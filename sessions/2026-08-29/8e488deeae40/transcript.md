@@ -10,208 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now the key question: what happens **after** the `EMAIL REGISTERED EVENT` lands at Edgar — who sends the verification email with the `?vk=&em=` link? Let me investigate the backend processing.
-[3 tool result(s) compacted: search_code, search_code, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Key context found. Now let me determine **which backend is LIVE** for `edgar.truesight.me/dao/submit_contribution` (Rails vs dao_protocol port), and find the GAS `sendEmailVerification` mailer.
-[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Edgar returns FastAPI-style `{"detail":"Not Found"}` — that's the **dao_protocol** Python backend. Let me confirm the live architecture and find the email-registration/verification handler there.
-[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The cutover plan flagged email registration as "deferred, not yet ported" to dao_protocol — but I see a `dapp_digital_signature_onboarding` folder in dao_protocol. Let me check what's actually live and where `sendEmailVerification` lives.
-[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The cutover plan noted email registration as deferred in Python, but `email_registration.py` exists and looks fully ported. Let me read the full implementation and find the GAS mailer it calls.
-[1 tool result(s) compacted: read_local_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The tool result is nesting. Let me read the key remaining sections directly on the box.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have the full backend picture. Let me verify what's actually **live** on the dao_protocol box and find the GAS mailer code.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
-
-
-### 🤖 Autopilot
-
-Converging now — here's where I am on the sunmint E2E task.
-
-## What I've established (investigation phase complete)
-
-**The email-linking flow on sunmint (prod `sunmint.truesight.me`, a GitHub Pages fork of `sunmint_beta`):**
-
-1. **Client (sunmint `index.html`, lines ~490–550):** Section "Vincular email (opcional)" → `submitEmailLink()` signs an `[EMAIL REGISTERED EVENT]` with a WebCrypto RSA-2048 keypair (generated on first use, stored in `localStorage`, **reused from the dapp if the farmer already has one**) and POSTs to `https://edgar.truesight.me/dao/submit_contribution`.
-2. **Backend (live = dao_protocol Python/FastAPI** — confirmed: edgar.truesight.me returns FastAPI-style `{"detail":"Not Found"}`; the Rails→dao_protocol cutover is complete): `email_registration.py` (`handle_after_successful_verify`) appends a **VERIFYING** row to the *Contributors Digital Signatures* sheet with a one-time `vk`, then calls the GAS mailer `sendEmailVerification` (action on `EMAIL_VERIFICATION_GAS_WEBHOOK_URL` w/ `GAS_SECRET`) which emails a link `?em=<email>&vk=<token>`.
-3. **Verification:** opening that link on **the same device/browser** auto-fires `checkVerificationLink()` on page load → signed `[EMAIL VERIFICATION EVENT]` → `consume_verification` flips the row **VERIFYING→ACTIVE** → fires `refresh_dao_members_cache` (so the dapp's `dao_members.json` cache updates).
-4. **Known gotchas already documented** (CREDENTIALING_E2E_VALIDATION.md): the clean URL never fires the verification event — the page must be loaded **with** `?em&vk`; same-device constraint (private key lives in localStorage); Gmail indexing can lag the fresh verification email.
-
-## Still unverified / blocking (next turn)
-
-- **Whether the live dao_protocol box has `EMAIL_VERIFICATION_GAS_WEBHOOK_URL` / `GAS_SECRET` set** — my box-level ssh attempt failed (hostname resolution issue); I still need `ssh_run(host='dao_protocol', …)` to check env + GAS mailer reachability. If those aren't set, EMAIL REGISTERED will return `"Verification email could not be sent"` — that alone would be a finding.
-- **Whether the GAS `sendEmailVerification` mailer** itself is healthy (live test needed).
-- **The actual E2E run itself** — no live submission made yet.
-
-## Planned E2E (once unblocked — flagging before the live write)
-
-The E2E **mutates the live *Contributors Digital Signatures* sheet** (adds a VERIFYING→ACTIVE row) and **sends a real email**. It's not financial/destructive, but it is a live ledger write — flagging per the rules:
-
-1. Headless browser (Playwright/Chromium on this box) → open `sunmint.truesight.me` → submit `[EMAIL REGISTERED EVENT]` with a **clearly-marked test address** (e.g. `sunmint-e2e-20260829@truesight.me`).
-2. Poll the admin mailbox (gmail_search) for the verification email → extract the `?em&vk` URL.
-3. Load that URL **in the same browser context** (same-device constraint) → expect auto-fire `[EMAIL VERIFICATION EVENT]` → "Email confirmado com sucesso!".
-4. Verify the sheet row flipped **ACTIVE** + `dao_members.json` cache refreshed (read-only checks via read_google_sheet / GitHub raw).
-5. Also test the **resend path** (re-submit same key → new email, gated by 60s cooldown) as a bonus since it's part of the flow.
-
-**RESUME HERE →** next turn: (a) `ssh_run(host='dao_protocol')` to check `EMAIL_VERIFICATION_GAS_WEBHOOK_URL`/`GAS_SECRET` in the box env + confirm GAS webhook responds; (b) confirm Playwright/Chromium availability on this box; (c) get Gary's OK on the test-email live write, then run steps 1–5 and post results here.
-
-Nothing broken found so far — the code path is coherent end-to-end (client → Edgar → dao_protocol → GAS mailer → email → same-device verification → ACTIVE + cache refresh). The two risk points to probe live are the GAS mailer env config and the sheet write.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×12 → cd /tmp && curl -sL https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/index.html -o sunmint_beta_index.html && wc -l sunmint_; cd /tmp && sed -n '280,310p' sunmint_beta_index.html && echo "=====JS FLOW=====" && sed -n '440,560p' sunmint_beta_index.html; cd /tmp && grep -n "EDGAR_SUBMIT_URL\|EDGAR_\|api.truesight\|edgar" sunmint_beta_index.html | head -20; …(+9 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-@truesight_autopilot_bot — Gary's OK on the live E2E write. Also, going forward: agentic_ai_context now has §5g (just merged, PR #829) — E2E test writes with clearly-marked test data (like your sunmint-e2e-20260829@truesight.me address) are standing-authorized, you don't need to pause for a go-ahead on this class of action anymore. The tradeoff: any test write that adds value to a ledger must be reversed in the SAME turn (expensed off / moved back), not left for later — this is directly in response to the QA sticker rows from #411/#427/#431 sitting unexpensed for 2 days. Proceed with the Sunmint test now.
-
-
-### 🤖 Autopilot
-
-Resuming the sunmint E2E with Gary's authorization. Plan: (1) verify live backend config on the dao_protocol box, (2) confirm browser tooling on this box, (3) find the GAS mailer sender so I can capture the verification email, then (4) run the real flow and reverse any ledger residue in the same turn.
-[3 tool result(s) compacted: ssh_run, ssh_run, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Key facts: chromium IS available on this box (snap chromium + playwright browser cache), but ssh to the dao_protocol host fails (publickey denied — will test the live path via HTTP instead, which is even more end-to-end). Now I need (a) the sunmint client selectors for automation, (b) the Contributors Digital Signatures sheet module (spreadsheet ID + columns — needed for verification AND same-turn reversal), (c) the mailbox situation.
-[4 tool result(s) compacted: ssh_run, read_repo_file, gmail_list_labels, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Good — I now have the full client flow, the sheet module (spreadsheet `1GE7PUq-...E6PU` = the Main Ledger, tab "Contributors Digital Signatures", cols A–I), and confirmation chromium + playwright browser cache exist on this box. Let me (1) read the new §5g standing-authorization rule I'm now operating under, (2) pin down the automation tooling (python playwright in a venv?), and (3) figure out which inbox can catch the verification email.
-[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the §5g rule (the truncation cut it off) and pin down the verification-email sender + which mailbox can receive the test email.
-[3 tool result(s) compacted: ssh_run, search_code, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the full §5g rule and find the actual GAS mailer project (searching tokenomics `google_app_scripts` for the verification email sender).
-[3 tool result(s) compacted: ssh_run, search_code, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-§5g is clear: standing authorization + mandatory same-turn reversal of any test value. Now I need the admin mailbox address (to receive the verification email via a +alias) and then I'll drive the real sunmint page with Playwright. Let me find the mailbox config and check the live site responds.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-sunmint site is live with the expected elements. Now let me (1) locate the autopilot code + gmail config, (2) check the sheet's current tail (for later cleanup decisions), and (3) confirm python playwright works.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Playwright python isn't in system python3, but node playwright exists in the dapp_beta clone. Let me check the autopilot's gmail config and node playwright availability.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Node playwright works against the live site, and the autopilot's gmail default account is `admin+sophia@truesight.me`. Let me confirm the mailbox address + current sheet state, and hunt for the GAS mailer's sender/subject so I can recognize the verification email.
-[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The sheet only has header + 5 ACTIVE rows (all Gary). The GAS mailer sender needs locating — let me check the mailbox address (sophia vs gary) and find the GAS project that sends the verification email so I know the sender address + subject to grep for.
-[2 tool result(s) compacted: gmail_search, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have everything I need. The GAS mailer is `1m8IZPs1vFN99cuu-39kbC-OGXggRVtJtXq5rfSB0M1sCQjMdolEUDuGU/email_verification_from_edgar.js`, sender `garyjob@agroverse.shop`, subject "Verify your TrueSight DAO digital signature", and the admin mailbox already receives these. Let me read the GAS mailer (to confirm the return_url param flows through) and check the current time/date for the test marker.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All the pieces are confirmed. Time to run the real E2E. My test vector:
-- **Email:** `sunmint-e2e-20260829@truesight.me` (clearly-marked test address — per §5g; delivery to the truesight.me mailbox since the GAS mailer sends to whatever address is given)
-- **Browser:** node playwright (chromium) against live `https://sunmint.truesight.me/`
-- **Verification email:** lands in the same mailbox via `gmail_search` (from `garyjob@agroverse.shop`)
-
-One caveat to flag before I run: the verification email will go to `sunmint-e2e-20260829@truesight.me`. I need to confirm that address delivers to the admin mailbox — otherwise the email is undeliverable and the vk never reaches me (which would itself be a finding, but not the intended test). Let me check the catch-all and then run.
-[2 tool result(s) compacted: gmail_search, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Two mailbox tokens exist (admin + gary). The `sunmint-e2e-20260829@truesight.me` address may or may not be a real catch-all. Rather than risk an undeliverable test email, I'll use a **delivery-guaranteed +alias of the admin mailbox** — the pattern `admin+e2e-sunmint-20260829@truesight.me` is what prior tests used (`admin+envoy@truesight.me` received a verification email on 2026-08-23, and `admin+sophia@truesight.me` on 2026-08-24), so it's proven to deliver AND is unambiguous test data. Let me check the gary mailbox too, then run.
-[2 tool result(s) compacted: gmail_search, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**STEP 1 PASSED** — live sunmint → Edgar round-trip works:
-- `POST /dao/submit_contribution` → **200**, `signature_verification: success`
-- `emailRegistration: {ok: true, verification_email_sent: true, skipped: false}`
-- UI: "Verifique seu email para confirmar o link." ✓
-- RSA keypair persisted to `/tmp/sunmint_e2e_state.json` (for the same-device verification step)
-
-Also spotted: prior E2E runs today (`tgm-e2e-20260829@`, `sophia.tgm.beta.test@`) — so this flow is actively being tested. Now step 2: find the verification email in the admin mailbox and extract the `?em&vk` link.
-[2 tool result(s) compacted: gmail_search, gmail_search — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 The verification email arrived at the admin mailbox (the +alias delivered — good). Let me read the full message to get the complete `vk`, then navigate the same browser context to the link.
 [1 tool result(s) compacted: gmail_read_message — detail in artifacts]
 
@@ -4275,11 +4073,13 @@ The access token expired (401). Before refreshing, let me check the root `Creden
 ### 🤖 Autopilot
 
 The webhook still errors. Let me see the actual error message (the grep caught generic "Error" — I need the full page title/content):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **✅ Credentials.js restored + @7 webhook works: `{"status":"success","message":"✅ Tree planting processed"}`** — the ReferenceError is gone. That fire's scan would have picked up the pending rows 11887/11888. Let me verify they landed, then repoint the box env at @7 (it currently points at the broken @5):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4290,6 +4090,7 @@ The webhook still errors. Let me see the actual error message (the grep caught g
 - `Edgar_20260829150131_001` (row 11888, auto-dispatch test)
 
 The tab grew 24→26 rows. Now repoint the box env at @7 (the working deployment) so auto-dispatch fires the restored webhook, then close out:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4298,16 +4099,19 @@ The tab grew 24→26 rows. Now repoint the box env at @7 (the working deployment
 - Box env now points `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING` → **@7** (restored webhook), service active (pid 957269), env confirmed in the running process.
 
 Now the final steps Gary asked for: (1) prevent recurrence — add `Credentials.js` to `.claspignore` (small PR), (2) write the detailed runbook for future Sophias/LLMs, (3) close out + contribution report. Let me do the `.claspignore` fix + write the runbook in one PR, and pin the current state:
+[2 tool result(s) compacted: pin_note, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tool results lost to a race — retrying. First the `.claspignore` fix so the Credentials.js deletion can never recur:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #448 opened (the `.claspignore` recurrence-prevention fix). Now merging it per standing authorization, then writing the runbook:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4521,4 +4325,43 @@ This thread is closed out. 🎉
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → export GH_TOKEN_AP="$(sudo grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2-)" echo "=== delete synthetic E2E te; export GH_TOKEN_AP="$(sudo grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2-)" echo "=== get current sha ===" SH; export GH_TOKEN_AP="$(sudo grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2-)" echo "=== check file existence vi; …(+3 more)
 • `create dao submission` ×2 → Contribution submitted
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] report contribution for you and me.
+
+
+### 🤖 Autopilot
+
+Both contributions were **already submitted and confirmed** in the close-out last turn. Here's the report:
+
+## 📋 Contribution Report — 2026-08-29 SunMint E2E Campaign
+
+### 🤖 Sophia Truesight (me) — 480 min `[CONTRIBUTION EVENT]` ✅ submitted
+**"SunMint E2E campaign + 7 production fixes"**
+
+Evidence PRs (all merged):
+- sunmint_beta #28 — offline-queue Blob corruption fix (base64 dataURLs)
+- tokenomics #441 — missing TGM webhook action
+- tokenomics #442 — handler undefined-return TypeError fix
+- tokenomics #446 — `DBH (cm)` regex metacharacter fix (escapeRe)
+- tokenomics #447 — plain planting webhook action
+- dao_protocol #149 — `[TREE PLANTING EVENT]` ROUTING entry
+- tokenomics #448 — .claspignore Credentials.js (recurrence prevention)
+- agentic_ai_context #840 — SUNMINT_E2E_RUNBOOK.md
+- (earlier: sunmint_beta #22/#23/#25 UX fixes)
+
+**Scope covered:** full-chain E2E (email link → sentinel → plant → monitor → mark-invalid), email-sender cutover to admin@truesight.me, env wiring + auto-dispatch, tree index 18→19, §5g cleanup (identity row deleted, 3 synthetic photos removed).
+
+### 👤 Gary Teh (you) — 90 min `[CONTRIBUTION EVENT]` ✅ submitted
+**"Governor direction for SunMint E2E campaign"**
+
+**Scope covered:** directing the E2E, the UX requirements (unlink button, monitor-page parity), the sender switch to admin@truesight.me, the "dao_protocol python, not rails" steering that shaped the dispatch-port fix, and repeated go-signals through 7 merged production fixes.
+
+---
+
+Both landed with status `"Contribution submitted"` (Edgar). If you'd like, I can pull the ledger rows (contributor name, amount, timestamp) to confirm them in the sheet — say the word.
 
