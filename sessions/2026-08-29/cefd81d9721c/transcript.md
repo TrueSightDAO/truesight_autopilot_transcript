@@ -213,16 +213,24 @@ No irreversible actions taken — this was all read/diagnosis.
 ### 🤖 Autopilot
 
 Continuing the dig — the interesting open questions: (1) is `Code.js` safe to delete (does it hold any unique functions), (2) is this the **only** broken GAS project, or do other folders have the same duplicate-global collision class, (3) what's in `Version.gs`/`appsscript.json`. Running all in parallel:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The scan just revealed this is **not one broken project — it's a class of breakage**. Let me see the full scan output to enumerate every affected project.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The scan surfaced **3 more project folders with the same collision pattern** — but I need to separate true breakage from legal JS. Key distinction: **`var` redeclaration is legal** (last wins), **`const`/`let` redeclaration throws SyntaxError**. Let me verify which of the flagged folders have actual `const` duplicates, and whether the duplicate files are identical (stale copies) or divergent.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -276,16 +284,24 @@ You asked me to keep digging and I did (all read-only). **I have not deployed or
 Gary's "Deploy" is the go. Executing the fix plan: verify canonical manifests → PR removing stale `Code.js` duplicates → merge → pull locally → push the fixed projects to GAS.
 
 First, the pre-flight reads (manifests for the 3 broken folders + full const/let collision scan + local git state):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The scan found **more** colliding projects than the initial 3. Let me read the full output to enumerate the complete list before fixing.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full scan complete — the collision class is bigger: **8 project folders** carry the stale `Code.js` duplicate (same `63f441e` flatten origin). Before the PR, one verification pass to confirm which file is canonical per folder (manifest `source_files` + sha256 match) so I delete the right file everywhere:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -440,4 +456,115 @@ Deploy ledger entries: `deploy_20260829T130346Z` (recurring), `…130423Z` (webh
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd ~/tokenomics && git pull --ff-only origin main 2>&1 | tail -3 && echo "=== verify recurring-tokenization folder clean ===" && cd google_a; cd ~/tokenomics && echo "=== branch/head ===" && git branch --show-current && git log --oneline -3 && echo "=== is merged commit present loc; cd ~/tokenomics && git fetch origin main 2>&1 | tail -1 && echo "=== commits we're missing ===" && git log --oneline HEAD..origin/main && ec; …(+3 more)
 • `gas deploy project` ×5 → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T130346Z_1lxwu9hos56jz6mbxra3edv74xjpjgkjqw40xjpq.md; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T130409Z_1zkgmwd6kjfjowkrh6oobgfvtvzrxvuekfxvbgix.md; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T130428Z_1m2sqondmgw6hbxivp0h0jjj1ayrylsrrlhb2mip.md; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15492] you have admin clasp cred
+
+
+### 🤖 Autopilot
+
+Gary says I have the admin clasp credential — so the digital-signatures project can deploy under `admin@truesight.me`. Let me check how the deploy script selects clasp identity (env var / profile / flag) before pushing:
+
+
+### 🤖 Autopilot
+
+Gary confirms the admin clasp credential exists — and indeed there's `/home/ubuntu/.clasprc-admin.json` on the box. The deploy script honors `CLASPRC_PATH` (line 30), so I can push the digital-signatures project under the admin identity. The deploy tool uses the `/opt/truesight_autopilot/context/tokenomics` checkout — let me verify it's in sync (no `Code.js`) and deploy with the admin cred:
+
+
+### 🤖 Autopilot
+
+Deployed under the admin identity — **digital signatures project is live now** (`register_member_digital_signatures_email.js` pushed clean). That's 4 of 5 clean projects deployed.
+
+Remaining: the capital-injection folder's `Version.js`/`Version.gs` clash, and the 3 folders with residual `const creds` collisions. Let me scope those fixes precisely (references per file, manifests) to build the Unit 2 PR:
+
+
+### 🤖 Autopilot
+
+All scope confirmed. Here's the Unit 2 fix design:
+
+**1orWgdGck (capital injection):** `Version.js` (1122B, stale — 04-12 timestamp) vs `Version.gs` (3373B, canonical — 04-28+ timestamp, full changelog). Manifest `source_files` names `capital_injection_processing.gs` only, but both Version files exist. **Fix: delete `Version.js`, keep `Version.gs`** — the richer changelog is the real one.
+
+**1wmgYPw + 1duQFfTO0 (sales-update + telegram_webhook_listener):** both canonical files declare `const creds`; the webhook listener only uses `creds.TELEGRAM_API_TOKEN` (3 refs each). **Fix: rename the webhook listener's `creds` → `webhookCreds`** (declaration + 3 refs per folder).
+
+**1rLl94jQ9 (wix_dashboard + web_app):** both declare `const creds` (3 refs each). Need to see which file's `creds` is used how — but the same rename pattern applies. Let me check the usage shape before writing the PR:
+
+
+### 🤖 Autopilot
+
+Full clarity now — here's the exact fix matrix:
+
+- **`1orWgdGck`** → delete stale `Version.js` (1122B, 04-12) keep canonical `Version.gs` (3373B, full 04-28+ changelog). clasp refuses to push because `.gs`/`.js` with the same basename map to the **same** GAS script file → "Conflicting files found".
+- **`1wmgYPw` / `1duQFfTO0`** → rename `telegram_webhook_listener.js`'s `creds` → `webhookCreds` (declaration + 3 refs); the sales-update file keeps `creds`.
+- **`1rLl94jQ9`** → rename `web_app.js`'s `creds` → `webAppCreds` (declaration + 2 refs); `tdg_wix_dashboard.js` owns `getCredentials()` and keeps `creds`.
+
+One global check for other basename collisions (`.js`+`.gs` same stem), then I'll open the Unit 2 PR:
+
+
+### 🤖 Autopilot
+
+Scan shows the same-basename collision class is **wider** — 4 more folders (`14gKJ0VW` with 4 pairs!, `1Jp8qNIB`, `1QtK-Ins`, `1UrBgqLn`) have `Version.*`/`Credentials.*`/etc. clashes. Those need per-folder verification first (which side is canonical) → Unit 2b.
+
+Opening the **Unit 2 PR** now with the 4 fully-verified fixes (delete stale `Version.js`; rename colliding `creds` consts):
+
+
+### 🤖 Autopilot
+
+PR **#438** opened. Merging it now (same authorized fix train), then deploying the 4 fixed projects:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn report — Unit 2 done: remaining GAS collisions fixed (PR #438 merged)
+
+### What happened this turn
+
+**1. Digital-signatures project deployed (admin clasp).** Gary confirmed the admin clasp cred — `/home/ubuntu/.clasprc-admin.json` exists, and the deploy script honors `CLASPRC_PATH`. Deployed `1zKgMwd6K` under `admin@truesight.me`:
+- ✅ **PUSHED CLEAN** — `register_member_digital_signatures_email.js` + `Version.gs` + `appsscript.json` (no Code.js). Ledger skipped (fail-open, no PAT in that env var) but push succeeded.
+
+**2. Scoped the residual collision classes** (2 ssh scans):
+- **Same-basename `.js`+`.gs` clash** (clasp "Conflicting files found"): `1orWgdGck` had `Version.js` (1122B, stale, changelog ends 04-12) vs `Version.gs` (3373B, canonical, full 04-28+ changelog).
+- **`const creds` duplicates** between canonical files: `1wmgYPw` + `1duQFfTO0` (webhook listener uses only `creds.TELEGRAM_API_TOKEN`), `1rLl94jQ9` (`web_app.js` uses `creds.WIX_API_KEY`/`QUICKNODE_API_KEY`; `tdg_wix_dashboard.js` owns `getCredentials()`).
+- Also discovered the same-basename collision class exists in **4 more folders** (`14gKJ0VW` ×4 pairs, `1Jp8qNIB`, `1QtK-Ins`, `1UrBgqLn`) — needs per-folder canonical verification → **Unit 2b**.
+
+**3. PR #438 opened + merged** — `fix/gas-collisions-round2` (sha `a6f21804`):
+- Deleted stale `Version.js` from `1orWgdGck` (capital injection)
+- Renamed `const creds` → `webhookCreds` in `telegram_webhook_listener.js` (decl + 3 refs) in `1wmgYPw` and `1duQFfTO0`
+- Renamed `const creds` → `webAppCreds` (decl + 2 refs) in `web_app.js` of `1rLl94jQ9`
+- 🔗 https://github.com/TrueSightDAO/tokenomics/pull/438
+
+### Deploy status so far
+| Project | Status |
+|---|---|
+| `1LxWu9hOs` recurring tokenization | ✅ deployed |
+| `1m2sQONdM` webhook listener | ✅ deployed |
+| `1vC3p_WfK` notarization | ✅ deployed |
+| `1zKgMwd6K` digital signatures | ✅ deployed (admin clasp) |
+| `1orWgdGck` capital injection | ⏳ fixed in #438 — deploy next |
+| `1wmgYPw`, `1duQFfTO0`, `1rLl94jQ9` | ⏳ fixed in #438 — deploy next |
+
+### RESUME HERE → next units
+- **Unit 3**: pull merged #438 into the deploy checkout, then `gas_deploy_project(push=true)` for the 4 fixed projects (`1orWgdGck` capital injection, `1wmgYPw`, `1duQFfTO0`, `1rLl94jQ9`).
+- **Unit 2b**: verify canonical side + fix the 4 remaining same-basename collision folders (`14gKJ0VW` — Version/email_agent_drafts/partner_poke_drafts/store_interaction_history_api; `1Jp8qNIB` — Credentials/Version; `1QtK-Ins` — Version; `1UrBgqLn` — Version) → third PR.
+- **Unit 4**: confirm the monthly recurring-tokenization trigger fires clean (auto-backfills Aug+Sep via `calculateTokenizationDates` loop) + verify Ledger rows.
+- **Unit 5 (guardrail PR, truesight_autopilot)**: duplicate-global + same-basename pre-push check in `gas_deploy_project`.
+
+Deploy ledger: `deploy_20260829T130346Z` (recurring), `…130423Z` (webhook), `…130512Z` (notarization), `1zKgMwd6K` pushed (ledger skipped fail-open). No payouts moved; catch-up runs via the scheduled trigger.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd ~/tokenomics && echo "=== deploy_gas_project.py: identity handling ===" && grep -n "identity\|clasp\|CLASP\|allow-identity\|owner_email\|clasp_login\|~/.clasprc" scripts/deploy_gas_project.py | head -40 && ec; cd /opt/truesight_autopilot/context/tokenomics && echo "=== /opt checkout ===" && readlink -f . && git log --oneline -1 && echo "=== folder contents ===" && ls google_app_scripts/1zKgMwd6KJFjoWkRH6OobgFvtVzrXVuEKfxVbgixgnfcp4TZTjrsfNKq0/ && ec; …(+2 more)
+• `git push changes` → https://github.com/TrueSightDAO/tokenomics/pull/438
+• `merge pr` → ✅ PR #438 on tokenomics merged successfully (sha: a6f218045ec65e23a13d68d782caba8050f18980). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd ~/tokenomics && echo "=== deploy_gas_project.py: identity handling ===" && grep -n "identity\|clasp\|CLASP\|allow-identity\|owner_email\|; cd /opt/truesight_autopilot/context/tokenomics && echo "=== /opt checkout ===" && readlink -f . && git log --oneline -1 && echo "=== folder ; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts && echo "=== 1orWgdGck (capital injection): file list + Version files ==="; …(+2 more)
+• `merge pr` → ✅ PR #438 on tokenomics merged successfully (sha: a6f218045ec65e23a13d68d782caba8050f18980). Pull Request successfully merged
 
