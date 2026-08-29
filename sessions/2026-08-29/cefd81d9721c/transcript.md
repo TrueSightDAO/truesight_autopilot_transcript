@@ -821,11 +821,13 @@ Pull confirmed at #439 head (`16241e0`), untracked `Version.js` files removed fr
 ### 🤖 Autopilot
 
 10 of 12 deployed ✅ — 9 more clean pushes this batch (only `10NKp8uLM` + `1IBrXqW_u` failed with "Requested entity was not found"). That clasp error means the scriptId **doesn't exist** under the clasp account — likely stale scriptIds (deleted/replaced projects) rather than our fixes. Let me verify by listing what the clasp account actually has vs those two scriptIds, and check if those projects exist under the admin account instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The greps came up empty — let me look at the raw clasp list output and the appsscript.json/.clasp.json contents to see what's actually there:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -833,11 +835,13 @@ The greps came up empty — let me look at the raw clasp list output and the app
 The clasp list confirms it: **`10NKp8uLM` and `1IBrXqW_u` are NOT in the garyjob account's 53 scripts** (the list shows all the other 10 folders I deployed, plus many more — but not these two). "Requested entity was not found" = the scriptIds are **stale** — they don't exist under this clasp account. These two are the *register_member_digital_signatures_telegram* and *subscription_notification* projects.
 
 Let me check whether they exist under the admin account (maybe they were created/moved there), and whether the repo has any record of them being superseded:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The admin account's 54 scripts also don't contain them — both scriptIds are **truly stale** (exist in neither account). But the repo has audit docs (`gas_orphan_mirror_audit.md`, `gas_exec_probe_audit.md`, `PROJECT_INDEX.md`) that may record their disposition. Checking those:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -845,6 +849,7 @@ The admin account's 54 scripts also don't contain them — both scriptIds are **
 Very interesting — the audit docs reveal these projects DO exist (they have live web-app deployments that returned HTTP 200 in the exec probe audit — `10NKp8uLM` returned `{"ok":false,"error":"No valid action (use action=sendEmailVerification or action=processDigitalSignatureEvents..."` — it's alive!). The clasp accounts (both garyjob and admin) don't have them, but the scripts exist in Google's cloud.
 
 The key insight: `clasp push` fails with "Requested entity was not found" because the clasp **OAuth credentials can't see these scriptIds** (they may be owned by a third account, e.g. `superadmin@agroverse.shop` — note the `Stripe:superadmin@g…` script in the list). Let me find which account owns them, and check the audit docs for the owning-account record:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -852,11 +857,13 @@ The key insight: `clasp push` fails with "Requested entity was not found" becaus
 There's a **third clasp credential** on the box I hadn't used: `/home/ubuntu/.clasprc-gary.json` (1895 bytes — likely a different account than the default `.clasprc.json`). And crucially: the exec probe audit (2026-05-28) shows **`10NKp8uLM` was live then** — its web app returned `{"ok":false,"error":"No valid action..."}`. So the script *existed* ~3 months ago under some account. The `1IBrXqW_u` disposition says it was **"routed to source"** `agroverse_qr_codes/subscription_notification.gs` (meaning that project may have been decommissioned/consolidated).
 
 Let me check the `.clasprc-gary.json` account identity and whether it can see these two scriptIds:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Mystery solved for `10NKp8uLM`:** the gary clasp account (`.clasprc-gary.json`, a third account — only 4 scripts) contains **"TDG - Telegram Iden…" under a NEW scriptId `1m8IZPs1v…`** — so `10NKp8uLM` was **superseded** (recreated under a new scriptId in the gary account). The old scriptId is an orphan: still alive in Google (web app responds) but no clasp account can push to it. Let me confirm the new scriptId's folder exists in the repo and check the `1IBrXqW_u` (subscription_notification) disposition:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -867,11 +874,13 @@ Both mysteries solved:
 - **`1IBrXqW_u`** — subscription_notification was **"routed to source"** (per the disposition doc) — the real source lives under the `1ovx-Hq5L…` project (create_subscription_checkout_session). `1IBrXqW_u` is a decommissioned orphan.
 
 I've now deployed 10 of 12 cleaned folders; the 2 "not found" ones are **stale orphan scriptIds, not failures of our fix**. Let me verify the `1m8IZPs1v` folder is clean (does it have the Code.js-collision issue?) and check whether `1IBrXqW_u` should simply be removed from the repo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `1m8IZPs1v` folder (the real, current TDG - Telegram Identity Management) has **no duplicate top-level consts and no same-basename pairs** — it's clean. But note: its manifest `source_files` lists 6 canonical files and `Code.js` is **not** among them, yet `Code.js` is present in the folder. It compiled fine (no dup consts), but it's still an extra file being pushed. It's likely another stale `Code.js` from the same flatten. Let me verify what's in that Code.js (is it a stale duplicate of a canonical file, or unique functions?), and check the full remaining orphan list:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -879,11 +888,13 @@ The `1m8IZPs1v` folder (the real, current TDG - Telegram Identity Management) ha
 Important distinction: in `1m8IZPs1v`, `Code.js` is **NOT a stale duplicate** — its header says it's the source for `tdg_identity_management/edgar_send_email_verification.gs`, and it has 11 unique functions. This is a case where the file was **renamed** during the flatten but the project relies on it. Since the folder has **no duplicate consts** (compiles fine), `Code.js` here is likely intentional (its functions may be referenced by the canonical files). Not touching it — this folder is fine as-is.
 
 Now let me confirm the final state and close out the orphan question. The 2 "not found" folders are orphaned scriptIds. Let me verify whether `1IBrXqW_u` (subscription_notification) is truly decommissioned or whether the live subscription flow uses `1ovx-Hq5L`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full picture is now clear. Let me summarize the complete deployment status and the orphan disposition, then hand this to the next unit (guardrail PR + verification). First, one check — whether the `1m8IZPs1v` (the superseding Telegram Identity project) is itself deployable, so the whole class is truly closed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -942,36 +953,43 @@ go
 ### 🤖 Autopilot
 
 Gary's go — executing Unit 5 (the guardrail, highest-leverage close-out) + Unit 4 (verification). First, locate where the `gas_deploy_project` tool's deploy script actually lives so I add the pre-push checks in the right repo:
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deploy script lives in **tokenomics** (`scripts/deploy_gas_project.py`, 483 lines) — that's where the guardrail goes. Let me read it in full to place the checks correctly:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the deploy script to see the main() flow and where to insert the pre-push checks:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full script structure now. The guardrail goes right after the `files` listing — a `validate_project_files()` that checks for: (1) duplicate top-level `const`/`let`, (2) same-basename `.js`+`.gs`, (3) stale `Code.js` not in manifest. Plus an orphan-scriptId warning using the clasp account's project list. Let me check the existing tests to match conventions:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Test file not in tokenomics (it's in truesight_autopilot). Let me check the truesight_autopilot copy of the deploy tests to understand what the tool wrapper expects, then write the guardrail:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deploy script lives in **tokenomics** (`scripts/deploy_gas_project.py`) — the guardrail goes there, right where the collision classes actually break pushes. I have the full structure (files listing, identity check, lease, push flow). Writing the guardrail PR now — a `validate_project_files()` that hard-blocks the two classes that broke these deploys (duplicate top-level `const`/`let` → GAS SyntaxError; same-basename `.js`+`.gs` → clasp "Conflicting files found") plus a soft orphan-scriptId warning:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **#440** opened with the guardrail. Per the local-test rule, let me verify the validator logic on the actual checkout — syntax check, run it against the 20 fixed folders (must return 0 errors), and confirm it catches a planted collision:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1097,4 +1115,75 @@ Deploys: **18 projects pushed clean** (recurring tokenization, webhook listener,
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /opt/truesight_autopilot/context/tokenomics && echo "=== deploy script location(s) ===" && ls -la scripts/deploy_gas_project.py 2>/dev/nu; cd /opt/truesight_autopilot/context/tokenomics && echo "=== syntax check ===" && python3 -m py_compile scripts/deploy_gas_project.py && echo; cd /opt/truesight_autopilot/context/tokenomics && git fetch origin fix/gas-deploy-pre-push-guardrail -q 2>&1 | tail -1; git checkout -q fix/; …(+7 more)
 • `merge pr` → ✅ PR #440 on tokenomics merged successfully (sha: 16a47d54171dde27dad27d3a2450be6ed3ace789). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15492] [Handoff context — this Telegram topic (thread 15492) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary's go — executing the final unit (Unit 4: verification). Pulling the guardrail into the deploy checkout, and locating the exact spreadsheet/tab the recurring-tokenization script writes to so I can verify the catch-up:
+
+
+### 🤖 Autopilot
+
+Guardrail live in the deploy checkout (HEAD = #440). Now I need the `SPREADSHEET_ID` from CONFIG to verify the actual ledger state:
+
+
+### 🤖 Autopilot
+
+`SPREADSHEET_ID` = `1GE7PUq-UT6x2rBN-Q2ksogbWpgyuh2SaxJyG_uEK6PU` — the **Main Ledger** (default SA has access). Now verify the current state: the "Most Recent Tokenization Date" column on the Recurring Transactions tab, and whether any Aug/Sep rows have landed in Ledger history:
+
+
+### 🤖 Autopilot
+
+Verification complete — the sheet state is now clear. Here's the final Unit 4 report.
+
+## ✅ Unit 4 — Verification: recurring tokenization sheet state
+
+**Guardrail deployed:** deploy checkout is at #440 head (`16a47d5`), validator live (4 guardrail markers present) — future pushes of this class are hard-blocked.
+
+**Recurring Transactions sheet (Main Ledger `1GE7PUq…`), verified live:**
+
+| Row | Contributor | Type | Last tokenized | Status |
+|---|---|---|---|---|
+| Wix TrueSight.Me / Agroverse.shop | — | Vault Draw down | 20250317 | stale (vault, not tokenized) |
+| Domains / GS1 / Google Apps | — | Vault Draw down | 20250405 / 20250630 | stale (vault) |
+| Edgar AWS — garyjob | Jacob Nelan | **Tokenization** | **20260801** | ✅ tokenized Aug 1 |
+| Edgar AWS — explorya | Gary Teh | **Tokenization** | **20260801** | ✅ tokenized Aug 1 |
+| SF Warehouse, Brazil VO, Ilheus, Davos, FounderHaus, eodhd, Kiki | Lapidus/Toledo/Reis/Heierling/Kaz/Gary/Kirsten | **Tokenization** | **20260723** | ⏳ **missed Aug 20 + Sep 20** |
+
+**Ledger history:** total TDG issued 2,424,067.45; no Aug/Sep recurring rows present yet (as expected — the 8/28 run died at compile).
+
+### What this means
+- The 8/1 run succeeded (AWS rows @ 20260801), then **8/28 12:27 hit the SyntaxError** — the 7 warehouse/eodhd/Kiki rows (billing date 20th) missed their **Aug 20** tokenization and **Sep 20** is upcoming.
+- The deployed code is **clean and compiles** (validator 0 errors). `processRecurringTransactions` generates all dates from last-check → now and **skips already-tokenized** (checks Ledger history) → **the next run auto-backfills Aug + Sep idempotently.** No manual fix needed.
+
+### ⚠️ One decision for you (I'm stopping here deliberately)
+Triggering the catch-up **issues TDG tokens** (recurring contributor payouts) — that's value movement, which I don't do without an explicit command. Two options:
+1. **Wait for the next scheduled trigger** (monthly; the 8/28 one already fired-and-failed, so next is ~9/28) → auto-backfills Aug + Sep then. Zero action.
+2. **Trigger now** in the Apps Script editor (`processRecurringTransactions` → Run) → August tokenizations land immediately. One click, human-in-the-loop.
+3. Or say the word and I'll check whether this script has API-executable deployment so I could run it programmatically — but I'd still confirm the exact TDG amounts with you before firing.
+
+My recommendation: **option 1 or 2** — no code changes needed; the fix is done and deployed.
+
+### 🎉 Incident close-out
+| PR | What | Status |
+|---|---|---|
+| #434 | Removed stale `Code.js` ×8 (incl. the failing project) | merged |
+| #438 | `creds`→`webhookCreds` ×3 + `Version.js` removal | merged |
+| #439 | Cleaned 12 more folders (17 deletions + 3 renames) | merged |
+| #440 | **Guardrail** (brace-depth-aware dup-global + same-basename + orphan checks) | merged |
+
+**18 projects deployed clean**, 2 orphans documented (`10NKp8uLM`→superseded `1m8IZPs1v`, `1IBrXqW_u`→decommissioned). All ledgered in `ecosystem_change_logs`.
+
+**RESUME HERE** → awaiting your call on the catch-up trigger (options 1/2/3 above). If you pick 3, I'll verify API-executable status + draft the exact TDG amounts for your approval before running anything. Otherwise the incident is fully closed.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot/context/tokenomics && git pull --ff-only origin main -q 2>&1 | tail -1; echo "=== deploy checkout head ===" && g; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK && sed -n '1,40p
 
