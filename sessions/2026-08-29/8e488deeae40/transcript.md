@@ -93,36 +93,58 @@ Let me check the dapp's `create_signature.html` (the canonical flow sunmint mirr
 ### 🤖 Autopilot
 
 Now the key question: what happens **after** the `EMAIL REGISTERED EVENT` lands at Edgar — who sends the verification email with the `?vk=&em=` link? Let me investigate the backend processing.
+[3 tool result(s) compacted: search_code, search_code, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key context found. Now let me determine **which backend is LIVE** for `edgar.truesight.me/dao/submit_contribution` (Rails vs dao_protocol port), and find the GAS `sendEmailVerification` mailer.
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edgar returns FastAPI-style `{"detail":"Not Found"}` — that's the **dao_protocol** Python backend. Let me confirm the live architecture and find the email-registration/verification handler there.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The cutover plan flagged email registration as "deferred, not yet ported" to dao_protocol — but I see a `dapp_digital_signature_onboarding` folder in dao_protocol. Let me check what's actually live and where `sendEmailVerification` lives.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The cutover plan noted email registration as deferred in Python, but `email_registration.py` exists and looks fully ported. Let me read the full implementation and find the GAS mailer it calls.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool result is nesting. Let me read the key remaining sections directly on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full backend picture. Let me verify what's actually **live** on the dao_protocol box and find the GAS mailer code.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -178,56 +200,67 @@ Nothing broken found so far — the code path is coherent end-to-end (client →
 ### 🤖 Autopilot
 
 Resuming the sunmint E2E with Gary's authorization. Plan: (1) verify live backend config on the dao_protocol box, (2) confirm browser tooling on this box, (3) find the GAS mailer sender so I can capture the verification email, then (4) run the real flow and reverse any ledger residue in the same turn.
+[3 tool result(s) compacted: ssh_run, ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key facts: chromium IS available on this box (snap chromium + playwright browser cache), but ssh to the dao_protocol host fails (publickey denied — will test the live path via HTTP instead, which is even more end-to-end). Now I need (a) the sunmint client selectors for automation, (b) the Contributors Digital Signatures sheet module (spreadsheet ID + columns — needed for verification AND same-turn reversal), (c) the mailbox situation.
+[4 tool result(s) compacted: ssh_run, read_repo_file, gmail_list_labels, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — I now have the full client flow, the sheet module (spreadsheet `1GE7PUq-...E6PU` = the Main Ledger, tab "Contributors Digital Signatures", cols A–I), and confirmation chromium + playwright browser cache exist on this box. Let me (1) read the new §5g standing-authorization rule I'm now operating under, (2) pin down the automation tooling (python playwright in a venv?), and (3) figure out which inbox can catch the verification email.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the §5g rule (the truncation cut it off) and pin down the verification-email sender + which mailbox can receive the test email.
+[3 tool result(s) compacted: ssh_run, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full §5g rule and find the actual GAS mailer project (searching tokenomics `google_app_scripts` for the verification email sender).
+[3 tool result(s) compacted: ssh_run, search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 §5g is clear: standing authorization + mandatory same-turn reversal of any test value. Now I need the admin mailbox address (to receive the verification email via a +alias) and then I'll drive the real sunmint page with Playwright. Let me find the mailbox config and check the live site responds.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 sunmint site is live with the expected elements. Now let me (1) locate the autopilot code + gmail config, (2) check the sheet's current tail (for later cleanup decisions), and (3) confirm python playwright works.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Playwright python isn't in system python3, but node playwright exists in the dapp_beta clone. Let me check the autopilot's gmail config and node playwright availability.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Node playwright works against the live site, and the autopilot's gmail default account is `admin+sophia@truesight.me`. Let me confirm the mailbox address + current sheet state, and hunt for the GAS mailer's sender/subject so I can recognize the verification email.
+[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet only has header + 5 ACTIVE rows (all Gary). The GAS mailer sender needs locating — let me check the mailbox address (sophia vs gary) and find the GAS project that sends the verification email so I know the sender address + subject to grep for.
+[2 tool result(s) compacted: gmail_search, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything I need. The GAS mailer is `1m8IZPs1vFN99cuu-39kbC-OGXggRVtJtXq5rfSB0M1sCQjMdolEUDuGU/email_verification_from_edgar.js`, sender `garyjob@agroverse.shop`, subject "Verify your TrueSight DAO digital signature", and the admin mailbox already receives these. Let me read the GAS mailer (to confirm the return_url param flows through) and check the current time/date for the test marker.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -238,11 +271,13 @@ All the pieces are confirmed. Time to run the real E2E. My test vector:
 - **Verification email:** lands in the same mailbox via `gmail_search` (from `garyjob@agroverse.shop`)
 
 One caveat to flag before I run: the verification email will go to `sunmint-e2e-20260829@truesight.me`. I need to confirm that address delivers to the admin mailbox — otherwise the email is undeliverable and the vk never reaches me (which would itself be a finding, but not the intended test). Let me check the catch-all and then run.
+[2 tool result(s) compacted: gmail_search, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two mailbox tokens exist (admin + gary). The `sunmint-e2e-20260829@truesight.me` address may or may not be a real catch-all. Rather than risk an undeliverable test email, I'll use a **delivery-guaranteed +alias of the admin mailbox** — the pattern `admin+e2e-sunmint-20260829@truesight.me` is what prior tests used (`admin+envoy@truesight.me` received a verification email on 2026-08-23, and `admin+sophia@truesight.me` on 2026-08-24), so it's proven to deliver AND is unambiguous test data. Let me check the gary mailbox too, then run.
+[2 tool result(s) compacted: gmail_search, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -365,4 +400,100 @@ Per §5g rule 3 (can't reverse in-turn → must flag explicitly): **row 171 is s
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×24 → systemctl status dao_protocol --no-pager 2>/dev/null | head -8; echo "=== ENV PRESENCE (names only, values redacted) ==="; sudo grep -oE '^[; which chromium chromium-browser google-chrome google-chrome-stable 2>/dev/null; python3 -c "import playwright; print('playwright OK', playwr; ls /tmp/sunmint_beta_index.html 2>/dev/null && sed -n '430,565p' /tmp/sunmint_beta_index.html || (cd /tmp && curl -sL https://raw.githubuser; …(+21 more)
+
+
+### 🧑 Governor
+
+The UX seems broken. After I successfully linked the enter email box is still showing 
+
+I think it should be unlink button instead which deletes both the public and private keys
+
+[Attachment auto-processed: **57c97811d234440e8187aee1bed24a13.jpg**]
+- Type: Image (OCR confidence: 90.2%, quality: good)
+
+Extracted text:
+```
+8:35 Sour unmint.truesight.me Take a picture Link email (optional) Your email is used to identify you in the TrueSight DAO. This creates (or reuses) your digital signature on this phone/browser. Your email you@example.com Email successfully confirmed! Order sent (signed) (EMAIL VERIFICATION EVENT] ~- Verification Key: Krjpa5jJOhjbY_pmHRGSO9shxkOT6fqIs01- x02-29A Email: garyjob@gmail.com
+```
+
+
+### 🤖 Autopilot
+
+Gary's screenshot confirms the bug: after successful verification the "Link email (optional)" card still shows the input box (plus the raw JSON dump), instead of switching to a "linked" state with an unlink option. Let me look at the current code to design the fix.
+
+
+### 🤖 Autopilot
+
+Let me read the full email section markup + the two JS functions so I can design the unlink fix precisely.
+
+
+### 🤖 Autopilot
+
+The bug is clear now: the markup always shows the input form, and after verification there's no state flip and no unlink. Let me read the i18n block (to add strings correctly) and check how sunmint_beta deploys (beta site URL) before opening the fix PR.
+
+
+### 🤖 Autopilot
+
+I have everything I need to design the fix. Before writing the PR, let me confirm the beta deploy target (which repo serves the preview) by checking `sunmint_prod`'s index (it should mirror `sunmint_beta`'s content, and the beta is the repo I must edit).
+
+
+### 🤖 Autopilot
+
+Found the bug and I have the full picture. Now let me locally apply the fix (linked-state + unlink UI), syntax-check the JS, and clean up my earlier test artifacts — all in one step.
+
+
+### 🤖 Autopilot
+
+Local fix is applied and JS syntax-checks clean. Now pushing to `sunmint_beta` (beta-first, never touching `sunmint_prod` directly):
+
+
+### 🤖 Autopilot
+
+The PR is up. Let me verify the deployed beta (if sunmint_beta auto-deploys to a GitHub Pages URL) to confirm the fix works live — plus confirm what the beta URL is.
+
+
+### 🤖 Autopilot
+
+The beta GitHub Pages site is live at `https://truesightdao.github.io/sunmint_beta/` — but it serves from `main`, so the fix isn't live there until merged. Since Gary's "go" authorizes merging my own feature PRs, I'll merge the fix (beta only — prod untouched), then verify the merged beta serves the linked-state UI.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ This turn: UX fix for sunmint email-linking — done (PR #22 merged)
+
+**Bug (from your screenshot):** after successfully verifying an email, the "Link email (optional)" card still showed the input box (plus the raw JSON dump), with no way to see the linked state or unlink.
+
+**Fix (client-only, `sunmint_beta`):**
+1. **Linked state** — on successful `EMAIL VERIFICATION EVENT`, the verified email is stored in `localStorage.sunmint_linked_email` and the section switches to: `Email linked: <email>` + **Unlink email** button.
+2. **Unlink button** — `unlinkEmail()` confirms, then **deletes `publicKey` + `privateKey` + `sunmint_linked_email` from localStorage** (exactly what you asked: removes both public and private keys), shows a success note, and returns the section to the input state.
+3. **Startup render** — `renderEmailSection()` runs on page load, so returning farmers immediately see the linked state.
+4. **i18n** — new strings in both pt (`Desvincular email`) and en (`Unlink email`).
+
+**Testing done before push:**
+- All 6 hunks applied to the live `sunmint_beta/index.html` (via exact-match assertions)
+- `node --check` on the extracted inline JS → **syntax OK**
+- Earlier E2E already exercised the full register→verify chain against the live backend; this change is UI-only
+
+**PRs:**
+- 🔀 [sunmint_beta #22 — fix: linked-email state + unlink button after verification](https://github.com/TrueSightDAO/sunmint_beta/pull/22) — **merged** (sha `1279eafc`). Beta only; **`sunmint_prod` untouched** (prod promotion needs your explicit OK).
+
+## ⚠️ Still open (from the E2E task)
+- **Sheet row 171** (`Contributors Digital Signatures`) — the test identity row is still live in the ledger. My cleanup SA is blocked by sheet protection (`APIError 400`), and I still need the dao_protocol server SA (or your manual delete) to reverse it. **Not forgotten — flagged per §5g.**
+
+## RESUME HERE → next turn
+1. **Verify the merged fix live**: `https://truesightdao.github.io/sunmint_beta/` (serves from `main`, so the merge should now show the linked-state UI) — quick playwright check that the unlink button appears and that unlink clears `publicKey`/`privateKey` from localStorage.
+2. **Finish row-171 cleanup** — locate the dao_protocol SA (`GOOGLE_SA_JSON` / `config.py`) and delete the test row; if protection blocks all SAs, ask you for a one-click manual delete.
+3. **Tell you when prod promotion is ready** for #22 (needs your explicit go — I won't touch `sunmint_prod` otherwise).
+
+**Bottom line:** the email-linking flow is confirmed working end-to-end, and the UX bug you spotted is fixed and merged on beta — the unlink button now deletes both keys, per your spec.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && curl -sL https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/index.html -o sunmint_beta_index.html && wc -l sunmint_; cd /tmp && echo "=== MARKUP 280-300 ===" && sed -n '280,300p' sunmint_beta_index.html && echo "=== JS 440-575 ===" && sed -n '440,575p' sunm; cd /tmp && sed -n '300,400p' sunmint_beta_index.html; …(+2 more)
+• `merge pr` → ✅ PR #22 on sunmint_beta merged successfully (sha: 1279eafcafbca11ed8e893dc0714764e4d784490). Pull Request successfully merged
 
