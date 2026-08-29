@@ -1266,26 +1266,31 @@ Let me verify the ledger is untouched (no partial writes) and check the script's
 Ledger history shows only old (Feb 2022) entries in that range — **no Aug 2026 rows, no partial writes** from my API attempt (it died before writing; `tokenizeRecordWithoutUpdate` is atomic per-row and nothing landed). The `NOT_FOUND` is a runtime storage read error inside the script execution itself.
 
 Let me check the script's execution transcript to see where it failed, and confirm no 202608 rows exist anywhere in the ledger:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ledger is large (654+ rows, full dump saved to artifact). Let me check the tail of the ledger (where new rows append) for any 202608 entries to confirm the API attempt wrote nothing:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the very last rows of the ledger (the actual append point) to see what's at the tail:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the absolute end of the ledger to see the final rows (what's actually at the append point):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the final chunk of the ledger to see its true end:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1328,6 +1333,7 @@ go
 ### 🤖 Autopilot
 
 Gary — "go" + "status". Executing the catch-up retry (option 1) and checking the handoff registry for this thread in parallel:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1484,4 +1490,127 @@ No payouts moved, no irreversible actions — the merged code is inert until dep
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts && echo "=== doGet conventions in sibling projects ===" && grep -rn "funct; cd /opt/truesight_autopilot/context/tokenomics && echo "=== pull PR branch ===" && git fetch origin feat/recurring-tokenization-doget-trigge; cd /opt/truesight_autopilot/context/tokenomics && echo "=== fetch PR ref ===" && git fetch origin pull/443/head:feat/recurring-tokenization-; …(+1 more)
 • `merge pr` → ✅ PR #443 on tokenomics merged successfully (sha: c74c3d4a815fc7f702063d68c1be8fdbe122f93e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15492] [Handoff context — this Telegram topic (thread 15492) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary's go — deploying the doGet trigger and firing the catch-up. Manifest check + pulling merged #443 into the deploy checkout in parallel:
+
+
+### 🤖 Autopilot
+
+Manifest checked — no row references this thread (ad-hoc GAS-fix execution, rows are emoji-reaction/sunmint/tree-QR/media-JSON/white-label). Deploy checkout is at #443 (`c74c3d4`) with the doGet present. **Deploying the project now** — this pushes the new `doGet` and I'll capture the web-app deployment URL:
+
+
+### 🤖 Autopilot
+
+Deploy succeeded — guardrail passed, 4 files pushed (including the new doGet), ledger recorded (`deploy_20260829T142906Z`). Now trigger the catch-up via the web-app `/exec` path. The @HEAD deployment ID is `AKfycbzWHu3f3NVvLkUBi1aE2X-VtCYHNxVlYuwwLP6dWTA` — firing the GET with the action param:
+
+
+### 🤖 Autopilot
+
+The `/exec` URL 404'd — those deployments have `entryPoints: None` (head deployments, **not** web-app deployments), so there's no `/exec` URL. I need to create a **web-app deployment** via the Apps Script API (with a WEB_APP entry point), then hit its `/exec` URL. Creating it now:
+
+
+### 🤖 Autopilot
+
+The payload schema was wrong. The correct `deployments` create body is `{"versionNumber": N, "manifestConfig": {...}, "description": "..."}` — `entryPoints` is in the *response*, not the request. Fixing the payload:
+
+
+### 🤖 Autopilot
+
+The field is `deploymentConfig` (not `manifestConfig`), with a nested `manifest.webApp` config. Correcting:
+
+
+### 🤖 Autopilot
+
+The API rejects my payload guesses — the correct path is the **manifest-driven** one: adding a `webapp` block to `appsscript.json` is what makes `clasp deploy` create a WEB_APP entry point (that's why the current deployments show `entryPoints: None`). This also keeps repo ↔ deployed config in sync. Let me check the current manifest, then PR the change:
+
+
+### 🤖 Autopilot
+
+Confirmed — 5 sibling projects use the `webapp` manifest block (that's how they got WEB_APP deployments). Let me check one sibling's exact webapp manifest shape to copy it precisely:
+
+
+### 🤖 Autopilot
+
+The sibling convention is exact: `"webapp": {"executeAs": "USER_DEPLOYING", "access": "ANYONE_ANONYMOUS"}` — running as the deployer (garyjob, who has ledger access) and callable anonymously. Adding this to the recurring-tokenization manifest so `clasp deploy` creates a real WEB_APP deployment with an `/exec` URL:
+
+
+### 🤖 Autopilot
+
+PR **#444** opened. Quick JSON validation, then merge:
+
+
+### 🤖 Autopilot
+
+JSON valid, guardrail clean. Merging #444:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn report — doGet deployed; web-app deployment enabled (PR #444 merged)
+
+### What happened this turn (Gary's "go")
+
+1. **Manifest check** — no row references this thread (ad-hoc GAS-fix execution; manifest rows are emoji-reaction/sunmint/tree-QR/media-JSON/white-label). Pulled #443 into the deploy checkout (`c74c3d4`, doGet present).
+
+2. **Deployed the doGet** ✅ — `gas_deploy_project` pushed 4 files (guardrail 0 errors), ledger `deploy_20260829T142906Z`. The script now has the action-gated `doGet` from #443 live.
+
+3. **Trigger attempt → 404.** Fired `GET …/AKfycbzWHu3…/exec?action=processRecurringTransactions` → **404 "Page Not Found"** — because the existing 3 deployments are head deployments with `entryPoints: None` (no WEB_APP entry point, hence no `/exec` URL).
+
+4. **Tried creating a WEB_APP deployment via API** — 3 attempts with progressively corrected payloads (`entryPoints`→`manifestConfig`→`deploymentConfig`) all rejected with 400 `Unknown name … Cannot find field`. The correct way is **manifest-driven**: adding the `webapp` block to `appsscript.json` is what makes `clasp deploy` produce a WEB_APP deployment.
+
+5. **Confirmed sibling convention** — 5 sibling projects (register_member_digital_signatures_telegram, stripe_sales_sync, tdg_wix_dashboard, etc.) carry exactly:
+   ```json
+   "webapp": { "executeAs": "USER_DEPLOYING", "access": "ANYONE_ANONYMOUS" }
+   ```
+   (executeAs = runs as deployer garyjob who owns ledger access; access = triggerable via GET).
+
+6. **PR #444 opened + merged** — `feat(recurring): webapp manifest block for WEB_APP deployment` (sha `637dec8`):
+   - Added the `webapp` block to the recurring-tokenization project's `appsscript.json`
+   - JSON valid ✅, guardrail 0 errors ✅
+   - 🔗 https://github.com/TrueSightDAO/tokenomics/pull/444
+
+### No TDG moved; ledger untouched
+The catch-up still hasn't run — we're one deployment away.
+
+### RESUME HERE → next unit (deploy + create WEB_APP deployment + trigger)
+1. **Pull merged #444** into the deploy checkout (`git pull --ff-only` → expect `637dec8`).
+2. **Deploy** via `gas_deploy_project(push=true)` — pushes the new manifest.
+3. **Create the WEB_APP deployment** — now that the manifest has `webapp`, `clasp deploy` (or the deploy tool's deployment step) creates a deployment with `entryPointType: WEB_APP` and a real `/exec` URL. I'll capture the new deployment ID.
+4. **Trigger** `GET <new-deployment>/exec?action=processRecurringTransactions` → expect `{"ok": true, "message": "processRecurringTransactions completed"}`.
+5. **Verify ledger**: 7 rows (~954.99 TDG, dates 20260804–20260825) + "Most Recent Tokenization Date" advances past 20260723.
+6. If the `/exec` path **also** 404s or hits NOT_FOUND → last lever is cloning the project to a fresh scriptId (changes identity + re-creates the trigger) — I'll confirm with you first since it touches the payout path.
+
+No payouts moved, no irreversible actions — merged code is inert until deployed + triggered.
+
+———
+**✅ Done this turn — actions taken:**
+• `read context file` → handoffs/HANDOFF_MANIFEST.md (no row for this thread)
+• `ssh run` ×1 → pulled #443; head c74c3d4; doGet present
+• `gas deploy project` → ✅ 4 files pushed (doGet live), ledger deploy_20260829T142906Z
+• `http fetch` → 404 on /exec (head deployments have no WEB_APP entry point)
+• `ssh run` ×3 → API deployment create attempts (400: entryPoints/manifestConfig/deploymentConfig all unknown fields) → confirmed manifest-driven webapp approach + sibling convention
+• `git push changes` → PR #444 (webapp manifest block)
+• `ssh run` ×1 → JSON valid + guardrail 0 errors
+• `merge pr` → ✅ PR #444 merged (sha 637dec8050aabdd466c038f3d91e71a4d63650f6)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /opt/truesight_autopilot/context/tokenomics && echo "=== ff-only pull ===" && git pull --ff-only origin main 2>&1 | tail -2 && echo "=== ; cd /tmp && cat > make_webapp_deploy.py <<'EOF' import json, urllib.request, urllib.parse SCRIPT_ID = "1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xj; cd /tmp && cat > make_webapp_deploy2.py <<'EOF' import json, urllib.request, urllib.parse SCRIPT_ID = "1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40x; …(+4 more)
+• `gas deploy project` → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T142906Z_1lxwu9hos56jz6mbxra3edv74xjpjgkjqw40xjpq.md
+• `merge pr` → ✅ PR #444 on tokenomics merged successfully (sha: 637dec8050aabdd466c038f3d91e71a4d63650f6). Pull Request successfully merged
 
