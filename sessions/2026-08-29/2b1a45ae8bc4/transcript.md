@@ -624,21 +624,25 @@ Now add the edit_message_text tests after the send_message tests:
 ### 🤖 Autopilot
 
 101 passed. Now the full local test suite (hard rule before push):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Formatting needs a pass on the two files. Let me format and re-verify, then run the full suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All green: 815 passed (3 pre-existing Edgar-network failures, same as before), 3 new tests included. Let me capture the exact diff vs the merged commit to push clean hunks:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The working tree has unrelated local drift (nginx conf, active_tracks, followups, submodule pointers, snapshot deletion — from local operations). I must NOT push those. Let me restore them and capture only my two-file diff:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -829,4 +833,50 @@ Deploy is the next unit and needs your explicit go — say the word.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #336 on truesight_autopilot merged successfully (sha: 3d7d152e2a707f06340bb2e879a162d780208c5e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15991] [Handoff context — this Telegram topic (thread 15991) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Governor "go" received — that's the explicit word for the deploy unit (per my previous message: "Deploy is the next unit and needs your explicit go — say the word"). Deploying PR #336 now:
+
+
+### 🤖 Autopilot
+
+Deploy deferred — 2 other threads (15492, 15530) are mid-turn; a restart would kill their active turns. Let me verify the services are indeed active and check whether those threads are genuinely running or stale:
+
+
+### 🤖 Autopilot
+
+Deploy is **deferred — and for a legitimate reason**. The deploy tool refused to restart because 2 other threads are mid-turn and a restart would kill their active work:
+
+- **Busy threads:** `15492` and `15530`
+- **Evidence 15530 is genuinely active:** the live process logged `marked resume-awaiting: message 16075/16076 -> thread 15530` at **14:47:13 UTC** — minutes ago. Not stale.
+- Services all `active running` (telegram adapter, watchdog, autopilot) — no crash, just busy.
+
+**What this means for the fix:** the running bot is still executing **#335** code (send_message auto-flag + old 📌-alone behavior). **#336** (merged `3d7d152`) is on disk via the deploy tool's auto-pull but the **process hasn't restarted**, so the edit-path auto-flag isn't live yet — which is exactly why 👍 on turn-reports still won't trigger until this deploy lands.
+
+📌 **RESUME HERE = deploy #336 when threads are idle:**
+
+1. When threads 15492 / 15530 finish their turns, re-say **"go"** (or "deploy") here → I run `deploy_autopilot` again; this time the busy-thread guard should clear and it'll restart the bot on `3d7d152`.
+2. Then verify: services ActiveEnter timestamp > deploy, `git log -1` = `3d7d152`, and the edit-path auto-flag code present in the loaded file.
+3. Smoke-test: 👍 on a **fresh** "📌 RESUME HERE" turn-report → resumes; 👍 on 📌-alone → ignored; 👍 on pre-deploy messages → still nothing (expected).
+
+I did **not** force the restart — that would kill 15530's active turn (the very "still not working" behavior you're fixing is about losing turn context). Say "go" once the threads settle and I'll complete the deploy.
+
+———
+**✅ Done this turn — actions taken:**
+• `deploy autopilot` → DEFERRED: 2 threads mid-turn (15492, 15530). Did NOT restart.
+• `ssh run` → services all active; thread 15530 actively logging (resume-awaiting marks at 14:42/14:47 UTC) → deferral is real, not stale.
+
+———
+**✅ Done this turn — actions taken:**
+• `deploy autopilot` → Deploy DEFERRED: 2 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
+• `ssh run` → cd /opt/truesight_autopilot && echo "===services===" && systemctl list-units --type=service --no-pager | grep -i autopilot && echo "===activ
 
