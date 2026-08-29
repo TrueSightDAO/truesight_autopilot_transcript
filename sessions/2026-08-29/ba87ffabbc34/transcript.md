@@ -8,109 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-Parser tests pass (drops E2E, handles coord-less FounderHaus). Now let me run the real script against the live sheet to generate the actual index, then decide the repo layout (the page fetches **prod URLs** — so the index must reach `sunmint.truesight.me/trees/` = sunmint_prod, plus beta for UAT).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The script works against the live sheet: **18 real trees, 13 with coordinates** (5 Corvallis, Brazil pair, etc.), 5 without coords (incl. FounderHaus Bougainvillea + 3 Aug-23 Cacao-Criolla) — those correctly emit `geometry: null` (selectable via manual Tree ID, not distance-rankable). Let me grab the full generated file and commit it to sunmint_beta as the P3 deliverable.
-[1 tool result(s) compacted: read_local_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The index is generated correctly (18 real trees, 13 with coords, FounderHaus + 4 others as `geometry: null`). Before pushing, let me verify the page's dropdown logic handles `geometry: null` trees gracefully (NaN sort risk), and confirm the URL strategy — the page currently fetches **prod URLs only**, which would break beta UAT.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me see the distance-assignment code (where `_dist` is computed) to confirm coord-less trees are handled safely.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The logic is now fully clear. Line 689 only sets `_dist` when coords exist (coord-less trees keep `_dist` undefined), but line 391's sort uses `(a._dist || 0)` — which would sort coord-less trees to the **top** (as 0). And the page fetches **prod-only URLs**, so beta UAT would still 404. Fixing both + committing the index in one PR:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-P3 built and pushed. Here's the turn report.
-
-## ✅ What I did this turn — P3: GeoJSON tree index (the dropdown fix)
-
-**PR [sunmint_beta#12](https://github.com/TrueSightDAO/sunmint_beta/pull/12)** (sha `a8e6d40`) — three pieces:
-
-**1. `trees/index.geojson`** — generated from the authoritative `SunMint Tree Planting` sheet via a Python build script (reads the sheet with the cypher_defense SA, skips E2E/test rows):
-- **18 real trees, 13 with coordinates** (Corvallis 5×, Cacao Native cluster 4×, Shenzhen 1×, Brazil pair 2×, etc.)
-- **5 without coordinates** (`geometry: null`) — incl. **FounderHaus Bougainvillea** (`FOUNDERHAUS_BOUGAINVILLEA_20260821_1`) + 3 Aug-23 Cacao-Criolla — selectable via manual Tree ID, not distance-rankable until coords are backfilled
-
-**2. Monitor page URL fix** — `TREE_INDEX_URLS` now prepends relative `trees/index.geojson` (same-origin, works on beta + prod automatically) + beta fallback. Previously prod-URLs-only → beta UAT would have 404'd.
-
-**3. Sort fix** — `(a._dist || 0)` → `(a._dist ?? Infinity)`: coord-less trees now sort **last** (previously they'd sort to the **top** as "0m").
-
-**Verified:** parser unit-tested (E2E dropped, coord-less handled), generated against live sheet, page logic audited end-to-end.
-
-**Also noted (follow-up, not this PR):** the build script lives at `/tmp/p3/build_tree_geojson.py` — I'll vendor it into `truesight_autopilot/scripts/` as a re-runnable tool (and it's the natural seed for a future GAS cron that regenerates the index whenever the sheet changes).
-
-## 📌 RESUME HERE → next units
-1. **Merge sunmint_beta#12** → then verify `beta.sunmint.truesight.me/trees/index.geojson` serves (200) + the dropdown populates on the beta page
-2. **FounderHaus coords** — still need your call: provide site lat/lng (I'll backfill the sheet + regenerate), or leave in the "no GPS" bucket for now
-3. **Vendor the build script** → `truesight_autopilot/scripts/build_tree_geojson.py` (small PR)
-4. Then: UAT → promote via `sync_beta_to_prod(sunmint_prod)`
-
-Say "go" and I'll vendor the script (unit 3) next — or merge #12 first if you want to see the dropdown live.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×7 → cd /tmp && TS=$(date +%s) && echo "=== 1. What URL does the monitor page fetch for tree index? ===" && curl -s "https://raw.githubuserconten; cd /opt/truesight_autopilot && echo "=== find sheets tool + creds ===" && grep -rn "google.oauth2\|service_account\|credentials" app/tools/*; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html" -o mon.html && echo "==; …(+4 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] Can’t you find it from either the Google sheet records or extract it from the coordinates embedded within the photo or the RSA?
-
-
-### 🤖 Autopilot
-
-Great thinking — the photo is the most likely source (phone cameras embed GPS in EXIF). The sheet's Lat/Lng cells are empty (I checked), and the RSA public key contains no coordinates — but the photo may. Let me download the FounderHaus image and extract its EXIF GPS.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The photo has EXIF (`DateTimeOriginal: 2026-08-21 17:13:37` — matches the planting timestamp), but **no GPSInfo block** — the camera wasn't geotagged, or the app stripped it on upload. Let me double-check with a deeper EXIF scan (all tags, including MakerNote / any embedded XMP) to be thorough.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Definitive answer: **the photo has no GPS.** Full EXIF dump shows only timestamp data (DateTimeOriginal `2026-08-21 17:13:37`, OffsetTime **-03:00** — Brazil timezone, confirming it was taken in Florianópolis-area Brazil where Paloma's Aug-21 plantings happened). Zero occurrences of GPS/Geo/lat/lon markers anywhere in the file — not in EXIF, not in XMP, nothing.
-
-**And the RSA signature can't contain coordinates either** — it's the *farmer's public key* (an RSA-2048 modulus/exponent, base64) used to sign the event; it encodes no location by design.
-
-## What we DO have (the useful breadcrumb)
-
-The EXIF's **`OffsetTimeOriginal: -03:00`** confirms the photo was taken in **UTC-3** — consistent with the Aug-19 Cacao-Criolla pair that *does* have coordinates: **-27.43855176, -48.49968606** (Florianópolis, Santa Catarina, Brazil). The FounderHaus Bougainvillea was planted the same week, same region, by the same submitter (Paloma Lecheta). So FounderHaus is almost certainly **near that same site** — but I can't assert an exact lat/lng from that alone; it's inference, not data.
-
-## My recommendation
-
-Don't guess coordinates into the ledger. Two clean paths:
-1. **Best:** you (or Paloma) confirm the FounderHaus site's coordinates — even approximate ("~200 m from the Aug-19 trees") — and I backfill the sheet cell, then regenerate the index. One data point, authoritative.
-2. **Now (unblocking):** the P3 index already ships with FounderHaus in the **"no GPS" bucket** — it's selectable via manual Tree ID (`FOUNDERHAUS_BOUGAINVILLEA_20260821_1`), just not distance-ranked. So the dropdown works for the 13 geo-tagged trees immediately, and FounderHaus joins them the moment coords land.
-
-**Want me to proceed with option 2 (ship the index as-is, FounderHaus in the no-GPS bucket) and add a "planting site approx coords" note to the open P3 PR?** Or do you have coordinates to give me for a proper backfill first?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → cd /tmp && echo "=== download FounderHaus photo ===" && curl -sL "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/images/2026082; cd /tmp && python3 - << 'PYEOF' import struct print("=== full EXIF dump ===") from PIL import Image from PIL.ExifTags import TAGS img = Imag
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11018] Merge PR12
@@ -4622,46 +4519,55 @@ Executing — Gary's "go" authorizes the dao_protocol deploy. First, let me insp
 ### 🤖 Autopilot
 
 SSH to the dao_protocol host was denied (publickey). Let me check the box's SSH config for the correct host/user/key:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The config alias is `dao-protocol` (dash) but the tool connects with `dao_protocol` (underscore) → wrong key fallback. Let me try the dedicated keys (`dao-protocol-beta-key`, `sophia_infra`) directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SSH works via the `dao-protocol` alias (and `sophia_infra` key also works as ubuntu). Now let me inspect how dao_protocol runs on the host (service, deploy dir, current version) before deploying:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool's `dao_protocol` label isn't in the SSH config (the alias is `dao-protocol`), so it falls back to the default key and gets denied. Running the same inspection through the working alias from the autopilot box:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it: `truesight-dao-protocol.service`, deploy dir `/home/ubuntu/dao_protocol`, port 8010, systemd-managed. Now let me check the deploy mechanism (is the repo a git checkout that needs pull, or does it have a deploy script?) and the current commit vs main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy path confirmed: git checkout at `/home/ubuntu/dao_protocol` (currently `df83d74` — pre-#148), systemd service runs the venv server. Deploying: pull main (brings #148) + restart the service:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deployed. Now verifying the live endpoint returns the new role flags — this is the decisive check (Sophia's key should return `is_governor:false, is_sentinel:true`):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Route is **live** (no more 404 — the not-found JSON is the normal response), but my `.env` public key doesn't match a record — yet the earlier email-registration test said it was already active. That contradiction needs one look at the lookup logic before I claim anything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The lookup matches by exact public key. My `.env` PK may carry newlines/whitespace that breaks the sheet match. One decisive retry with a normalized key, plus a peek at how keys are stored in the sheet:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4709,11 +4615,13 @@ go
 ### 🤖 Autopilot
 
 Resuming — pulling the profile5 keypair from the E2E browser session to confirm the live endpoint returns `is_sentinel:true` for Sophia's identity.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Keypair extracted from profile5 — this is the key Edgar knows (linked to `tgm-e2e-20260831@truesight.me`, the test email, **not** Sophia's identity). So querying the endpoint with it will confirm the flags mechanism works, but for a **test identity**, not Sophia. The honest check: (1) confirm the live endpoint returns the new flags for a registered key, (2) separately note Sophia's own key isn't in the sheet. Querying:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4870,4 +4778,49 @@ Say "go" and I'll merge #27 + re-verify the sentinel UI.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /tmp/e2e && cat > verify_sentinel_ui.js << 'EOF' const puppeteer = require('puppeteer-core'); const sleep = ms => new Promise(r => setTim; cd /tmp/e2e && TS=$(date +%s) && curl -s "https://beta.sunmint.truesight.me/monitor-tree-growth/?cb=$TS" -o live_now.html && echo "bytes: $(; cd /tmp/e2e && echo "=== loadContributorIdentity + maybeShowInvalidZone call sites ===" && sed -n '980,1003p' live_now.html && echo "=== whe; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Merging sunmint_beta#27 — the manual-tree invalid-zone fix.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged. Here's the turn report.
+
+## ✅ What I did this turn
+
+**Merged [sunmint_beta#27](https://github.com/TrueSightDAO/sunmint_beta/pull/27)** (sha `940b927`) — the manual-tree invalid-zone fix:
+- The `treeIdManual` input listener now calls `maybeShowInvalidZone()` when a manual Tree ID is entered (and hides the zone when cleared)
+- **Effect:** a governor/sentinel who selects a tree via the **manual ID path** (the only path for index-only trees like TEST_TREE_E2E) now sees the **MARK INVALID** button — previously only the dropdown path triggered it
+
+This was found via live browser verification (profile_sophia session → identity resolved `is_sentinel:true`, but the button didn't render on manual selection — a real UX bug, now fixed).
+
+## 📌 RESUME HERE → next units
+1. **Post-rebuild verify** (after Pages rebuild): profile_sophia session selecting TEST_TREE_E2E via manual path shows the MARK INVALID button, zero console errors
+2. **The invalidation itself**: click MARK INVALID → confirms `markTreeInvalid()` builds the signed `[TREE PLANTING REJECT EVENT]` share text (share-to-Telegram UX — GAS handler picks it up). **Flagged gap:** TEST_TREE_E2E needs either a SunMint-sheet row or a growth-measurement reject path for the REJECT to find a target
+3. **Standing (separate approvals):** test-row cleanup (FounderHaus DBH 12.5, TEST_TREE_E2E measurements, e2e email identities), `sunmint_prod` promotion + `prod_repos` config line
+
+Say "go" and I'll run the post-rebuild sentinel-UI verification.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #27 on sunmint_beta merged successfully (sha: 940b9278f12c5e1a6ca250a578387072b1662ed1). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #27 on sunmint_beta merged successfully (sha: 940b9278f12c5e1a6ca250a578387072b1662ed1). Pull Request successfully merged
 
