@@ -83,31 +83,72 @@ Now let me read the specific code sections the plan references (get_updates, run
 ### 🤖 Autopilot
 
 The repo exists locally at `/opt/truesight_autopilot`. Let me read the key code sections directly from the local checkout.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the specific code sections from the local checkout (faster than paging artifacts), plus config.py.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the security gate and config:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now config.py and existing test patterns:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the existing tests for the adapter, particularly parser tests and config tests, to match conventions.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check config.py's field patterns (list vs string env parsing) and the conftest for test fixtures.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -164,51 +205,61 @@ Sophia @truesight_autopilot_bot — continue with PR1. Pre-flight is already com
 ### 🤖 Autopilot
 
 Continuing PR1. First, the authoritative spec (re-reading the plan) + the exact `main`-branch text of the regions I'll edit (my local checkout is on a feature branch, so I need main's actual content for the search/replace hunks).
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the plan's core + main-branch text. Now let me read the plan's tail (resume tracker §5, so I can update it after the PR opens) and verify the adapter's imports/`is_allowed`/logger details for exact hunks.
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything needed. Let me build the exact hunks for PR1. First, verify the `is_allowed` body and the `run()` region to be edited (so search/replace hunks match `origin/main` exactly), then write the changes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All specs confirmed. Now let me grab the test-file tail (for the append hunk) and set up a clean worktree of `origin/main` to apply edits + run the local test suite before pushing (hard rule).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Worktree ready at `/tmp/pr1-wt` (clean `origin/main`). Now I'll apply the PR1 edits surgically — (1) `get_updates` allowed_updates, (2) parser + handler + safe-wrapper, (3) `run()` dispatch, (4) config setting, (5) unit tests.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ssh call failed due to my malformed arguments wrapper. Let me do this properly — write a patch script to the worktree, apply it, then run the full local test suite before pushing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The config hunk didn't match — let me check the exact text around `telegram_home_group_id` in origin/main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The config field uses a one-line `default=...` style (no trailing comma), so my hunk didn't match. The adapter edits already applied before the assert failed — I'll reset the three files to origin/main and re-run the corrected patch cleanly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Patch applied cleanly. Now run the full local test suite (hard rule) — compileall → ruff check → ruff format --check → pytest.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Ruff format flags 37 files — I need to confirm my *own* additions are clean (pre-existing formatting issues in untouched files are acceptable). Let me check what's actually in my touched files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -318,4 +369,58 @@ The pushed branch's `app/config.py` was read back but truncated before the `emoj
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×16 → cd /opt/truesight_autopilot && git fetch origin main --quiet 2>&1 | tail -1; echo "=== main get_updates ==="; git show origin/main:app/teleg; cd /opt/truesight_autopilot && echo "=== imports ==="; git show origin/main:app/telegram_adapter.py | sed -n '1,40p'; echo "=== is_allowed d; cd /opt/truesight_autopilot && git show origin/main:app/telegram_adapter.py | sed -n '163,180p'; echo "=== run() for hunk (2218-2271) ==="; ; …(+13 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15728] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 15728) is the active handoff for `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary said "go" — that's the go-signal to resume execution. Plan: merge PR1 (RULE 2: the governor's "go" authorizes merging own feature PRs), report the DAO contribution per plan §6, update the tracker, then execute **PR2**. Let me re-read the plan (for §6 exact text) and check PR #331's state.
+
+
+### 🤖 Autopilot
+
+Gary's "go" — per RULE 2, that authorizes merging my own feature PRs. I'll merge PR1 (#331) + the tracker PR (#835), read the plan tail for §6's exact contribution-reporting wording, then execute PR2.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — PR1 merged ✅ (stopped per one-PR-per-turn rule)
+
+**Gary's "go" executed:** both PRs from the PR1 unit are now merged.
+
+| PR | Repo | Result |
+|---|---|---|
+| **[#331](https://github.com/TrueSightDAO/truesight_autopilot/pull/331)** — PR1: receive `message_reaction` updates + emoji verdict parser | `truesight_autopilot` | ✅ Merged (sha `8fe250a`) |
+| **[#835](https://github.com/TrueSightDAO/agentic_ai_context/pull/835)** — resume tracker: PR1 opened | `agentic_ai_context` | ✅ Merged (sha `bce5025`) |
+
+**What PR1 changed (now on `truesight_autopilot` main):**
+- `get_updates` sends `allowed_updates=["message","edited_message","callback_query","message_reaction"]` — reactions are no longer invisible (plan §1.2)
+- `reaction_emoji_verdict()` — go/blocked/custom/none, deny-list `👎` per decision 0.1
+- `_reaction_reactor_authorized()` — same security gate as a text go-signal (decision 0.3)
+- `handle_message_reaction()` + `_handle_reaction_safe` + `run()` dispatch — logs reaction + authorized/go verdict only (no resume yet, PR1 scope)
+- `settings.emoji_go_blocked = ["👎"]` in `app/config.py`
+- 11 new unit tests — suite **791 passed, 1 skipped** (3 pre-existing `test_events_catalog.py` failures reproduced on clean main, unrelated)
+
+**Gates honored:** merged only after Gary's explicit "go"; nothing deployed, no prod touch. Tracker §4 now shows PR1 "PR opened ☑ / Merged ☑".
+
+**Pending (next turn, before PR2):** DAO contribution report for PR1 per plan §6 (`create_dao_submission` with #331 as evidence) + tracker update marking "Contribution reported ☑".
+
+---
+
+**RESUME HERE → PR2:** new `app/resume_registry.py` (`mark_resume_awaiting(message_id, thread_id, text)` / `is_resume_awaiting()` / `lookup()` → `{thread_id, text}`, JSON-persisted, TTL-bounded, pruned on consume) + hook the ready/GO-prompt post path so **every chunk's** `message_id` is flagged (§1.4 gotcha — the "Reply go for it" text lands on the last chunk). Open PR, stop at own-repo gate (Gary merges). One PR per turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #331 on truesight_autopilot merged successfully (sha: 8fe250a8cb17acbdcf386dc733e4fa0fcb58feec). Pull Request successfully merged; ✅ PR #835 on agentic_ai_context merged successfully (sha: bce502595a0a7927904b0f57244986bb96985133). Pull Request successfully merged
 
