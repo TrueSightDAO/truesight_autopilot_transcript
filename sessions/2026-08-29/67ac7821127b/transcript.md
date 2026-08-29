@@ -1082,16 +1082,19 @@ If you'd rather have the Brazil and China panels **further apart with the arrow 
 ### 🤖 Autopilot
 
 Legends overlapping — let me diagnose the current legend layout and OCR the map to see exactly what's colliding.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 OCR confirms the bottom legend lines are colliding — the constraints are running into each other. Let me look at the legend layout code precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The bug is clear: 5 side-by-side columns (`col_w ≈ 0.184`) each hold a long constraint string — matplotlib doesn't wrap text, so long constraints run into the next column and overlap. The fix: **stack the legend vertically** (one site per row, constraint on the same row — full width available, no overlap possible). Let me check the GridSpec to size the legend panel properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1213,4 +1216,75 @@ If anything still looks off — legend wording, pin placement, panel proportions
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && ls -la CACAO_SOURCING_NETWORK_OVERVIEW.pdf cacao_sourcing_network_map.png && file CACAO_SOURCING_NETWORK_OVERVIEW.pdf
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15564] provide as accurate a description of this and generate the image using Gemini
+
+
+### 🤖 Autopilot
+
+Gary's asking for an accurate text description of the map **and** a Gemini-generated version of it. Interesting turn given we replaced the AI map with the plotted one — I'll ground the description in the actual rendered map first (OCR), then craft a precise prompt and generate.
+
+
+### 🤖 Autopilot
+
+OCR confirms the current map's content. The Gemini image was generated (1.2 MB). Let me verify what Gemini actually rendered — OCR it and check the panel layout — then deliver both.
+
+
+### 🤖 Autopilot
+
+Here's the accurate description of the map, and the Gemini-generated version.
+
+## Accurate description of the current map
+
+**Layout (2077×1334):** a cartographic infographic, white background, title banner top-left: **"TrueSight DAO — Cacao Sourcing Network (Brazil → China)"**, with the subtitle "Plotted from real coordinates — not AI-generated".
+
+**Two side-by-side map panels:**
+- **Left — Brazil (sourcing network, pins 1–4):** green landmass, Atlantic at the right edge. Pin **1 Manicoré (AM)** in the deep west Amazon; **2 Altamira (PA)** south of the Amazon river bend; **3 Itabuna (BA)** and **4 Ilhéus (BA)** close together on the east coast (~25 km apart — Ilhéus carries a red dashed **blocker ring**).
+- **Right — China (destination, pin 5):** amber landmass, **5 Dongguan** in the Pearl River Delta north of the South China Sea.
+
+**Bridge:** a purple arrow arcs between the panels, labeled "Export lane · Brazil → China".
+
+**Bottom legend — vertical stack, 5 rows** (pin circle + name—role, constraint beneath):
+1. Manicoré (AM) — exploratory source — *no logistics / fermentation / freight infra known*
+2. Altamira (PA) — beans supplier (CEPOTX) — *beans only · NO conversion · needs CN-side warehouse*
+3. Itabuna (BA) — conversion + export (Coopercabruca) — *members-only · NO warehousing · exact spec upfront*
+4. Ilhéus (BA) — exporter / warehouse (Black King) — **⚠ CNPJ INAPTA · NO export NF-e — BLOCKER** (red)
+5. Dongguan (CN) — destination market (Elizabeth Wong) — *SKU spec pending*
+
+**Footnote:** "red = Brazil network · orange = destination · purple arrow = export lane".
+
+## Gemini-generated version (just made)
+
+Sent below — but **read this honestly**: I OCR'd it and the AI version already shows the exact failure mode we engineered the plotted map to avoid —
+
+- ❌ **Legend garbled**: Itabuna and Ilhéus constraints merged ("members-only · NO warehousing · NO export NF-e — BLOCKER"), Black King + Elizabeth Wong scrambled across rows, "CN-side warehouse" repeated
+- ❌ **Pins decorative**, not at real coordinates; Manicoré/Altamira/Bahia spacing is approximate
+- ❌ The ⚠ CNPJ INAPTA blocker row lost its distinct red treatment
+
+So this is a good **illustrative comparison**, not a replacement. The plotted map (PDF sent earlier) remains the accurate one. Want me to keep this Gemini version for a before/after comparison, or drop it?
+
+
+### 🤖 Autopilot
+
+**Sent ✅** — the Gemini-generated map is in the chat above.
+
+**Recap:**
+- 📝 **Accurate description** of the current plotted map provided in my previous message (layout, panels, pins, legend, footnote)
+- 🖼️ **Gemini version** generated (1344×768, 1.2 MB) and sent
+
+**Honest assessment:** the Gemini render is visually attractive but **not geographically accurate** — OCR shows garbled legend text (Itabuna/Ilhéus constraints merged, names scrambled) and decorative pin placement. That's exactly why we moved to the programmatic plotted map. The plotted version (PDF, PR #328) remains the source of truth.
+
+If you want, I can:
+1. **Iterate on the Gemini prompt** (simpler map, fewer words — AI handles fewer text elements better)
+2. **Keep the Gemini version as a visual cover/banner** and keep the plotted map as the data-accurate artifact
+3. **Drop it** and stay plotted-only
+
+Your call.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && tesseract cacao_sourcing_network_map.png map_now 2>/dev/null && cat map_now.txt
 
