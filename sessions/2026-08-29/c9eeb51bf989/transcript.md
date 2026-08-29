@@ -41,31 +41,37 @@ Flag items 1 and 4 in the PR description as needing Gary's UAT on beta.sunmint.t
 ### 🤖 Autopilot
 
 On it. Let me first pull the current state of `sunmint_beta` files so the diff hunks match reality.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full files to locate the exact JS sections for the edits.
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Need the JS portions of both files. Let me pull the remaining parts.
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GitHub content API responses are getting truncated into artifacts. More efficient: clone the repo on the autopilot box and inspect the exact JS sections locally.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clone is clean. Now let me inspect the exact JS sections I need to modify.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me read the exact code regions in both files.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -153,4 +159,119 @@ Want me to do anything else — e.g. set up a watcher on the PR, or prep the fol
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×17 → cd /tmp && rm -rf sunmint_beta_clone && git clone --depth 1 https://github.com/TrueSightDAO/sunmint_beta.git sunmint_beta_clone 2>&1 | tail ; cd /tmp/sunmint_beta_clone && echo "=== index.html: startTreeCamera / capturePhoto / emailLinkedLabel / setLang ===" && grep -n "startTreeCa; cd /tmp/sunmint_beta_clone && echo "=== monitor-tree-growth/index.html: onTreeSelectChange / showPhotoSection / camera-viewport / startCamer; …(+14 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: why is sunmint.truesight.me main page calling this URL
+
+https://edgar.truesight.me/dao/contributors?public_key=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApPRTAO1crTPepPB0kFl1POCqyRJk1yxVm0vQZBHZmLyFrnD/mxVvHu7fW4qLgjMC+bXZ7O1Vt1rfK08oZMSuWWGhnQuBwVUWYX0gkmHB5ajXieBzfnXbnyCdIYjNR8lIlig02T/X7U2Jg6vdNF/qpX6000F9cdeqeE/sLyJ87sazaBHR4tjW9phoKHliNH0D+JFcebHLn0StK5qLlhoCtJTPekCBqCEdpftf17Mh069RTAXZj10EsRI2+G9ygku2seZZI22JNAcUe0T0g/5gOvCXFFj0+zX2PGf+tT4apUStuv5PugAdznKZbnnt7g0X4wbRXJhvps2t1wyY/BxCTQIDAQAB
+
+and does the end point actually exist?
+
+---
+
+[observed, not directed at you — Nobody Will not DM you]: @sophia
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16178] [Handoff context — this Telegram topic (thread 16178) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go for it
+
+
+### 🤖 Autopilot
+
+On it — investigating why the sunmint main page calls that Edgar URL and whether the endpoint exists. Let me pull context in parallel: check the handoff registry (since this thread may be an execution handoff), grep the sunmint code for the call, and search the org for that route.
+
+
+### 🤖 Autopilot
+
+The handoff manifest is indexed (this thread maps to no active plan — the PR task is complete; the question at hand is the Edgar URL mystery). Let me dig: grep both sunmint repos, check dao_protocol for the route, and test the endpoint live.
+
+
+### 🤖 Autopilot
+
+Found the caller. The live endpoint returns **404 Not Found** — let me verify exactly which page(s) call it, and whether Edgar/dao_protocol ever had this route. Checking in parallel:
+
+
+### 🤖 Autopilot
+
+Good — the picture is clear. Let me confirm the beta page has the same call, check the canonical response shape of the real endpoint (`/dao/check_digital_signature`) by calling it live with that same public key, and see how dapp_beta's `create_signature.html` uses it (the canonical pattern).
+
+
+### 🤖 Autopilot
+
+Root cause is now crystal clear. Let me pull the two full `fetch` blocks from prod's monitor page to confirm the exact error-handling shape, then I'll report.
+
+
+### 🤖 Autopilot
+
+Let me verify the **live** prod page actually serves the old URL (not just the repo) — diagnostic discipline before concluding.
+
+
+### 🤖 Autopilot
+
+Live page confirmed as the OLD code (`.camera-viewport` without the cap, matching prod repo). Let me finish with two checks: whether the live **root** page also calls it, and whether the manifest maps this thread (16178) to any active plan.
+
+
+### 🤖 Autopilot
+
+The picture is complete. Two final confirmations — live beta page behavior and whether sunmint_prod has any open PR touching this:
+
+
+### 🤖 Autopilot
+
+Investigation complete — here's the full picture.
+
+## Answer to your two questions
+
+**1. Why is sunmint.truesight.me calling that URL?**
+
+It's not the **main page** — it's the **monitor-tree-growth page** (`sunmint.truesight.me/monitor-tree-growth/`). On page load its `window.onload` runs two identity checks:
+
+```js
+await checkSignatureRegistration(localStorage.getItem('publicKey') || '');
+await loadContributorIdentity();
+```
+
+- `checkSignatureRegistration()` fetches `${EDGAR_BASE}/dao/contributors?public_key=${encoded}` ← **this is your URL**
+- `loadContributorIdentity()` fetches the same `/dao/contributors?public_key=` URL
+
+The `public_key` in the URL is the farmer's **RSA public key** (SPKI base64), generated client-side and stored in `localStorage`. The page is a farmer-facing tool — the call verifies whether the current key is a registered DAO contributor (and, separately, whether they're a governor, to gate an admin "mark invalid" control).
+
+Note: the "main page" (`sunmint.truesight.me/`) does **not** call it — it only POSTs to `/dao/submit_contribution`.
+
+**2. Does the endpoint actually exist?**
+
+**No — the live endpoint returns `404 {"detail":"Not Found"}`.** I verified it directly:
+
+- `GET https://edgar.truesight.me/dao/contributors?public_key=...` → **404**
+- Edgar's live OpenAPI spec (`/openapi.json`) lists **no `/dao/contributors` route** — the real route is `/dao/check_digital_signature?signature=<SPKI>` (which returned `{"registered":false,"error":"No matching contributor digital signature"}` for that key)
+
+## Root cause — a stale URL on the PROD page
+
+The **beta** page (`beta.sunmint.truesight.me/monitor-tree-growth/`) already uses the correct endpoint:
+```js
+fetch(`${EDGAR_BASE}/dao/check_digital_signature?signature=${encoded}`)
+```
+
+The **prod** page still uses the old, removed `/dao/contributors?public_key=` URL — it's running the **older sunmint_prod code** (confirmed live: its `.camera-viewport` CSS also lacks the `max-height: 40vh` cap that beta already has). So the prod monitor page is **behind beta by at least one deploy** — beta got the `check_digital_signature` fix, prod never did.
+
+## Impact
+- **Harmless but noisy**: both calls 404, the code handles `!resp.ok` gracefully (`return null`) — no crash, just failed lookups.
+- **Functional**: `isSignatureRegistered` stays `false`, and `currentContributorName` never resolves — so the **governor gate** (`maybeShowInvalidZone()`) can't activate on prod, meaning governors can't see/use the "mark tree invalid" control there. The tree-reporting flow itself still works.
+
+## Suggested fix (needs your go)
+The right fix is beta-first per repo policy: I can open a PR on **sunmint_beta** updating `monitor-tree-growth/index.html`'s `checkSignatureRegistration()` to the canonical endpoint, then promote to prod via `sync_beta_to_prod` after you review. But note the prod page appears to be **several deploys behind beta** — so the cleaner path may be a straight **beta→prod sync** of the whole monitor page (which also brings the camera-viewport cap and gesture fixes from PR #29 once you UAT them).
+
+Want me to:
+1. Open the sunmint_beta fix PR for the `/dao/contributors` → `/dao/check_digital_signature` swap (small, targeted), and/or
+2. Check how far prod lags beta on the monitor page, and prep the promotion?
+
+(No action taken beyond read-only investigation — no code pushed, no prod touched.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp/sunmint_beta_clone 2>/dev/null && echo "=== grep contributors in sunmint_beta ===" && grep -rn "dao/contributors\|contributors?publi; echo "=== sunmint_beta_clone exists? ==="; ls -d /tmp/sunmint_beta_clone 2>/dev/null && grep -rin "contributor" /tmp/sunmint_beta_clone --in; echo "=== sunmint_prod root index.html: EDGAR_BASE + fetch + contributors ==="; grep -n "EDGAR_BASE\|contributors\|fetch(" /tmp/sunmint_prod; …(+4 more)
 
