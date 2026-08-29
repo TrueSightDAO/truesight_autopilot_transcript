@@ -282,6 +282,7 @@ Write access confirmed. Executing (a) — deleting the two phantom rows (127, 12
 **(a) Cleanup done.** Both phantom Currencies rows (127, 128) deleted from the live ledger — verified 0 QA leftovers, 141 → 139 rows.
 
 Now executing (b) the convention doc and (c) the `(Test` guard PR in parallel — they're independent repos.
+[2 tool result(s) compacted: git_push_changes, git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -504,4 +505,123 @@ So the deploy step is: `gas_deploy_project(script_id=<asset_receipt_ingest>, pus
 **Why I'm waiting for your explicit go:** it changes the behavior of the live ingest pipeline (the same pipeline that processes real farmer/partner receipts). It's a production-adjacent action — small and safe, but I don't deploy to live without your word.
 
 So: want me to push it? One word and I'll run the deploy (first push without hooks, verify, then re-run with hooks per convention).
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15540] merge and deploy it then @truesight_autopilot_bot
+
+
+### 🤖 Autopilot
+
+"Merge" is already done (tokenomics#436 merged earlier, sha `0ed19da`) — the remaining step is the **deploy**. Executing now: first a dry-run to confirm the project resolves, then the real push.
+
+
+### 🤖 Autopilot
+
+The repo has the folder, but the **local checkout** on the box (`/opt/truesight_autopilot/context/tokenomics/`) is missing it — likely a stale clone (the merge happened in GitHub, not locally). Let me inspect what's actually on disk and in the repo.
+
+
+### 🤖 Autopilot
+
+The ssh_run failed because I omitted the `host` param. Retrying properly, and also checking the repo's folder structure on GitHub to confirm what should be there.
+
+
+### 🤖 Autopilot
+
+The GitHub repo has the guard in `Code.gs` — the problem is the **local checkout on the box is stale** (missing the `asset_receipt_ingest/` folder). My ssh_run calls were missing the `host` param — fixing that now.
+
+
+### 🤖 Autopilot
+
+The local checkout is current (`0ed19da` #436 checked out) and `asset_receipt_ingest/` exists — so the deploy script failed because **`.clasp.json` is missing inside that folder**. Let me verify what's actually in it and whether the GAS scriptId can be derived.
+
+
+### 🤖 Autopilot
+
+The folder `asset_receipt_ingest/` contains only `Code.gs` — no `.clasp.json` — while every real GAS project folder in this repo is named by its **scriptId**. The deploy tool expects `google_app_scripts/<scriptId>/.clasp.json`. So `asset_receipt_ingest` is a human-readable alias and I need the **actual scriptId** of that GAS project. Let me find the mapping (README / deploy script / Edgar's webhook config).
+
+
+### 🤖 Autopilot
+
+The `asset_receipt_ingest` folder is an alias — the deploy tool needs the real scriptId (folder name = scriptId with `.clasp.json`). Let me find the actual GAS scriptId for this project (webhook URL / clasp_mirrors / config).
+
+
+### 🤖 Autopilot
+
+Found the real scriptId: **`1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU`** (identical Code.gs content, 17KB). Let me verify it has `.clasp.json` and do a dry-run deploy on the real project.
+
+
+### 🤖 Autopilot
+
+Key finding: the real deployable GAS folder (`1o2lzpd…/`) still has the **OLD Code.gs without the guard** — PR #436 wrote the guard only to the new alias folder `asset_receipt_ingest/`, which is not deployable (no `.clasp.json`). Let me confirm which repo files actually contain the guard on GitHub.
+
+
+### 🤖 Autopilot
+
+The guard exists **only** in the alias folder `asset_receipt_ingest/` — the **real deployable project** (`1o2lzpd…/`) still has the OLD code without the guard. That's why the deploy failed. Let me check the deploy script's alias/manifest handling and the git history of the alias folder to confirm the intent.
+
+
+### 🤖 Autopilot
+
+Root cause of the failed deploy found. Let me pin the exact edit region in the real deployable file.
+
+
+### 🤖 Autopilot
+
+Root cause found — this is important:
+
+**The guard was never in the deployable file.** PR #436 wrote the guard only to `google_app_scripts/asset_receipt_ingest/Code.gs` (a **human-readable alias/mirror folder** with no `.clasp.json`, hence undeployable). The **real deployable project** — `google_app_scripts/1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU/` (scriptId `1o2lzpd…`, has `.clasp.json`) — still has the OLD code. The `diff` proved the files are identical **except** the guard is missing from the real one.
+
+So "deploy" failed not because of a stale checkout, but because **the merged change didn't touch the file that actually gets pushed**. Fixing that now: apply the guard to the real deployable folder → merge → deploy.
+
+
+### 🤖 Autopilot
+
+PR #437 opened (the fix that makes the guard deployable). Merging it now per Gary's "merge and deploy" go.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged. Here's where things stand:
+
+---
+
+## What happened this turn
+
+**The deploy exposed a real gap:** Gary said "merge and deploy it" — but the deploy failed because **the guard was never in the deployable file.**
+
+### Root cause
+- PR #436 wrote the `(Test` guard to `google_app_scripts/asset_receipt_ingest/Code.gs` — a **human-readable alias folder** with **no `.clasp.json`** → not deployable by `scripts/deploy_gas_project.py` (folders must be named by GAS scriptId).
+- The **real deployable project** (`google_app_scripts/1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU/`, scriptId `1o2lzpd…`, has `.clasp.json`) still had the **OLD code** — no guard.
+- Diff confirmed the two files are identical except the guard hunk.
+
+### Fix
+- **PR: [tokenomics#437](https://github.com/TrueSightDAO/tokenomics/pull/437)** — merged (sha `44cdf96`) — applied the same guard hunk to the real deployable project folder:
+  - `var isTestCurrency = /(\(test| test | test$)/i.test(currencyName);`
+  - Currencies-row creation guarded with `&& !isTestCurrency`
+  - `else if (isTestCurrency)` → Logger QA-GUARD audit line
+
+---
+
+## RESUME HERE → next unit (the actual deploy)
+
+The guard is now merged into the **deployable** project. Remaining step — deploy it live:
+
+```
+gas_deploy_project(script_id='1o2lzpdTZBYTTFdXzWJoATxznbqL959b_O7_no2Gd-OV4ryOPZOsqxtpU', push=true)
+```
+
+Per convention: first push **without hooks**, verify, then re-run **with hooks**. Gary's "merge and deploy it then" authorizes this — the next turn should run the dry-run + push and report the live deploy result. (Note: this project's manifest from #433 includes `repoint_deployment` — the deploy script bumps the version and repoints the pinned deployment, so the live `/exec` URL will actually serve the new code.)
+
+———
+**✅ Done this turn — actions taken:**
+• `gas deploy project` → error
+• `ssh run` ×9 → ls -la /opt/truesight_autopilot/context/tokenomics/google_app_scripts/ 2>/dev/null | head -40; echo '---'; ls /opt/truesight_autopilot/conte; ls -la /opt/truesight_autopilot/context/tokenomics/ 2>/dev/null | head -20; echo '---GAS---'; ls /opt/truesight_autopilot/context/tokenomics; ls /opt/truesight_autopilot/context/tokenomics/google_app_scripts/ 2>/dev/null; echo '---GIT---'; cd /opt/truesight_autopilot/context/tokeno; …(+6 more)
+• `merge pr` → ✅ PR #437 on tokenomics merged successfully (sha: 44cdf96a3e66beb1f34d961c2ad6dc295be3881a). Pull Request successfully merged
 
