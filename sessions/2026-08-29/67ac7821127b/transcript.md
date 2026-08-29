@@ -81,21 +81,60 @@ GitHub code search may not index dapp_beta's default branch. Let me grep the rep
 ### 🤖 Autopilot
 
 Let me look at how the store data and coordinates are loaded in stores_nearby.html.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me find where the store data (with lat/lng) comes from.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at where the coordinates come from — the Stores GAS backend and the Hit List.
+[2 tool result(s) compacted: search_code, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the GAS backend source that serves store data, and check the actual data.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -149,36 +188,63 @@ I'll pull the two constants from `Code.js`, sample ~10–20 stores from the sour
 ### 🤖 Autopilot
 
 Got it — the **map image inside a PDF I generated**, not the DApp stores map. Let me find which PDF/map workflow that is.
+[2 tool result(s) compacted: search_context, search_transcript — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the map is `cacao_sourcing_network_map.png`, a **Gemini-generated map** embedded in the cacao sourcing network PDF. The doc even flags "AI labels to be spot-checked." Let me find the generation workflow.
+[2 tool result(s) compacted: search_code, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The map is `cacao_sourcing_network_map.png` — a **Gemini-generated AI image** embedded in the cacao sourcing network PDF (the doc itself flags "AI labels to be spot-checked"). AI image generation can't place pins accurately — that's the root cause. Let me find the PNG and how the PDF was produced.
+[2 tool result(s) compacted: search_code, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find where the map PNG actually lives and how it got into a PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PNG exists at `agentic_ai_context/brazil/cacao_sourcing_network_map.png`. Let me download and inspect it, and find which PDF embeds it.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the actual map image to see the inaccuracy.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 OCR returned nothing (graphical map). Let me check how the map was generated and whether a PDF embeds it.
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -275,4 +341,29 @@ Say the word ("fix the map" / "which PDF") and I'll proceed.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×16 → cd /tmp && curl -s "https://api.github.com/search/code?q=repo:TrueSightDAO/agentic_ai_context+cacao_sourcing" | python3 -c "import json,sys;; cd /tmp && curl -sL -o cacao_sourcing_network_map.png "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/brazil/cacao_s; cd /tmp && curl -s "https://api.github.com/search/code?q=repo:TrueSightDAO/.github+cacao_sourcing" | python3 -c "import json,sys; d=json.loa; …(+13 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15564] @truesight_autopilot_bot status?
+
+
+### 🤖 Autopilot
+
+**Status — "map locations inaccurate" investigation: done, awaiting your call on the fix.**
+
+## What I found
+- The map in question: `brazil/cacao_sourcing_network_map.png` (added 2026-08-29, PR #830, alongside `CACAO_SOURCING_NETWORK_OVERVIEW.md`).
+- **Root cause:** it's a **Gemini AI-generated image** (`gemini-2.5-flash-image`). Image models draw plausible-looking geography but have **no real geospatial grounding** — so the pins for Manicoré (AM), Altamira (PA), Itabuna (BA), Ilhéus (BA) don't sit at their true coordinates. The doc itself flags "AI labels to be spot-checked."
+- Real coords (verified): Manicoré ~-10.0, -62.0 · Altamira ~-5.98, -57.83 · Itabuna -14.79, -39.28 · Ilhéus -14.80, -39.32. Bahia is 1,500+ km from the Amazon sites — an AI image can't honor that spacing.
+- Also confirmed: my `generate_pdf` tool is **markdown-only, it cannot embed images** — so that PDF was produced via a different path (one-off slide/report render or direct attachment), not stored in any repo.
+
+## Recommended fix (ready to execute)
+Replace the AI map with a **programmatically plotted map** from the real coordinates (matplotlib/GeoPandas or staticmap → PNG), add a lat/lng column to the overview table, and regenerate any PDF from the corrected PNG. Every pin then matches its address, guaranteed.
+
+## Blocking on you — 2 quick questions
+1. **Which PDF** did you see the map in? (I couldn't find a stored copy — likely a one-off I generated in the 29 Aug session and sent over Telegram.) If you can point me to it or re-share it, I'll fix exactly that artifact.
+2. **Fix approach OK?** My recommendation: replace AI map with real-coordinate plotted map. Alternative: drop the map entirely and keep only the table.
+
+Say **"fix the map"** (or "drop the map") and I'll execute — no further questions needed if you can also re-share the PDF or confirm it was the sourcing-network one.
 
