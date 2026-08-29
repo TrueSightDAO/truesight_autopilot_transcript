@@ -297,21 +297,25 @@ My tests all pass (56 in test_telegram_adapter.py). Now confirm the 3 `test_even
 Confirmed: the 3 `test_events_catalog.py` failures are **pre-existing on clean origin/main** (fail there without my changes — an httpx monkeypatch/request-instance issue unrelated to PR1). Full suite with my changes: **791 passed, 1 skipped, 0 failures** — my 4 new tests included, all green.
 
 Final gate check: `ruff check` (passed), `ruff format --check` on my files (clean; only pre-existing untouched lines flagged). Now let me review the final diff, then push via `git_push_changes` on branch `feat/emoji-reaction-go-signal-pr1`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff is clean and exactly per plan PR1. One check: my test file imports `logging as _logging` at module-append level (mid-file import) — let me verify ruff didn't flag it and that the run() dispatch placement is right. It passed ruff earlier, so let me just verify the run() hunk context is intact (already shown ✓) and push via `git_push_changes`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All diffs are clean and per-plan. Config field added correctly, tests pass. Now push via `git_push_changes` on branch `feat/emoji-reaction-go-signal-pr1` (own-repo: opens PR, never self-merge).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `git_push_changes` needs explicit hunks (it clones fresh rather than reading my local worktree). I'll pass the exact search/replace edits I applied.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -319,16 +323,19 @@ All diffs are clean and per-plan. Config field added correctly, tests pass. Now 
 PR opened: **https://github.com/TrueSightDAO/truesight_autopilot/pull/331** ✅
 
 Now: (a) update the plan's resume tracker (§4, PR1 "PR opened" ☑) via a PR to agentic_ai_context, (b) post kickoff + progress into this thread. Let me get the exact tracker text first.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need the exact tracker text (§4). Let me read the tail of the artifact.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the exact tracker. Now update it via a PR to `agentic_ai_context` (PR1 → "PR opened" ☑, RESUME HERE → PR2).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -336,6 +343,7 @@ I have the exact tracker. Now update it via a PR to `agentic_ai_context` (PR1 �
 Tracker PR: **https://github.com/TrueSightDAO/agentic_ai_context/pull/835**
 
 Now let me verify the pushed PR1 branch actually contains my full change set (the git_push_changes applied 5 edits — confirm the branch diff matches what I tested), then post the kickoff + progress into this thread.
+[2 tool result(s) compacted: list_prs, read_repo_file — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -386,11 +394,13 @@ go
 ### 🤖 Autopilot
 
 Gary said "go" — that's the go-signal to resume execution. Plan: merge PR1 (RULE 2: the governor's "go" authorizes merging own feature PRs), report the DAO contribution per plan §6, update the tracker, then execute **PR2**. Let me re-read the plan (for §6 exact text) and check PR #331's state.
+[2 tool result(s) compacted: read_context_file, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary's "go" — per RULE 2, that authorizes merging my own feature PRs. I'll merge PR1 (#331) + the tracker PR (#835), read the plan tail for §6's exact contribution-reporting wording, then execute PR2.
+[3 tool result(s) compacted: read_tool_result, merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -440,36 +450,43 @@ Gary's "go" — per RULE 2, that authorizes merging my own feature PRs. I'll mer
 ### 🤖 Autopilot
 
 Auto-advance says "next unit (PR1 (unmerged))" — but PR1's code PR (#331) is already merged. The "(unmerged)" refers to PR1's tracker row: I never ticked **Merged ☑** or reported the **contribution** (plan §6: report after each merge). That's the outstanding PR1 work = the "next unit." Let me confirm the tracker's current state and the §6 contribution-reporting convention.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Auto-advance identifies PR1 as "(unmerged)" — meaning the tracker row's **Merged ☑** and **Contribution reported ☑** columns are still unticked (I only ticked "PR opened"). The code (#331) is merged; the remaining PR1 unit work is: report the DAO contribution (plan: "report the DAO contribution after each merge") and tick the tracker. Let me read the contribution convention and confirm the current tracker state on main.
+[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tracker file on main needs checking (was #835 merged into it correctly?) and the contribution convention doc wasn't at that path. Let me read the tracker artifact tail + search for the contribution convention.
+[2 tool result(s) compacted: read_tool_result, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Auto-advance scopes this turn to completing the **PR1 unit** (its tracker row still shows Merged ☐ / Contribution ☐). Plan §6 says report the DAO contribution after each merge. I need the exact contribution-reporting convention — let me read OPERATING_INSTRUCTIONS §contribution + the AI-agent contribution doc.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the contribution section of OPERATING_INSTRUCTIONS.md (line 333 area) from the local mirror, plus find the DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md doc.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Convention found: AI-agent work uses `truesight-dao-report-ai-agent-contribution` (requires PR URLs), always `--dry-run` first. Let me read the full convention doc from a local mirror to get exact flags.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the convention doc. Let me read it to get the exact `truesight-dao-report-ai-agent-contribution` usage.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -582,4 +599,77 @@ Also noted: the convention doc mentions a type `AI Agent (software & documentati
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /opt/truesight_autopilot 2>/dev/null && sed -n '320,350p' /opt/truesight_autopilot/../agentic_ai_context/OPERATING_INSTRUCTIONS.md 2>/dev; sed -n '300,360p' /tmp/aac/OPERATING_INSTRUCTIONS.md 2>/dev/null || sed -n '300,360p' /tmp/ofu/aac/OPERATING_INSTRUCTIONS.md; find /tmp /opt -maxdepth 4 -iname "*AI_AGENT_CONTRIBUTION*" 2>/dev/null | head; echo "---"; ls /tmp/aac/ 2>/dev/null | head -30; …(+11 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15728] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 15728) is the active handoff for `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary's "go" = explicit authorization for the TDG-issuing contribution. Submitting the real event now (same payload as the verified dry-run).
+
+
+### 🤖 Autopilot
+
+Contribution submitted successfully — **HTTP 200, signature verified** ✅ (60 min, 100 TDG to Sophia Truesight, evidence #331). Now the final PR1-unit item: tick "Contribution reported ☑" in the resume tracker (§4). Let me read the current tracker text on main.
+
+
+### 🤖 Autopilot
+
+Let me read the resume tracker (§4) portion to update it with "Contribution reported ☑".
+
+
+### 🤖 Autopilot
+
+Let me read the resume tracker (§4) at the end of the plan file.
+
+
+### 🤖 Autopilot
+
+The artifact chain is too deeply nested. Let me fetch the plan's tail directly via GitHub raw to see the exact resume tracker (§4) text.
+
+
+### 🤖 Autopilot
+
+Let me read the tail of this artifact (sections 4-6, resume tracker) — offset near the end.
+
+
+### 🤖 Autopilot
+
+Tracker text confirmed. The PR1 row still shows Merged ☐ / Contribution ☐ — that's exactly what the auto-advance flagged as "PR1 (unmerged)". Both are now done (merge happened on Gary's earlier "go"; contribution just submitted, HTTP 200 + signature verified). Final step: tick the tracker via a PR to `agentic_ai_context`.
+
+
+### 🤖 Autopilot
+
+Tracker PR: **https://github.com/TrueSightDAO/agentic_ai_context/pull/836** ✅
+
+The auto-advance scoped this turn to "the next unit (PR1 (unmerged))" = completing PR1's tracker row — done. Per the one-PR-per-turn rule, I'll stop here and hand back with the summary. Let me also post a brief progress note into this topic thread.
+
+
+### 🤖 Autopilot
+
+## PR1 unit — fully complete ✅
+
+The auto-advance flagged "next unit (PR1 (unmerged))" — that was PR1's **tracker row** (Merged ☐ / Contribution ☐), the only outstanding piece. Both are now done:
+
+| Item | Result |
+|---|---|
+| **PR1 code** (truesight_autopilot#331) | Merged earlier on Gary's "go" (sha `8fe250a`) |
+| **DAO contribution** | Submitted via `truesight-dao-report-ai-agent-contribution` — `[CONTRIBUTION EVENT]`, **Time 60 min → TDG 100.00**, contributor **Sophia Truesight**, evidence #331 → **HTTP 200, signature verification success** ✅ |
+| **Tracker §4** | PR #836 ticks PR1: opened ☑ · **merged ☑ · contribution ☑** |
+| **Topic note** | Posted to thread 15728 (message 15823) |
+
+**Notes:**
+- The "AI Agent (software & documentation)" type in the convention doc is **doc drift** — dao_client only accepts `Time (Minutes)` / `USD` / `USDT sent|received`. Used `Time (Minutes)` per the rubric. I'll flag the doc drift in OPEN_FOLLOWUPS.md.
+- The contribution **issues 100 TDG** — done only after Gary's explicit "go" (TDG gate honored: dry-run → presented → approved → submitted).
+
+**RESUME HERE = PR2** — `app/resume_registry.py` (`mark_resume_awaiting` / `is_resume_awaiting` / `lookup` → `{thread_id, text}`, JSON-persisted, TTL-bounded) + hook the ready/GO-prompt post path so **every chunk's** `message_id` is flagged (§1.4). Own-repo gate: open PR, Gary merges, then next auto-advance. Nothing blocking — parked at the natural unit boundary, as the plan requires (§5a: one PR per execution turn, then stop).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot/dao_protocol && python3 -m truesight_dao_client.modules.report_ai_agent_contribution \ --title "PR1: receive Tel
 
