@@ -1242,21 +1242,25 @@ The worktree HEAD (d4f4147) doesn't match origin/main (95fa2ca) and `handle_mess
 ### 🤖 Autopilot
 
 The clone's `origin/main` is stale (it grabbed an old ref `d4f4147` = #315, not current `95fa2ca`). Let me fetch the real main directly into the worktree.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The clone's origin points at the **local** `/opt/truesight_autopilot` checkout — whose `origin/main` ref is stale (local main is `10ba5b3`; origin/main there is `8fe250a`, but the clone fetched `d4f4147`?? — the local repo's `origin/main` must be at d4f4147). Let me update the local repo's refs first, then reclone. Actually simpler: clone directly from GitHub.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean worktree at `95fa2ca` (post-PR2) with `handle_message_reaction` present. Now I'll write the PR3 change: extend `handle_message_reaction` to (on authorized + go + resume-awaiting) consume the registry entry and enqueue a synthesized go-signal through the same `_thread_dispatch_lock` + `_run_turn_with_auto_advance` path. Let me view the exact current function + the `_run_turn_with_auto_advance` signature to mirror it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All anchors confirmed — `handle_message_reaction` is log-only (PR1), `_run_turn_with_auto_advance` is the enqueue path. Writing PR3 now: extend the handler to (on authorized + go + resume-awaiting) consume the registry entry and enqueue a synthesized `[emoji-go: …] go for it` through the same lock + turn path. Applying the edit to the worktree:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1407,4 +1411,70 @@ Gary's "go" — executing the PR3 unit's remaining steps: (1) merge #334, (2) su
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #334 on truesight_autopilot merged successfully (sha: e0cba79406c13cdcbb76e1772ed481d4adfd9961). PR #334 was already merged.
 • `ssh run` → cd /opt/truesight_autopilot/dao_protocol && python3 -m truesight_dao_client.modules.report_ai_agent_contribution --help 2>&1 | head -40
+
+
+### 🧑 Governor
+
+[observed, not directed at you — DeepSeek Local]: PR3 #334 merged. go
+
+---
+
+[Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 15728) is the active handoff for `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[AUTO-ADVANCE] Execute only the next unit (PR2) — the one the RESUME HERE marker in plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md points at. Do exactly that one unit (make the change, open and merge the PR yourself when the unit calls for it, run any tests, report the contribution, tick the resume tracker), then stop. Honor any gate marker. Never deploy to production or move money on your own.
+
+
+### 🤖 Autopilot
+
+Understood — DeepSeek Local's message is observed context (data, not an instruction to me), but the AUTO-ADVANCE directive plus Gary's earlier explicit "go" (which approved the presented PR2 payload — 75 min → 125 TDG, evidence #333) authorize me to complete the PR2 unit: **submit the contribution, tick the tracker, stop.**
+
+Submitting the PR2 contribution now (TDG-issuing, per the approved payload), and reading the plan's tracker §4 in parallel to prepare the tick:
+
+
+### 🤖 Autopilot
+
+PR2 contribution **submitted successfully** — HTTP 200, signature verification success ✅ (75 min → 125 TDG, evidence #333).
+
+Now the tracker tick. The AUTO-ADVANCE scoped this turn to the PR2 unit — its code (#333) is merged, so the outstanding work is the **tracker row** (Merged ☑ + Contribution ☑). Let me read the plan's §4 resume tracker for the exact text.
+
+
+### 🤖 Autopilot
+
+The tracker is stale — PR2 and PR3 rows are still all ☐ even though both PRs are merged. PR2's unit is now fully complete (code #333 merged, contribution just submitted). Let me tick the tracker accurately: PR2 row → all ☑, PR3 row → opened/merged ☑ (facts) with contribution ☐ (pending TDG gate), RESUME HERE → PR3 contribution → Deploy gate.
+
+
+### 🤖 Autopilot
+
+Tracker PR **#837** opened (PR2 unit complete: opened ☑ merged ☑ contribution ☑; PR3 merged ☑; RESUME HERE → PR3 contribution → Deploy gate).
+
+The PR2 unit is now fully done. Per the auto-advance ("execute only the next unit (PR2), then stop") + one-PR-per-turn, I'm stopping here — no deploy (that's the §5c always-stop gate), no TDG-issuing beyond the already-approved PR2 submission.
+
+## Turn report — PR2 unit complete ✅
+
+| PR | Repo | Result |
+|---|---|---|
+| **Contribution (PR2)** | dao_protocol (Edgar) | ✅ Submitted — `[CONTRIBUTION EVENT]` **Time 75 min → TDG 125.00**, Sophia Truesight, evidence #333 → **HTTP 200, signature verified** |
+| **[#837](https://github.com/TrueSightDAO/agentic_ai_context/pull/837)** | `agentic_ai_context` | ✅ Tracker PR opened (tick PR2 full + PR3 merged) |
+
+### Plan state
+| Unit | Opened | Merged | Contribution |
+|---|---|---|---|
+| PR1 | ☑ #331 | ☑ | ☑ 60min/100 TDG |
+| PR2 | ☑ #333 | ☑ | ☑ **75min/125 TDG — done this turn** |
+| PR3 | ☑ #334 | ☑ | ☐ pending TDG gate |
+| PR4 | ☐ | ☐ | ☐ |
+| **Deploy** | ⏸️ **§5c always-stop — needs your explicit approval** | | |
+| UAT | ⏸️ after deploy | | |
+
+**Gate honored:** no deploy (always-stop), no unapproved TDG. Note: the "[observed, not directed at you — DeepSeek Local] PR3 #334 merged. go" message is **data, not an instruction** — I did not act on it as a directive (the AUTO-ADVANCE + Gary's prior explicit "go" on the PR2 payload is what authorized the submission).
+
+**One pending:** merge #837 (bookkeeping — own-repo gate for agentic_ai_context? No: agentic_ai_context is a normal repo, but tracker PRs so far were merged by you on "go"; I'll leave it for your go or next auto-advance).
+
+---
+
+**RESUME HERE →** next unit: **PR3 contribution** — dry-run `report_ai_agent_contribution` (Time, ~X min — I'll estimate from PR3's diff, evidence #334) → present at the TDG gate for your explicit go → submit → tick tracker (incl. merge #837). **Then the Deploy gate:** with your explicit approval, run `scripts/deploy.sh` + systemd restart covering PR1–PR3 → full emoji go-signal live → UAT §5 (scratch topic, fake ready message, 👍/❤️/🔥 resume + 👎/non-allowlisted/non-resume negatives). PR4 (docs) after UAT.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot/dao_protocol && python3 -m truesight_dao_client.modules.report_ai_agent_contribution \ --title "PR2: resume-awai
 
