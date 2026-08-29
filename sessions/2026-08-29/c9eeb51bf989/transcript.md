@@ -701,11 +701,13 @@ Good — the tree IS in the index and Edgar says your key is governor-registered
 ### 🤖 Autopilot
 
 Now let me read the root page's email-linking flow — that's the key to understanding which public key ends up in localStorage after linking (and why the monitor gate fails):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two candidate root causes for the missing button. Let me read `populateTreeDropdown` and `onTreeSelectChange` — if the dropdown filters by distance, his tree falls into the deep-link **else** branch, which never calls `maybeShowInvalidZone()`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -953,4 +955,56 @@ Merging #29 first:
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #29 on sunmint_beta merged successfully (sha: dbaf77e401e4c2bb6205802bd804582353264280). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16178] Work on the deep link
+
+
+### 🤖 Autopilot
+
+Working on the deep-link fix now — Unit 2 from the plan. First let me pull the current `sunmint_beta` main (post-#29 merge) to write exact hunks against the live code.
+
+
+### 🤖 Autopilot
+
+The merged #29 code is live in main. Let me read the exact deep-link fallback block to place the one-liner:
+
+
+### 🤖 Autopilot
+
+Exact code confirmed. The fallback branch (`else`) calls `showPhotoSection(false)` but **never calls `maybeShowInvalidZone()`** — the governor gate is skipped when the tree id isn't in the local index. One-line fix. Opening the PR:
+
+
+### 🤖 Autopilot
+
+PR opened — no merge yet (merging the previous PR was your go for that one; this one I'll merge after you confirm, unless you say otherwise).
+
+## What I did this turn
+- **Opened [sunmint_beta#30](https://github.com/TrueSightDAO/sunmint_beta/pull/30)** — `fix/monitor-deeplink-invalid-zone` (commit `4f1eedb`, 1 line)
+- **The fix:** in `monitor-tree-growth/index.html`, the `?tree=` deep-link **fallback** branch (tree id NOT in local index) now calls `maybeShowInvalidZone()` right after `showPhotoSection(false)` — so governors see **MARK INVALID** on that path too. The match branch already had it; the fallback was the only gap.
+- Verified against current `main` (post-#29 merge, HEAD `dbaf77e`): match branch covered at ~1185, fallback missing the call at ~1192 — now fixed.
+
+## Why this mattered
+Your `?tree=Edgar_20260819134722_487` deep link hit the **fallback** (tree not in index → button skipped). With the cache-busting/incognito test plus this fix, the button will show on **both** deep-link paths.
+
+## Awaiting you
+1. **Merge #30?** — say the word and I merge into beta main (Pages rebuild ~5 min, then it's live on beta)
+2. **UAT on beta** (after merge + refresh, ideally incognito/hard-refresh to bypass the stale gate cache):
+   - `beta.sunmint.truesight.me/` → camera starts on **tap**, no null error
+   - `beta.sunmint.truesight.me/monitor-tree-growth/?tree=<unknown-id>` → **MARK INVALID** appears as governor
+   - `?tree=<known-id>` (dropdown match) → MARK INVALID also appears
+3. Then **"deploy"** → one `sync_beta_to_prod` ships #29 + #30 (plus earlier #26–#28) to prod.
+
+Want me to merge #30 now?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && rm -rf sunmint_beta_dl && git clone -q --depth 5 https://github.com/TrueSightDAO/sunmint_beta.git sunmint_beta_dl 2>&1 | tail -2; cd sunmint_beta_dl && echo "=== HEAD ===" && git log --oneline -3; cd /tmp/sunmint_beta_dl && echo "=== deep-link block (1177-1200) ===" && sed -n '1177,1200p' monitor-tree-growth/index.html
+• `git push changes` → edit monitor-tree-growth/index.html; commit 4f1eedb; PR https://github.com/TrueSightDAO/sunmint_beta/pull/30
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && rm -rf sunmint_beta_dl && git clone -q --depth 5 https://github.com/TrueSightDAO/sunmint_beta.git sunmint_beta_dl 2>&1 | tail -2;; cd /tmp/sunmint_beta_dl && echo "=== deep-link block (1177-1200) ===" && sed -n '1177,1200p' monitor-tree-growth/index.html
 
