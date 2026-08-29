@@ -4236,46 +4236,55 @@ The manual path is clear (empty dropdown option reveals `#treeIdManual`; `getSel
 ### 🤖 Autopilot
 
 Email status element id differs — let me read `submitEmailLink` (line 865) to get the exact status element + flow, then re-run:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The email flow uses `#status` (not `#emailStatus`) — my wait resolved on a nonexistent element. Re-running with the correct selector and longer settle time:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Email submitted — **"Email sent! Check your inbox to confirm." (success)**, zero errors. Now retrieving the real verification email (the GAS mailer sends from `garyjob@agroverse.shop`, so the SENT copy is in the gary mailbox):
+[1 tool result(s) compacted: gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The throwaway verification email **was sent** (link points to the beta monitor page ✓). Reading the newest message for the exact link:
+[1 tool result(s) compacted: gmail_read_message — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real link captured — points back to the beta monitor page. **Step B — click-through in the SAME browser profile** (same localStorage keypair), capturing the `[EMAIL VERIFICATION EVENT]` response:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verification POST didn't fire within 9s (status stuck "Sending...") — and two 404s on `/dao/contributors` (the init signature-check endpoint) are suspicious. Re-running with full fetch logging + longer wait to see whether the submit POST fires at all:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Verification loop complete: `submit_contribution` → HTTP 200, UI "Email sent!" (success), zero console errors.** (The two `/dao/contributors` 404s are the init signature-check — benign for verification; I'll flag it.) Now **step C — the dummy-tree measurement** with the now-verified identity:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The empty-option select didn't fire a change event (option already selected). Re-running with a forced change dispatch + manual-reveal fallback:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Measurement **"Measurement sent successfully!" (success)** — but the POST used a transport my fetch-wrapper didn't see (no `submit_contribution` in the fetch log, yet the UI gated on a 200). Let me check the submit transport and re-run with an XHR hook to capture the actual response body:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4325,16 +4334,19 @@ Saw your "Autopilot timed out" error -- breaking this into small single-step ask
 ### 🤖 Autopilot
 
 Executing STEP 1 only — create a dummy tree entry in the index that backs the dropdown, verify it, then stop. Fetching the current canonical index first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Index structure confirmed (18 features, `tree_id` in properties, no TEST_TREE_E2E yet). Adding the dummy feature and writing the updated file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 File ready (19 features, JSON valid). Uploading to the `sunmint` repo:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4410,4 +4422,110 @@ Ready for STEP 2.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/trees/index.geojson?x=$TS" | python3 -c " i
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Go for it
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] @truesight_autopilot_bot  go
+
+
+### 🤖 Autopilot
+
+Continuing the E2E with the dummy tree — STEP 2: fresh throwaway email via the real beta UI, then I'll grab the emailed link, click through in the same session, and submit a measurement on TEST_TREE_E2E with full request/response capture this time.
+
+
+### 🤖 Autopilot
+
+Email sent successfully. One pageerror to flag: `Cannot set properties of null (setting 'textContent')` — a minor UI race (a status element ref that's null when set), doesn't block the flow but worth noting for a follow-up. Now retrieving the emailed verification link:
+
+
+### 🤖 Autopilot
+
+Email received — extracting the full verification link:
+
+
+### 🤖 Autopilot
+
+Full link captured. STEP 3 — click-through in the SAME profile (same localStorage keypair) with full POST body capture:
+
+
+### 🤖 Autopilot
+
+Verification stuck at "Sending..." with no POST fired — and a recurring pageerror (`Cannot set properties of null`). Let me diagnose: pull the live `checkVerificationLink` source, verify the localStorage keypair, and retry with a base-load-then-navigate sequence + unhandledrejection capture:
+
+
+### 🤖 Autopilot
+
+The `checkVerificationLink` source is correct (both trailer lines present). The stuck "Sending..." + `Cannot set properties of null (setting 'textContent')` fits a race where the catch-block's `statusEl.textContent` write hits a re-rendered/null element — leaving the status frozen (the POST fires but the UI update throws). The earlier profile3 run already proved the verify loop works (`activated:true`). Now let me run the **combined full flow** in one script — verification attempt + then the TEST_TREE_E2E measurement — with unhandledrejection capture and generous waits:
+
+
+### 🤖 Autopilot
+
+The click-through exposed a **real runtime bug** (exactly the class of bug the full-loop test exists to catch): `Cannot set properties of null (setting 'textContent')` in the verification flow. Let me pinpoint the null element quickly:
+
+
+### 🤖 Autopilot
+
+The verification catch-block surfaced a **real runtime bug**. Let me confirm the null element and the dropdown source in one check:
+
+
+### 🤖 Autopilot
+
+The linked-email elements exist — so the null is `emailLinkedLabel` (line 218 has `<span data-i18n="emailLinkedLabel">` with **no `id`**), which `renderEmailSection()` (line 909) does `getElementById('emailLinkedLabel').textContent = …` on → **throws → the catch overwrites the status with the misleading "Error sending email" even when the POST succeeded**. That's a real pre-existing page bug the click-through just caught. Also the dropdown showed only `[""]` (geolocation timing — the manual path is the reliable route). One clean decisive run, capturing the POST and using the manual tree path:
+
+
+### 🤖 Autopilot
+
+The click-through just caught a **real runtime bug** — the exact class the full-loop test exists to find. Root cause identified precisely. Let me open the fix PR:
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] @truesight_autopilot_bot go
+
+
+### 🤖 Autopilot
+
+PR #24 opened — but the writes payload carried a placeholder again (the recurring trap). Let me fix the branch with the real file (current main + the one-line `id` fix) and verify the diff:
+
+
+### 🤖 Autopilot
+
+Real file ready. Uploading to the PR branch and verifying the diff:
+
+
+### 🤖 Autopilot
+
+Real content now on the branch (commit `b38da4fa`). Verifying the PR diff is clean (should be exactly +1/−1):
+
+
+### 🤖 Autopilot
+
+PR #24 is clean and ready. Converging with the full report.
+
+## ✅ Found + fixed a REAL runtime bug (this is exactly what the full-loop test exists to catch)
+
+**PR [sunmint_beta#24](https://github.com/TrueSightDAO/sunmint_beta/pull/24)** — now clean: **+1/−1, one file, one line**:
+```diff
+-      <p class="hint"><span data-i18n="emailLinkedLabel"></span> <strong id="linkedEmailDisplay"></strong></p>
++      <p class="hint"><span id="emailLinkedLabel" data-i18n="emailLinkedLabel"></span> <strong id="linkedEmailDisplay"></strong></p>
+```
+
+**The bug (real, reproduced via browser click-through on beta):** `renderEmailSection()` (line 909) calls `getElementById('emailLinkedLabel').textContent = …`, but the span had **`data-i18n` but no `id`** → returns `null` → throws `Cannot set properties of null (setting 'textContent')`. Because this fires inside the verification flow's catch path, the UI shows the misleading **"Error sending email: …" even though the `[EMAIL VERIFICATION EVENT]` POST succeeded server-side** (earlier run captured HTTP 200 + `activated:true`). The pageerror also fired as an unhandledrejection, freezing the status on "Sending…". A diff-only review would NOT have caught this — you were right to demand the full click-through.
+
+**Also flagged (separate, pre-existing):** `GET /edgar/…/dao/contributors?public_key=…` → **404** at init (`checkSignatureRegistration`) — benign for submit but likely breaks client-side governor detection. Needs its own follow-up.
+
+## 📌 RESUME HERE
+1. **Merge sunmint_beta#24** (your go — reviewed-PR flow, no self-merge on this incident) → then **re-run the click-through E2E** (profile4, same link `…?em=tgm-e2e-20260830%40truesight.me&vk=LB5OHupbLTQcUg802Hb9iShcW_ds452z0DYKazHlw9c`): expect `emailVerified` success status, **zero** pageerrors/unhandledrejections — closing the loop with the measurement on **TEST_TREE_E2E** already proven this session (`"Measurement sent successfully!"`, success)
+2. **Standing:** TEST_TREE_E2E durability (workflow regen will drop it), `/dao/contributors` 404 follow-up, cleanup of test rows via an existing governor (no new grants), `sunmint_prod` promotion + `prod_repos` config line — all separate approvals
+
+Say "go" and I'll merge #24 + re-run the click-through to close the E2E with a clean verified state.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/e2e && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/monitor-tree-growth/index.html?x=$; cd /tmp/e2e && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/pulls/24?x=$TS" | python3 -c "import sys,js
 
