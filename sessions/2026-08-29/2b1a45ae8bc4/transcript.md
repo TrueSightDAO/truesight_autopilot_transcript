@@ -710,11 +710,13 @@ git_push_changes(repo="truesight_autopilot",
 ### 🤖 Autopilot
 
 Gary correction received: auto-flag must trigger on the text "RESUME HERE" **only** — not on 📌 alone. Since PR #335 is already merged, this becomes a new PR, and I'll bundle it with the edit-path fix (the actual root cause of "still not working", already implemented + verified locally) into ONE PR. First, get exact origin content for precise hunks:
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Got it — Gary's correction: auto-flag on **"RESUME HERE" text only**, not 📌 alone (I have the exact origin content now). I'll bundle this correction with the edit-path fix (the actual root cause of "still not working") into one PR. First apply the correction locally and run targeted tests:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -879,4 +881,43 @@ I did **not** force the restart — that would kill 15530's active turn (the ver
 **✅ Done this turn — actions taken:**
 • `deploy autopilot` → Deploy DEFERRED: 2 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
 • `ssh run` → cd /opt/truesight_autopilot && echo "===services===" && systemctl list-units --type=service --no-pager | grep -i autopilot && echo "===activ
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Should not be 📌 RESUME HERE instead is this RESUME HERE
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=15991] [Handoff context — this Telegram topic (thread 15991) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Should not be 📌 RESUME HERE instead is this RESUME HERE
+
+
+### 🤖 Autopilot
+
+Gary — understood: the marker convention should be plain **"RESUME HERE"** (no 📌 pin). Let me check whether the bot *generates* "📌 RESUME HERE" anywhere in code (my messages have been using the pin — the detection regex already matches the bare text, so the fix is about the marker format itself):
+
+
+### 🤖 Autopilot
+
+Got it — the marker convention is plain **"RESUME HERE"**, no 📌 pin. Good news: the detection already matches the bare text, so nothing behavioral needs to change:
+
+- **`_RESUME_HERE_RE = re.compile(r"RESUME HERE", re.IGNORECASE)`** — matches the plain text exactly (and 📌-alone was already dropped per your earlier correction). So 👍 on a message containing "RESUME HERE" flags it regardless of any emoji decoration.
+- **The 📌 was only decorative in my own chat messages** — the bot's code never *generates* "📌 RESUME HERE" in a sent message. The only 📌 hits in the codebase are comments/docstrings (`resume_registry.py:78,81`, `telegram_adapter.py:831`) plus an unrelated "📌 Due follow-ups" briefing header.
+- Going forward I'll write the marker as plain **"RESUME HERE"** (no pin) in my turn-reports — which is also what the handoff template already specifies.
+
+So: behavior correct, convention noted. No code change required for this — unless you'd like me to clean the 3 comment/docstring mentions of "📌 RESUME HERE" for consistency (tiny cosmetic PR; say the word).
+
+**Still pending — the deploy of #336** (deferred because threads 15492/15530 were mid-turn; the edit-path auto-flag that makes 👍 work on turn-reports is on disk at `3d7d152` but not yet live in the running process).
+
+📌→ (plain) **RESUME HERE = say "go"/"deploy" when threads are idle** and I'll run `deploy_autopilot` to restart the bot on `3d7d152`, verify the services + loaded code, then smoke-test 👍 on a fresh "RESUME HERE" turn-report.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → grep for 📌 and "RESUME HERE" across app/ + scripts/: 📌 appears only in comments/docstrings (resume_registry.py:78,81; telegram_adapter.py:831) + unrelated briefing header; "RESUME HERE" appears in detection regex + handoff protocol strings. No sent message carries the pin — it was stylistic in my chat text only.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && echo "===where 📌 appears in app/===" && grep -rn "📌" app/ scripts/ --include="*.py" 2>/dev/null | head -20; e
 
