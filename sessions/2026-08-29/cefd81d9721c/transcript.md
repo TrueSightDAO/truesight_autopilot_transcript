@@ -399,11 +399,13 @@ Manifest checked — no row tracks this thread (ad-hoc execution; manifest rows 
 The merge landed — all 8 folders are clean of `Code.js`. The recurring-tokenization folder now has exactly one `const CONFIG` (in `tdg_recurring_tokenization_monthly.js`). 
 
 **Deploying the fixed projects now** — starting with the critical one (TDG - Monthly Recurring Tokenization), then the other 4 clean folders. The 3 folders with residual `const creds` collisions (`1wmgYPw`, `1duQFfTO0`, `1rLl94jQ9`) are **not** deployable yet — those get a follow-up PR.
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Critical deploy succeeded** ✅ — `TDG - Monthly Recurring Tokenization` pushed clean (no `Code.js`), deploy ledger recorded. Now deploying the other 4 clean projects in parallel:
+[4 tool result(s) compacted: gas_deploy_project, gas_deploy_project, gas_deploy_project, gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -418,11 +420,13 @@ Deploy results — mixed:
 - ⏸️ 3 folders (`1wmgYPw`, `1duQFfTO0`, `1rLl94jQ9`) still have residual `const creds` collisions — not deployable until Unit 2 PR.
 
 The critical one (recurring tokenization) is live. **Now the catch-up run** — trigger `processRecurringTransactions` to tokenize the missed August + September cycles. But I can't call a GAS function directly from here — let me check how the script is triggered (there's a `setupTrigger` + the sheet's last-date logic) and whether there's a `doGet` endpoint or the monthly trigger just fires. Let me verify the trigger state and the sheet's current tokenization date:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full `processRecurringTransactions` loop to confirm whether it catches up all missed months automatically (Aug + Sep) once the next trigger fires:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -472,6 +476,7 @@ Deploy ledger entries: `deploy_20260829T130346Z` (recurring), `…130423Z` (webh
 ### 🤖 Autopilot
 
 Gary says I have the admin clasp credential — so the digital-signatures project can deploy under `admin@truesight.me`. Let me check how the deploy script selects clasp identity (env var / profile / flag) before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -649,4 +654,120 @@ No payouts moved; catch-up runs via the normal scheduled trigger. All deploy rec
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main -q 2>&1 | tail -1; echo "=== head ===" && git log --oneline -1 origi; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts && for id in 1orWgdGckts55owiYOysR_y4sde52T_eUmrtDGAEkb4YV5DlUfJ0JZC5J 1wm; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts && echo "=== CLASS 1: duplicate top-level const/let across project files (
 • `gas deploy project` ×4 → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T132015Z_1orwgdgckts55owiyoysr-y4sde52t-eumrtdgae.md; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T132038Z_1wmgypwfrdxpiboa8oh-c6ndovklf8hajy305n7d.md; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T132100Z_1duqffto0pj0lc4tpvnmmohnos1gvjgzqvxxbsed.md; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15492] [Handoff context — this Telegram topic (thread 15492) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary's go — executing next units. This turn: (1) verify the recurring-tokenization sheet state (Unit 4), (2) verify the flagged folders from the full-tree scan (Unit 2b), and (3) open the guardrail PR (Unit 5) — the highest-leverage fix. Parallel reads first:
+
+
+### 🤖 Autopilot
+
+All 12 flagged folders have `.clasp.json` (deployable) — and most still carry the stale `Code.js` from the same `63f441e` flatten (my earlier scan only caught 8; the full-tree scan found the rest). The recurring-tokenization script reads the **Main Ledger** spreadsheet (`1GE7PUq…` = the default-SA ledger), so I can verify catch-up from here.
+
+Let me run the authoritative check — diff each polluted folder against its `clasp_mirrors/` counterpart (the true deployed snapshot, which has no Code.js), plus post-removal duplicate-global simulation:
+
+
+### 🤖 Autopilot
+
+All 12 folders deployable (have `.clasp.json`), no mirrors to diff against. Verification shows the fix set: **7 folders** need only `Code.js` removal (15qbfLN3Z, 1IBrXqW_u, 1Og2g8Q0, 1QKqUTyl3, 1Y8sJ22lZ, 1Q5HfGR_A, 1QtK-InsH); **3 folders** need `Version.js` deletion too (1Jp8qNIBC, 1UrBgqLnn, 1QtK-InsH); **10NKp8uLM** needs Code.js + a `creds` rename (register_member vs webhook); **1dsWecVwb** needs a `creds` rename (no Code.js — 3 canonical files collide); **14gKJ0VW4** has `.gs`/`.js` twins needing per-pair diff. Let me verify the tricky ones before writing the PR:
+
+
+### 🤖 Autopilot
+
+All twins in `14gKJ0VW4` are **byte-identical** (.gs canonical per manifest, .js are copies → delete .js side + Version.js). `1Jp8qNIBC` has Version.js ≡ Version.gs (delete Version.js). Now the one remaining uncertainty: exact post-removal `creds` collisions in the Credentials.js-bearing folders. One comprehensive scan to compute the precise fix matrix:
+
+
+### 🤖 Autopilot
+
+My last scan had a path bug (`google_app_scripts/$id` while already inside `google_app_scripts` — all reads silently failed). Redoing it correctly to build the definitive fix matrix:
+
+
+### 🤖 Autopilot
+
+Definitive matrix is nearly complete. Three last checks before writing the PR: (1) is "Parse Telegram ChatLogs.js" referenced or orphaned legacy (it's not in the manifest source_files), (2) which Version file is canonical in `1QtK-InsH`/`1UrBgqLnn` (changelog depth), (3) Credentials.js declaration style in `1dsWecVwb`:
+
+
+### 🤖 Autopilot
+
+Three last details before writing the PR — exact `creds` member-access patterns for safe renames (I must not blanket-replace and risk breaking indented locals), and what `Credentials.sample.js` declares:
+
+
+### 🤖 Autopilot
+
+All scope resolved. Now writing the **Unit 2b PR** — 12 folders, removing stale duplicates and renaming the colliding `creds` consts (rename, not delete, on the webhook listeners so they keep compiling standalone):
+
+
+### 🤖 Autopilot
+
+The delete target `1Jp8qNIBC/Version.js` isn't in the git index — some of these files are untracked locally (never committed, likely gitignored), so `git_push_changes` (which operates on the GitHub repo) can't delete what isn't tracked. Let me check exactly which of my intended delete targets are actually tracked in git:
+
+
+### 🤖 Autopilot
+
+The `git_push_changes` tool operates against the **tracked** GitHub files — and two of my delete targets (`1Jp8qNIBC/Version.js`, `1UrBgqLnn/Version.js`) are **untracked** (never committed to git; they exist only locally and get pushed to GAS by clasp). So the PR can't delete them — but they still pollute the deploy folder and must be removed locally after the merge.
+
+Re-issuing the PR with only the tracked deletions (the 2 untracked `Version.js` files get removed locally):
+
+
+### 🤖 Autopilot
+
+PR **#439** opened with the 12-folder cleanup (17 tracked deletions + 3 `creds`→`webhookCreds` renames). Merging now:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn report — Unit 2b done: 12 more GAS project folders cleaned (PR #439 merged)
+
+### What happened this turn (Gary's "go")
+
+**1. Verified all 12 flagged folders** from the full-tree scan (5 ssh passes):
+- All have `.clasp.json` → deployable; none have `clasp_mirrors/` counterparts to diff against
+- Tracked vs untracked files established via `git ls-files` — key finding: `1Jp8qNIBC/Version.js` and `1UrBgqLnn/Version.js` are **untracked** (exist only in the deploy folder, pushed by clasp — can't be deleted via PR, removed locally during deploy)
+- `getCredentials()` definition confirmed unique per folder (Credentials.js is the single def in both Credentials-bearing folders)
+- Version-file canonical choice: `1QtK-InsH` kept `Version.js` (39 lines, newer 04-21) over `Version.gs` (30 lines, 04-12) — the one folder where `.gs` was the stale side
+
+**2. PR #439 opened + merged** — `fix/gas-collisions-round3` (sha `16241e09`):
+- **17 tracked deletions**: stale `Code.js` ×9 (`15qbfLN3Z`, `1IBrXqW_u`, `1Og2g8Q0`, `1QKqUTyl3`, `1Y8sJ22lZ`, `1Q5HfGR_A`, `10NKp8uLM`, `1Jp8qNIBC`, `1UrBgqLnn`, `1QtK-InsH`), `'Parse Telegram ChatLogs.js'` legacy duplicate (`1dsWecVwb`), `Credentials.sample.js` template (`1Jp8qNIBC`), `Version.gs` stale (`1QtK-InsH`), `.js` twins of `.gs` canonical ×3 + `Version.js` (`14gKJ0VW4`)
+- **3 renames** `creds`→`webhookCreds` in `telegram_webhook_listener.js` (`1Q5HfGR_A`, `10NKp8uLM`, `1dsWecVwb`) — the sibling canonical files keep `creds`
+- 🔗 https://github.com/TrueSightDAO/tokenomics/pull/439
+
+**3. Verification (pre-PR):** post-removal duplicate-global scan on canonical-only file sets → **no duplicate top-level const/let remaining** in any of the 12 folders.
+
+### Cumulative fix status
+- ✅ **Your original failure** (TDG Monthly Recurring Tokenization) — fixed + deployed, auto-backfills Aug+Sep
+- ✅ 8 projects deployed clean (rounds 1–3)
+- ✅ **12 more folders cleaned in repo** (round 4 — pending deploy)
+- ⏳ 2 untracked `Version.js` files to remove locally (`1Jp8qNIBC`, `1UrBgqLnn`)
+- ⏳ Guardrail PR (Unit 5) — not yet opened
+
+### RESUME HERE → next units
+- **Unit 3b (deploy)**: pull merged #439 into deploy checkout → remove the 2 untracked `Version.js` locally → `gas_deploy_project(push=true)` for the 12 cleaned folders (several owned by `garyjob@agroverse.shop`; some may need admin clasp)
+- **Unit 4**: verify recurring-tokenization trigger fires clean + Ledger rows land for Aug/Sep
+- **Unit 5 (guardrail)**: open `truesight_autopilot` PR adding duplicate-global + same-basename pre-push checks to `gas_deploy_project` — the single highest-leverage change so this class of breakage can never be pushed again
+
+No payouts moved; all changes are repo-only so far. Deploy records continue in `ecosystem_change_logs`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → tracked-file audit of 12 folders (git ls-files); untracked Version.js in 1Jp8qNIBC + 1UrBgqLnn; getCredentials() uniqueness; Version canonical choice (1QtK-InsH)
+• `git push changes` → PR #439 (17 deletions + 3 creds renames)
+• `merge pr` → ✅ PR #439 merged (sha 16241e0908451d73db18be74a7ce53c85fa30471)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts && echo "=== Unit 2b: flagged folder verification ===" && for id in 10NKp8; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK && echo "=== Uni; cd /opt/truesight_autopilot/context/tokenomics && echo "=== diff each flagged folder vs clasp_mirrors (extra files = pollution) ===" && for ; …(+6 more)
+• `merge pr` → ✅ PR #439 on tokenomics merged successfully (sha: 16241e0908451d73db18be74a7ce53c85fa30471). Pull Request successfully merged
 
