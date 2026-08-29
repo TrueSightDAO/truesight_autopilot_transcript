@@ -2621,26 +2621,31 @@ The ROUTING table has `[TREE PLANTING LINK EVENT]` and `[TREE GROWTH MONITORING 
 ### 🤖 Autopilot
 
 The ROUTING table has the LINK + MONITORING events but NOT the plain `[TREE PLANTING EVENT]` — and I need to find where the plain planting handler lives (the 14-byte fetch means that filename doesn't exist). Let me pin down the handler name, the TREE webhook env keys on the box, and the webhook_trigger naming:
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The missing piece: plain `[TREE PLANTING EVENT]` has **no ROUTING entry** and only `TREE_PLANTING_LINK` is configured on the box (no `TREE_GROWTH_MONITORING` either). Let me find the GAS handler for the plain planting event (its action name) so the dispatch entry points at the right function:
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GAS project has NO handler for the plain `[TREE PLANTING EVENT]` — only LINK and GROWTH MONITORING. Yet the planting sheet was written until 2026-08-23 (Rails era). Let me find the original plain-planting handler (likely in a different GAS project) to know the correct action name + webhook URL for the fix:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The HANDOFF_MANIFEST references the tree planting event — that may name the plain-planting handler. Let me read it plus check what the Rails-era handler was (the site's `submitTreePlanting` uses `[TREE PLANTING EVENT]` with a photo → the old Rails worker must have written the SunMint Tree Planting sheet). Let me check the manifest and the old Rails worker:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest confirms this is a real gap (rows in the sheet stop 2026-08-23 — the Rails→dao_protocol cutover date). Let me find the GAS webhook's supported actions (the `doGet` dispatch in `process_qr_code_updates.js`) and the tree-index builder source, to know exactly what the missing ROUTING entry must call:
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2690,26 +2695,31 @@ go
 ### 🤖 Autopilot
 
 "go" — proceeding with the fix (Option A, port into the existing GAS project — search_code found 0 traces of a Rails-era handler to port verbatim, so fresh-but-mirrored is the path). First, let me quickly check for any Rails-era reference and read the growth-monitoring handler to mirror its structure:
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The growth handler references `process_tree_planting_telegram_logs.js` as an existing sibling — but it wasn't in the project file list. Let me check whether that file exists anywhere in the tokenomics repo (maybe a different folder), and see the doGet actions for the growth handler:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **The plain-planting handler EXISTS** — it's in a **different GAS project**: `1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF/process_tree_planting_telegram_logs.js`. So the pipeline isn't "never ported" — the handler lives in a separate GAS project, and the dao_protocol dispatch + webhook env are probably just **pointing at the wrong project** (or the webhook URL is missing). Let me read that handler and check the webhook config:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plain-planting handler lives in GAS project `1Jp8q…` (different from the webhook project `1UrBgq…`) with main function `processTelegramLogs()`. Let me check (a) whether that project has a `doGet` webhook action or relies on a cron trigger, and (b) what `creds.SHEET_ID` is, to confirm the same sheet the index builder reads:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — this handler's `doGet` expects `?list_new=true&governor_key=…` (a different action protocol than the standard `?action=` webhooks). The dao_protocol `webhook_trigger` fires `?action=<name>` — **these two protocols don't match**. So even if a ROUTING entry existed, the webhook call format would be wrong. Let me read the doGet + the main processing gate to see the exact contract (governor_key requirement + whether it processes by message scan):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2874,4 +2884,47 @@ After #441 merges, the next steps touch production:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → ls -la /home/ubuntu/.clasprc* 2>/dev/null cat > /tmp/check_triggers.py <<'EOF' import json, urllib.request, urllib.parse, sys def load(p): w; echo "=== .clasprc.json top-level keys (admin) ===" python3 -c " import json d = json.load(open('/home/ubuntu/.clasprc.json')) print('top-le; cat > /tmp/check_triggers.py <<'EOF' import json, urllib.request, urllib.parse, sys def load(p): with open(p) as f: return json.load(f) def ; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — merging #441 and proceeding with the wiring. Step 1: merge the PR:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ This turn: PR #441 merged — growth-monitoring webhook action is now in main
+
+**Merged:** 🔀 [tokenomics #441 — fix: add missing tree-growth-monitoring webhook action to doGet](https://github.com/TrueSightDAO/tokenomics/pull/441) (sha `a69a304`)
+
+**What changed:** `process_qr_code_updates.js` (GAS project `1UrBgq…`) now has the `processTreeGrowthMonitoringFromTelegramChatLogs` action branch in `doGet`, mirroring the existing link-processing branch. The handler function was already defined in `process_tree_growth_monitoring.gs` — the webhook just never routed to it.
+
+**Why it matters:** this was the second half of the SunMint tree-event ingestion gap. With this merged, the full chain for monitoring events is now: site → dao_protocol → Telegram Chat Logs → dispatch → GAS webhook → **Tree Growth Measurements** (once deployed + env-configured).
+
+## RESUME HERE → next unit (the deploy + wiring, all production-facing — I'll flag before each)
+
+1. **`clasp push`** the merged code to GAS project `1UrBgq…` (as admin@ — the default clasp credential) → create new deployment version.
+2. **Verify the webhook action live**: call the new `/exec` with `?action=processTreeGrowthMonitoringFromTelegramChatLogs` → expect "✅ Tree growth monitoring processed" (not "No valid action specified").
+3. **Set `DAO_PROTOCOL_WEBHOOK_TREE_GROWTH_MONITORING`** in the dao_protocol box env (pointing at the 1UrBgq `/exec` URL) → restart `truesight-dao-protocol.service`.
+4. **Confirm ingestion**: my E2E row 11884 (`[TREE GROWTH MONITORING EVENT]`, DBH 12.5) lands in Tree Growth Measurements.
+5. **Plain-planting decision** (still open): `[TREE PLANTING EVENT]` has no ROUTING entry + no webhook action; the handler lives in `1Jp8q…` (cron-designed `processTelegramLogs`, trigger appears lost since the 2026-08-23 cutover). Options: (a) restore the cron trigger, or (b) port a `processTreePlantingTelegramLogs` action into the `1UrBgq` webhook project (matches the dao_protocol dispatch pattern better, given your "we are not using rails but dao_protocol python" steer). I'll recommend (b) unless you prefer (a).
+6. **Final green report** + §5g close-out (test photo `sunmint/images/20260829134704_…jpg` keep/remove decision; ledger rows 11882/11884 are legitimate signed records).
+
+**Bottom line:** the monitoring half of the ingestion gap is fixed in code and merged; the remaining work is deploy + env wiring + the plain-planting pipeline decision, all of which I'll execute next turn with explicit flagging before production touches.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #441 on tokenomics merged successfully (sha: a69a3048d56047468c9109198e71f8c4d11ba7d5). Pull Request successfully merged
 
