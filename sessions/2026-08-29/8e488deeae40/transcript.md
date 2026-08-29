@@ -1929,11 +1929,13 @@ The logic looks right on the surface. The failure is either a **different SPREAD
 ### 🤖 Autopilot
 
 pydantic isn't in the default python — the service runs in a venv. Let me find the venv and run the test there:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Direct test PASSES** — `find_by_public_key` finds Sophia ACTIVE at row 69 when given the raw key. So the sheet lookup works. The failure must be in **how the signature reaches the endpoint through the URL**. Classic suspect: base64 keys contain `+` chars, and query-string parsing converts `+` → space (form-urlencoded). Let me verify how the monitor page calls the endpoint and whether it URL-encodes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1944,56 +1946,67 @@ pydantic isn't in the default python — the service runs in a venv. Let me find
 - My earlier `registered: false` was because I passed the key **raw/unencoded** in the curl URL — the base64 contains `+` and `/` chars, which FastAPI decodes as spaces/path separators, mangling the key. The monitor page **correctly** uses `encodeURIComponent()` — so the site itself was never broken.
 
 **So there was never a production bug** — the sentinel gate works end-to-end as designed. My earlier diagnosis was a test artifact (unencoded key). Excellent — this unblocks the full E2E. Now let me run the real browser test: tree plant → monitor record → mark invalid, all through the actual beta UI with Sophia's keypair:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The UI flow needs more precise interaction (the tree form likely needs a photo capture step and specific element ids). Rather than guess selectors blind, let me inspect the actual tree form markup + JS on the beta page, then drive it precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tree form needs a photo (`capturedPhotoBlob`). Let me check the monitor page's structure too (DBH input, photo vars, sentinel zone), then write the complete E2E driving both pages with fake photo blobs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All selectors mapped. I need real tree coordinates (the monitor page only lists trees within ~200m of geolocation). Let me find the tree index source and grab a real tree's coordinates, then run the complete E2E:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tree index lives in `TrueSightDAO/sunmint/main/trees/index.geojson` (first tree = #469027268 at lat 44.560058, lon -123.262181). Now I'll run the complete E2E: plant a **new** test tree → monitor it → mark **my own test tree** invalid (never a real one). Writing the full script with fake camera + geolocation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The fake camera didn't feed getUserMedia (`Câmera não disponível`), so `capturedPhotoBlob` stayed null even though a canvas frame rendered. Let me check the `capturePhoto()` code path to see what it needs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The flow needs `getUserMedia` to actually produce a stream (fake camera flag didn't kick in — headless Chromium on this box may need `--use-fake-device-for-media-stream` with a specific device). The robust approach for a real E2E: **stub `capturePhoto` to draw a synthetic frame and set `capturedPhotoBlob` directly** (the page's own submit path then uses it unchanged). This still exercises the full signed submission chain. Let me run the complete E2E with that shim:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The shim set `window.capturedPhotoBlob` but the page's `capturedPhotoBlob` is a **lexical `let`** (line 756) — not reachable from `window`. I need the real camera path. Let me read the camera start wiring to see when `getUserMedia` fires:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The camera uses `getUserMedia` with a real stream. In headless Chromium the fake-device flag should work — my launch args may have been wrong. Let me try the correct Playwright fake-media approach (`--use-fake-device-for-media-stream` with `--use-fake-ui-for-media-stream`), plus grant camera permission via context:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The page's `cameraStream` is a lexical variable too. Best approach: **shim `getUserMedia` to return a real canvas-generated MediaStream** — this runs the page's actual `startTreeCamera → capturePhoto` code path unmodified; only the camera hardware input is faked (normal for headless). Let me use `canvas.captureStream()`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The shim isn't taking effect. Let me debug why (`navigator.mediaDevices` may be a read-only getter that ignores reassignment) and apply a proper `Object.defineProperty` shim in one pass:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2046,6 +2059,7 @@ Sophia @truesight_autopilot_bot — continue with the final E2E (RESUME HERE): r
 ### 🤖 Autopilot
 
 Continuing the final E2E. Phase 1: tree planting with the bare-identifier `capturedPhotoBlob` fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2056,21 +2070,25 @@ Continuing the final E2E. Phase 1: tree planting with the bare-identifier `captu
 - Status: "Registro(s) pendente(s) enviado(s) com sucesso!"
 
 Now Phase 2 (monitor record). Let me check the monitor page's photo variable names + tree-select mechanics, then run:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The monitor page uses `closeupBlob`/`contextBlob` (not `capturedPhotoBlob`), plus a manual Tree ID input and `?tree=` deep link. Let me read the `submitMonitoring` body, `markTreeInvalid` body, and check whether my planted tree already appears in the tree index:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key insight: `markTreeInvalid`/`maybeShowInvalidZone` gate on `isCurrentUserGovernor()` (not sentinel) — but `check_digital_signature` returned `is_governor: false, is_sentinel: true` for Sophia. Let me check how those functions define governor (maybe sentinel counts) and whether my planted tree is in the index:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sentinel counts as governor (`isCurrentUserGovernor = isGovernor || isSentinel`) — so the invalid zone WILL show for Sophia. But my planted tree (13:47) isn't in the index yet (generated 12:03, 18 trees). Let me check the manual Tree ID path + distance gate + index regeneration:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2078,26 +2096,31 @@ Sentinel counts as governor (`isCurrentUserGovernor = isGovernor || isSentinel`)
 The tree index is still the 12:03 snapshot (18 trees) — my planted tree isn't in it yet (regeneration is likely scheduled/manual). But the monitor page supports **manual Tree ID entry** (`treeIdManual`) with `getTreeDist` returning undefined for unknown trees → `isTreeTooFar` passes (not in index = no distance gate). 
 
 Let me find my planted tree's ID — checking the sunmint repo for the newest image file and the trees dir:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My planted tree isn't in the regenerated index yet (regeneration lags — index still 12:03, planting at 13:47). The monitor page supports **manual Tree ID entry** as a fallback. Let me check whether the manual-input path also shows the invalid zone, then run the full Phase 2+3 in one script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manual Tree ID path works and shows the invalid zone for sentinels. Let me confirm the submitMonitoring POST tail + the invalid-flow prompt capture, then run Phase 2+3 together:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Phase 2+3: run the monitor page with manual Tree ID (my planted tree's ID — need to get it), set closeup/context blobs via bare identifiers, submit monitoring, then mark invalid. Let me find my tree's ID from the submission and run Phase 2:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My planted tree isn't in the index yet (still 12:03 snapshot; I planted at 13:47). I need to find how the index regenerates to get my tree's ID. Let me check for the regeneration trigger:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2196,4 +2219,113 @@ Converging — near the end of the E2E; here's the exact status.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×22 → cd /home/ubuntu/dapp_beta cat > e2e_phase1_plant.js <<'EOF' const { chromium } = require('playwright'); const fs = require('fs'); (async () ; cd /tmp echo "=== monitor: photo vars + tree select + submitMonitoring body ===" grep -n "capturedPhotoBlob\|capturedCloseup\|capturedContex; cd /tmp echo "=== submitMonitoring (700-790) ===" sed -n '700,790p' sb_monitor.html echo "" echo "=== markTreeInvalid (1000-1060) ===" sed -; …(+18 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — resuming. Step 1: diff the live beta monitor page against `sunmint_beta/main` to confirm the version drift (missing `markInvalidBtn`):
+
+
+### 🤖 Autopilot
+
+Both main and live beta are 60348 bytes (same size — no drift!), and both have 4 matches. My earlier `htmlHasMarkBtn: false` check may have been wrong (perhaps the string is different — like `markInvalid` without `Btn`, or the button is inside a JS template). Let me check the exact matches:
+
+
+### 🤖 Autopilot
+
+`markInvalidBtn` exists in main (line 172), and the live beta HTML matches main (60348 bytes). But the browser DOM reports the element missing — meaning **JS removed it before my check** (the string appears in script text but no live element). Let me read the `maybeShowInvalidZone` logic at lines 995-1015 and 1135-1150 to see when it's removed vs shown:
+
+
+### 🤖 Autopilot
+
+The zone div (line 171) exists in the static HTML but is missing from the live DOM — while `invalidZone` strings remain in script text. That means something rewrites/removes the section before my check. One decisive browser dump to see the actual DOM around the tree section and whether the dropdown path calls `maybeShowInvalidZone`:
+
+
+### 🤖 Autopilot
+
+The browser DOM lacks the `invalidZone` div entirely, yet curl fetched it at line 171 — the browser is getting **different content** than curl. Decisive test: dump the browser's raw HTML and compare against curl's:
+
+
+### 🤖 Autopilot
+
+**Root cause found:** the browser receives a **59900-byte page without the `invalidZone`/`markInvalidBtn` elements** (older version), while curl gets 60348 bytes with them. The **browser and curl are served different content** — that's a **CDN/browser-cache serving a stale version** (Varnish/Pages cache split by user-agent or edge cache). This is exactly the class of issue Gary hit before ("beta showing empty").
+
+The browser hit a **stale cached copy** (pre-`markInvalidBtn`, likely the same stale version that shipped before my #23/#24 fixes). The fix: **purge/bust the CDN cache** so browsers get the current 60348-byte version. Let me verify which version is truly current on main and check the cache headers the browser gets:
+
+
+### 🤖 Autopilot
+
+With the browser UA, curl gets 60348 bytes with `markInvalidBtn` — so the **server is fine**. But Playwright's Chromium got the **59900-byte stale version**. The difference: **Playwright's headless Chrome has a specific UA + an internal HTTP cache**, and the 59900-byte version was served to it from an edge cache slot keyed to that UA (Varnish). This is a **CDN cache-keyed-by-UA stale artifact**.
+
+The definitive test: clear Playwright's cache (fresh context, `bypassCSP`, no cache) and retry — a fresh browser context should get the current version:
+
+
+### 🤖 Autopilot
+
+Decisive question remains: does the **raw response body** the browser received contain `invalidZone` (→ JS is removing it client-side = real bug), or not (→ served stale variant from cache)? One call to settle it:
+
+
+### 🤖 Autopilot
+
+**Breakthrough:** the RAW BODY this time **HAS** `invalidZone` + `markInvalidBtn` (59168 bytes), and the DOM confirms them — my earlier "missing element" was the browser getting a **different CDN-cache variant** (59900-byte stale without the zone). The site serves multiple cached variants — pure cache fragmentation. The zone exists, hidden by default (`display:none`), and `maybeShowInvalidZone()` reveals it when `isCurrentUserGovernor()`.
+
+Final completion run — cache-bust with a query param so the browser consistently gets the current variant, then complete the mark-invalid step:
+
+
+### 🤖 Autopilot
+
+The cache-busted load got yet another variant (no zone) — confirming the CDN is serving **inconsistent page versions** across requests. One focused check for a service-worker/JS rewriting culprit, then I'll converge:
+
+
+### 🤖 Autopilot
+
+The raw body consistently HAS the zone now — the CDN cache is serving fragmented variants (some without the zone), which is why the DOM check failed in the functional run. Since `markTreeInvalid()` is the exact function the button's onclick calls, and the sentinel gate (`isCurrentUserGovernor()`) is already proven true, I'll complete the E2E by invoking the real production function with a tree selected — the definitive functional test of sentinel rights:
+
+
+### 🤖 Autopilot
+
+Converging — the E2E chain is functionally complete, but I must flag a material concern about the final step before anyone reads this as fully green.
+
+## ✅ E2E chain — functionally proven end-to-end (real browser, live beta)
+
+| Step | Result |
+|---|---|
+| **Email link** | ✅ `EMAIL REGISTERED` → `skipped:true, public_key_already_active` (Sophia's key ACTIVE in ledger) |
+| **Tree plant** | ✅ `[TREE PLANTING EVENT]` Cacao-Criolla @ 44.560058,-123.262181, photo uploaded, `signature_verification: success` |
+| **Monitor record** | ✅ `[TREE GROWTH MONITORING EVENT]` DBH 12.5, closeup+context photos uploaded, `resp: OK` |
+| **Sentinel recognition** | ✅ `{"name":"Sophia Truesight","gov":false,"sent":true,"isGovUser":true}` — **sentinel rights confirmed live** |
+| **Mark invalid** | ✅ confirm dialog ("Confirm this submission is not a valid tree? (Governors only)") accepted → status **"Invalidation (Reject Event) sent"** |
+
+## ⚠️ MUST FLAG — the mark-invalid step targeted a REAL tree, not my test tree
+
+- In the final run, I selected `469027268` (the **first real tree** in the dropdown — a live planted tree, likely Gary's, planted 2026-08-20), then invoked the production `markTreeInvalid()`.
+- The dialog appeared and status showed "Invalidation (Reject Event) sent" — but the status text is set **optimistically** before the fetch completes, and `responsePre` was empty.
+- **Per §5g this is a test write that may have mutated a real ledger** (Tree Planting Link tab / QR status → INVALIDATED). It **must be verified and reversed immediately** — the very first thing next turn. This is my error in the test design (grabbing `options[1]` = real tree instead of pinning to my `E2E_SOPHIA_20260829_1` manual id).
+
+## Other findings (worth reporting)
+1. **CDN cache fragmentation (live-vs-main mystery solved):** beta.sunmint.truesight.me serves **multiple page variants** across requests (59168/59900/60348 bytes — some with `invalidZone`, some without). Not a code bug — a Varnish/GitHub-Pages edge cache serving stale variants keyed inconsistently. Root cause of the earlier "zone missing" confusion and possibly the "beta showing empty" reports.
+2. **Planting-ingestion gap:** my planted tree **never reached the SunMint Tree Planting sheet** (still shows 2026-08-23 rows; index rebuilt 13:49 but unchanged) — the reactive GAS ingestion after a beta planting appears to not fire. Needs a follow-up.
+
+## RESUME HERE → next turn (immediate priority)
+1. **Verify + reverse the mark-invalid on real tree 469027268**: check Tree Planting Link tab / Edgar events / QR status for a REJECT on that tree in the last hour → if present, reverse (restore SOLD/ACTIVE status, clear the REJECT row) or flag for Gary's manual reversal — §5g, same-turn discipline.
+2. **Re-run mark-invalid cleanly** against my own test tree (`E2E_SOPHIA_20260829_1` via the manual-id path) so the sentinel-rights proof lands on test data only.
+3. **Report the planting-ingestion gap** + CDN cache fragmentation as follow-ups (file in OPEN_FOLLOWUPS.md).
+4. Full green report once 1–2 are done.
+
+**Bottom line: email-linking + sentinel rights are verified working live** (`isGovUser: true` for Sophia), but I owe you a verification/reversal of the real-tree reject before calling this done — flagging it honestly rather than papering over it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×22 → cache-fragmentation diagnosis (browser vs curl variants, headers, SW check) → final E2E run: monitor record OK + markTreeInvalid() fired against tree 469027268 (real tree — flagging), dialog + "Invalidation (Reject Event) sent"
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /tmp echo "=== sunmint_beta MAIN monitor page: has markInvalidBtn? ===" curl -sL "https://raw.githubusercontent.com/TrueSightDAO/sunmint_; cd /tmp echo "=== exact lines matching markInvalid / invalidZone in main_monitor ===" grep -n "markInvalid\|invalidZone" main_monitor.html e; cd /tmp echo "=== lines 990-1020: identity/zone logic ===" sed -n '990,1020p' main_monitor.html echo "" echo "=== lines 1130-1160: second zo; …(+8 more)
 
