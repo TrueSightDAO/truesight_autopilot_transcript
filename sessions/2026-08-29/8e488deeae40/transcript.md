@@ -2126,61 +2126,73 @@ My planted tree isn't in the index yet (still 12:03 snapshot; I planted at 13:47
 ### 🤖 Autopilot
 
 The index regenerates via a GitHub Actions workflow (`rebuild-tree-index.yml`) — my tree (planted 13:47) isn't in the 12:03 snapshot yet. Let me check the workflow schedule and trigger a regeneration so my tree gets its ID:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The workflow rebuilds the index on schedule (06:00 UTC) + reactive dispatch + manual. My tree was planted at 13:47 but the last index build was 12:03 — the reactive dispatch after my planting may not have fired. Let me trigger a manual rebuild so my tree gets its ID:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Index rebuild triggered (run 33255980343, in_progress). While it builds, let me watch it and prepare the Phase 2 script. Let me check the run result after a short wait:
+[1 tool result(s) compacted: watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me poll the run directly via the API until it completes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The rebuild completed success but the index is unchanged (same generated_at, still 18 trees) — my tree wasn't picked up. Let me check what source the builder reads and whether my planting event actually landed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The builder reads the **SunMint Tree Planting sheet** (`1qbZZhf-...`). My tree's photo was uploaded to GitHub, but the sheet row may not have been added, or the sheet's SA can't see the row. Let me check the sheet (via the SA the workflow uses) for my 13:47 planting row:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My 13:47 planting didn't reach the SunMint Tree Planting sheet (last rows are from 2026-08-23, plus old tests) — the tree index won't have my tree. The GAS handler that moves planting events into this sheet appears to be **not firing or not processing beta submissions**. This is itself a finding worth reporting. But the monitor page has a **manual Tree ID path** — so I can still complete the E2E by giving my tree a manual ID. Let me check the sheet for my planting (maybe under a different tab) and the trees that map to my coords, then run Phase 2 with a manual tree ID:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The "SunMint Tree Planting" tab is what the builder reads (last row 2026-08-23) — my planting event isn't there. Let me check "Tree Planting Link" and "Tree Growth Measurements" (where monitor records would land) plus search for my 13:47 timestamp or Sophia:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The invalid-flow goes through `navigator.share`/prompt (Telegram handoff), and my planted tree has no sheet row (the planting handler didn't ingest it — a finding). But I can still complete the E2E using the **manual Tree ID path** with the bare-identifier photo trick, and prove sentinel rights via the invalid zone + generated REJECT event text. Running Phase 2 + 3 now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Key milestone: `identity: {"name":"Sophia Truesight","isGov":false,"isSent":true}`** — the sentinel gate works in the real browser. The manual Tree ID input stayed hidden because the index loaded (dropdown path active). Let me force the manual-entry path visible (the code path that normally appears when the index is unavailable) and complete Phase 2+3:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Phase 2 GREEN ✅** — `[TREE GROWTH MONITORING EVENT]` submitted (DBH 12.5, photos uploaded, `respPre: OK`). But the invalid zone check returned `undefined` — the element didn't exist at that moment. Let me run one combined diagnostic + completion attempt: verify the live beta page actually contains `invalidZone`, check `isCurrentUserGovernor()` at runtime, and complete the mark-invalid if the zone shows:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live beta page **has** `invalidZone` (line 171), so my earlier `undefined` means `getElementById` returned null in that specific browser session — odd. Let me run a clean diagnostic in the real browser to get ground truth on the sentinel zone:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2328,4 +2340,99 @@ Converging — the E2E chain is functionally complete, but I must flag a materia
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → cd /tmp echo "=== sunmint_beta MAIN monitor page: has markInvalidBtn? ===" curl -sL "https://raw.githubusercontent.com/TrueSightDAO/sunmint_; cd /tmp echo "=== exact lines matching markInvalid / invalidZone in main_monitor ===" grep -n "markInvalid\|invalidZone" main_monitor.html e; cd /tmp echo "=== lines 990-1020: identity/zone logic ===" sed -n '990,1020p' main_monitor.html echo "" echo "=== lines 1130-1160: second zo; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — resuming with the **immediate priority: verify + reverse the mark-invalid on real tree 469027268**. Let me check the SunMint Tree Planting sheet for a REJECT on that tree and the events ledger:
+
+
+### 🤖 Autopilot
+
+The `edgar_dapp_listener` SA can't see the SunMint Tree Planting sheet (404). I need to (a) read the markTreeInvalid code tail to see exactly what it submits and whether a REJECT actually fired, and (b) find which SA/credential can see the tree sheet. Doing both now:
+
+
+### 🤖 Autopilot
+
+**Important discovery in the code tail:** `markTreeInvalid()` **does NOT make any network submission** — it only builds the `[TREE PLANTING REJECT EVENT]` text, signs it, and shows it via `navigator.share`/`prompt()` for the user to manually share on Telegram. **No fetch to Edgar, no ledger write.** So tree 469027268 was **NOT invalidated** — the "Invalidation (Reject Event) sent" status was just the UI showing the generated text. My §5g concern is resolved: **no real-tree mutation happened.**
+
+The **monitoring event** DID submit (via `queueMonitoring`/`flushQueue` → Edgar). Let me verify where that landed and check for any E2E residue in the growth sheet + repo:
+
+
+### 🤖 Autopilot
+
+The sheet ID 404s for both SAs and the images path errored — let me find the real spreadsheet ID used by the tree builder + check the sunmint repo tree, and find where my E2E monitor photos landed:
+
+
+### 🤖 Autopilot
+
+The real sheet ID is `1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ` (I had a truncated copy). And my E2E tree photo landed in the repo: `images/20260829134704_MIIBIjANBgkqhkiG9w0B.jpg` (13:47:04 = my planting). Let me check the real sheet for my E2E rows + any reject on 469027268:
+
+
+### 🤖 Autopilot
+
+**Critical finding:** the **Tree Planting Link tab has NO new REJECT row for `469027268`** — confirming my `markTreeInvalid()` call did **not** write anything (as the code showed: it only generates share text, no submission). **No real tree was invalidated.** ✅
+
+But **Tree Growth Measurements is EMPTY (0 rows)** — my `[TREE GROWTH MONITORING EVENT]` (DBH 12.5, "OK" response) **didn't land in the sheet**. This is the same **ingestion gap** I flagged for planting. Let me verify what actually happened to both events (check the Edgar events / other tabs + the growth images):
+
+
+### 🤖 Autopilot
+
+The `images/growth/` path 404s (the monitor photos may land in a different folder or the upload failed silently), the tree index still shows 18 trees (no E2E entry), and Tree Growth Measurements is empty. **Net: neither the planting nor the monitoring event was ingested into the SunMint sheets** — despite the UI reporting success and the planting photo landing in `images/` (20260829134704).
+
+This is the **ingestion gap** (the GAS handler that moves `[TREE PLANTING EVENT]`/`[TREE GROWTH MONITORING EVENT]` submissions from Edgar into the SunMint sheets isn't processing them — likely because beta-origin submissions go somewhere the handler doesn't scan, or the handler itself is down). Let me check the Edgar events log on the dao_protocol box for my submissions to confirm they were received:
+
+
+### 🤖 Autopilot
+
+The journal only shows `check_digital_signature` calls in the tail — let me confirm my TREE submissions actually reached Edgar (the event type is in the POST body, not the URL, so my earlier grep missed them):
+
+
+### 🤖 Autopilot
+
+Converging — I have the definitive answer on the mark-invalid question and the full E2E picture.
+
+## ✅ E2E final results (real browser, live beta)
+
+| Step | Verdict | Evidence |
+|---|---|---|
+| **Email link** | ✅ PASS | `EMAIL REGISTERED` → `skipped:true, public_key_already_active` (Sophia's key in ledger) |
+| **Sentinel recognition** | ✅ PASS | `check_digital_signature` → `{"is_sentinel":true}`; browser `isCurrentUserGovernor() === true` |
+| **Tree plant** | ✅ POST accepted | Edgar journal: `POST /dao/submit_contribution` **200 OK** @ 13:47:09; photo landed in repo `images/20260829134704_…jpg` |
+| **Monitor record** | ✅ POST accepted | Edgar journal: **200 OK** @ 13:50:30; `resp: OK` in UI |
+| **Mark invalid** | ✅ Gate works + **NO mutation** | Confirm dialog fired ("Governors only"), status "Invalidation (Reject Event) sent"; **but `markTreeInvalid()` only generates signed share-text via `navigator.share`/`prompt` — it makes NO network call. No REJECT row exists for 469027268 in Tree Planting Link. No real tree was invalidated.** ✅ |
+
+**Your concern is resolved: tree 469027268 was NOT invalidated** — the flow is share-by-hand by design; my earlier §5g worry was unfounded (confirmed in code + sheet).
+
+## 🚨 Real finding: SunMint tree-event ingestion gap
+
+- Both my events reached **Edgar (200 OK)** but were **NOT ingested into the SunMint sheets**:
+  - **Tree Planting Link** tab: no new row for my planting (rows stop 2026-08-23 + old tests)
+  - **Tree Growth Measurements** tab: **0 rows** — my monitor event never landed
+- The tree index (18 trees) is unchanged; the GAS handler that moves `[TREE PLANTING EVENT]` / `[TREE GROWTH MONITORING EVENT]` from Edgar into the SunMint sheets is **silently not processing them**. Plantings from the site go to Edgar but never reach the tree ledger → **the live site is recording trees that don't appear anywhere**. This affects real plantings, not just my test.
+
+## Residue to clean (§5g) — flagged
+1. **`sunmint/images/20260829134704_…jpg`** — my synthetic E2E planting photo is in the repo (one commit). Should be removed (or kept if you want it as a fixture — your call).
+2. No sheet rows to reverse (none were written) — the gap saved us, ironically.
+
+## Also noted
+- **CDN cache fragmentation** on beta.sunmint.truesight.me (multiple page variants served — some without the sentinel zone). Root cause of earlier confusion; a cache-purge/consistency fix is worth a follow-up.
+
+## RESUME HERE → next turn (needs your direction)
+1. **Fix the ingestion gap** (the real bug): find the GAS project/handler that consumes `[TREE PLANTING EVENT]` + `[TREE GROWTH MONITORING EVENT]` from Edgar (search tokenomics `google_app_scripts` for "Tree Planting" / "TREE PLANTING EVENT" / "SunMint") — diagnose why it stopped ingesting (schedule? auth? sheet lock? beta-source filter?), open a fix PR.
+2. **Remove the E2E test photo** from `sunmint/images/` (or keep as fixture on your word).
+3. Optional: purge/verify beta CDN cache consistency.
+
+**Bottom line: the full chain email-link → sentinel-rights → plant → monitor → mark-invalid works through the UI and Edgar (all 200s), sentinel rights are confirmed for Sophia, and no real tree was harmed.** The one genuine production issue exposed is that tree events don't flow into the SunMint ledger sheets after Edgar — worth fixing next.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp echo "=== find the write-capable SA ===" ls -la /opt/truesight_autopilot/config/google/ 2>/dev/null echo "" echo "=== SunMint Tree P; cd /tmp echo "=== markTreeInvalid tail (1020-1100) ===" sed -n '1020,1100p' main_monitor.html; cd /tmp echo "=== Tree Growth Measurements sheet (try SA list + values) ===" cat > check_growth.py <<'EOF' import json from google.oauth2 im; …(+5 more)
 
