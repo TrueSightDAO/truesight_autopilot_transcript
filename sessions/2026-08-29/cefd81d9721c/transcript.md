@@ -91,12 +91,29 @@ I have the full script now. The failing function is `processRecurringTransaction
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: ocr_image, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now I have the exact error: **`SyntaxError: Identifier 'CONFIG' has already been declared`** (Count: 2). This is a compile-time failure in the GAS project — two files in the same project each declare `const CONFIG`, and GAS shares one global scope across all files. Let me confirm which files collide.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it. The exact error is a **`SyntaxError: Identifier 'CONFIG' has already been declared`** — Apps Script compiles all files in a project into one global scope, and **two files in this project (`Code.js` and `tdg_recurring_tokenization_monthly.js`) each declare `const CONFIG` at top level**. Let me confirm when this got introduced and what's actually deployed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -236,4 +253,73 @@ You asked me to keep digging and I did (all read-only). **I have not deployed or
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd ~/tokenomics/google_app_scripts && echo "=== CLASS-OF-BUG SCAN: duplicate top-level globals per project folder ===" && for d in */; do id; cd ~/tokenomics/google_app_scripts/1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK && echo "=== functions in Code.js ===" && grep ; cd ~/tokenomics/google_app_scripts && for id in 1wmgYPwfRDxpiboa8OH-C6Ndovklf8HaJY305n7dhRzs7BmUBQg7fL_sZ 1zKgMwd6KJFjoWkRH6OobgFvtVzrXVuEKf
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15492] Deploy
+
+
+### 🤖 Autopilot
+
+Gary's "Deploy" is the go. Executing the fix plan: verify canonical manifests → PR removing stale `Code.js` duplicates → merge → pull locally → push the fixed projects to GAS.
+
+First, the pre-flight reads (manifests for the 3 broken folders + full const/let collision scan + local git state):
+
+
+### 🤖 Autopilot
+
+The scan found **more** colliding projects than the initial 3. Let me read the full output to enumerate the complete list before fixing.
+
+
+### 🤖 Autopilot
+
+Full scan complete — the collision class is bigger: **8 project folders** carry the stale `Code.js` duplicate (same `63f441e` flatten origin). Before the PR, one verification pass to confirm which file is canonical per folder (manifest `source_files` + sha256 match) so I delete the right file everywhere:
+
+
+### 🤖 Autopilot
+
+All 8 confirmed: `Code.js` is the accidental duplicate in every folder (manifest `source_files` names the canonical files; in several folders Code.js is **byte-identical** to the canonical sibling — sha256 match — proving it's a stale copy from the 63f441e flatten). 
+
+One more critical detail from the scan: after deleting `Code.js`, a few folders (1wmgYPw, 1duQFfTO, 1rLl94jQ9) still have a **second** collision between canonical files (`const creds` declared in both `telegram_webhook_listener.js` and the sales_update files). I'll handle those separately. Opening the cleanup PR now:
+
+
+### 🤖 Autopilot
+
+PR **#434** opened with the 8 `Code.js` deletions. Now merging it (Gary's "Deploy" authorizes the fix), then I'll check the residual `const creds` collisions in 3 folders that the manifest shows share both files in one project.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn report — GAS collision fix, PR #434 merged
+
+**What happened this turn (Gary's "Deploy" = go):**
+
+1. **Pre-flight verification (3 ssh scans)** — expanded the collision hunt to the full `google_app_scripts/` tree. Result: **8 project folders** carry the same stale `Code.js` duplicate from the 2026-06-16 clasp_mirrors flatten (`63f441e`), each declaring duplicate top-level `const`/`let` → compile-time SyntaxError in Apps Script (which shares one global scope across all files). Confirmed canonical file per folder via each `manifest.json` `source_files`; in 3 folders `Code.js` was **sha256-identical** to the canonical sibling — proven stale copy.
+
+2. **PR #434 opened + merged** — `fix/remove-stale-code-js-collisions`
+   - Deleted `Code.js` from all 8 broken projects:
+     - `1LxWu9hOs…` **(TDG - Monthly Recurring Tokenization — your failing one)**
+     - `1wmgYPwfR…`, `1zKgMwd6K…`, `1duQFfTO0…`, `1m2sQONdM…`, `1orWgdGck…`, `1rLl94jQ9…`, `1vC3p_WfK…`
+   - Merged: `0f3d6c41` — https://github.com/TrueSightDAO/tokenomics/pull/434
+   - No local test suite needed (pure file deletions, no code added).
+
+**Still to do (next units — not started, per one-PR-per-turn):**
+
+- **RESUME HERE → Unit 2: residual `const creds` collisions.** 3 folders still collide between *canonical* files (both listed in `manifest.json`, both legitimately deployed): `1wmgYPwfR` and `1duQFfTO0` (`telegram_webhook_listener.js` + sales_update file both `const creds`), `1rLl94jQ9` (`tdg_wix_dashboard.js` + `web_app.js` both `const creds`). These need a code-level fix (rename/scope one side) — second PR to tokenomics.
+- **Unit 3: deploy fixed projects to GAS** — pull merged code locally, then `gas_deploy_project(push=true)` for each of the 8 projects (starting with the recurring-tokenization one), dry-run first.
+- **Unit 4: catch-up run** — manually trigger `processRecurringTransactions` to tokenize missed Aug + Sep cycles; verify rows land with correct dates.
+- **Unit 5: guardrail** — PR in `truesight_autopilot` adding a duplicate-global pre-push check to the GAS deploy tooling so this class of breakage can never be pushed again.
+
+I did **not** touch GAS yet — the repo fix is merged; deploys and the catch-up run are the next plan units awaiting your continued go (deploying to live GAS is the same authorized plan, but I'll confirm at that gate since it's a live payout system).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd ~/tokenomics/google_app_scripts && for id in 1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK 1wmgYPwfRDxpiboa8OH-C6Ndovklf8HaJY
+• `merge pr` → ✅ PR #434 on tokenomics merged successfully (sha: 0f3d6c41ca05007f1944b551d6cbe1294dc73fb0). Pull Request successfully merged
 
