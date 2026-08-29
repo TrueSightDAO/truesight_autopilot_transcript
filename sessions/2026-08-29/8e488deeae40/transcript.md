@@ -2999,6 +2999,7 @@ Two clear issues in the handler:
 2. **No return object at all** — even when it runs, it returns `undefined`; the webhook action expects `{processed, skipped, errors}`.
 
 Let me also check: my E2E row 11884 should be in Telegram Chat Logs and match `TREE_GROWTH_MONITORING_EVENT_MARKER` — but the handler found nothing processed (returned early or skipped). I need to fix the handler to (a) return a proper object, and (b) check my row's format. Let me open the fix PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3045,6 +3046,7 @@ go
 ### 🤖 Autopilot
 
 "go" — merging #442 and completing the wiring. Step 1: merge:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3092,46 +3094,55 @@ go
 ### 🤖 Autopilot
 
 "go" — resuming the deploy unit. Step 1: pull main (avoiding the stale-checkout trap), confirm the fix, push, and create a new deployment:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deployment @35 created with the fix (both greps confirmed 1 match each). Now verify the webhook action returns the proper result object:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Webhook now returns "✅ Tree growth monitoring processed: 0 recorded, 0 skipped, 0 errors"** — the TypeError is fixed. But 0 recorded means my E2E row 11884 wasn't picked up. Let me diagnose why — checking the marker constant, SOURCE_SHEET_URL, and my row's actual content:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The marker is correct (`[TREE GROWTH MONITORING EVENT]`) and the tracking tab is `Tree Growth Measurements`. The SOURCE_SHEET_URL grep didn't match — it's likely defined in a shared constants file (the link handler uses it). The webhook returned 0 recorded, 0 skipped, 0 errors — meaning either the source sheet/row wasn't scanned (wrong SOURCE_SHEET_URL) or my row's msgId was already processed. Let me check the constants + the actual row content:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The handler scans the right spreadsheet (`1qbZZhf-…`). 0 recorded/skipped/errors means **no row matched the marker** in the sheet the webhook sees. Let me check `SOURCE_SHEET_NAME` and read the actual content of row 11884 to see why it's not matching:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet + tabs are confirmed (Telegram Chat Logs + Tree Growth Measurements + SunMint Tree Planting all exist). The webhook processed 0 — so either my row isn't in the sheet the webhook reads, or it doesn't match. Let me read the actual tail of Telegram Chat Logs to see my row 11884 exactly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The message text isn't in column N (index 13) as I assumed — the rows have 20 cols and the actual event text must be in a different column. Let me dump row 11884 fully and check `MESSAGE_COL`'s actual value:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Correction to my earlier read:** row 11882 is my `[TREE PLANTING EVENT]` (col G = event text — the handler's `MESSAGE_COL`), but rows 11883/11884 are **CONTRIBUTION EVENTS** (PR2/PR3), not my monitoring event. The event text lives in **col 7 (G)**, and my earlier attribution of 11884 to the monitoring event was wrong (rows shifted). Let me search the sheet for my actual `[TREE GROWTH MONITORING EVENT]` row:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The scan found no `[TREE GROWTH MONITORING EVENT]` row in 11800–11900 — so my monitor submission either landed elsewhere or the client's marker differs. Let me scan the entire column G for the marker + get the true last row:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3295,4 +3306,82 @@ I've hit the root cause. Given the tool-round budget, let me converge and report
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → cd /tmp && { echo "=== monitor page: submitMonitoring + queueMonitoring + required fields ===" curl -sL "https://beta.sunmint.truesight.me/m; cd /tmp && { echo "=== submitMonitoring (1034-1095) ===" sed -n '1034,1095p' mon_now.html echo "" echo "=== flushQueue (846-900) ===" sed -n; cd /home/ubuntu/dapp_beta && { # load Sophia's keys source /tmp/sophia_keys_clean.env 2>/dev/null || { echo "KEYS MISSING"; exit 1; } cat > ; …(+10 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — opening the fix PR for the blob-serialization bug. First, let me pull the exact current code from `sunmint_beta` main (queueMonitoring/flushQueue) and check for any existing blob helpers:
+
+
+### 🤖 Autopilot
+
+The main version has the same bug (no blob helper). Now I'll write the fix: base64-encode blobs on queue, decode on flush. Let me read the exact functions to build precise hunks:
+
+
+### 🤖 Autopilot
+
+The bug is confirmed in main (60348 bytes, same code). The fix: base64-encode blobs in `queueMonitoring`, decode in `flushQueue`, skip broken legacy records. Opening the PR on `sunmint_beta`:
+
+
+### 🤖 Autopilot
+
+PR #28 opened. Given the earlier empty-file incident, let me verify the PR's diff actually applied correctly (file not empty, both hunks landed):
+
+
+### 🤖 Autopilot
+
+Bash heredoc quoting issue with the embedded python. Let me split it:
+
+
+### 🤖 Autopilot
+
+PR #28 diff is healthy this time: **1 file, +31/−3, 61664 bytes** (non-empty — the empty-file incident didn't recur), both hunks landed (`closeupDataUrl: await blobToDataURL` present, 6 helper references). Let me do the JS syntax check separately:
+
+
+### 🤖 Autopilot
+
+JS syntax verified. Merging the fix per standing authorization:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ This turn: monitor offline-queue blob bug fixed + merged (PR #28)
+
+**Merged:** 🔀 [sunmint_beta #28 — fix: monitor-tree-growth offline queue corrupts photo blobs (JSON.stringify on Blob → {})](https://github.com/TrueSightDAO/sunmint_beta/pull/28) (sha `a0b7a572`)
+
+**The bug (found via the E2E):** `queueMonitoring()` persisted `{shareText, closeupBlob, contextBlob}` through `JSON.stringify` → Blobs serialize to `{}`. On `flushQueue()`, FormData was built from broken objects → the POST to `submit_contribution` never fired, records stayed pending forever. **Any real user submitting a monitor measurement offline/on-flaky-connection silently never had it delivered.**
+
+**The fix (+31/−3, 1 file, `monitor-tree-growth/index.html`):**
+- Added `blobToDataURL()` (async, `arrayBuffer` + `btoa`) and `dataURLToBlob()` helpers
+- `queueMonitoring()` now stores `closeupDataUrl`/`contextDataUrl` (base64) instead of raw Blobs
+- `flushQueue()` reconstructs real Blobs from data URLs before FormData; legacy-field fallback + skips unusable records instead of failing the batch
+
+**Verified before merge:** diff healthy (61664 bytes — non-empty, both hunks landed, 6 helper refs), `node --check` on extracted inline JS → **JS SYNTAX OK** (47,393 bytes). This time the edit-anchor path worked correctly (no repeat of the empty-file incident).
+
+## RESUME HERE → next unit (verify the fix live + finish the chain)
+
+1. **Re-run the clean monitor E2E** (same script as before, now against the merged fix): queue a `[TREE GROWTH MONITORING EVENT]` → confirm `closeupDataUrl`/`contextDataUrl` in `sunmint_monitor_pending` → **confirm the POST to `submit_contribution` now fires** (network capture) → confirm the row lands in Telegram Chat Logs (scan col G for the marker).
+2. **Fire the growth webhook** (`?action=processTreeGrowthMonitoringFromTelegramChatLogs` @35) → expect "1 recorded" → verify **Tree Growth Measurements** tab has the row.
+3. **Plain-planting decision** (still open): `[TREE PLANTING EVENT]` (row 11882, real, in ledger) — cron-restore on `1Jp8q…` vs dispatch-port into the `1UrBgq…` webhook → execute → confirm row 11882 lands in **SunMint Tree Planting** → tree index picks it up.
+4. **Promote #28 to prod** (needs your explicit OK — targeted Contents-API write to `sunmint_prod`, CNAME untouched, per the earlier pattern).
+5. **§5g close-out**: test photo `sunmint/images/20260829134704_…jpg` keep/remove; ledger rows 11882/11884 keep (legitimate signed records); final green report.
+
+**Bottom line:** the last real production bug blocking the monitor step is fixed and merged on beta — the offline queue now survives reloads with photos intact, so pending measurements can actually reach Edgar. One re-run to prove it, then the plain-planting decision and close-out.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && { curl -sL "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html" -o sb_mon_main.html ; cd /tmp && { echo "=== 827-875 (getPending..flushQueue head) ===" sed -n '827,875p' sb_mon_main.html echo "" echo "=== 875-895 (flushQueue b; cd /tmp && { echo "=== PR #28 diff stat ===" curl -sL "https://api.github.com/repos/TrueSightDAO/sunmint_beta/pulls/28" | python3 -c "import; …(+2 more)
+• `merge pr` → ✅ PR #28 on sunmint_beta merged successfully (sha: a0b7a572356d38b85b52969a72425a173271543f). Pull Request successfully merged
 
