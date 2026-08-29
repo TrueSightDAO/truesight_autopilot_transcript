@@ -1582,6 +1582,7 @@ Let me read the tracker §4 tail (the exact current row text) to build the tick 
 ### 🤖 Autopilot
 
 I have the exact tracker. Now tick PR3 "Contribution reported ☑" and move RESUME HERE to **Deploy (gate)** via a tracker PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1640,21 +1641,25 @@ go
 ### 🤖 Autopilot
 
 Gary's "go" in direct response to my framed Deploy gate ("on your explicit approval ('deploy' / 'go deploy')") = the explicit deploy command. Executing the Deploy unit now — but first, careful recon of what `scripts/deploy.sh` actually does and the current live state (I've never run it; I won't run an unknown script blind).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The script is mostly understood, but there are **two things I must verify before running it** — (1) the tail of `deploy.sh` (the systemd restart), and (2) critically: `git reset --hard origin/main && git clean -fd` on the box could wipe untracked runtime state (e.g. `followups/state.json`, `app/data/*.json`, session logs) unless gitignored. Let me check those + the `sophia` host alias (the script SSHes to it — need to confirm it's this box).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy recon is mostly clear — the `.gitignore` explicitly protects runtime dirs (`sessions/`, `context/`, vault, etc.) so `git clean -fd` won't wipe state. But two critical checks remain before I touch anything: (1) does `.gitignore` cover `app/data/` (where `_resume_awaiting.json` lives) and `followups/` — else `git clean -fd` nukes them; (2) the deploy.sh tail (systemd restart) + whether `sophia` alias loops back to this box. Let me read the rest of the artifact + verify.
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deploy script is an **operator-Mac script** — it SSHes to a `sophia` host alias (not configured on this box) and its `git reset --hard + git clean -fd` would clobber local state (`followups/state.json` = the backlog, `config/nginx/sophia.conf` = box-specific, untracked `artifacts/` + `dao_protocol/` = my working dirs). Running it blind here is wrong. The box **is** the deploy target, so I'll do the equivalent surgical deploy: checkout only the code paths from origin/main, then restart services. First, inspect the risky local diffs + confirm deps/systemd didn't change.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1662,6 +1667,7 @@ The deploy script is an **operator-Mac script** — it SSHes to a `sophia` host 
 Critical finding: the local repo has **uncommitted local modifications** (mixing PRs #325/#326-era local edits in `gas_deploy_project.py`, `e2e_*` scripts, `followups/state.json` backlog, `active_tracks.json`, etc.) **and** origin/main contains other merged PRs beyond my PR1–PR3 (plot_cacao_sourcing_network_map, gas_deploy_project deployment_id, e2e fixes). A full `git reset --hard origin/main` would wipe all local mods — and PR1–PR3 changes are *interleaved* in the same files (telegram_adapter.py) as these local mods.
 
 This is **exactly the §5c always-stop territory** — the safest deploy is NOT a blind reset (data-loss risk to `followups/state.json` backlog + local script fixes) and NOT `scripts/deploy.sh` from here (operator-Mac assumptions). My PR1–PR3 changes are all in `app/` (config, adapter, resume_registry, telegram tools). The surgical path: checkout only my PR files from origin/main, keep everything else. Let me confirm exactly which files PR1–PR3 touched vs. what the local mods are, and verify whether the local mods overlap my PR files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1674,26 +1680,31 @@ Perfect separation confirmed:
 So the surgical deploy is safe and correct: checkout **only my 7 PR files** (config.py, resume_registry.py, telegram_adapter.py, telegram_post.py, telegram_topic.py + 3 test files) from origin/main — zero risk to the local backlog/nginx/e2e mods, and it brings PR1–PR3 (plus #329/#330 which touch the same gas_deploy_project file — but those are on origin/main already, and my checkout won't touch that file). Wait — #329/#330 modified `app/tools/gas_deploy_project.py` on origin/main, but the local copy has uncommitted mods there too. My deploy is scoped to MY 7 files only, so gas_deploy_project stays as-is locally (fine — its local mods may predate or match origin). The emoji feature doesn't touch it.
 
 Executing the surgical checkout now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Checkout successful — all PR1–PR3 markers verified live on disk (allowed_updates ×2, resume_registry ×3+4, emoji_go_blocked ×1, message_reaction ×12). The 7 files are backed up in /tmp. Now the local test suite on the deployed tree (hard rule) + syntax check, then restart the Telegram adapter service.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **86 passed** on the deployed tree (my 4 test files: resume_registry 8 + adapter 64 + topic 14, all green), compileall rc=0, ruff clean. Now restart the Telegram adapter service (and the main autopilot + vault for consistency) and verify the new build is live:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Blocked by the guard — right: I must use the **`deploy_autopilot` tool** (it waits for idle threads before restarting, so it won't sever this conversation). The tool auto-detects local vs remote. Running it now — this is the proper deploy path for the running services, and Gary's "go" authorized the deploy.
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy correctly **deferred** — thread `tg:-1003919341801:15492` (this very conversation) is mid-turn, and the tool refused to restart so it doesn't sever us. That's the idle-drain guard doing its job. The code files are already on disk (my surgical checkout), so the running service just needs a restart once threads drain. Let me register a watcher to retry the deploy when this thread goes idle, and report the status.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1705,6 +1716,7 @@ State is clear and healthy:
 - **Health OK** (v0.2.0, all creds set, 67 governors)
 
 The restart is the only remaining step — and `deploy_autopilot` deferred it because **this thread is mid-turn** (it won't sever the active conversation). Once this turn ends and threads idle, I'll retry the deploy. Let me watch the deploy readiness and wrap up the turn report.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1887,4 +1899,68 @@ The feature you asked about is now **live**: emoji reactions are received, parse
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /opt/truesight_autopilot && echo "=== find deploy_autopilot impl ==="; grep -rln "deploy_autopilot\|Deploy DEFERRED\|busy_threads\|idle" ; cd /opt/truesight_autopilot && sed -n '466,600p' app/tools/deploy.py; cd /opt/truesight_autopilot && echo "=== _other_threads_busy ==="; grep -n "_other_threads_busy\|_active_streams\|caller_session" app/tools/; …(+7 more)
 • `deploy autopilot` → Already on the latest commit e0cba794 — no deploy needed. Did NOT restart. Do not retry.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15728] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 15728) is the active handoff for `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+I just tried. Doesn't seem like you are
+
+
+### 🤖 Autopilot
+
+Let me diagnose — check the live logs for what happened when you reacted just now.
+
+
+### 🤖 Autopilot
+
+Found it. The logs tell the story clearly:
+
+- **14:04:30** — your 👍 on msg **15938** → `verdict=go authorized=True` — **received and authorized correctly** ✅
+- But no resume fired because **msg 15938 was never flagged resume-awaiting** — the registry is empty (`_resume_awaiting.json` doesn't exist yet)
+
+That's by design (decision 0.2): a 👍 only triggers a resume on a message **explicitly flagged** `resume_awaiting=True` when it was posted (PR2 hook) — not on any random message. Your earlier test reacted to my turn reports, which were posted without the flag.
+
+The fix for UAT: I post a message **with** the flag, then you react to *that specific message*. Doing it now — posting a flagged UAT message into this thread:
+
+
+### 🤖 Autopilot
+
+Flagged message posted — **message 15949** in this thread, with `resume_awaiting=True` (PR2 registered it in the resume registry). Let me verify the registry entry landed:
+
+
+### 🤖 Autopilot
+
+Registry file still doesn't exist at `/tmp/autopilot_sessions/`. The flag may have been registered under a different session_log_dir, or the tool call's `resume_awaiting` param didn't reach the deployed handler (the tool spec change was in PR2 — but is the *running* adapter's `post_to_telegram_topic` the new one?). Let me check where the deployed code writes it + whether the tool actually passed the flag:
+
+
+### 🤖 Autopilot
+
+Found it — the registry lives at `/opt/truesight_autopilot/sessions/_resume_awaiting.json` (session_log_dir = `/opt/truesight_autopilot/sessions`, not `/tmp/autopilot_sessions`). The deployed code IS new (telegram_post.py has the `resume_awaiting` param + registry hook). Let me verify msg 15949 was registered:
+
+
+### 🤖 Autopilot
+
+**Registered ✅** — message **15949** is flagged resume-awaiting in the registry (thread 15728, with the UAT text, ts 14:05).
+
+Now the UAT is properly staged: **react 👍 (or ❤️/🔥) to message 15949** — the one that starts with "🧪 UAT — THIS message is flagged resume-awaiting" — and I should resume this thread (you'll see me act on the go-signal). 
+
+Your earlier 👍 reactions (msg 15926, 15907, 15938) did exactly the right thing per design — they logged `verdict=go authorized=True` but weren't on a resume-flagged message, so no turn fired. That's decision 0.2 working as specified: the flag must be set at post time.
+
+**Try it now:** react 👍 to the 🧪 UAT message (15949) → I should reply with the resume behavior. Then we can test the negatives:
+- 👎 on another flagged message → no resume
+- 👍 on an un-flagged message → no resume
+- non-allowlisted user reacting → no resume
+
+I'm watching the logs for your reaction to 15949.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → read live telegram logs (your 👍 reactions at 13:56/13:59/14:04 all logged `verdict=go authorized=True` — received & authorized, but on non-flagged messages); confirmed deployed PR3 handler + registry path (`sessions/_resume_awaiting.json`); verified msg 15949 registered
+• `post_to_telegram_topic` → posted flagged UAT message 15949 (resume_awaiting=True) into thread 15728
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → sudo journalctl -u truesight-autopilot-telegram --no-pager -n 60 --no-hostname 2>/dev/null | tail -40; cd /opt/truesight_autopilot && echo "=== registry file? ==="; ls -la /tmp/autopilot_sessions/_resume_awaiting.json 2>/dev/null && cat /tmp/a; echo "=== registry now ==="; cat /tmp/autopilot_sessions/_resume_awaiting.json 2>/dev/null | python3 -m json.tool 2>/dev/null || cat /tmp/au; …(+2 more)
 
