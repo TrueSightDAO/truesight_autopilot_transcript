@@ -676,6 +676,7 @@ go
 ### 🤖 Autopilot
 
 Gary's go — executing next units. This turn: (1) verify the recurring-tokenization sheet state (Unit 4), (2) verify the flagged folders from the full-tree scan (Unit 2b), and (3) open the guardrail PR (Unit 5) — the highest-leverage fix. Parallel reads first:
+[3 tool result(s) compacted: ssh_run, ssh_run, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -683,41 +684,49 @@ Gary's go — executing next units. This turn: (1) verify the recurring-tokeniza
 All 12 flagged folders have `.clasp.json` (deployable) — and most still carry the stale `Code.js` from the same `63f441e` flatten (my earlier scan only caught 8; the full-tree scan found the rest). The recurring-tokenization script reads the **Main Ledger** spreadsheet (`1GE7PUq…` = the default-SA ledger), so I can verify catch-up from here.
 
 Let me run the authoritative check — diff each polluted folder against its `clasp_mirrors/` counterpart (the true deployed snapshot, which has no Code.js), plus post-removal duplicate-global simulation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 12 folders deployable (have `.clasp.json`), no mirrors to diff against. Verification shows the fix set: **7 folders** need only `Code.js` removal (15qbfLN3Z, 1IBrXqW_u, 1Og2g8Q0, 1QKqUTyl3, 1Y8sJ22lZ, 1Q5HfGR_A, 1QtK-InsH); **3 folders** need `Version.js` deletion too (1Jp8qNIBC, 1UrBgqLnn, 1QtK-InsH); **10NKp8uLM** needs Code.js + a `creds` rename (register_member vs webhook); **1dsWecVwb** needs a `creds` rename (no Code.js — 3 canonical files collide); **14gKJ0VW4** has `.gs`/`.js` twins needing per-pair diff. Let me verify the tricky ones before writing the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All twins in `14gKJ0VW4` are **byte-identical** (.gs canonical per manifest, .js are copies → delete .js side + Version.js). `1Jp8qNIBC` has Version.js ≡ Version.gs (delete Version.js). Now the one remaining uncertainty: exact post-removal `creds` collisions in the Credentials.js-bearing folders. One comprehensive scan to compute the precise fix matrix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My last scan had a path bug (`google_app_scripts/$id` while already inside `google_app_scripts` — all reads silently failed). Redoing it correctly to build the definitive fix matrix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Definitive matrix is nearly complete. Three last checks before writing the PR: (1) is "Parse Telegram ChatLogs.js" referenced or orphaned legacy (it's not in the manifest source_files), (2) which Version file is canonical in `1QtK-InsH`/`1UrBgqLnn` (changelog depth), (3) Credentials.js declaration style in `1dsWecVwb`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Three last details before writing the PR — exact `creds` member-access patterns for safe renames (I must not blanket-replace and risk breaking indented locals), and what `Credentials.sample.js` declares:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All scope resolved. Now writing the **Unit 2b PR** — 12 folders, removing stale duplicates and renaming the colliding `creds` consts (rename, not delete, on the webhook listeners so they keep compiling standalone):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The delete target `1Jp8qNIBC/Version.js` isn't in the git index — some of these files are untracked locally (never committed, likely gitignored), so `git_push_changes` (which operates on the GitHub repo) can't delete what isn't tracked. Let me check exactly which of my intended delete targets are actually tracked in git:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -725,11 +734,13 @@ The delete target `1Jp8qNIBC/Version.js` isn't in the git index — some of thes
 The `git_push_changes` tool operates against the **tracked** GitHub files — and two of my delete targets (`1Jp8qNIBC/Version.js`, `1UrBgqLnn/Version.js`) are **untracked** (never committed to git; they exist only locally and get pushed to GAS by clasp). So the PR can't delete them — but they still pollute the deploy folder and must be removed locally after the merge.
 
 Re-issuing the PR with only the tracked deletions (the 2 untracked `Version.js` files get removed locally):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **#439** opened with the 12-folder cleanup (17 tracked deletions + 3 `creds`→`webhookCreds` renames). Merging now:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -792,16 +803,19 @@ go
 ### 🤖 Autopilot
 
 Gary's go — executing Unit 3b: pull #439, remove the 2 untracked `Version.js` locally, deploy the 12 cleaned folders. First the pull + local cleanup + verification in one pass:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pull confirmed at #439 head (`16241e0`), untracked `Version.js` files removed from both folders, and the verify scan is clean: **11 of 12 folders have 0 Code.js/Version.js + no twins** (1QtK-InsH's single `Version.js` is the intentional canonical kept one), and **zero duplicate top-level consts** remain in the creds-bearing folders. Deploying all 12 now:
+[6 tool result(s) compacted: gas_deploy_project, gas_deploy_project, gas_deploy_project, gas_deploy_project, gas_deploy_project, gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 6 of 12 deployed — 4 clean pushes (✅ `15qbfLN3Z`, `1Jp8qNIBC`, `1Og2g8Q0`, `1Q5HfGR_A`), 2 failures with **"Requested entity was not found"** (`10NKp8uLM`, `1IBrXqW_u`) — that clasp error means the scriptId doesn't exist under the clasp account (stale/deleted script or wrong owner). Deploying the remaining 6, then I'll investigate the 2 not-found ones:
+[6 tool result(s) compacted: gas_deploy_project, gas_deploy_project, gas_deploy_project, gas_deploy_project, gas_deploy_project, gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -916,4 +930,171 @@ No payouts moved. All repo changes merged (PRs #434, #438, #439); all deploys le
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main -q 2>&1 | tail -1; echo "=== ff-only pull ===" && git pull --ff-only; cd /opt/truesight_autopilot/context/tokenomics && echo "=== clasp list (scriptId vs title) for garyjob ===" && for id in 10NKp8uLMGyfgDv0Bya; cd /opt/truesight_autopilot/context/tokenomics && echo "=== appsscript.json (10NKp8uLM) ===" && cat google_app_scripts/10NKp8uLMGyfgDv0ByakH; …(+9 more)
 • `gas deploy project` ×12 → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T133051Z_10nkp8ulmgyfgdv0byakhvgiooyzvdv7nbhmsbig.md; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T133117Z_15qbfln3zck-ee6ynqnlj2orywn3bwgh4bkqbaad.md; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T133141Z_1ibrxqw-utsfkbku-fiotrkfblxlnx8khsksw2qq.md; …(+9 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15492] [Handoff context — this Telegram topic (thread 15492) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary's go — executing Unit 5 (the guardrail, highest-leverage close-out) + Unit 4 (verification). First, locate where the `gas_deploy_project` tool's deploy script actually lives so I add the pre-push checks in the right repo:
+
+
+### 🤖 Autopilot
+
+The deploy script lives in **tokenomics** (`scripts/deploy_gas_project.py`, 483 lines) — that's where the guardrail goes. Let me read it in full to place the checks correctly:
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the deploy script to see the main() flow and where to insert the pre-push checks:
+
+
+### 🤖 Autopilot
+
+I have the full script structure now. The guardrail goes right after the `files` listing — a `validate_project_files()` that checks for: (1) duplicate top-level `const`/`let`, (2) same-basename `.js`+`.gs`, (3) stale `Code.js` not in manifest. Plus an orphan-scriptId warning using the clasp account's project list. Let me check the existing tests to match conventions:
+
+
+### 🤖 Autopilot
+
+Test file not in tokenomics (it's in truesight_autopilot). Let me check the truesight_autopilot copy of the deploy tests to understand what the tool wrapper expects, then write the guardrail:
+
+
+### 🤖 Autopilot
+
+The deploy script lives in **tokenomics** (`scripts/deploy_gas_project.py`) — the guardrail goes there, right where the collision classes actually break pushes. I have the full structure (files listing, identity check, lease, push flow). Writing the guardrail PR now — a `validate_project_files()` that hard-blocks the two classes that broke these deploys (duplicate top-level `const`/`let` → GAS SyntaxError; same-basename `.js`+`.gs` → clasp "Conflicting files found") plus a soft orphan-scriptId warning:
+
+
+### 🤖 Autopilot
+
+PR **#440** opened with the guardrail. Per the local-test rule, let me verify the validator logic on the actual checkout — syntax check, run it against the 20 fixed folders (must return 0 errors), and confirm it catches a planted collision:
+
+
+### 🤖 Autopilot
+
+The local checkout is on `main` (the PR branch isn't pulled yet) — and ruff flagged 1 error. Let me fetch the PR branch, see the ruff complaint, and run the tests against it:
+
+
+### 🤖 Autopilot
+
+The ruff F821 (`deploy_version`) is **pre-existing on main** (the checkout is on main now and it reports it there too — acceptable per the rule). The branch checkout failed because `git fetch <branch>` only populates FETCH_HEAD, not a local branch. Let me check out properly and run the validator tests:
+
+
+### 🤖 Autopilot
+
+The validator works but is **too aggressive** — it's flagging duplicate `const`/`let` that appear *inside unindented function bodies* (lines starting at column 0 within `function foo() {` blocks), which are legal (block-scoped locals). The real GAS-breaking class is **cross-file** duplicates (shared global scope). Let me verify the theory on two concrete examples, then tighten the validator to be brace-depth-aware:
+
+
+### 🤖 Autopilot
+
+Confirmed the theory: the "duplicates" are **block-scoped locals inside functions** (indented) — legal JS that my regex falsely caught. The notarization one is even the *same file, same function* (a loop iteration pattern). The real GAS-killer is **cross-file duplicates** (like `action` at Code.js:54 in `doGet` vs DappPermissionChangeHandler — wait, that one IS cross-file but *also* inside functions).
+
+The precise rule: Apps Script's single global scope only collides for **true top-level** declarations (brace depth 0). My regex must track `{`/`}` depth and only flag declarations at depth 0. Let me fix the validator:
+
+
+### 🤖 Autopilot
+
+My edit failed because I issued two overlapping edits against the same block. Doing it as **one clean edit** — replacing the naive regex block with the brace-depth-aware version:
+
+
+### 🤖 Autopilot
+
+The edit mismatched because I guessed the committed text wrong. Let me read the exact current section from the local checkout (which is on the PR branch at the first commit) to craft a precise edit:
+
+
+### 🤖 Autopilot
+
+The local checkout is back on main (16241e0). Let me read the exact committed text from the PR branch on GitHub to craft a precise edit:
+
+
+### 🤖 Autopilot
+
+Let me get the exact `validate_project_files` section from the artifact to craft a precise replacement:
+
+
+### 🤖 Autopilot
+
+The PR's validator is too aggressive — it flags block-scoped locals (legal) as if they were globals. The precise rule: only **brace-depth-0** declarations collide in Apps Script's single global scope. The `git_push_changes` edit kept failing on exact-match, so I'll apply the fix deterministically via local git on the existing PR branch:
+
+
+### 🤖 Autopilot
+
+Edit applied cleanly on the PR branch. Now run the full validation: the brace-depth-aware validator against **all** folders (should now show ~0 real errors), the negative test, and the deploy tool's test suite:
+
+
+### 🤖 Autopilot
+
+The brace-depth-aware validator now reports **0 errors across all 33 deployable project folders** (the in-function `const CONFIG` in the negative test is correctly *not* flagged — only the same-basename clash is), and the negative test passes. Now let me run the deploy tool's test suite and commit this fix to the PR branch:
+
+
+### 🤖 Autopilot
+
+Local checks pass (the 1 ruff error is the **pre-existing** F821 `deploy_version` on main, not mine; the 6 test errors are pre-existing `schema_validation` tests needing live sheet access — unrelated module). Committing the brace-depth fix to the PR branch and pushing:
+
+
+### 🤖 Autopilot
+
+The guardrail PR (#440) now has both commits: the feature + the brace-depth-aware fix. It's ready to merge — this is the highest-leverage close-out so this class of breakage can never be pushed again. Merging now:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn report — Unit 5 done: GAS deploy guardrail built, tested, merged (PR #440)
+
+### What happened this turn (Gary's "go" → guardrail close-out)
+
+**1. Located the deploy tooling.** The `gas_deploy_project` tool shells out to `tokenomics/scripts/deploy_gas_project.py` (483 lines) — that's where the guardrail belongs (the autopilot wrapper itself doesn't reimplement the push logic).
+
+**2. Opened PR #440** — `feat(deploy): pre-push collision guardrail for GAS deploys`:
+- `validate_project_files(project_dir, manifest)` — scans all `.js`/`.gs` for the two collision classes that broke 20+ projects in Aug 2026:
+  1. **Duplicate top-level `const`/`let`** → Apps Script single global scope → compile-time `SyntaxError` (your recurring-tokenization failure)
+  2. **Same-basename `.js`+`.gs`** → clasp "Conflicting files found" (the `Version.js`+`Version.gs` class)
+- `warn_if_orphan(project_dir, sid)` — soft warning when the scriptId is absent from the active clasp account (would have flagged `10NKp8uLM`/`1IBrXqW_u`)
+- Wired into `main()`: validation blocks **every** push (dry-run included)
+
+**3. Tested it — and caught my own bug.** The first version used a line-start regex that **false-flagged legal block-scoped locals** inside functions (e.g. `const notarizationRowNumber` twice in the same function → reported 33 folders broken, all false). Fixed with **brace-depth-aware detection** (commit `f7939af`): only depth-0 declarations are true globals.
+
+**4. Verified clean:**
+- ✅ **0 errors across all 33 deployable project folders** (all fixed)
+- ✅ Negative test: depth-0 dup + same-basename caught; in-function `const` correctly ignored
+- ✅ Syntax + ruff (only the **pre-existing** F821 `deploy_version` on main); test suite: 5 passed, 6 pre-existing schema_validation errors (live-sheet dependent, unrelated)
+
+**5. Merged** — PR #440 (sha `16a47d5`). 🔗 https://github.com/TrueSightDAO/tokenomics/pull/440
+
+### RESUME HERE → next units
+- **Unit 4 (verification, the last one)**: pull merged main into the deploy checkout so the guardrail is live for future deploys, then confirm the TDG - Monthly Recurring Tokenization trigger fires clean and Ledger rows land for **Aug + Sep** (next scheduled run, or manual trigger in the GAS editor — `processRecurringTransactions` is idempotent via `calculateTokenizationDates`). Verify the sheet's "Most Recent Tokenization Date" advances past `20260723`.
+- Optional follow-up if Gary wants it: sweep the **other GAS-adjacent deploy tooling** (`clasp_mirrors/` audit docs) for consistency with the new guardrail.
+
+### Full incident close-out
+| # | PR | What |
+|---|---|---|
+| #434 | merged | Removed stale `Code.js` ×8 (incl. your failing recurring-tokenization project) |
+| #438 | merged | `creds`→`webhookCreds` renames ×3 + stale `Version.js` removal |
+| #439 | merged | Cleaned 12 more folders (17 deletions + 3 renames) |
+| #440 | merged | **Guardrail**: brace-depth-aware dup-global + same-basename + orphan pre-push checks |
+
+Deploys: **18 projects pushed clean** (recurring tokenization, webhook listener, notarization, digital signatures, capital injection, + 13 more); 2 confirmed orphan scriptIds (`10NKp8uLM`→superseded `1m8IZPs1v`, `1IBrXqW_u`→decommissioned). All ledgered in `ecosystem_change_logs`. No payouts moved.
+
+———
+**✅ Done this turn — actions taken:**
+• `search code` → deploy script lives in tokenomics/scripts/deploy_gas_project.py
+• `read repo file` ×2 → full script + autopilot tool tests
+• `git push changes` → PR #440 (guardrail)
+• `ssh run` ×3 → validated: first version false-flagged 33 folders → fixed to brace-depth-aware → **0 errors all folders** + negative test passed
+• `ssh run` ×1 → committed fix + pushed (`f7939af`)
+• `merge pr` → ✅ PR #440 merged (sha 16a47d5)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /opt/truesight_autopilot/context/tokenomics && echo "=== deploy script location(s) ===" && ls -la scripts/deploy_gas_project.py 2>/dev/nu; cd /opt/truesight_autopilot/context/tokenomics && echo "=== syntax check ===" && python3 -m py_compile scripts/deploy_gas_project.py && echo; cd /opt/truesight_autopilot/context/tokenomics && git fetch origin fix/gas-deploy-pre-push-guardrail -q 2>&1 | tail -1; git checkout -q fix/; …(+7 more)
+• `merge pr` → ✅ PR #440 on tokenomics merged successfully (sha: 16a47d54171dde27dad27d3a2450be6ed3ace789). Pull Request successfully merged
 
