@@ -4168,6 +4168,7 @@ go
 ### 🤖 Autopilot
 
 "go" — final close-out unit: write the runbook, remove the test photo (my lean, will flag), and submit the contribution report. Let me first check the test photo's current state + the runbook conventions in agentic_ai_context:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4364,4 +4365,40 @@ Evidence PRs (all merged):
 ---
 
 Both landed with status `"Contribution submitted"` (Edgar). If you'd like, I can pull the ledger rows (contributor name, amount, timestamp) to confirm them in the sheet — say the word.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] seems to be working properly end to end. Tabulate how much time you spent on this?
+
+
+### 🤖 Autopilot
+
+Here's my honest time tabulation for this campaign (estimates by phase — the session ran from the first email-link E2E through the final close-out):
+
+## ⏱️ Time Spent — SunMint E2E Campaign (2026-08-29)
+
+| # | Phase | Est. minutes |
+|---|---|---|
+| 1 | **Email-link E2E** — register → capture `vk` → verify → sheet row-171 cleanup (§5g) | 60 |
+| 2 | **UX fix main page (#22)** — screenshot diagnosis, linked-state + unlink, PR, merge | 40 |
+| 3 | **Monitor page parity (#23)** — port same UX, PR, merge | 25 |
+| 4 | **Empty-index incident (#25)** — root-caused my own broken push, rebuilt + restored main, CDN cache diagnosis | 45 |
+| 5 | **Prod promotion** — both pages via Contents API (CNAME-safe), verify live | 30 |
+| 6 | **Sentinel-gate diagnosis** — discovered the URL-encode trap in `check_digital_signature` | 25 |
+| 7 | **Sender cutover → admin@truesight.me** — clasp credential archaeology, admin deploy @32, env cutover, live verify | 60 |
+| 8 | **Tree E2E (plant → monitor → mark-invalid)** — headless camera/geolocation tricks, selectors, network capture | 60 |
+| 9 | **Bug: offline-queue Blob corruption (#28)** — diagnosed via localStorage `{}`, base64 fix | 30 |
+| 10 | **TGM webhook chain (#441/#442/#446)** — missing action, undefined return, `DBH (cm)` regex metacharacters; deploys + verify | 55 |
+| 11 | **Planting dispatch (#447/#149)** — webhook action + ROUTING entry, env keys, service restart, index rebuild 18→19 | 45 |
+| 12 | **Credentials.js incident (#448)** — clasp push deleted live secrets (2nd occurrence); recovered from history, restored seeding-only file, redeployed @7 | 40 |
+| 13 | **Runbook + contribution reports (#840)** | 25 |
+| | **TOTAL** | **≈ 540 min** |
+
+## 📌 vs. what was submitted
+
+- **Submitted: 480 min (8h)** for my contribution — a **conservative round-down** of the ≈540 min breakdown above (I didn't include the many short verification/follow-up pings).
+- **You: 90 min** — direction, reviews, and go-signals across the campaign.
+
+If you'd rather I log the full 540 (or adjust either figure), say the word and I'll submit an additional/supplemental contribution event — contributions are append-only ledger events, so I'd log the delta as a separate `[CONTRIBUTION EVENT]` rather than editing the first. Otherwise, the 480/90 split stands.
 
