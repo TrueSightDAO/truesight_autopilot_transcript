@@ -499,11 +499,13 @@ Map PNG replaced on main. Now update the doc note (step 3 of the plan) — repla
 ### 🤖 Autopilot
 
 PR #832 opened for the doc note + lat/lng table. Now push the reproducible plotting script to `truesight_autopilot` (the plan's step 1 deliverable).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PRs opened. Let me merge them (the governor's "go" authorizes merging my own feature PRs), then send the corrected PDF + map to Gary.
+[2 tool result(s) compacted: merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -548,11 +550,13 @@ Both PRs merged — the plan is complete. Here's what I did this turn.
 ### 🤖 Autopilot
 
 The PDF with the corrected map is already built at `/tmp/CACAO_SOURCING_NETWORK_OVERVIEW.pdf`. Let me verify both files are still on disk, then send them to you.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files are on disk. Sending you the PDF (with the accurate map embedded) and the standalone map PNG.
+[2 tool result(s) compacted: send_telegram_attachment, send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -711,4 +715,36 @@ You reported **words overlapping outside their boxes** on the constraint-annotat
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/truesight_autopilot && python3 - << 'EOF' import re p = 'scripts/plot_cacao_sourcing_network_map.py' s = open(p, encoding='utf-8').r; cd /tmp && tesseract cacao_sourcing_network_map.png map_full_ocr 2>/dev/null && echo '=== FULL MAP OCR ===' && cat map_full_ocr.txt && echo ; cd /tmp && sed -i 's|width=7.1\*inch, height=7.1\*inch\*1096/2196|width=7.1*inch, height=7.1*inch*1113/2191|' build_cacao_pdf.py && python3 
 • `merge pr` → ✅ PR #323 on truesight_autopilot merged successfully (sha: 83bf51133ecbb66626fbf42db2160bd54ce4b0ef). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15564] regenerate PDF
+
+
+### 🤖 Autopilot
+
+The PDF is already built from the corrected map — let me regenerate it fresh to be certain, verify, and send it to you.
+
+
+### 🤖 Autopilot
+
+Regenerated fresh (2 pages, corrected map embedded on page 1). Sending it now.
+
+
+### 🤖 Autopilot
+
+Sent ✅
+
+**`CACAO_SOURCING_NETWORK_OVERVIEW.pdf`** — regenerated fresh from the corrected map:
+- 2 pages, map embedded on page 1
+- Pins at **real coordinates** (Manicoré, Altamira, Itabuna, Ilhéus, Dongguan)
+- Each Brazil location annotated with its **constraint** (Ilhéus ⚠ CNPJ INAPTA blocker ring included)
+- **No label overlaps** — constraints wrapped inside their boxes, Bahia labels separated
+
+Let me know if any pin or label still needs adjusting — or if you'd like the map PNG sent separately too.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && ls -la cacao_sourcing_network_map.png build_cacao_pdf.py && python3 build_cacao_pdf.py && python3 -c " import fitz d = fitz.open(
 
