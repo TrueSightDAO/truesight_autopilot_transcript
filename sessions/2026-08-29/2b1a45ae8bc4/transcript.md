@@ -244,11 +244,18 @@ Go-signal received — resuming. I need the full diff to construct precise push 
 ### 🤖 Autopilot
 
 Go received — resuming execution. The local implementation is complete and verified (98 targeted tests pass; full suite 812 pass, 3 pre-existing Edgar-network failures). The diff is captured; now I push it as ONE PR via `git_push_changes` (fresh clone from origin/main @ e0cba79, applies clean hunks only — my local ruff-format noise on unrelated test lines will not leak into the PR):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR opened. Let me verify it landed cleanly (no extraneous format-noise hunks) by checking the PR diff:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -385,4 +392,60 @@ Say **"go"** / **"deploy"** and I'll run `deploy_autopilot` in the next turn.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #335 on truesight_autopilot merged successfully (sha: 7539c002d5af7e09cdaa8c65255610ca366f31c4). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15991] deploy
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=15991] [Handoff context — this Telegram topic (thread 15991) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+@truesight_autopilot_bot I think emoji on messages from you with RESUME HERE should also trigger
+
+
+### 🤖 Autopilot
+
+Governor says **deploy** — and the note "emoji on messages from you with RESUME HERE should also trigger" is exactly what PR #335 (just merged) implements. Deploying now so it goes live, then I'll confirm the behavior is in the running code.
+
+
+### 🤖 Autopilot
+
+The deploy tool reports the checkout is already on the merged commit but did **not** restart — that means the *running process* may still be executing pre-merge code. Let me verify whether the live bot actually has the fix loaded:
+
+
+### 🤖 Autopilot
+
+Deploy tool says checkout already at `7539c00` but didn't restart. The services show start time **14:35** — I need to confirm whether that start is *after* the merge (i.e. the running process loaded the new code) or before. Let me check timestamps:
+
+
+### 🤖 Autopilot
+
+**Deploy verified live — the fix is running.**
+
+| Check | Result |
+|---|---|
+| Commit on disk | `7539c00` (PR #335, merged 11:34:55 -0300) |
+| Services restarted | `truesight-autopilot-telegram.service` + `truesight-autopilot.service` ActiveEnter **14:35:53 UTC** (merge was 14:34:55 UTC → restart **after** merge, ~1 min later) |
+| Loaded code has the fix | ✅ `looks_resume_awaiting()` referenced at all 3 flag sites (adapter 717/752, telegram_post 97, telegram_topic 128) + helper at resume_registry:70 |
+
+The deploy tool's "noop" was because the **checkout** was already at `7539c00` (auto-pull happened at restart), but the **processes were restarted at 14:35:53** — 58 seconds after the merge — so the running bot is executing the new code. Deploy is effectively done.
+
+## ✅ Deployed — PR #335 live
+
+**The behavior you asked for is now in the running bot:** any message *I* post whose text contains **"📌 RESUME HERE"** (or "RESUME HERE") is auto-flagged resume-awaiting at post-time, so **👍 on it triggers a resume** — same as the typed "go" signal. That closes the inconsistency exactly as you described.
+
+**To smoke-test right now:** 👍 this turn-report's "📌 RESUME HERE" line (below) and I should pick it up as a go-signal.
+
+**Remaining after smoke-test:**
+1. Submit DAO [CONTRIBUTION EVENT] for the fix (minutes + PR #335 as evidence) — say "submit" when you're happy.
+2. Update the handoff manifest row for this thread (mark PR1-3 + follow-up #335 done/deployed) — I'll do this as part of the closeout.
+
+📌 **RESUME HERE = smoke-test: 👍 this message.** If it works, say **"submit"** and I'll log the contribution + close out the manifest row.
+
+———
+**✅ Done this turn — actions taken:**
+• `deploy autopilot` → Already on the latest commit 7539c002 — no deploy needed. Did NOT restart. Do not retry.
+• `ssh run` ×2 → cd /opt/truesight_autopilot && git log --oneline -1 && echo "---SERVICE---" && systemctl list-units --type=service --no-pager 2>/dev/null | ; cd /opt/truesight_autopilot && echo "---MERGE COMMIT TIME---" && git log -1 --format="%ci %h %s" && echo "---SYSTEMD START TIMES---" && syst
 
