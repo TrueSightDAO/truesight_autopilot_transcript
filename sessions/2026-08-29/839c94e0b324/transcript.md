@@ -122,16 +122,19 @@ Want me to start on #1 (reconcile storefront vs. ledger inventory) or #2 (draft 
 ### 🤖 Autopilot
 
 Deploying now to pick up #341–#344.
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy deferred — another thread (16178) is still mid-turn, and the deployer won't restart while a thread is active (safety: no interrupted turns). Let me retry.
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still deferred — thread 16178 is actively running a turn, and the deployer intentionally won't restart the service while any thread is mid-turn (no interrupted conversations). Retrying once more:
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -288,4 +291,18 @@ Both rows are on the ledger now (Sophia + Gary, 30 min each for the same inciden
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16196] please run deploy_autopilot now to pick up PR #345 (fixes the restart ordering bug that was leaving truesight-autopilot-telegram/-watchdog/truesight-vault stuck on old code after every deploy). After it completes, please verify via systemctl show that all 4 services (truesight-autopilot, truesight-autopilot-telegram, truesight-autopilot-watchdog, truesight-vault) show the SAME, fresh ActiveEnterTimestamp — that's the actual proof this worked, not just the brain's own commit.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16196] just reply with the single word 'test' — nothing else.
+
+
+### 🤖 Autopilot
+
+test
 
