@@ -4564,6 +4564,7 @@ Calendar event created. Now let me see the end of the Pending section in OPEN_FO
 ### 🤖 Autopilot
 
 I have the format. Now let me add the follow-up entry to OPEN_FOLLOWUPS.md via PR — inserting before "## Recently shipped".
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4782,4 +4783,23 @@ Quick inventory check you might appreciate: I can't reach the 3rd-floor printer 
 Exactly right — and that's correct behavior, not a glitch. The gate's trigger is **@-mention OR reply-to**, so replying to my message counts as addressing me directly — I respond. Only *neither* (plain unmentioned chatter in a 3+ group) gets the observe-only treatment.
 
 So: reply-to → active response ✅. This very message is the proof — you replied, I answered. Gate's working exactly as specced. 👍
+
+
+### 🧑 Governor
+
+no mention here, just dropping a photo
+
+[Attachment auto-processed: **f575218e8f0648cd8f71287b3e23ec47.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Photo received — and per the gate rules, **attachments always get full processing regardless of mention**, so here I am. ✅
+
+The OCR pass came back empty (0.0% confidence — no text in the image), so it's likely a visual-only shot (landscape, object, person) rather than a screenshot or document.
+
+If you want me to actually *see* it, tell me what to look for — or if it's one of the visual-reference types I can describe (a place, a product, a scene), I can take a closer pass. Otherwise: gate test confirmed — **photo bypasses the mention gate entirely**, and I'm here when you need me. 📸
 
