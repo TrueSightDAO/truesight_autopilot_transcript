@@ -593,11 +593,13 @@ Plan:
 3. PR → merge script, replace PNG on agentic_ai_context, send you the files
 
 Let me rewrite and run the script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Map regenerated with constraint annotations (218 KB). Let me verify the text rendered correctly via OCR, then rebuild the PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -747,4 +749,113 @@ Let me know if any pin or label still needs adjusting — or if you'd like the m
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && ls -la cacao_sourcing_network_map.png build_cacao_pdf.py && python3 build_cacao_pdf.py && python3 -c " import fitz d = fitz.open(
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15564] Information on the Brazilian side shouldn't overlapp in the map
+
+
+### 🤖 Autopilot
+
+Let me diagnose the exact overlap numerically — I'll compute each annotation box's rendered extent and report which pairs collide, rather than guessing.
+
+
+### 🤖 Autopilot
+
+All boxes report identical coords — my measurement method was flawed (bbox measured before render). But the real issue is clear from the earlier OCR: **Itabuna's constraint text ran into Ilhéus's label** — those two pins are only ~25 km apart in reality, so side-by-side label boxes will always collide. The robust fix is to stop placing text boxes on the map at all: **numbered pins + a legend panel** (professional cartographic style — overlap becomes impossible by construction).
+
+Let me rewrite the script with a two-panel layout (map left, legend right) and regenerate:
+
+
+### 🤖 Autopilot
+
+Legend-panel layout works — OCR confirms all 5 sites + constraints render cleanly in the legend, map panel shows just numbered pins. No on-map text boxes = no overlap possible. Now let me lint the script, rebuild the PDF, and ship.
+
+
+### 🤖 Autopilot
+
+Ruff wants a reformat, and the heredoc got mangled. Let me fix formatting first, then rebuild the PDF in a cleaner separate step.
+
+
+### 🤖 Autopilot
+
+Script is clean. Now let me write the PDF builder to a file (avoiding the heredoc issue) and rebuild.
+
+
+### 🤖 Autopilot
+
+The table rows have 4 fields but I unpacked 6. Quick fix:
+
+
+### 🤖 Autopilot
+
+PDF rebuilt (1 page, map + table together — the legend layout is more compact). Now let me push the redesigned script (PR), merge, replace the PNG, and send you the files.
+
+
+### 🤖 Autopilot
+
+The push hit an "invalid write path" error — likely transient or content-related. Let me retry with the same content, and if it fails, fall back to a hunk-based edit.
+
+
+### 🤖 Autopilot
+
+PR #324 opened, but only the docstring edit applied — the full rewrite didn't make it into the push (the earlier `writes` call errored). The local file has the complete new content. Let me push the full file onto the same branch via `writes` (same PR, not a new one):
+
+
+### 🤖 Autopilot
+
+Local file has the full new content (8.4 KB). Let me push the complete rewritten file to the same branch (PR #324):
+
+
+### 🤖 Autopilot
+
+My commit landed on local `main` instead of the feature branch (the clone was on main), and the push failed. Let me fix this cleanly: save the full content, fetch the feature branch, apply the content there, push, and reset local main.
+
+
+### 🤖 Autopilot
+
+The branch exists on origin (PR #324) but the clone's refspec didn't map it. Let me fetch it properly and rebuild the branch from FETCH_HEAD:
+
+
+### 🤖 Autopilot
+
+Full rewrite pushed to PR #324 (174 insertions, 57 deletions). Let me merge it, replace the PNG, and send you the files.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+PR #324 merged and the map PNG updated — here's the wrap-up.
+
+## ✅ Done this turn — Brazilian-side info no longer overlaps
+
+You reported the Brazil-side information overlapping on the map. **Root cause:** Itabuna and Ilhéus are only ~25 km apart in reality, so even wrapped on-map text boxes for the two Bahia sites inevitably collide.
+
+**The fix — redesigned to standard cartographic style:**
+- **Numbered pins (1–5) on the map only** — no text boxes on the map at all → overlap is impossible by construction
+- **Legend panel** on the right side carries all the information: number → site name → role → constraint (blocker in red, ⚠ export-blocker note at bottom)
+- Colors preserved: red = Brazil network, orange = destination (China), blocker ring on Ilhéus retained
+- Map + legend via matplotlib GridSpec (2217×1042)
+
+**Verified:** OCR of both panels confirms all 5 sites + constraints render cleanly in the legend; the map panel shows only numbered pins. No text collision possible anymore.
+
+**PRs / artifacts:**
+| Repo | PR / commit | What |
+|---|---|---|
+| `truesight_autopilot` | [#324](https://github.com/TrueSightDAO/truesight_autopilot/pull/324) — merged | Full redesign of `plot_cacao_sourcing_network_map.py` (numbered pins + legend panel) |
+| `agentic_ai_context` | PNG updated (58e40375) | `brazil/cacao_sourcing_network_map.png` = legend-layout version |
+
+**Also rebuilt:** `/tmp/CACAO_SOURCING_NETWORK_OVERVIEW.pdf` (1 page — map + "network at a glance" table + bottleneck summary, map embedded, 206 KB). *Note: the PDF is currently 1 page because the legend layout is more compact; the source table and notes are all still included.*
+
+**RESUME HERE →** send the regenerated PDF + map PNG to Gary (`send_telegram_attachment` on `/tmp/CACAO_SOURCING_NETWORK_OVERVIEW.pdf` and `/tmp/cacao_sourcing_network_map.png`) — the only remaining step; code, map, and PDF are all ready.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /tmp/truesight_autopilot && python3 - << 'EOF' import sys sys.path.insert(0, 'scripts') import matplotlib matplotlib.use('Agg') import ma; cd /tmp/truesight_autopilot && cat > scripts/plot_cacao_sourcing_network_map.py << 'PYEOF' #!/usr/bin/env python3 """Plot the TrueSight DAO ; cd /tmp/truesight_autopilot && python3 -m compileall -q scripts/plot_cacao_sourcing_network_map.py && python3 -m ruff check scripts/plot_cac; …(+7 more)
+• `merge pr` → ✅ PR #324 on truesight_autopilot merged successfully (sha: 51d01aa32b7bcca6a48178f22399ea6b2b02d71b). Pull Request successfully merged
 
