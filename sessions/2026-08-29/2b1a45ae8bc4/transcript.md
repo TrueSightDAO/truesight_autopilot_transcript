@@ -556,6 +556,7 @@ Registry empty + mark count 0 + reaction received but dropped — the fix isn't 
 ### 🤖 Autopilot
 
 Critical data: registry `{}`, **0 marks** since restart, and the reaction on 16041 was dropped. But my deploy message contained "📌 RESUME HERE" and was posted after restart — so it should have been flagged. The voice-reply at 14:37:04 tells me the final response may be sent through a **different path than the wired `send_message` at 1193**. Let me examine the exact final-send logic and what message 16041 was:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -572,6 +573,7 @@ send_message(chat_id, final_response, thread_id)   # ← only LONG responses get
 Turn-reports are sent by **editing the "🔄 Thinking…" status message** (created at line 1037 with text that has no "RESUME HERE") — the edit replaces the text with "📌 RESUME HERE" but **never marks the message_id**. So short responses (which is what these are) are delivered via `edit_message_text` and never registered. My PR #335 only fixed the `send_message` path — the edit path bypasses it entirely. That's exactly why 👍 still does nothing on your turn-reports.
 
 Let me confirm `edit_message_text` and see where else edits happen:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -579,6 +581,7 @@ Let me confirm `edit_message_text` and see where else edits happen:
 **THE REAL BUG FOUND.** Turn-reports are delivered by **editing** the "🔄 Thinking…" status message (line 1037 → 1188-1190), not by `send_message`. `edit_message_text` never marks the edited message — so a short report containing "📌 RESUME HERE" never enters the registry, and 👍 is dropped. PR #335 only wired the `send_message` path. That's exactly why it's "still not working."
 
 Let me check all `edit_message_text` call sites and the existing tests before fixing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -586,26 +589,36 @@ Let me check all `edit_message_text` call sites and the existing tests before fi
 **Root cause confirmed.** Turn-reports are delivered by **editing** the "🔄 Thinking…" status message (lines 1188–1190) when the response is short — which is the common case for a "📌 RESUME HERE" report. `edit_message_text` never marks the edited message, so it never enters the registry and 👍 is dropped. PR #335 only wired the `send_message` path. **The fix: auto-flag inside `edit_message_text` itself** (one place covers all edit sites — progress updates carry no marker, final reports do).
 
 Let me check the test file conventions and the exact `send_message` tests to mirror:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Root cause is now certain. The fix: auto-flag inside `edit_message_text` itself — one place covers the final-response edit path (line 1188) and all other edit sites. Let me check the test mocking convention, then implement:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Root cause confirmed and fix is clear. Implementing now — auto-flag inside `edit_message_text` (one central place covers the final-response edit at line 1188, which is the exact path turn-reports take):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Patched. Now add unit tests mirroring the `send_message` auto-flag tests, then run the suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now add the edit_message_text tests after the send_message tests:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -762,4 +775,58 @@ PR #336 is clean — exact intended change, no format noise. The diff vs `origin
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /opt/truesight_autopilot && python3 - <<'EOF' # 1) resume_registry.py: drop the 📌-alone alternation p = "app/resume_registry.py" src = op; cd /opt/truesight_autopilot && python3 - <<'EOF' p = "app/resume_registry.py" src = open(p).read() hunks = [ # A: regex — drop the 📌-alone a; cd /opt/truesight_autopilot && python3 -m compileall -q app tests scripts && echo "COMPILE OK" && .venv/bin/python -m pytest -q 2>&1 | tail ; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15991] [Handoff context — this Telegram topic (thread 15991) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Governor "go" received. Per the handoff protocol, let me check the manifest, the plan, and the current PR #336 state (Gary may have merged it already) before acting:
+
+
+### 🤖 Autopilot
+
+"go" received. Treating it as authorization to complete the fix unit: **merge PR #336 → deploy** (consistent with your prior "merge and deploy" for #335 — and the standing rule that a governor's "go" authorizes merging own feature PRs). PR #336 is still open (`merged_at: null`). Executing:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+✅ **PR #336 merged** (squash `3d7d152` onto `main`) per your "go".
+
+## What I did this turn
+
+- **Merged** [PR #336 — Auto-flag RESUME HERE on the edit path + 📌-alone correction](https://github.com/TrueSightDAO/truesight_autopilot/pull/336) via squash (`3d7d152e2a707f06340bb2e879a162d780208c5e`), on your "go" (same authorization pattern as the earlier "merge and deploy" for #335).
+- Change set (4 files, +80/−9, verified clean vs `origin/main` before merging):
+  1. **`app/telegram_adapter.py` — the actual root-cause fix**: `edit_message_text` now auto-flags the edited message_id when the text contains "RESUME HERE". Turn-reports are delivered by *editing* the "🔄 Thinking…" status message (short responses), so the message_id never entered the registry and 👍 was dropped — PR #335 only wired `send_message`.
+  2. **`app/resume_registry.py`** — `_RESUME_HERE_RE = re.compile(r"RESUME HERE", re.IGNORECASE)` — your correction: 📌 pin emoji ALONE no longer flags; only the literal "RESUME HERE" text does.
+  3. **Tests** — `test_looks_resume_awaiting_pin_marker_alone` flipped (📌 alone → False, "📌 RESUME HERE" → True) + 3 new edit-path tests.
+- Verification before merge: compileall ✅ · ruff check ✅ · ruff format ✅ · targeted 101 passed · full suite 814 passed (3 `test_events_catalog.py` failures pre-existing on main, per your note not chased; `test_vault` flake passes in isolation).
+
+## Stopping per one-PR-per-turn rule
+
+📌 **RESUME HERE = deploy PR #336 + smoke test:**
+1. Say **"deploy"** → I run `deploy_autopilot` (restart the bot so the edit-path auto-flag + 📌-correction go live on `3d7d152`).
+2. Verify services restarted + confirm loaded code (like last time: commit + systemd ActiveEnter timestamps).
+3. Smoke-test: 👍 on a **fresh** "📌 RESUME HERE" turn-report → should resume; 👍 on a 📌-alone message → ignored; 👍 on a **pre-deploy** RESUME HERE message → still nothing (expected — old messages aren't retroactively flagged; only new posts after restart).
+4. Then submit the DAO [CONTRIBUTION EVENT] for the emoji-GO work (PRs #331–336) once you confirm it works.
+
+Deploy is the next unit and needs your explicit go — say the word.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #336 on truesight_autopilot merged successfully (sha: 3d7d152e2a707f06340bb2e879a162d780208c5e). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #336 on truesight_autopilot merged successfully (sha: 3d7d152e2a707f06340bb2e879a162d780208c5e). Pull Request successfully merged
 
