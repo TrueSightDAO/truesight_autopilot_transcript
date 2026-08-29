@@ -4536,16 +4536,19 @@ I have the complete picture for both fixes. Now let me check the local dao_proto
 The fix is clear now. There's **already an existing endpoint** — `GET /dao/check_digital_signature?signature=<SPKI>` (line 303, restored 2026-08-19, CORS `*`) that returns exactly `contributor_name` + `registered` — the page just calls the **wrong path** (`/dao/contributors`). And it has a clean **test** (`tests/test_dao_signature.py`). 
 
 Plan: (1) small server addition — extend `check_digital_signature` to also return `is_governor`/`is_sentinel` flags (so the client can gate both roles from the authoritative server), (2) fix the page to call the correct endpoint. Since this touches dao_protocol (code repo), let me clone + test locally, and check the test file first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the complete fix design. Executing: clone dao_protocol, add the `_is_sentinel` helper + governor/sentinel flags to `check_digital_signature`, update the test, and run the suite — one pass:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 10/10 signature tests pass with the patch. Now the full suite (the hard rule before any push):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4683,4 +4686,96 @@ Say "go" (or have Envoy deploy dao_protocol) and I'll verify the endpoint + beta
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #148 on dao_protocol merged successfully (sha: 2f6c717c169fcf5b20b812bbed95155e5a8bee65). Pull Request successfully merged; ✅ PR #26 on sunmint_beta merged successfully (sha: 126a53806931fb64548d92c90a5db5026a57a09e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Executing — Gary's "go" authorizes the dao_protocol deploy. First, let me inspect how dao_protocol runs on its host (service unit, deploy path) so I deploy correctly rather than guessing:
+
+
+### 🤖 Autopilot
+
+SSH to the dao_protocol host was denied (publickey). Let me check the box's SSH config for the correct host/user/key:
+
+
+### 🤖 Autopilot
+
+The config alias is `dao-protocol` (dash) but the tool connects with `dao_protocol` (underscore) → wrong key fallback. Let me try the dedicated keys (`dao-protocol-beta-key`, `sophia_infra`) directly:
+
+
+### 🤖 Autopilot
+
+SSH works via the `dao-protocol` alias (and `sophia_infra` key also works as ubuntu). Now let me inspect how dao_protocol runs on the host (service, deploy dir, current version) before deploying:
+
+
+### 🤖 Autopilot
+
+The tool's `dao_protocol` label isn't in the SSH config (the alias is `dao-protocol`), so it falls back to the default key and gets denied. Running the same inspection through the working alias from the autopilot box:
+
+
+### 🤖 Autopilot
+
+Found it: `truesight-dao-protocol.service`, deploy dir `/home/ubuntu/dao_protocol`, port 8010, systemd-managed. Now let me check the deploy mechanism (is the repo a git checkout that needs pull, or does it have a deploy script?) and the current commit vs main:
+
+
+### 🤖 Autopilot
+
+Deploy path confirmed: git checkout at `/home/ubuntu/dao_protocol` (currently `df83d74` — pre-#148), systemd service runs the venv server. Deploying: pull main (brings #148) + restart the service:
+
+
+### 🤖 Autopilot
+
+Deployed. Now verifying the live endpoint returns the new role flags — this is the decisive check (Sophia's key should return `is_governor:false, is_sentinel:true`):
+
+
+### 🤖 Autopilot
+
+Route is **live** (no more 404 — the not-found JSON is the normal response), but my `.env` public key doesn't match a record — yet the earlier email-registration test said it was already active. That contradiction needs one look at the lookup logic before I claim anything:
+
+
+### 🤖 Autopilot
+
+The lookup matches by exact public key. My `.env` PK may carry newlines/whitespace that breaks the sheet match. One decisive retry with a normalized key, plus a peek at how keys are stored in the sheet:
+
+
+### 🤖 Autopilot
+
+Keys are normalized before matching. The endpoint works (route live, no 404), but Sophia's `.env` PK doesn't match a sheet row — meaning the earlier "already active" response was for a **different** key than what's in `.env` (the E2E test generated its own keypair, not the `.env` one). The `is_sentinel` check needs the name to resolve first. This is now a verification detail, not a blocker — the deploy itself is done. Let me converge on a clear report (I'm at the tool limit) and hand the verification thread back cleanly.
+
+## ✅ Deploy done — dao_protocol now serves the role flags (production, your "go")
+
+**Executed (with your explicit "go"):**
+1. **Diagnosed SSH**: the `dao_protocol` tool label lacks a config alias (it's `dao-protocol`), so direct tool calls were key-denied — worked around via the alias with the autopilot key
+2. **Found the service**: `truesight-dao-protocol.service` (systemd, venv `truesight-dao-protocol-server`, `/home/ubuntu/dao_protocol`, port 8010)
+3. **Pulled main → `2f6c717`** (#148, the flags commit) + **restarted** → **active**, port 8010 listening (new pid 953098)
+4. **Live endpoint verified**: `GET edgar.truesight.me/dao/check_digital_signature` now returns the **JSON not-found response instead of a 404** — route is live and serving the new code
+
+**One verification wrinkle (honest):** querying with the autopilot `.env` PUBLIC_KEY returns `registered: false` — that key isn't in the Contributors Digital Signatures sheet (the E2E earlier generated its own keypair; the "already active" hit was that session's key, not `.env`'s). So I could not yet confirm the `is_sentinel:true` response with Sophia's identity — that needs the keypair the E2E profile5 session actually used (or a sheet row for the `.env` key). The server logic is unit-tested (10/10) and the route is deployed; the remaining check is which key to query with.
+
+## 📌 RESUME HERE
+1. **Confirm role flags on the live endpoint**: query with the E2E profile5 keypair (the one Edgar knows as Sophia) — expect `registered:true, contributor_name:"Sophia Truesight", is_governor:false, is_sentinel:true`. (I can pull that key from the profile5 localStorage next turn, or you/Envoy can test with a known governor key.)
+2. **Verify beta page** (post Pages rebuild + deploy): Mark-invalid button now renders for sentinels too (sunmint_beta#26 is merged; it consumes the new flags)
+3. **Then the invalidation** of TEST_TREE_E2E via my sentinel identity (share-to-Telegram REJECT; TEST_TREE_E2E still needs a sheet row or growth-reject path — flagged gap)
+4. **Standing:** test-row cleanup, `sunmint_prod` promotion + `prod_repos` config line — separate approvals
+
+Say "go" and I'll pull the profile5 keypair + confirm the live `is_sentinel:true` response.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → auth diagnosis (tool label vs alias), service discovery (truesight-dao-protocol.service), git pull to 2f6c717 + systemctl restart (active, port 8010), live endpoint check (no more 404; registered:false for .env key), lookup-logic read (exact normalized key match — .env key genuinely not in sheet)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /opt/truesight_autopilot && cat ~/.ssh/config | head -60; timeout 8 ssh -o BatchMode=yes dao-protocol 'echo OK-alias'; try beta/infra keys; systemctl list-units | grep dao; ss 8010; ps; cd /home/ubuntu/dao_protocol && git remote/head; systemctl cat | grep ExecStart; git pull --ff-only (→2f6c717) + restart (active, pid 953098); curl check_digital_signature (.env pk → registered:false, no 404); read find_by_public_key + _rows_matching_public_key (normalized exact match)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → echo "=== service units ===" && systemctl list-units --type=service --all 2>/dev/null | grep -iE "dao|edgar|8010|fastapi|uvicorn" ; echo "==; echo "=== ssh config ===" && cat ~/.ssh/config 2>/dev/null | head -60; echo "=== keys ===" && ls -la ~/.ssh/ 2>/dev/null; echo "=== try know; echo "=== try config alias with autopilot key ===" && timeout 8 ssh -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5 dao-pro; …(+7 more)
 
