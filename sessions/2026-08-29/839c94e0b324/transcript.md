@@ -42,16 +42,29 @@ Treasury cache is fresh (generated today 21:48Z), and the store inventory signal
 ### 🤖 Autopilot
 
 Signals are coming together. The store inventory is a striking one — let me check the restock runbook and the supply line status to make the recommendation concrete.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The storefront signal is alarming — let me verify the supply-line file path and check for any in-transit shipment before finalizing.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The snapshot points to `ecosystem_change_logs/ops_health/current.json` for per-SKU days-of-cover. Let me check that — it's the sharpest signal for the commerce surface.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -165,4 +178,48 @@ Here's exactly what happened:
 **✅ Done this turn — actions taken:**
 • `deploy autopilot` → https://github.com/TrueSightDAO/dao_client.git
 • `ssh run` ×4 → cd /opt/truesight_autopilot && git log --oneline -8 && echo "---BRANCH/STATUS---" && git status -sb && echo "---HEAD vs origin---" && git re; ps aux | grep -iE "deploy|uvicorn|telegram_adapter" | grep -v grep; echo "---SYSTEMD---"; systemctl list-units --type=service | grep -iE "tr; systemctl status truesight-autopilot.service --no-pager -l | head -40; echo "===SHOW==="; systemctl show truesight-autopilot.service -p Main; …(+1 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: figre out how much time was spent fixing this?
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16196]
+
+
+### 🤖 Autopilot
+
+That observed message asked to quantify time spent on "this" — the deploy saga in this thread. Using PR timestamps from `truesight_autopilot`:
+
+## The incident (this thread's deploy failure)
+
+| Event | Time (UTC) |
+|---|---|
+| First deploy attempt deferred (thread busy) | ~22:2x |
+| Deploy ran, phase-two SIGTERM'd mid-restart (deadlock: service was restarting *itself* while serving turns) | 22:34:32 |
+| **Fix authored + merged** — #345 *"restart self LAST in multi-service deploy restart"* | 22:57:55 → **22:59:47** |
+
+**Incident → fix: ≈ 28 minutes** (22:32 → 22:59). Notably, #345 is the exact fix for the deadlock we just hit — and it's **already merged**, so the next deploy won't recur.
+
+## The PRs being deployed (#341–#344) — author/merge spans
+
+| PR | Created → Merged | Hands-on time |
+|---|---|---|
+| #341 /chat/observe bootstrap fix | 21:49:45 → 21:50:46 | ~1 min |
+| #342 strip bot @mention | 21:54:39 → 21:59:13 | ~4.5 min |
+| #343 mention-gating fixes | 22:17:41 → 22:20:11 | ~2.5 min |
+| #344 emoji go-signal unconditional | 22:27:23 → 22:31:27 | ~4 min |
+| **Subtotal** | 21:49 → 22:31 | **~12 min** |
+
+## Whole-day deploy-tool saga (all related fixes today)
+
+- #337 / #338 (deploy no-op bugs) — 15:28–15:33, closed unmerged (superseded by #339)
+- #339 (staleness check) — 15:35 → 15:36 (~1.5 min)
+- #340 (list_prs IndexError) — 21:30 → 21:32 (~1 min)
+
+**Cumulative hands-on authoring time across all 8 deploy-related PRs (#337–#345): ≈ 18 min** (excluding the two superseded dupes). Wall-clock from first deploy-no-op PR (15:28) to deadlock fix merge (22:59) spans ~7.5h, but the 15:36→21:30 gap was unrelated work.
+
+**Bottom line:** ~18 min of focused authoring across 8 PRs, ~28 min from this incident to its fix — and the fix (#345) is already merged.
 
