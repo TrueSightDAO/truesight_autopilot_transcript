@@ -492,51 +492,61 @@ Found the convention doc. Let me read it to get the exact `truesight-dao-report-
 ### 🤖 Autopilot
 
 I have the convention. The module is `truesight-dao-report-ai-agent-contribution` (dao_client). PR1 is AI-agent software work — Type "AI Agent (software & documentation)", evidence = PR URL #331, dry-run first, then real. Let me find the CLI on the box and run a dry-run (default contributor is "Gary Teh" from .env email; I'll keep defaults unless the doc says Sophia — it says contributors default to Gary Teh; Sophia's work is credited via her own registration. Let me check how previous Sophia contributions were attributed, then dry-run).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CLI isn't on this box's PATH. The convention doc (OPERATING_INSTRUCTIONS §contribution) says AI-agent work reports via `truesight-dao-report-ai-agent-contribution` with `dao_client/.env` credentials on the dao_protocol box. Let me check where dao_client lives (dao_protocol host) and find the exact CLI usage.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the module at `/opt/truesight_autopilot/dao_protocol/truesight_dao_client/`. Let me read the module's CLI args and check for a `.env` / how the CLI entrypoint is invoked.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The module exists with `.env` present (symlink to `/home/ubuntu/.env`). Let me see the CLI args (rest of main) to build the exact dry-run command.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full CLI contract. Now let me dry-run the contribution for PR1 (AI-agent software work, PR #331, type "AI Agent (software & documentation)", amount/TDG 0 per convention). I'll run it from the dao_protocol dir so it picks up `.env`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `python` isn't on PATH — try `python3` (the box runs Python 3.x; earlier compileall used python3).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local copy's `VALID_CONTRIBUTION_TYPES` is outdated — it lacks "AI Agent (software & documentation)" which the convention doc lists. Let me check the canonical `dao_protocol` main version and the dao_protocol host's installed copy.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local `dao_protocol` checkout is a **stale clone** — `VALID_CONTRIBUTION_TYPES` lacks the "AI Agent (software & documentation)" type that main has (the convention doc references it; the `.env` here is also just a symlink, likely not the live daemon's). The right place to run the contribution CLI is the **dao_protocol host** (`dao_protocol` box, port 8010) where the live `.env` + current code live. Let me check the dao_protocol host.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No SSH key to the dao_protocol host from here. The canonical path per OPERATING_INSTRUCTIONS §contribution: `dao_client/.env` credentials and the CLI live in the dao_protocol workspace. Since I can't reach that host, the correct approach is to **update the stale local dao_protocol clone to main first** (it's a git repo), so the CLI has the current type set. But wait — dao_protocol is an API-only/data repo class? No — dao_protocol is a **code repo** (FastAPI server). Let me check whether this local clone is even the right workspace or just a leftover, and whether I should instead use the `submit_contribution` tool (which submits via Edgar's API with my own signing identity). Let me verify what the tool's event docs say for CONTRIBUTION EVENT.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The canonical route for reporting contributions is the **dao_client CLI** (OPERATING_INSTRUCTIONS §contribution — explicitly *not* submit_contribution/create_dao_submission). The blocker is my local dao_protocol clone is stale (missing the "AI Agent (software & documentation)" type). Let me verify main's canonical type set and whether credentials exist locally.
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -672,4 +682,51 @@ The auto-advance flagged "next unit (PR1 (unmerged))" — that was PR1's **track
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot/dao_protocol && python3 -m truesight_dao_client.modules.report_ai_agent_contribution \ --title "PR1: receive Tel
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15728] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 15728) is the active handoff for `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary's "go" — executing: (1) merge tracker PR #836 (bookkeeping from the completed PR1 unit), (2) execute **PR2** (resume registry + chunk-id capture), open the PR, then stop at the own-repo gate. Starting with the merge + reconnaissance of the current post path / data layout in parallel.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — tracker #836 merged; PR2 recon done, not yet started
+
+I merged the outstanding tracker PR (finishing the PR1 unit bookkeeping). Per the one-PR-per-turn rule, I'm stopping here — **PR2 has NOT been started** (only pre-flight recon gathered).
+
+| PR | Repo | Result |
+|---|---|---|
+| **[#836](https://github.com/TrueSightDAO/agentic_ai_context/pull/836)** — tracker: PR1 merged + contribution reported | `agentic_ai_context` | ✅ Merged (sha `1bc1d32`) |
+
+**What changed:** `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md` §4 — PR1 row now shows **opened ☑ · merged ☑ · contribution ☑**; RESUME HERE text simplified to "PR2". The PR1 unit is now *fully* closed (code #331 merged, contribution filed 60min/100 TDG, tracker ticked).
+
+**PR2 reconnaissance gathered (for next turn, no code touched yet):**
+- PR1's code is live on `origin/main` — `get_updates` now sends `allowed_updates` incl. `message_reaction` (line ~510), `handle_message_reaction` + `_handle_reaction_safe` + `run()` dispatch all present (lines 2216–2384) ✅
+- Existing persistence patterns: `app/data/` dir exists; `vault.py` and `main.py` use `json.loads(Path.read_text())` / `json.dump(..., ensure_ascii=False)` style — resume_registry will follow that convention
+- Post path to hook: `send_message` (line 686) + `chunk_text` (line 409) — the §1.4 gotcha target; ready/GO prompt is LLM-generated via `create_telegram_topic`/`post_to_telegram_topic` tools, so PR2 must flag at the post site (per plan §3 note), not by string match
+- Test conventions confirmed: `tests/test_telegram_adapter.py` + `tests/test_telegram_topic.py` exist for the adapter/topic tools
+
+**Gates honored:** merged only after Gary's "go"; nothing deployed; own-repo gate intact (no self-merge of truesight_autopilot code).
+
+---
+
+**RESUME HERE → PR2:** new `app/resume_registry.py` — `mark_resume_awaiting(message_id, thread_id, text)` / `is_resume_awaiting(message_id)` / `lookup(message_id) → {thread_id, text}`, JSON-persisted under `app/data/` (bounded, TTL-pruned, consumed-on-lookup) + hook the ready/GO-prompt post path so **every chunk's** `message_id` is flagged (§1.4). Unit tests. Then open the PR and stop at the own-repo gate (Gary merges). Next auto-advance / "go" kicks it off.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #836 on agentic_ai_context merged successfully (sha: 1bc1d32e951f6487d6c53fb36d06eeea4c239420). Pull Request successfully merged
+• `ssh run` ×2 → cd /opt/truesight_autopilot && git fetch origin main --quiet 2>&1 | tail -1; echo "=== anchors ==="; git show origin/main:app/telegram_adapt; cd /opt/truesight_autopilot && echo "=== app/ ==="; git show origin/main:app/ 2>/dev/null | head -5; ls app/ 2>/dev/null; echo "=== tests ==
 
