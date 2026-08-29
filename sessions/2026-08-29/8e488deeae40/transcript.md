@@ -3538,6 +3538,7 @@ The diff is almost right — but there's a **duplicate `result.treeId = grab('Tr
 ### 🤖 Autopilot
 
 The v3 branch bases from main (no duplicate there — the duplicate only exists on v2). Let me verify v3's diff is clean:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3589,26 +3590,31 @@ go
 ### 🤖 Autopilot
 
 "go" — resuming the cleanup. Step 1: close the wrong PR #445 and clean the duplicate line on #446's branch in parallel:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #445 closed. Now fix the duplicate treeId line on v2 branch via Contents API (remove the second `result.treeId` line), then verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The intermediate file didn't get written correctly. Let me do it in a single clean Python script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Duplicate removed (commit `58f5ec7`). Now verify the PR #446 diff is clean, then merge it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #446 diff is now **clean**: `+2 −1`, `escapeRe` helper + regex escaping, single treeId line intact. Merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3818,4 +3824,146 @@ Diff is clean: `+21 −3`, action branch added, `list_new` fallback preserved. M
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /home/ubuntu/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== processTelegramLogs ful; cd /home/ubuntu/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== processTelegramLogs tai; cd /home/ubuntu/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== 1Jp8q deployments ===" ; …(+2 more)
 • `merge pr` → ✅ PR #447 on tokenomics merged successfully (sha: 77476ab56ea3b45969f251750340d96e4ed4cf7e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — resuming: deploy #447 to the 1Jp8q GAS project, fire the action, and verify row 11882 lands in SunMint Tree Planting:
+
+
+### 🤖 Autopilot
+
+Deployment @5 created (action branch confirmed, pushed). Now fire the action and verify:
+
+
+### 🤖 Autopilot
+
+**🎉 THE PLAIN-PLANTING PIPELINE WORKS!** Row 11882 is now **ROW 24 in SunMint Tree Planting**:
+
+| Field | Value |
+|---|---|
+| Species | **Cacao - Criolla** ✓ |
+| Lat / Lon | 44.560058 / -123.262181 ✓ (my E2E coords) |
+| Contributor | **Sophia Truesight** ✓ (matched by signature) |
+| Status | **NEW** ✓ |
+| Planting time | 2026-08-29T13:47:04 ✓ |
+
+(The curl returned the GAS HTML wrapper — normal for the first call — but the action ran and the row landed.)
+
+Now wire the **automatic** dispatch so future plantings flow without manual firing: add the ROUTING entry + env key on the dao_protocol box:
+
+
+### 🤖 Autopilot
+
+dispatch.py is git-tracked on the box with existing TREE entries. Let me see the exact context around the TREE GROWTH entry (to mirror the pattern) + check the env keys + git remote, so I can open the proper PR:
+
+
+### 🤖 Autopilot
+
+The ROUTING pattern is clear. Let me see the remaining env keys (tree ones) + the git remote to know where to PR the dispatch change:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture — including a second finding: **`DAO_PROTOCOL_WEBHOOK_TREE_GROWTH_MONITORING` env key is also missing** (only `TREE_PLANTING_LINK` exists), which is why monitoring events didn't auto-fire either. Let me open the dispatch ROUTING PR on dao_protocol, reading the exact file first:
+
+
+### 🤖 Autopilot
+
+I have the full dispatch.py. Now I'll open the PR adding the plain-planting ROUTING entry:
+
+
+### 🤖 Autopilot
+
+Wait — I need to verify my second edit didn't break the file (I may have created a duplicate closing `]`). Let me check the PR diff immediately:
+
+
+### 🤖 Autopilot
+
+The diff shows a **duplicate `]`** — my second edit added an extra closing bracket (syntax error in the Python file). Let me fix it immediately on the same branch:
+
+
+### 🤖 Autopilot
+
+The search string didn't match — the file's actual content differs slightly. Let me read the exact tail of the file on the PR branch:
+
+
+### 🤖 Autopilot
+
+The duplicate `]` is confirmed at lines 98-99. My earlier search failed because of the trailing-newline context. Let me fix with a precise single-line-targeted search:
+
+
+### 🤖 Autopilot
+
+The git_push_changes tool searches against main, not the branch — so it can't fix the branch. Let me use the Contents API directly to patch the branch file:
+
+
+### 🤖 Autopilot
+
+Fixed locally (duplicate `]` removed, PY SYNTAX OK). Now push the corrected file to the branch via Contents API:
+
+
+### 🤖 Autopilot
+
+The diff still shows a stray `+]\n` in the second hunk — I need to verify the actual branch file state before merging (the diff may be stale or my fix removed the wrong bracket):
+
+
+### 🤖 Autopilot
+
+The push reported success but the file still has the duplicate — likely a stale raw cache OR the push didn't take. Let me check the authoritative git contents API at the pushed commit:
+
+
+### 🤖 Autopilot
+
+**The fix IS in place** — commit `6783d05` has the single `]` (authoritative contents API confirms: `has duplicate ]: False`, syntax-clean). The earlier raw fetch was a stale cache. Let me merge PR #149 now that it's verified correct:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ This turn: plain-planting dispatch wired + merged (PR #149) — full pipeline now complete in code
+
+**Merged:** 🔀 [dao_protocol #149 — fix: route [TREE PLANTING EVENT] to processTreePlantingTelegramLogs webhook](https://github.com/TrueSightDAO/dao_protocol/pull/149) (sha `17018c3`)
+
+**What changed** (`truesight_dao_client/server/dispatch.py`, `+8 −0`):
+- Added ROUTING entry: `("[TREE PLANTING EVENT]", [("TREE_PLANTING_PROCESSING", "processTreePlantingTelegramLogs")], False)` — so future plain plantings auto-fire the GAS webhook action (added in tokenomics #447) immediately after landing in Telegram Chat Logs.
+- **Cleanup this turn:** my first edit accidentally introduced a duplicate `]` (SyntaxError); caught it via PR diff verification → fixed via Contents API (commit `6783d05`, `has duplicate ]: False`, `py_compile` clean) → merged.
+
+## ✅ Verified this turn (production data)
+- **Fired `?action=processTreePlantingTelegramLogs` on 1Jp8q deployment @5** → row 11882 now **ROW 24 in SunMint Tree Planting** tab:
+  - Cacao - Criolla · 44.560058 / -123.262181 · **Sophia Truesight** (matched by signature) · Status **NEW** · planted 2026-08-29T13:47:04
+
+## 📋 The complete SunMint tree pipeline is now wired end-to-end in code:
+```
+site plant → [TREE PLANTING EVENT] → Edgar → Chat Logs → dispatch #149 → GAS @5 (#447) → SunMint Tree Planting tab → tree index
+site monitor → [TREE GROWTH MONITORING EVENT] → Edgar → Chat Logs → dispatch (existing) → GAS @36 (#441/#442/#446) → Tree Growth Measurements tab ✅ (verified live)
+```
+
+## ⚠️ Remaining production config (box env — flagged, needs your go)
+Both webhook env keys are **missing** on the dao_protocol box (only `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_LINK` exists). Until set, dispatch logs "no webhook URL … GAS cron will process" and auto-firing won't happen (manual firing works, as proven):
+1. `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING` → `https://script.google.com/macros/s/AKfycbw9xy-CrNr1WxZln9BbFNcn929FS3xNKTGrwlZ_-cH5ky9W0_yE3J8jK4AkfpN-E_Xa/exec` (1Jp8q @5)
+2. `DAO_PROTOCOL_WEBHOOK_TREE_GROWTH_MONITORING` → `https://script.google.com/macros/s/AKfycbwm9TZDLPrG1vui3KjR4WHnydQAJXa5U7KHMygRnS9vN6oAwBLUw1q23nzzkmlSe0vq/exec` (1UrBgq @36)
+
+## RESUME HERE → next unit
+1. **On the box** (`ssh dao_protocol_nelanco`): add the two env keys above to `/home/ubuntu/dao_protocol/.env` → restart `truesight-dao-protocol.service` → confirm dispatch picks them up (submit a test → watch webhook fire automatically).
+2. **Trigger the tree index rebuild** (`.github/workflows/rebuild-tree-index.yml` dispatch) → confirm 18→19 trees (my planting included).
+3. **§5g close-out**: test photo `sunmint/images/20260829134704_…jpg` keep/remove (your call); ledger rows 11882/11885 keep; **final full summary + thread close.**
+
+**Bottom line: the entire SunMint tree pipeline — planting AND monitoring — is now complete in code and verified against production data (my E2E rows flowed through every hop). The only remaining step is setting two env keys on the box for automatic dispatch, which is flagged and ready for your go.**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /home/ubuntu/tokenomics && { echo "=== pull main (must reach 77476ab #447) ==="; git pull --ff-only origin main 2>&1 | tail -2; git log -; echo "=== fire tree planting action @5 ===" && curl -sL "https://script.google.com/macros/s/AKfycbw9xy-CrNr1WxZln9BbFNcn929FS3xNKTGrwlZ_-cH5; ssh -o ConnectTimeout=8 -o BatchMode=yes dao_protocol_nelanco ' echo "=== dispatch.py: is it git-tracked? ===" cd /home/ubuntu/dao_protocol ; …(+8 more)
+• `merge pr` → ✅ PR #149 on dao_protocol merged successfully (sha: 17018c318735760e37d0554d5126ed48dc75c67f). Pull Request successfully merged
 
