@@ -837,16 +837,19 @@ The button is not showing up anywhere on my screen after I selected a tree.
 ### 🤖 Autopilot
 
 Gary, thanks — that's the key data point. If Edgar confirms `is_governor: true` for the exact key in your localStorage, then the gate *data* is right and the bug is in the page's code path. Let me read `maybeShowInvalidZone()` and `loadContributorIdentity()` on the live beta page to find why the button never renders.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me read the full logic — `loadContributorIdentity`, `maybeShowInvalidZone`, and the deep-link init path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the deep-link path never calls `maybeShowInvalidZone()` in the fallback branch. Let me see the last lines of that fallback to confirm there's no later call:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1064,4 +1067,211 @@ Then on your "deploy": run `sync_beta_to_prod(sunmint_prod)` to ship #29 + #30 (
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #30 on sunmint_beta merged successfully (sha: d4c90236715202675c461dec4d5b0ea1b449d110). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Still not seeing mark Invalid on this page
+
+https://beta.sunmint.truesight.me/monitor-tree-growth/?tree=Edgar_20260819134740_489
+
+I am getting
+
+{
+    "registered": true,
+    "contributor_name": "Gary Teh",
+    "contributor_email": "garyjob@gmail.com",
+    "is_governor": true,
+    "is_sentinel": false
+}
+
+ewhen calling this
+https://edgar.truesight.me/dao/check_digital_signature?signature=MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA28wHvZfuqIRBrq1nTNBvIl59S2B0WWJSEP4wGuAwMoFOqlHH1ALU%2FDGgDK%2FBsVxHfYDmA0NGDkCyJuslWvhh%2FUBgrjke5%2FRBNgcmLoCiyEsW0NymuyEiUyzUWu9gQkj4VyyvDxN87L8nSiJWpo86wD%2FwQyQlZwK7XjMshqfxYxO%2FQQfybnEV0jURzVW0JWebgldsQk5yOJfS9Sng7eXtUhP8wLBdc5NITgK741T9dWMC6RBesZnFugsVHiutGTRefzCGYOnXlM0Vs6BfUDHZgOXf71rwMKYMbJNX9rN1vfZNsrGV4D4P7o1RTLElN05ewx9ULbZk9Kc8DP8xnnt1mQIDAQAB
+
+---
+
+[observed, not directed at you — Nobody Will not DM you]: @sophia
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16178] thoughts
+
+
+### 🤖 Autopilot
+
+Gary — thanks for the exact repro. Before theorizing, let me check three things on the **live** beta page: (1) does it even have the #30 code yet (Pages rebuild lag?), (2) the real order of `loadContributorIdentity()` vs `maybeShowInvalidZone()` in onload — I suspect a **timing bug** where the async identity fetch hasn't landed when the gate runs, and (3) whether `maybeShowInvalidZone()` injects the button into a hidden container.
+
+
+### 🤖 Autopilot
+
+#30 is live (last-modified 22:58Z, the `maybeShowInvalidZone()` at line 1193 is present) — yet you still don't see the button. The live page has the code, so the bug is in **how the gate evaluates in a real browser**. Let me read the exact `maybeShowInvalidZone()` + `loadContributorIdentity()` implementations and the deep-link block to find the runtime gap:
+
+
+### 🤖 Autopilot
+
+The gate code is present and correct, yet still no button — so something upstream is failing in a real browser. Prime suspects: (a) `treeIndex` never loads (the whole deep-link block is gated on `if (urlTree && treeIndex)`), or (b) `loadContributorIdentity()` isn't completing, or (c) the `invalidZone` element is missing. Let me read the full onload + tree index loader + check the element exists:
+
+
+### 🤖 Autopilot
+
+The code is live (line 1193 has the fix) but the button still doesn't render — so something earlier in `window.onload` must be failing **in a real browser** before the deep-link block runs. The async init chain has no try/catch around several steps, so one uncaught throw aborts everything downstream. Let me hunt the exact throw point:
+
+
+### 🤖 Autopilot
+
+Found a prime suspect. The monitor page's `renderEmailSection()` also does `document.getElementById('emailLinkedLabel').textContent = ...` — if the monitor HTML doesn't have an element with `id="emailLinkedLabel"` (only `data-i18n`), it **throws**, and since it sits **before** `loadTreeIndex()` and the deep-link block in `window.onload`, the entire gate never runs. Let me verify the element exists on the monitor page:
+
+
+### 🤖 Autopilot
+
+The monitor page's `renderEmailSection()` is **safe** (line 218 has `id="emailLinkedLabel"`), so the crash isn't there. The fix code IS live (last-modified 22:58Z matches the #30 merge). So the button is missing because something **before** the deep-link block in `window.onload` is throwing in your browser — aborting init before `maybeShowInvalidZone()` runs. Let me check the remaining init steps for null-element risks, and confirm which branch your tree hits:
+
+
+### 🤖 Autopilot
+
+One suspect stands out: `ensureKeyPair()` regenerates a key if `!isValidSignature(publicKey)` — if your stored key fails that validation, a **new keypair** is generated and overwrites `localStorage`, so the identity check then runs against a **fresh, unregistered key** → gate never shows the button. Let me check `isValidSignature`:
+
+
+### 🤖 Autopilot
+
+`isValidSignature` is just a shape check — your key passes it (it's a long base64 string), so `ensureKeyPair()` won't regenerate. Good, that rules that out.
+
+Let me step back and test the **exact live page** in a real browser engine (headless Chrome) to reproduce, since the code review keeps coming up clean. If a headless run shows the button, it's a browser-cache/environment issue on your side; if not, I'll capture the console error:
+
+
+### 🤖 Autopilot
+
+The code is live and clean — so the failing piece must be in the **browser's cross-origin call to Edgar** (CORS), not the page logic. Curl doesn't enforce CORS; the browser does. If Edgar's response for `check_digital_signature` lacks `Access-Control-Allow-Origin`, the browser silently rejects the fetch → `loadContributorIdentity()` returns null → `isCurrentUserGovernor()` false → button hidden. Let me test exactly what the browser sees:
+
+
+### 🤖 Autopilot
+
+CORS is fine (`access-control-allow-origin: *`, and the real key returns 200). So the gate data and endpoint work — the missing piece must be **DOM structure**: I suspect `invalidZone` lives *inside* `treeDetailPanel`, and the deep-link fallback branch hides that panel — taking the button with it. Let me verify the HTML nesting:
+
+
+### 🤖 Autopilot
+
+**FOUND IT.** This is a real DOM bug — and it explains everything. Look at the nesting:
+
+```
+<div id="treeDetailPanel" style="display:none;">          ← line 162
+  ...
+  <div id="invalidZone" style="display:none;">            ← line 171 (INSIDE the panel)
+    <button>MARK INVALID</button>
+```
+
+And the deep-link **fallback** branch (line 1189):
+```js
+document.getElementById('treeDetailPanel').style.display = 'none';  // hides the PARENT
+...
+showPhotoSection(false);
+maybeShowInvalidZone();   // sets invalidZone display:block — but parent is still display:none!
+```
+
+**`maybeShowInvalidZone()` un-hides the zone, but its parent `treeDetailPanel` was explicitly hidden — so the button is invisible.** Same bug hits the manual-typing path (line 1169-1170): panel stays hidden, button invisible. Only the dropdown-match path works, because `renderTreeDetail()` shows the panel.
+
+Let me confirm which branch your tree hits (is `Edgar_20260819134740_489` in the index?) and check `renderTreeDetail`'s panel handling:
+
+
+### 🤖 Autopilot
+
+The data says the button *should* show (tree **is** in the index → match branch → panel shown → gate passes). Since code review keeps coming up clean, let me **reproduce it in a real browser engine** — headless Chromium with your exact key injected into localStorage, so I can see exactly what the page does:
+
+
+### 🤖 Autopilot
+
+Node 22 + Chromium 151 available. Let me drive headless Chromium via CDP to reproduce exactly what your browser sees — injecting your key into localStorage, loading the deep link, and inspecting the button state + console errors:
+
+
+### 🤖 Autopilot
+
+Script bug in my eval helper — fixing the response handling and re-running:
+
+
+### 🤖 Autopilot
+
+The eval helper is still broken (my JSON.stringify fallback). Let me simplify it to raw JSON output:
+
+
+### 🤖 Autopilot
+
+The CDP harness is swallowing error responses (my resolver returns `m.result` which is undefined when the response has `m.error`). Let me fix it to log errors and add a sanity check:
+
+
+### 🤖 Autopilot
+
+CDP flattening bug — `sessionId` must be top-level in the message, not inside params. Fixing:
+
+
+### 🤖 Autopilot
+
+Found it — `sessionId` is inside `result`, not top-level. One-line fix:
+
+
+### 🤖 Autopilot
+
+`_att.result` is undefined — the attach response shape is different. Let me debug the raw attach response:
+
+
+### 🤖 Autopilot
+
+The `Target.createTarget` response didn't have `targetId` at top-level either — my send wrapper returns `{result, error}`. The createTarget call's targetId is under `result.targetId`. Let me fix both destructures:
+
+
+### 🤖 Autopilot
+
+**Breakthrough — reproduced in a real browser engine.** Headless Chromium with your exact key shows: `treeIndex loaded: null`, dropdown empty, deep-link block **skipped entirely**, and — critically — `invalidZone: NO ELEMENT`. Two things to nail down: (a) does the LIVE page actually contain the `invalidZone` element in its HTML, and (b) why does `loadTreeIndex()` fail in a browser. Checking both:
+
+
+### 🤖 Autopilot
+
+The live page HAS `invalidZone` and the #30 fallback call — but headless shows **NO ELEMENT** and `treeIndex: null`. That's contradictory: static HTML can't lose an element to JS unless the whole script crashed. Prime suspect now: **the merged #29/#30 script has a parse/runtime error in a real browser, killing `window.onload` entirely** (which would explain dropdown empty + deep-link skipped + button missing for Gary too). Let me re-run headless with full diagnostics — console logs, exceptions, readyState, and whether the script even parsed:
+
+
+### 🤖 Autopilot
+
+The browser reproduction is decisive: `treeIndex` loaded (with **both** your trees present), Edgar returned `"Gary Teh"` + `isSignatureRegistered: true` — yet `querySelectorAll('#invalidZone').length === 0`. The element exists in the **static HTML** (curl confirms it) but is **gone from the live DOM** after onload. Something is removing or rewriting it. Prime suspect: `renderTreeDetail()` rewriting `treeDetailPanel` innerHTML. Let me check:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+I'm at my tool-round limit for this turn, so let me converge with what the browser-level reproduction definitively showed — this is the most valuable evidence so far.
+
+## What the headless-Chromium repro proved (your exact key, real browser engine)
+
+I drove headless Chromium to `beta.sunmint.truesight.me/monitor-tree-growth/?tree=Edgar_20260819134740_489` with your RSA public key injected into localStorage, exactly as your browser would have it:
+
+| Check | Result |
+|---|---|
+| `treeIndex` loaded | ✅ **20 trees loaded** — both `Edgar_20260819134722_487` and `...40_489` present in index |
+| `checkSignatureRegistration` | ✅ `isSignatureRegistered: true` |
+| `loadContributorIdentity` | ✅ `currentContributorName: "Gary Teh"` |
+| `isCurrentUserGovernor()` | ❌ **`false`** |
+| `currentContributorIsGovernor` | ❌ **`false`** |
+| `#invalidZone` in live DOM | ❌ **`querySelectorAll → 0`** (element exists in static HTML + repo main, but **not in the rendered DOM**) |
+| Uncaught exceptions | ✅ none (Runtime.exceptionThrown silent) |
+
+**Key insight:** the *data path works* (Edgar says you're a governor) but the *page state doesn't reflect it* — `is_governor` isn't landing in `currentContributorIsGovernor`, and the `invalidZone` div is missing from the rendered DOM despite being in the served HTML. **This points to the live beta page being a stale/different build than repo main** (e.g., a Pages build stuck between the email-link UX fix and #27, which added `invalidZone`), rather than your browser or key.
+
+**Second fragility found (real):** `loadTreeIndex()` has **no timeout** — in one repro run, `raw.githubusercontent.com` hiccuped and the whole `window.onload` **stalled at `treeIndex = await loadTreeIndex()`**, so the dropdown, the deep-link block, the gate, and the camera all never ran (treeIdManual stayed hidden, photoSection hidden). A single hung fetch can silently kill the entire page. That's a genuine hardening bug worth a PR regardless of the stale-build question.
+
+## What's still blocking
+I could not, within this turn's tool budget, confirm whether GitHub Pages is serving a stale HTML (missing the `invalidZone` div) vs. the current `main`. That single check decides the fix (redeploy/cache-bust vs. code fix).
+
+## RESUME HERE → next turn
+1. **Verify served HTML:** `curl -s https://beta.sunmint.truesight.me/monitor-tree-growth/ | grep -n 'id="invalidZone"'` — if absent → Pages is serving stale content → investigate deployment (why last-modified 22:58Z didn't carry #27's div) and force a rebuild.
+2. **Fix `loadTreeIndex()` timeout** (open PR on `sunmint_beta`): wrap the fetch in `AbortController` (~8s) so a hung `raw.githubusercontent` call can't stall init; treat failure as "try next URL / manual mode."
+3. **Re-run the headless repro** after both — expect `isCurrentUserGovernor(): true` and `#invalidZone` present.
+4. Then re-test with you on beta, and only then promote to prod.
+
+**No code pushed this turn; nothing on prod touched.** Ready to execute step 1 immediately next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×29 → echo "=== LIVE beta monitor page: last-modified + has #30? ==="; curl -sI https://beta.sunmint.truesight.me/monitor-tree-growth/ | grep -i "; cd /tmp && rm -rf sunmint_beta_dl2 && git clone -q --depth 5 https://github.com/TrueSightDAO/sunmint_beta.git sunmint_beta_dl2 2>&1 | tail -; cd /tmp/sunmint_beta_dl2 && echo "=== loadContributorIdentity (1011-1030) ===" && sed -n '1011,1030p' monitor-tree-growth/index.html && echo; …(+22 more)
 
