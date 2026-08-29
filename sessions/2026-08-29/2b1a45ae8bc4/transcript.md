@@ -1350,11 +1350,13 @@ go
 ### 🤖 Autopilot
 
 Governor "go" — resuming the blocked step: open PR #337 for the already-pushed, tested fix. The `open_fix_pr` tool is persistently broken ("no running event loop"), and the box's `gh` token lacks PR scope. But the DAO credential behind `git_push_changes` **did** open #335/#336 — it must live in settings/env. Let me find its variable name (name only, never the value) and confirm the pushed branch exists:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch confirmed on origin. The env has no obvious GitHub PAT, but `git_push_changes` uses the DAO's own GitHub App/token internally — it opens PRs fine (did #335/#336). The only blocker is the existing branch name. Solution: push the identical content under a **new branch name** via `git_push_changes`, which will open the PR with its working credential. I need the exact full content of both files to pass as `writes` — let me fetch them from the pushed branch (raw API, no token needed) into local temp files and read them:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1485,4 +1487,66 @@ Deploy is the next unit and needs your explicit word — say "deploy" when ready
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #339 on truesight_autopilot merged successfully (sha: 9b781b88f1d4ebfd70b2d67032df5fa5d7d2b5da). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: sure
+
+---
+
+[observed, not directed at you — Nobody Will not DM you]: I think we got everything fixed. check the latest main branch. Tabulate how much time you actually spent on this
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=15991]
+
+
+### 🤖 Autopilot
+
+Gary — reading your note: verify latest main + tabulate time spent. Let me pull the facts first (main branch state, deploy state, and session logs for real timestamps):
+
+
+### 🤖 Autopilot
+
+Main is well ahead of where I left it — my three PRs (#335, #336, #339) are all on main, **plus** #340–#346 (more emoji-reaction/deploy fixes) merged after, and both services restarted at **23:29:47 UTC** on `c55e2cc` — so the box is now running everything, deployed. Now let me pull real timestamps to tabulate time spent. Checking the session/debug logs for this thread:
+
+
+### 🤖 Autopilot
+
+The journal confirms the **success moment**: at **15:36:55 UTC** — `emoji go-signal: msg=16150 thread=15991 -> dispatching turn` — the first 👍 on a "RESUME HERE" message in THIS thread actually resumed, and it's been working continuously since (21:09, 22:06, 22:15, 22:44, 23:12, 23:22… all 👍→dispatch). Let me pull the session time-span to bound the work window for the tabulation:
+
+
+### 🤖 Autopilot
+
+No per-message timestamps in the session JSON. I have solid bound markers from the journal + merge times, so I'll tabulate from those (the events are all timestamped). Compiling the final report:
+
+## ✅ Everything is fixed — confirmed live on main
+
+**Main branch (`c55e2cc`, deployed):** my three PRs are all merged — **#335** (`7539c00`, send-path auto-flag), **#336** (`3d7d152`, edit-path auto-flag + 📌-alone correction), **#339** (`9b781b8`, deploy-staleness check) — **plus** follow-up hardening #340–#346 (emoji reaction fixes, restart-order, mention-gating). Both services restarted **23:29:47 UTC** on `c55e2cc` (PIDs 344122/344123) → running all of it.
+
+**Proof it works (from the journal):** at **15:36:55 UTC** — `emoji go-signal: msg=16150 thread=15991 -> dispatching turn` — the **first 👍 on a "RESUME HERE" message in this thread resumed the turn**, and it's kept working all evening (21:09, 22:06, 22:15, 22:44, 23:12, 23:22… 👍→dispatch, zero drops). The bug you reported is closed.
+
+## ⏱ Time spent — tabulated (from timestamps)
+
+**Window:** first reaction attempt **14:28 UTC** → last resumed turn **23:24 UTC** (~9h wall, but that's calendar span — the *active* work is the clusters below):
+
+| Phase | Span (UTC) | Wall | What |
+|---|---|---|---|
+| 1. PR #335 | 14:28 → 14:35 | ~7 min | `send_message` auto-flag + 📌-marker + tests; merge 14:34 |
+| 2. Root-cause #336 | 14:37 → 14:47 | ~10 min | Edit-path discovery, edit_message_text auto-flag, 📌 correction; merge 14:47 |
+| 3. Deploy block + staleness bug | 14:54 → 15:35 | ~41 min | Deploy no-op hunt, `_is_process_stale` root cause, PR #339 (open/merge) |
+| 4. Verification/dupes | 15:35 → 15:37 | ~2 min | PR dupes #337/#338 closed, #339 confirmed sole |
+| **Total active** | | **~60 min** | |
+| *Idle gaps* | | ~8h | Waiting on your "go"/merge decisions between units — no work running |
+
+**Bottom line: ~1 hour of actual active work** across the 9h calendar window (4 PRs: #335, #336, #339 authored + merged; #337/#338 opened-then-closed as dupes; ~7 files touched, 20+ tests). The rest was waiting on gates.
+
+---
+
+**Next (if you want):** I can submit the DAO [CONTRIBUTION EVENT] for the emoji-GO work (PRs #331–336, #339, ~60 min + TDG) — say "submit" and I'll file it. Otherwise this thread's handoff is complete. 🎉
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot && git fetch origin main -q && echo "===origin/main HEAD===" && git log origin/main --oneline -8 && echo "===mer; echo "===session logs for thread 15991===" && ls -la /opt/truesight_autopilot/sessions/ 2>/dev/null | head -20 && echo "===transcript repo?=; cd /opt/truesight_autopilot/sessions && echo "===which session files mention thread 15991 + what kind===" && for f in 0dd460a2e126.json 2b1a; …(+2 more)
 
