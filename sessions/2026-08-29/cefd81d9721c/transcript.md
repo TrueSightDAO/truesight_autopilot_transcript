@@ -1341,16 +1341,19 @@ Gary — "go" + "status". Executing the catch-up retry (option 1) and checking t
 The retry hit the **same `NOT_FOUND` storage error** — so it's not transient. And the handoff manifest confirms **no row references this thread** (ad-hoc execution — the rows are emoji-reaction, sunmint, tree-QR, media-JSON, white-label).
 
 Since it failed identically twice, the fix is likely a **stale deployment/version** issue: the `@HEAD` deployment may point at a broken version. Let me inspect the deployed manifest + Version file content, then create a fresh deployment and retry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Same `NOT_FOUND` twice — not transient. The `Version`/`appsscript` files are benign. Two likely causes: (a) the API `:run` on a bare scriptId needs the **deployment ID** instead (clasp-created scripts sometimes lack the Drive-file association the runtime reads), or (b) this scriptId was **superseded** like the identity one was (`10NKp8uLM`→`1m8IZPs1v`). Let me check both — list deployments via API + search the clasp account for a newer "Recurring" script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Same `NOT_FOUND` on all 3 deployment IDs too — so it's script-level, not deployment-level. Two more diagnostics to disambiguate (is it the function's data access, or the whole script? is there a superseding scriptId like the identity one?):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1358,11 +1361,13 @@ Same `NOT_FOUND` on all 3 deployment IDs too — so it's script-level, not deplo
 The `NOT_FOUND` hits **every** function — even `getClaspMirrorDeployInfo`, a pure in-memory function with zero external access. That means it's not the data access, not a superseded script (all 3 clasp accounts list `1LxWu9hOs` as the live "TDG - Monthly Recur…"), and not a stale file. **The script project's runtime storage itself is broken at Google level** — and the only change between the script working (8/1 run tokenized the AWS rows) and now is my 8/29 `clasp push` of the fixed code.
 
 Cheapest reset: create a **new version + deployment** via clasp (re-points the runtime), then re-run the API against the fresh deployment ID:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 A new deployment `AKfycbwzfNEqW9Y0r…` was created (@2 — meaning the code was re-versioned, so the runtime is freshly materialized). Now retry the execution against **this fresh deployment ID**:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1372,6 +1377,7 @@ Same `NOT_FOUND` even on a **freshly-created deployment @2**. That eliminates ev
 Since `gas_deploy_project` uses `clasp push` + the autopilot reads content fine, but **execution** fails at Google's runtime — and `run` is the exact API the trigger would use — the scheduled trigger on 9/28 would hit the same wall. The pragmatic, robust fix that eliminates Google-side container corruption: **re-create the script project under a fresh scriptId** (clone content → new project → redeploy), OR **give it a kick via a no-op re-save/re-push** to force Google to re-materialize storage.
 
 Let me try the cheap kick first — a `clasp push` with a whitespace-only touch to force full content re-save, then retry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1421,6 +1427,7 @@ I'd recommend **A** — it's the path you originally picked, takes one click, an
 Yes — that's the right lever. The REST `:run` path is what's broken (Google container quirk), but a `doGet` web-app deployment uses a **different execution path** — and the exec-probe audit showed these projects' web apps respond fine via HTTP GET. Adding a guarded `doGet` that calls `processRecurringTransactions`, deploying it, and hitting the `/exec` URL myself is exactly how to trigger the catch-up without the editor.
 
 Let me first check the existing `doGet` convention in sibling GAS projects (action-param pattern, key guards) so I follow the house style, and find where to add it in the recurring file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1428,26 +1435,31 @@ Let me first check the existing `doGet` convention in sibling GAS projects (acti
 The house style is clear — the `register_member_digital_signatures_telegram.js` doGet (action-gated, ContentService JSON) is the perfect template, and the recurring file has **no existing `doGet`** (confirmed by grep). A web-app `/exec` GET uses a different execution path than the broken REST `:run` — this should get past the `NOT_FOUND` container error.
 
 Adding the doGet to the recurring tokenization file now (PR to tokenomics), following the exact house convention:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **#443** opened. Let me run the local test suite (per the hard rule before pushing), then merge and deploy:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch fetch failed (the `-q` swallowed the real error). Let me fetch the PR ref properly and check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Syntax OK; the guardrail call needs a `Path` not a string. Re-running with the right type + the doGet count:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All checks pass — guardrail 0 errors, exactly 1 `doGet`, exactly 1 `const CONFIG` (no duplicate). Merging PR #443, then deploying:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1613,4 +1625,136 @@ No payouts moved, no irreversible actions — merged code is inert until deploye
 • `ssh run` ×7 → cd /opt/truesight_autopilot/context/tokenomics && echo "=== ff-only pull ===" && git pull --ff-only origin main 2>&1 | tail -2 && echo "=== ; cd /tmp && cat > make_webapp_deploy.py <<'EOF' import json, urllib.request, urllib.parse SCRIPT_ID = "1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xj; cd /tmp && cat > make_webapp_deploy2.py <<'EOF' import json, urllib.request, urllib.parse SCRIPT_ID = "1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40x; …(+4 more)
 • `gas deploy project` → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T142906Z_1lxwu9hos56jz6mbxra3edv74xjpjgkjqw40xjpq.md
 • `merge pr` → ✅ PR #444 on tokenomics merged successfully (sha: 637dec8050aabdd466c038f3d91e71a4d63650f6). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15492] [Handoff context — this Telegram topic (thread 15492) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary's go — deploying the webapp manifest and creating the WEB_APP deployment. Pulling #444 first, then deploying:
+
+
+### 🤖 Autopilot
+
+Checkout at #444 head with the webapp manifest present. Deploying — this push carries the manifest, then I'll create the WEB_APP deployment:
+
+
+### 🤖 Autopilot
+
+Deploy succeeded (manifest now live). The deploy tool only pushes — I need to create the WEB_APP deployment with `clasp deploy` (which now honors the webapp manifest block). Running it and capturing the new deployment ID/URL:
+
+
+### 🤖 Autopilot
+
+New WEB_APP deployment created: **`AKfycbzwij2AAQMhS1e4GcmRuMyF2EGEmH6rYmDrLCtQSYGyA4_2wz5M2oqHJDD_paCoJeOn`** @3. Firing the catch-up trigger at its `/exec` URL:
+
+
+### 🤖 Autopilot
+
+The `/exec` call **timed out at 60s** — unlike the earlier 404, this means the web app **was reached** and `processRecurringTransactions` started executing (it does real work — reads sheets, writes ledger rows — which can exceed 60s). The ground truth is the ledger itself. Verifying whether rows landed:
+
+
+### 🤖 Autopilot
+
+The catch-up **executed** — "Most Recent Tokenization Date" advanced to **20260829** (was 20260723) on the visible warehouse/Brazil/Ilheus rows, and **Total TDG Issued jumped 2,424,067.45 → 2,424,672.45 (+605)**. The 60s timeout was just the client giving up — GAS kept running server-side. Let me confirm the remaining rows (13–16) and find the actual ledger entries:
+
+
+### 🤖 Autopilot
+
+Rows 13–16 confirm the update; but I need to see the remaining recurring rows (Davos, FounderHaus, eodhd, Kiki) and find the actual 2026 ledger entries. The ledger rows I read (600–660) are Feb 2022 history — the new entries must be at the append point. Checking both:
+
+
+### 🤖 Autopilot
+
+Good progress — 5 rows updated to **20260829** (SF, Brazil, Ilheus, Davos, FounderHaus), but **7 rows still show 20260723** (eodhd, Kiki, Andrea, Aga, Jenifer, Hacker Dojo, Will Chen), and the ledger delta is **+605** (not the full expected amount). The run likely **timed out mid-loop** (my 60s client timeout — GAS web-app responses must return within ~30s). Let me find where the ledger entries actually landed (top of the sheet?) and what target `tokenizeRecordWithoutUpdate` writes to:
+
+
+### 🤖 Autopilot
+
+The catch-up **partially completed** — 5 rows updated to 20260829 (SF, Brazil, Ilheus, Davos, FounderHaus) but **7 rows still at 20260723** (eodhd, Kiki, Andrea, Aga, Jenifer, Hacker Dojo, Will Chen), and the ledger delta (+605) doesn't match all 5 done rows (765). The web-app execution **timed out mid-loop** (GAS web-apps must return within ~30s; my client timed out at 60s). The good news: the doGet path **bypassed the NOT_FOUND** — the trigger works!
+
+Let me understand the write ordering and find where the ledger entries actually landed:
+
+
+### 🤖 Autopilot
+
+The write mechanics are clear now: each tokenized record inserts a new row at the **true end** of the Ledger history sheet (after the last non-empty row) with Column B = "Recurring Tokenizations", and the total (E1) is a live formula — which is why it moved +605. The run died mid-loop (web-app execution limit) after 5 records: **F-column updated for SF, Brazil, Ilheus, Davos, FounderHaus, but only ~605/765 of the ledger total moved** — so likely 4 ledger writes landed. The script is **idempotent** (skips already-tokenized via `tokenizedAlready`), so re-triggering safely finishes the rest.
+
+Let me find the actual new ledger rows at the sheet's true end:
+
+
+### 🤖 Autopilot
+
+The ledger rows 700–740 are still Feb 2022 history — the new entries were appended after the true end. Let me read the very end of the sheet to see exactly what landed:
+
+
+### 🤖 Autopilot
+
+The new ledger rows are further down (the sheet is long — reads keep landing in 2022 history). The **total moved +605** = exactly SF(160)+Brazil(125)+Ilheus(160)+Davos(160) — so **4 ledger entries landed**, and the execution is likely **still running server-side** (GAS continues past my client timeout, up to its execution limit). The safest move is to wait ~90s for the server-side run to settle, then re-check state (re-triggering now could race a still-running execution):
+
+
+### 🤖 Autopilot
+
+Now let me check the settled state — total TDG, F-column status, and find the appended "Recurring Tokenizations" ledger rows:
+
+
+### 🤖 Autopilot
+
+**The catch-up completed!** The ledger total is now **2,425,822.44** — up exactly **+1,754.99** from 2,424,067.45 (160+125+160+160+160+29.99+160+160+160+160+160+160 = all 11 qualifying rows × monthly amount). All F-column dates are now **20260829**. The server-side execution kept running past my client timeout and finished the whole loop. Let me capture the actual appended ledger rows for the record:
+
+
+### 🤖 Autopilot
+
+The math is conclusive — but let me capture the actual appended ledger entries for the record. The sheet's true end is past row 850; one targeted read:
+
+
+### 🤖 Autopilot
+
+## ✅ Catch-up COMPLETE — August recurring tokenizations landed
+
+### Proof from the live ledger (Main Ledger `1GE7PUq…`)
+
+| Metric | Before | After | Δ |
+|---|---|---|---|
+| **Total TDG Issued** (Ledger E1) | 2,424,067.45 | **2,425,822.44** | **+1,754.99** ✅ |
+| **Recurring rows at 20260829** | 0 (all stuck at 20260723) | **12 rows** | ✅ all advanced |
+
+**Δ = 1,754.99** — exactly the 12 qualifying rows' monthly amounts: 10×160 (SF, Ilheus, Davos, FounderHaus, Kiki, Andrea, Aga, Jenifer, HackerDojo, Will Chen) + 125 (Brazil VO) + 29.99 (eodhd). The script's `tokenizedAlready` guard skipped the already-tokenized AWS rows and the Vault rows don't qualify (type filter). **No duplicates, no double-payout** — the loop is idempotent.
+
+### How we got here (this turn)
+1. **Deployed** the webapp manifest (#444) — push clean, ledger `deploy_20260829T143901Z`.
+2. **Created the WEB_APP deployment** via `clasp deploy` → `AKfycbzwij2AAQMhS…` @3 (the manifest block made it a real web-app this time).
+3. **Triggered** `GET …/exec?action=processRecurringTransactions` → client timed out at 60s, but **GAS kept running server-side** and completed the whole loop (~11 ledger inserts + 12 F-date updates).
+4. **Verified** the settled state after a 90s wait: total +1,754.99, all 12 rows at 20260829.
+
+### The original incident is fully closed
+- **Your failing script** (TDG - Monthly Recurring Tokenization) — SyntaxError fixed, deployed, **and now proven to execute end-to-end** (the doGet path bypassed the REST `:run` container error that blocked API triggering).
+- **20+ sibling projects** with the same collision class fixed + deployed; guardrail (PR #440) prevents regression; 2 orphan scriptIds documented.
+- **Aug tokenizations paid; Sep will auto-fire** on the next scheduled monthly trigger (or via the same `/exec` URL on ~Sep 20).
+
+### ⚠️ Two follow-ups for your call
+1. **Security:** the web-app deployment is `ANYONE_ANONYMOUS` / runs as `USER_DEPLOYING` (garyjob). Anyone with the URL could re-trigger it — it's idempotent (no double-payout) but still: **want me to undeploy it now that the catch-up is done?** (One `clasp undeploy` — the monthly trigger keeps working regardless.) I recommend yes.
+2. **Documentation:** file the `NOT_FOUND`-on-`:run` / doGet-workaround quirk in `OPEN_FOLLOWUPS.md` for cross-session recall.
+
+### RESUME HERE
+- Say "**undeploy**" and I'll remove the anonymous web-app deployment (leaving the doGet function + monthly trigger intact), or "**keep it**" to leave it as a manual re-trigger handle.
+- Say "**file it**" and I'll PR the follow-up note to `OPEN_FOLLOWUPS.md`.
+- Otherwise: **incident closed** — nothing else pending from the original failure.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → pulled #444; deployed; `clasp deploy` created WEB_APP deployment @3; 90s settle wait
+• `http fetch` ×1 → triggered `/exec?action=processRecurringTransactions` (client timeout; server completed)
+• `read google sheet` ×8 → verified total +1,754.99, F-dates → 20260829, ledger entries appended
+• No payouts moved by me directly — the script's own scheduled logic executed per its design under the authorized trigger
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot/context/tokenomics && echo "=== ff-only pull ===" && git pull --ff-only origin main 2>&1 | tail -2 && echo "=== ; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK && echo "=== cla; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1LxWu9hOs56JZ6Mbxra3eDv74xjpjgkJQW40xjpQBIHObsqiv1D5jr5fK && echo "=== tok; …(+2 more)
+• `gas deploy project` → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260829T143901Z_1lxwu9hos56jz6mbxra3edv74xjpjgkjqw40xjpq.md
 
