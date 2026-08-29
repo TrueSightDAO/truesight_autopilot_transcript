@@ -10,132 +10,6 @@
 
 ### 🧑 Governor
 
-[Telegram context: chat_id=-1003919341801, thread_id=11018] https://beta.sunmint.truesight.me/monitor-tree-growth/
-
-This page Missing the UI elements visible on 
-
-https://beta.sunmint.truesight.me/
-
-
-### 🤖 Autopilot
-
-Let me compare the live monitor page against the root page to identify exactly which UI elements are missing.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both pages serve content, but the element comparison already shows a key gap: the **root page has a language toggle (`langPt`/`langEn`)** — the monitor page has **no lang toggle**. Let me check the full visual structure (logo, header, footer, any missing sections) to give a complete answer.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Diagnosis is clear. The monitor page is missing three UI elements that the root page has:
-
-1. **Language toggle** (Português/English buttons) — root has `langPt`/`langEn` buttons + `.lang-toggle` CSS + `setLang()` wiring; monitor has i18n keys but **no toggle UI and no way to switch language**
-2. **Logo header** — root shows the TrueSight DAO logo (120px, in a centered container); monitor has no logo at all
-3. **Android APK download CTA** ("Baixar APK (Android)") — root's footer has the sunmint_mobile UAT APK download button; monitor has no footer CTA
-
-Let me verify whether the monitor page's i18n actually works (does it default to pt and have the setLang function?) and check the git history to see if these were ever in my build.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The root page has `data-i18n` attributes AND a working `setLang()` toggle, but my monitor page has `data-i18n` attributes with **no language toggle UI, no `setLang()` function, and no i18n dictionary**. So the `data-i18n` attributes are just dead weight — the page is stuck in pt-only, and more importantly the **i18n framework itself is missing**. Let me confirm the monitor page's script section (does it have any `setLang`/I18N code at all?).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Good news — the i18n framework **is** fully present on the monitor page (I18N dict, `t()` helper, `setLang()`, `data-i18n` wiring, `applyLang`-style loop at line 256). What's missing is **the visible toggle UI** (the lang buttons + `.lang-toggle` CSS + header wiring). Let me confirm exactly how the root page wires the toggle vs the monitor page's setLang, then compare the logo + APK CTA presence one more time.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Complete diagnosis — I have everything needed. The monitor page's i18n *machinery* exists but the visible **toggle UI is missing**, plus the logo and APK footer CTA. Let me grab the exact root-page blocks to mirror (lang-toggle CSS + logo + APK footer + `downloadButton` i18n key) so the fix is a faithful port.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the full diagnosis. The monitor page is missing **3 UI elements** the root page has. Let me grab the monitor page's I18N dict and body anchors to build precise fix edits.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have everything needed. The diagnosis: the monitor page is missing **3 UI elements** vs the root page — (1) the **language toggle buttons** (Português/English), (2) the **logo header** (with `Sunmint` title), (3) the **Android APK download CTA** footer. The i18n machinery exists (I18N dict + `setLang()` + `t()`), but there's no toggle UI to invoke it, no logo, and no APK CTA.
-
-Let me build the fix: add the lang-toggle HTML + CSS, the logo block, the APK footer CTA (with i18n keys), and wire the active-class toggle into the existing `setLang()`. I'll write the updated file locally, validate, then push.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The CSS anchor didn't match — the live file's CSS differs slightly from what I assumed. Let me check the actual CSS block.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have the exact anchors. The nav-dropdown CSS is a compact one-liner (`.nav-dropdown { margin-bottom: 1rem; text-align: center; }`), not the multi-line block I assumed. Let me apply the three edits with correct anchors.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Edits applied and balanced. Now I need to wire the `setLang()` function to toggle the active class on the new buttons (the monitor page's `setLang` doesn't do the active-class toggle like the root does), and add the i18n keys for downloadHeading/downloadHint/downloadButton. Let me apply those JS edits.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The tag balance caught a real bug: my APK edit replaced the page's original `</script>` closing tag instead of inserting before it — the main script now swallows the HTML comment/div (would cause a JS SyntaxError). Fixing by restoring the closing tag right after the main JS and dropping the redundant script block.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All tags balanced now. Let me run a JS syntax check on the script section to be safe, then push the fix.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Everything validates: JS syntax OK, tags balanced, 37,567 bytes, all new UI elements present. Now pushing the fix to sunmint_beta.
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Fix pushed. Here's the report.
-
-## ✅ What I did this turn — diagnosed + fixed the monitor page UI gap
-
-**Found the root cause:** the monitor page's i18n machinery (I18N dict, `setLang()`, `t()`) existed, but three root-page UI elements were missing:
-1. **Language toggle** — the Português/English buttons (without them the page was stuck pt-only; the toggle CSS + active-class wiring were also absent)
-2. **Logo header** — the TrueSight DAO logo block the root shows
-3. **Android APK download CTA** — the "Baixar APK (Android)" footer section
-
-**PR [sunmint_beta#11](https://github.com/TrueSightDAO/sunmint_beta/pull/11)** (sha `e35222e`) — 6 edits restoring full parity: lang-toggle CSS/HTML, logo header, pt/en `downloadHeading/Hint/Button` i18n keys, `setLang()` now toggles the active class + `document.documentElement.lang`, and the APK CTA footer.
-
-**Validated before push:** all tags balanced (script 1/1, div 10/10, etc.), main script passes `node --check` (JS syntax OK), 37.6 KB.
-
-## 📌 RESUME HERE → verify on beta after merge
-Once you merge **sunmint_beta#11**, I'll re-verify `beta.sunmint.truesight.me/monitor-tree-growth/` shows the language toggle, logo, and APK CTA — then confirm the dropdown works both directions and await your UAT sign-off for promotion (`sync_beta_to_prod(sunmint_prod)`).
-
-One flag for your review: the i18n **defaults to pt** (sunmint_beta convention, matches root) — the lang toggle is what switches to English, same as the Plant Tree page.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×13 → cd /tmp && echo "=== LIVE monitor page ===" && curl -s "https://beta.sunmint.truesight.me/monitor-tree-growth/" -o live_monitor.html && wc -; cd /tmp && echo "=== MONITOR: header/logo/lang/footer markers ===" && grep -n -iE "logo|langPt|langEn|lang-toggle|footer|truesight\.me|githu; cd /tmp && echo "=== MONITOR: i18n + setLang presence ===" && grep -n -E "setLang|I18N|const lang|localStorage|currentLang|data-i18n" live_m; …(+10 more)
-
-
-### 🧑 Governor
-
 Still not seeing the logo on this page
 
 [Attachment auto-processed: **b41bf004d21140f389a576305905dafa.jpg**]
@@ -4486,11 +4360,13 @@ The verification catch-block surfaced a **real runtime bug**. Let me confirm the
 ### 🤖 Autopilot
 
 The linked-email elements exist — so the null is `emailLinkedLabel` (line 218 has `<span data-i18n="emailLinkedLabel">` with **no `id`**), which `renderEmailSection()` (line 909) does `getElementById('emailLinkedLabel').textContent = …` on → **throws → the catch overwrites the status with the misleading "Error sending email" even when the POST succeeded**. That's a real pre-existing page bug the click-through just caught. Also the dropdown showed only `[""]` (geolocation timing — the manual path is the reliable route). One clean decisive run, capturing the POST and using the manual tree path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The click-through just caught a **real runtime bug** — the exact class the full-loop test exists to find. Root cause identified precisely. Let me open the fix PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4501,16 +4377,19 @@ The click-through just caught a **real runtime bug** — the exact class the ful
 ### 🤖 Autopilot
 
 PR #24 opened — but the writes payload carried a placeholder again (the recurring trap). Let me fix the branch with the real file (current main + the one-line `id` fix) and verify the diff:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real file ready. Uploading to the PR branch and verifying the diff:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real content now on the branch (commit `b38da4fa`). Verifying the PR diff is clean (should be exactly +1/−1):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4552,6 +4431,7 @@ Say "go" and I'll merge #24 + re-run the click-through to close the E2E with a c
 ### 🤖 Autopilot
 
 Merging sunmint_beta#24 — the emailLinkedLabel fix.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4725,4 +4605,174 @@ I did not invent any elevated access — my identity was already a server-side s
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp/e2e && TS=$(date +%s) && echo "=== 1. client: governor/sentinel gating + keypair storage ===" && curl -s "https://raw.githubusercont; cd /tmp/e2e && echo "=== markTreeInvalid() 995-1040 ===" && sed -n '995,1040p' page_now.html && echo "" && echo "=== constants in tpl_live.j; cd /opt/truesight_autopilot && echo "=== .env key names + format (names only, first 40 chars of values) ===" && grep -iE "^(PUBLIC_KEY|PRIVA; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] For 3 make sure Sentinel also have that permission
+
+Fix that bug you surfaced too
+
+
+### 🤖 Autopilot
+
+Two clear tasks: (1) make the client gate also grant sentinels, and (2) fix the `/dao/contributors` 404. Let me find the correct endpoint in dao_protocol and check whether the lineage cache exposes sentinel flags (so the client can resolve both governor + sentinel from authoritative data).
+
+
+### 🤖 Autopilot
+
+The lineage cache **has `is_sentinel`** (7 sentinels incl. "Sophia Truesight") — so the client can resolve both roles from the authoritative cache. Now finding the correct contributors endpoint in dao_protocol:
+
+
+### 🤖 Autopilot
+
+The search API isn't finding matches in dao_protocol (may not index that repo or the term differs). Let me find the actual API routes by reading the app source directly — checking the main.py / routers structure:
+
+
+### 🤖 Autopilot
+
+The main server file isn't in the visible slice — let me find the FastAPI app entry and the route definitions (where `/dao/contributors` would be defined):
+
+
+### 🤖 Autopilot
+
+The server routes live in `truesight_dao_client/server/routes/dao.py` (the `/dao/*` routes) and the entry is `server/main.py`. The page calls `GET /dao/contributors?public_key=…`. Let me read `dao.py` to find the contributors route and see what path it actually registers:
+
+
+### 🤖 Autopilot
+
+Let me find the contributors route in dao.py directly:
+
+
+### 🤖 Autopilot
+
+The routes confirmed: dao.py has `POST /dao/verify-signature`, `GET /dao/check_digital_signature`, `POST /dao/submit_contribution` — but **no `GET /dao/contributors`** at all. The page's `checkSignatureRegistration()` calls a nonexistent endpoint → 404 for every session.
+
+Best fix path: the page **already fetches the lineage cache** (which has `pk_hash`, `display_name`, `is_governor`, `is_sentinel` per member) — so the client can resolve its own identity + roles from the cache instead of the dead endpoint, which also powers the sentinel gate. Let me verify how `pk_hash` is computed (so the client can match its SPKI key):
+
+
+### 🤖 Autopilot
+
+The lineage cache has `pk_hash` for keyed members (Gary: `pk-wR9zU8JMnEz1`) but **null** for Sophia's cache row — so client-side pk_hash matching is unreliable. The robust fix is a proper **server route**. Let me read the page's `checkSignatureRegistration` fully to design the smallest correct fix:
+
+
+### 🤖 Autopilot
+
+The bug is confirmed at the source: **dao.py has no `GET /dao/contributors` route at all** — the page calls a nonexistent endpoint. The right fix is a server route that returns the contributor's name **and** role flags (governor/sentinel), which also enables the sentinel permission you asked for. Let me check the signature-lookup helper and route wiring:
+
+
+### 🤖 Autopilot
+
+I have the complete picture for both fixes. Now let me check the local dao_protocol checkout (for the mandatory test suite) and build the route precisely from the local file:
+
+
+### 🤖 Autopilot
+
+The fix is clear now. There's **already an existing endpoint** — `GET /dao/check_digital_signature?signature=<SPKI>` (line 303, restored 2026-08-19, CORS `*`) that returns exactly `contributor_name` + `registered` — the page just calls the **wrong path** (`/dao/contributors`). And it has a clean **test** (`tests/test_dao_signature.py`). 
+
+Plan: (1) small server addition — extend `check_digital_signature` to also return `is_governor`/`is_sentinel` flags (so the client can gate both roles from the authoritative server), (2) fix the page to call the correct endpoint. Since this touches dao_protocol (code repo), let me clone + test locally, and check the test file first:
+
+
+### 🤖 Autopilot
+
+I have the complete fix design. Executing: clone dao_protocol, add the `_is_sentinel` helper + governor/sentinel flags to `check_digital_signature`, update the test, and run the suite — one pass:
+
+
+### 🤖 Autopilot
+
+10/10 signature tests pass with the patch. Now the full suite (the hard rule before any push):
+
+
+### 🤖 Autopilot
+
+The full-suite collection error is a pre-existing issue (`cannot import name 'dedup'`) unrelated to my change — but I must verify that claim rather than assume. Checking whether `dedup` exists and whether this fails on a pristine checkout too:
+
+
+### 🤖 Autopilot
+
+Confirmed: the `dedup` collection error is **pre-existing** (fails identically on pristine main, my change restored cleanly). My patch touches none of that path. Let me run the rest of the suite minus those two broken-at-collection modules, to prove my change doesn't break anything:
+
+
+### 🤖 Autopilot
+
+110 passed, 4 failed — but I must confirm those 4 failures are pre-existing (they're in `post_repackaging_cleanup`, an unrelated module, but the rule says verify). Checking them against pristine main:
+
+
+### 🤖 Autopilot
+
+All 4 failures confirmed **pre-existing** (identical on pristine main — unrelated to my change). My change: **10/10 signature tests pass, 110 passed, zero new failures**. Now pushing the dao_protocol PR (server route + test), then the sunmint_beta page fix:
+
+
+### 🤖 Autopilot
+
+The git tool needs explicit edits/writes. Let me push using the actual file contents (read from my patched local clone):
+
+
+### 🤖 Autopilot
+
+Now pushing the dao_protocol PR with explicit edits:
+
+
+### 🤖 Autopilot
+
+PR opened. Verifying the diff is clean, then I'll prepare the sunmint_beta page fix (the second half):
+
+
+### 🤖 Autopilot
+
+PR #148 is clean (**+33/−3, 2 files**). Now the second half — the sunmint_beta page fix: point `checkSignatureRegistration()`/`loadContributorIdentity()` at the correct endpoint and consume `is_governor`/`is_sentinel` (this also implements your "sentinels get the permission" ask). Let me fetch the current page and apply:
+
+
+### 🤖 Autopilot
+
+All patches applied cleanly (JS OK, 3× endpoint refs, 3× sentinel refs, **0 GOVERNORS** — the hardcoded list is gone). The nonzero exit was just the final `grep -c GOVERNORS` returning 0 matches (grep exit 1 on no match) — which is exactly what we want. Now pushing the page fix to sunmint_beta via PR (code repo, reviewed flow):
+
+
+### 🤖 Autopilot
+
+Both PRs are open. Verifying the sunmint_beta PR diff is clean:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging at the tool cap — both PRs are open and verified. Full state below.
+
+## ✅ Done this turn — both fixes built, tested, PR'd
+
+**Root cause (confirmed, not guessed):** the monitor page called `GET /dao/contributors?public_key=…` — **a route that doesn't exist** in dao_protocol (I read the full route list). Every session 404'd → `currentContributorName` never resolved → the governor gate (Mark-invalid, invalid zone) was **dead for everyone**, governors included. Plus the client gate used a hardcoded GOVERNORS list that couldn't include sentinels.
+
+**PR 1 — [dao_protocol#148](https://github.com/TrueSightDAO/dao_protocol/pull/148)** (+33/−3, clean):
+- `GET /dao/check_digital_signature` (the correct, existing endpoint) ACTIVE response now returns **`is_governor` + `is_sentinel`** (new `_is_sentinel()` helper mirroring the sheet column-W logic)
+- **Tests:** `pytest tests/test_dao_signature.py` → **10/10 pass**; full suite **110 passed**; the 4 failures + 2 collection errors are **pre-existing** (verified identical on pristine main via `git stash` — not mine)
+
+**PR 2 — [sunmint_beta#26](https://github.com/TrueSightDAO/sunmint_beta/pull/26)** (+13/−7, 1 file, clean):
+- Both identity calls now hit `check_digital_signature?signature=` (requires `registered`)
+- **Removed the hardcoded GOVERNORS list**; `isCurrentUserGovernor()` now returns true if **governor OR sentinel** (server-authoritative) → **sentinels get the Mark-invalid permission**, exactly per your instruction
+- `node --check` passes; markers verified (3× endpoint, 3× sentinel, 0× GOVERNORS)
+
+## ⏸️ Blocking (not code)
+- Both PRs are **reviewed-PR flow — I did not merge or deploy** (this incident's standing constraint). Merge order matters: **dao_protocol #148 first** (route must be live on Edgar before the page's flags resolve; page falls back to a disabled gate until then).
+- After merging #148, Edgar needs a **deploy/restart** (the dao_protocol host) before the endpoint serves the new fields.
+
+## 📌 RESUME HERE
+1. **Merge dao_protocol#148** → deploy dao_protocol (restart) → verify `GET /dao/check_digital_signature?signature=<sophia_pk>` returns `is_governor:false, is_sentinel:true`
+2. **Merge sunmint_beta#26** → after Pages rebuild, verify on beta: Mark-invalid button renders for my Sophia session (sentinel), invalid zone shows
+3. **Then the invalidation itself** (the original ask): with the gate fixed, attempt mark-invalid on TEST_TREE_E2E — noting `markTreeInvalid()` shares a signed REJECT to Telegram (the GAS handler picks it up); TEST_TREE_E2E still needs either a SunMint-sheet row or the growth-measurement reject path (flagged gap) for the REJECT to find a target
+4. Standing: test-row cleanup via existing governor/sentinel identity (mine qualifies server-side), `sunmint_prod` promotion + `prod_repos` config line — separate approvals
+
+**No elevated access invented** — my Sophia identity is an existing sentinel; the fix just lets the system honor that server-side flag on the client.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → verified lineage cache has `is_sentinel` (7 incl. Sophia Truesight); read dao.py routes (no /dao/contributors exists); read check_digital_signature + sigs helper + main.py; cloned dao_protocol, patched route + test, ran suite (10/10 sig, 110 pass, pre-existing failures confirmed via stash); fetched + patched page (4 edits), node --check OK
+• `git push changes` ×2 → dao_protocol#148 (+33/−3), sunmint_beta#26 (+13/−7) — both diffs verified clean
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×18 → cd /tmp && TS=$(date +%s) && echo "=== lineage cache: sentinel-ish flags ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/lin; cd /tmp && TS=$(date +%s) && echo "=== dao_protocol app tree (top) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/g; cd /tmp && echo "=== dao_protocol source files (excluding venv) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/git/; …(+15 more)
 
