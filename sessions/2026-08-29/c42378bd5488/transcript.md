@@ -2208,6 +2208,7 @@ Everything else (gallery grid `auto-fit`, 16:9 video wrappers, CTA row `flex-wra
 ### 🤖 Autopilot
 
 PR #317 opened. Merging it per the standing merge authorization (governor said "Fix it" and we're in the merge-and-deploy flow).
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2255,31 +2256,37 @@ Also still open (from earlier): **`deploy_autopilot()`** to make the `sync_beta_
 ### 🤖 Autopilot
 
 Explicit go — promoting the mobile-overflow fix (#317, `1f19de7`) to prod. Let me try the sync tool first.
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Same known tool bug (fix merged in #318 but not yet deployed). Doing the sync directly via the GitHub merge-upstream API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Same conflict as last time — prod has its own `[skip ci]` stats refresh commit (`99d8d69`), so merge-upstream won't fast-forward. Last time the ONLY conflicting file was `stats/current.json` (machine-generated cache). Let me confirm the same is true now, then do the safe local merge (keep prod's generated stats, take beta's page).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — the **only** conflict is `stats/current.json`, a machine-generated cache differing purely by a timestamp (`22:35:39Z` prod vs `22:34:26Z` beta). The program page fix merges cleanly. Resolution: keep **prod's** generated stats (it's the fresher cache), take beta's everything else. Committing and pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed to prod (`99d8d69..b14f897`) — final diff exactly **1 file, +8/−4** (the QR-row mobile fix), prod's generated stats untouched. Now verifying the live site picks it up (GitHub Pages builds async):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live page hasn't picked up the change yet (GitHub Pages build is async). Let me check the deployment status properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2443,4 +2450,61 @@ The pair matches the established pattern (receipt + contribution, like the Biale
 • `ssh run` → cd /tmp/tg_attachments && file 2c8749c3d33a4f2183fb34a489e2494b.jpg && ls -la 2c8749c3d33a4f2183fb34a489e2494b.jpg && python3 -c " from PIL 
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-29/cdf980ffa628/transcript.md
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Opps… it was 20 Brazilian reis
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=15208] Opps… it was 20 Brazilian reis @truesight_autopilot_bot
+
+
+### 🤖 Autopilot
+
+The governor corrected the amount: **BRL 20**, not 200. That changes the USD figure too (20 × 0.1940 = **USD 3.88**). Since both events are already in the ledger, let me check the protocol's correction/void mechanism before touching anything.
+
+
+### 🤖 Autopilot
+
+No "correction" event type exists in the catalog. Let me check how ledger errors were handled previously in the context before deciding the protocol-correct move.
+
+
+### 🤖 Autopilot
+
+No correction/void event type exists in the catalog — TrueChain is an append-only, immutable audit trail. So the protocol-correct way is **reversing/correcting entries**: submit the correct events with clear "corrects the earlier submission" references (the originals stay on-chain as history, per the immutability design). Also, the receipt filename I used says "200brl" — I'll upload a correctly-named copy so the evidence matches the true amount.
+
+The corrected math: **20 BRL × 0.1940 = USD 3.88**. Uploading the correctly-named receipt first:
+
+
+### 🤖 Autopilot
+
+Now submitting the corrected events (append-only ledger — new entries that explicitly supersede the earlier ones):
+
+
+### 🤖 Autopilot
+
+## ✅ Corrected — it was BRL 20, not 200
+
+### Corrected numbers
+| | Wrong (earlier) | **Correct** |
+|---|---|---|
+| Amount (BRL) | 200 | **20** |
+| USD equivalent (@ 0.1940) | 38.81 | **3.88** |
+
+### What I recorded (append-only ledger → new entries that supersede the old)
+1. **Receipt renamed** → `sunmint/images/receipts/founderhaus-bougainvillea-20brl-receipt.jpg` ([view](https://github.com/TrueSightDAO/sunmint/blob/main/images/receipts/founderhaus-bougainvillea-20brl-receipt.jpg)) — the original `…-200brl-receipt.jpg` stays in git history (evidence trail intact)
+2. **CONTRIBUTION EVENT (corrected)** — Paloma, **USD 3.88** (20 BRL @ 0.1940), description explicitly says it **supersedes the earlier USD 38.81 entry**
+3. **ASSET RECEIPT EVENT (corrected)** — **BRL 20**, Fund Handler Paloma, corrected receipt attached, explicitly supersedes the earlier BRL 200 entry
+
+### How the ledger reads now
+- The two wrong entries (USD 38.81 / BRL 200) remain on-chain as history — TrueChain is immutable, so they can't be deleted. Each carries the original submission.
+- The two corrected entries are the authoritative ones, clearly marked as superseding, so anyone reconciling sees the true amount: **Paloma contributed BRL 20 → USD 3.88** for the bougainvillea tree.
+
+⚠️ **One flag:** if anything downstream (TDG scoring, dashboards) already read the wrong USD 38.81, it will need the correction noted. Want me to check whether the wrong amount already flowed into any ledger/score? And is **TDG Issued: 0** still right for this?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Contribution submitted successfully.
 
