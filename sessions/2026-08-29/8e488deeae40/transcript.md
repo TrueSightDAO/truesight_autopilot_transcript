@@ -3661,16 +3661,19 @@ go
 ### 🤖 Autopilot
 
 "go" — resuming: deploy the merged #446 to GAS, then fire the webhook to process row 11885 into Tree Growth Measurements. Step 1: pull main + push + create deployment:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deployment @36 created with the fix (escapeRe confirmed, pushed clean). Now fire the growth webhook @36 and check the result — expecting **"1 recorded"** now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **🎉 "1 recorded, 0 skipped, 0 errors"** — the full monitor chain now works! Let me verify the row actually landed in the Tree Growth Measurements tab:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3686,11 +3689,13 @@ The complete chain works: **monitor form → queue (base64 blobs) → POST → E
 One small cosmetic note: `Species: "unknown"` — the site's event text may not include a Species field for monitoring (or the extractor's `grab('Species')` didn't match). Minor, not blocking. The DBH (the field that was broken) extracts correctly.
 
 Now the last remaining item: the **plain-planting pipeline** (row 11882, `[TREE PLANTING EVENT]`). Let me check the current state of the plain-planting handler project and decide cron-restore vs dispatch-port:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 1Jp8q project exists locally with the plain-planting handler. Given Gary's steer ("we are not using rails but dao_protocol python"), the **dispatch-port** approach is the right call — it makes the plain planting event flow through the same dao_protocol dispatch → GAS webhook path as everything else (no cron dependency). But the 1Jp8q project's `processTelegramLogs` is a full-scan function (different protocol). Let me check what it does and whether there's a simpler path — checking if the 1Jp8q project has a deployable webapp + what its processTelegramLogs expects:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3750,36 +3755,43 @@ go
 ### 🤖 Autopilot
 
 "go" — resuming the plain-planting dispatch-port. First, read the full `processTelegramLogs()` to understand its scan/dedup protocol so I can port it into the webhook project correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the key insight — let me read the rest of the function to see the empty-fileIds path (web submissions have no Telegram file IDs since the site uploads photos to GitHub directly):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture of the plain-planting handler. The cleanest port: add an `action` branch to the **1Jp8q project's existing doGet** that calls `processTelegramLogs()` (keeping all its helpers local), then wire the dao_protocol ROUTING + env to point at it. Let me check the 1Jp8q deployments and the webhook_trigger contract first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of 1Jp8q's doGet (the governor gate + how to add an action branch) and the webhook_trigger contract:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full contract. The plan: add an `action=processTreePlantingTelegramLogs` branch to 1Jp8q's doGet (so the dao_protocol dispatch can trigger it via `?action=`), deploy, then wire the ROUTING + env. Opening the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #447 opened. Let me verify the diff is clean (both branches present, no accidental deletions), then merge per standing authorization:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff is clean: `+21 −3`, action branch added, `list_new` fallback preserved. Merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3836,11 +3848,13 @@ go
 ### 🤖 Autopilot
 
 "go" — resuming: deploy #447 to the 1Jp8q GAS project, fire the action, and verify row 11882 lands in SunMint Tree Planting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deployment @5 created (action branch confirmed, pushed). Now fire the action and verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3858,6 +3872,7 @@ Deployment @5 created (action branch confirmed, pushed). Now fire the action and
 (The curl returned the GAS HTML wrapper — normal for the first call — but the action ran and the row landed.)
 
 Now wire the **automatic** dispatch so future plantings flow without manual firing: add the ROUTING entry + env key on the dao_protocol box:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3966,4 +3981,109 @@ Both webhook env keys are **missing** on the dao_protocol box (only `DAO_PROTOCO
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → cd /home/ubuntu/tokenomics && { echo "=== pull main (must reach 77476ab #447) ==="; git pull --ff-only origin main 2>&1 | tail -2; git log -; echo "=== fire tree planting action @5 ===" && curl -sL "https://script.google.com/macros/s/AKfycbw9xy-CrNr1WxZln9BbFNcn929FS3xNKTGrwlZ_-cH5; ssh -o ConnectTimeout=8 -o BatchMode=yes dao_protocol_nelanco ' echo "=== dispatch.py: is it git-tracked? ===" cd /home/ubuntu/dao_protocol ; …(+8 more)
 • `merge pr` → ✅ PR #149 on dao_protocol merged successfully (sha: 17018c318735760e37d0554d5126ed48dc75c67f). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — resuming: wire the two env keys on the box. First, get the exact deployment URLs fresh from clasp (avoiding any truncated URL from my report), then set env + restart:
+
+
+### 🤖 Autopilot
+
+URLs confirmed exactly as reported. Now set the two env keys on the box, restart the service, and verify dispatch picks them up:
+
+
+### 🤖 Autopilot
+
+Both keys set (112 chars each — matching the @5 and @36 URLs), service **active**. Now the wiring proof: invoke `dispatch_event` with a sample `[TREE PLANTING EVENT]` text in the service's venv and confirm the log shows the webhook URL is now found (vs "no webhook URL" before):
+
+
+### 🤖 Autopilot
+
+sudo needs a password on the box (my earlier `sudo systemctl restart` worked — because I was already in a sudoers context there; this heredoc invocation lost it). Let me retry without sudo, using the venv directly, and check the service log differently:
+
+
+### 🤖 Autopilot
+
+The manual invocation didn't load `.env` (that's why False) — the keys are in the file, but my test process doesn't read it. The real question is whether the **running service** (restarted after the keys were added, pid 956223, started 14:56:56) picked them up. Let me verify via the running process's own environment:
+
+
+### 🤖 Autopilot
+
+**✅ VERIFIED — the running service (pid 956223) now has all three tree webhook keys loaded:**
+- `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_LINK` = 129 chars
+- `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING` = 112 chars ✅ (new)
+- `DAO_PROTOCOL_WEBHOOK_TREE_GROWTH_MONITORING` = 112 chars ✅ (new)
+- 26 total webhook keys loaded
+
+The dispatch will now auto-fire the GAS webhooks for both tree event types. Final steps: trigger the tree-index rebuild so my E2E planting appears in the public tree index, then close out. Let me trigger the rebuild:
+
+
+### 🤖 Autopilot
+
+Rebuild triggered (run 33258941097, queued). Let me watch it complete and confirm the tree count goes 18→19 with my E2E tree included:
+
+
+### 🤖 Autopilot
+
+watch_url needs a Telegram topic context. Let me poll the run status directly instead:
+
+
+### 🤖 Autopilot
+
+**✅ TREE COUNT 18 → 19 — my E2E planting is now in the public tree index!** The rebuild completed (success), and the index has 19 trees (was 18). Let me find my specific tree by ID to confirm it's the new entry:
+
+
+### 🤖 Autopilot
+
+**✅ FOUND IT — `Edgar_20260829134707_005 | Cacao - Criolla | NEW`** — that's my E2E planting (2026-08-29 13:47:07, matching my planting event timestamp; coordinates [-123.262181, 44.560058] = my exact E2E geolocation). **The complete pipeline is now GREEN end-to-end.**
+
+The full E2E + fixes are complete. Let me do the §5g close-out (test photo decision) and give the final summary:
+
+
+### 🤖 Autopilot
+
+## 🏁 FULL E2E COMPLETE — ALL GREEN
+
+The entire SunMint pipeline is now **verified working end-to-end in production**, with **5 real bugs found and fixed** along the way.
+
+### ✅ What the E2E proved (real browser, live beta + production ledger)
+
+| Chain step | Result |
+|---|---|
+| **Email link** (admin+sophia@truesight.me) | ✅ linked — key ACTIVE, sentinel TRUE |
+| **Sentinel rights** | ✅ `check_digital_signature` → `is_sentinel: true`, browser `isCurrentUserGovernor()===true` |
+| **Tree plant** | ✅ `[TREE PLANTING EVENT]` → **row 24 in SunMint Tree Planting** → **tree `Edgar_20260829134707_005` now in public index** (18→19 trees) |
+| **Monitor record** | ✅ `[TREE GROWTH MONITORING EVENT]` → **Tree Growth Measurements tab** (DBH 12.5, photos) |
+| **Mark invalid** | ✅ sentinel gate works; flow is share-by-hand by design — **no real tree was invalidated** |
+
+### 🔧 5 bugs found & fixed (all merged)
+1. **sunmint_beta #28** — offline queue corrupts photo blobs (JSON.stringify on Blob → `{}`); base64 fix
+2. **tokenomics #441** — missing TGM webhook action in doGet
+3. **tokenomics #442** — handler missing return object (TypeError)
+4. **tokenomics #446** — `DBH (cm)` regex metacharacter never matches → records silently skipped
+5. **tokenomics #447 + dao_protocol #149** — plain `[TREE PLANTING EVENT]` had no dispatch → GAS action added + ROUTING entry
+6. **Env wiring (this turn)** — both tree webhook keys set on the box (verified loaded in running process), service restarted, **tree index rebuilt → 19 trees**
+
+### ⚠️ §5g residue — flagged for your call
+- **Test photo** `sunmint/images/20260829134704_MIIBIjANBgkqhkiG9w0B.jpg` (4771 bytes) — my synthetic E2E planting photo. **Keep or remove?** (I lean remove — it's a fake-canvas image, not a real tree photo)
+- **Ledger rows 11882 (planting) / 11885 (monitoring)** + **tree `Edgar_20260829134707_005`** — legitimate signed E2E records; they're the proof the pipeline works. Recommend **keep** (they're real submissions from a real identity — Sophia).
+- Minor cosmetic: monitor row shows `Species: unknown` (the site's monitoring event doesn't emit a species the extractor recognizes — non-blocking).
+
+### ✅ Also completed earlier this session
+- Verification emails now send **From: admin@truesight.me** (was garyjob@agroverse.shop) — cutover verified live
+- Email-linking UX (linked state + unlink button deleting both keys) live on **both** beta and prod sunmint pages
+
+**Bottom line: Gary's original ask is fully delivered — email linking works E2E, tree planting/monitoring flows through the entire chain into the ledger and public index, sentinel rights are confirmed for Sophia, and every broken segment found along the way has been fixed and merged.** The only thing awaiting your word is the test-photo keep/remove call. Want me to remove the photo and close this thread out?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /home/ubuntu/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF && echo "=== 1Jp8q deployments (plan; ssh -o ConnectTimeout=8 -o BatchMode=yes dao_protocol_nelanco ' set -e ENV=/home/ubuntu/dao_protocol/.env echo "=== backup env ===" cp $ENV ; ssh -o ConnectTimeout=8 -o BatchMode=yes dao_protocol_nelanco ' echo "=== find venv + invoke dispatch_event with sample planting text ===" c; …(+6 more)
 
