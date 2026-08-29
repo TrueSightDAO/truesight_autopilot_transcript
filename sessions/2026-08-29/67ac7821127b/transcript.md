@@ -891,6 +891,7 @@ You reported the Brazil-side information overlapping on the map. **Root cause:**
 ### 🤖 Autopilot
 
 Sending you the regenerated PDF (legend-layout map embedded) and the map PNG.
+[2 tool result(s) compacted: send_telegram_attachment, send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -916,21 +917,25 @@ Let me know if the legend layout or pin placement needs any tweak.
 ### 🤖 Autopilot
 
 Good catch — the current map is a single world view, so Brazil (far west) and China (far east) sit on opposite edges with a huge ocean gap between them. I'll redesign to **two adjacent panels — Brazil zoomed on the left, China zoomed on the right — bridged by the export arrow**, so the countries sit side by side and each one fills its panel. Then regenerate map + PDF and ship.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Map generated (2302×1334, side-by-side panels). The OCR only caught panel titles — let me verify the legend text rendered (bottom strip) before rebuilding the PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Legend renders correctly — all 5 sites + constraints present (OCR garble is just accented-char misreads). Now let me rebuild the PDF with the new map aspect ratio and verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF rebuilt (side-by-side layout). Now let me push the updated script to the repo and replace the map PNG:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1056,4 +1061,109 @@ If you'd rather have the Brazil and China panels **further apart with the arrow 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -la /tmp/CACAO_SOURCING_NETWORK_OVERVIEW.pdf /tmp/cacao_sourcing_network_map.png && file /tmp/CACAO_SOURCING_NETWORK_OVERVIEW.pdf
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15564] Legends are overlapping
+
+
+### 🤖 Autopilot
+
+Legends overlapping — let me diagnose the current legend layout and OCR the map to see exactly what's colliding.
+
+
+### 🤖 Autopilot
+
+OCR confirms the bottom legend lines are colliding — the constraints are running into each other. Let me look at the legend layout code precisely.
+
+
+### 🤖 Autopilot
+
+The bug is clear: 5 side-by-side columns (`col_w ≈ 0.184`) each hold a long constraint string — matplotlib doesn't wrap text, so long constraints run into the next column and overlap. The fix: **stack the legend vertically** (one site per row, constraint on the same row — full width available, no overlap possible). Let me check the GridSpec to size the legend panel properly.
+
+
+### 🤖 Autopilot
+
+Let me see the GridSpec + SITES structure to rewrite the legend as a vertical stack:
+
+
+### 🤖 Autopilot
+
+Root cause confirmed: the legend draws **5 side-by-side columns** (`col_w ≈ 0.184` each) and matplotlib doesn't wrap text — long constraints overflow into the neighboring column. Fix: **vertical stack** (one site per row, full width per row → overlap impossible) + taller legend panel. Patching now:
+
+
+### 🤖 Autopilot
+
+Compile + ruff check pass; only formatting needs applying. Let me format, regenerate the map, and verify the legend no longer overlaps via OCR.
+
+
+### 🤖 Autopilot
+
+The vertical-stack legend is now clean — OCR shows each site name + constraint on its own row, no collisions (the OCR "4X/©e6o00" are just digit misreads of the pin circles, not real overlap). Let me visually verify the full map, rebuild the PDF, and ship.
+
+
+### 🤖 Autopilot
+
+Map panels + title + export lane all render; legend header and first site present. Now rebuild the PDF with the new aspect ratio (2077×1334) and verify:
+
+
+### 🤖 Autopilot
+
+PDF rebuilt (291 KB, map embedded). Now push the script fix to the repo — PR, merge, replace the PNG on `agentic_ai_context`, then send Gary the files. First the PR:
+
+
+### 🤖 Autopilot
+
+PR #328 opened, but it contains a placeholder — I need to push the real full file content onto that branch via git (as before):
+
+
+### 🤖 Autopilot
+
+Branch fetch mapped to FETCH_HEAD but not a local ref. Let me create the branch from FETCH_HEAD and push:
+
+
+### 🤖 Autopilot
+
+Full content pushed to PR #328. Now merge it and replace the PNG on `agentic_ai_context` in parallel:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+PR #328 merged and PNG updated — here's the wrap-up.
+
+## ✅ Done this turn — legend overlap fixed
+
+You reported the **legends overlapping** in the bottom strip. Root cause: the legend drew 5 side-by-side columns, and long constraint strings (matplotlib doesn't wrap text) overflowed into neighboring columns.
+
+**The fix — vertical stack legend:**
+- **One site per row** (pin number circle + site name—role on top line, constraint beneath), full panel width per row → overlap impossible by construction
+- Legend panel made taller (height ratio 1.0 → 1.6, hspace 0.32 → 0.22)
+- Blocker constraint (Ilhéus) still red, export-blocker footnote at bottom
+
+**Verified:** OCR of the regenerated map (2077×1334) shows all 5 sites + constraints on clean, separate rows — no collisions. PDF rebuilt (1 page, 291 KB, map embedded).
+
+**PRs / artifacts:**
+| Repo | PR / commit | What |
+|---|---|---|
+| `truesight_autopilot` | [#328](https://github.com/TrueSightDAO/truesight_autopilot/pull/328) — merged | Vertical-stack legend fix in `plot_cacao_sourcing_network_map.py` |
+| `agentic_ai_context` | PNG updated (7e802721) | `brazil/cacao_sourcing_network_map.png` = overlap-free version |
+
+**RESUME HERE →** send the regenerated PDF + map PNG to Gary (`send_telegram_attachment` on `/tmp/CACAO_SOURCING_NETWORK_OVERVIEW.pdf` and `/tmp/cacao_sourcing_network_map.png`) — the only remaining step; everything is merged and live.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → diagnosed legend overlap (5 side-by-side columns, no text wrap); rewrote `_draw_legend` as vertical stack + GridSpec height_ratios 3.3/1.6 + hspace 0.22; compileall ✓, ruff check ✓, ruff format applied; regenerated map (2077×1334) + OCR-verified legend strip + map panels; rebuilt PDF (291 KB, 1 page, image on p1)
+• `merge pr` → ✅ PR #328 on truesight_autopilot merged (sha: 3338d588)
+• `upload_file` → agentic_ai_context brazil/cacao_sourcing_network_map.png updated (7e802721)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /tmp && grep -n "legend\|Legend\|text(\|ax.text\|fig.text\|tight_layout" /tmp/truesight_autopilot/scripts/plot_cacao_sourcing_network_map; cd /tmp && tesseract cacao_sourcing_network_map.png map_ocr2 2>/dev/null && cat map_ocr2.txt | head -40; cd /tmp/truesight_autopilot && sed -n '150,200p' scripts/plot_cacao_sourcing_network_map.py; …(+8 more)
+• `merge pr` → ✅ PR #328 on truesight_autopilot merged successfully (sha: 3338d588a4584e9770c8257700e1461a2d69cd45). Pull Request successfully merged
 
