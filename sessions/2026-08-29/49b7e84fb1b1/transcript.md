@@ -972,16 +972,19 @@ Gary's "go" — pushing PR2 now (open → stop at own-repo gate, per the plan's 
 ### 🤖 Autopilot
 
 All content captured. Now push PR2 via `git_push_changes` (branch `feat/emoji-reaction-go-signal-pr2`), using writes for the two new files and edits for the three source files + two test-file appends:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #332 opened, but I only passed the one write — the remaining files (test file, adapter/topic/post edits, test appends) weren't included. Let me push the rest to the same branch to complete the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I omitted the required top-level fields in the second call. Re-issuing with repo/branch/commit_message:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1119,4 +1122,50 @@ On your confirm, I'll: submit the real contribution → tick the PR2 tracker row
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot/dao_protocol && python3 -m truesight_dao_client.modules.report_ai_agent_contribution \ --title "PR2: resume-awai
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15728] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 15728) is the active handoff for `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+do you need to redeploy yourself to be able to respond to emojis?
+
+
+### 🤖 Autopilot
+
+Good question — let me check exactly what's running on the box right now vs. what's on main.
+
+
+### 🤖 Autopilot
+
+Short answer: **yes — the live adapter is still running pre-PR1 code, so it can't see emoji reactions yet.** Let me show you exactly what I found:
+
+## Current live state (this box, `ssh autopilot`)
+
+| What | State |
+|---|---|
+| Live Telegram adapter process | PID 241128, started **10:14**, running `/opt/truesight_autopilot/.venv/bin/python -m app.telegram_adapter` |
+| Deployed checkout HEAD | `10ba5b3` — **`#326` e2e_asset_receipt_test** (predates PR1) |
+| `origin/main` HEAD | `8fe250a` — **`#331` PR1 (receive message_reaction)** — and PR2 `#333` merged after that |
+| So live code has | ❌ no `allowed_updates` for reactions · ❌ no `reaction_emoji_verdict` · ❌ no `resume_registry` |
+
+The adapter serving *this* conversation is the old build. PR1 + PR2 exist only on `origin/main` — **merged, not deployed**.
+
+## What deploy would change (and the plan's gate)
+
+- Deploying **PR1+PR2** → Sophia starts *receiving* reactions and logging go/blocked verdicts, and `resume_registry` starts flagging posted chunks — but reactions would **not yet trigger a resume** (that's PR3).
+- Deploying **PR1+PR2+PR3** → full behavior: emoji reaction on a resume-awaiting message acts as a go-signal, exactly like typing "go for it".
+
+Per plan §2.2, **prod deploy is an always-stop gate**: *"After PR1–PR3 merged → Gary approves `scripts/deploy.sh` + systemd restart."* We're at PR2 merged; PR3 isn't written yet.
+
+## So, how do you want to play it?
+
+1. **Plan default (recommended):** I build **PR3** next (wire reaction → go-signal), you merge, then we do **one deploy** covering PR1–PR3 → full emoji go-signal live + UAT (§5).
+2. **Deploy now (PR1+PR2 only):** you approve an early deploy → reactions get received/logged live, but no resume action until PR3 lands + a second deploy.
+
+Both deploy paths need your explicit "go" (always-stop gate — I won't run `scripts/deploy.sh` / restart systemd on my own). Which do you prefer?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== systemd units (telegram/autopilot) ==="; systemctl list-units --type=service --all 2>/dev/null | grep -iE "telegram|autopilot|soph
 
