@@ -2178,16 +2178,19 @@ sol LTE G3: truesight.me > TrueSight DAO The founding grove — tree planting at
 ### 🤖 Autopilot
 
 Let me diagnose the mobile overflow on the program page — I'll read the page source and its CSS.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full page content to pinpoint which section overflows (the QR row / PDF CTA area based on the screenshot).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The screenshot shows the `.program-qr-row` box overflowing on mobile — the long unbroken URL `truesight.me/qr/?id=2024OSCAR_CT_20260820_1` and the flex row (fixed 128px QR image + text) don't wrap. Let me read the full inline style block and check `main.css` for the CTA row too.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2199,6 +2202,7 @@ I've got the full picture. The culprit is the `.program-qr-row` block (the QR + 
 3. No mobile media query to stack/center
 
 Everything else (gallery grid `auto-fit`, 16:9 video wrappers, CTA row `flex-wrap: wrap`) is already responsive-safe. Fixing the QR row CSS in `truesight_me_beta`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2364,5 +2368,79 @@ Submitting a CONTRIBUTION EVENT to the ledger with the USD amount (no TDG issued
 
 ———
 **✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+Use this attachment instead
+
+[Attachment auto-processed: **2c8749c3d33a4f2183fb34a489e2494b.jpg**]
+- Type: Image (OCR confidence: 56.2%, quality: good)
+
+Extracted text:
+```
+BROGAN VILLE : Referente a ——— : @ para clareza firmo (amos) o presente. j Ov FE\et Zo _ EOS SO. ce | BONNE = ssinatura .. i us ee ae WDE DEN ' ao 2B. BU 23_O8F4 e. RC
+```
+
+
+### 🤖 Autopilot
+
+Let me inspect this attachment properly (it's a Portuguese receipt — I'll OCR it in Portuguese), and check how contribution receipts are conventionally attached.
+
+
+### 🤖 Autopilot
+
+The attachment is the actual **bougainvillea receipt** (Portuguese, "BROGAN VILLE" ≈ bougainvillea, "Referente a...", dated ~Feb, with "assinatura" — signed). The governor wants this as the evidence for Paloma's contribution, instead of the earlier unrelated Singapore letter. Let me check how receipts get linked to contribution records, and persist the attachment to the transcript.
+
+
+### 🤖 Autopilot
+
+The context shows there's an established **ASSET RECEIPT EVENT** pattern (receipt uploaded to GitHub + submitted event — like the Bialetti Moka case). "Use this attachment instead" = use the bougainvillea receipt as the evidence for Paloma's BRL 200 contribution. Let me get the ASSET RECEIPT EVENT format and persist the attachment.
+
+
+### 🤖 Autopilot
+
+The context shows the established pattern: upload the receipt to GitHub, then submit an **ASSET RECEIPT EVENT** (like the Bialetti Moka case — receipt + contribution pair). I'll upload the bougainvillea receipt to the FounderHaus media store, then record the asset receipt.
+
+
+### 🤖 Autopilot
+
+Receipt uploaded. Now submitting the ASSET RECEIPT EVENT with the receipt as evidence (currency BRL 200, per the receipt; the USD conversion is already recorded in the contribution).
+
+
+### 🤖 Autopilot
+
+## ✅ Done — receipt attached to Paloma's bougainvillea contribution
+
+The receipt you sent is now the official evidence, replacing the earlier (unrelated Singapore letter).
+
+### What I did
+1. **Inspected the receipt** — it's the bougainvillea purchase receipt (Portuguese: "BROGAN VILLE", "Referente a…", signed, dated ~Feb, ref 08F4). OCR'd in Portuguese and persisted to the session transcript.
+2. **Uploaded it to GitHub** → `sunmint/images/receipts/founderhaus-bougainvillea-200brl-receipt.jpg` ([view](https://github.com/TrueSightDAO/sunmint/blob/main/images/receipts/founderhaus-bougainvillea-200brl-receipt.jpg))
+3. **Recorded an ASSET RECEIPT EVENT** (Edgar):
+   - **Currency:** BRL · **Amount:** 200 · **Fund Handler:** Paloma
+   - **Description:** Bougainvillea tree at FounderHaus Farm (`FOUNDERHAUS_BOUGAINVILLEA_20260821_1`), receipt linked
+   - **Attached:** `founderhaus-bougainvillea-200brl-receipt.jpg`
+
+### Ledger state now
+| Event | Amount | Evidence |
+|---|---|---|
+| CONTRIBUTION EVENT (Paloma) | **USD 38.81** (200 BRL @ 0.1940) | previous |
+| ASSET RECEIPT EVENT (Paloma) | **BRL 200** | ✅ receipt on GitHub |
+
+The pair matches the established pattern (receipt + contribution, like the Bialetti Moka case) — the receipt is now permanently linked on-chain. If you want TDG issued for the USD 38.81 contribution, tell me the amount and I'll submit it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ocr image` ×1 (Portuguese) · `ssh run` ×1 (file/dims) · `search context` ×2 (receipt patterns)
+• `append to transcript` → session transcript
+• `upload local file to github` → sunmint/images/receipts/founderhaus-bougainvillea-200brl-receipt.jpg (commit `dfc4747`)
+• `submit contribution` → ASSET RECEIPT EVENT submitted successfully (BRL 200, Paloma)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && file 2c8749c3d33a4f2183fb34a489e2494b.jpg && ls -la 2c8749c3d33a4f2183fb34a489e2494b.jpg && python3 -c " from PIL 
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-29/cdf980ffa628/transcript.md
 • `submit contribution` → Contribution submitted successfully.
 
