@@ -4179,61 +4179,73 @@ The new submission should be around rows 11888+. Let me read the actual tail pro
 ### 🤖 Autopilot
 
 Row 11888 (`Edgar_20260829150131_001`) is the new auto-dispatch test submission — but SunMint Tree Planting still has only 24 rows. The dispatch didn't fire. Let me check the service logs around that submission to see what dispatch_event did:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 15:01:33 POST (row 11888) was handled by the **new** pid (956587) — but there's no dispatch log line. The dispatch likely runs inside `submit_contribution` but doesn't log. The question: did it call the webhook? Let me check the dispatch_event implementation to see if it's wired into the submit path at all, and check the GAS webhook's access logs (the planting action was fired?):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Found it — `dispatch_event` is never called from the submit path!** The grep shows only the definition (line 105), zero callers. My #149 ROUTING entry is dead code until the submit handler actually invokes `dispatch_event(text)`. Let me confirm where submissions are handled and add the call:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 dao.py isn't where submissions are handled (no matches). Let me find the actual submit handler + the telegram_raw_log add_record call:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The submit handler is `server/routes/dao.py` (with `add_record`). Let me read where it logs the submission and add the `dispatch_event` call right after — the missing wiring that makes my ROUTING entry actually fire:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Correction to my earlier read — dispatch IS wired** (line 501: `background.add_task(dispatch.dispatch_event, text)`). So the 15:01:33 submission should have fired the webhook. But the tab still shows 24 rows — meaning the webhook call either failed or the GAS handler didn't process the new rows. Let me test the webhook directly + read the trigger function:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 dispatch IS wired (line 501) — so the webhook should have fired at 15:01. The tab didn't grow, so either the trigger call failed silently or logging is configured off. Let me check the trigger implementation + whether dispatch logs are visible anywhere (logger config):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Found ANOTHER real bug!** The @5 webhook now errors: `ReferenceError: setApiKeys is not defined (line 11, file "process_tree_planting_telegram_logs")`. So the dispatch DID fire the webhook — but the GAS handler crashed, which is why rows 11887/11888 never processed. The `setApiKeys` function lives in a `Credentials.js` file that my `clasp push` for #447 evidently removed from the project (classic GAS secret-file trap — clasp syncs the folder, so if Credentials.js is gitignored and absent locally, pushing deletes it from the project). Let me confirm:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Root cause confirmed:** `Credentials.js` is gitignored (`google_app_scripts/**/Credentials.js`), missing locally, and my `clasp push` (which syncs the folder — not in .claspignore) **deleted it from the live GAS project**. So the @5 deployment crashed on `setApiKeys is not defined`. The fix: the file must be restored to the GAS project. It's the live project's stored Credentials.js — I can't recover it from git (gitignored), but the project's **older deployments** (@4, @2) still have it. Let me check what setApiKeys sets and restore it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Credentials.sample.js is empty here too. The live project's old deployments (@4/@2) still have the real Credentials.js — the cleanest fix is to **redeploy @4's code as the new HEAD** (it has Credentials.js + the pre-#447 code), then re-apply #447's action branch. But actually simpler: the code only calls `setApiKeys()` at line 11 — let me check what it does and whether the script properties are already set (they were seeded by @4 "idempotent seeding"). If the properties exist, I can safely remove/replace the `setApiKeys()` call with a guard:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand the full structure: line 11 calls `setApiKeys()` then `getCredentials()` (both from the missing Credentials.js). The safest fix that doesn't require recovering the secret file: **guard the calls** so they only run when the file exists, and make `creds` optional. The `getCredentials()` result is used where? Let me check, then patch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `creds` is used heavily (TELEGRAM_API_TOKEN, SHEET_ID, GITHUB_API_TOKEN) — the real Credentials.js is genuinely needed, not optional. The correct fix is to **restore Credentials.js to the live project**. It's not in git, but the **@4/@2 deployments still have it in the project** — I can restore it by pulling the project's current file list via the Apps Script API (which shows the live files including Credentials.js) and re-adding it. Let me check what the live project actually contains now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4241,6 +4253,7 @@ Now I understand the full structure: line 11 calls `setApiKeys()` then `getCrede
 Confirmed: **Credentials.js is GONE from the live project** (my `clasp push` deleted it — the folder-sync trap). The live project now only has appsscript.json, process_tree_planting_telegram_logs.js, Version.js. 
 
 The good news: **deployment @4 was a version with Credentials.js present**. Since GAS versions are immutable snapshots of the whole project, I can recover `Credentials.js` content from the **@4 version snapshot**. Let me check the @4 deployment's script version and pull that version's file content via the Apps Script API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4302,6 +4315,7 @@ go
 ### 🤖 Autopilot
 
 "Go" — resuming the Credentials.js recovery. Step 1: hunt for any local copy of the file (pre-push backups, older checkouts, /tmp, /opt) and check the live project's script properties:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4414,4 +4428,74 @@ Site → Edgar → Chat Logs → dispatch (auto) → GAS @7 → SunMint Tree Pla
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → echo "=== hunt for any Credentials.js / setApiKeys copies on this box ===" find /home/ubuntu /opt /tmp -name "Credentials.js" -o -name "Cred; echo "=== quick targeted hunt (home + tmp, name only) ===" ls /home/ubuntu/tokenomics/google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2; cd /home/ubuntu/tokenomics echo "=== root Credentials.sample.js (structure template) ===" cat google_app_scripts/Credentials.sample.js 2>/de; …(+8 more)
 • `merge pr` → ✅ PR #448 on tokenomics merged successfully (sha: 1e31ee82eb532387dee7679a101670ebdc42aa8f). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15530] [Handoff context — this Telegram topic (thread 15530) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go
+
+
+### 🤖 Autopilot
+
+"go" — final close-out unit: write the runbook, remove the test photo (my lean, will flag), and submit the contribution report. Let me first check the test photo's current state + the runbook conventions in agentic_ai_context:
+
+
+### 🤖 Autopilot
+
+The test photo still exists (4771 bytes, sha `86189ea1f7`). Now let me write the runbook — a detailed, followable doc for future Sophias/LLMs covering the whole E2E + the incident traps. I'll place it as `SUNMINT_E2E_RUNBOOK.md` in agentic_ai_context (matching existing naming conventions like `AGROVERSE_CHECKOUT_E2E_POLICY.md`):
+
+
+### 🤖 Autopilot
+
+The tool rejected the call — likely the large writes array hit a validation edge. Let me retry with the same parameters (the error says repo/branch/commit_message required — they were present, so this may be a transient parse issue with the big payload):
+
+
+### 🤖 Autopilot
+
+Runbook PR #840 opened. Now merging it (docs-only, standing authorization), then the contribution report:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ This turn: runbook written + merged (PR #840)
+
+**Merged:** 🔀 [agentic_ai_context #840 — docs: SUNMINT_E2E_RUNBOOK — reproducible E2E + pipeline map + incident traps](https://github.com/TrueSightDAO/agentic_ai_context/pull/840) (sha `ec82962`)
+
+**What changed:** added `SUNMINT_E2E_RUNBOOK.md` — the detailed, followable guide for future Sophias/LLMs covering:
+1. **Pipeline map** — the full chain (site → Edgar/dao_protocol → Telegram Chat Logs → dispatch → GAS webhooks @7/@36 → SunMint sheets → tree index)
+2. **The E2E procedure** — email link → sentinel check (with the URL-encode trap) → plant → monitor → mark-invalid (share-only), including selectors (`#emailInput`, `#treeSubmitBtn`, bare-identifier blob trick), keypair injection, and expected results
+3. **Key identifiers table** — sheet IDs, GAS project IDs + deployment URLs, env keys, box aliases, SA paths
+4. **7 incident traps** — the clasp-push Credentials.js deletion (+recovery pattern), empty-file PR writes, URL-encoding, Blob serialization, regex metacharacters, stale checkouts, CDN cache variants
+5. **§5g cleanup pattern** — which test rows to delete vs keep, and with which SA
+
+**Also confirmed:** test photo `sunmint/images/20260829134704_MIIBIjANBgkqhkiG9w0B.jpg` still present (4771 bytes, sha `86189ea1`) — pending your keep/remove call.
+
+## RESUME HERE → final unit (close-out)
+1. **Test photo call (yours):** remove `20260829134704_MIIBIjANBgkqhkiG9w0B.jpg` from `TrueSightDAO/sunmint` (my lean — synthetic canvas image) or keep as fixture. I'll execute whichever you say.
+2. **Contribution report** — submit for **you and me** via `create_dao_submission` (Edgar), with evidence PRs: sunmint_beta #22/#23/#25/#28, tokenomics #441/#442/#446/#447/#448, dao_protocol #149, agentic_ai_context #840 + the email-sender cutover (admin@truesight.me).
+3. **Final thread summary** — one consolidated wrap-up of the whole E2E campaign for the record.
+
+**Bottom line: the runbook is merged and the pipeline is fully documented — anyone (or any future agent) can now reproduce the E2E and operate the SunMint tree pipeline from the doc alone. Two small close-out items remain (photo decision + contribution report), which I'll land next turn.**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 → verified test photo still in sunmint repo (name/size/sha); checked agentic_ai_context doc conventions
+• `git_push_changes` + `merge_pr` → **PR #840 merged** (sha `ec82962`) — SUNMINT_E2E_RUNBOOK.md added
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 → echo "=== test photo in sunmint repo (current state) ===" cd /tmp curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/images/20260829134704_MIIBIjANBgkqhkiG9w0B.jpg" 2>/dev/null | python3 -c "import json,sys; d=json.load(sys.stdin); print('name:', d.get('name'), '| size:', d.get('size'), '| sha:', (d.get('sha') or '')[:10])" 2>/dev/null || echo "NOT FOUND (already removed?)" echo "" echo "=== runbook docs in agentic_ai_context (existing conventions) ===" curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/contents/" 2>/dev/null | python3 -c "import json,sys; [print(f['name']) for f in json.load(sys.stdin) if f['type']=='file']" 2>/dev/null | head -40
+• `merge pr` → ✅ PR #840 on agentic_ai_context merged successfully (sha: ec8296299663efef2c825c7f64a78f223d33533d). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== test photo in sunmint repo (current state) ===" cd /tmp curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/images
+• `merge pr` → ✅ PR #840 on agentic_ai_context merged successfully (sha: ec8296299663efef2c825c7f64a78f223d33533d). Pull Request successfully merged
 
