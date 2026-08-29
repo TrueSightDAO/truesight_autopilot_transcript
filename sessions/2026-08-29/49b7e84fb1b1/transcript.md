@@ -990,11 +990,13 @@ I omitted the required top-level fields in the second call. Re-issuing with repo
 ### 🤖 Autopilot
 
 The search string didn't match the actual `telegram_topic.py` TOOL_SPEC text. Let me fetch the exact current text from the branch (the first push succeeded, so the file may already have my import + function edits from earlier attempts — let me check what the branch currently has for the TOOL_SPEC region).
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch's `telegram_topic.py` shows the TOOL_SPEC properties don't include a `session_id` property (it's passed via ctx) — my search string assumed wrong structure. Cleanest fix: push the exact tested files from the worktree as whole-file writes. Let me grab the final content of all 5 remaining files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1168,4 +1170,166 @@ Both deploy paths need your explicit "go" (always-stop gate — I won't run `scr
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== systemd units (telegram/autopilot) ==="; systemctl list-units --type=service --all 2>/dev/null | grep -iE "telegram|autopilot|soph
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15728] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 15728) is the active handoff for `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+1
+
+
+### 🤖 Autopilot
+
+Option 1 (plan default) — building **PR3** (reaction → go-signal wiring), then one deploy covering PR1–PR3 + UAT. First, the current post-PR1/PR2 code: the `handle_message_reaction` / `_handle_reaction_safe` / `run()` dispatch and the text go-signal enqueue path (so PR3 reuses the exact same `_thread_dispatch_lock` + `call_chat_with_progress` route).
+
+
+### 🤖 Autopilot
+
+I have the exact post-PR2 code. Now I need the **text go-signal enqueue path** in `handle_message` — how a text "go" currently reaches `_thread_dispatch_lock` + `call_chat_with_progress` (the path PR3 must reuse). Let me read the rest of the artifact (run() tail) + the go-signal handling inside `handle_message`.
+
+
+### 🤖 Autopilot
+
+Confirmed: `run()` dispatches `message_reaction` → `_handle_reaction_safe` ✓ (PR1 live on main). Now I need the **text go-signal path** inside `handle_message` — how `_looks_like_go_signal` + `_handoff_prefix` currently enqueue through `_thread_dispatch_lock` + `call_chat_with_progress`, so PR3 reuses the exact same route. Let me read the middle of `handle_message`.
+
+
+### 🤖 Autopilot
+
+I have the pattern — `handle_message` wraps `dispatch_text` with `_handoff_prefix`, prepends Telegram context, then `lock = _thread_dispatch_lock(chat_id, thread_id)` + `call_chat_with_progress`. PR3 must mirror this for the reaction path. Let me read the rest (the exact `call_chat_with_progress` call + `_GO_SIGNAL_RE`/`_handoff_prefix` definitions) to copy the shape precisely.
+
+
+### 🤖 Autopilot
+
+I have the shape. Let me get the exact `with lock:` → `call_chat_with_progress` block and `_handoff_prefix`/`_GO_SIGNAL_RE` definitions in one focused read (these are the exact code PR3 must mirror).
+
+
+### 🤖 Autopilot
+
+The enqueue path is `_run_turn_with_auto_advance` (the final call in `handle_message`). Let me read it + the tail of `handle_message`, and check PR1's existing reaction tests (so PR3 tests match conventions).
+
+
+### 🤖 Autopilot
+
+All PR3 anchors confirmed. I now have the full picture — `handle_message_reaction` (log-only, PR1) needs PR3's wiring: on authorized + go verdict + resume-awaiting message → synthesize `[emoji-go: …] go for it` → enqueue via the **same** `_thread_dispatch_lock` + `_run_turn_with_auto_advance` path a text go-signal uses, with `_handoff_prefix` context, and consume the registry entry.
+
+Let me set up the clean worktree at the current main (95fa2ca, post-PR2) and write the PR3 code + tests.
+
+
+### 🤖 Autopilot
+
+The worktree HEAD (d4f4147) doesn't match origin/main (95fa2ca) and `handle_message_reaction` isn't found — the clone picked up a stale ref. Let me verify and fix the checkout.
+
+
+### 🤖 Autopilot
+
+The clone's `origin/main` is stale (it grabbed an old ref `d4f4147` = #315, not current `95fa2ca`). Let me fetch the real main directly into the worktree.
+
+
+### 🤖 Autopilot
+
+The clone's origin points at the **local** `/opt/truesight_autopilot` checkout — whose `origin/main` ref is stale (local main is `10ba5b3`; origin/main there is `8fe250a`, but the clone fetched `d4f4147`?? — the local repo's `origin/main` must be at d4f4147). Let me update the local repo's refs first, then reclone. Actually simpler: clone directly from GitHub.
+
+
+### 🤖 Autopilot
+
+Clean worktree at `95fa2ca` (post-PR2) with `handle_message_reaction` present. Now I'll write the PR3 change: extend `handle_message_reaction` to (on authorized + go + resume-awaiting) consume the registry entry and enqueue a synthesized go-signal through the same `_thread_dispatch_lock` + `_run_turn_with_auto_advance` path. Let me view the exact current function + the `_run_turn_with_auto_advance` signature to mirror it.
+
+
+### 🤖 Autopilot
+
+All anchors confirmed — `handle_message_reaction` is log-only (PR1), `_run_turn_with_auto_advance` is the enqueue path. Writing PR3 now: extend the handler to (on authorized + go + resume-awaiting) consume the registry entry and enqueue a synthesized `[emoji-go: …] go for it` through the same lock + turn path. Applying the edit to the worktree:
+
+
+### 🤖 Autopilot
+
+Adapter patched. Now add the PR3 unit tests (go-reaction resumes, 👎 doesn't, non-resume message ignored, non-allowed reactor ignored, unusable thread, no-identity) to `tests/test_telegram_adapter.py`:
+
+
+### 🤖 Autopilot
+
+Tests appended and parse. Now the local test suite (hard rule) — compileall → ruff check → ruff format --check → pytest:
+
+
+### 🤖 Autopilot
+
+compileall ✓, ruff check ✓, **64 adapter tests pass** (incl. my 6 new PR3 tests). Only ruff format flags the two touched files — my appended blocks need formatting (the PR1/PR2 files were ruff-formatted before). Let me auto-format just those two files, then re-verify + run the full suite.
+
+
+### 🤖 Autopilot
+
+**806 passed** (64 adapter tests incl. my 6 new PR3 tests). The 3 `test_events_catalog.py` failures are the same **pre-existing** httpx-monkeypatch issue I confirmed on clean origin/main back during PR1 (they fail without my changes — unrelated to PR3). Let me confirm the worktree diff is exactly my PR3 change (adapter + tests only) before pushing.
+
+
+### 🤖 Autopilot
+
+Test side-effects again (`app/data/events_catalog_snapshot.json` deleted, `followups/state.json` modified by the catalog tests) — reverting them so the PR contains exactly the 2 intended files:
+
+
+### 🤖 Autopilot
+
+Exactly the 2 intended files. Now the final diff review of the adapter change before pushing:
+
+
+### 🤖 Autopilot
+
+Diff is clean and exactly per plan PR3 — mirrors the text go-signal path (handoff prefix + Telegram context + per-thread lock + `_run_turn_with_auto_advance`), consumes the registry entry, and handles the negative cases. Now push via `git_push_changes` (single edit hunk for the adapter + a write for the test-file append). Let me capture the exact hunks from the worktree diff to pass as edits:
+
+
+### 🤖 Autopilot
+
+One more recon call — get the exact (ruff-formatted) appended test block + the main tail anchor for the push hunks:
+
+
+### 🤖 Autopilot
+
+All content captured. Pushing PR3 via `git_push_changes` — one edit for the adapter (replace the PR1 log-only function with the PR3 resume-wiring version) + one edit appending the tests to the tail anchor:
+
+
+### 🤖 Autopilot
+
+PR **#334** opened with the complete PR3 changeset (both edits applied). Now I need to handle the merge question. Per the plan, own-repo merge = human (Gary). But this turn came in via `[AUTO-ADVANCE]`? No — it's Gary's "1" (option 1: build PR3, then one deploy covering PR1–PR3). His "1" authorized building PR3, not explicitly merging it. However, the plan's §5a is "one PR per execution turn, then stop" — and Gary's earlier pattern has been: I open, he says "go", I merge. The safest reading: **open PR3 and stop at the own-repo gate** (Gary merges, like PR1/PR2).
+
+Let me post the progress into the thread and stop with the report.
+
+
+### 🤖 Autopilot
+
+## Turn report — PR3 built & opened (stopped at own-repo gate)
+
+Gary's "1" = build PR3 now, then one deploy covering PR1–PR3. **PR3 is complete and open — waiting for your merge.**
+
+| PR | Repo | Result |
+|---|---|---|
+| **[#334](https://github.com/TrueSightDAO/truesight_autopilot/pull/334)** — PR3: wire emoji reaction → go-signal resume | `truesight_autopilot` | ✅ Open (sha `59d4485`) |
+
+### What PR3 does (per plan §2.1 PR3 + decisions 0.1–0.6)
+- **`handle_message_reaction`** now, when reactor is **authorized** (same gate as text go — 0.3) **AND** verdict is **"go"** (deny-list, 👎 excluded — 0.1) **AND** message is **resume-awaiting** (0.2):
+  - `resume_registry.lookup(message_id)` — **consuming** (0.4, entry pruned once used)
+  - recovers `thread_id` from the registry (a `message_reaction` carries no `message_thread_id`)
+  - synthesizes `[emoji-go: <emoji> from user <id>] go for it[ — original resume text: …]` and enqueues through the **same** `_thread_dispatch_lock` + `_run_turn_with_auto_advance` path a typed go-signal uses — with `_handoff_prefix` + `[Telegram context: …]` (0.6 additive; text go-signals unchanged)
+- **Negatives (no resume):** 👎 · non-resume message · non-allowlisted reactor · unusable thread (log) · no governor identity (⚠️ notify, no turn)
+- New helpers `_reaction_resume_entry_thread` / `_maybe_resume_from_reaction`; **6 new unit tests**
+- **Validation:** compileall ✓ · ruff check ✓ · ruff format ✓ · **pytest 806 passed, 1 skipped** (3 events_catalog failures pre-existing — reproduced on clean main during PR1); side-effect files reverted; PR touches only the 2 intended files
+
+### Plan state
+| Unit | PR opened | Merged | Contribution |
+|---|---|---|---|
+| PR1 | ☑ #331 | ☑ | ☑ |
+| PR2 | ☑ #333 | ☑ | ⏸️ **pending your go** (dry-run'd: 75 min → 125 TDG) |
+| PR3 | ☑ **#334** | ☐ **← you merge** | ☐ |
+| Deploy | — | — | ☐ (after PR3 merged — always-stop, your approval) |
+
+**Two pending gates need you:**
+1. **Merge #334** (own-repo gate — I don't self-merge)
+2. **PR2 contribution** — the dry-run payload (75 min / 125 TDG) is still waiting on your explicit go from earlier; say "go" to submit
+3. After #334 merges: **deploy approval** for PR1–PR3 (always-stop)
+
+---
+
+**RESUME HERE** = after you merge #334 (+ optionally approve the PR2 contribution): report PR3 contribution (dry-run first, TDG gate), tick PR3 tracker row, then **deploy gate** — with your approval run `scripts/deploy.sh` + systemd restart covering PR1–PR3 → UAT §5 (scratch topic, fake ready message, 👍/❤️/🔥 resume + 👎/non-allowlisted/non-resume negatives). PR4 (docs) after UAT.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×18 → cd /opt/truesight_autopilot && git fetch origin main --quiet 2>&1 | tail -1; echo "=== _GO_SIGNAL_RE / _looks_like_go_signal / _handoff_pref; cd /opt/truesight_autopilot && echo "=== _thread_dispatch_lock usage + call_chat_with_progress (1700-1800) ==="; git show origin/main:app/te; cd /opt/truesight_autopilot && echo "=== _GO_SIGNAL_RE / _looks_like_go_signal / _handoff_prefix (338-410) ==="; git show origin/main:app/te; …(+15 more)
 
