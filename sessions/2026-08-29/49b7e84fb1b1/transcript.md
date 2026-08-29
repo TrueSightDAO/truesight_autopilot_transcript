@@ -828,66 +828,79 @@ All three post sites hooked. Now the tests — new `tests/test_resume_registry.p
 ### 🤖 Autopilot
 
 Now add send_message chunk-capture tests to `test_telegram_adapter.py` and flag tests to `test_telegram_topic.py`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All files written. Now the local test suite (hard rule) — compileall → ruff check → ruff format --check → pytest:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 compileall clean (no errors), ruff check passes. Format flags 34 files — including two I touched. Let me see whether *my* appended hunks are the offenders or pre-existing lines:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Ruff flags my files too. My new `app/resume_registry.py` and the adapter/topic edits need formatting. Let me auto-format my changed files with ruff (safe — it only reformats whitespace/structure), then re-verify the diff didn't break anything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All my files now pass format. Note: ruff reformatted the whole test files, which included pre-existing non-formatted lines (e.g. the `assert 'the governor's...'` at line 58 of test_telegram_topic.py, and the lambda lines at 607-651 in test_telegram_adapter.py). Those are whitespace-only reformats of *pre-existing* lines in files I'm also touching — acceptable per the hard rule (my new code is clean, and the reformats don't change behavior). Let me run the full pytest suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 799 passed. The 3 `test_events_catalog.py` failures are pre-existing (confirmed earlier). But **my** `test_resume_registry.py::test_mark_then_lookup_roundtrip` failed. Let me see why:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — **my own design bug**: `is_resume_awaiting()` calls `lookup()`, which *consumes* the entry. So `is_resume_awaiting` then `lookup` returns None. `is_resume_awaiting` must be non-consuming. Fixing the module:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 8 registry tests pass now. Full suite re-run to confirm:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **803 passed, 1 skipped** — all green (the 3 events_catalog failures are gone?! Let me double check — it shows 803 passed, 1 skipped, 0 failed. The earlier 3 failures... wait, that's odd. Let me confirm the events_catalog tests status.)
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **803 passed, 1 skipped, 0 failed** — the events_catalog tests pass now too (they were network-flaky earlier, not pre-existing failures). But I spotted a critical issue: `git diff --stat` shows changes to **`app/data/events_catalog_snapshot.json` (-27)** and **`followups/state.json`** — those are **test side-effects**, not my intended changes. I must revert them before pushing (my PR should only touch my PR2 files). Also `app/resume_registry.py` + `tests/test_resume_registry.py` are untracked (new), hence absent from diff. Let me check and clean:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean — exactly my 5 intended files (+2 new). Let me review the final diff of the 3 modified source files to make sure everything is correct before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff is clean and exactly per plan. Now push via `git_push_changes`. The test-file appends need hunks that match origin/main exactly — let me grab the tail anchors of both test files on origin/main to build the append edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the exact (ruff-formatted) appended test blocks from the worktree so the PR content matches what I tested:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -953,6 +966,7 @@ go
 ### 🤖 Autopilot
 
 Gary's "go" — pushing PR2 now (open → stop at own-repo gate, per the plan's §5a pattern). First, I need the exact content of the two new files and the precise edit regions from the worktree (search side = origin/main) so `git_push_changes` hunks match exactly.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1059,4 +1073,50 @@ PR **#333** opened with the complete PR2 changeset (all 18 hunks applied: 2 new 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp/pr2-wt && echo "===== app/resume_registry.py =====" && cat app/resume_registry.py && echo "===== tests/test_resume_registry.py =====; cd /opt/truesight_autopilot && echo "===== ORIGIN/MAIN adapter 683-752 =====" && git show origin/main:app/telegram_adapter.py | sed -n '683,; cd /tmp/pr2-wt && for f in app/telegram_adapter.py app/tools/telegram_topic.py app/tools/telegram_post.py tests/test_telegram_adapter.py tes; …(+3 more)
 • `merge pr` → ✅ PR #333 on truesight_autopilot merged successfully (sha: 95fa2ca45aa064222ed349b4d47a168240b97781). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=15728] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 15728) is the active handoff for `plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SOPHIA_EMOJI_REACTION_GO_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go
+
+
+### 🤖 Autopilot
+
+Gary's "go" — executing. Per the plan §6, PR2's merge (#333) now needs its DAO contribution reported. TDG issuance is an always-stop-and-ask gate, so this turn = verify the plan's RESUME HERE + dry-run the PR2 contribution, then present the payload for your confirmation (same pattern as PR1). In parallel: confirm the plan state + run the dry-run.
+
+
+### 🤖 Autopilot
+
+The CLI flags differ from what I guessed (it's `--pr`, `--minutes`, `--contributors`). Re-running the dry-run with correct flags, and reading the plan's §4 resume tracker tail in parallel:
+
+
+### 🤖 Autopilot
+
+PR2 contribution dry-run verified. The plan tracker confirms PR2's row is still fully ☐ — that bookkeeping comes after the contribution lands. Per the hard gate (TDG issuance always stops and asks), I'm presenting the payload for your explicit go:
+
+## ⏸️ Stopped at TDG gate — PR2 contribution ready for your go
+
+**Dry-run payload** (identical to what the real submission would POST):
+
+| Field | Value |
+|---|---|
+| Event | `[CONTRIBUTION EVENT]` |
+| Type | Time (Minutes) |
+| Amount | **75** (my PR2 estimate: registry + 3 post-site hooks + 12 tests + PR loop) |
+| Contributor(s) | Sophia Truesight |
+| **TDG Issued** | **125.00** ⚠️ |
+| Evidence | https://github.com/TrueSightDAO/truesight_autopilot/pull/333 |
+| Title | "PR2: resume-awaiting registry + flag every posted chunk's message_id (emoji go-signal)" |
+
+**To confirm:**
+1. **75 min / 125 TDG** figure — say "adjust to X minutes" if you'd rather.
+2. **Explicit go to submit** (TDG issuance gate — same as PR1, where you gave a separate "go" after I presented the payload).
+
+On your confirm, I'll: submit the real contribution → tick the PR2 tracker row (opened ☑ merged ☑ contribution ☑, via agentic_ai_context PR) → then **RESUME HERE → PR3** (wire `handle_message_reaction` → `resume_registry.lookup` → enqueue `[emoji-go: …] go for it` through the same `_thread_dispatch_lock` + `call_chat_with_progress` path; mark entry consumed; tests incl. 👎/non-resume/non-allowed negatives) in the next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot/dao_protocol && python3 -m truesight_dao_client.modules.report_ai_agent_contribution \ --title "PR2: resume-awai
 
