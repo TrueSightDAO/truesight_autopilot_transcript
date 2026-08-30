@@ -4546,11 +4546,18 @@ Perfect insertion point — after §3's carbon-pools bullet, before §4. Adding 
 ### 🤖 Autopilot
 
 Whitepaper patched (§3.1 + TOC, divs 74/74). Now part 2 — the scaffolding. Fetching the current generator to add `plot_id` + the `plots` layer:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full generator. Adding the scaffolding: `plot_id` column pass-through + a `plots.geojson` output (empty FeatureCollection to start — stable contract for the map/cache). Patching:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4672,4 +4679,101 @@ Say "go" to build the plot-rendering V2 map, or to verify §3.1 on beta first.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #323 on truesight_me_beta merged successfully (sha: 05317db7fa70a5b94718d78a9c2a13e7793b006b). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Here's the turn report.
+
+## ✅ What I did this turn
+
+**Merged [truesight_me_beta#323](https://github.com/TrueSightDAO/truesight_me_beta/pull/323)** (sha `05317db7`) — whitepaper **§3.1 Geospatial Data
+
+
+### 🤖 Autopilot
+
+Executing — build the plot-rendering V2 on the impact map. Fetching the current page and map script:
+
+
+### 🤖 Autopilot
+
+Now let me read the full map init function (437–560) to see where to add the plots layer:
+
+
+### 🤖 Autopilot
+
+Let me see the fetch/init block and the HTML section structure to wire the plots layer + selector:
+
+
+### 🤖 Autopilot
+
+Full structure mapped. Building the plot V2: a `plots.geojson` fetch → polygon rendering → plot selector chips → fly-to-plot, all degrading gracefully when empty. Applying the patches:
+
+
+### 🤖 Autopilot
+
+All 4 scripts pass, all markers present. Let me verify div balance and push as a PR:
+
+
+### 🤖 Autopilot
+
+All balanced (45/45 divs, 3/3 buttons). Pushing the plot V2 as a PR:
+
+
+### 🤖 Autopilot
+
+PR #324 opened. Now uploading the full patched file to the branch:
+
+
+### 🤖 Autopilot
+
+Verifying the PR diff via the authoritative API:
+
+
+### 🤖 Autopilot
+
+PR #324 is clean (+67/−0, mergeable, all markers present, zoom 11 preserved). Merging it:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Here's the turn report.
+
+## ✅ What I did this turn — plot V2 built and merged
+
+**Merged [truesight_me_beta#324](https://github.com/TrueSightDAO/truesight_me_beta/pull/324)** (sha `202984e6`, **+67/−0, 1 file, mergeable**) — the impact map now renders plots:
+
+- **Fetches `trees/plots.geojson`** from the sunmint repo (cache-busted, CDN fallback) — the empty-but-stable layer scaffolded last turn
+- **Renders plot polygons** (6-color palette, 12% fill, clickable popups with name/area/status)
+- **Plot selector chip strip** above the map ("Plots: …" chips) — click a chip → `flyToBounds` to that plot + highlight
+- **Plot count appended** to the map note when plots exist
+- **Degrades gracefully**: selector hidden + nothing rendered when `plots.geojson` is empty or unreachable — the map works exactly as before until real plot boundaries are added
+- Validated: all 4 inline scripts `node --check`, divs 45/45, buttons 3/3, zoom 11 preserved, all markers present on branch (verified via Contents API)
+
+**The full plot scaffolding chain is now in place:** whitepaper §3.1 (the gotcha) + generator `plot_id` column + `plots.geojson` layer + plot-aware satellite caching + map polygon rendering/selector. When you add plot boundaries in Altamira, everything lights up automatically.
+
+## 📌 RESUME HERE → next units
+1. **Verify on beta post-rebuild** (`beta.truesight.me/sunmint.html`): map loads, selector hidden (no plots yet), zero console errors — browser check when the Pages rebuild lands
+2. **In Altamira**: collect `plot_id` per tree + digitize plot boundaries (Google Earth / SW Maps) → fill the SunMint Plots tab → generator + cache + map light up automatically
+3. **Standing**: promote truesight_me_beta → prod (#318–#324) after beta review; `sunmint_prod` config line; test-row cleanup
+
+Say "go" to verify on beta, or to promote the whole truesight_me_beta stack after your review.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → fetched main sunmint.html (32,319 B, sha 16ec2c1f), read map init + fetch block + HTML section, patched plot selector strip + loadPlots + PLOT_COLORS (4 scripts node --check OK, divs 45/45, buttons 3/3, markers present)
+• `git push changes` (edit anchor) → PR #324; `upload local file to github` → full file on branch (4dcaaf9d); verified +67/−0, mergeable, all markers
+• `merge pr` → ✅ PR #324 merged (sha 202984e6)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp/es_cache && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/contents/sunmint.html?ref=main&cb; cd /tmp/es_cache && sed -n '437,560p' sm_v2.html; cd /tmp/es_cache && echo "=== fetch/init block (560-585) ===" && sed -n '560,585p' sm_v2.html && echo "=== impact map HTML section ===" && g; …(+3 more)
+• `merge pr` → ✅ PR #324 on truesight_me_beta merged successfully (sha: 202984e6ae9f5cdc2d45a963489e1f253443fc4f). Pull Request successfully merged
 
