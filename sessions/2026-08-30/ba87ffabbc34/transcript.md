@@ -3522,11 +3522,13 @@ Also perhaps as a next step what should be the initial implementation
 ### 🤖 Autopilot
 
 Let me look at the current sunmint.html first so my recommendation is grounded in what's actually there.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — sunmint.html is a marketing/impact page (no map, no satellite refs). Let me look at the IMPACT REGISTRY + Highlights sections to see where a satellite map would fit best:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3561,6 +3563,7 @@ Want me to build it? I'd do it beta-first — a PR on truesight_me_beta adding t
 ### 🤖 Autopilot
 
 Quick check to make sure I recommend the current access model, not an outdated one:
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3598,6 +3601,7 @@ Good — current picture confirmed. Here's the answer.
 ### 🤖 Autopilot
 
 Quick verification on the anonymous-access question so I give you a correct answer, not a guess:
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3648,6 +3652,12 @@ I believe we have a formula isn't it? We should include it in the PDf document a
 ### 🤖 Autopilot
 
 Good instinct on both. Let me ground the formula in the actual analysis script (not ad-lib) and check what the whitepaper already has, so the one-liner is exact:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3675,21 +3685,25 @@ Agreed on both:
 2. **Formula into the PDF + whitepaper** — I'll add the formula section to the field PDF and the whitepaper now.
 
 Let me update both documents:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated with the formula section. Sending it, then updating the whitepaper with the same formula section:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rate-limited — retrying the send after the cooldown:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still rate-limited — trying once more:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3736,36 +3750,43 @@ Say "go" and I'll push through all three.
 ### 🤖 Autopilot
 
 Executing all three: (a) deliver the PDF, (b) add the formula section to the whitepaper PR, (c) build the impact-map V1 PR. Starting with the PDF send (rate limit may have cleared):
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF delivered (message 16490). Now (b) — add the formula section to the whitepaper. Let me fetch the current whitepaper from the PR branch and see where section 13 ends:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch name guess wrong (404). Let me get the actual branch name from PR #318:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch is `docs/sunmint-whitepaper-carbon-lifecycle`. Fetching the branch file and adding the formula section:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Section 13 is the last section before `</section>` at line 314. Let me see the exact end of section 13 to insert the formula subsection cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Section 13 ends with the provenance paragraph, then spacers. I'll insert a **13.1 How Carbon Is Calculated** subsection (the formula) right after that paragraph:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The escape handling may have produced literal `\uXXXX` sequences instead of real characters. Let me verify what actually landed in the file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3876,4 +3897,70 @@ Say "go" to merge #318 + #319, or to start the satellite caching pipeline.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×16 → cd /tmp && echo "=== PR #318 branch state: whitepaper ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/feat; cd /tmp && echo "=== PR #318 branch ===" && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/pulls/318" | python3 -c "im; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/docs/sunmint-whitepaper-carbon-lifecycle/sunmint/whitep; …(+12 more)
 • `upload file to github` → https://github.com/TrueSightDAO/truesight_me_beta/blob/docs/sunmint-whitepaper-carbon-lifecycle/sunmint/whitepaper/index.html
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] seeing weird characters
+
+AGB = a × DBH■ — bioma
+
+
+### 🤖 Autopilot
+
+Let me check what character actually landed in the file — the ■ suggests a glyph that isn't rendering (likely the superscript ᵇ):
+
+
+### 🤖 Autopilot
+
+Let me look at both documents — the whitepaper formula on the branch and the PDF's actual text — to see exactly which characters are rendering as ■ (likely the superscript ᵇ, which many fonts lack):
+
+
+### 🤖 Autopilot
+
+Found it — exactly as suspected. The weird character is the **superscript `ᵇ`** (U+1D47, "modifier letter small b") in `DBHᵇ`, plus the subscript `₂` in `CO₂e`. Both are exotic Unicode that many fonts/PDF renderers don't support:
+- **Whitepaper (HTML):** `DBHᵇ` → the browser can't glyph it → **■**
+- **PDF:** the extraction shows the same chars mangled (`DBHI`, `COIe`) — the PDF font substitutes them badly
+
+**Fix:** replace them with universally-renderable forms — HTML `<sup>b</sup>` in the whitepaper, plain `DBH^b` / `CO2e` in the PDF. Applying both:
+
+
+### 🤖 Autopilot
+
+Whitepaper fixed (1 replacement, `DBH<sup>b</sup>`). Now pushing to the branch + fixing the PDF (CO₂e → CO2e, DBHᵇ → DBH^b):
+
+
+### 🤖 Autopilot
+
+Whitepaper fixed on the branch (`1b0cdf76`). Now regenerating the PDF with safe characters (CO2e, DBH^b) and sending it:
+
+
+### 🤖 Autopilot
+
+PDF v7 regenerated (8,715 B) with safe characters. Sending it:
+
+
+### 🤖 Autopilot
+
+Both fixed. Here's the report.
+
+## ✅ Weird characters fixed (both documents)
+
+**Root cause:** the formula used **exotic Unicode glyphs** that most fonts/renderers can't display:
+- `DBHᵇ` — the superscript `ᵇ` (U+1D47, "modifier letter small b") → rendered as **■**
+- `CO₂e` — the subscript `₂` (U+2082) → mangled in the PDF (`COIe`)
+
+**Fixes applied:**
+1. **Whitepaper** (PR #318 branch, commit `1b0cdf76`): `DBHᵇ` → **`DBH<sup>b</sup>`** (proper HTML superscript, renders in every browser). Verified via Contents API — 0 leftover superscript-b.
+2. **Field PDF (v7, sent as msg 16496)**: regenerated with `DBH^b` and `CO2e` (plain ASCII forms) — extraction confirmed clean (`AGB = a × DBH^b`, `CO2e = C × 44/12`, example ≈ 38 kg CO2e).
+
+**Also noted:** the whitepaper has **pre-existing** `\uXXXX` literal escapes at lines 232/236/286 (in the funding/sequestration section) — from before this work; they'd render as literal escape text. I can clean those up in the same PR if you want.
+
+**Status:** whitepaper PR #318 now has §13 (on-chain lifecycle) + §13.1 (formula) + the glyph fix — ready for your review. PDF v7 is in your hands for Altamira.
+
+Want me to also fix those pre-existing `\uXXXX` escapes, or merge #318/#319 for beta review?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/contents/sunmint/whitepaper/index.html?ref=docs/sunmint-whit; cd /tmp && python3 << 'PYEOF' # Regenerate the PDF with safe characters: DBH^b and CO2e instead of exotic unicode content = open('/tmp/pdf_c
 
