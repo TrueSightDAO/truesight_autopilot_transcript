@@ -3138,11 +3138,13 @@ The tracking read was truncated mid-row (saved to artifact). The tail of that ar
 ### 🤖 Autopilot
 
 The tracking tab still ends at **11957** (03:25:03Z) — my correctly-formatted row 11975 (`Edgar_20260830221906_015`, 22:19Z) is **still unprocessed**. No auto-dispatch observed. Let me (1) fire the @37 webhook manually to prove the handler can process the row, and (2) read `dispatch_event`'s full flow to pinpoint why the box isn't auto-firing:
+[2 tool result(s) compacted: http_fetch, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The @37 webhook just processed **"0 linked, 2 rejected, 0 errors"** — it DID process rows now (including my 11975). The "2 rejected" likely = my row (487 already INVALID → correctly refused) + the earlier stub row. Let me confirm the tracking tab tail now shows my row processed:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3192,26 +3194,31 @@ No further writes this turn; nothing destructive; no money movement.
 ### 🤖 Autopilot
 
 You're right on both counts. Let me (1) try the dao_protocol logs myself, and (2) find whether a proper sign+submit script already exists instead of me hand-rolling RSA in heredocs every time.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SSH to dao_protocol is denied as expected (by design — you have that access). Let me find whether a canonical sign+submit script already exists so I stop hand-rolling:
+[2 tool result(s) compacted: search_code, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the repos for existing sign+submit tooling — there may be a script in dao_client or the runbook I haven't found:
+[2 tool result(s) compacted: search_code, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The runbook answers your second question directly — there **is** a canonical E2E harness (Playwright in `dapp_beta`, §4.0) that I should have been using instead of hand-rolled Python heredocs. Let me find those scripts:
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found them — there's a whole E2E harness including **`e2e_reject.js`** (the mark-invalid test from 08-29). That's the canonical script I should have been using. Let me read it:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3279,6 +3286,7 @@ No writes this turn; nothing submitted; no money movement.
 ### 🤖 Autopilot
 
 👍 Go received. Opening the reusable-submit-script PR. First, getting the **exact** site-format source (markTreeInvalid + signText) so the script replicates byte-for-byte — no more format drift:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3448,4 +3456,74 @@ No Edgar submissions, no ledger writes, no money movement this turn.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_autopilot/feat/sunmint-submit-script/scripts/sunmint_submit.py"; cd /tmp && echo "=== find extraneous f ===" && grep -n 'f"[^"]*"' sunmint_submit.py | grep -v '{' | head; grep -n 'f'"'"'[^'"'"']*'"'"'' sun; cd /tmp && sed -i 's/print(f"=== signature_verification: pending ===")/print("=== signature_verification: pending ===")/' sunmint_submit.py ; …(+4 more)
 • `upload file to github` → https://github.com/TrueSightDAO/truesight_autopilot/blob/feat/sunmint-submit-script/scripts/sunmint_submit.py
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn — fixed + fully verified PR #353
+
+**Go received 👍 → completed the fix + verification of the reusable-submit-script PR** (no new PR opened/merged this turn — I updated the exist
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **merge PR #353** (the reusable submit script, fully verified). Checking mergeable state:
+
+
+### 🤖 Autopilot
+
+PR #353 is mergeable (2 commits, 1 file, +205/−0, head = the fixed `74bbad4`; "unstable" = merely behind main — fine). Merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**Go received 👍 → merged the reusable SunMint submit script.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `truesight_autopilot` | **[#353](https://github.com/TrueSightDAO/truesight_autopilot/pull/353)** | ✅ **MERGED** (sha `11302d2b`) |
+
+**What changed:** `scripts/sunmint_submit.py` (+205/−0) — the single reusable CLI that replicates the site-exact reject flow (`markTreeInvalid()` → `signText()` → POST to Edgar), with the correct field order encoded **once** (publicKey in "My Digital Signature", RSA-2048/SHA-256 signature in "Request Transaction ID"). This eliminates the hand-rolling that caused the field-swap bug (`signature_verification: error` + stub rows) during the 487 invalidation.
+
+**Pre-merge verification (genuinely ran this time):** compile ✅ · ruff check ✅ · ruff format ✅ · dry-run byte-exact vs site format ✅ · authoritative branch blob confirmed fixed (`5cd6699b`) · mergeable ✅ (2 commits, 1 file).
+
+### Chain status
+| Item | State |
+|---|---|
+| 061 + 487 trees invalidated & removed from index | ✅ proven |
+| Reusable submit script (`#353`) | ✅ **merged now** |
+| Reject routing (`dao_protocol #150`) | ✅ merged — box env provisioned; **auto-dispatch proof pending** (needs box check) |
+| Dispatch-failure visibility (`tokenomics #451`) | 🟡 open, unmerged |
+| UI no-QR-fabrication (`sunmint_beta #46`) | ✅ merged — beta only |
+| Runbook §4.5 update (reference script) | 📋 deferred follow-up |
+
+### Gates NOT crossed
+- No deploy, no Edgar submission, no ledger writes, no money movement this turn
+- `sunmint_beta #46` still beta-only (prod promotion awaits Gary's review)
+
+---
+**RESUME HERE → next turn (pick one, one PR/deploy each):**
+1. **Live use of the script + auto-dispatch re-test**: `python3 scripts/sunmint_submit.py --tree-id <new tree> --dry-run` → real submit → watch for the tracking tab to advance **without** a manual webhook. This requires you to confirm the box runs merged `dispatch.py` first (2 commands): `cd /home/ubuntu/dao_protocol && git pull --ff-only && sudo systemctl restart truesight-dao-protocol.service`, then `journalctl -u truesight-dao-protocol --since "2 min ago" | grep -iE "dispatch|TREE_PLANTING_REJECT"`.
+2. **Merge + deploy `tokenomics #451`** (dispatch-failure visibility) — clasp deploy with your explicit go.
+3. **Promote `sunmint_beta #46` to prod** (`sync_beta_to_prod(sunmint_prod)`) — your explicit approval required.
+4. **Runbook §4.5 follow-up** — reference `sunmint_submit.py` in `SUNMINT_E2E_RUNBOOK.md`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 → verified PR #353 mergeable state (+205/−0, 2 commits, head `74bbad4`)
+• `merge pr` → ✅ PR #353 on truesight_autopilot merged (sha: 11302d2b5aed240f20886570965974f28e1ac953)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot/pulls/353" | python3 -c " import json,sys d=json.load(sys.
+• `merge pr` → ✅ PR #353 on truesight_autopilot merged successfully (sha: 11302d2b5aed240f20886570965974f28e1ac953). Pull Request successfully merged
 
