@@ -117,21 +117,25 @@ Let me verify several things in parallel: whether the tree exists in the public 
 ### 🤖 Autopilot
 
 Key finding: the tree `Edgar_20260819134722_487` **IS in the public tree index** — it was planted on 2026-08-19. So the reject event claims "Not a valid tree" but the tree is registered. Let me confirm what the monitor page's mark-invalid flow actually does, and check if there's any sign this submission reached Edgar today.
+[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tree exists and is valid. Now let me verify exactly what `markTreeInvalid()` does on the live monitor page (does it POST to Edgar or not?) and double-check the ledger for any reject submission.
+[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the remaining pieces: the exact reject-path code, the live page's mark-invalid behavior, the ledger tail for any reject row today, and who "Nobody Will" is.
+[4 tool result(s) compacted: ssh_run, read_tool_result, read_google_sheet, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify whether this reject event ever reached the Telegram Chat Logs ledger, and what the current ledger tail shows.
+[2 tool result(s) compacted: read_google_sheet, lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -256,4 +260,166 @@ Both are small PRs to `TrueSightDAO/sunmint` (a data repo — I can open the fix
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/trees" | python3 -c "import json,sys; d=json.load(sys.stdin);; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recursive=1" | python3 -c "import json,sys; d=json.load; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/.github/workflows/rebuild-tree-index.yml"; echo "=====BUILDE; …(+1 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: how is the value Edgar_20260819134722_487 being fetched right now? From where?
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] how to ensure when 
+
+
+[TREE PLANTING REJECT EVENT] 
+- QR Code: Edgar_20260819134722_487 
+- SunMint Submission Message ID: Edgar_20260819134722_487 
+- Updated by: Gary Teh 
+- Reason: Not a valid tree 
+-------- 
+ 
+My Digital Signature: MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA+AqDeTrRyYEDdHmzTNwjSU2SZT76hesRJTzkOQmSTOVxdxfshTw6DmUKqcQpQ9HYevLF+ALjTGFo+SBFCcOrYDO1+mjS2+abK0mY4XGmp/UQ5holz8JuB1+8y+TZP2kRmmLWW5+gG2x05P1AVs3ssi6jfjOne/IIlA37tyvJvWrC4nqe6XCNI0UDbiqI2q5ZjOF/0JTOmCJJDrqqtFfmR25jPJ4v7zx5qwNopCv/KndcuxUWGemGSnBNQYp8Y4yeR0yjIqAF9d8k8DDGTfjDq2Pm3P/s7gK3ApYLujTyQDyKqau0pRII58j9sr1pUdXR8kxyMxRES49T1dkGGxVdywIDAQAB 
+ 
+Request Transaction ID: FbhWaBzr6hVUsB5WQCZ8KOoy+G91b54JvjG1ZD7aQZolb4hyz1wcd2LdFQXy3dSn3/LNlS9Wzw6eLNtLxv+Sdx1uuho1VsPTbYs32B+elLuLp+zqmKaVzJ1wNltDbmiWjdCH/VgP9KZ/22HN/G4Oe4HTp3X/vJcR2Fm26MGHmvep5pQDbyioBNJWns/QJIdu5dIgNvreuniZnj2XQ6JKGNKt3LB5gjFHt+GTIuPejojPj78oKqUZ3L+OaQJUx5xTo6y+l8gn+90NCpuiq0VJkRREEMhbJxRcXGP89w0fn95vjRwRxGSKuG3QzbkYCwN6AsWahfq3Mu4IidkTfXZOQg== 
+ 
+This submission was generated using http://localhost:8080/monitor-tree-growth/?tree=Edgar_20260819134722_487 
+ 
+Verify submission here: https://dapp.truesight.me/verify_request.html
+
+Is sent to edgar, Edgar_20260819134722_487 never shows up again. Also QR Code: Edgar_20260819134722_487 is obviously wrong. The html should make errorneous assumptions. If the tree is not yet linked dont insert the value that is not supposed to be that
+
+
+### 🤖 Autopilot
+
+Let me verify the exact fetch chain — whether this tree has a `qr_code` property in the index, and where the monitor page source actually lives.
+
+
+### 🤖 Autopilot
+
+Key finding: the tree's index entry has **no `qr_code` property** — so `markTreeInvalid()`'s fallback `const qrCode = (key && key.qrCode) || treeId;` injects the treeId into the QR Code field. Exactly the bug you describe. Let me locate the monitor page source and check the sheet row for this tree.
+
+
+### 🤖 Autopilot
+
+Let me read the middle sheet rows to see exactly how the 2026-08-19 tree is recorded (its Message ID column vs. tree id column, and whether it has a Linked QR Code).
+
+
+### 🤖 Autopilot
+
+Let me pinpoint the monitor page source, the reject handler's matching logic, and the exact sheet row for this tree.
+
+
+### 🤖 Autopilot
+
+**Correction to my earlier claim** — the SunMint sheet row for this tree **DOES exist** (I misread earlier because the sheet output was truncated and I only saw the first rows). The row:
+
+- **Col A (tree id / Telegram Update ID):** `Edgar_20260819134722_487`
+- **Col D (Telegram Message ID):** `Edgar_20260819134722_488` ← note the `_488`, not `_487`
+- **Status:** `NEW` · **Linked QR Code (col R):** empty
+
+So the reject event's two fields are both problematic: "QR Code" is really the tree id, and "SunMint Submission Message ID" (`_487`) doesn't match col D (`_488`). Let me read the GAS reject handler to see exactly which column it matches.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the handler — the reject-event processing logic specifically.
+
+
+### 🤖 Autopilot
+
+I need to see the actual reject-event branch (the part that matches the SunMint row and marks INVALID). Let me read the rest of the file.
+
+
+### 🤖 Autopilot
+
+Now I have the full reject-path logic. Let me confirm exactly where the monitor page fetches the tree list from (the "from where" question) and what the full sunmint repo layout is.
+
+
+### 🤖 Autopilot
+
+Let me confirm the fetch loop's filtering behavior (does the page filter INVALID out of the dropdown?).
+
+
+### 🤖 Autopilot
+
+Let me confirm whether the dropdown filters by status (would INVALID trees show after a successful reject?).
+
+
+### 🤖 Autopilot
+
+Let me verify how the monitor page uses `status` (does `measureStatus` / deep-link render INVALID trees?).
+
+
+### 🤖 Autopilot
+
+Now I have everything. Let me assemble the final answer. One thing to verify precisely — the reject event's "SunMint Submission Message ID" (`_487`) vs the sheet's col D (`_488`), and how the GAS handler's reject branch would behave. That's already established. Let me write the answer.
+
+## Direct answers to your three questions
+
+### 1. How is `Edgar_20260819134722_487` being fetched right now? From where?
+
+**From `trees/index.geojson` in the `TrueSightDAO/sunmint` GitHub repo** — a static committed file. Exact chain:
+
+1. `https://sunmint.truesight.me/monitor-tree-growth/` serves `live_monitor.html`
+2. On load, `loadTreeIndex()` tries `TREE_INDEX_URLS` **in order** (I read the live code, line 431-436):
+   1. `https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/trees/index.geojson` ← **this one wins (first, reachable)**
+   2. `trees/index.geojson` (relative)
+   3. `https://sunmint.truesight.me/trees/index.geojson`
+   4. `https://beta.sunmint.truesight.me/trees/index.geojson`
+   5. `https://truesight.me/sunmint/trees/index.geojson`
+3. It fetches with `cache:'no-store'` + a cache-buster, parses the FeatureCollection, and builds the dropdown from `geojson.features[]`.
+4. If all URLs fail, it falls back to the `localStorage` cache (`sunmint_tree_index_cache`).
+
+**So on reload it re-reads the same GitHub file, which still contains the tree** (status `NEW`, no `qr_code` property — I fetched it just now). The GitHub file only changes when the daily 06:00 UTC workflow rebuilds it — or a dispatch ping tells it to.
+
+### 2. Is it sent to Edgar? Will `Edgar_20260819134722_487` "never show up again"?
+
+**The reject event as-written would NOT be sent to Edgar and would NOT invalidate anything.** Here's the exact code path I traced in `process_tree_planting_link.js`:
+
+- The GAS handler `processTreePlantingLinksFromTelegramChatLogs()` scans "Telegram Chat Logs" for messages containing `[TREE PLANTING REJECT EVENT]`.
+- For the reject branch, it looks up the SunMint row **by column D (Telegram Message ID)**:
+  ```js
+  if ((sunmintRejectData[kr][TPL_SUNMINT_MESSAGE_ID_COL] || '').toString().trim() === parsed.sunmintMessageId)
+  ```
+- **Your reject says "SunMint Submission Message ID: `Edgar_20260819134722_487`" — but the sheet's column D for this tree is `Edgar_20260819134722_488`** (I read the actual row). The `_487` vs `_488` mismatch means the handler logs `REJECTED — SunMint submission not found (reject path)` and **does nothing**. The tree stays `NEW`.
+- Even if the IDs matched, nothing in the flow removes the tree from the GitHub index: marking INVALID only writes `INVALID` to the sheet column M, and the index builder **doesn't filter INVALID rows** — and a reject never fires the `tree-index-rebuild` dispatch. So the tree would still appear in the dropdown (with `status: INVALID` in the data, which the UI's `measureStatus()` doesn't even display — it only looks at `lastMeasured`).
+
+**So: "never shows up again" cannot happen with the current code** — the only thing that removes a tree from the dropdown is the browser-side localStorage removal after a successful mark-invalid click (which is why it vanished for you in-session), but that's per-browser and resets on reload.
+
+### 3. "QR Code: Edgar_20260819134722_487 is obviously wrong. The html should not make erroneous assumptions."
+
+**You're right — and I found the exact bug.** In `markTreeInvalid()` (line ~1049):
+
+```js
+const key = (treeIndex || []).find(t => t.id === treeId || t.qrCode === treeId);
+const qrCode = (key && key.qrCode) || treeId;   // ← THE BUG
+```
+
+This tree's index entry has **no `qr_code` property** (verified: the geojson feature for `Edgar_20260819134722_487` only has `tree_id, species, last_measured, photo_url, status`). So `key.qrCode` is `undefined`, and the fallback `|| treeId` **substitutes the tree ID into the QR Code field**. That's exactly how "QR Code: Edgar_20260819134722_487" (a tree ID, not a QR code) got into the reject event text. The handler then can't find it in the QR sheet → `QR code not found`.
+
+**Your proposed fix is correct**: when a tree is not yet linked, the page should NOT put a non-QR value into the QR Code field. Concretely:
+- If `key.qrCode` is absent → emit `QR Code: (unlinked)` or omit the line entirely, rather than `|| treeId`.
+- Same for the "SunMint Submission Message ID" — it should be the tree's actual col-D message ID (`..._488`), not the tree id (`..._487`), or the reject path can never match.
+
+## Summary table
+
+| Question | Answer |
+|---|---|
+| Where is the tree fetched from? | `TrueSightDAO/sunmint` GitHub repo → `trees/index.geojson` (raw.githubusercontent URL #1 in `TREE_INDEX_URLS`) |
+| Is the reject sent to Edgar? | The handler only reads it from the Telegram Chat Logs sheet — but with `_487` vs col D `_488` mismatch it can't find the row → REJECTED, no-op |
+| Will the tree disappear? | No — nothing in the backend removes/rebuilds the index on reject; only the browser localStorage drops it temporarily |
+| Is the QR Code value wrong? | Yes — `markTreeInvalid()` falls back `key.qrCode || treeId`, injecting the tree ID into the QR field when the tree has no linked QR |
+| Fix | Don't substitute treeId into QR Code; omit/blank it when unlinked. Also use the real col-D message id for `SunMint Submission Message ID` |
+
+---
+
+**Want me to fix it?** I can open a PR on `TrueSightDAO/sunmint` (the monitor page source lives... let me note: the live HTML comes from the sunmint repo's GitHub Pages/site, and the GAS handler lives in `tokenomics/google_app_scripts/.../process_tree_planting_link.js`) with:
+1. `markTreeInvalid()`: don't fall back to treeId for QR Code — emit `(unlinked)` when no `qr_code`, and use the tree's real message id (`..._488`) for `SunMint Submission Message ID`.
+2. Optionally: index builder filter for `INVALID` status + reject-triggered rebuild so invalidated trees actually disappear.
+
+Say the word ("go") and I'll open the PRs and report back. Nothing was written or submitted by me this turn — read-only investigation.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/trees/index.geojson" | python3 -c " import json,sys d=json.l; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recursive=1" | python3 -c "import json,sys; d=json.load; cd /tmp && echo "=== live page: index fetch URL ==="; grep -n "TREE_INDEX\|index.geojson\|getTreeIndex\|treeIndexUrl\|raw.githubusercontent"; …(+3 more)
 
