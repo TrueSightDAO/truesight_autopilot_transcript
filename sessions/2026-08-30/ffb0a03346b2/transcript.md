@@ -585,16 +585,19 @@ The running service loads `settings = Settings()` at import time — so it has t
 ### 🤖 Autopilot
 
 Deploy says the checkout is already at the merge commit (`1ce140f`) — but the service may not have restarted to reload it. Let me verify the running config and whether a restart is needed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Local HEAD has the merge, config.py includes `fda_fsvp` — but the service started at 23:15:45 and the config is loaded at import time. The deploy tool's noop means the disk commit is current, but the **running process** may still have the old config in memory. Let me restart the service to load the new config, then verify the gate opens.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The guardrail blocked a manual restart (correct — use the sanctioned tool). `deploy_autopilot` returned noop though, so let me understand its restart logic — whether it restarts on config changes or only on new commits.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -747,4 +750,41 @@ The FDA FSVP documentation system is now fully documented as processes, and the 
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #9 on fda_fsvp merged successfully (sha: 0479104a212204b8191bcfd7be7f96378d8718da). Pull Request successfully merged; ✅ PR #843 on agentic_ai_context merged successfully (sha: 99a5f02ddd5d2d6f1b1232fcc54485374c7cabe4). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] can you share the generated PDF for my review first?
+
+
+### 🤖 Autopilot
+
+Of course — let me pull up the generated PDF and send it to you for review.
+
+
+### 🤖 Autopilot
+
+The PDF is on disk (2.8 MB, 7 pages). Sending it to you now for review.
+
+
+### 🤖 Autopilot
+
+📄 **PDF sent** — `20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf` (2.8 MB, 7 pages) is now in this thread for your review.
+
+**Quick map of the document:**
+- **Page 1–2:** Supplier/dates table, facilities visited (1 cacao farm / 1 fermentation / 1 drying), FSVP observation tables for Facilities A/B/C (microbial contamination, insect infestation, foreign objects, mold, pesticide residues, etc.)
+- **Page 3–4:** Still-photo evidence — drying shed, cacao pod close-up, fermentation box (captioned)
+- **Page 5–6:** Video frames from `walk in the forest.MOV` — Facility A cacao farm walk (3 frames, captioned)
+- **Page 7:** Signature block — Zhiwen Teh, President, TrueTech Inc (EIN 88-3411514)
+
+**⚠️ Placeholders still in the doc** (they were never confirmed):
+1. `[DATE OF VISIT]` — header + Date field
+2. `[TBD]` — Site code
+3. `[LATITUDE / LONGITUDE / Google Map location]` — for Facilities A, B, C
+
+If you give me the actual **visit date, site code, and coordinates** (or tell me to look them up), I'll regenerate the PDF with real values, update the filed record in `fda_fsvp`, and re-send the corrected version. Otherwise, review the current draft and let me know any changes.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → ls -la /tmp/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf && echo "===" && python3 -c " import sys; sys.path.insert(0,'/opt/truesight_au
 
