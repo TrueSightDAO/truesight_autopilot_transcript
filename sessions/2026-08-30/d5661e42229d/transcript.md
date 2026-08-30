@@ -1153,21 +1153,25 @@ No ledger money/QR writes; the deploy itself is recorded in `ecosystem_change_lo
 ### 🤖 Autopilot
 
 👍 Go received. Next unit: **end-to-end repro** — verify the deployed reject path actually works for `Edgar_20260819134722_487`. First, pull the GAS constants (sheet IDs, tabs, columns) from the merged code so I can read the right sheets:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me get the shared constants (SOURCE_SHEET_URL, tab names) and the full reject-parsing block so I can pinpoint exactly which sheets to read and what the handler expects:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the exact constants. Source spreadsheet = `1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ` (holds **both** "Telegram Chat Logs" and "SunMint Tree Planting" tabs). Let me check both: (1) is there a REJECT row in Chat Logs, and (2) what's the current status of the tree row?
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet output is large and truncated. Let me read the artifact to find the exact row for `Edgar_20260819134722_487`:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1381,4 +1385,67 @@ Patch verified — clean, correct placement (inside the reject branch after `set
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/450" | python3 -c "import json,sys; d=json.load(sys.stdin); p; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/450/files" | python3 -c "import json,sys; d=json.load(sys.std
 • `merge pr` → ✅ PR #450 on tokenomics merged successfully (sha: 95848350cca0b1542d73fe3c60744da928d07c16). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**Go received 👍 → merged the dispatch-on-reject fix.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `tokenomics` | **[#450](https://gith
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **clasp-deploy `tokenomics #450`** to GAS `1UrBg…`. Running the dry-run first to confirm what would push:
+
+
+### 🤖 Autopilot
+
+Dry-run clean (3 files, clasp `garyjob@agroverse.shop`, no hooks). The 👍 covers this deploy — pushing for real:
+
+
+### 🤖 Autopilot
+
+## What I did this turn (GAS deploy — no PR opened/merged, so full report allowed)
+
+**Go received 👍 → deployed the dispatch-on-reject fix to the live GAS project.**
+
+| Step | Result |
+|---|---|
+| Dry-run (`gas_deploy_project`) | ✅ clean — 3 files, clasp `garyjob@agroverse.shop`, no hooks |
+| **Push** (`--push --no-hooks`) | ✅ **DEPLOYED** — lease `L-20260830-023143`, pushed 5 files (`process_tree_planting_link.js` incl. the dispatch block + `process_qr_code_updates.js`, `process_tree_growth_monitoring.gs`, `appsscript.json`, `Version.gs`) |
+| Deploy ledger | ✅ `deploy_20260830T023159Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9` — [evidence](https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260830T023159Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md) |
+
+**What's now live in GAS:** the `[TREE PLANTING REJECT EVENT]` handler — after marking a SunMint row `INVALID` — fires the `tree-index-rebuild` dispatch to `TrueSightDAO/sunmint`, so the rejected tree drops from `trees/index.geojson` **immediately**, not at the next 06:00 UTC cron.
+
+### Full chain — everything is now deployed
+| Item | State |
+|---|---|
+| Builder skip-INVALID (`sunmint`, Contents API) | ✅ delivered |
+| Reject-path col A OR col D (`tokenomics #449`) | ✅ merged + deployed |
+| UI no-QR-fabrication (`sunmint_beta #46`) | ✅ merged — beta only |
+| Dispatch-on-reject (`tokenomics #450`) | ✅ merged + **deployed now** |
+
+### Gates NOT crossed
+- `sunmint_beta #46` still **beta-only** — prod promotion (`sync_beta_to_prod(sunmint_prod)`) awaits Gary's review
+- No ledger money/QR writes; no Edgar submissions; no money movement
+
+---
+**RESUME HERE → next units (each a fresh turn):**
+1. **Live end-to-end repro (the moment of truth)**: mark `Edgar_20260819134722_487` invalid via the monitor page's mark-invalid **button** (a real Edgar submission — the pasted text block does nothing) → GAS matches by col A → row INVALID → dispatch fires → workflow rebuilds → builder drops the tree → **verify `index.geojson` no longer contains it and reload shows it gone**.
+2. **Promote `sunmint_beta #46` to prod** (`sync_beta_to_prod(sunmint_prod)`) — your explicit approval required. Then the monitor page no longer fabricates `QR Code: Edgar_...` (emits `(unlinked)`).
+
+———
+**✅ Done this turn — actions taken:**
+• `gas_deploy_project` ×2 → dry-run clean; then `--push --no-hooks` → deployed 5 files to GAS `1UrBg…`, lease L-20260830-023143, ledger `deploy_20260830T023159Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9`
+
+———
+**✅ Done this turn — actions taken:**
+• `gas deploy project` ×2 → ok; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260830T023159Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md
 
