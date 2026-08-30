@@ -3292,6 +3292,7 @@ No writes this turn; nothing submitted; no money movement.
 ### 🤖 Autopilot
 
 Exact format captured. Now writing the reusable script — `scripts/sunmint_submit.py` in `truesight_autopilot` — replicating the site byte-for-byte, plus a runbook pointer:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3352,11 +3353,13 @@ No format drift possible.
 ### 🤖 Autopilot
 
 👍 Go received. Next unit: **fix + verify #353** — remove the dead placeholder line, run the full hard-rule suite, dry-run against a real tree, then push the fix to the PR branch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dead line removed, compile OK, but ruff flags an extraneous `f` prefix. Let me fix it and re-run all checks:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3526,4 +3529,123 @@ PR #353 is mergeable (2 commits, 1 file, +205/−0, head = the fixed `74bbad4`; 
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot/pulls/353" | python3 -c " import json,sys d=json.load(sys.
 • `merge pr` → ✅ PR #353 on truesight_autopilot merged successfully (sha: 11302d2b5aed240f20886570965974f28e1ac953). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**Go received 👍 → merged the reusable SunMint submit script.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `truesight_autopilot` | **[#
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **live auto-dispatch re-test** using the new script — non-destructive (target an already-INVALID tree so the handler processes it and refuses, which still proves the full Edgar→dispatch→webhook→tracking chain). First, baseline state: tracking tab tail + confirm the script landed on main:
+
+
+### 🤖 Autopilot
+
+Script is on main ✅, keys present ✅, tracking baseline confirmed. Now the live auto-dispatch test — submitting a reject for **487** (already INVALID → handler will refuse it, which is the **non-destructive** proof of the full chain: Edgar → dispatch → webhook → tracking, with **no manual webhook**). Dry-run first to confirm the exact payload:
+
+
+### 🤖 Autopilot
+
+Dry-run is byte-exact. Executing the real submission — this is the auto-dispatch proof: if the merged `dispatch.py` routing + env var work, the GAS webhook fires **automatically** and the tracking tab advances **without any manual call from me**:
+
+
+### 🤖 Autopilot
+
+✅ **`signature_verification: "success"`** — the reusable script works end-to-end. Now the decisive moment: **do NOT fire the webhook manually** — wait and check whether the box's auto-dispatch advances the tracking tab on its own. Giving it ~60s, then checking:
+
+
+### 🤖 Autopilot
+
+The sleep command hit the 60s tool cap. Let me check the tracking tab directly — enough time may have passed:
+
+
+### 🤖 Autopilot
+
+The tracking tab caps at 1000 rows (its own row numbers, not Chat Logs rows — column A references the Chat Logs row). Reading the tracking tab's actual tail:
+
+
+### 🤖 Autopilot
+
+The tracking tab is 57 rows; my new submission's processing would be at the tail. Reading the artifact to see the last rows:
+
+
+### 🤖 Autopilot
+
+Reading the tail of the tracking artifact to see if my just-submitted reject (via the reusable script) got auto-processed:
+
+
+### 🤖 Autopilot
+
+The tracking tab ends at **11962** (22:22:42Z — my *manual* webhook fire from earlier). My just-submitted reject (HTTP 200, signature success) has **not** been auto-processed. Let me confirm my submission landed in Chat Logs so I can pin the exact row for the governor's journalctl check:
+
+
+### 🤖 Autopilot
+
+## Converging — script works; auto-dispatch STILL doesn't fire (now precisely pinned)
+
+### ✅ What this turn proved
+1. **The reusable script works perfectly** (your "stop hand-rolling" fix, now live):
+   - Dry-run byte-exact vs site format ✅
+   - Real submit → **HTTP 200, `signature_verification: "success"`** ✅
+   - Landed in Telegram Chat Logs at **row 11977** (`Edgar_20260830233042_017`, 23:30:42Z) ✅
+2. **Baseline captured**: tracking tab ends at **11962** (22:22:42Z — my earlier *manual* webhook fire)
+
+### ❌ The negative result (the actual question)
+I submitted via the script and **did NOT fire the webhook manually** — the tracking tab **still ends at 11962**, i.e. **row 11977 was NOT auto-processed**. Auto-dispatch from dao_protocol **still does not fire**, even with:
+- `dao_protocol #150` routing entry **merged** ✅
+- `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_REJECT` env var **provisioned** by you ✅
+- Signature now **valid** (so it's not the auth gate) ✅
+
+**Conclusion: the box is almost certainly running pre-#150 code** — the env var alone isn't enough; the merged `dispatch.py` ROUTING entry must be pulled onto the box and the service restarted.
+
+### The one remaining action (yours — I don't have box access by design)
+```bash
+cd /home/ubuntu/dao_protocol && git pull --ff-only && sudo systemctl restart truesight-dao-protocol.service
+journalctl -u truesight-dao-protocol --since "2026-08-30 23:30" | grep -iE "dispatch|TREE_PLANTING_REJECT|webhook"
+```
+Expected findings:
+- **`dispatch_event` logged + webhook POST** → then re-submit once and the tracking tab advances with **no manual call** (the proof we want)
+- **No log lines** → confirms the box runs stale code (pre-#150) — the `git pull` fixes it
+- **"no webhook URL configured"** → env var not visible to the process (restart needed)
+
+### Chain status
+| Item | State |
+|---|---|
+| 061 + 487 invalidated & removed from index | ✅ |
+| Reusable submit script (`#353`) | ✅ merged + **proven live** |
+| Routing entry (`dao_protocol #150`) + env var | ✅ merged + provisioned — **box code pull pending (yours)** |
+| Auto-dispatch proof | ⏳ one box command away |
+| `tokenomics #451` (dispatch visibility) | 🟡 open |
+| `sunmint_beta #46` → prod | ⏳ pending your review |
+
+No new PRs/deploys this turn; no ledger writes beyond the test submission (row 11977, non-destructive — 487 already INVALID); no money movement.
+
+---
+**RESUME HERE → next turn:**
+1. **You run the 2 commands above**, paste the journalctl output — then I re-submit (or you do) and we confirm the tracking tab advances **without** any manual webhook = auto-dispatch proven end-to-end.
+2. Then close out: merge+deploy `tokenomics #451`; promote `sunmint_beta #46` to prod; runbook §4.5 pointer to the script.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → verified script on main (compile OK), keys present, dry-run byte-exact, **live submit → HTTP 200 signature_verification: success** (row 11977)
+• `read google sheet` ×3 → tracking baseline (ends 11962), full tracking tab (57 rows), Chat Logs tail (row 11977 = my submission)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_autopilot/main/scripts/sunmint_submit.py" -o sunmint_main.py && python3 -m compileall; cd /tmp && python3 sunmint_main.py --tree-id Edgar_20260819134722_487 --dry-run 2>&1 | head -25; cd /tmp && python3 sunmint_main.py --tree-id Edgar_20260819134722_487 2>&1 | head -30
+• `read google sheet` ×3 → 'Tree Planting Link'!A1:H5, 'Tree Planting Link'!A1:H1000 (57 rows), 'Telegram Chat Logs'!A11960:A11990 (row 11977)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_autopilot/main/scripts/sunmint_submit.py" -o sunmint_main.py &&; cd /tmp && python3 sunmint_main.py --tree-id Edgar_20260819134722_487 --dry-run 2>&1 | head -25; cd /tmp && python3 sunmint_main.py --tree-id Edgar_20260819134722_487 2>&1 | head -30; …(+1 more)
 
