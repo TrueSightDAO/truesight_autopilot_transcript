@@ -3126,11 +3126,13 @@ Comparing the successful row 11953
 ### 🤖 Autopilot
 
 👍 Go received. Let me verify whether the auto-dispatch/cron has since processed my correctly-formatted row 11975 — checking the tracking tab tail and the row itself in parallel:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tracking read was truncated mid-row (saved to artifact). The tail of that artifact will show whether rows beyond 11957 (my 22:19 submission) were processed. Let me read it:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3324,4 +3326,126 @@ No format drift possible.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html" -o beta_monitor.html &&
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (one PR opened — stopped per one-PR-per-turn)
+
+**Go received 👍 → opened the reusable-submit-script PR.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `truesight_autopilot` | **[#353
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **fix + verify #353** — remove the dead placeholder line, run the full hard-rule suite, dry-run against a real tree, then push the fix to the PR branch.
+
+
+### 🤖 Autopilot
+
+Dead line removed, compile OK, but ruff flags an extraneous `f` prefix. Let me fix it and re-run all checks:
+
+
+### 🤖 Autopilot
+
+One fixable lint — line 148's extraneous `f`. Fixing it, then running the full suite + dry-run:
+
+
+### 🤖 Autopilot
+
+ruff format wants to reformat. Let me see what and apply it:
+
+
+### 🤖 Autopilot
+
+All checks green — compile ✅, ruff ✅, format ✅, and the dry-run output matches the site format **exactly** (QR Code: `(unlinked)`, tree id in col A, publicKey in "My Digital Signature"). Now pushing the fixed file to the PR branch. Let me read the final content and push it as an update to PR #353:
+
+
+### 🤖 Autopilot
+
+All checks green (compile ✅, ruff ✅, format ✅) and the dry-run output is byte-exact vs the site format. Pushing the corrected file to the PR branch:
+
+
+### 🤖 Autopilot
+
+Push rejected — remote branch has my earlier commit that the fresh clone didn't fetch. Retrying with an `edits` hunk (smaller delta) instead of a whole-file write:
+
+
+### 🤖 Autopilot
+
+The tool clones from main (where the file doesn't exist) so the edit-anchor can't match. Correct approach: update the file on the PR branch directly via the Contents API (the PR stays open, branch gets the fixed file):
+
+
+### 🤖 Autopilot
+
+The remote branch has the original file; my fix is local. Cleanest path: update the file directly on the PR branch via the Contents API (`upload_file_to_github`, branch = `feat/sunmint-submit-script`) — PR #353 stays open and picks up the fix:
+
+
+### 🤖 Autopilot
+
+PR #353's branch is now updated with the fixed file (commit `74bbad4`). Let me verify the branch content matches the locally-verified file, then report:
+
+
+### 🤖 Autopilot
+
+The diff shows the branch still has the **old** file (the `>` lines are the pre-fix version — dead placeholder still present at line 158). My upload reported success, but the branch content doesn't match. Let me verify authoritatively via the Contents API (not raw.githubusercontent, which may cache):
+
+
+### 🤖 Autopilot
+
+## What I did this turn — fixed + fully verified PR #353
+
+**Go received 👍 → completed the fix + verification of the reusable-submit-script PR** (no new PR opened/merged this turn — I updated the existing PR's branch via the Contents API, which is a file write, not a PR action).
+
+### Fixes applied to `scripts/sunmint_submit.py` (PR #353)
+1. **Removed the dead placeholder line** (`signature = sign_request_text(priv_der, "")` — empty-text sign immediately overwritten)
+2. **Fixed the extraneous `f` prefix** on `print("=== signature_verification: pending ===")` (ruff F541)
+3. **Applied `ruff format`** (whole-file canonical formatting)
+
+### Verification (all green)
+| Check | Result |
+|---|---|
+| `python3 -m compileall` | ✅ |
+| `ruff check` | ✅ "All checks passed!" |
+| `ruff format --check` | ✅ "1 file already formatted" |
+| **Dry-run vs real tree** `Edgar_20260819134740_489` | ✅ output **byte-exact** vs site format (QR Code: `(unlinked)`, tree id in col A, publicKey in "My Digital Signature") |
+| Authoritative branch content (GitHub Contents API) | ✅ dead placeholder **gone**, fixed comment present (blob `5cd6699b`) |
+
+**Note:** the raw.githubusercontent diff initially showed the *old* file — same stale-cache phenomenon as the index.geojson check earlier. The **Contents API is authoritative** and confirms the fixed file is on the branch. PR #353 is ready for review/merge.
+
+### Why this PR matters (your point, now closed)
+Future reject/link E2E = **one command** with zero format drift:
+```bash
+python3 scripts/sunmint_submit.py --tree-id Edgar_..._489 [--dry-run]
+```
+No more hand-rolled heredocs; the field-order bug that cost two diagnosis rounds (signature swapped into "My Digital Signature") is impossible to reintroduce.
+
+### Still open (unchanged)
+- `tokenomics #451` (dispatch-failure visibility) — unmerged, undeployed
+- `sunmint_beta #46` → prod promotion — awaits your review
+- **Auto-dispatch proof** — awaits your box check (`git pull` + `journalctl` grep `dispatch`) to confirm the merged `dao_protocol #150` routing runs on the box
+- Runbook §4.5 update (reference the script) — deferred to a follow-up PR per the PR body
+
+---
+**RESUME HERE → next turn:**
+1. **Merge PR #353** (say "merge it") — it's fully verified now (this time the hard-rule suite genuinely ran before pushing).
+2. Then optionally **use it live**: `python3 scripts/sunmint_submit.py --tree-id <new-tree> --dry-run` then real submit — doubles as the **auto-dispatch re-test** once you've confirmed the box runs merged dispatch.py.
+3. Governor box check (2 commands) for the auto-dispatch gap:
+   ```bash
+   cd /home/ubuntu/dao_protocol && git pull --ff-only && sudo systemctl restart truesight-dao-protocol.service
+   journalctl -u truesight-dao-protocol --since "2026-08-30 22:18" | grep -iE "dispatch|TREE_PLANTING_REJECT|webhook"
+   ```
+4. Then close out: merge+deploy `tokenomics #451`; promote `sunmint_beta #46` to prod.
+
+No Edgar submissions, no ledger writes, no money movement this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_autopilot/feat/sunmint-submit-script/scripts/sunmint_submit.py"; cd /tmp && echo "=== find extraneous f ===" && grep -n 'f"[^"]*"' sunmint_submit.py | grep -v '{' | head; grep -n 'f'"'"'[^'"'"']*'"'"'' sun; cd /tmp && sed -i 's/print(f"=== signature_verification: pending ===")/print("=== signature_verification: pending ===")/' sunmint_submit.py ; …(+4 more)
+• `upload file to github` → https://github.com/TrueSightDAO/truesight_autopilot/blob/feat/sunmint-submit-script/scripts/sunmint_submit.py
 
