@@ -8,93 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-TGM handler patched and syntax-OK. Now extending the REJECT path in the planting handler to also allow invalidating **LINKED** trees (FounderHaus is LINKED, not NEW — currently only NEW can be invalidated).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check the reject-path region to ensure no duplicated log line was introduced.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-There's a duplicated log line and the original indentation was lost (the original block was indented inside a for-loop). Let me fix the indentation and remove the duplicate.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both files patched cleanly. Now pushing both GAS files to the tokenomics repo as a PR (this is a code repo — PR flow), then I'll deploy to the GAS project.
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-⚠️ Same trap as before — the writes payload carried placeholder content and only covered one file. Let me check the PR and fix it with the real file contents.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The PR shows the file replaced with 1 line (placeholder) — the real content never made it. I need to fix both files with actual content via `upload_local_file_to_github` (which reads the real local files). Let me push the correct files to the same branch.
-[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both files now carry real content on the branch. Let me verify the PR diff is correct.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #432 is now clean and correct: **+65/−0** for the growth handler (helpers + gates), **+4/−3** for the planting handler (REJECT now allows NEW or LINKED). Both files verified with the key additions present. Stopping per the one-PR-per-turn rule.
-
-## ✅ What I did this turn — server-side enforcement (the "truth" layer)
-
-**PR [tokenomics#432](https://github.com/TrueSightDAO/tokenomics/pull/432)** (branch `feat/growth-proximity-invalid-gates`, real content verified):
-
-**1. `process_tree_growth_monitoring.gs` (+65):**
-- `tgmHaversineKm_()` — haversine distance (km)
-- `tgmFindSunMintTreeRow_()` — resolves the tree's **coords + status** from the `SunMint Tree Planting` tab (match by Linked QR Code or Telegram Message ID — columns verified from the live sheet)
-- `tgmIsOperator_()` — governor/sentinel exemption (reuses the shared-project `isGovernorByName_`/`isSentinelByName_`)
-- **In the loop:** skips measurements on **INVALID** trees; skips non-operator submissions **>200 m** from the tree (logged `TOO FAR` + distance)
-
-**2. `process_tree_planting_link.js` (+4/−3):** the REJECT path now invalidates **NEW or LINKED** submissions (was NEW-only) — so a governor's "Mark invalid" on a LINKED tree like FounderHaus actually works server-side.
-
-**Semantics preserved:** no ledger booking, no QR status change on reject (unchanged).
-
-⚠️ **Process flag:** the first push of this PR went out with placeholder content (the `writes` payload didn't carry the real file bodies) — I caught it, pushed the real files to the branch via Contents API, and verified the PR diff (+65/−0, +4/−3, key additions present). The PR is correct now.
-
-## 📌 RESUME HERE → next units
-1. **Merge tokenomics#432** (your go) — then **deploy** both handlers to the GAS project (`1UrBgq…`) so the gates go live
-2. **`governors.json`** sync in the sunmint repo (the client's hardcoded governor list is a temporary mirror — the rebuild workflow should publish the authoritative list)
-3. `TGM_GITHUB_TOKEN` Script Property (still needs the PAT from you/Envoy)
-4. **UAT** → `sync_beta_to_prod(sunmint_prod)`
-
-Say "go" and I'll merge #432 + deploy the handlers.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×12 → read both GAS files, verified sheet columns (K/L/M/D/R), patched both files locally (tgm_new.gs + tpl_new.js), node --check syntax OK on both, fixed the REJECT guard to NEW|LINKED, deduped + re-indented, verified PR diff + key additions
-• `git push changes` ×1 → PR #432 (then fixed content via 2× upload_local_file_to_github on the branch)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → read tgm.gs + tpl.js structures, isGovernorByName_/isSentinelByName_, REJECT path, SunMint tab columns
-• `git push changes` → PR #432 (placeholder content — flagged)
-• `upload file to github` ×2 → real content for both files on branch (d157de05, dfc0de73)
-• `ssh run` → verified PR diff (+65/−0, +4/−3) + key additions present
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×10 → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/contents/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh; cd /tmp && sed -n '213,264p' tgm.gs && echo "=== extract (102-140) ===" && sed -n '102,140p' tgm.gs; cd /tmp && sed -n '1,70p' tgm.gs && echo "=== DESTINATION_SHEET / sunmint sheet refs in tpl.js ===" && grep -n "DESTINATION_SHEET_URL\|TPL_S; …(+5 more)
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
@@ -4435,36 +4348,43 @@ Full script mapped. Now building the date-slider history view — a dated thumbn
 ### 🤖 Autopilot
 
 All 4 scripts validate and markers are present. One flaw to fix before pushing: the global `document.addEventListener('change', ...)` references `map` which is scoped inside `initMap` — the overlay toggle won't work after the overlay is added (the inner click handler re-adds it correctly, but the global listener throws). Let me fix the global listener to find the map safely via the instance, and also drop the redundant global listener (the per-click handler already manages the toggle). Simplest robust fix: make the toggle listener re-trigger via the stored overlay only:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One more guard needed: the global toggle calls `toggleOverlay(null, …)` but `toggleOverlay` uses `map.removeLayer` unguarded. Fixing with a stashed map reference:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All checks pass (4 scripts OK, divs 44/44, all markers present). Pushing the date-slider history view as a PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The edit anchor occurs twice (both `setView` call sites). Using `replace_all` for the stash line is wrong (it'd add a duplicate stash). Let me use the more specific anchor — the one with the SATELLITE_BASEMAP following:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #322 opened with the stash edit applied. Now uploading the full patched file to the branch (the proven two-step — the branch has the base edit, this adds the full feature):
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full file now on the branch. Verifying the PR diff is clean via the authoritative API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #322 is clean (**+92/−0, 1 file, mergeable**, all markers present, zoom 11 preserved). Merging it to make the satellite history live:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4510,21 +4430,25 @@ Say "go" to verify on beta (browser check) or to trigger the cache workflow.
 ### 🤖 Autopilot
 
 Good question — let me ground the answer in what the cache actually does today and whether the tree records carry any plot grouping:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Cache covers **tree-bearing grid cells** (1 km buckets) — right now only the pilot cell is committed (the full run produced 9 cells/36 scenes; I trimmed to the pilot cell so the manifest stayed consistent). And the tree records have **no plot grouping field yet** — so "plots" don't exist as data yet. Let me check the SunMint sheet for any site/parcel column:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the correct sheet name/tab from the generator script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The generator reads from a **different spreadsheet** (`1qbZZhf-…`, not the Main Ledger). Reading that tab to check for any plot/site/parcel column:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4598,21 +4522,25 @@ Yes — and the good news is **GeoJSON already natively supports both**, so we d
 ### 🤖 Autopilot
 
 Executing both: (1) add the data-model gotcha to the whitepaper, (2) scaffold the plot layer (generator + index + map). Starting with the whitepaper addition — fetching the current whitepaper and finding the right section:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the TOC structure and section list to pick the right insertion point:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The whitepaper has **§3 Project Boundary** — that's the perfect home for the data-model gotcha (tree points vs plot polygons). Let me read §3 to add the gotcha right after it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Perfect insertion point — after §3's carbon-pools bullet, before §4. Adding the **data-model gotcha** as a subsection (tree points vs plot polygons, GeoJSON-native, backward compatible, plot_id link):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4698,4 +4626,50 @@ Say "go" to merge #323, or to build the map's plot-rendering V2 next.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → cd /tmp && TS=$(date +%s) && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint/whitepaper/index.html?cb; cd /tmp && echo "=== TOC links (64-100) ===" && sed -n '64,105p' wp_now.html && echo "=== all section ids ===" && grep -oE 'id="[^"]+"' wp_n; cd /tmp && echo "=== §3 Project Boundary ===" && sed -n "$(grep -n 'id=\"3-project-boundary\"' wp_now.html | cut -d: -f1),+12p" wp_now.html; …(+11 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: PR #323 is clean (**+14/−0, 1 file, mergeable**, §3.1 + TOC + plot_id all present). Both the whitepaper update and the scaffolding are done. Here's the report.
+
+## ✅ Done — whitepaper gotcha + scaffol
+
+
+### 🤖 Autopilot
+
+Merging truesight_me_beta#323 — the whitepaper §3.1 geospatial data model.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Here's the turn report.
+
+## ✅ What I did this turn
+
+**Merged [truesight_me_beta#323](https://github.com/TrueSightDAO/truesight_me_beta/pull/323)** (sha `05317db7`) — whitepaper **§3.1 Geospatial Data Model: Tree Points and Plot Boundaries**:
+- **Trees are always GeoJSON Points; plots are always GeoJSON Polygons** — never mix a boundary into a tree feature
+- Trees link to plots via `plot_id`; trees without one render as standalone points (**backfill-tolerant**, no legacy migration)
+- Plot-level accounting required by VM0047/PM002; satellite caching clips to plot boundaries
+- TOC entry added; verified clean (+14/−0, 1 file, §3.1 + plot_id present)
+
+This completes the paired deliverable from last turn: the **whitepaper gotcha is now on main**, alongside the **scaffolding already in the sunmint repo** (`plot_id` column + `plots.geojson` empty layer + plot-aware satellite caching).
+
+## 📌 RESUME HERE → next units
+1. **Map consumption V2** (next build): extend the impact map to fetch `plots.geojson`, render plot polygons + a plot selector, degrade gracefully while empty — truesight_me_beta PR
+2. **Verify §3.1 on beta** after Pages rebuild (`beta.truesight.me/sunmint/whitepaper/`)
+3. **In Altamira**: collect `plot_id` per tree + digitize plot boundaries (Google Earth / SW Maps) → fill the SunMint Plots tab → generator + cache + map light up automatically
+4. **Standing**: promote truesight_me_beta → prod (#318–#323) after beta review; `sunmint_prod` config line; test-row cleanup
+
+Say "go" to build the plot-rendering V2 map, or to verify §3.1 on beta first.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #323 on truesight_me_beta merged successfully (sha: 05317db7fa70a5b94718d78a9c2a13e7793b006b). Pull Request successfully merged
 
