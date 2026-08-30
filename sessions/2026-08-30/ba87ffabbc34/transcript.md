@@ -4180,26 +4180,31 @@ Only 10 collections and none printed with "sentinel"/"s2" in id — let me see a
 Interesting — the new STAC API's `/collections` only lists CLMS + CCM right now (the Sentinel collections aren't listed, possibly due to a staging/rollout state or the search needs different parameters). The Sentinel-2 search on the old deprecated endpoint 404s. This tells me the **STAC-based fetching needs the CDSE account anyway** (and possibly the collections get exposed once authenticated). Given the registration is deferred anyway, the right move is: **build the caching scaffold now with the correct architecture + graceful degradation, targeting `catalogue.dataspace.copernicus.eu` (verified live), and document the CDSE registration + exact follow-ups**. The script must not fail the workflow when creds/collections aren't available yet.
 
 Let me check the existing workflow + generator so the new script plugs in consistently, then build:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have everything — verified endpoints (`catalogue.dataspace.copernicus.eu` live; token endpoint reachable, 401-with-bad-creds = correct flow) and the existing repo pattern. Building the caching script + workflow with graceful degradation (never fails when CDSE creds/collections aren't available yet), then uploading to the sunmint repo. Writing and linting locally first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two lint errors — removing the unused `base64` import and the unused `bbox` variable:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Ruff format wants a reformat — applying it, then re-running all checks:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All checks pass (compile, ruff, format, functional grid-bucketing test). Now creating the workflow file that runs the cache script alongside the existing rebuild workflow, then pushing both via PR to the sunmint repo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4348,4 +4353,134 @@ Say "go" to promote to production, or to continue with anything else you spot on
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && TS=$(date +%s) && echo "=== 1. try beta subdomains for truesight_me ===" && for d in beta.truesight.me truesight-me-beta truesigh; cd /tmp && TS=$(date +%s) && echo "=== 1. LIVE beta.truesight.me/sunmint.html: map present? ===" && curl -s "https://beta.truesight.me/sunmi; cd /tmp && echo "=== live sunmint.html: map section structure ===" && grep -n "liveMap\|Live Impact Map\|leaflet\|map-container\|mapSection"; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Seems the impact map is saying for API key required
+
+
+### 🤖 Autopilot
+
+Let me check what the map is actually requesting and what the tile server is returning — the "API key required" is coming from the CDSE WMS endpoint, so I need to see the exact request:
+
+
+### 🤖 Autopilot
+
+Found it — the WMS base URL is **`https://sh.dataspace.copernicus.eu/`** — that's the **Sentinel Hub** endpoint, which **requires an API key** (it's the paid OGC service; the `/ogc/wms/` path needs a token). That contradicts what I told you earlier ("anonymous, no key"). The **anonymous** path is the **new Copernicus catalogue WMS** (`https://catalogue.dataspace.copernicus.eu/ogc/wms/…`) — which is what I verified earlier but did NOT use in the map. My error: I used the Sentinel Hub URL that everyone's old tutorials reference instead of the verified anonymous catalogue endpoint.
+
+Let me confirm the anonymous catalogue WMS endpoint works with a direct tile request, then fix the map:
+
+
+### 🤖 Autopilot
+
+The catalogue WMS path 404s as well. Let me probe the correct anonymous OGC paths on the new catalogue (the path structure differs — likely includes the collection):
+
+
+### 🤖 Autopilot
+
+The picture is now clear and it corrects my earlier claim: **there is no anonymous Sentinel-2 WMS anymore** — the new catalogue only exposes STAC publicly (everything else 404s), and `sh.dataspace` requires auth. So the map's "API key required" is real. My "no key needed" statement was wrong — the old anonymous Sentinel Hub access is gone.
+
+Let me verify a free no-key satellite basemap that works immediately (ESRI World Imagery), so the map stops erroring:
+
+
+### 🤖 Autopilot
+
+ESRI World Imagery works (200, real satellite imagery, no key). The fix is clear: **use ESRI as the satellite basemap now** (free, no key), and **drop the live Sentinel-2 WMS layer from V1** — the satellite layer will come from our own **cache** (the scaffold we built) once CDSE creds are set, which is the correct architecture anyway (no live WMS dependency at all). Let me see the rest of the map script to write the fix precisely:
+
+
+### 🤖 Autopilot
+
+Full picture confirmed. The fix: replace the key-requiring Sentinel-2 WMS layers with **ESRI World Imagery** (free, no key, verified 200) as the satellite basemap, repurpose the toggle to Satellite/Map, and note that Sentinel-2 NDVI layers arrive via the CDSE cache pipeline. Applying the patch:
+
+
+### 🤖 Autopilot
+
+All 4 patches applied + buttons found. Let me relabel the buttons (TrueColor→Satellite, NDVI→Map) and validate the JS:
+
+
+### 🤖 Autopilot
+
+All patches clean (0 WMS refs, buttons relabeled, JS OK on the first script). But that first script is only 436 B — let me verify ALL inline scripts validate, then push:
+
+
+### 🤖 Autopilot
+
+All 4 scripts validate. Pushing the fix as a PR (two-step: open branch, then upload real file):
+
+
+### 🤖 Autopilot
+
+The tool requires explicit edits/writes. Using a precise edit hunk instead:
+
+
+### 🤖 Autopilot
+
+The branch doesn't have the SATELLITE_BASEMAP line yet (main still has the old WMS code). Let me use the actual current main content as the edit base — replacing the old WMS block directly:
+
+
+### 🤖 Autopilot
+
+PR #320 opened with the base edit applied. Now uploading the full real patched file from disk to the branch:
+
+
+### 🤖 Autopilot
+
+Real content now on the branch (commit `b9ea5396`). Let me verify the PR diff is clean via the authoritative API:
+
+
+### 🤖 Autopilot
+
+PR #320 is clean (+15/−27, 1 file, ESRI in, WMS out, button relabeled). This is the verified fix for the "API key required" issue. Merging it so the map stops erroring on beta:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Here's the turn report.
+
+## ✅ What I did this turn — fixed the impact map "API key required" bug
+
+**Root cause (verified live, not guessed):** the map's satellite layer pointed at `https://sh.dataspace.copernicus.eu/` (Sentinel Hub), which now **requires an API key**. I confirmed there is **no anonymous Sentinel-2 WMS anymore**: the new Copernicus catalogue (`catalogue.dataspace.copernicus.eu`) exposes only STAC publicly (all OGC/WMS paths 404), and `sh.dataspace` WMS 404s without auth. My earlier "no key needed" claim was wrong — the old anonymous access is gone.
+
+**Merged [truesight_me_beta#320](https://github.com/TrueSightDAO/truesight_me_beta/pull/320)** (`8f312168`, +15/−27, 1 file):
+- Replaced the key-requiring Sentinel-2 WMS layers with **ESRI World Imagery** — free, no key, verified HTTP 200
+- Layer toggle now **Satellite / Map** (was TrueColor/NDVI)
+- High-res Sentinel-2 true-color/NDVI layers will arrive via the **CDSE cache pipeline** (already scaffolded in `sunmint/scripts/cache_satellite_scenes.py`) once credentials are set — no live WMS dependency at all
+- Validated: all 4 inline scripts pass `node --check`, div/button balance intact, 0 WMS refs remain on the branch
+
+**Honest correction for the record:** the map as merged in #319 claimed anonymous Sentinel-2 tiles; that was wrong, and #320 fixes it. The map now works without any key (tree markers + ESRI satellite basemap), and Sentinel-2 layers arrive properly through our own cache.
+
+## 📌 RESUME HERE → next units
+1. **Verify on beta post-rebuild** (Pages lag ~1-2 min): `beta.truesight.me/sunmint.html` — map renders ESRI satellite tiles + tree markers, **no "API key required"**, zero console errors
+2. **Promote #318/#319/#320 to `truesight_me_prod`** — after your beta review sign-off: `sync_beta_to_prod(truesight_me_prod)`
+3. **Satellite cache activation** — when you complete the CDSE registration (dataspace.copernicus.eu → OAuth2 client) → I add `CDSE_CLIENT_ID`/`CDSE_CLIENT_SECRET` as sunmint repo secrets → verify the Sentinel-2 collection id → run the cache → then wire the date-slider history + true Sentinel-2 layers
+4. **Standing:** `sunmint_prod` `prod_repos` config line + monitor page promotion; test-row cleanup
+
+Say "go" to verify on beta, or to promote after your review.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → live map script read (found sh.dataspace WMS), probed catalogue OGC/WMS paths (all 404 — only STAC public), confirmed sh.dataspace WMS 404 without auth, verified ESRI tile 200, patched map (4 blocks + button relabels), all 4 scripts node --check OK, div/button balance 40/40
+• `git push changes` ×1 (with edit hunk) → PR #320; `upload local file to github` ×1 → full real file on branch (b9ea5396); verified +15/−27 clean (ESRI in, WMS out)
+• `merge pr` → ✅ PR #320 merged (sha 8f312168)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → live page fetch + WMS config read; catalogue WMS probes (ogc/wms, stac, odata, api/wms — only stac 200); sh.dataspace 404; ESRI tile 200 (10.6 KB jpeg); patch apply ×4 + button relabel; 4 inline scripts node --check OK; div 40/40
+• `git push changes` + `upload file` → PR #320 clean (+15/−27); verified branch file (26392 B, ESRI 1, WMS 0, sh.dataspace 0, tileLayer.wms 0, Satellite label ✓)
+• `merge pr` → ✅ merged sha 8f312168f66b276ceb9e7f26eff10f93f6a9e315
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /tmp && TS=$(date +%s) && echo "=== map script WMS layer config (live page 416-460) ===" && curl -s "https://beta.truesight.me/sunmint.html?cb=$TS" -o live_sm2.html && sed -n '416,470p' live_sm2.html; cd /tmp && echo "=== 1. does the anonymous catalogue WMS work? (getcapabilities) ===" && curl -s -m 20 -o /tmp/wms_caps.xml -w "HTTP %{http_code}\n" "https://catalogue.dataspace.copernicus.eu/ogc/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities" && head -c 400 /tmp/wms_caps.xml; cd /tmp && echo "=== probe candidate anonymous WMS/OGC paths on catalogue ===" && for p in "ogc/wms" "ogc/wms/SENTINEL-2" "ogc/wms/sentinel-2-l2a" "ogc/wms/TRUE_COLOR_S2L2A" "stac" "odata/v1" "api/wms" "wms" "ogc"; do code=$(curl -s -m 12 -o /dev/null -w "%{http_code}" "https://catalogue.dataspace.copernicus.eu/$p?SERVICE=WMS&REQUEST=GetCapabilities" 2>/dev/null); echo "$p -> $code"; done; echo "" && echo "=== also check sh.dataspace requires auth now? ===" && curl -s -m 15 -o /dev/null -w "sh.dataspace WMS HTTP %{http_code}\n" "https://sh.dataspace.copernicus.eu/ogc/wms?SERVICE=WMS&VERSION=1.3.0&REQUEST=GetCapabilities" 2>&1 | head -2; …(+6 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /tmp && TS=$(date +%s) && echo "=== map script WMS layer config (live page 416-460) ===" && curl -s "https://beta.truesight.me/sunmint.ht; cd /tmp && echo "=== 1. does the anonymous catalogue WMS work? (getcapabilities) ===" && curl -s -m 20 -o /tmp/wms_caps.xml -w "HTTP %{http_; cd /tmp && echo "=== probe candidate anonymous WMS/OGC paths on catalogue ===" && for p in "ogc/wms" "ogc/wms/SENTINEL-2" "ogc/wms/sentinel-; …(+6 more)
+• `merge pr` → ✅ PR #320 on truesight_me_beta merged successfully (sha: 8f312168f66b276ceb9e7f26eff10f93f6a9e315). Pull Request successfully merged
 
