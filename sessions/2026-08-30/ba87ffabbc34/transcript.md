@@ -8,49 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-I think when a tree is selected, the corresponding image of the tree as well as detailed of the tree entered during its planting should be surfaced
-
-[Attachment auto-processed: **865ba60c022248e2a1698d9751d84093.jpg**]
-- Type: Image (OCR confidence: 87.6%, quality: good)
-
-Extracted text:
-```
-oH wat LTE GD: f) beta.sunmint.truesightme Monitor Tree ¢ Record tree measurement Select the tree, take a close-up photo with the calibration card against the trunk (1.3 m height), and a context photo of the whole tree. Nearby tree Edgar_20260819134722_487 — 1891 ¢ DBH (cm) — diameter at breast height (1.3 m) Hold the calibration card against the trunk, in frame. ex: 12.5 Close-up photo (card + trunk) Take close-up photo Context photo (whole tree) Take context photo lar eve Raat a toatatatd a
-```
-
-
-### 🤖 Autopilot
-
-Good idea — the canonical index already carries each tree's `photo_url`, `species`, `planted_at`, `status`, and `qr_code`, so the data is there to surface. Let me look at the current selection code in the monitor page to wire the panel correctly.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the tree-selection block (lines 365–410) and the `onTreeSelectChange` handler to wire the detail panel correctly.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The structure is clear. `loadTreeIndex()` drops `photo_url`, `status`, `qr_code`, `planted_at` — I need to keep those and render a detail panel on selection. Let me look at the HTML around the dropdown and the i18n dict to wire it precisely.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the full structure. Let me view the complete i18n dict (lines 151–235) to add the detail-panel keys in both languages, then apply the edits.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The picture is complete. Now I'll wire the detail panel: keep the extra fields in `loadTreeIndex()`, add the panel HTML, populate it on selection, and add i18n keys. Applying all edits in one PR:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 The en dict's `selectTree` string differs slightly from what I assumed. Let me check the exact text in the en block.
@@ -4594,11 +4551,13 @@ Live page shows only 3 `maybeShowInvalidZone` refs (pre-fix count) and the manua
 ### 🤖 Autopilot
 
 Clear: **main has the fix (4 refs, 60,348 B) but the live page is stale** (60,158 B, old 3-ref listener at line 1137 — pre-#27). This is the recurring Pages rebuild lag. Let me check when the last Pages deployment was and whether a rebuild is pending, then decide whether to wait or verify against a simulated merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live page is **stale** (last-modified `Sat, 29 Aug 2026 12:38:32` = pre-#27 build; still the old 3-ref listener at line 1137). Main has the fix (4 refs, 60,348 B) — the Pages rebuild for #27 just hasn't propagated yet (merge was minutes ago). Registering a watcher to notify this topic the moment the fixed page is live:
+[1 tool result(s) compacted: watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4745,4 +4704,46 @@ One small note: the dummy test tree I added got dropped in the daily index rebui
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/trees/index.geojson?x=$TS" | python3 -c " i
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Hey, I think we need to indicate the dimensions of the calibration card clearly in the monitoring view of the sun in that, isn't that way they know that they need a card like this in place fully. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call — let me check the current close-up hint text and i18n keys, then add the card dimensions clearly.
+
+
+### 🤖 Autopilot
+
+Clear. The closeup hint doesn't mention the card's dimensions — a farmer can't know they need a specific physical card. I'll add a clear dimension line to the closeup hint in both languages (credit-card standard 85.6 × 54 mm), so the requirement is explicit in the view. Applying the edit:
+
+
+### 🤖 Autopilot
+
+Validated (JS OK, both languages, divs balanced). Uploading to sunmint_beta main — this is the fast-UAT direct-to-main flow we've been using on this repo, but given it's a user-visible copy change I'll flag it again as usual:
+
+
+### 🤖 Autopilot
+
+Done — shipped.
+
+## ✅ Calibration card dimensions now shown in the monitoring view
+
+The close-up photo hint now spells out the exact card size in both languages (committed `3d234af7` to sunmint_beta):
+
+- **PT:** "Segure o cartão de calibração **(85,6 × 54 mm — tamanho de cartão de crédito)** contra o tronco, enquadre e tire a foto."
+- **EN:** "Hold the calibration card **(85.6 × 54 mm — credit-card size)** against the trunk, frame it, and take the photo."
+
+So a farmer reading the view knows they need a **credit-card-sized physical card** in the photo — the dimension requirement is explicit, not assumed. Will be live on `beta.sunmint.truesight.me/monitor-tree-growth/` after the Pages rebuild (give it a minute — the CDN variant lag we hit before can take a few minutes to fully clear).
+
+**A thought for your Altamira trip:** this is exactly why the physical card matters — since the app now tells farmers the size, the natural next step is **printing cards locally** (any print shop can cut credit-card-size cards; ideally rigid plastic or laminated paper so it survives field use). That's one of the highest-leverage things you can leave behind with the farmers.
+
+Also still open from before, unchanged: the dummy test tree needs re-adding (dropped by the daily rebuild), and the sentinel-UI verification on the mark-invalid button is waiting on the CDN variant to clear. Want me to tackle either now?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/e2e && TS=$(date +%s) && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html?cb; cd /tmp/e2e && python3 << 'PYEOF' p = '/tmp/e2e/page_dim.html' d = open(p, encoding='utf-8').read() # 1) pt closeupHint with dimensions old_
 
