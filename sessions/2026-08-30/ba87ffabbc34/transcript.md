@@ -3923,11 +3923,13 @@ AGB = a × DBH■ — bioma
 ### 🤖 Autopilot
 
 Let me check what character actually landed in the file — the ■ suggests a glyph that isn't rendering (likely the superscript ᵇ):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at both documents — the whitepaper formula on the branch and the PDF's actual text — to see exactly which characters are rendering as ■ (likely the superscript ᵇ, which many fonts lack):
+[2 tool result(s) compacted: extract_pdf_text, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4069,4 +4071,36 @@ Great news: **we don't need the API key yet** — the V1 map (already merged) us
 **Timeline:** we don't need it until we start V1.1 (the caching job + date-slider history). The map with markers + live satellite layer works today without it. So — no rush, but whenever you're near a computer, the dataspace.copernicus.eu registration takes ~5 minutes, and once you've got the client credentials, hand them to me and I'll wire the whole pipeline.
 
 One note: I'll also add a fallback in the script so if the CDSE fetch ever fails, the map still shows our tree markers — the satellite layer is enhancement, not a single point of failure.
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Give me the instructions for https://identity.dataspace.copernicus.eu/auth/realms/CDSE/account/#/personal-info
+
+I am on the website right now
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] thoughts?
+
+
+### 🤖 Autopilot
+
+Perfect — you're at the right place (that's the Keycloak account console). Here's the exact path to create the OAuth2 client:
+
+**1. On the left sidebar** of that page, look for **"Clients"** (may appear as a separate menu item — if you don't see it on the personal-info page, click through the left menu items; it's usually its own section, sometimes under the account name/menu).
+
+**2. Click "Clients" → then "Create a new client"** (or "New client" / "+" button).
+
+**3. Give it a name** — anything unique, e.g. **`sunmint-cache`** (this becomes part of your client_id).
+
+**4. Save/create** → it will show you the **client_id** and **client_secret** — copy both. The client_id usually looks like `sunmint-cache` (with the name you chose); the secret is a long random string.
+
+**5. Send me both** via a private channel (not in this chat) — I'll store them as GitHub repo secrets (`CDSE_CLIENT_ID`, `CDSE_CLIENT_SECRET`) on the sunmint repo, and the caching workflow will read them from the environment, never from the repo.
+
+**Two notes:**
+- If you see **"confidential" vs "public"** client options, pick **confidential** (that's the type that issues a client_secret).
+- The token flow uses **username/password + client_id** (the docs even show a `cdse-public` option), but the **client credentials (client_id + client_secret) are the cleanest** for an unattended GitHub Actions job — so that's what I'll wire.
+
+Once you've got the pair, drop them somewhere private (password manager / direct DM) and tell me — I'll take it from there with the caching pipeline. The V1 map is already live without any of this, so there's zero pressure.
 
