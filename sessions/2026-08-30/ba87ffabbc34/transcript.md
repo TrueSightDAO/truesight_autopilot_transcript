@@ -3792,36 +3792,43 @@ The escape handling may have produced literal `\uXXXX` sequences instead of real
 ### 🤖 Autopilot
 
 The escapes landed as **literal** `\uXXXX` sequences (my `\\u` doubling in the heredoc), while the rest of the file uses real unicode chars. Fixing by decoding just my inserted block:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My 13.1 block is now correctly decoded (real `CO₂e ≈ 57` ✓). The literal escapes at lines 232/236/286 are **pre-existing** in the original whitepaper (not mine — they predate this work; worth a separate cleanup note). Pushing the updated whitepaper to the PR branch and verifying:
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ Same trap — I passed empty content. The file on the branch is likely blanked. Fixing with the real local file:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real content now on the branch (commit `30a9770c`). Verifying the PR diff and the section is intact:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #318 is now +25/−0 (was +16; the +9 is the 13.1 formula subsection). But the branch grep returned 0 — likely the `grep -c` with two patterns + `≈` char issue over the pipe, or a CDN lag. Let me verify directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Problem confirmed** — the branch file is **31,018 B, same as the ORIGINAL pre-13.1 size**, and has **0** "13.1 How Carbon" markers. My `upload_local_file_to_github` did **not** put my local patched file up (the local file is 31,018 B too — wait, let me check: the local file should be bigger after the 13.1 insert). The branch file is missing the 13.1 section entirely — the earlier uploads (empty content + local file) both failed to persist the real content, or the local file itself never got the insert saved. Let me check the local file size first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Local file is **32,914 B with 1 marker** (the 13.1 section IS in my local file), and PR head is `30a9770c` (my upload commit). But the raw fetch shows 31,018 B / 0 markers — **the raw CDN is serving stale content** (the exact recurring lag). The branch itself is correct. Verifying via the authoritative Contents API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3829,6 +3836,7 @@ Local file is **32,914 B with 1 marker** (the 13.1 section IS in my local file),
 **Confirmed via authoritative API: the branch file is 32,914 B with the 13.1 formula section intact** (`has 13.1: True`, `has CO₂e ≈ 57: True`). The raw-CDN 31,018 B was just the stale-cache lag again. Whitepaper PR #318 now has **both sections** (13 + 13.1).
 
 Now (c) — the **impact-map V1 PR**. Building the Leaflet map section for sunmint.html with tree markers from the live index + anonymous Sentinel-2 WMS layer. Let me fetch the current sunmint.html and add the map section:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3963,4 +3971,70 @@ Want me to also fix those pre-existing `\uXXXX` escapes, or merge #318/#319 for 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/contents/sunmint/whitepaper/index.html?ref=docs/sunmint-whit; cd /tmp && python3 << 'PYEOF' # Regenerate the PDF with safe characters: DBH^b and CO2e instead of exotic unicode content = open('/tmp/pdf_c
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: All three tasks are done and verified. Here's the full report.
+
+## ✅ All three delivered
+
+**1. Field PDF delivered** (message 16490 in this thread) — v6 with the carbon formula section + partner one-l
+
+
+### 🤖 Autopilot
+
+Checking the handoff manifest first (per the directive), then executing: fix the pre-existing `\uXXXX` escapes in the whitepaper, then merge #318 for beta review.
+
+
+### 🤖 Autopilot
+
+Manifest checked — this thread (11018) is the live monitor-tree-growth execution thread, not a parked manifest handoff; the "go for it" resumes the whitepaper/PDF wrap-up. Executing: fix the pre-existing `\uXXXX` literal escapes in the whitepaper, then merge #318 + #319 for beta review.
+
+First, locating the literal escape sequences on the #318 branch:
+
+
+### 🤖 Autopilot
+
+No literal `\uXXXX` sequences found in the fetched file — my earlier "pre-existing escapes" flag was based on a stale/partial fetch (the raw-CDN lag or the pre-fix copy). Let me double-check with a different pattern in case they're single-backslash (not double) or in a different form:
+
+
+### 🤖 Autopilot
+
+Good — **zero literal `\uXXXX` escapes** in the actual branch file. My earlier flag was wrong (based on a stale/fragmented fetch). The whitepaper is clean — the only non-ASCII chars are legitimate (×, ≈, é, etc., 21 unique), and the section 12→13 flow is intact. No escape cleanup needed.
+
+Both PRs are ready. Merging #318 (whitepaper) and #319 (impact map) for beta review:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged. Here's the turn report.
+
+## ✅ What I did this turn — merged both beta PRs
+
+| PR | SHA | What |
+|---|---|---|
+| **[truesight_me_beta#318](https://github.com/TrueSightDAO/truesight_me_beta/pull/318)** | `37ab680` | Whitepaper: **§13 On-Chain Carbon Credit Lifecycle** (tree-anchored issue→sell→proceeds→payout) + **§13.1 How Carbon Is Calculated** (the exact formula: `AGB = a × DBH<sup>b</sup>` → `BGB ×0.32` → `C ×0.47` → `CO₂e ×44/12`, worked example, partner one-liner) + the `DBHᵇ` glyph fix |
+| **[truesight_me_beta#319](https://github.com/TrueSightDAO/truesight_me_beta/pull/319)** | `0a7e521` | sunmint.html: **Live Impact Map V1** (Leaflet + registered-tree markers from live index.geojson + anonymous Sentinel-2 WMS true-color/NDVI, no API key) |
+
+**Also:** the pre-existing `\uXXXX` escape concern I'd flagged earlier was **checked and cleared** — the actual branch file has zero literal escapes (my earlier flag was a stale-fetch artifact). No cleanup needed.
+
+## 📌 RESUME HERE → next units
+1. **Verify on beta** (after Pages rebuild): `truesight.me/sunmint/whitepaper/` renders §13 + §13.1 with clean glyphs; `sunmint.html` shows the impact map with tree markers + satellite layer
+2. **V1.1 map follow-ups** (separate): satellite image **caching** in `sunmint/satellite/<lat>_<lng>/` (scene-date filenames, your design) via the daily rebuild job → date-slider history; CDSE OAuth if higher quota needed
+3. **Standing (separate approvals):** promote both to `truesight_me_prod` after beta review; `sunmint_prod` `prod_repos` config line + promotion; test-row cleanup (FounderHaus DBH 12.5, TEST_TREE_E2E measurements, e2e email identities); the emoji-reaction-GO plan (manifest row, PR1 pending)
+
+Say "go" to verify on beta, or to start the satellite caching pipeline.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/contents/sunmint/whitepaper/index.html?ref=docs/sunmint-whit; cd /tmp && python3 << 'PYEOF' import re c = open('/tmp/wp_esc.html', encoding='utf-8').read() # check for any literal backslash-u (single ba
+• `merge pr` ×2 → ✅ PR #318 on truesight_me_beta merged successfully (sha: 37ab680f309efa81cebb28b4011840128916b792). Pull Request successfully merged; ✅ PR #319 on truesight_me_beta merged successfully (sha: 0a7e521a3b8e636b45dffdf1f9ea53608439c16c). Pull Request successfully merged
 
