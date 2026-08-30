@@ -10,120 +10,6 @@
 
 ### 🧑 Governor
 
-[Telegram context: chat_id=-1003919341801, thread_id=11018] Yes, actually viewed it that way. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Building it treasury-cache style — everything in the `sunmint` data repo. Let me first verify the build script on the box and the repo's current state.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The script exists and works; `sunmint` is a clean slate (16 paths, all `images/`). Let me see the script's `main()` to know how it reads creds (so the workflow can pass the secret properly), then build the three files.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The script is clean and self-contained (reads sheet via `--creds`, emits `trees/index.geojson`). Now building the treasury-cache-style setup in the `sunmint` data repo — three files, mirroring the `generate_review_cache.yml` pattern exactly:
-[2 tool result(s) compacted: upload_file_to_github, upload_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Workflow + script are in the `sunmint` data repo. Now seeding the canonical index and pointing the page at it:
-[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Canonical index seeded in `sunmint` repo. Now updating the monitor page to fetch from the canonical location and removing the now-redundant copy in sunmint_beta (single source of truth):
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Done — the treasury-cache-pattern restructure is complete. Here's the report.
-
-## ✅ What I did this turn — canonical tree index (treasury-cache pattern)
-
-Followed the actual precedent (checked treasury-cache first): **the data repo owns data + generator + workflow together.**
-
-**In `TrueSightDAO/sunmint`** (the designated data/asset store — same role as treasury-cache):
-- **`.github/workflows/rebuild-tree-index.yml`** — daily 06:00 cron + `repository_dispatch` (reactive, for the GAS handler to ping) + manual; `permissions: contents: write`; commits back as Sophia Truesight (exact `generate_review_cache.yml` shape)
-- **`scripts/build_tree_geojson.py`** — vendored generator (reads the sheet via `GOOGLE_SERVICE_ACCOUNT_JSON` secret, emits `trees/index.geojson`)
-- **`trees/index.geojson`** — canonical index seeded (18 features, 13 coords)
-
-**In `sunmint_beta`** — **PR [#13](https://github.com/TrueSightDAO/sunmint_beta/pull/13)** (sha `32e17a0`): page now fetches the canonical raw URL **first**, and the redundant beta copy of the index is **deleted** (single source of truth, no drift).
-
-**Why this fits:** exactly how treasury-cache works — one repo holds the JSON data, the `scripts/` generator, and the `.github/workflows/` that refreshes it. Both sites (beta + prod) read the same canonical file from raw.githubusercontent (CORS-enabled), so there's no beta/prod duplication and no fork-sync freshness dependency. Secrets are the same pair treasury-cache uses: `GH_PAT_TOKEN` + `GOOGLE_SERVICE_ACCOUNT_JSON`.
-
-## 📌 RESUME HERE → next units
-1. **Merge sunmint_beta#13** → verify the dropdown populates on `beta.sunmint.truesight.me/monitor-tree-growth/` (it fetches the canonical raw URL)
-2. **Set repo secrets** on `sunmint`: `GH_PAT_TOKEN` + `GOOGLE_SERVICE_ACCOUNT_JSON` (needs you/Envoy to paste, or I add via API if the PAT has secret-write scope) — then test the workflow once (manual dispatch)
-3. **FounderHaus coords** — still open: provide site lat/lng (backfill sheet → regenerate index) or leave in no-GPS bucket
-4. **GAS handler reactive ping** — the `repository_dispatch` trigger is wired; the GAS handler should POST it after a new planting/link (uses the `TGM_GITHUB_TOKEN` already planned)
-
-Want me to merge #13 and verify the live dropdown next?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → cd /tmp && echo "=== build script exists? ===" && ls -la /tmp/p3/build_tree_geojson.py 2>/dev/null && head -40 /tmp/p3/build_tree_geojson.py; cd /tmp && echo "=== script main + creds handling ===" && sed -n '40,140p' /tmp/p3/build_tree_geojson.py
-• `upload file to github` ×3 → https://github.com/TrueSightDAO/sunmint/blob/main/.github/workflows/rebuild-tree-index.yml; https://github.com/TrueSightDAO/sunmint/blob/main/scripts/build_tree_geojson.py; https://github.com/TrueSightDAO/sunmint/blob/main/trees/index.geojson
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] Yep keep going [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Continuing — merging sunmint_beta#13, then verifying the live dropdown populates from the canonical index.
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged. Here's the turn report.
-
-## ✅ What I did this turn
-
-**Merged [sunmint_beta#13](https://github.com/TrueSightDAO/sunmint_beta/pull/13)** (sha `bd57459`) — the monitor page now fetches the **canonical index** from `raw.githubusercontent.com/TrueSightDAO/sunmint/main/trees/index.geojson` first, and the redundant beta copy of the index was deleted. Single source of truth, treasury-cache pattern.
-
-**Current state of the tree-index pipeline (all live on main):**
-- `sunmint/trees/index.geojson` — canonical data (18 features, 13 coords)
-- `sunmint/scripts/build_tree_geojson.py` — generator (vendored)
-- `sunmint/.github/workflows/rebuild-tree-index.yml` — daily cron + repository_dispatch + manual
-- `sunmint_beta/monitor-tree-growth/index.html` — fetches canonical URL first
-
-## 📌 RESUME HERE → next units
-1. **Verify live** — check `beta.sunmint.truesight.me/monitor-tree-growth/` dropdown populates from the canonical index (needs GitHub Pages rebuild; can check the raw URL returns 200 now)
-2. **Set repo secrets on `sunmint`** — `GH_PAT_TOKEN` + `GOOGLE_SERVICE_ACCOUNT_JSON` (needs you/Envoy to provide, or I add via API if PAT has secret-write scope) → then test the workflow once via manual dispatch
-3. **FounderHaus coords** — still open: backfill from you, or leave in no-GPS bucket
-4. **GAS handler reactive ping** — wire `repository_dispatch` POST after new planting/link events (uses `TGM_GITHUB_TOKEN`)
-5. Eventually: **UAT** → `sync_beta_to_prod(sunmint_prod)`
-
-Say "go" and I'll verify the live dropdown + start the secret setup.
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #13 on sunmint_beta merged successfully (sha: bd57459f455ca05fa08bdd1dab61b6793f51e24b). Pull Request successfully merged
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #13 on sunmint_beta merged successfully (sha: bd57459f455ca05fa08bdd1dab61b6793f51e24b). Pull Request successfully merged
-
-
-### 🧑 Governor
-
 I think when a tree is selected, the corresponding image of the tree as well as detailed of the tree entered during its planting should be surfaced
 
 [Attachment auto-processed: **865ba60c022248e2a1698d9751d84093.jpg**]
@@ -4696,11 +4582,13 @@ go
 ### 🤖 Autopilot
 
 Executing — post-rebuild verification of the sentinel UI: profile_sophia session selecting TEST_TREE_E2E via the manual path should now show the MARK INVALID button.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Live page shows only 3 `maybeShowInvalidZone` refs (pre-fix count) and the manual listener grep returned empty — the live page may still be serving the pre-#27 code (Pages rebuild lag). Let me check the actual listener block and compare against main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4823,4 +4711,38 @@ Received — the handoff from **Onaya** (formerly Bionpact) came through the mai
 - The PDF itself lives on Onaya's box (`/tmp/sunmint_consolidated_v6.pdf`); if you want me to review it I can ask Onaya to pass it over
 
 Nothing here changes the current RESUME HERE state (CDN-variant staleness re-check → sentinel UI verify → invalidation). Want me to hand anything back to Onaya (e.g. our E2E evidence for the directors memo), or continue with the standing verification?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Can you explain what the calibration card is? Also, once we have the satellite in place, what else is missing that we need to really put in place? Right now, I'm in Altamira amongst the farmers. What else can I get done with them before I leave, so that I don't really have to come back that much? Because if I don't get it done now, then probably I'll just end up having to come next year. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here's the picture, answered for where you're standing right now.
+
+**The calibration card** — it's a physical card, credit-card-sized, with known exact dimensions (85.6 × 54 mm). In the close-up photo you hold it against the trunk at chest height, and the software uses the card's known size to convert pixels to real centimeters, then measures the trunk diameter accurately. It's the "ruler in the photo" trick — without it the computer can't tell a 10 cm trunk from a 30 cm trunk. Your app's whole DBH measurement depends on these cards existing in people's hands.
+
+**Once the satellite is in place, what's still missing** — the satellite gives you wide-area canopy and deforestation monitoring, but it does NOT measure individual tree diameter. So the ground layer still needs:
+1. **Physical calibration cards**, printed and distributed to every farmer or field agent
+2. The **backend photo-analysis pipeline** — right now the app uploads photos but the automatic DBH/carbon computation isn't wired end-to-end yet (that's the `pm002_analysis.yml` gap)
+3. **Farmer self-sufficiency on the app** — their phones installed, identity registered, email linked
+4. **Data completeness** — today only 1 of your 19 trees is fully linked; 15 have coordinates but most lack species and real planting dates
+5. **Measurement discipline** — annual minimum, ideally every 6 months for young trees, which is what the carbon programs will audit
+
+**What to do with the farmers right now in Altamira** — this is the highest-leverage trip, and honestly the whole point of the app design:
+- **Get the cards in hands**: print calibration cards locally and give one to each farmer
+- **Do one supervised end-to-end measurement with each farmer** — install the app, register their identity, link their email, and measure one real tree together. That's the training that makes them self-sufficient
+- **Backfill the missing tree data** — for the trees already planted, capture coordinates, species, and planting dates from the farmers who remember; that's 19 trees of knowledge that only exists in their heads right now
+- **Identify a local champion** — one farmer or agent who becomes the on-the-ground point person, so you don't have to fly back for every issue
+- **Field-test the 200 m proximity gate** with real GPS — we built it, but it's never been exercised in the actual field
+
+If you leave with every participating farmer having a card, an installed app, a linked identity, and one supervised measurement under their belt — plus a local champion — then measurements flow in without you, and the satellite layer just adds the wide-area verification on top. That's the difference between coming back next year and not having to.
+
+One small note: the dummy test tree I added got dropped in the daily index rebuild, so I'll re-add it when we next touch that work.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/trees/index.geojson?x=$TS" | python3 -c " i
 
