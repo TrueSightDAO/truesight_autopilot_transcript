@@ -1177,16 +1177,19 @@ The sheet output is large and truncated. Let me read the artifact to find the ex
 ### 🤖 Autopilot
 
 Found the exact row — now let me check the processor's own tracking tab ("Tree Planting Link") to see what the GAS handler actually recorded, and search the Telegram Chat Logs tail for whether the reject event ever landed:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tracking tab is the smoking gun: **the GAS handler never processed a reject for `Edgar_20260819134722_487`** — last processed row is 11714 (2026-08-22), and no entry for this tree exists in "Tree Planting Link". The tree's SunMint row is still **NEW**. Let me check the tail of Telegram Chat Logs to confirm the reject never landed there (i.e., never reached Edgar):
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tracking tab confirms the handler processed nothing for this tree (last row 11714, dated 2026-08-22). Let me check the very tail of Telegram Chat Logs to confirm whether the reject event landed *at all* (this turn's question — "is it sent to Edgar today?"):
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1448,4 +1451,80 @@ Dry-run clean (3 files, clasp `garyjob@agroverse.shop`, no hooks). The 👍 cove
 ———
 **✅ Done this turn — actions taken:**
 • `gas deploy project` ×2 → ok; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260830T023159Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] Use this one as a test for invalidations 
+
+https://sunmint.truesight.me/monitor-tree-growth/?tree=Edgar_20250809202528_061
+
+
+### 🤖 Autopilot
+
+Gary wants to run the invalidation test on tree `Edgar_20250809202528_061`. Before triggering anything, let me verify read-only: (1) does this tree exist in the index/sheet, (2) is the reject event type submittable via my signing key, and (3) does the GAS handler gate on governor signature.
+
+
+### 🤖 Autopilot
+
+This is the real invalidation test. Tree `Edgar_20250809202528_061` **exists in the index** (Cacao Native, status NEW) — good candidate. Key constraint: **`TREE PLANTING REJECT EVENT` is NOT in the Edgar events catalog** — it's a freeform signed text block that reaches the Chat Logs sheet via the monitor page's mark-invalid flow (client-side signing + flush to Edgar). So the trigger is the **button on the monitor page**, not `submit_contribution`. Let me verify the sheet row exists for this tree (col A match — the #449 fix) so the handler will find it:
+
+
+### 🤖 Autopilot
+
+Let me read the full sheet output to find the exact row for `Edgar_20250809202528_061`:
+
+
+### 🤖 Autopilot
+
+The SunMint Tree Planting tab (26 rows) only shows the 2025-07 legacy trees with numeric IDs — `Edgar_20250809202528_061` is **not among them**, yet it IS in `index.geojson`. That means the builder reads from a **different source** than the tab I just read. Let me check exactly which spreadsheet/tab the builder reads (this determines where INVALID gets written and whether the handler can find this tree):
+
+
+### 🤖 Autopilot
+
+The builder reads the **same** spreadsheet/tab I just read — but `Edgar_20250809202528_061` wasn't in rows 1–26. Yet it IS in `index.geojson` (19 features). That's contradictory — let me get the full picture: all 19 tree_ids in the index vs. the full column A of the sheet, so I know exactly where this tree lives and whether the reject handler can find it.
+
+
+### 🤖 Autopilot
+
+The test candidate checks out. `Edgar_20250809202528_061` **is** in the sheet (row 10, col A) with Status NEW, and in `index.geojson` — the #449 fix (col A match) will find it. Before submitting, let me confirm the exact field labels the GAS parser expects for the reject event, so my submission is parsed correctly:
+
+
+### 🤖 Autopilot
+
+Readiness confirmed — the test tree is a valid candidate and the full invalidation chain is deployed and live. Here's the complete picture:
+
+## Test tree `Edgar_20250809202528_061` — invalidation readiness
+
+| Check | Result |
+|---|---|
+| In SunMint sheet (col A) | ✅ Row **11**, Status **NEW** |
+| In `index.geojson` | ✅ Present (Cacao Native, NEW) — this is the tree that will drop |
+| Handler will find it | ✅ **#449 fix (deployed)**: reject matches by **col A OR col D** — the tree id `Edgar_20250809202528_061` is col A, so the match works (no more `_487`/`_488` style mismatch) |
+| Rebuild on reject | ✅ **#450 fix (deployed)**: after marking INVALID, GAS fires `tree-index-rebuild` dispatch → workflow rebuilds → builder (skip-INVALID, delivered) drops the tree immediately |
+| Signature gate | ⚠️ Handler requires signer = **governor or sentinel** (line 477–483: `signer is not a registered governor or sentinel` → reject is refused). |
+
+## How to trigger it (important)
+
+The `[TREE PLANTING REJECT EVENT]` text block is **not** an Edgar catalog event (`lookup_event_docs` → "not found in documentation") and is **not** something I can submit via `submit_contribution`. It only works through the **monitor page's mark-invalid flow**, which signs the event with the **operator's key** and flushes it to Edgar → GAS picks it up from the Chat Logs sheet.
+
+So the clean trigger is **you clicking "Mark Invalid" on that page** (with your governor key in the browser). The page will now:
+1. Emit `QR Code: (unlinked)` (beta) or the old fabricated value (prod — until #46 promotes), either way non-empty so it passes the parser gate
+2. Sign with your key → you're a registered governor → authorized-operator check passes
+3. GAS matches col A → sets Status = **INVALID** → fires `tree-index-rebuild` dispatch → tree drops from `index.geojson` within seconds
+
+## What you should see after clicking
+
+1. SunMint sheet row 11 → Status = `INVALID` (was NEW)
+2. Within ~1–2 min: `trees/index.geojson` no longer contains `Edgar_20250809202528_061` (19 → 18 features)
+3. Reload the page → tree **gone from the dropdown**
+
+**One caution:** if the handler logs `signer is not a registered governor` for your key, tell me — the Contributors Digital Signatures lookup (col A = name, col E = signature) may not have your key, which would be a separate fix.
+
+---
+**RESUME HERE → next turn:** after you click mark-invalid on `sunmint.truesight.me/monitor-tree-growth/?tree=Edgar_20250809202528_061`, I'll verify end-to-end: (1) sheet Status → INVALID, (2) `index.geojson` feature count 19 → 18, (3) reload shows the tree gone. If the handler rejected the signature or couldn't find the row, I'll read the "Tree Planting Link" tracking tab outcome and diagnose. Say "verified" or paste what you see, and I'll confirm the chain closed.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && echo "=== index.geojson: does the tree exist? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/trees/; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/build_tree_geojson.py" -o builder.py && echo "=== sh; cd /tmp && echo "=== all 19 tree_ids in index.geojson ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/trees/ind; …(+1 more)
 
