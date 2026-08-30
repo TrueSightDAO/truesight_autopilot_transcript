@@ -1443,11 +1443,13 @@ The full suite shows **6 failed, 817 passed** — but earlier baseline was "3 pr
 Key finding: **the `test_events_catalog.py` failures are pre-existing on clean main** — confirmed by stashing my branch (3 failed there too, identical `Attr...` truncation). They're network/attr-dependent (the events catalog tries to fetch a live catalog at test time and fails on this box without network access to it — same class of pre-existing infra-flake as the earlier 3). My branch: 3 sync-tool tests pass + the events-catalog failures are identical before/after my change → **my change introduces zero new failures**.
 
 Let me also confirm the earlier `test_chat_observe.py` trio is still the same 3 pre-existing, then merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: on my branch, the **3 sync-tool tests pass**, the 3 `test_chat_observe.py` failures are the known pre-existing trio, and the 3 `test_events_catalog.py` failures are pre-existing on clean main (network/attr flakes, identical before/after). **My change introduces zero new failures.** Merging PR #351:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1629,5 +1631,112 @@ Say go and I'll resolve the conflict and complete the merge → beta → prod ch
 
 ———
 **✅ Done this turn — actions taken:**
+• `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merge attempt failed — stopping here per the one-PR-per-turn rule and reporting the blocker.
+
+## What happened this turn
+
+**Attempted to merge PR #292** (whitepaper v4 content) → **❌ failed: "Pull Req
+
+
+### 🤖 Autopilot
+
+Go-signal received — resolving the PR #292 conflict, then merge → beta → promote. First, let me see what changed on `main` vs the PR branch for the whitepaper file:
+
+
+### 🤖 Autopilot
+
+Big divergence found — `main` has moved substantially (Community-First MRV, PM002/VM0047 methodology detail, funding, milestones M0–M8, first funded tree). My PR branch is based on older main. I need to **rebase the v4 content onto current main**. Let me see the full main structure and the complete diff:
+
+
+### 🤖 Autopilot
+
+Main has evolved significantly — it now has section 13 "On-Chain Carbon Credit Lifecycle" (13.1 How Carbon Is Calculated) where my branch had "13. Carbon Credit Registry Roadmap". Let me see the full main structure (TOC + remaining sections) to plan the rebase correctly:
+
+
+### 🤖 Autopilot
+
+Now I understand the conflict fully. `main` has evolved: its section 13 is now **"On-Chain Carbon Credit Lifecycle"** (added after my branch was created), while my branch's section 13 is the Registry Roadmap. The correct rebase: **start from current `main`**, apply my v4 changes on top (trees-based section 12, then Registry Roadmap as **14** and Target Buyers as **15**), preserving main's new content (Community-First MRV, funding, milestones, lifecycle section). Let me check main's section 6 staged-path bullet first:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. `main` has evolved: its section 13 is now "On-Chain Carbon Credit Lifecycle", section 6 already carries the VM0047/PM002 staged path, and section 12 has funding + milestones. The correct rebase: **start from current `main`**, apply the v4 framing on top (trees-based section 12, Registry Roadmap as **14**, Target Buyers as **15**), preserving all of main's new content. Let me check the exact TOC/article-tail anchors and confirm the PR branch touches only this file:
+
+
+### 🤖 Autopilot
+
+The PR only touches the one file, so the rebase is clean. Now I'll build the resolved file: start from current `main`, apply the v4 framing on top (trees-based section 12, Registry Roadmap → **14**, Target Buyers → **15**), preserving all of main's new content (Community-First MRV, funding, milestones, lifecycle section):
+
+
+### 🤖 Autopilot
+
+One tag mismatch (`</p>` 85 vs `<p` 84) — let me check whether that's pre-existing on `main` or introduced by my edit:
+
+
+### 🤖 Autopilot
+
+The `</p>` imbalance is **pre-existing on `main`** (57 vs 58 — a stray close in main's own content, which browsers auto-handle); my insert region added **zero** imbalance (file went from −1 to −1). My PR branch version (built on old main) happened to be balanced, but the resolved file correctly inherits main's current state. This is not a regression.
+
+Pushing the resolved file (built on current `main` + my v4 changes) to the PR branch, then attempting the merge:
+
+
+### 🤖 Autopilot
+
+Pushed the resolved file. Now attempting the merge again:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merge still fails — stopping here per the one-PR-per-turn rule and reporting the blocker precisely.
+
+## What happened this turn
+
+**Resolved the content conflict but the merge still won't take.** Sequence:
+
+1. **Diagnosed the conflict** — `main` had evolved substantially since PR #292's branch was created (Aug 17): new **Community-First MRV** section, **PM002/VM0047** methodology detail, **funding + milestones M0–M8**, **first funded tree**, and a renumbered section 13 → **"On-Chain Carbon Credit Lifecycle"**. My branch was based on stale main.
+2. **Rebuilt the file correctly** — started from **current `main`** (32,677 bytes) and applied the v4 framing on top:
+   - Section 12 bullet → **fluid scale + trees upside** (hard 10,000 ha ceiling removed)
+   - **Section 14 = Carbon Credit Registry Roadmap** (fluid-by-design callout, indicative registry column, trees-based scale cells, Plan Vivo → Verra → SBCE table)
+   - **Section 15 = Target Buyers & Market Context** (SBTi V2.0 OER tiers, hyperscalers + Re.green, member-registry warm intros, EU € price reference)
+   - TOC updated with 14 + 15 links
+   - **All of main's new content preserved** (verified: Community-First MRV ✓, Milestones ✓, first funded tree ✓, PM002 ✓, lifecycle section ✓)
+   - Tag check: `</p>` 85 vs `<p` 84 — **pre-existing on `main`** (57/58 there too); my insert region added **zero** imbalance; not a regression
+3. **Pushed the resolved file** to the PR branch (commit `6b98019a`) — 40,138 bytes, all markers present, hard ceilings absent
+4. **Merge attempt #2 → ❌ still 405 "merge conflicts"**
+
+## Why it likely still fails
+
+The PR branch was **created Aug 17** and has since diverged from `main` massively (my branch history + main's ~2 weeks of new content). Even though the *file content* at the branch tip is now based on current main, GitHub's **three-way merge against the original merge-base** still sees a conflict — the branch's history is too tangled for a clean auto-merge on that PR object.
+
+## RESUME HERE → next unit (clean redo)
+
+**Close PR #292 and open a fresh PR** — the surgical path for this situation:
+
+1. Fetch **latest `main`** (re-verify it hasn't moved since my 40,138-byte resolved file was built)
+2. Rebuild the resolved file if main moved (re-apply the same 3 edits: S12 bullet, S14+S15 insert, TOC)
+3. Create a **new branch** off current `main` (`whitepaper-carbon-roadmap-v5`), push just this one file
+4. Open a **new PR** (clean single-file diff vs current main — will merge cleanly), **close PR #292** as superseded
+5. Merge → beta live (`beta.truesight.me/sunmint/whitepaper/`) → promote to prod (`sync_beta_to_prod("truesight_me_prod")`)
+
+Say go and I'll execute the fresh-PR path.
+
+———
+**Actions this turn:** diagnostics (`ssh run` ×5: diff main-vs-PR, main structure, PR changed-files) · built resolved file (main + v4 framing) · `upload_file_to_github` (commit `6b98019a`) · `merge_pr #292` → ❌ 405 conflict persists. No PR opened or merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp && echo "=== main version of whitepaper ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmi; cd /tmp && echo "=== MAIN structure (headings) ===" && grep -n 'id="[0-9][0-9]*\|<h[34]' wp_main.html | head -40; echo; echo "=== MAIN size/; cd /tmp && echo "=== MAIN TOC ===" && sed -n '70,90p' wp_main.html; echo "=== MAIN remaining headings (after 13.1) ===" && grep -n 'whitepap; …(+4 more)
 • `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
 
