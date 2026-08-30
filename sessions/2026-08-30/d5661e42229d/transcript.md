@@ -630,11 +630,18 @@ The full picture is confirmed. Three coordinated fixes needed; I have the go-sig
 ### 🤖 Autopilot
 
 👍 Go received. Per the handoff directive, first checking the registry, then locating the `allowed_repos` settings so I can unblock the `sunmint` builder PR.
+[2 tool result(s) compacted: read_context_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest confirms the SUNMINT_TREE_QR_LINKING plan is active. Now let me find the `settings` file in truesight_autopilot (the code search returned 0 — the file may not be indexed or named differently).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -784,4 +791,98 @@ Merging config is only step 1. `settings.allowed_repos` is read **at runtime**, 
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot/pulls/347" | python3 -c "import json,sys; d=json.load(sys.
 • `merge pr` → ✅ PR #347 on truesight_autopilot merged successfully (sha: 1ea2b632e6328f8f9aaf11ea470daaf8d3b1ee12). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] I don’t think we should be pulling or pushing from SunMint repo. Instead we interfacing with the items in that repo via the PAT Content APi
+
+
+### 🤖 Autopilot
+
+Understood — you're right, and I'll correct course. `sunmint` should stay an **API-only data repo** (PAT Contents API writes), not a PR-able code repo. The reclassification I merged (#347) was wrong. Plan for this turn:
+
+1. Deliver the builder fix to `sunmint` via **`upload_file_to_github` (Contents API)** — exactly the interface you're specifying
+2. **Revert #347** with a config PR (restore `sunmint` to `api_only_repos`, remove from `allowed_repos`)
+3. Stop after that PR (one-PR-per-turn)
+
+First, fetch the current builder so I can apply the INVALID-filter locally and syntax-check it before the Contents API write:
+
+
+### 🤖 Autopilot
+
+The governor is right — `sunmint` should stay an API-only data repo (PAT Contents API is the correct interface; that's exactly what `upload_file_to_github` uses). My #347 reclassification was wrong on principle. Clean part: **I never deployed**, so the runtime already treats `sunmint` as api-only — only the repo config is now out of line. Let me fetch the rest of the builder, apply the INVALID filter, and check it locally before the Contents API write.
+
+
+### 🤖 Autopilot
+
+Understood — course-corrected. `sunmint` stays an **API-only data repo** (PAT Contents API is the sanctioned interface — that's `upload_file_to_github`, which uses exactly that). My #347 reclassification was wrong on principle. Clean part: **I never deployed**, so the runtime still treats `sunmint` as api-only — only the repo config is now inconsistent. Plan this turn:
+
+1. Patch the builder (`skip INVALID rows`) locally + syntax check
+2. Deliver it to `sunmint` via **Contents API** (`upload_local_file_to_github` — the PAT path, no clone/PR)
+3. Open a **revert PR** for #347 on truesight_autopilot (restore `sunmint` → `api_only_repos`), then stop
+
+Applying the builder patch and verifying the current config state:
+
+
+### 🤖 Autopilot
+
+Governor's direction is clear — course-correcting: **`sunmint` stays API-only; writes go via PAT Contents API** (no clone/PR on that repo). My #347 reclassification was wrong on principle; the only saving grace is it was never deployed, so the runtime still treats `sunmint` as api-only. Now:
+
+1. **Deliver the builder fix via Contents API** (the sanctioned interface — `upload_local_file_to_github`)
+2. **Open the revert PR** for #347 (restore `sunmint` → `api_only_repos`)
+3. Stop (one PR this turn — the Contents API write isn't a PR)
+
+Delivering the patched builder to `sunmint` via Contents API first:
+
+
+### 🤖 Autopilot
+
+Builder fix delivered to `sunmint` via Contents API (PAT) — commit `b9545d8`. Now the revert PR to restore `sunmint`'s api-only classification:
+
+
+### 🤖 Autopilot
+
+## What I did this turn (one PR opened — stopped per one-PR-per-turn)
+
+**Governor correction acknowledged and actioned.** You're right: `sunmint` is a **data repo** — we interface via the **PAT Contents API**, never clone/PR. My #347 reclassification was wrong on principle; I've reversed it and delivered the actual fix through the sanctioned channel.
+
+### 1. Builder fix delivered to `sunmint` — via Contents API (PAT) ✅
+| Repo | File | Method | Commit |
+|---|---|---|---|
+| `sunmint` (API-only) | `scripts/build_tree_geojson.py` | `upload_local_file_to_github` (PAT Contents API) | `b9545d8` |
+
+**What changed:** the builder now **skips rows whose Status is `INVALID`** — so a rejected tree stops appearing in `trees/index.geojson` on the next rebuild. This is the fix that makes `Edgar_20260819134722_487` (and any future rejected tree) finally stop reappearing on page reload. Verified locally: `py_compile` ✅ (hunk applied + syntax checked before upload).
+
+### 2. Revert PR opened — restores `sunmint` to API-only
+| Repo | PR | What changed |
+|---|---|---|
+| `truesight_autopilot` | **[#348](https://github.com/TrueSightDAO/truesight_autopilot/pull/348)** | `app/config.py`: remove `sunmint` from `allowed_repos`, restore it in `api_only_repos` — exact pre-#347 state. |
+
+### Clean-up status
+- **#347** (the wrong reclassification): merged but **never deployed** — the runtime still treats `sunmint` as api-only, so nothing misbehaved in practice. #348 cleans up the config.
+- **No deploy happened** this turn; no further pushes to `sunmint` beyond the sanctioned Contents API write.
+
+### Still open (unchanged, not touched this turn)
+- `tokenomics #449` (reject path col A OR col D) — unmerged, un-deployed to GAS
+- `sunmint_beta #46` (QR-code fabrication fix) — merged, beta only; prod promotion awaits Gary's review
+- `truesight_autopilot #348` — the revert, awaiting merge
+
+---
+**RESUME HERE → next units (each a fresh turn):**
+1. **Merge #348** (revert) — say "merge it". Then optionally `deploy_autopilot` with your explicit go.
+2. **The rebuild itself**: run the workflow / trigger `tree-index-rebuild` so `index.geojson` regenerates (this is the moment the tree drops out — but note the sheet row for this tree is still `NEW`, never marked `INVALID`, so it *won't* drop until the GAS reject path is fixed and the row is marked INVALID — **tokenomics #449** is the missing piece there).
+3. Merge + clasp-deploy `tokenomics #449` → re-mark the tree invalid → rebuild → verify the tree is gone end-to-end.
+
+No ledger writes, no Edgar submissions, no money movement this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → fetched + patched `build_tree_geojson.py` (INVALID-skip), `py_compile` ✅; verified post-#347 config state
+• `upload_local_file_to_github` → ✅ sunmint/scripts/build_tree_geojson.py updated (commit b9545d8ad30aa51a82049740e48973b4d38d5126)
+• `git_push_changes` → opened truesight_autopilot PR #348 (revert of #347)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/build_tree_geojson.py" -o build_tree_geojson.py && e; cd /tmp && sed -n '120,200p' build_tree_geojson.py; echo "=== total lines: $(wc -l < build_tree_geojson.py) ==="; cd /tmp && python3 - <<'EOF' src = open('build_tree_geojson.py').read() old = ''' lat = cell(row, c_lat) lng = cell(row, c_lng) def to_float
 
