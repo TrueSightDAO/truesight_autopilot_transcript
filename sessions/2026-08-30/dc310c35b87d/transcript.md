@@ -1264,36 +1264,43 @@ The remaining optional item from the sunmint work: **`sunmint_mobile/www/` sync*
 ### 🤖 Autopilot
 
 Go-signal received — resuming the flagged item: **`sunmint_mobile/www/` sync** (bring the native wrapper's embedded web layer up to date with `sunmint_beta/main`, including the new service worker). First, checking the handoff manifest as directed, plus the current state of both repos:
+[2 tool result(s) compacted: read_context_file, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest confirms a formal **SUNMINT_MOBILE_APP_PLAN.md** governs the `sunmint_mobile` repo work. My flagged item (sync `www/` with the new SW) touches exactly that plan's scope — let me read the plan and the current repo state so I follow its PR sequence rather than doing ad-hoc edits:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The mobile repo is well advanced (25 PRs done), though the manifest row is stale ("new — awaiting kickoff"). My flagged item — syncing `www/` with the new SW — fits this plan's scope. Let me check the current state of `www/` vs `sunmint_beta/main` and the plan's later sections:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The mobile `www/` deliberately diverges from `sunmint_beta` (native adaptations: 47,978 vs 40,905 bytes for index.html) — so a blanket "sync" would destroy the native work. Let me verify the mobile app's actual offline story before recommending anything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The mobile `www/` deliberately diverges from the web (native Capacitor adaptations — 42 Capacitor refs, 9 SQLite, 6 IndexedDB in the mobile index.html vs 0 in beta). Before making a blanket sync that could regress that native work, let me confirm the app's bundle/offline behavior:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the decisive finding — and it changes the recommendation. Let me confirm the README's exact stale claim before deciding:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Decisive finding — let me read the README's exact text to fix the stale claim properly:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1312,6 +1319,7 @@ The evidence is decisive — and it **changes the recommendation**. Here's what 
 **Conclusion:** the flagged "sync www/ + add SW" was based on the wrong premise that `www/` is a stale mirror of `sunmint_beta`. It's actually a **deliberately adapted native layer** (PRs 4–7 of the mobile plan). A blanket sync would **regress the native camera/geo/SQLite work**, and the SW would be pointless (pages are bundled, not served). The governor's real goal — "all pages load offline" — is **already met on mobile** by design.
 
 However, the repo's **README is now factually wrong**: it still claims `www/index.html` is a "byte-identical copy of the web app" (line 5 + line 61). That stale claim is exactly what misled my earlier recommendation. That's the real fix. Let me correct it:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1469,4 +1477,99 @@ Which next?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /opt/truesight_autopilot && echo "=== config.prod_repos ===" && grep -n "prod_repos" app/config.py | head; echo "=== how tool schemas get; cd /opt/truesight_autopilot && echo "=== ToolSpec definition ===" && grep -n "class ToolSpec\|enum" app/tool_registry.py | head -20; echo "=; cd /opt/truesight_autopilot && echo "=== test_sync_beta_to_prod_tool.py ===" && cat tests/test_sync_beta_to_prod_tool.py 2>/dev/null | head ; …(+3 more)
 • `merge pr` → ✅ PR #351 on truesight_autopilot merged successfully (sha: 0dc390a6e948d29c9b2b30af9c254cccf1abab98). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Your critique was right** — the tool hand-maintained a hardcoded enum + repo list in its description, duplicating `se
+
+
+### 🤖 Autopilot
+
+Go-signal received — resuming the next open item: **Sunmint whitepaper PR #292** (fold in the v4 framing, then merge to beta). Per the handoff context, let me check the manifest/plan first, plus the current state of PR #292:
+
+
+### 🤖 Autopilot
+
+Manifest checked — no dedicated whitepaper plan row (PR #292 is my work from this thread; the resume pointer governs). PR #292 is still open. Per my flagged resume item, the sequence is: **fold in the PDF v4 framing → merge to beta → promote to prod**. This turn = the content update to PR #292.
+
+Let me fetch the current PR-branch whitepaper to see exactly what's there:
+
+
+### 🤖 Autopilot
+
+Let me look at the full structure — the section headings (13, the roadmap) and the key content blocks I want to update with the v4 framing:
+
+
+### 🤖 Autopilot
+
+PR #292 has the roadmap table + Apple bullet, but it's missing the v4 framing (fluid roadmap, trees-not-ceilings, member registry warm intros, SBTi V2.0, EU price). Let me check what's in the file re: 10,000 ha, SBTi, EU, member registry, trees:
+
+
+### 🤖 Autopilot
+
+PR #292 has the roadmap table + Apple bullet but is missing the v4 framing: fluidity disclaimer, trees-not-ceilings upside, SBTi V2.0 buyer alignment, EU price reference, and member-registry warm intros. Let me read sections 12–13 in full to make precise edits:
+
+
+### 🤖 Autopilot
+
+PR #292's content is confirmed: it has the roadmap table + Apple bullet, but is missing the v4 framing (fluidity disclaimer, trees-not-ceilings, SBTi V2.0, EU price, member-registry warm intros) and still carries the hard 10,000 ha ceiling. This turn = fold in the v4 framing. Let me build the updated file with precise edits:
+
+
+### 🤖 Autopilot
+
+All 10 edits applied (24,605 → 28,404 bytes). The only remaining "10,000" is the registry's own microscale threshold (≤10,000 credits/yr) — correct. Let me verify HTML tag balance, then push the update to PR #292's branch:
+
+
+### 🤖 Autopilot
+
+HTML is well-formed (no tag mismatches), all heading IDs + TOC links present. Now pushing the updated file to the PR #292 branch (same branch, updates the PR in place):
+
+
+### 🤖 Autopilot
+
+Updated the PR branch. Let me verify the live PR-branch file is exactly the v4 content, then report (the merge to beta + promote to prod follows the beta-first review — per the one-PR-per-turn rule, the content update is this turn's PR work; the merge is the next unit):
+
+
+### 🤖 Autopilot
+
+The API (authoritative) shows 28,404 bytes, balanced tags (div 64/64, table 2/2, p 69/69, h4 15/15) — but raw.githubusercontent shows 0 key markers. That's the same CDN caching I hit before. Let me check the API content directly:
+
+
+### 🤖 Autopilot
+
+The authoritative API content confirms everything landed on PR #292's branch: **all v4 markers present** (FLUID BY DESIGN, SBTi V2.0, member registry, Re.green, €74, 482+), and the hard ceilings are **gone** (10,000+ hectares ABSENT, 2,000–10,000 ha ABSENT). The earlier raw.githubusercontent 0-count was CDN cache lag, exactly as before. PR #292 is now fully updated.
+
+Stopping here per the one-PR-per-turn rule — the content update is this turn's work; the merge/promote is the next unit.
+
+## What I did this turn
+
+**Folded the v4 whitepaper framing into PR #292** (`truesight_me_beta`, branch `sunmint-wp-carbon-registry-roadmap`) — 10 precise edits via a single whole-file push (28,404 bytes, tags balanced div 64/64 · table 2/2 · p 69/69 · h4 15/15):
+
+1. **Fluid roadmap, explicit** — Section 13 now opens with a **"⚠ THIS ROADMAP IS FLUID BY DESIGN"** callout (indicative mappings; flexes with ICVCM/registry rules, buyer standards, price signals, SBCE/Article 6, community uptake); table header → **"Registry (indicative — may change)"**
+2. **No more 10,000 ha ceiling** — Section 12's hard "Expand to 10,000+ hectares" replaced with fluid scaling expressed in **total trees** (500–1,000+ trees/ha → 1,000 ha ≈ 500k–1M trees; 5,000 ha ≈ 2.5–5M; "from hundreds of thousands toward millions and beyond"); table scale cells now trees-based ("Pilot — first tens of thousands" → "Millions of trees and beyond")
+3. **New Section 14 — Target Buyers & Market Context**:
+   - **SBTi V2.0** OER tiers (Engaged/Advanced/Leadership + $20/$80 floors; nature-based removals stay eligible)
+   - **Hyperscalers** + **Re.green precedent** (Microsoft's 3.5M-credit Brazilian restoration deal)
+   - **Member-registry warm intros** (482+ contributors; members employed at target companies)
+   - **EU price reference** (€74–82/t spot, €105.73 ATH, ~€93 forecast; €100 = forward benchmark; ETS ≠ voluntary channel; Leadership $80 ≈ €69 convergence)
+4. **TOC** — added section 14 link
+
+**Verified** via the authoritative GitHub Contents API (raw.githubusercontent was CDN-cached stale, same as before): all markers PRESENT, hard ceilings ABSENT.
+
+## RESUME HERE → next unit
+
+**Merge PR #292 → beta live → promote to prod** (beta-first flow; sunmint prod sync is now supported by the tool I fixed — `sync_beta_to_prod("truesight_me_prod")`). The updated whitepaper goes live on beta.truesight.me → after your review, promote to truesight.me.
+
+Note: the beta deploy may also pick up other open truesight_me_beta PRs (282, 284–289 are unrelated content — I'll check before merging so the promote is clean). Say go and I'll execute.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/sunmint-wp-carbon-registry-roadmap/sunmint/whitepaper/i; cd /tmp && echo "=== all heading-like anchors ===" && grep -n 'id="[0-9]\|class="whitepaper-heading"' wp_pr.html | head -30; echo "=== secti; cd /tmp && echo "=== 10,000 ha mentions ===" && grep -n "10,000\|10000" wp_pr.html | head -20; echo "=== SBTi / Science Based ===" && grep -; …(+5 more)
 
