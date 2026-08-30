@@ -10,60 +10,6 @@
 
 ### 🧑 Governor
 
-[Telegram context: chat_id=-1003919341801, thread_id=11018] How  should go about getting the TGM_GITHUB_TOKEN and which repositories and what permissions and which GAS editor should I insert it into
-
-
-### 🤖 Autopilot
-
-Let me confirm the exact Script Property key and project ID from the handler code so I give you byte-accurate instructions.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed from the code. Here's exactly how to get and place the token.
-
-## What the handler needs (from the code)
-
-- **Property key:** `TGM_GITHUB_TOKEN` (read via `PropertiesService.getScriptProperties().getProperty('TGM_GITHUB_TOKEN')`)
-- **What it's used for:** the Contents-API PUT to `https://api.github.com/repos/TrueSightDAO/sunmint/contents/images/growth/<file>` on branch `main`, header `Authorization: token <PAT>`
-
-## How to get the token
-
-1. **Who:** anyone with access to the TrueSightDAO GitHub org settings (you, or the Envoy — same place the workflow secrets came from)
-2. **Create a new fine-grained PAT** (GitHub → Settings → Developer settings → Personal access tokens → Fine-grained tokens → Generate new token)
-   - **Resource owner:** `TrueSightDAO`
-   - **Repository access:** **Only select repositories → `sunmint`** (the ONLY repo the handler writes to — least privilege)
-   - **Permissions:** 
-     - **Contents: Read and write** (this is the only permission actually needed — the mirror PUT + the analysis.json read-back)
-     - **Metadata: Read** (auto-required alongside Contents)
-   - **Expiration:** pick a sensible window (90 days / custom), and add a note `TGM_GITHUB_TOKEN — sunmint GAS mirror`
-3. **Copy the token value** (it starts `github_pat_…`)
-
-⚠️ **Don't paste the raw token in Telegram chat** — if you send it here, treat it as compromised and rotate it. Give it to me (or the Envoy) via a private channel, or better: you/Envoy paste it directly into the GAS editor yourself.
-
-## Where to insert it (the GAS project)
-
-- **Project (script ID):** `1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v` (the shared agroverse_qr_codes project — the one that already hosts `process_tree_growth_monitoring.gs`)
-- **GAS editor identity:** the account that owns/deploys that project — **`garyjob@agroverse.shop`** (that's the clasp identity on the box, confirmed at deploy)
-- **Steps:**
-  1. Open `https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v` (logged in as `garyjob@agroverse.shop`)
-  2. Left sidebar → **Project Settings** (⚙️)
-  3. Scroll to **"Script properties"** → **Add script property**
-  4. **Property:** `TGM_GITHUB_TOKEN` · **Value:** paste the PAT
-  5. Save
-
-**Verification after:** run the `processTreeGrowthMonitoringFromTelegramChatLogs` function once (or trigger the cron), and check that a photo actually lands in `sunmint/images/growth/`. I can verify the code path end-to-end once it's set — just have the Envoy (or you) confirm when it's inserted.
-
-One flag: fine-grained PATs are per-repo — if you'd rather use the org-level `TRUESIGHT_DAO_AUTOPILOT` token we already use, that works too (it has sunmint access), but the scoped single-repo PAT is the cleaner least-privilege choice for a token living in GAS properties.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp && echo "=== handler: token property key + mirror function ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomic
-
-
-### 🧑 Governor
-
 [Telegram context: chat_id=-1003919341801, thread_id=11018] make sense: threshold (proposed 200 m)
 I think there is already an exsiting one for this isnt it see the tree to qr code linking dapp? invalid mechanism
 
@@ -4564,31 +4510,37 @@ The STAC 400s — likely the `now` datetime token isn't accepted (my earlier wor
 ### 🤖 Autopilot
 
 Confirmed: Earth Search doesn't accept the `now` token (needs explicit RFC3339). Fixing the script to use the current UTC timestamp, then re-running the functional test:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The script works end-to-end: **9 cells, 36 scenes cached** from the real index — including the FounderHaus cell (`-27.44_-48.5`, 2 trees) with the cloud-free Aug 21 scene (0.01% cloud, 18.5 KB preview). Now update the workflow (drop CDSE env vars — no longer needed) and patch the map zoom (15 → 11 for a regional view):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All files ready. Pushing: cache script + workflow to sunmint (established direct-to-main pattern for that data repo), and the map zoom via PR to truesight_me_beta:
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files pushed to sunmint main. Now the map zoom via PR to truesight_me_beta:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #321 opened with the real edit (replace_all worked this time). Let me verify the diff is clean via the authoritative API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #321 is clean (+2/−2, mergeable, both setView calls at zoom 11). Merging it so the regional view goes live, then converging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4640,16 +4592,19 @@ Here's the turn report.
 ### 🤖 Autopilot
 
 Executing — run the cache to populate `satellite/`, push it, and verify the map zoom on beta. First, regenerate the cache from the live index (the script is tested; this produces the real artifacts to commit):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Cache generated — 36 scenes across 9 cells, including the FounderHaus cell (`-27.44_-48.5`) with the cloud-free Aug 21 preview. Now pushing the pilot-area scenes + manifest to the repo (the full set populates via the daily workflow; I'll flag the workflow-secret check). Preparing a manifest trimmed to the pushed cell so it always matches:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now uploading the pilot cell (4 scene JPEGs) + trimmed manifest to the sunmint repo, then verifying the map zoom on beta:
+[5 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4779,4 +4734,59 @@ Say "go" to verify on beta (browser check) or to trigger the cache workflow.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp/es_cache && TS=$(date +%s) && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint.html?cb=$TS" -o; cd /tmp/es_cache && sed -n '420,505p' sm_now.html; cd /tmp/es_cache && cp sm_now.html sm_history.html && python3 - << 'PYEOF' p = '/tmp/es_cache/sm_history.html' d = open(p, encoding='utf-8'); …(+3 more)
 • `merge pr` → ✅ PR #322 on truesight_me_beta merged successfully (sha: 1351ebabf134a7413a2c305e7819f3656f5d66c3). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] So basically for all coordinates on the map, we have caching? My sense is there is going to be multiple different plots... What is the best way to display these plots? Since these plots might not be contiguous
+
+
+### 🤖 Autopilot
+
+Good question — let me ground the answer in what the cache actually does today and whether the tree records carry any plot grouping:
+
+
+### 🤖 Autopilot
+
+Cache covers **tree-bearing grid cells** (1 km buckets) — right now only the pilot cell is committed (the full run produced 9 cells/36 scenes; I trimmed to the pilot cell so the manifest stayed consistent). And the tree records have **no plot grouping field yet** — so "plots" don't exist as data yet. Let me check the SunMint sheet for any site/parcel column:
+
+
+### 🤖 Autopilot
+
+Let me get the correct sheet name/tab from the generator script:
+
+
+### 🤖 Autopilot
+
+The generator reads from a **different spreadsheet** (`1qbZZhf-…`, not the Main Ledger). Reading that tab to check for any plot/site/parcel column:
+
+
+### 🤖 Autopilot
+
+Good questions — here's the honest picture, grounded in the actual data.
+
+## 1. What has caching right now?
+
+**Only tree-bearing cells — and only the pilot cell is committed.** The cache script buckets the tree index into **1 km grid cells** and fetches Sentinel-2 scenes per cell. The full run produced **9 cells / 36 scenes** (covering every tree cluster in the index), but I deliberately committed **only the FounderHaus pilot cell** (`-27.44_-48.5`, 2 trees, 4 scenes) so the manifest stays consistent. So: **caching exists for all tree-bearing coordinates in the index — but only the pilot cell's scenes are published so far.** The daily workflow will populate the rest.
+
+## 2. The data gap: "plots" don't exist yet
+
+I checked the source of truth — the SunMint Tree Planting sheet has **no plot/parcel/site field** (columns: lat, lng, species, status, QR link, cost, etc.). And the current trees are genuinely scattered — FounderHaus (-27.44), plus older test trees in Oregon (44.5, 45.5). So **the plot concept has to be added to the data model first** — a `plot_id` (or site name) column in the sheet → flows into `index.geojson` properties → powers everything downstream.
+
+## 3. Best way to display non-contiguous plots
+
+For scattered sites, a single full-world map is wrong. The cleanest pattern, given what we have:
+
+1. **Add `plot_id`/`plot_name` to the sheet + index** (one column; assign per tree) — this is the foundation, and you can do it **in Altamira right now** while you're with the farmers (you know which trees belong to which site).
+2. **UI: plot selector strip + map that pans/zooms to the selected plot.** A horizontal row of plot cards (name, tree count, latest satellite thumbnail, cloud badge) above the map. Click a plot → map flies to its centroid, shows only that plot's markers, and the satellite history strip shows *that plot's* scenes.
+3. **Cache keys by plot bbox, not just grid cell** — I'll extend the cache script so a plot can span cells and still get one coherent scene set (manifest gains a `plots` entry alongside `cells`).
+4. Map still shows **all** plots as colored markers when no plot is selected (so the global view stays), with clustering when they overlap.
+
+**So the short answer:** caching is per-cell and pilot-only right now; the real fix for multiple non-contiguous plots is (a) add `plot_id` to the sheet while you're in Altamira, and (b) I build the plot-selector UI + plot-keyed caching on top. That's the V2 of the impact map.
+
+Want me to (a) draft the exact sheet column + instructions for Altamira, and (b) build the plot-selector V2 now (it degrades gracefully until plot_ids are filled in)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== 1. manifest: how many cells cached ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/satelli; cd /tmp && echo "=== generator: which sheet/tab feeds the index? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/mai
 
