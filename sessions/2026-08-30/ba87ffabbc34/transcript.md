@@ -3447,26 +3447,36 @@ Good — the em-dashes were already real (the heredoc interpreted them correctly
 ### 🤖 Autopilot
 
 The section header is in the TOC. Let me verify the section body content renders (search for the specific section body text):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The new **Section 13 — On-Chain Carbon Credit Lifecycle** renders correctly with the full tree-anchored transaction flow. Now pushing the whitepaper update as a PR to truesight_me_beta (beta-first for the site):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The writes payload carried the placeholder again — pushing the real patched file to the branch:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real content is now on the branch. Verifying the PR diff is clean:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR [truesight_me_beta#318](https://github.com/TrueSightDAO/truesight_me_beta/pull/318)** is clean: **+16/−0, 1 file**, section 13 present on the branch. Now the second part — updating the field PDF with the same on-chain credit lifecycle. Generating the updated PDF:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3714,4 +3724,156 @@ Say "go" and I'll push through all three.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== tree_growth_analysis.py: allometric + carbon constants ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/; cd /tmp && echo "=== exact constants + allometric table ===" && sed -n '40,66p' tga.py && echo "=== CO2_MOLAR_RATIO / CARBON_FRACTION values
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Telegram is rate-limiting the send right now (repeated "Too Many Requests"). I'll stop retrying and hand you the state — the PDF is ready on the box and I'll push it through the moment the limit clear
+
+
+### 🤖 Autopilot
+
+Executing all three: (a) deliver the PDF, (b) add the formula section to the whitepaper PR, (c) build the impact-map V1 PR. Starting with the PDF send (rate limit may have cleared):
+
+
+### 🤖 Autopilot
+
+PDF delivered (message 16490). Now (b) — add the formula section to the whitepaper. Let me fetch the current whitepaper from the PR branch and see where section 13 ends:
+
+
+### 🤖 Autopilot
+
+Branch name guess wrong (404). Let me get the actual branch name from PR #318:
+
+
+### 🤖 Autopilot
+
+Branch is `docs/sunmint-whitepaper-carbon-lifecycle`. Fetching the branch file and adding the formula section:
+
+
+### 🤖 Autopilot
+
+Section 13 is the last section before `</section>` at line 314. Let me see the exact end of section 13 to insert the formula subsection cleanly:
+
+
+### 🤖 Autopilot
+
+Section 13 ends with the provenance paragraph, then spacers. I'll insert a **13.1 How Carbon Is Calculated** subsection (the formula) right after that paragraph:
+
+
+### 🤖 Autopilot
+
+The escape handling may have produced literal `\uXXXX` sequences instead of real characters. Let me verify what actually landed in the file:
+
+
+### 🤖 Autopilot
+
+The escapes landed as **literal** `\uXXXX` sequences (my `\\u` doubling in the heredoc), while the rest of the file uses real unicode chars. Fixing by decoding just my inserted block:
+
+
+### 🤖 Autopilot
+
+My 13.1 block is now correctly decoded (real `CO₂e ≈ 57` ✓). The literal escapes at lines 232/236/286 are **pre-existing** in the original whitepaper (not mine — they predate this work; worth a separate cleanup note). Pushing the updated whitepaper to the PR branch and verifying:
+
+
+### 🤖 Autopilot
+
+⚠️ Same trap — I passed empty content. The file on the branch is likely blanked. Fixing with the real local file:
+
+
+### 🤖 Autopilot
+
+Real content now on the branch (commit `30a9770c`). Verifying the PR diff and the section is intact:
+
+
+### 🤖 Autopilot
+
+PR #318 is now +25/−0 (was +16; the +9 is the 13.1 formula subsection). But the branch grep returned 0 — likely the `grep -c` with two patterns + `≈` char issue over the pipe, or a CDN lag. Let me verify directly:
+
+
+### 🤖 Autopilot
+
+**Problem confirmed** — the branch file is **31,018 B, same as the ORIGINAL pre-13.1 size**, and has **0** "13.1 How Carbon" markers. My `upload_local_file_to_github` did **not** put my local patched file up (the local file is 31,018 B too — wait, let me check: the local file should be bigger after the 13.1 insert). The branch file is missing the 13.1 section entirely — the earlier uploads (empty content + local file) both failed to persist the real content, or the local file itself never got the insert saved. Let me check the local file size first:
+
+
+### 🤖 Autopilot
+
+Local file is **32,914 B with 1 marker** (the 13.1 section IS in my local file), and PR head is `30a9770c` (my upload commit). But the raw fetch shows 31,018 B / 0 markers — **the raw CDN is serving stale content** (the exact recurring lag). The branch itself is correct. Verifying via the authoritative Contents API:
+
+
+### 🤖 Autopilot
+
+**Confirmed via authoritative API: the branch file is 32,914 B with the 13.1 formula section intact** (`has 13.1: True`, `has CO₂e ≈ 57: True`). The raw-CDN 31,018 B was just the stale-cache lag again. Whitepaper PR #318 now has **both sections** (13 + 13.1).
+
+Now (c) — the **impact-map V1 PR**. Building the Leaflet map section for sunmint.html with tree markers from the live index + anonymous Sentinel-2 WMS layer. Let me fetch the current sunmint.html and add the map section:
+
+
+### 🤖 Autopilot
+
+Let me see the structure around the Highlights section close (200-230) to insert the map section cleanly:
+
+
+### 🤖 Autopilot
+
+Clear insertion point: after `</section>` (line 226, end of Highlights), before the footer div. Now building the map section — Leaflet + tree markers from the live index.geojson + anonymous Sentinel-2 WMS layer + NDVI toggle:
+
+
+### 🤖 Autopilot
+
+Map section inserted. Now adding the Leaflet init script (load Leaflet CDN, fetch tree index, render markers + Sentinel-2 WMS layers) before `</body>`:
+
+
+### 🤖 Autopilot
+
+Map script added and JS validates. Pushing the map V1 as a PR — using the proven two-step (open branch via git_push_changes with a small edit, then upload the full real file from disk):
+
+
+### 🤖 Autopilot
+
+PR #319 opened (placeholder content on branch, as expected). Fixing with the real local file:
+
+
+### 🤖 Autopilot
+
+Real content on the branch. Verifying the PR diff via the authoritative API (raw CDN is unreliable):
+
+
+### 🤖 Autopilot
+
+All three tasks are done and verified. Here's the full report.
+
+## ✅ All three delivered
+
+**1. Field PDF delivered** (message 16490 in this thread) — v6 with the carbon formula section + partner one-liner, bilingual PT/EN.
+
+**2. Whitepaper formula section — PR [truesight_me_beta#318](https://github.com/TrueSightDAO/truesight_me_beta/pull/318)** now +25/−0 (was +16):
+- **§13.1 "How Carbon Is Calculated — the measurement-to-CO₂e chain"**: the exact formula (`AGB = a × DBHᵇ` Chave et al. 2014 → `BGB ×0.32` → `C ×0.47` → `CO₂e ×44/12`), a worked example (cacao at DBH 10 cm ≈ **57 kg CO₂e** with the project-level reserves noted), and the copy-paste partner one-liner
+- Verified via authoritative Contents API (32,914 B, section present) — the raw-CDN 31,018 B was just the recurring stale-cache lag
+
+**3. Impact map V1 — PR [truesight_me_beta#319](https://github.com/TrueSightDAO/truesight_me_beta/pull/319)** (+110/−0, 1 file):
+- **"Live Impact Map" section** on sunmint.html after Highlights
+- Leaflet map (pilot-area centered) + **tree markers from the live index.geojson** (cache-busted, CDN fallback) + **Sentinel-2 satellite layer** (anonymous CDSE WMS — **no API key**, true color + NDVI toggle) + honest labeling (~10 m res, ~5-day revisit, acquisition date per scene)
+- JS validated, content verified via Contents API
+
+**Both PRs are reviewed-PR flow — I did not merge** (beta-first convention, matching the other apps). Raw-CDN lag will make them look stale briefly; the authoritative branch content is correct.
+
+## 📌 RESUME HERE → next units
+1. **Review PRs on beta** — #318 (whitepaper: §13 + §13.1) and #319 (sunmint.html impact map). Merge when you approve → verify on `truesight.me/sunmint/whitepaper/` + `sunmint.html`
+2. **V1.1 map follow-ups** (separate): satellite image **caching** in `sunmint/satellite/<lat>_<lng>/` (scene-date filenames — your design) via the daily rebuild job → date-slider history; CDSE OAuth if higher quota needed
+3. **Standing:** promote both to prod after beta review; `sunmint_prod` `prod_repos` config line; test-row cleanup; the pre-existing literal `\uXXXX` escapes in the whitepaper (lines 232/236/286) — separate cleanup
+
+Say "go" to merge #318 + #319, or to start the satellite caching pipeline.
+
+———
+**✅ Done this turn — actions taken:**
+• `send telegram attachment` ×1 → PDF delivered (msg 16490)
+• `ssh run` ×7 → branch lookup, whitepaper 13.1 insert + escape decode fix, Contents-API verify (32,914 B, section present), sunmint.html map section + Leaflet script insert, JS validate, PR stats
+• `upload file to github` ×1 (empty — flagged) → `upload local file to github` ×2 → real content on both branches (30a9770c, ef5c53f5); PRs #318 (+25) + #319 (+110/−0) verified
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×16 → cd /tmp && echo "=== PR #318 branch state: whitepaper ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/feat; cd /tmp && echo "=== PR #318 branch ===" && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/pulls/318" | python3 -c "im; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/docs/sunmint-whitepaper-carbon-lifecycle/sunmint/whitep; …(+12 more)
+• `upload file to github` → https://github.com/TrueSightDAO/truesight_me_beta/blob/docs/sunmint-whitepaper-carbon-lifecycle/sunmint/whitepaper/index.html
 
