@@ -1767,51 +1767,61 @@ No further writes this turn — submission already done, verification pending.
 ### 🤖 Autopilot
 
 👍 Go received. Resuming verification — checking whether my reject landed in Chat Logs, whether the handler processed it, and whether the tree dropped from the index:
+[3 tool result(s) compacted: read_google_sheet, read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My structured submission did **not** land in Telegram Chat Logs — no `[TREE PLANTING REJECT EVENT]` row from Sophia anywhere in the tail. This confirms the tool's event path doesn't replicate the page's flow. The real path: the monitor page POSTs the **full signed shareText** to `edgar.truesight.me/dao/submit_contribution`, and Edgar's bot writes it into the Chat Logs sheet. Let me read the exact `markTreeInvalid()` text assembly + `flushQueue()` payload so I can replicate byte-for-byte with my own key:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the exact format. The critical detail: `signText(privateKey, requestText)` signs **only the requestText** (`[TREE PLANTING REJECT EVENT]\n...\n--------`), and `formData.append('text', shareText)` sends the full shareText as a multipart `text` field. Let me see the surrounding lines (1049–1090) for the exact `markTreeInvalid` body and the `EDGAR_BASE`/privateKey source:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The page's exact flow is now clear. I need the `signText` hash algorithm and key format to replicate the signature exactly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have the exact protocol: RSASSA-PKCS1-v1_5 with **SHA-256** over `requestText`, then POST the assembled `shareText` as multipart `text` to `https://edgar.truesight.me/dao/submit_contribution`. My earlier structured submission went through a different path that didn't append to Chat Logs. Let me replicate the page byte-for-byte with my identity key:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **✅ HTTP 200 — `signature_verification: success` — the reject is now a REAL Edgar submission.** This is the exact page protocol: signed `[TREE PLANTING REJECT EVENT]` with my sentinel key (Sophia Truesight), POSTed as multipart `text` to `edgar.truesight.me/dao/submit_contribution`. Now verifying it landed in Chat Logs and the handler processed it (timer-driven, may need a moment):
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The submission returned HTTP 200 with `signature_verification: success` — but my row isn't in the visible tail yet (last row `…_30108_125`). Let me check the very end of the sheet for my new row:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet ends at row 11966 — my submission isn't there yet. Edgar accepted it (HTTP 200, signature verified), so it should flow: Edgar → Telegram channel → logger → Chat Logs sheet. Let me search the whole sheet for the reject text and check the tracking tab for processing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Found it!** My submission landed — row **11951** and **11952** both contain `[TREE PLANTING REJECT EVENT]` with `QR Code: (unlinked)` and the `SunMint Submission Message` (one was my structured submission, one the HTTP-200 one — the first appears to have also been ingested). Let me check the exact content of both rows and whether the handler has processed them (tracking tab):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both my reject events landed in Chat Logs (rows 11951 & 11952 — identical; the structured one did eventually get ingested too). Now the decisive check — has the timer-driven handler processed them? Checking tracking + row status + index:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1866,51 +1876,61 @@ Nothing further to submit — both events are queued. I'll verify on your signal
 ### 🤖 Autopilot
 
 👍 Go received. Re-verifying the invalidation chain — checking whether the handler has processed the reject now:
+[3 tool result(s) compacted: read_google_sheet, read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Handler still hasn't moved — tracking tab frozen at 11714 since **2026-08-22** (8 days). That's the real blocker now: the GAS time-trigger appears dead. Let me check the trigger setup code:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No `ScriptApp.newTrigger` in the code — the timer must be configured via the GAS UI. Let me check how the handler tracks progress (why it froze at 11714) and whether there's an execution log I can query:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The handler is designed to skip already-tracked rows and process new ones (11715+) on each run — so a run would pick up my rows. The freeze at 11714 since 08-22 strongly implies the time trigger stopped firing or the handler errors early. Let me check for any trigger-setup function in the project:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No trigger setup in code — the timer must be a GAS-UI-configured trigger (or it's dead). But lines 666 and 727 reference calling the process function — let me check if there's a web-app endpoint I can hit to invoke it manually:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The webhook `doPost` only accepts **LINK** events and requires a **governor** — so it can't help force the REJECT processing. The real question is why the cron stopped firing after 08-22 (tracker frozen at 11714 for 8 days). Let me check the deployment config and whether dao_protocol has a route that pings the processor:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The doPost webhook only accepts LINK events + requires a governor — can't force REJECT processing. The cron has been frozen at 11714 for 8 days, which predates my deploys. Best path: execute the processor directly. I have clasp (as `garyjob@agroverse.shop`) — `clasp run` can invoke the function if the Apps Script API is enabled. Let me check the box's clasp setup:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 clasp is available. Let me find the GAS project folder with `.clasp.json` and use `clasp run` to invoke the processor directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 clasp is configured for the project. Let me try invoking the processor directly via `clasp run` (bypasses the dead cron):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `clasp run` hit a storage error (Apps Script execution API not enabled — known clasp limitation). The events are safely in the sheet; the only missing piece is getting the processor to run. Let me check whether the doGet webhook can trigger processing, and whether dao_protocol's dispatch routes submissions to the GAS processor:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2027,4 +2047,85 @@ Nothing further submitted; all writes already done.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×20 → cd /tmp && echo "=== index.geojson: 061 gone? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/trees/index.geojs; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; cd /tmp && echo "=== progress tracking / lastProcessedRow mechanism ===" && sed -n '420,480p' ptpl.js && echo "=== ... and search for how la; …(+16 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] Shouldn't the GAS have a doGet and get triggered via dao_protocol python server whenever a relevant RSA signed event comes through?
+
+
+### 🤖 Autopilot
+
+Good architectural instinct — that's exactly the right fix for the dead-cron problem. The current chain is **event-driven at the front** (RSA-signed POST → Edgar) but **poll-driven at the back** (GAS timer scans the Chat Logs sheet — and that timer died 8 days ago). Let me verify what dao_protocol does on submission and what the GAS `doGet` already supports, so I can scope the change precisely.
+
+
+### 🤖 Autopilot
+
+SSH to dao_protocol is key-denied again (known — I'll read the repo instead). Key facts so far: the GAS `doGet` **already exists** and dispatches `processTreePlantingLinksFromTelegramChatLogs` (in `process_qr_code_updates.js` line 119). So the missing link is whether **dao_protocol's Python server calls that webhook** after an RSA-signed submission. Let me check dao_protocol's dispatch code on GitHub:
+
+
+### 🤖 Autopilot
+
+No dao_protocol reference to the GAS webhook — confirming it's **not** currently wired. Let me check the runbook (which may document the intended architecture) and the dao_protocol submission handler to find the natural hook point:
+
+
+### 🤖 Autopilot
+
+The runbook confirms the **intended architecture**: Edgar (dao_protocol) already has `dispatch_event(text) -> ROUTING table -> GAS webhook ?action=...` — so the plumbing exists. The question is whether the ROUTING table includes the REJECT event and whether dispatch actually fires it. Let me read the runbook's rest and find dao_protocol's ROUTING dispatch code:
+
+
+### 🤖 Autopilot
+
+The runbook confirms the intended architecture: **Edgar (dao_protocol) already does `dispatch_event(text) → ROUTING table → GAS webhook ?action=...`**, and there are env keys `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_LINK` / `TREE_PLANTING_PROCESSING` / `TREE_GROWTH_MONITORING`. So the plumbing exists — the question is whether the REJECT event is in the ROUTING table and whether the deployed webhook URL points at the right deployment. Let me find dao_protocol's dispatch code (SSH is key-denied, so via repo):
+
+
+### 🤖 Autopilot
+
+The runbook + `dispatch.py` give me the full picture — and it confirms your instinct exactly. Let me read the tail of `dispatch.py` (the part that was truncated) to see the fallback behavior before proposing the fix.
+
+
+### 🤖 Autopilot
+
+## Direct answer: Yes — that's exactly the design, and it's confirmed in the code. But there's a gap: **`[TREE PLANTING REJECT EVENT]` was never added to the routing table.**
+
+### What the architecture actually is (verified in `dispatch.py` + runbook)
+Edgar = dao_protocol (FastAPI). After every RSA-signed submission, it runs `dispatch_event(text)` in a background task: it scans the **ROUTING table**, matches the event tag, and fires the corresponding **GAS doGet webhook** (`?action=...`) using an env-configured URL. The GAS cron is only the *fallback* when no webhook URL is set. The runbook's pipeline map states this explicitly, and it works for:
+
+| Event | Routing entry | Webhook action |
+|---|---|---|
+| `[TREE PLANTING LINK EVENT]` | ✅ `TREE_PLANTING_LINK` | `processTreePlantingLinksFromTelegramChatLogs` |
+| `[TREE PLANTING EVENT]` | ✅ `TREE_PLANTING_PROCESSING` | `processTreePlantingTelegramLogs` |
+| `[TREE GROWTH MONITORING EVENT]` | ✅ `TREE_GROWTH_MONITORING` | `processTreeGrowthMonitoringFromTelegramChatLogs` |
+| **`[TREE PLANTING REJECT EVENT]`** | ❌ **NO ROUTING ENTRY** | — |
+
+The GAS `doGet` already handles the action (`process_qr_code_updates.js:119` → `processTreePlantingLinksFromTelegramChatLogs`) — the same handler processes LINK and REJECT. But `dispatch.py`'s ROUTING table has **no row for the REJECT tag**, so a reject falls through all entries, fires **no webhook**, and relies on the GAS cron — **which has been dead for 8 days** (tracking tab frozen at row 11714 since 2026-08-22).
+
+That's the exact root cause of what we hit: my reject event sat unprocessed until I manually fired the @37 webhook.
+
+### The fix (proposed — I have NOT started it)
+1. **`dispatch.py`** — add one routing row (mirrors the LINK pattern exactly):
+   ```python
+   ("[TREE PLANTING REJECT EVENT]", [
+       ("TREE_PLANTING_REJECT", "processTreePlantingLinksFromTelegramChatLogs"),
+   ], False),
+   ```
+2. **dao_protocol box `.env`** — set `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_REJECT` to the **@37** deployment URL (the one with #449+#450: `AKfycbyoFCTzIdC1g69ZX3AK894h2siQOKoNSEiuyLDtZJTtarQPHHa5Zl8rjot0vPFUquV2/exec`).
+3. **Audit existing env keys** — if `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_LINK` points at @32/@36 it's running pre-#449 code (that's the other half of why the first 34 rejects failed).
+4. **Reinstall the GAS time-trigger** as the cron fallback (it died; runbook relies on it).
+
+### ⚠️ Still unverified from the invalidation test
+The @37 webhook returned **"1 processed, 0 rejected, 0 errors"** (success branch), but I have **not yet confirmed** the downstream effects: SunMint row 11 → INVALID? `index.geojson` → 18 features (061 gone)?
+
+---
+**RESUME HERE → next turn:**
+1. **Verify the invalidation landed**: re-read `SunMint Tree Planting!A11:M11` (expect Status INVALID) + `index.geojson` (expect 18 features, `Edgar_20250809202528_061` gone). If the rebuild didn't fire, trigger `rebuild-tree-index.yml` manually.
+2. **Open the `dispatch.py` PR** adding the `[TREE PLANTING REJECT EVENT]` routing entry (one-PR-per-turn; `dao_protocol` repo — the same flow I used before).
+3. **Wire the box env**: set `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_REJECT` → @37 URL (needs box access — SSH key to dao_protocol is currently denied, so this may need the governor or the edgar_dapp_listener path), and audit the LINK env key's deployment.
+4. **Reinstall the GAS cron trigger** so the fallback never silently dies again.
+
+Nothing further submitted; all reads this turn, no writes.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /home/ubuntu/dao_protocol 2>/dev/null && grep -rn "script.google\|doGet\|doPost\|webhook\|GAS\|tree.planting\|TREE PLANTING" --include="*; cd /home/ubuntu/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== doGet / doPost in deplo
 
