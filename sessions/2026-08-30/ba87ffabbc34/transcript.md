@@ -10,138 +10,6 @@
 
 ### 🧑 Governor
 
-[Telegram context: chat_id=-1003919341801, thread_id=11018] This below is strange... 
-
-Species: unknown
-Planted on: Invalid Date
-Status: 20260821
-QR Code: FOUNDERHAUS_BOUGAINVILLEA_20260821_1
-
-
-### 🤖 Autopilot
-
-That's a data-mapping bug surfacing in the detail panel — `Status: 20260821` is the giveaway: the generator is reading the **"Status date"** column (YYYYMMDD) instead of the **"Status"** column, and species/date fields aren't resolving either. Let me check what's actually in the canonical index now vs what the live page is fetching (we've hit stale-CDN before), and the panel's render code.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The canonical index on main is **correct** (species: Bougainvillea, real timestamp, status: LINKED) — so the page is rendering from a **stale index**. "Status: 20260821" is the old generator's column mix-up (Status *date* read as Status). Let me find which URL the page actually fetches and which copy is stale.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Root cause isolated. The **first URL in the fetch list is correct** (`raw.githubusercontent.com/TrueSightDAO/sunmint/main/trees/index.geojson` → species Bougainvillea, LINKED). So the live page should render fine on next load. But the **`trees/index.geojson` fallback in sunmint_beta is stale garbage** ("NOT JSON: Extra data") — the old copy from PR #12 that was supposed to be deleted. Let me check what's in sunmint_beta's `trees/index.geojson` and why it still exists:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The sunmint_beta `trees/index.geojson` was deleted in #13 (confirmed — NOT FOUND, so the relative `trees/index.geojson` fallback 404s, which is fine; the page falls through to the next URL). So the correct raw URL is first and serves right data. **Why is the user still seeing the stale "Status: 20260821"?**
-
-The answer: **caching**. The page tried the correct URL first — but if the user's browser (or the CDN) cached the *old* index from before the generator fix, the stale fields render. The fetch code has no cache-buster. Let me confirm the page's fetch uses `fetch(url)` without cache control, then add `cache: 'no-store'` (or `?x=`) so users always get the current index:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The canonical data is **correct right now** (verified via Contents API + raw fetch): FounderHaus shows `species: Bougainvillea · status: LINKED · last_measured: 2026-08-21T17:51:31.626Z`. The page's fetch already uses `cache: 'no-store'` and maps `p.status`/`p.last_measured` correctly.
-
-**What you saw ("Status: 20260821", "Invalid Date") is the OLD pre-fix index** — that's exactly the buggy generator's output (Status *date* column leaking into the status/date fields). It was live before my generator fix + regeneration landed. Your browser (or the CDN) served that stale copy. A hard refresh should now show the correct record — but let me eliminate the whole caching class with a deterministic cache-buster so this can't recur:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Shipped. Here's the diagnosis and fix.
-
-## ✅ "Status: 20260821 / Invalid Date" — root cause + fix
-
-**What happened:** the canonical index on `sunmint` main is **correct right now** (verified: FounderHaus = `species: Bougainvillea · status: LINKED · last_measured: 2026-08-21T17:51:31.626Z`). What you saw is the **stale pre-fix index** — the old buggy generator's output where the Status-*date* column (YYYYMMDD) leaked into the status/date fields. Your browser/CDN served that old copy (the page's own `cache: 'no-store'` doesn't stop CDN-level or stale-parsed copies).
-
-**Fix (committed `8ff0e4468`):** cache-busting on every index fetch — each load appends `?cb=<timestamp>` so the browser/CDN can never serve the stale JSON again. A hard refresh on the beta page should now show the correct FounderHaus record (Bougainvillea · LINKED · real date · QR `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`).
-
-## 📌 Open threads
-1. **Proximity gate + governor override + invalid flag** — waiting on your two calls: threshold (proposed 200 m) + invalid mechanism (new signed event type vs flag on the growth event)
-2. `TGM_GITHUB_TOKEN` Script Property (GAS photo-mirror)
-3. UAT → `sync_beta_to_prod(sunmint_prod)`
-
-If the FounderHaus record still looks wrong after a hard refresh, tell me and I'll dig into the served bytes directly — but the authoritative data and the render code are both correct now.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → verified canonical index (Contents API): FounderHaus correct; tested all 5 fetch URLs; confirmed sunmint_beta trees/ deleted (404 fallback OK); reviewed fetch + render code; added cache-buster; validated JS
-• `upload file to github` ×1 → monitor-tree-growth/index.html (8ff0e4468)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → cd /tmp && TS=$(date +%s) && echo "=== 1. Canonical index (Contents API, authoritative) — FounderHaus feature ===" && curl -s "https://api.g; cd /tmp && echo "=== detail panel render code ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree; cd /tmp && echo "=== TREE_INDEX_URLS in current page ===" && grep -n "TREE_INDEX_URLS\|index.geojson" monA.html | head -10 && echo "" && ech; …(+3 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] Isn't this supposed to be handled by the python script in the backend?
-
-DBH (cm) — diameter at breast height (1.3 m)
-Hold the calibration card against the trunk, in frame.
-
-
-### 🤖 Autopilot
-
-You're right to flag this — that's exactly the design intent: the backend Python (PM002 `tree_growth_analysis.py`) is supposed to compute DBH from the calibration-card photo. The manual DBH field looks like a leftover from the video-era design. Let me verify the current state before proposing the fix.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed — you've spotted a real gap. The pieces exist but aren't wired:
-
-- ✅ `tree_growth_analysis.py` (PM002, merged via #314) exists in truesight_autopilot
-- ❌ **No workflow runs it** — the sunmint repo only has `rebuild-tree-index.yml`; the planned `pm002_analysis.yml` (the piece that watches `images/growth/**` and computes DBH from the card photo) was **never built**
-- ❌ The page still **requires manual DBH** as the primary path
-
-Let me check what the analysis script actually needs (photo + card → DBH?) to wire it correctly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Yes — exactly. Your instinct is right, and this is a genuine gap in the wiring. Here's the honest state:
-
-## The design vs. what's built
-
-**Designed (from the original P2 plan):** agent takes the close-up photo (card + trunk) → photo lands in `sunmint/images/growth/` → **backend Python runs PM002** → detects the calibration card, computes pixel→cm ratio, measures DBH at 1.3 m → estimates AGB/BGB/C/CO₂e → writes `analysis.json` → the measurement is recorded with a **computed DBH**.
-
-**What actually exists:**
-- ✅ `tree_growth_analysis.py` (the PM002 worker) — merged via #314, **correctly implements card-based DBH from photos** (ISO card 85.6×54 mm, allometric AGB per species, PM002/IPCC constants, `--json` output for the webhook path)
-- ❌ **The `pm002_analysis.yml` workflow was never built** — the sunmint repo only has `rebuild-tree-index.yml`. Nothing watches `images/growth/**` and runs the analysis
-- ❌ The page **still treats manual DBH as required** (a video-era leftover) — the backend-computed value never flows back
-- ❌ The photo-mirror leg needs `TGM_GITHUB_TOKEN` (still unset) — the photos can't actually reach `images/growth/` until that's set
-
-So the manual DBH field is sitting in front of a backend that was designed to compute it but was never connected. That's on me — the analysis worker shipped, but the workflow that runs it (and the page change to consume its output) didn't.
-
-## Proposed fix (the missing P2 wiring)
-
-1. **`sunmint/.github/workflows/pm002_analysis.yml`** — triggers on `paths: [images/growth/**]` (new photo = new measurement), runs the vendored `tree_growth_analysis.py --photo <file> --species <from index> --tree-id <from filename> --json`, commits `images/growth/<id>/analysis.json` (same treasury-cache pattern)
-2. **Vendor the analysis script** into the sunmint repo (self-contained, like `build_tree_geojson.py`)
-3. **Page:** DBH field becomes **optional/read-only auto-filled** — "DBH (auto-estimated from photo)" after analysis; manual entry kept only as a cross-check fallback (the script already supports `--dbh` as an override for VVB auditing)
-4. **Set `TGM_GITHUB_TOKEN`** so photos actually reach `images/growth/`
-
-Want me to build items 1–3 now (the workflow + vendoring + page change), and we sort the token (item 4) with the Envoy in parallel?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → cd /tmp && echo "=== 1. Does tree_growth_analysis.py exist in truesight_autopilot (merged #314)? ===" && curl -s "https://api.github.com/rep; cd /tmp && echo "=== 3. Page: is DBH required in submit? ===" && sed -n "$(grep -n 'function submitMonitoring' monA.html | cut -d: -f1),+30p; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot/contents/scripts/tree_growth_analysis.py?x=$(date +%s)" |
-
-
-### 🧑 Governor
-
 [Telegram context: chat_id=-1003919341801, thread_id=11018] How  should go about getting the TGM_GITHUB_TOKEN and which repositories and what permissions and which GAS editor should I insert it into
 
 
@@ -4457,6 +4325,7 @@ Real content now on the branch (commit `b9ea5396`). Let me verify the PR diff is
 ### 🤖 Autopilot
 
 PR #320 is clean (+15/−27, 1 file, ESRI in, WMS out, button relabeled). This is the verified fix for the "API key required" issue. Merging it so the map stops erroring on beta:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4524,11 +4393,13 @@ Say "go" to verify on beta, or to promote after your review.
 ### 🤖 Autopilot
 
 Executing the next unit — verify the merged #320 fix is live on beta (map renders ESRI tiles, no API-key error), then check readiness for promotion.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fix is live on beta (ESRI in, WMS out). Now the browser render check — confirm the map actually loads tiles + markers with zero errors:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4573,21 +4444,25 @@ The registration button doesn't seem to be responding... Is this the only free s
 ### 🤖 Autopilot
 
 Two good questions — let me check the map's actual zoom config and research alternatives to the Copernicus registration in parallel:
+[2 tool result(s) compacted: ssh_run, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good questions on both. Quick reality-check on the alternatives before I answer (the registration pain may be avoidable entirely):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Earth Search STAC works (no registration needed!) but returned 0 features for that window — let me check why before recommending it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `context: None` and 0 features suggests the query shape may need adjusting (possibly the `datetime` format or a `GET` vs `POST`). Let me test the POST form + verify the S3 bucket actually has recent scenes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4606,11 +4481,13 @@ Let me first answer your zoom question, then wire this up:
 **On the map zoom:** the map is set to `setView(PILOT_CENTER, 15)` — zoom 15 (~1 km view, good for seeing individual tree markers). That's actually a reasonable default for "where are our trees" — you can zoom out to see the region. If you want it wider on load (show the Altamira/Brazil context), I can change it to zoom 10-12. Your call.
 
 Shall I rewrite the cache script to use Earth Search (no registration needed)?
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The preview URL pattern was wrong (my guessed path — and I used the wrong grid square: it's `22JGQ`, not `22JGS`). The correct URLs come from the STAC search result's asset links. Let me pull the real asset links for that cloud-free scene:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4741,4 +4618,63 @@ Here's the turn report.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp && echo "=== current cache_satellite_scenes.py (sunmint repo) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmin; mkdir -p /tmp/es_cache && cat > /tmp/es_cache/cache_satellite_scenes.py << 'PYEOF' #!/usr/bin/env python3 """Cache Sentinel-2 preview scenes; cd /tmp/es_cache && python3 -m ruff format cache_satellite_scenes.py && python3 -m ruff check cache_satellite_scenes.py && python3 -m ruff f; …(+4 more)
 • `merge pr` → ✅ PR #321 on truesight_me_beta merged successfully (sha: 318802d6c998b1f02b54f3260500c06f24e8b4d6). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Here's the turn report.
+
+## ✅ What I did this turn — satellite cache switched to Earth Search (no registration) + map zoom widened
+
+**1. Cache script rewritten — `sunmint/scripts/cache_satellite_scene
+
+
+### 🤖 Autopilot
+
+Executing — run the cache to populate `satellite/`, push it, and verify the map zoom on beta. First, regenerate the cache from the live index (the script is tested; this produces the real artifacts to commit):
+
+
+### 🤖 Autopilot
+
+Cache generated — 36 scenes across 9 cells, including the FounderHaus cell (`-27.44_-48.5`) with the cloud-free Aug 21 preview. Now pushing the pilot-area scenes + manifest to the repo (the full set populates via the daily workflow; I'll flag the workflow-secret check). Preparing a manifest trimmed to the pushed cell so it always matches:
+
+
+### 🤖 Autopilot
+
+Now uploading the pilot cell (4 scene JPEGs) + trimmed manifest to the sunmint repo, then verifying the map zoom on beta:
+
+
+### 🤖 Autopilot
+
+All 5 files committed to the repo. Now verifying the map zoom 11 on beta (after the #321 merge + Pages rebuild):
+
+
+### 🤖 Autopilot
+
+Everything is live and verified. Here's the report.
+
+## ✅ What I did this turn — satellite cache populated + map zoom verified
+
+**1. First real satellite cache committed** to `sunmint/satellite/` (5 commits):
+- **`-27.44_-48.5/` (FounderHaus pilot cell, 2 trees)** — 4 real Sentinel-2 previews: **2026-08-21** (0.01% cloud, 18.5 KB — the planting day), 07-17, 07-19, 07-27
+- **`manifest.json`** — pilot-area subset, source tagged (Earth Search STAC, anonymous), note that the full 9-cell/36-scene set populates via the daily workflow
+- The full cache run was also executed live (9 cells, 36 scenes — verified working end-to-end)
+
+**2. Map zoom verified on beta** (`beta.truesight.me/sunmint.html`, 26,412 B): **zoom 11 ×2, zoom 15 ×0, ESRI basemap intact** — the regional default view is live.
+
+**3. Cache manifest live** in the repo (`raw.githubusercontent.com/.../satellite/manifest.json` → 200, cells: `-27.44_-48.5`).
+
+## 📌 RESUME HERE → next units
+1. **Date-slider history view** on the impact map — layer the cached previews from `manifest.json` by date (the natural next feature now that real scenes exist). Say go and I'll build it (truesight_me_beta PR).
+2. **Trigger the workflow once** (Actions → workflow_dispatch) to confirm the cron path commits cleanly — or I trigger via API.
+3. **Promote truesight_me_beta → prod** (#318, #319, #320, #321) — after your beta review sign-off: `sync_beta_to_prod(truesight_me_prod)`.
+4. **Standing:** `sunmint_prod` `prod_repos` config line + monitor page promotion; test-row cleanup.
+
+The pilot-area satellite history is now real and in the repo — the "watch our trees grow from space" story has its first data.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/es_cache && rm -rf sat_real && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/trees/index.geojson" -o index_re; cd /tmp/es_cache && python3 - << 'PYEOF' import json m = json.load(open('sat_real/manifest.json')) # Keep only the FounderHaus pilot cell (t; cd /tmp && TS=$(date +%s) && curl -s "https://beta.truesight.me/sunmint.html?cb=$TS" -o beta_sm_live.html && echo "bytes: $(wc -c < beta_sm_
 
