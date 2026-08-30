@@ -4493,11 +4493,13 @@ The preview URL pattern was wrong (my guessed path — and I used the wrong grid
 ### 🤖 Autopilot
 
 The assets point to **COGS (cloud-optimized GeoTIFF)** files on `sentinel-cogs.s3.us-west-2.amazonaws.com` — including a **`visual`** asset (true-color RGB) and **`thumbnail`**. Those COGS files can be served directly as map tiles (that's the modern way). Let me verify the visual COG is publicly accessible and check its URL pattern:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The full URLs are there. Let me verify both are publicly downloadable (thumbnail JPEG + TCI COG) — the caching script will use these:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4538,21 +4540,25 @@ So you can **skip the broken Copernicus registration entirely**. The caching pip
 ### 🤖 Autopilot
 
 Executing both: (a) rewrite the cache script to Earth Search STAC (no registration), (b) widen the map default zoom. First, read the current script + workflow + confirm the exact map lines to patch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Executing both. First, rewrite the cache script for Earth Search (no auth) — writing it locally and linting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Ruff wants formatting — applying it, then a functional test against the real Earth Search endpoint:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The STAC 400s — likely the `now` datetime token isn't accepted (my earlier working test used explicit dates). Let me debug quickly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4677,4 +4683,100 @@ The pilot-area satellite history is now real and in the repo — the "watch our 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/es_cache && rm -rf sat_real && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/trees/index.geojson" -o index_re; cd /tmp/es_cache && python3 - << 'PYEOF' import json m = json.load(open('sat_real/manifest.json')) # Keep only the FounderHaus pilot cell (t; cd /tmp && TS=$(date +%s) && curl -s "https://beta.truesight.me/sunmint.html?cb=$TS" -o beta_sm_live.html && echo "bytes: $(wc -c < beta_sm_
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Everything is live and verified. Here's the report.
+
+## ✅ What I did this turn — satellite cache populated + map zoom verified
+
+**1. First real satellite cache committed** to `sunmint/satellite/` (5 c
+
+
+### 🤖 Autopilot
+
+Executing — building the date-slider history view on the impact map. First, fetch the current page + manifest structure to wire the slider precisely:
+
+
+### 🤖 Autopilot
+
+Structure clear. Let me see the full map script (423–500) to wire the slider cleanly:
+
+
+### 🤖 Autopilot
+
+Full script mapped. Now building the date-slider history view — a dated thumbnail strip under the map (clearest scene first, cloud badges), click to expand + overlay the scene on the map. Applying the patch:
+
+
+### 🤖 Autopilot
+
+All 4 scripts validate and markers are present. One flaw to fix before pushing: the global `document.addEventListener('change', ...)` references `map` which is scoped inside `initMap` — the overlay toggle won't work after the overlay is added (the inner click handler re-adds it correctly, but the global listener throws). Let me fix the global listener to find the map safely via the instance, and also drop the redundant global listener (the per-click handler already manages the toggle). Simplest robust fix: make the toggle listener re-trigger via the stored overlay only:
+
+
+### 🤖 Autopilot
+
+One more guard needed: the global toggle calls `toggleOverlay(null, …)` but `toggleOverlay` uses `map.removeLayer` unguarded. Fixing with a stashed map reference:
+
+
+### 🤖 Autopilot
+
+All checks pass (4 scripts OK, divs 44/44, all markers present). Pushing the date-slider history view as a PR:
+
+
+### 🤖 Autopilot
+
+The edit anchor occurs twice (both `setView` call sites). Using `replace_all` for the stash line is wrong (it'd add a duplicate stash). Let me use the more specific anchor — the one with the SATELLITE_BASEMAP following:
+
+
+### 🤖 Autopilot
+
+PR #322 opened with the stash edit applied. Now uploading the full patched file to the branch (the proven two-step — the branch has the base edit, this adds the full feature):
+
+
+### 🤖 Autopilot
+
+Full file now on the branch. Verifying the PR diff is clean via the authoritative API:
+
+
+### 🤖 Autopilot
+
+PR #322 is clean (**+92/−0, 1 file, mergeable**, all markers present, zoom 11 preserved). Merging it to make the satellite history live:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Here's the turn report.
+
+## ✅ What I did this turn — satellite history view built and merged
+
+**Merged [truesight_me_beta#322](https://github.com/TrueSightDAO/truesight_me_beta/pull/322)** (`1351ebab`, **+92/−0, 1 file, mergeable**) — the **"Satellite history"** strip on the impact map:
+
+- **Thumbnail strip** under the map, fed by `sunmint/satellite/manifest.json` (the real cache committed last turn)
+- Each scene: **cloud-coverage badge** + date; click → **detail view + overlay** the scene on the map (approx. tile footprint, 65% opacity, checkbox toggle)
+- **Auto-selects the clearest scene** (lowest cloud) on load — for the pilot cell that's the **2026-08-21 scene (0.01% cloud, planting day)**
+- **Degrades gracefully**: strip hidden if the manifest/cache is unavailable; toggle guarded via `__satMap`/`__satCells` stashes so the global handler can't throw
+- Validated: all 4 inline scripts pass `node --check`, divs 44/44, zoom 11 preserved, all markers present on the branch (verified via authoritative Contents API)
+
+**The "watch our trees grow from space" feature is now real on beta** — visitors see the tree markers on ESRI satellite imagery plus a dated Sentinel-2 history strip for the pilot area.
+
+## 📌 RESUME HERE → next units
+1. **Verify on beta post-rebuild** (`beta.truesight.me/sunmint.html`): history strip renders (4 thumbnails, cloud badges), click shows detail + overlay, zero console errors — browser check when the Pages rebuild lands
+2. **Trigger the daily cache workflow once** (Actions → workflow_dispatch on sunmint) to confirm the cron path commits cleanly, or I trigger via API
+3. **Promote truesight_me_beta → prod** (#318, #319, #320, #321, #322) — after your beta review sign-off: `sync_beta_to_prod(truesight_me_prod)`
+4. **Standing:** `sunmint_prod` `prod_repos` config line + monitor page promotion; test-row cleanup
+
+Say "go" to verify on beta (browser check) or to trigger the cache workflow.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp/es_cache && TS=$(date +%s) && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint.html?cb=$TS" -o; cd /tmp/es_cache && sed -n '420,505p' sm_now.html; cd /tmp/es_cache && cp sm_now.html sm_history.html && python3 - << 'PYEOF' p = '/tmp/es_cache/sm_history.html' d = open(p, encoding='utf-8'); …(+3 more)
+• `merge pr` → ✅ PR #322 on truesight_me_beta merged successfully (sha: 1351ebabf134a7413a2c305e7819f3656f5d66c3). Pull Request successfully merged
 
