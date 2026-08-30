@@ -3403,11 +3403,13 @@ There's already a **`sunmint/whitepaper/index.html`** on the site. Let me see wh
 ### 🤖 Autopilot
 
 There's already a **SunMint Whitepaper** live at `truesight.me/sunmint/whitepaper/`. Let me read its full content to see what needs updating with the carbon-credit/TrueChain flow:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest — particularly the traceability/MRV sections and whether the tree-anchored carbon-credit transaction flow (TrueChain) is covered:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3534,4 +3536,37 @@ Want me to build it? I'd do it beta-first — a PR on truesight_me_beta adding t
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && TS=$(date +%s) && echo "=== sunmint.html: current structure ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/trues; cd /tmp && echo "=== IMPACT REGISTRY + Highlights sections ===" && grep -n "IMPACT REGISTRY\|Highlights\|impact-registry\|highlights" sunmin
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Perhaps a V1 where we just do a minimal viable PR on the true set mean beta page. Wait, which satellite API are you going to use for this one? Let me know. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Quick check to make sure I recommend the current access model, not an outdated one:
+
+
+### 🤖 Autopilot
+
+Good — current picture confirmed. Here's the answer.
+
+**Which satellite API:** **Copernicus Data Space Ecosystem (CDSE)** — the EU's free Sentinel-2 service, already named in the SunMint whitepaper. Key facts (verified current):
+- **Free** — no paid key, no quota cost for what we need
+- **Sentinel-2 L2A** gives true-color + vegetation (NDVI) imagery, ~10 m resolution, ~5-day revisit — right for a regional/pilot map
+- Access via **STAC API** (search/catalog) + **OGC WMS/WMTS** (serve tiles straight into Leaflet — no heavy processing)
+- One caveat: **the legacy STAC endpoint is deprecated 17 Nov 2025** — so I'll build against the **new STAC endpoint** from day one, not the old one (that's exactly the kind of thing that silently breaks otherwise)
+- Authentication: a **free CDSE account** for OAuth2 token (client credentials) — the only setup needed, and it's free
+
+**The V1 plan (minimal viable, beta-first):**
+1. **PR on truesight_me_beta** — add a **"Live Impact Map" section** to `sunmint.html` with **Leaflet**:
+   - **Layer 1:** our own tree markers from the existing `index.geojson` (already published — zero new pipeline)
+   - **Layer 2:** Sentinel-2 recent true-color tiles of the pilot area via CDSE WMS (plus an optional NDVI toggle later)
+2. **Auth:** I'll set up the free CDSE client-credentials (a small config; tokens refresh automatically) — if you want it *fully* no-secret, V1 can ship with just the tree markers and a static Sentinel basemap, then add the live NDVI layer as V1.1 after the CDSE account is created
+3. **You review on beta** → promote to truesight_me_prod after approval
+
+**One honest note:** with 19 trees and 10 m resolution, the map is symbolic-but-real for now — it shows the *system* (trees on a real satellite map) before scale. That's the right message for a marketing page.
+
+**Want me to go with CDSE for V1?** If yes, I'll start the PR (tree markers + Sentinel-2 basemap layer), and we can add the CDSE OAuth token as a follow-up for the live NDVI layer.
 
