@@ -4429,6 +4429,7 @@ Structure clear. Let me see the full map script (423–500) to wire the slider c
 ### 🤖 Autopilot
 
 Full script mapped. Now building the date-slider history view — a dated thumbnail strip under the map (clearest scene first, cloud badges), click to expand + overlay the scene on the map. Applying the patch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4587,4 +4588,114 @@ Yes — and the good news is **GeoJSON already natively supports both**, so we d
 **Trees are always Points; plots are always Polygons.** Don't mix a plot boundary into a tree feature. That keeps every consumer (map, cache, carbon calc, TrueChain anchor) working on a stable contract.
 
 **Concrete next step when you're ready:** I add `plot_id` + a `plots` layer to the generator + index (empty to start, degrades gracefully), and the map renders polygons + a plot selector once plots exist. Want me to scaffold that now, or fold it into the Altamira field-plan (you collect plot boundaries + tree→plot mapping while you're with the farmers)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] makes sense can we make sure to include this gotcha into our white paper as well as start implementing the scaffolding?
+
+
+### 🤖 Autopilot
+
+Executing both: (1) add the data-model gotcha to the whitepaper, (2) scaffold the plot layer (generator + index + map). Starting with the whitepaper addition — fetching the current whitepaper and finding the right section:
+
+
+### 🤖 Autopilot
+
+Let me see the TOC structure and section list to pick the right insertion point:
+
+
+### 🤖 Autopilot
+
+The whitepaper has **§3 Project Boundary** — that's the perfect home for the data-model gotcha (tree points vs plot polygons). Let me read §3 to add the gotcha right after it:
+
+
+### 🤖 Autopilot
+
+Perfect insertion point — after §3's carbon-pools bullet, before §4. Adding the **data-model gotcha** as a subsection (tree points vs plot polygons, GeoJSON-native, backward compatible, plot_id link):
+
+
+### 🤖 Autopilot
+
+Whitepaper patched (§3.1 + TOC, divs 74/74). Now part 2 — the scaffolding. Fetching the current generator to add `plot_id` + the `plots` layer:
+
+
+### 🤖 Autopilot
+
+Now I have the full generator. Adding the scaffolding: `plot_id` column pass-through + a `plots.geojson` output (empty FeatureCollection to start — stable contract for the map/cache). Patching:
+
+
+### 🤖 Autopilot
+
+Generator passes all checks. Now let me verify the generator actually runs end-to-end with the SA (checking if the workflow env has the SA available), then update the map to consume `plots.geojson` + `plot_id`. First let me run the generator live to produce the real index + plots:
+
+
+### 🤖 Autopilot
+
+The workflow uses `GOOGLE_SERVICE_ACCOUNT_JSON` secret (not available locally), so I can't run the generator live here — the workflow will produce the updated index + empty `plots.geojson` on its next run. I'll push the patched generator, and also add an empty `plots.geojson` to the repo now so the map can consume it immediately. Let me push the generator + plots.geojson to the sunmint repo, then update the map to consume the plots layer:
+
+
+### 🤖 Autopilot
+
+Now pushing to the sunmint repo: patched generator + empty plots.geojson + updated cache script (plot-aware, reads plots.geojson when present). Let me first update the cache script to use plots when available, then push all three:
+
+
+### 🤖 Autopilot
+
+Let me see the full main() to add plot-aware caching:
+
+
+### 🤖 Autopilot
+
+Clear picture. I'll add a **plots layer to the cache script** — when `plots.geojson` exists with polygons, cache per-plot (folder `plot_<id>/` with the plot's bbox + manifest `plots` section); otherwise fall back to per-cell (current behavior). Adding this:
+
+
+### 🤖 Autopilot
+
+All checks pass. Now pushing to the sunmint repo (generator + plots.geojson + cache script) and the map PR. Pushing all three files:
+
+
+### 🤖 Autopilot
+
+All three sunmint files pushed. Now the whitepaper §3.1 — pushing as a PR to truesight_me_beta:
+
+
+### 🤖 Autopilot
+
+PR #323 opened. Now uploading the full patched whitepaper file to the branch:
+
+
+### 🤖 Autopilot
+
+Now verifying the PR diff is clean via the authoritative API:
+
+
+### 🤖 Autopilot
+
+PR #323 is clean (**+14/−0, 1 file, mergeable**, §3.1 + TOC + plot_id all present). Both the whitepaper update and the scaffolding are done. Here's the report.
+
+## ✅ Done — whitepaper gotcha + scaffolding (both shipped)
+
+**1. Whitepaper — [truesight_me_beta#323](https://github.com/TrueSightDAO/truesight_me_beta/pull/323)** (+14/−0, 1 file, verified clean):
+- **§3.1 Geospatial Data Model: Tree Points and Plot Boundaries** (after §3 Project Boundary, TOC entry added)
+- Documents the gotcha exactly as discussed: **trees are always Points, plots are always Polygons**, trees link via `plot_id`, plot-level accounting required by VM0047/PM002, satellite caching clips to plot boundaries, **backfill tolerance** (trees without a plot render as standalone points; no legacy migration)
+
+**2. Scaffolding — sunmint repo (3 commits, verified):**
+- **`scripts/build_tree_geojson.py`** (`a0f91d4b`) — reads a `plot_id` column (falls back gracefully when absent) → carries it into each tree's properties; also emits **`trees/plots.geojson`** (empty FeatureCollection to start — the stable contract)
+- **`trees/plots.geojson`** (`1a1e1fe2`) — committed empty so consumers can depend on it now
+- **`scripts/cache_satellite_scenes.py`** (`f3cf59c9`) — **plot-aware caching**: when plots exist, caches a coherent per-plot scene set (`satellite/plot_<id>/` + `manifest.plots`), falling back to grid cells for plot-less trees
+
+**Testing:** generator passes compile + ruff + format + structure checks; cache script same (including the new plot path); whitepaper divs 74/74.
+
+## 📌 RESUME HERE → next units
+1. **Merge truesight_me_beta#323** (your go) → verify §3.1 on beta
+2. **Map consumption (V2)**: extend the impact map to fetch `plots.geojson` + render plot polygons + a plot selector (degrades gracefully while empty) — separate PR
+3. **In Altamira**: collect `plot_id` per tree + digitize plot boundaries (Google Earth / SW Maps) → fill the SunMint Plots tab → the generator + cache + map all light up automatically
+4. **Standing**: promote truesight_me_beta → prod (#318–#323) after beta review; `sunmint_prod` config line; test-row cleanup
+
+Say "go" to merge #323, or to build the map's plot-rendering V2 next.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → cd /tmp && TS=$(date +%s) && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint/whitepaper/index.html?cb; cd /tmp && echo "=== TOC links (64-100) ===" && sed -n '64,105p' wp_now.html && echo "=== all section ids ===" && grep -oE 'id="[^"]+"' wp_n; cd /tmp && echo "=== §3 Project Boundary ===" && sed -n "$(grep -n 'id=\"3-project-boundary\"' wp_now.html | cut -d: -f1),+12p" wp_now.html; …(+11 more)
 
