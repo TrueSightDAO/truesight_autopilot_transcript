@@ -2632,11 +2632,13 @@ No ledger/money writes beyond the already-submitted reject; nothing destructive 
 ### 🤖 Autopilot
 
 👍 Go received. Resuming the 487 invalidation. My hypothesis from last turn: the `signature_verification: "error"` was a transient Edgar-side verification hiccup — the row still landed (11954), and the GAS handler does its **own** signature verification (which passed for my key on the 061 rows). Let me fire the @37 webhook to process row 11954 and see the outcome directly:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The @37 webhook processed 4 rows: **"1 linked, 3 rejected, 0 errors"** — one row succeeded (likely my 487 reject), 3 failed. Let me verify the decisive outcome: SunMint row 13 (487) status and the tracking tab:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2644,16 +2646,19 @@ The @37 webhook processed 4 rows: **"1 linked, 3 rejected, 0 errors"** — one r
 **🎉 Row 13 = INVALID — the 487 tree is invalidated!** The @37 webhook's "1 linked" was my 487 reject succeeding (the "rejected" count refers to the older @32-era rows re-processing — those were the ones marked REJECTED-not-found at 03:04).
 
 The remaining step: verify 487 drops from `index.geojson` (the #450 dispatch should have auto-fired the rebuild this time since @37 has the dispatch code). Checking:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Row 13 = INVALID ✅, but `index.geojson` **still has 487** (20 features) and no new rebuild run after my webhook — the **#450 dispatch did NOT auto-fire again** (same issue as the 061 test). This confirms the #450 GAS dispatch call is silently failing (PAT scope or endpoint issue). Let me trigger the rebuild manually (the proven path) to complete the removal:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rebuild dispatched (HTTP 204). Let me register a watcher to be notified when it completes, then verify the tree is gone:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2728,16 +2733,19 @@ No new PRs opened/merged this turn; no money movement; the only writes were the 
 ### 🤖 Autopilot
 
 👍 Go received. Next unit: **fix the #450 dispatch** — the GAS `getGithubToken_()` repository_dispatch call silently fails (no auto-rebuild on INVALID). Let me diagnose the token and the dispatch call in the deployed GAS project:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the dispatch code. Key detail: the token comment says "scoped to sunmint repo **Contents API**" — but `repository_dispatch` requires **`repo` scope** (classic) or **Actions write** permission (fine-grained). If the token only has Contents permission, the dispatch 403s silently. Let me read the dispatch block + its error handling:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dispatch code is correct (`muteHttpExceptions: true` means failures just log, never throw) — so the question is the **token scope**. The comment says TGM_GITHUB_TOKEN is "scoped to sunmint repo **Contents API**" — but `repository_dispatch` needs **`repo` scope / Actions:write**, not Contents. That's the likely silent 403. Let me verify: (1) does `repository_dispatch` work with the .env PAT (proving the endpoint+event are fine), and (2) is there any Script Properties setter in the project:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2904,4 +2912,131 @@ Nothing destructive done; no ledger writes beyond the stub submission; no money 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && python3 - <<'EOF' import json, base64, os, urllib.request from cryptography.hazmat.primitives import hashes, serialization from c; sleep 45 && echo "waited 45s"
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Converging — auto-dispatch verification is INCONCLUSIVE; two anomalies found
+
+### What I verified this turn
+1. **Env wiring is correct on the code side**: `dispatch.py` `ROUTING` entry `("[TREE PLA
+
+
+### 🤖 Autopilot
+
+👍 Go received. Resuming the signature-failure diagnosis. The decisive evidence: compare the **successful** 11953 text vs the **failed** 11954, find what Edgar's `signature_verification` actually checks, and recall the exact script that produced the success.
+
+
+### 🤖 Autopilot
+
+Col F reads return empty in Chat Logs — the text must live in a different column there, and the verifier code isn't in dao_protocol's indexed default branch. Let me find both: search org-wide for the verifier, and read a wider row to locate the message text column:
+
+
+### 🤖 Autopilot
+
+Col G holds the text (F is a separator). The **successful** 11953 row shows my signature with public key `...utpNWeD7...` — matching my .env key (row 164, Sophia). Now let me read the **failed** 11954 row's text + the E2E runbook that documents `signature_verification`:
+
+
+### 🤖 Autopilot
+
+The runbook is gold — it documents the canonical test keys (`/tmp/sophia_keys_clean.env`), the exact verification endpoint (§4.2 `check_digital_signature` — **must URL-encode**), and the incident traps. The key diagnostic: compare my `.env` key vs the canonical `sophia_keys_clean.env`, and check whether my key still registers via the endpoint. One comprehensive check:
+
+
+### 🤖 Autopilot
+
+**Root cause found!** The successful row 11953 vs failed 11954 reveals the format mismatch:
+- **11953 (success)**: `My Digital Signature:` = **SPKI PUBLIC KEY** (392 chars, starts `MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8` = RSA-2048 pubkey prefix, tail matches my key) · `Request Transaction ID:` = **raw 256-byte RSA signature** (344 chars)
+- **11954 (failed)**: I had it **backwards** — put the raw signature in "My Digital Signature" and random bytes in "Request Transaction ID"
+
+Edgar's verifier resolves the contributor by the **public key** in "My Digital Signature", then verifies the **signature** in "Request Transaction ID". My later scripts swapped them → lookup failed → `signature_verification: error` + stub row. The successful 061 script used the correct order. Let me confirm the site's exact `signText` format, then re-submit correctly:
+
+
+### 🤖 Autopilot
+
+Let me see the exact shareText assembly around line 1070 (markTreeInvalid) to replicate byte-for-byte:
+
+
+### 🤖 Autopilot
+
+**Root cause nailed.** The site format (lines 1069–1075) is:
+- `My Digital Signature:` = **publicKey** (SPKI, 392 chars)
+- `Request Transaction ID:` = **signature** (RSA-2048, 344 chars)
+
+My later 487 scripts had it **backwards** (signature in "My Digital Signature", random bytes in "Transaction ID") → Edgar couldn't resolve a contributor → `error` + stub row. The successful 061 row (11953) used the correct order — and my `.env` key is byte-identical to the canonical `sophia_keys_clean.env`, still registering as **Sophia Truesight, sentinel ✓** via the (URL-encoded) endpoint.
+
+Now re-submitting the 487 reject in the **exact site format** — non-destructive proof (487 is already INVALID, so the handler will *refuse* it but the processing proves auto-dispatch):
+
+
+### 🤖 Autopilot
+
+**`signature_verification: "success"`** — the format fix works. Now the decisive auto-dispatch test: this submission should trigger dao_protocol → GAS webhook automatically (no manual call). Waiting briefly, then checking tracking:
+
+
+### 🤖 Autopilot
+
+Empty results — let me re-read the tracking tab's full extent and the Chat Logs tail to see what happened to my submission:
+
+
+### 🤖 Autopilot
+
+The tracking tab still ends at **11957** — my new submission (row 11975, `Edgar_20260830221906_015`) has **not** been processed. Let me confirm row 11975 is my reject and check whether the handler wrote anything:
+
+
+### 🤖 Autopilot
+
+Row 11973–11975 read returns empty even though the tail showed those ids — the sheet's grid may not have them populated in all columns, or the range is off. I'm low on rounds. Let me do one focused read of the last populated rows (A/G columns only, where the text lives):
+
+
+### 🤖 Autopilot
+
+## Converging — signature fixed (root cause found); auto-dispatch timing still unconfirmed
+
+### ✅ Root cause of the `signature_verification: error` — FOUND AND FIXED
+Comparing the successful row 11953 vs failed 11954 + the site's `markTreeInvalid()` source (monitor-tree-growth `index.html` lines 1069–1075):
+
+| Field | Correct format (site) | My broken 487 scripts |
+|---|---|---|
+| `My Digital Signature:` | **publicKey** (SPKI, 392 chars) | ❌ I put the raw **signature** here |
+| `Request Transaction ID:` | **signature** (RSA-2048/SHA-256, 344 chars) | ❌ I put random bytes here |
+
+I had the two fields **swapped** in the later scripts. Edgar resolves the contributor by the public key in "My Digital Signature" → key not found → `error` + stub row (no text → handler can't parse → no tracking). The earlier successful 061 script used the correct order.
+
+**Re-submitted in the exact site format → `signature_verification: "success"`** ✅ (also verified: my `.env` key is byte-identical to the canonical `/tmp/sophia_keys_clean.env` and registers as **Sophia Truesight, sentinel ✓** via the URL-encoded `check_digital_signature` endpoint).
+
+### ⏳ Auto-dispatch NOT yet observed
+- My correctly-formatted submission landed at Chat Logs row **~11975** (`Edgar_20260830221906_015`, 22:19:06Z)
+- **Tracking tab still ends at row 11957** (03:25Z yesterday) — the handler has **not** processed my new row even ~40s+ after submission
+- So the dao_protocol → GAS webhook auto-fire either **didn't fire**, **fired before the row landed** (BackgroundTask race with the sheet append), or **fired and errored** — I can't see dao_protocol's logs or GAS execution logs without box/API access
+
+### Chain status (all still valid)
+| Item | State |
+|---|---|
+| 061 + 487 trees INVALID + removed from index | ✅ proven |
+| Signature format bug (my scripts) | ✅ fixed + re-verified `success` |
+| Routing env var on dao_protocol box | ✅ provisioned by governor |
+| `dao_protocol #150` routing entry | ✅ merged (needs the box to run the merged code — restart done by governor) |
+| Auto-dispatch E2E proof | ⏳ **pending** |
+| `tokenomics #451` (dispatch-failure visibility) | 🟡 open PR |
+| `sunmint_beta #46` → prod | ⏳ pending Gary's review |
+
+---
+**RESUME HERE → next turn:**
+1. **Check dao_protocol logs** (governor, box access): around 22:19Z — did `dispatch_event` run for `Edgar_20260830221906_015`, match `[TREE PLANTING REJECT EVENT]`, and POST to the `TREE_PLANTING_REJECT` webhook URL? (`journalctl -u truesight-dao-protocol --since "2026-08-30 22:15" | grep -i dispatch`). If it fired but the tracking tab didn't move, the likely cause is a **race**: the BackgroundTask webhook hit GAS before the sheet row appended → handler saw no new rows. Confirm whether the webhook response was logged.
+2. **If it fired pre-row**: either (a) manually re-fire the @37 webhook once to confirm the row processes cleanly (outcome should be `REJECTED` — "status is INVALID, expected NEW or LINKED", proving the full parse), or (b) accept the cron/next-trigger will pick it up and just confirm on the next check.
+3. If dispatch **didn't fire at all**, verify the merged `dispatch.py` is actually running on the box (the governor restarted the service — but the merged code must be deployed to `/home/ubuntu/dao_protocol/`; `git pull` on the box may be needed) and that `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_REJECT` is visible in the process environ.
+4. Then close out: merge+deploy `tokenomics #451`; promote `sunmint_beta #46` to prod.
+
+No further writes this turn beyond the verification submission; no money movement; nothing destructive.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → key comparison (.env ≡ sophia_keys_clean), `check_digital_signature` (registered/sentinel), signText + markTreeInvalid source read, **correctly-formatted resubmit → `signature_verification: success`**
+• `read google sheet` ×4 → 11953 vs 11954 text comparison (root cause), tracking tab tail (frozen at 11957), Chat Logs tail (row 11975 = my submission)
+• `read context file` ×1 → SUNMINT_E2E_RUNBOOK (canonical keys, endpoints, incident traps)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && echo "=== key files ===" && ls -la /tmp/sophia_keys_clean.env 2>/dev/null; echo "=== compare public keys (.env vs sophia_keys_cle; cd /tmp && echo "=== signText in beta_monitor.html ===" && grep -n "signText\|function sign" beta_monitor.html 2>/dev/null | head; echo "---; cd /tmp && sed -n '1049,1100p' beta_monitor.html; …(+2 more)
 
