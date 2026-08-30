@@ -2755,6 +2755,7 @@ Key diagnosis confirmed:
 - The GAS project reads `TGM_GITHUB_TOKEN` from **Script Properties** — commented "scoped to sunmint repo **Contents API**". A Contents-only token **lacks the `repo`/Actions scope** that `repository_dispatch` needs → the GAS dispatch silently 403s (and `muteHttpExceptions` swallows it)
 
 So the dispatch **code is correct** — the blocker is the **token scope in GAS Script Properties**. Two possible fixes: (a) set `TGM_GITHUB_TOKEN` to a repo-scoped PAT, or (b) harden the code to surface the failure. Let me check if there's a Script Properties setter function I can run via clasp (or whether the Apps Script API is enabled):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2762,11 +2763,13 @@ So the dispatch **code is correct** — the blocker is the **token scope in GAS 
 **Diagnosis confirmed.** The dispatch **code is correct** (endpoint + `event_type` work — the `.env` PAT returns HTTP 204). The blocker is the **GAS Script Properties token**: `TGM_GITHUB_TOKEN` is commented as "scoped to sunmint repo **Contents API**" — a Contents-only token **lacks the `repo`/Actions:write scope** that `repository_dispatch` needs, so the GAS call silently 403s (`muteHttpExceptions: true` swallows it — that's the "silent failure" I hit twice).
 
 The real fix is provisioning a repo-scoped PAT into GAS Script Properties (operator action — I can't write Script Properties without Apps Script API). What I *can* ship is making the failure **audible** so it never silently stalls again. Opening the hardening PR — first the local checks:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Suite green (same 3 pre-existing `test_chat_observe.py` failures — unrelated). Opening the hardening PR now:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2826,6 +2829,7 @@ No deploy, no Edgar submissions, no money movement this turn.
 ### 🤖 Autopilot
 
 👍 Understood — governor provisioned the env var and restarted the service. Let me verify the merged routing code reads exactly that env key (naming convention), then run a live end-to-end test of the auto-dispatch.
+[2 tool result(s) compacted: read_repo_file, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2836,31 +2840,37 @@ Verified the wiring on my side:
 - Sheet state: 061 = INVALID, 487 = INVALID (both already removed from index)
 
 Now the meaningful verification: **prove the auto-dispatch fires without a manual webhook**. I'll submit a fresh reject for `487` (already INVALID) — the handler will *refuse* it ("only NEW or LINKED can be invalidated") — a **non-destructive** E2E test of: Edgar intake → `dispatch_event` → GAS webhook auto-fire → outcome logged. No data changes, no rebuild needed. Submitting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 HTTP 200 — Edgar ingested it (the `signature_verification: "error"` is Edgar's intake-time check; the **GAS handler does its own verification which already passed for Sophia** — that's how 487 got INVALID'd earlier). Now the decisive question: **did dao_protocol auto-fire the webhook** (no manual call this time)? The handler should refuse the reject ("already INVALID") and record an outcome with a fresh timestamp. Checking:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tracking tab shows rows up to 11951 — I need the tail (11951+) to see my new submission's processing. Let me read the last rows of the tracking tab and find my new Chat Logs row (the tab is likely "Telegram Chat Logs"):
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tracking tab tells a nuanced story. Rows processed at 03:25: `11954` (my 03:21 487 reject) → **"Signer is not a registered governor or sentinel"** (auth FAILED), then `11955` (03:24:36) → **"Not a valid tree"** (success — this is what actually invalidated 487), `11956/57` → refused (already INVALID). Critically: **nothing processed after 03:25** — so my submission *this* turn was NOT auto-dispatched. Let me check whether it even landed in Chat Logs, and inspect what my 03:21 row actually contains (to understand the auth failure):
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My submission landed at row **11972** (`Edgar_20260830145259_007`). The tracking tab hasn't processed it yet (still ends at 11957, 03:25) — the question is whether dao_protocol's auto-dispatch fires the webhook now. Let me wait briefly, then check the tracking tail + the content of my new row:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the tracking tab tail and the content of my new row:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2927,6 +2937,7 @@ Nothing destructive done; no ledger writes beyond the stub submission; no money 
 ### 🤖 Autopilot
 
 👍 Go received. Resuming the signature-failure diagnosis. The decisive evidence: compare the **successful** 11953 text vs the **failed** 11954, find what Edgar's `signature_verification` actually checks, and recall the exact script that produced the success.
+[3 tool result(s) compacted: read_google_sheet, search_code, recall_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3039,4 +3050,50 @@ No further writes this turn beyond the verification submission; no money movemen
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp && echo "=== key files ===" && ls -la /tmp/sophia_keys_clean.env 2>/dev/null; echo "=== compare public keys (.env vs sophia_keys_cle; cd /tmp && echo "=== signText in beta_monitor.html ===" && grep -n "signText\|function sign" beta_monitor.html 2>/dev/null | head; echo "---; cd /tmp && sed -n '1049,1100p' beta_monitor.html; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] Worst case scenario why not register again to get a new set of keys since you have access to your email address admin+sophia@truesight.me which is marked as a sentinel account??
+
+
+### 🤖 Autopilot
+
+Good question — and it's the right instinct as a worst-case fallback. But in this case re-registering is **not needed and would actually be harmful**. Here's the reasoning:
+
+## Why NOT re-register
+
+**1. The key isn't broken — it's verified healthy right now.**
+Last turn I ran the canonical check (the same endpoint the site + handler use):
+```
+GET edgar.truesight.me/dao/check_digital_signature?signature=<urlencoded key>
+→ {"registered": true, "contributor_name": "Sophia Truesight",
+   "contributor_email": "admin+sophia@truesight.me",
+   "is_governor": false, "is_sentinel": true}
+```
+And my re-submission in the correct format returned `signature_verification: "success"`. The problem was **my script's field order** (I put the raw signature in "My Digital Signature:" and junk in "Request Transaction ID:" — the site puts the **public key** in the first field and the **signature** in the second). Script bug, not identity bug.
+
+**2. Re-registering would break the audit trail of already-signed rows.**
+Rows 11953 (061 success), 11954/11955 (487 invalidation), etc. are all signed with the **current** key. If I register a new keypair, those ledger rows become **unverifiable** against the new identity — the TRUECHAIN signature chain for the exact events we just proved would be orphaned. The DAO's whole point is a tamper-evident signature ledger; rotating keys casually destroys that.
+
+**3. The ledger has no clean "rotate" path — it has an "already active" guard.**
+The runbook documents `public_key_already_active` as the response for a re-registration attempt on a live identity. I'd need to manually deactivate/orphan the old key in Contributors Digital Signatures (write-capable SA, §5g) — creating duplicate/orphaned identity rows, two keys for one email, and a governance-visible mess — to fix a bug that isn't in the identity.
+
+**4. The sentinel flag lives on the account, not the key — and it's already TRUE.**
+Even in the worst case, the fix is provisioning/replacing the key in the sheet row (operator action), not re-registering the account.
+
+## When re-registration WOULD be the right call
+- The private key is **compromised/lost** (this key never left this box — it's in `.env` + `/tmp/sophia_keys_clean.env`, same file)
+- The account's registered key was **deleted from the sheet** (it's there — row 164, exact match)
+- We need a **new sentinel identity** for a different purpose
+
+## Current actual status (the thing you're worried about)
+| Check | Result |
+|---|---|
+| Signature verification | ✅ `success` (after format fix — proven) |
+| Auto-dispatch from dao_protocol | ⏳ still unconfirmed — this is a **dispatch/timing** issue, not a signature/identity issue |
+
+So the remaining open item isn't the identity at all — it's whether dao_protocol's background `dispatch_event` fired the webhook for row 11975 (`Edgar_20260830221906_015`). That's a box-log question (`journalctl -u truesight-dao-protocol` around 22:19Z, grep `dispatch`), which you have access to and I don't by design.
+
+**RESUME HERE** — if you'd like, check those logs and paste the dispatch lines (or tell me it's not there), and I'll confirm whether the routing fired or we have a race/deploy issue on the box. I can also re-fire the @37 webhook manually to confirm row 11975 parses cleanly, which isolates "handler works" from "dispatcher fired". I won't re-register unless you explicitly direct it — I believe it would damage the ledger for zero benefit.
 
