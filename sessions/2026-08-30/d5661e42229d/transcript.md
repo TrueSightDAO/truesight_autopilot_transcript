@@ -2234,21 +2234,25 @@ The run succeeded but the logs download was only 180 bytes (empty). The builder 
 ### 🤖 Autopilot
 
 The workflow committed (17f3cc03 "Update tree index [2026-08-30 03:09 UTC]") but 061 is still there with status NEW — so the builder did **not** see the INVALID status. Let me check the builder's actual spreadsheet constants and what the commit changed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **🎉 THE TREE IS GONE!** The commit `17f3cc03` (03:09:49Z) **removed `Edgar_20250809202528_061` from the index** (−18/+35: it deleted the feature block and regenerated). My earlier check showed "still present" because I was polling **before** the commit landed (raw.githubusercontent caches the old content for a bit). Let me confirm the live index now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Conflicting evidence: the commit removed 061, but the file still shows it. Let me get the **authoritative** content from the GitHub API (the commit's actual file state) to rule out cache staleness:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The authoritative API confirms it: **at commit `17f3cc03` (HEAD of main), `061` is GONE** (20 tree_id matches, no 061 — the raw.githubusercontent poll was serving a stale cache). Let me do one final authoritative check at `ref=main` to be certain, then report:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2309,6 +2313,7 @@ Nothing further submitted this turn; all writes already landed (sheet INVALID + 
 ### 🤖 Autopilot
 
 👍 Go received. Per the handoff directive, checking the manifest first, then reading the routing table in `dao_protocol/dispatch.py` to write the PR precisely.
+[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2316,21 +2321,25 @@ Nothing further submitted this turn; all writes already landed (sheet INVALID + 
 The manifest confirms `SUNMINT_TREE_QR_LINKING_PLAN` is active (UAT pending), and the `dispatch.py` ROUTING table shows the gap precisely: `[TREE PLANTING LINK EVENT]`, `[TREE PLANTING EVENT]`, and `[TREE GROWTH MONITORING EVENT]` all have entries — but **`[TREE PLANTING REJECT EVENT]` has no routing row**, so rejects rely on the (dead) GAS cron. The fix mirrors the LINK entry exactly (same handler `processTreePlantingLinksFromTelegramChatLogs` processes both).
 
 Per the hard rule, running the local checks on the modified file before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `py_compile` and `ruff check` pass; `ruff format --check` says it would reformat — let me confirm the reformat is only my hunk (or pre-existing) before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `ruff` isn't on PATH in that shell — the earlier check ran via the project's venv. Let me run the format check from the venv to see the diff:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The format diff is **pre-existing** (the whole file isn't ruff-formatted — it would rewrite all 26 routing entries; my insertion is one line and matches the file's existing style). `ruff check` passed clean, `py_compile` passed. Per the rule, pre-existing formatting issues in untouched code are acceptable. Opening the PR now:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2396,11 +2405,13 @@ It mirrors the existing `[TREE PLANTING LINK EVENT]` entry exactly (same handler
 ### 🤖 Autopilot
 
 👍 Go received. Next unit: **merge `dao_protocol #150`** (the reject routing entry). Verifying mergeable state first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #150 is mergeable with a clean state — 1 commit, +3/−0, exactly the routing entry. Merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2472,6 +2483,7 @@ The code is merged, but the webhook URL is read from env at runtime: **`DAO_PROT
 ### 🤖 Autopilot
 
 👍 Go received. Next unit: **invalidate the original thread tree `Edgar_20260819134722_487`** — resolving Gary's original complaint end-to-end. Since the env step on the dao_protocol box isn't done yet, I'll use the proven @37 webhook path directly. First, let me confirm the tree's current sheet row (col A match) and status:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2591,4 +2603,97 @@ No ledger/money writes beyond the already-submitted reject; nothing destructive 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && echo "=== sheet row for 487 (SunMint Tree Planting) ===" && python3 - <<'EOF' # Find the row for 487 in the sheet via the same re; cd /tmp && for p in /home/ubuntu/truesight_autopilot/.env /opt/truesight_autopilot/.env /home/ubuntu/.truesight_autopilot/.env; do [ -f "$p"; cd /tmp && python3 - <<'EOF' import json, base64, os, sys, urllib.request from cryptography.hazmat.primitives import hashes, serialization f; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Converging — 487 reject submitted but signature verification flagged `error`
+
+### What happened this turn
+1. **Located the tree**: SunMint sheet row 13 = `Edgar_20260819134722_487` (col D `..._488`
+
+
+### 🤖 Autopilot
+
+👍 Go received. Resuming the 487 invalidation. My hypothesis from last turn: the `signature_verification: "error"` was a transient Edgar-side verification hiccup — the row still landed (11954), and the GAS handler does its **own** signature verification (which passed for my key on the 061 rows). Let me fire the @37 webhook to process row 11954 and see the outcome directly:
+
+
+### 🤖 Autopilot
+
+The @37 webhook processed 4 rows: **"1 linked, 3 rejected, 0 errors"** — one row succeeded (likely my 487 reject), 3 failed. Let me verify the decisive outcome: SunMint row 13 (487) status and the tracking tab:
+
+
+### 🤖 Autopilot
+
+**🎉 Row 13 = INVALID — the 487 tree is invalidated!** The @37 webhook's "1 linked" was my 487 reject succeeding (the "rejected" count refers to the older @32-era rows re-processing — those were the ones marked REJECTED-not-found at 03:04).
+
+The remaining step: verify 487 drops from `index.geojson` (the #450 dispatch should have auto-fired the rebuild this time since @37 has the dispatch code). Checking:
+
+
+### 🤖 Autopilot
+
+Row 13 = INVALID ✅, but `index.geojson` **still has 487** (20 features) and no new rebuild run after my webhook — the **#450 dispatch did NOT auto-fire again** (same issue as the 061 test). This confirms the #450 GAS dispatch call is silently failing (PAT scope or endpoint issue). Let me trigger the rebuild manually (the proven path) to complete the removal:
+
+
+### 🤖 Autopilot
+
+Rebuild dispatched (HTTP 204). Let me register a watcher to be notified when it completes, then verify the tree is gone:
+
+
+### 🤖 Autopilot
+
+# 🎉 **THE ORIGINAL THREAD TREE IS GONE — `Edgar_20260819134722_487` fully invalidated & removed**
+
+## Complete verification (authoritative GitHub API, ref=main)
+
+| Step | Evidence |
+|---|---|
+| **1. Reject submitted** (RSA-signed, sentinel Sophia) → Edgar | ✅ HTTP 200, row 11954 landed in Chat Logs |
+| **2. @37 webhook processed** | ✅ "1 linked, 3 rejected, 0 errors" — the "1 linked" = my 487 reject SUCCESS |
+| **3. SunMint sheet row 13** | ✅ Status = **INVALID** (was NEW) — `Edgar_20260819134722_487` |
+| **4. Rebuild run** (`33290226184`, workflow_dispatch 03:25:25Z) | ✅ completed success |
+| **5. `index.geojson` at ref=main** | ✅ **`487 present: False` — count 20 → 19** |
+
+## The original complaint is now FULLY RESOLVED
+- The tree `Edgar_20260819134722_487` that Gary marked invalid and kept reappearing → **now INVALID in the ledger sheet AND removed from the public index**. Reloading `sunmint.truesight.me/monitor-tree-growth/?tree=Edgar_20260819134722_487` will no longer show it.
+- The `QR Code: Edgar_...` fabrication issue → fixed in code (#46, beta) and no longer relevant to the invalidated tree.
+
+## One remaining follow-up (known, unchanged)
+The **#450 dispatch auto-fire still doesn't work** — no `repository_dispatch` runs appear; the GAS `getGithubToken_()` PAT likely lacks `repo` scope for dispatch (or the call fails silently). I triggered the rebuild via `workflow_dispatch` (204) both times. This is a small follow-up fix (verify PAT scope / wire through dao_protocol) — not blocking the invalidation result.
+
+### Chain status
+| Item | State |
+|---|---|
+| 061 test tree invalidated + removed | ✅ |
+| **487 original thread tree invalidated + removed** | ✅ **now** |
+| Reject routing (`dao_protocol #150`) | ✅ merged (env step pending on dao_protocol box) |
+| GAS fixes (#449 col A OR col D, #450 dispatch) | ✅ merged + deployed @37 |
+| Builder skip-INVALID | ✅ delivered |
+| UI no-QR-fabrication (`sunmint_beta #46`) | ✅ merged — beta only |
+
+No new PRs opened/merged this turn; no money movement; the only writes were the reject submission + the rebuild trigger.
+
+---
+**RESUME HERE → next units (each a fresh turn):**
+1. **Fix the #450 dispatch** — check `getGithubToken_()` PAT scope in the GAS project (needs `repo` scope for `repository_dispatch`); likely a small token/scope fix so INVALID auto-fires the rebuild without manual `workflow_dispatch`.
+2. **Server-side env step**: set `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_REJECT` → @37 URL on the dao_protocol box + restart (SSH key denied for me — governor/ops) so the merged `dao_protocol #150` routing actually fires webhooks automatically.
+3. **Promote `sunmint_beta #46` to prod** (`sync_beta_to_prod(sunmint_prod)`) — your explicit approval required.
+
+———
+**✅ Done this turn — actions taken:**
+• `http fetch` ×1 → @37 webhook: "1 linked, 3 rejected, 0 errors"
+• `read google sheet` ×2 → row 13 INVALID ✅, tracking tab reviewed
+• `ssh run` ×3 → authoritative index check (487 present: True), rebuild dispatch (HTTP 204), post-rebuild verify (**487 present: False, count 19**)
+
+———
+**✅ Done this turn — actions taken:**
+• `http fetch` → https://script.google.com/a/macros/agroverse.shop/s/AKfycbyoFCTzIdC1g69ZX3AK894h2siQOKoNSEiuyLDtZJTtarQPHHa5Zl8rjot0vPFUquV2/exec?action=processTreePlantingLinksFromTelegramChatLogs → ✅ Tree planting links processed: 1 linked, 3 rejected, 0 errors
+• `read google sheet` ×2 → SunMint row 13 = INVALID ✅; Tree Planting Link tab reviewed (34 REJECTED-not-found rows from @32-era + new successes)
+• `ssh run` ×3 → index check pre-rebuild (487 present, 20 features) → dispatch (HTTP 204) → post-rebuild check (**487 gone, 19 features**)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && echo "=== index.geojson: does 487 remain? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/trees/index; cd /tmp && python3 - <<'EOF' import json, urllib.request, os # load PAT from .env env = {} for line in open("/opt/truesight_autopilot/.env"); cd /tmp && sleep 25 && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/actions/runs?per_page=3" | python3 -c " import json,sys d=
 
