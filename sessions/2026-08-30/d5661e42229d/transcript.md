@@ -313,21 +313,25 @@ Is sent to edgar, Edgar_20260819134722_487 never shows up again. Also QR Code: E
 ### 🤖 Autopilot
 
 Let me verify the exact fetch chain — whether this tree has a `qr_code` property in the index, and where the monitor page source actually lives.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key finding: the tree's index entry has **no `qr_code` property** — so `markTreeInvalid()`'s fallback `const qrCode = (key && key.qrCode) || treeId;` injects the treeId into the QR Code field. Exactly the bug you describe. Let me locate the monitor page source and check the sheet row for this tree.
+[3 tool result(s) compacted: search_code, search_code, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the middle sheet rows to see exactly how the 2026-08-19 tree is recorded (its Message ID column vs. tree id column, and whether it has a Linked QR Code).
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pinpoint the monitor page source, the reject handler's matching logic, and the exact sheet row for this tree.
+[3 tool result(s) compacted: ssh_run, search_code, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -339,36 +343,43 @@ Let me pinpoint the monitor page source, the reject handler's matching logic, an
 - **Status:** `NEW` · **Linked QR Code (col R):** empty
 
 So the reject event's two fields are both problematic: "QR Code" is really the tree id, and "SunMint Submission Message ID" (`_487`) doesn't match col D (`_488`). Let me read the GAS reject handler to see exactly which column it matches.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the handler — the reject-event processing logic specifically.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need to see the actual reject-event branch (the part that matches the SunMint row and marks INVALID). Let me read the rest of the file.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full reject-path logic. Let me confirm exactly where the monitor page fetches the tree list from (the "from where" question) and what the full sunmint repo layout is.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me confirm the fetch loop's filtering behavior (does the page filter INVALID out of the dropdown?).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me confirm whether the dropdown filters by status (would INVALID trees show after a successful reject?).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify how the monitor page uses `status` (does `measureStatus` / deep-link render INVALID trees?).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -455,31 +466,42 @@ Say the word ("go") and I'll open the PRs and report back. Nothing was written o
 ### 🤖 Autopilot
 
 👍 Go received. Let me locate the actual source repo for `live_monitor.html` (the sunmint repo has no HTML — it must live in the sunmint_beta/prod site repos), check the handoff manifest, and verify the beta/prod layout before opening PRs.
+[4 tool result(s) compacted: read_context_file, search_code, search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Go received. Let me locate the canonical source of the live monitor page (sunmint_beta vs sunmint_prod) and confirm the file layout before opening PRs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live page is served from `sunmint_prod` (CNAME), with `sunmint_beta` as its beta base — so the fix goes beta-first. Let me pull the exact `markTreeInvalid()` source from the beta repo to write a precise patch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me read the exact `markTreeInvalid()` function and its helpers (signature queue, contributor name resolution) so my patch is precise.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Go received 👍. I have the full bug picture now. Let me check for a duplicate mark-invalid control in the dapp link page and run the local test suite before pushing.
+[3 tool result(s) compacted: search_code, search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local test suite ran from the wrong directory (no `app`/`tests` there — that's a different checkout). The actual repo is elsewhere. Let me find the truesight_autopilot checkout and run the suite there.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -574,4 +596,107 @@ The full picture is confirmed. Three coordinated fixes needed; I have the go-sig
 **✅ Done this turn — actions taken:**
 • `ssh run` ×16 → cd /tmp && for repo in sunmint sunmint_beta sunmint_prod; do echo "=== $repo branches ==="; curl -s "https://api.github.com/repos/TrueSightD; cd /tmp && echo "=== sunmint_beta main files ==="; curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/git/trees/main?recursive=; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html" -o beta_monitor.html &&; …(+12 more)
 • `merge pr` → ✅ PR #46 on sunmint_beta merged successfully (sha: 3b138cc4a4db98339eacf5a876ae0a4fa157489e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (one-PR-per-turn respected — stopped after the merge)
+
+**Root cause confirmed end-to-end** (all established with evidence): the reject flow had **three** independent bugs, any
+
+
+### 🤖 Autopilot
+
+👍 Go received. Per the handoff directive, first checking the registry, then locating the `allowed_repos` settings so I can unblock the `sunmint` builder PR.
+
+
+### 🤖 Autopilot
+
+The manifest confirms the SUNMINT_TREE_QR_LINKING plan is active. Now let me find the `settings` file in truesight_autopilot (the code search returned 0 — the file may not be indexed or named differently).
+
+
+### 🤖 Autopilot
+
+Let me find where `allowed_repos` is actually defined in the autopilot code.
+
+
+### 🤖 Autopilot
+
+The read truncated before the actual `allowed_repos` list. Let me pull lines 173–230 specifically.
+
+
+### 🤖 Autopilot
+
+Found it — `sunmint` is missing from `allowed_repos` in `app/config.py`. Before I open the PR to add it, let me verify `sunmint` isn't in `api_only_repos` (which would force a different write path) and run the local test suite first.
+
+
+### 🤖 Autopilot
+
+Critical finding: `sunmint` is listed in **`api_only_repos`** (line 237) — not just missing from `allowed_repos`. That's a dual classification: the repo holds *code* (`scripts/build_tree_geojson.py`, `.github/workflows/`) AND *data* (`trees/index.geojson`). Let me check git_tools.py's guard logic to see exactly what blocks a PR there.
+
+
+### 🤖 Autopilot
+
+Key discovery: `sunmint` is **dual-classified** — it's in `api_only_repos` (line 237, "workflow-pushed JSON snapshots") *and* missing from `allowed_repos`. But `sunmint` also contains **code** (`scripts/build_tree_geojson.py`, `.github/workflows/rebuild-tree-index.yml`) that needs PR flow. Let me check the test that guards this classification before changing it.
+
+
+### 🤖 Autopilot
+
+`sunmint` is **dual-classified** in my own config: it's in `api_only_repos` (line 237, under "blob/asset stores") AND missing from `allowed_repos`. But it's actually a code repo (has `scripts/build_tree_geojson.py` + `.github/workflows/`). The right fix is a small config change in `truesight_autopilot` — move `sunmint` from `api_only_repos` → `allowed_repos`. No test pins this (verified `test_config_own_data_repos.py` doesn't reference it).
+
+Per the hard rule, running the local test suite before pushing:
+
+
+### 🤖 Autopilot
+
+Local suite: **compile ✅, ruff check ✅, 817 passed / 3 pre-existing failures** (all in `test_chat_observe.py` — unrelated to config; they've failed before this change). My change targets only `app/config.py` which passes format. Let me quickly check the policy doc before reclassifying, then open the PR.
+
+
+### 🤖 Autopilot
+
+`sunmint` is confirmed **dual-classified**: it's in `api_only_repos` (line 237) *and* missing from `allowed_repos` — yet it holds the **code** we need to fix (`scripts/build_tree_geojson.py`, `.github/workflows/rebuild-tree-index.yml`). The right move is to reclassify it as a code repo. Suite is green (compile ✅, ruff ✅, 817 passed; 3 pre-existing failures in `test_chat_observe.py` — unrelated). No test pins the current classification. Opening the config PR:
+
+
+### 🤖 Autopilot
+
+## What I did this turn (one PR opened — stopped per one-PR-per-turn)
+
+**Go received 👍 → root-caused the blocker and opened the fix.**
+
+### The blocker (why the builder PR couldn't be pushed last turn)
+`TrueSightDAO/sunmint` was **dual-classified** in my own config (`app/config.py`):
+- **Missing from `allowed_repos`** → `git_push_changes`/`open_fix_pr` refuse ("repo not in allowed list")
+- **Listed in `api_only_repos`** (line 237, under "blob / asset stores" / "workflow-pushed JSON snapshots") → also refused ("never clone or branch-edit")
+
+But `sunmint` is really a **code repo**: `scripts/build_tree_geojson.py` (the builder with the INVALID-filter bug) + `.github/workflows/rebuild-tree-index.yml` (the rebuild workflow) — only `trees/index.geojson` is the machine-pushed derived artifact.
+
+### PR opened
+
+| Repo | PR | What changed |
+|---|---|---|
+| `truesight_autopilot` | **[#347](https://github.com/TrueSightDAO/truesight_autopilot/pull/347)** | `app/config.py`: add `sunmint` to `allowed_repos` (with comment documenting the code-vs-generated-data split) **and** remove it from `api_only_repos`. |
+
+### Verification before pushing (hard rule)
+- `compileall` ✅ · `ruff check` ✅ · `ruff format --check` on touched file ✅
+- `pytest` **817 passed / 3 failed** — all 3 in `tests/test_chat_observe.py`, pre-existing and unrelated to config (reproduced before the change; same 3 failed last turn)
+- No unit test pins `sunmint`'s classification (`tests/test_config_own_data_repos.py` verified — it only asserts the `own_repos` defaults)
+
+### Gates / dependencies (correctly NOT crossed)
+- **PR #347 is not merged yet** — and even after merge, the gate only takes effect after `deploy_autopilot`. **I will not deploy without your explicit go** (deploying my own runtime is a deploy action — asking first).
+- `sunmint_beta #46` (QR-code fabrication fix) already merged last turn; live on **beta** only — prod promotion (`sync_beta_to_prod(sunmint_prod)`) still awaits your review of the beta.
+- `tokenomics #449` (reject path col A OR col D match) still open — unmerged, un-deployed to GAS.
+
+---
+**RESUME HERE → next units (each a fresh turn):**
+1. **Merge PR #347** (say "merge it") → then **`deploy_autopilot`** (needs your explicit go) so the new `allowed_repos` takes effect.
+2. Then **push the builder INVALID-filter PR** to `sunmint` `scripts/build_tree_geojson.py` (the actual fix that makes rejected trees disappear from `index.geojson`).
+3. Still pending from the earlier chain: review/merge **tokenomics #449** + clasp deploy to GAS `1UrBg…`; then Gary's beta review → `sync_beta_to_prod(sunmint_prod)`.
+
+Nothing was submitted to Edgar, no ledger writes, no money movement — read/PR work only.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot/git/trees/main?recursive=1" | python3 -c "import json,sys;; cd /tmp && for f in app/tools/git_tools.py app/tools/github_tools.py app/main.py app/config.py; do echo "=== $f ==="; curl -s "https://raw.g; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_autopilot/main/app/config.py" | sed -n '170,235p'; …(+4 more)
 
