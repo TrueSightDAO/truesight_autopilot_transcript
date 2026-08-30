@@ -409,31 +409,37 @@ The Grok key lives in a specific env location. Let me find it.
 ### 🤖 Autopilot
 
 The key is in `/opt/truesight_autopilot/.env`. Let me load it and run the vision analysis on the frames.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Frames analyzed — the video is a walk through the cacao forest examining pods on trees (all farm-evidence, Facility A). Let me check the remaining frames and find where `allowed_repos` is configured.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The frame analysis came back empty (probably an API hiccup), and `allowed_repos` is defined in a settings module. Let me find where.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `allowed_repos` lives in `app/config.py`. Let me check it and see if fda_fsvp is listed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the full `allowed_repos` list and the repo-org overrides to understand how fda_fsvp should be added.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Frames are analyzed — the video is a walk through the cacao forest (pods on trees, Facility A evidence). The second batch returned empty (API hiccup) — let me retry it and confirm fda_fsvp's org so I can plan the write path.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -441,6 +447,7 @@ Frames are analyzed — the video is a walk through the cacao forest (pods on tr
 Frames fully analyzed — the video is a **cacao forest walk** (man inspecting pods on tree trunks) = **Facility A (farm) evidence**, confirmed "Excellent FDA FSVP evidence" by vision analysis.
 
 Key finding: `fda_fsvp` is under **TrueSightDAO org** (`github.com/TrueSightDAO/fda_fsvp.git`) but is **missing from `app/config.py` `allowed_repos`** — that's the write gate that blocked the PDF upload. The fix is a config change to truesight_autopilot (enabling change for the approved plan). Let me run the local test suite first (hard rule before any push) and check for env overrides.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -448,11 +455,13 @@ Key finding: `fda_fsvp` is under **TrueSightDAO org** (`github.com/TrueSightDAO/
 Tests: 4 failures — all in `test_chat_observe.py` and `test_vault.py`, **pre-existing** (I've made no edits yet; neither file touches config). The compile/lint/format gates pass. My change is a single line in `config.py` — unrelated to those failures, so I'm clear to push.
 
 Now the fix: add `fda_fsvp` to `allowed_repos` in truesight_autopilot's config.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR opened. Now let me analyze the remaining frames batch-2 that came back with a generic summary, and update the PDF with the best video frames. First, let me get a fuller vision description of batch 2 and select the best frames.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -503,6 +512,7 @@ The analysis pipeline that just worked is exactly what a future runbook should c
 ### 🤖 Autopilot
 
 👍 Go signal received. Executing the plan: merge #352, then update the PDF with video frames, deploy the config, and file the FSVP records. Starting with the merge and local prep in parallel.
+[2 tool result(s) compacted: merge_pr, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -563,11 +573,13 @@ The analysis pipeline that just worked is exactly what a future runbook should c
 ### 🤖 Autopilot
 
 👍 Go signal received. Resuming the plan: deploy the config change → regenerate the PDF with video frames → PR into fda_fsvp. First let me check how the deploy works and whether the running process picks up config without a restart.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The running service loads `settings = Settings()` at import time — so it has the old config. I need to deploy to pick up merged #352. The `deploy_autopilot` tool handles this (pull + restart).
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -681,4 +693,58 @@ Both commits verified on the branch — the PDF (2.8 MB, `477b22d`) and the enti
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /opt/truesight_autopilot && grep -rn "def deploy\|deploy_autopilot" app/ --include="*.py" | grep -v __pycache__ | head -10; echo "=== how; cd /opt/truesight_autopilot && echo "=== local HEAD ===" && git log --oneline -1 && echo "=== fda_fsvp in working config.py? ===" && grep -n; sudo systemctl restart truesight-autopilot.service && sleep 4 && systemctl is-active truesight-autopilot.service && echo "=== verify config ; …(+7 more)
 • `deploy autopilot` → Already on the latest commit 1ce140fe — no deploy needed. Did NOT restart. Do not retry.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⚙️ ssh run …
+
+
+### 🤖 Autopilot
+
+👍 Go signal received — merging both PRs to close out this unit.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — both PRs merged
+
+### `fda_fsvp#9` merged — Santa Anna Fazenda site-visit record is officially filed
+- `suppliers/cepotx/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf` (2.8 MB, 7 pages, 6 embedded images: 3 still photos + 3 video frames from `walk in the forest.MOV`)
+- `suppliers/cepotx/entity.json` — `source_farms` now includes **Santa Anna Fazenda (Pará)**, PDF added to `source_documents`
+- Merge sha: `0479104`
+
+### `agentic_ai_context#843` merged — video evidence process is now a permanent runbook
+- New `fsvp/VIDEO_EVIDENCE_PROCESS.md` — the validated pipeline: ffprobe → ffmpeg @4fps frames → Grok vision batch analysis (`fsVP_evidence` flagging) → representative frame selection → reportlab embed → file; plus gotchas (MOV may not land in attachments, Grok throttling, no GPS EXIF)
+- `fsvp/README.md` — video evidence linked from category #1 and the farm quick-path
+- Merge sha: `99a5f02`
+
+**Full deliverable now live:**
+| Repo | What | Status |
+|---|---|---|
+| `fda_fsvp` | Santa Anna site-visit PDF + entity.json | ✅ merged |
+| `agentic_ai_context` | `fsvp/` folder: README (13-category taxonomy), SITE_VISIT, SUPPLIER_ONBOARDING, SHIPMENT_DOCUMENTATION, RECURRING_VERIFICATION, VIDEO_EVIDENCE | ✅ merged (all 6 files) |
+
+The FDA FSVP documentation system is now fully documented as processes, and the first video-evidence-backed site visit is filed.
+
+## RESUME HERE → next unit (optional, no rush)
+1. **Finalize placeholders** — the PDF currently shows `[DATE OF VISIT]`, `[TBD]` site code, and `[LATITUDE/LONGITUDE — to confirm]`. If you give me the actual visit date, site code, and Santa Anna's coordinates + Google Map links (Facilities A/B/C), I'll regenerate the PDF and update the filed record.
+2. **Optional: [CONTRIBUTION EVENT]** via `submit_contribution` to log this site-visit documentation work on the DAO ledger (or skip — say the word).
+3. If you later visit more farms, the `fsvp/` runbooks now cover the whole flow end-to-end — just send the photos/video and say "file a site visit."
+
+—
+**✅ Done this turn — actions taken:**
+• `merge_pr` → ✅ PR #9 on fda_fsvp merged (sha `0479104`)
+• `merge_pr` → ✅ PR #843 on agentic_ai_context merged (sha `99a5f02`)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #9 on fda_fsvp merged successfully (sha: 0479104a212204b8191bcfd7be7f96378d8718da). Pull Request successfully merged; ✅ PR #843 on agentic_ai_context merged successfully (sha: 99a5f02ddd5d2d6f1b1232fcc54485374c7cabe4). Pull Request successfully merged
 
