@@ -3167,11 +3167,13 @@ Let me ground this in the actual SunMint plan so the PDF reflects the real state
 ### 🤖 Autopilot
 
 Building the bilingual field-week PDF now — practical, printable, with everything the farmers need to follow.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF built. Sending it into this thread now:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3207,6 +3209,7 @@ Say the word and I'll extend it.
 ### 🤖 Autopilot
 
 Fair point — reframing that line. The goal is farmer self-sufficiency, not travel logistics for you. Regenerating the PDF with the corrected wording:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3345,4 +3348,116 @@ The chain doesn't change how anyone works — the flow is **DApp/Edgar → Sheet
 So your instinct is right — this is exactly the "provenance timeline" TrueChain was built for, and SunMint just adds one new registry to the existing pattern. The one honest caveat: **the credit-issuance leg depends on the measurement pipeline being real** (the DBH-from-photo analysis we still need to wire). Once that's flowing, the tree-anchored transaction chain follows the exact cacao-bag blueprint.
 
 Want me to sketch the concrete registry/transaction schema for the SunMint carbon flow (issue → sell → payout per tree) as a doc or a PR to TrueChain?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Can we make sure to update the PDF as well as some mint white paper on TrueSideMe website? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me find what exists on the TrueSight.me site and whether there's already a SunMint whitepaper page before I update anything:
+
+
+### 🤖 Autopilot
+
+No existing SunMint whitepaper found. Let me check what's on the TrueSight.me site structure — which repo hosts it and what content exists:
+
+
+### 🤖 Autopilot
+
+There's already a whitepaper section on the site (`agroverse/whitepaper/`) — let me see what's actually there before updating anything:
+
+
+### 🤖 Autopilot
+
+There's already a **`sunmint/whitepaper/index.html`** on the site. Let me see what it currently contains before updating:
+
+
+### 🤖 Autopilot
+
+There's already a **SunMint Whitepaper** live at `truesight.me/sunmint/whitepaper/`. Let me read its full content to see what needs updating with the carbon-credit/TrueChain flow:
+
+
+### 🤖 Autopilot
+
+Let me read the rest — particularly the traceability/MRV sections and whether the tree-anchored carbon-credit transaction flow (TrueChain) is covered:
+
+
+### 🤖 Autopilot
+
+The whitepaper is comprehensive but **missing exactly what you just described** — the tree-anchored carbon credit transaction lifecycle (issue → sell → money to tree → payout to farmer, all on-chain). Let me find the insertion point in the HTML (end of section 12 + the "On this page" nav list):
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The whitepaper's section 7 mentions on-chain verification generally, but **doesn't have a dedicated section on the tree-anchored carbon-credit transaction lifecycle** (issue → sale → proceeds to tree → farmer payout, all recorded on-chain with the tree as anchor) — exactly what you described. I'll add that as a new section with a TOC entry. This is truesight_me_beta (beta-first for the site, like the other apps).
+
+Let me get the exact HTML around section 12's end (line 275-290) to place the new section cleanly:
+
+
+### 🤖 Autopilot
+
+This is a two-part task: (1) add the on-chain carbon credit lifecycle (the tree-anchored transaction flow you described) to the **SunMint Whitepaper** on truesight.me, and (2) update the **field PDF** with the same loop so farmers see how measurement → credits → payment works. Starting with the whitepaper — building the new section locally against the current file:
+
+
+### 🤖 Autopilot
+
+Wait — I need to check for a Python escaping issue (`\\u2014` in the heredoc may have written literal backslash sequences instead of real em-dashes). Verifying and fixing:
+
+
+### 🤖 Autopilot
+
+Good — the em-dashes were already real (the heredoc interpreted them correctly; 31 em-dashes, 0 literal escapes). The section is correctly formatted. Let me verify the final section renders properly, then push as a PR (truesight_me_beta, beta-first flow):
+
+
+### 🤖 Autopilot
+
+The section header is in the TOC. Let me verify the section body content renders (search for the specific section body text):
+
+
+### 🤖 Autopilot
+
+The new **Section 13 — On-Chain Carbon Credit Lifecycle** renders correctly with the full tree-anchored transaction flow. Now pushing the whitepaper update as a PR to truesight_me_beta (beta-first for the site):
+
+
+### 🤖 Autopilot
+
+The writes payload carried the placeholder again — pushing the real patched file to the branch:
+
+
+### 🤖 Autopilot
+
+Real content is now on the branch. Verifying the PR diff is clean:
+
+
+### 🤖 Autopilot
+
+**PR [truesight_me_beta#318](https://github.com/TrueSightDAO/truesight_me_beta/pull/318)** is clean: **+16/−0, 1 file**, section 13 present on the branch. Now the second part — updating the field PDF with the same on-chain credit lifecycle. Generating the updated PDF:
+
+
+### 🤖 Autopilot
+
+Both updates are done. Here's the summary:
+
+## ✅ Whitepaper updated (PR open) + PDF updated (sent)
+
+**1. SunMint Whitepaper on truesight.me — [PR truesight_me_beta#318](https://github.com/TrueSightDAO/truesight_me_beta/pull/318)** (+16/−0, 1 file)
+Added **Section 13 — On-Chain Carbon Credit Lifecycle (the Tree as Transaction Anchor)** to `sunmint/whitepaper/index.html`, covering exactly the flow you described:
+1. **Credit issuance** — credit born attached to a specific tree (measurement → DBH → biomass → CO₂e)
+2. **Credit sale** — a sales transaction tied to the tree (same pattern as cacao bag sales receipts)
+3. **Proceeds return to the tree** — booked to the tree's carbon account
+4. **Farmer payout** — payout transaction to the farmer, fully auditable
+
+Plus the per-tree provenance timeline (**planted → measured → credit issued → credit sold → farmer paid**) and an honest note that credit issuance depends on the measurement pipeline. Per beta-first flow, it's a **reviewed PR** — the site stays as-is until you merge (then promote to truesight_me_prod if you approve).
+
+**2. Field PDF updated (sent into this thread — v5)**
+Added a new section **"How Your Measurement Becomes a Carbon Credit / Como Sua Medição Vira um Crédito de Carbono"** in PT/EN — the same four-step lifecycle in farmer language (measured → issued to *your* tree → sold → paid to you), so everyone in Altamira sees that their measurement is the first link in the chain that pays them.
+
+**Want me to merge the whitepaper PR** (your go), or review it on beta first at `truesight.me/sunmint/whitepaper/`?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cd /tmp && TS=$(date +%s) && echo "=== truesight_me_beta repo tree (top) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/truesigh; cd /tmp && TS=$(date +%s) && echo "=== assets/whitepaper tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/g; cd /tmp && TS=$(date +%s) && echo "=== sunmint/whitepaper/index.html ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesig; …(+9 more)
 
