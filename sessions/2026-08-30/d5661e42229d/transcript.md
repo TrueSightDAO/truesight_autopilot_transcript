@@ -647,21 +647,35 @@ The manifest confirms the SUNMINT_TREE_QR_LINKING plan is active. Now let me fin
 ### 🤖 Autopilot
 
 Let me find where `allowed_repos` is actually defined in the autopilot code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The read truncated before the actual `allowed_repos` list. Let me pull lines 173–230 specifically.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `sunmint` is missing from `allowed_repos` in `app/config.py`. Before I open the PR to add it, let me verify `sunmint` isn't in `api_only_repos` (which would force a different write path) and run the local test suite first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Critical finding: `sunmint` is listed in **`api_only_repos`** (line 237) — not just missing from `allowed_repos`. That's a dual classification: the repo holds *code* (`scripts/build_tree_geojson.py`, `.github/workflows/`) AND *data* (`trees/index.geojson`). Let me check git_tools.py's guard logic to see exactly what blocks a PR there.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -885,4 +899,71 @@ No ledger writes, no Edgar submissions, no money movement this turn.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/build_tree_geojson.py" -o build_tree_geojson.py && e; cd /tmp && sed -n '120,200p' build_tree_geojson.py; echo "=== total lines: $(wc -l < build_tree_geojson.py) ==="; cd /tmp && python3 - <<'EOF' src = open('build_tree_geojson.py').read() old = ''' lat = cell(row, c_lat) lng = cell(row, c_lng) def to_float
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (one PR opened — stopped per one-PR-per-turn)
+
+**Governor correction acknowledged and actioned.** You're right: `sunmint` is a **data repo** — we interface via the **PAT Conten
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **merge #348** (the revert restoring `sunmint` to api-only). Verifying it's mergeable, then merging.
+
+
+### 🤖 Autopilot
+
+PR #348 is mergeable. Merging the revert:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**Go received 👍 → merged the revert that restores `sunmint` to API-only.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `truesight_autopilot` | **[#348](https://github.com/TrueSightDAO/truesight_autopilot/pull/348)** | ✅ **MERGED** (sha `2f42b06`) |
+
+**What changed:** `app/config.py` — removed `sunmint` from `allowed_repos`, restored it in `api_only_repos` (blob/asset stores). This fully reverses #347 and brings the repo config back to the pre-reclassification state, matching your direction: **`sunmint` is a data repo; interface only via PAT Contents API, never clone/PR.**
+
+**Pre-merge check:** `mergeable: True`, base `main`, correct title/head confirmed before merging.
+
+### Where things now stand (full chain)
+
+| Item | State |
+|---|---|
+| Builder fix (skip INVALID rows) → `sunmint` via Contents API | ✅ delivered (`b9545d8`) |
+| Config revert #348 | ✅ merged (`2f42b06`) |
+| `sunmint_beta #46` (QR-code fabrication fix) | ✅ merged — beta only; prod pending Gary's review |
+| `tokenomics #449` (reject path col A OR col D) | 🟡 open, unmerged, un-deployed to GAS |
+| `deploy_autopilot` | ⏸ not run — config revert isn't live at runtime until deployed (and per your correction the *original* #347 was never deployed, so runtime behavior never changed) |
+
+**No runtime deploy happened; no ledger writes; no Edgar submissions; no money movement.**
+
+---
+**RESUME HERE → next units (each a fresh turn):**
+1. **`deploy_autopilot`** — only if you want the config state live (functionally a no-op for behavior, since runtime never changed; your 👍 go covers it if you want it clean).
+2. **`tokenomics #449`** — merge it (it's the missing piece that lets a monitor-page reject actually find its sheet row and mark it `INVALID`), then clasp-deploy to GAS `1UrBg…` with your explicit go.
+3. **End-to-end repro**: mark `Edgar_20260819134722_487` invalid → GAS marks row INVALID → trigger `tree-index-rebuild` → builder (now with the INVALID-skip) drops it from `index.geojson` → tree stops reappearing. Then Gary reviews beta → `sync_beta_to_prod(sunmint_prod)`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 → verified PR #348 mergeable/state/base before merging
+• `merge pr` → ✅ PR #348 on truesight_autopilot merged (sha: 2f42b064da448a47e5ea7e2b01e85c86379e2590)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot/pulls/348" | python3 -c "import json,sys; d=json.load(sys.
+• `merge pr` → ✅ PR #348 on truesight_autopilot merged successfully (sha: 2f42b064da448a47e5ea7e2b01e85c86379e2590). Pull Request successfully merged
 
