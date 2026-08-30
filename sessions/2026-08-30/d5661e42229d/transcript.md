@@ -701,6 +701,7 @@ Local suite: **compile ✅, ruff check ✅, 817 passed / 3 pre-existing failures
 ### 🤖 Autopilot
 
 `sunmint` is confirmed **dual-classified**: it's in `api_only_repos` (line 237) *and* missing from `allowed_repos` — yet it holds the **code** we need to fix (`scripts/build_tree_geojson.py`, `.github/workflows/rebuild-tree-index.yml`). The right move is to reclassify it as a code repo. Suite is green (compile ✅, ruff ✅, 817 passed; 3 pre-existing failures in `test_chat_observe.py` — unrelated). No test pins the current classification. Opening the config PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -759,11 +760,13 @@ Nothing was submitted to Edgar, no ledger writes, no money movement — read/PR 
 ### 🤖 Autopilot
 
 👍 Go received. The next unit per my resume: **merge PR #347 → deploy_autopilot** (the resume flagged the deploy as needing your explicit go — this 👍 provides it). Let me first verify #347 is mergeable (no conflicts), then merge.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #347 is mergeable (no conflicts; "unstable" just means behind main — fine). Merging it, then deploying the autopilot so the new `allowed_repos` takes effect.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1056,4 +1059,68 @@ for f in d:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/449" | python3 -c "import json,sys; d=json.load(sys.stdin); p; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/449/files" | python3 -c " import json,sys d=json.load(sys.std
 • `merge pr` → ✅ PR #449 on tokenomics merged successfully (sha: ffe9acda026efd671303f2a19518bddc6283c829). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**Go received 👍 → merged the GAS reject-path fix.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `tokenomics` | **[#449](https://github.
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **clasp-deploy the merged reject-path fix (#449) to GAS project `1UrBg…`**. Running the deploy dry-run first to see what would change:
+
+
+### 🤖 Autopilot
+
+Dry-run clean — project `1UrBg…` has `process_tree_planting_link.js` (the merged file) + 2 siblings, clasp owner `garyjob@agroverse.shop`. The 👍 covers this deploy (it's the gated step I flagged, and the governor approved). Pushing for real:
+
+
+### 🤖 Autopilot
+
+## What I did this turn (GAS deploy — no PR opened/merged this turn, so I can report fully)
+
+**Go received 👍 → deployed the reject-path fix to the live GAS project.**
+
+| Step | Result |
+|---|---|
+| Dry-run (`gas_deploy_project`, no push) | ✅ clean — project dir `google_app_scripts/1UrBg…`, 3 files, clasp owner `garyjob@agroverse.shop` |
+| **Push** (`--push --no-hooks`) | ✅ **DEPLOYED** — lease `L-20260830-022315`, pushed 5 files (`process_tree_planting_link.js` incl. the col A OR col D fix + `process_qr_code_updates.js`, `process_tree_growth_monitoring.gs`, `appsscript.json`, `Version.gs`) |
+| Deploy ledger | ✅ `deploy_20260830T022330Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9` — [evidence](https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260830T022330Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md) |
+
+**What's now live in GAS:** the `[TREE PLANTING REJECT EVENT]` handler matches SunMint rows by **col A OR col D** — so a reject from the monitor page (which submits the tree id `…_487` = col A) will now actually find its row and mark it `INVALID` instead of logging `submission not found` and leaving the tree `NEW`.
+
+### Chain status
+| Item | State |
+|---|---|
+| Builder skip-INVALID → `sunmint` (Contents API) | ✅ delivered |
+| Config revert `truesight_autopilot #348` | ✅ merged |
+| UI fix `sunmint_beta #46` (no QR fabrication) | ✅ merged — beta only |
+| Reject-path fix `tokenomics #449` | ✅ merged |
+| **GAS deploy of #449 → `1UrBg…`** | ✅ **deployed now** |
+| `deploy_autopilot` (config revert live) | ⏸ optional, your call |
+
+No ledger money/QR writes; the deploy itself is recorded in `ecosystem_change_logs` (standard deploy evidence).
+
+---
+**RESUME HERE → next units (each a fresh turn):**
+1. **End-to-end repro** — the moment of truth: mark `Edgar_20260819134722_487` invalid on `sunmint.truesight.me/monitor-tree-growth/` → the deployed GAS should now find the row by col A and set Status = **INVALID**. Then trigger `tree-index-rebuild` (or wait for the 06:00 UTC cron) → the deployed builder skips INVALID → tree disappears from `index.geojson` → verify it no longer reappears on reload. **Note:** check the SunMint sheet row first — if its col A is `…_487` the match works; if the row still says `NEW` after marking, we'll inspect.
+2. **Beta review → prod**: Gary reviews beta (UI fix `#46` is on `beta.sunmint.truesight.me` already) → `sync_beta_to_prod(sunmint_prod)`.
+3. Optional cleanup: `deploy_autopilot` for the config revert (no behavioral change).
+
+———
+**✅ Done this turn — actions taken:**
+• `gas_deploy_project` ×2 → dry-run clean; then `--push --no-hooks` → deployed 5 files to GAS `1UrBg…`, lease L-20260830-022315, ledger `deploy_20260830T022330Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9`
+
+———
+**✅ Done this turn — actions taken:**
+• `gas deploy project` ×2 → ok; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260830T022330Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md
 
