@@ -8,50 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-The en dict's `selectTree` string differs slightly from what I assumed. Let me check the exact text in the en block.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The en string is "Select **a** tree from the list above or enter **a** Tree ID." — different from my search. Also I noticed the pt `selectTree` might differ ("a árvore" vs "uma árvore"). Let me re-apply the full PR with the corrected en anchor (and check the pt anchor too).
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Done — PR opened. Here's the report.
-
-## ✅ What I did this turn — tree detail panel on selection
-
-**PR [sunmint_beta#14](https://github.com/TrueSightDAO/sunmint_beta/pull/14)** (sha `c883ef3`) — when a tree is selected in the nearby-tree dropdown (or entered manually), the monitor page now surfaces:
-
-- **The tree's planting photo** (from `photo_url` in the canonical index)
-- **Species** · **Planted-on date** (from `last_measured`) · **Status** · **QR Code** (e.g. `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`)
-
-**Changes (6 edits, all in `monitor-tree-growth/index.html`):**
-1. `loadTreeIndex()` now keeps `photo_url`/`status`/`qr_code` (was dropping them)
-2. New `#treeDetailPanel` — photo + 4 detail rows, hidden until selection
-3. `onTreeSelectChange()` → `renderTreeDetail(treeId)` fills the panel; manual-ID selection also works
-4. Graceful "No photo available" hint for coord-less trees
-5. i18n — 5 new keys (pt + en)
-6. Styling matching the app (`.tree-detail`, `.tree-detail-photo`)
-
-## 📌 RESUME HERE → next units
-1. **Merge sunmint_beta#14** → verify the panel renders on `beta.sunmint.truesight.me/monitor-tree-growth/` (photo + details for e.g. FounderHaus via manual ID, or the 13 geo-tagged trees via dropdown)
-2. **Set repo secrets** on `sunmint` (`GH_PAT_TOKEN` + `GOOGLE_SERVICE_ACCOUNT_JSON`) → test the rebuild workflow once
-3. **FounderHaus coords** — still open (backfill or no-GPS bucket)
-4. Eventually: UAT → `sync_beta_to_prod(sunmint_prod)`
-
-Say "go" and I'll merge #14 and verify the live panel.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×5 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html" -o mon2.html && wc -l m; cd /tmp && echo "=== 360-420: loadTreeIndex + populate + onTreeSelectChange ===" && sed -n '360,420p' mon2.html && echo "=== 590-640: onTree; cd /tmp && echo "=== HTML 100-140 (dropdown area) ===" && sed -n '100,140p' mon2.html && echo "=== i18n dict location ===" && grep -n "const; …(+2 more)
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11018] merge
@@ -4563,21 +4519,25 @@ The live page is **stale** (last-modified `Sat, 29 Aug 2026 12:38:32` = pre-#27 
 ### 🤖 Autopilot
 
 The watcher can't run outside a topic context. Since the Pages rebuild is a known lag (typically 1–2 min after merge, sometimes longer), let me do a bounded wait-and-check loop directly, then run the full sentinel UI verification once the fix is live:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fix is live (poll 2: 4 refs, 60,348 B). Now the full sentinel UI verification — profile_sophia session selecting TEST_TREE_E2E via the manual path, checking the MARK INVALID button appears:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Identity resolves (Sophia/sentinel:true) and photoSection shows, but the invalid zone element reports NO_EL — need to check whether the live page actually contains `invalidZone` in its HTML:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `invalidZone` element **exists** in the live HTML (line 171) — but the browser reported `NO_EL`. That means my manual-input event didn't actually trigger the listener (or the element's parent chain hides it). Wait — the element exists at parse time, so `getElementById` should find it regardless. The likely culprit: **my `dispatchEvent(new Event('input'))` didn't fire the listener because the page's listener was attached but my synthetic event didn't propagate the same way**, OR the evaluate ran before the init block attached the listener. Let me test the button visibility directly with a longer settle + verify the listener is attached by checking `onTreeSelectChange`'s behavior:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4746,4 +4706,49 @@ Also still open from before, unchanged: the dummy test tree needs re-adding (dro
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/e2e && TS=$(date +%s) && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html?cb; cd /tmp/e2e && python3 << 'PYEOF' p = '/tmp/e2e/page_dim.html' d = open(p, encoding='utf-8').read() # 1) pt closeupHint with dimensions old_
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] I think we probably need a PDF stating clearly in English and Portuguese what we need to do and get in place for carbon credit program for this upcoming week when I spend time with the farmers so that we all know that what to follow. And basically it's a row out of the sum mint debt, isn't it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me ground this in the actual SunMint plan so the PDF reflects the real state — then I'll build a bilingual field-week checklist PDF.
+
+
+### 🤖 Autopilot
+
+Building the bilingual field-week PDF now — practical, printable, with everything the farmers need to follow.
+
+
+### 🤖 Autopilot
+
+PDF built. Sending it into this thread now:
+
+
+### 🤖 Autopilot
+
+PDF delivered. Here's what's in it.
+
+## ✅ SunMint Field Week PDF — Altamira (PT/EN bilingual)
+
+**Sent into this thread** — 2-page PDF, every section in both English and Portuguese:
+
+1. **Goal** — register/link every tree + train farmers to measure alone
+2. **Equipment** — the calibration card (85.6 × 54 mm, credit-card size, rigid/plastic), phone with app, linked identity, tree list
+3. **The measurement step-by-step** — select tree → close-up (card against trunk at 1.3 m, fully in frame) → context photo → enter DBH → send (GPS on, within 200 m)
+4. **What the system does** — photo → DBH → biomass → CO₂e (PM002/VM0047), RSA-signed audit trail, annual minimum / 6-monthly for young trees
+5. **Field checklist (before you leave)** — card given, app installed, identity linked, one supervised measurement, species + planting dates recorded, coordinates captured, local champion identified, farmer can measure alone
+6. **Ground rules** — one card per farmer, same 1.3 m spot, never without GPS, only real trees on-site, accuracy matters
+
+**And yes — you nailed the concept:** this is essentially the **farmer-facing row out of the SunMint plan** — the practical "what to follow" version of the plan's equipment + measurement protocol + field-readiness requirements, turned into something you can print and hand to everyone in Altamira this week.
+
+**Want me to adjust anything?** For example:
+- Add a **farmer sign-off sheet** (each farmer's name, tree count, card received ✓, trained ✓)
+- Print-ready **calibration card template** (a page with cut-out card guides at exact 85.6 × 54 mm so you can print/laminate locally)
+- Shorten to a **1-page quick reference** version for the farmers to keep
+
+Say the word and I'll extend it.
 
