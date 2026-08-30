@@ -3939,21 +3939,25 @@ Found it — exactly as suspected. The weird character is the **superscript `ᵇ
 - **PDF:** the extraction shows the same chars mangled (`DBHI`, `COIe`) — the PDF font substitutes them badly
 
 **Fix:** replace them with universally-renderable forms — HTML `<sup>b</sup>` in the whitepaper, plain `DBH^b` / `CO2e` in the PDF. Applying both:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Whitepaper fixed (1 replacement, `DBH<sup>b</sup>`). Now pushing to the branch + fixing the PDF (CO₂e → CO2e, DBHᵇ → DBH^b):
+[2 tool result(s) compacted: upload_local_file_to_github, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Whitepaper fixed on the branch (`1b0cdf76`). Now regenerating the PDF with safe characters (CO2e, DBH^b) and sending it:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF v7 regenerated (8,715 B) with safe characters. Sending it:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3995,6 +3999,7 @@ Want me to also fix those pre-existing `\uXXXX` escapes, or merge #318/#319 for 
 ### 🤖 Autopilot
 
 Checking the handoff manifest first (per the directive), then executing: fix the pre-existing `\uXXXX` escapes in the whitepaper, then merge #318 for beta review.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4002,11 +4007,13 @@ Checking the handoff manifest first (per the directive), then executing: fix the
 Manifest checked — this thread (11018) is the live monitor-tree-growth execution thread, not a parked manifest handoff; the "go for it" resumes the whitepaper/PDF wrap-up. Executing: fix the pre-existing `\uXXXX` literal escapes in the whitepaper, then merge #318 + #319 for beta review.
 
 First, locating the literal escape sequences on the #318 branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No literal `\uXXXX` sequences found in the fetched file — my earlier "pre-existing escapes" flag was based on a stale/partial fetch (the raw-CDN lag or the pre-fix copy). Let me double-check with a different pattern in case they're single-backslash (not double) or in a different form:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4014,6 +4021,7 @@ No literal `\uXXXX` sequences found in the fetched file — my earlier "pre-exis
 Good — **zero literal `\uXXXX` escapes** in the actual branch file. My earlier flag was wrong (based on a stale/fragmented fetch). The whitepaper is clean — the only non-ASCII chars are legitimate (×, ≈, é, etc., 21 unique), and the section 12→13 flow is intact. No escape cleanup needed.
 
 Both PRs are ready. Merging #318 (whitepaper) and #319 (impact map) for beta review:
+[2 tool result(s) compacted: merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4055,6 +4063,7 @@ Say "go" to verify on beta, or to start the satellite caching pipeline.
 ### 🤖 Autopilot
 
 Quick verification of the exact CDSE registration URL + credential format so I give you the right link, not a guess:
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4115,46 +4124,55 @@ can't seem to register. Will do it later. Can we just go ahead and setup the V1 
 ### 🤖 Autopilot
 
 Setting up the V1 caching scaffold now — buildable without the key (the script degrades gracefully when CDSE creds are absent), with the registration documented as the follow-up. First, inspect the sunmint repo structure and verify the current CDSE STAC endpoint anonymously so the script targets the right API:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 STAC search returned HTTP 000 (connection failure) — let me diagnose: is it network egress, DNS, or does that endpoint require auth? Testing connectivity and the alternative endpoint:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key finding: the auth service is up (302), but `catalog.dataspace.copernicus.eu` **doesn't resolve** — that's the wrong hostname for the new STAC endpoint. Let me find the current one from the official docs:
+[1 tool result(s) compacted: web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The doc page has the exact URL but the search extraction stripped it. Let me pull the STAC documentation page directly for the precise endpoint:
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The doc page stripped the URL again (it's a JS-rendered value). Let me probe the candidate hostnames directly to find which resolves and serves STAC:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Found it: `catalogue.dataspace.copernicus.eu`** (British spelling) is the correct new STAC host — DNS OK, `/stac/` root returns 200, and the search endpoint answered **400** (not 404/000 — meaning it's live and parsed my request; 400 is likely a query-shape issue). Let me confirm the exact working search call and test the token endpoint anonymously:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Token endpoint is confirmed reachable (401 `invalid_client` = correct auth flow, just needs real creds). The STAC search returned 400 — let me see the exact error body to get the request shape right (the script needs the correct call):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The collection name `SENTINEL-2` doesn't exist on the new API — the hint says to check `/collections`. Let me list the actual collection names (critical — the script must use the right one, likely `sentinel-2-l2a` or similar):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Only 10 collections and none printed with "sentinel"/"s2" in id — let me see all 10 to find the right one:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4256,4 +4274,78 @@ The map works today with tree markers + live anonymous Sentinel tiles; the cache
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /tmp && TS=$(date +%s) && echo "=== sunmint repo tree (root) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/; cd /tmp && echo "=== 1. new STAC catalog endpoint (anonymous) ===" && curl -s -m 25 -X POST "https://catalog.dataspace.copernicus.eu/stac/se; cd /tmp && echo "=== connectivity probes ===" && for u in "https://identity.dataspace.copernicus.eu" "https://catalog.dataspace.copernicus.e; …(+12 more)
 • `merge pr` → ✅ PR #841 on agentic_ai_context merged successfully (sha: b0aa78547cb7ef3da9be4c9dfd25d0370410c51a). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Here's the turn report.
+
+## ✅ What I did this turn — satellite cache V1 scaffold (built without the API key)
+
+**Delivered to the `sunmint` repo (main, verified live via Contents API):**
+- **`scripts/c
+
+
+### 🤖 Autopilot
+
+Executing the next actionable unit — verify the merged whitepaper + impact map are live on the beta site. First, find the beta URL for truesight_me (the repo #318/#319 landed in):
+
+
+### 🤖 Autopilot
+
+Interesting — `beta.truesight.me` serves the site (200), but the repo Pages API 404s (legacy Pages setup, like sunmint_beta). Main has the map section (10 leaflet refs). Let me verify the live beta page actually serves the merged content (map + whitepaper §13.1):
+
+
+### 🤖 Autopilot
+
+Both are live on beta:
+- **Whitepaper:** §13 On-Chain Carbon Credit Lifecycle ✓, §13.1 How Carbon Is Calculated ✓, the `DBH<sup>b</sup>` glyph fix ✓ — all served
+- **sunmint.html:** leaflet refs present (2 matches on the live page; the full 10 on main — the live page has the map section loading Leaflet, let me do a deeper check to make sure the map section itself is fully rendered)
+
+Let me verify the map section markup is complete on the live page (the section div + script), not just leaflet strings:
+
+
+### 🤖 Autopilot
+
+The live beta page is fully confirmed:
+- **sunmint.html** has the complete Live Impact Map section: the `pill` label (line 228), Leaflet CSS+JS (413-414), the map init script (416) fetching the live tree index (419-420) with a CDN fallback
+- **Whitepaper** serves §13 + §13.1 with the glyph fix
+
+Both merged PRs are live on beta. Now let me verify the map actually renders with markers by loading the page in a browser (checking for console errors + that Leaflet initializes + tree markers appear):
+
+
+### 🤖 Autopilot
+
+The impact map is **live and rendering on beta** — conclusive evidence:
+
+- **`leafletLoaded: true`** — Leaflet initialized
+- **`tileCount: 18`** — Sentinel-2 satellite tiles rendering
+- **`markerCount: 15`** — **15 tree markers on the map** (matches the ~15 indexed trees with coordinates)
+- **Zero console errors, zero pageerrors**
+
+(`hasMapDiv:false` is just my selector guessing the wrong div id — the `.leaflet-*` elements prove the map works regardless.)
+
+## ✅ What I did this turn — beta verification of both merged PRs
+
+**1. Whitepaper live on beta** (`beta.truesight.me/sunmint/whitepaper/`):
+- §13 On-Chain Carbon Credit Lifecycle ✓ (2 refs)
+- §13.1 How Carbon Is Calculated ✓ (formula section)
+- `DBH<sup>b</sup>` glyph fix ✓
+
+**2. Impact map live on beta** (`beta.truesight.me/sunmint.html`):
+- Live Impact Map section fully served (Leaflet CSS/JS + init script fetching the tree index with CDN fallback)
+- **Rendered in a real browser: 18 satellite tiles + 15 tree markers, zero errors** — the map works end-to-end, no API key needed
+
+## 📌 RESUME HERE → next units
+1. **Promote to `truesight_me_prod`** — after your beta review sign-off: `sync_beta_to_prod(truesight_me_prod)` for both #318 (whitepaper) + #319 (map)
+2. **Satellite cache activation** — when you complete the CDSE registration (OAuth2 client at dataspace.copernicus.eu) → I add `CDSE_CLIENT_ID`/`CDSE_CLIENT_SECRET` as sunmint repo secrets → verify collection id → run the cache → then the date-slider history view
+3. **Standing:** `sunmint_prod` `prod_repos` config line + monitor page promotion; test-row cleanup
+
+Say "go" to promote to production, or to continue with anything else you spot on beta first.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && TS=$(date +%s) && echo "=== 1. try beta subdomains for truesight_me ===" && for d in beta.truesight.me truesight-me-beta truesigh; cd /tmp && TS=$(date +%s) && echo "=== 1. LIVE beta.truesight.me/sunmint.html: map present? ===" && curl -s "https://beta.truesight.me/sunmi; cd /tmp && echo "=== live sunmint.html: map section structure ===" && grep -n "liveMap\|Live Impact Map\|leaflet\|map-container\|mapSection"; …(+1 more)
 
