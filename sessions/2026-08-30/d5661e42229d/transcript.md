@@ -827,11 +827,13 @@ Understood — you're right, and I'll correct course. `sunmint` should stay an *
 3. Stop after that PR (one-PR-per-turn)
 
 First, fetch the current builder so I can apply the INVALID-filter locally and syntax-check it before the Contents API write:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The governor is right — `sunmint` should stay an API-only data repo (PAT Contents API is the correct interface; that's exactly what `upload_file_to_github` uses). My #347 reclassification was wrong on principle. Clean part: **I never deployed**, so the runtime already treats `sunmint` as api-only — only the repo config is now out of line. Let me fetch the rest of the builder, apply the INVALID filter, and check it locally before the Contents API write.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1123,4 +1125,101 @@ No ledger money/QR writes; the deploy itself is recorded in `ecosystem_change_lo
 ———
 **✅ Done this turn — actions taken:**
 • `gas deploy project` ×2 → ok; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260830T022330Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (GAS deploy — no PR opened/merged this turn, so I can report fully)
+
+**Go received 👍 → deployed the reject-path fix to the live GAS project.**
+
+| Step | Result |
+|---|---|
+| Dr
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **end-to-end repro** — verify the deployed reject path actually works for `Edgar_20260819134722_487`. First, pull the GAS constants (sheet IDs, tabs, columns) from the merged code so I can read the right sheets:
+
+
+### 🤖 Autopilot
+
+Now let me get the shared constants (SOURCE_SHEET_URL, tab names) and the full reject-parsing block so I can pinpoint exactly which sheets to read and what the handler expects:
+
+
+### 🤖 Autopilot
+
+Now I have the exact constants. Source spreadsheet = `1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ` (holds **both** "Telegram Chat Logs" and "SunMint Tree Planting" tabs). Let me check both: (1) is there a REJECT row in Chat Logs, and (2) what's the current status of the tree row?
+
+
+### 🤖 Autopilot
+
+The sheet output is large and truncated. Let me read the artifact to find the exact row for `Edgar_20260819134722_487`:
+
+
+### 🤖 Autopilot
+
+Found the exact row — now let me check the processor's own tracking tab ("Tree Planting Link") to see what the GAS handler actually recorded, and search the Telegram Chat Logs tail for whether the reject event ever landed:
+
+
+### 🤖 Autopilot
+
+The tracking tab is the smoking gun: **the GAS handler never processed a reject for `Edgar_20260819134722_487`** — last processed row is 11714 (2026-08-22), and no entry for this tree exists in "Tree Planting Link". The tree's SunMint row is still **NEW**. Let me check the tail of Telegram Chat Logs to confirm the reject never landed there (i.e., never reached Edgar):
+
+
+### 🤖 Autopilot
+
+The tracking tab confirms the handler processed nothing for this tree (last row 11714, dated 2026-08-22). Let me check the very tail of Telegram Chat Logs to confirm whether the reject event landed *at all* (this turn's question — "is it sent to Edgar today?"):
+
+
+### 🤖 Autopilot
+
+Let me check the actual end of the Chat Logs sheet for any REJECT EVENT row for this tree:
+
+
+### 🤖 Autopilot
+
+I'm at my tool budget for this turn — converging with findings.
+
+## End-to-end verification results (this turn)
+
+**Direct answer to "is it sent to Edgar right now today?" → NO, and here's the proof:**
+
+| Check | Evidence |
+|---|---|
+| SunMint Tree Planting row exists | ✅ Col A = `Edgar_20260819134722_487`, Col D = `Edgar_20260819134722_488`, **Status = NEW** |
+| Handler tracking tab ("Tree Planting Link") | ✅ No entry for this tree — **handler has never processed a reject/link for it** (last processed row 11714, 2026-08-22) |
+| Telegram Chat Logs tail (rows 11700–11870) | ❌ **No `[TREE PLANTING REJECT EVENT]` row for this tree anywhere** — latest rows are 2026-08-28; nothing from "today" |
+| Conclusion | The reject block posted in this thread is **just a text block, not an Edgar submission**. It never reached Edgar, so the GAS handler never saw it, the row stays `NEW`, and the tree stays in `index.geojson` → reappears on reload |
+
+## Why the tree keeps showing up — and what "never shows up again" requires
+
+For the tree to permanently disappear, **all four** must be true (currently only #2 and #3 are):
+
+1. **The reject must actually be submitted to Edgar** (as a real submission with an `Edgar_` transaction id — via the monitor page's mark-invalid button → `flushQueue()` → `/dao/submit_contribution`). A pasted text block does nothing. ❌ **Not done**
+2. **GAS must match the row and mark it INVALID** — the deployed fix (#449) matches by **col A OR col D**, so `_487` (col A) now matches. ✅ **Fixed & deployed**
+3. **The index builder must drop INVALID rows** — delivered to `sunmint` via Contents API (`b9545d8`). ✅ **Fixed**
+4. **The index must actually rebuild** — ⚠️ **GAP**: rebuild runs on the **06:00 UTC daily cron** or a `tree-index-rebuild` dispatch, and **nothing fires dispatch on a reject**. So even after a successful INVALID, the tree persists until the next cron (≤24h). This is the one remaining code gap.
+
+Plus your monitor-page complaint: the fabricated `QR Code: Edgar_...` value — fixed in `sunmint_beta #46` (emits `(unlinked)`) but that's **beta-only, not yet promoted to prod**.
+
+## What to do now (two paths)
+
+- **Immediate (today, no code):** mark the tree invalid via the monitor page button (real submission) → GAS marks INVALID → next cron (or a manual `tree-index-rebuild` dispatch) drops it from the index. Still need to wait ≤24h unless a dispatch is fired.
+- **Permanent (code gap):** small PR to `process_tree_planting_link.js` reject branch — after `setValue('INVALID')`, fire `UrlFetchApp` to trigger the `tree-index-rebuild` `repository_dispatch` so rejected trees vanish **immediately**, not at next cron.
+
+---
+**RESUME HERE → next turn:**
+1. **Open the dispatch-on-reject PR** (tokenomics GAS: reject branch fires `tree-index-rebuild` after marking INVALID) — say "go".
+2. **Re-submit the reject properly** (or via the monitor button) once that's deployed, then verify: row INVALID → index regenerated → tree gone from `index.geojson` → reload shows it gone.
+3. **Promote `sunmint_beta #46` to prod** (`sync_beta_to_prod(sunmint_prod)`) so the QR fabrication fix is live — your explicit approval required.
+
+Nothing submitted to Edgar, no ledger writes, no money movement this turn — read-only verification.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x
 
