@@ -925,11 +925,13 @@ Let me prep: check the promotion tooling (`gh` on the box for the sunmint fork s
 ### 🤖 Autopilot
 
 `gh` is authenticated and `sunmint_beta` has no open PRs. Let me check the truesight_autopilot tooling for promotion (the git_push_changes tool handles beta; promotion to prod for sunmint uses fork-sync). Let me look at how the dapp does prod promotion and whether the deploy tooling covers sunmint, then run the local test suite.
+[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the `sync_beta_to_prod` tool's allowed repos — it may not cover sunmint, so I need to know the right promotion path.
+[2 tool result(s) compacted: read_local_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -937,16 +939,19 @@ Let me check the `sync_beta_to_prod` tool's allowed repos — it may not cover s
 The `sync_beta_to_prod` tool covers only agroverse_shop/truesight_me/dapp — sunmint's promotion per its README is `gh repo sync TrueSightDAO/sunmint_prod --source TrueSightDAO/sunmint_beta` (same merge-upstream mechanism, and `gh` is authed on the box). I'll use that at promotion time, and flag adding sunmint to the tool as a follow-up.
 
 Let me look at the exact tree-index fetch in the monitor page (it uses a `cb=` cache-buster — the SW must normalize that for offline cache hits):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the rest of `loadTreeIndex` to understand its existing offline caching (it mentioned caching for offline fallback):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the TREE_INDEX_URLS definition and confirm the monitor page's existing offline caching approach:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -965,16 +970,19 @@ I have the complete picture. Sunmint's monitor page already has its own localSto
 4. Run local tests, open PR → merge → **promote to prod** (gh repo sync, per sunmint README) — you've authorized "update and deploy and then promote once done"
 
 Let me first run the local test suite (hard rule), then build the changes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Local test suite: **817 passed, 3 pre-existing failures** in `test_chat_observe.py` (untouched by this work — acceptable per the hard rule; my changes are static web assets, not Python). Now let me build the service worker and syntax-check it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SW syntax is valid and anchors are confirmed. Now pushing all three changes to `sunmint_beta`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1126,4 +1134,99 @@ Open `https://sunmint.truesight.me/` once (fresh load → SW installs), then **a
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → echo "=== sunmint_prod fork info ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_prod" | python3 -c "import json,sys; d=j; cd /tmp && echo "=== pre-sync: prod main head ===" && git ls-remote https://github.com/TrueSightDAO/sunmint_prod.git refs/heads/main && echo; cd /opt/truesight_autopilot && echo "=== settings.prod_repos ===" && python3 -c "from app.config import settings; print(settings.prod_repos); …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Deploy recorded in the ledger. **Done — the Sunmint offline update is fully live on production.** 🎉
+
+## ✅ Completed: Sunmint offline-capable pages (prod + beta)
+
+### What shipped (PR #47 → prod)
+- **`
+
+
+### 🤖 Autopilot
+
+Go-signal received — proceeding with the flagged fix: adding `sunmint_prod` to the `sync_beta_to_prod` tool enum. Let me find the tool definition first.
+
+
+### 🤖 Autopilot
+
+Found it. Let me read the `sync_beta_to_prod.py` tool to see the exact code around the enum, the description, and the sync mechanism (to make sure sunmint fits the same flow):
+
+
+### 🤖 Autopilot
+
+The fix is clear: the tool already honors `settings.prod_repos` (which includes sunmint) — only the hardcoded description and enum are missing `sunmint_prod`. Let me check the test file and context.py references so the change is complete and consistent:
+
+
+### 🤖 Autopilot
+
+I have the full picture. The minimal, correct fix: add `sunmint_prod` to the `sync_beta_to_prod` enum + description (the tool already reads `settings.prod_repos`, which contains sunmint). I'll also update `context.py`'s PRODUCTION-repos list to mention sunmint for consistency (the docstring is the operator-facing rule). Let me apply the changes via `git_push_changes` (self-improvement PR on truesight_autopilot):
+
+
+### 🤖 Autopilot
+
+The context.py edit failed because the `\u2014` escape didn't match the literal character. Let me fix the search string to use the actual em-dash character:
+
+
+### 🤖 Autopilot
+
+PR #349 opened. Before merging (per the hard rule), I must run the local test suite on the box to confirm the changes pass:
+
+
+### 🤖 Autopilot
+
+The `-k` filter deselected everything — let me run the full test suite (hard rule) on the changed files:
+
+
+### 🤖 Autopilot
+
+All checks pass: compile ✓, ruff lint ✓, format ✓, and the full suite shows **817 passed** with only the **3 pre-existing failures** in `test_chat_observe.py` (identical to before this change — untouched by my edit, confirmed earlier). Merging PR #349:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Fixed the tooling gap flagged last turn** — `sync_beta_to_prod` couldn't accept `sunmint_prod` even though `settings.prod_repos` already mapped it.
+
+**PR #349 — https://github.com/TrueSightDAO/truesight_autopilot/pull/349** (merged, sha `243b91c`)
+- **`app/tools/sync_beta_to_prod.py`**
+  - Tool description now lists `sunmint_prod` alongside the original three prod repos
+  - `prod_repo` parameter enum now includes `"sunmint_prod"`
+- **`app/context.py`** — PRODUCTION-repos note updated to include `sunmint_prod` for operator clarity
+
+No behavior change for existing repos — the tool already reads `settings.prod_repos` at runtime; this only makes the tool callable for sunmint and documents it.
+
+**Local test suite** (hard rule): compile ✓ · ruff lint ✓ · format ✓ · pytest **817 passed, 3 pre-existing failures** in `test_chat_observe.py` (identical to before this change — untouched by my edit).
+
+## RESUME HERE → next flagged item
+
+The remaining optional item from the sunmint work: **`sunmint_mobile/www/` sync** — the native wrapper's embedded web layer is an older snapshot (byte-diffs confirmed) and lacks the new service worker. Say the word and I'll bring `www/` up to date with `sunmint_beta/main` (including `service-worker.js` + the SW registration on both pages) as a PR on `sunmint_mobile`.
+
+**Also still open from earlier in this thread (awaiting your pick, non-urgent):**
+1. Sunmint whitepaper PR #292 (`truesight_me_beta`) — merge to beta, then promote to prod? It holds the carbon-registry roadmap + Apple/hyperscaler/SBTi buyer content.
+2. Optionally: add the SBTi V2.0 buyer-alignment section + Apple-engagement track to the whitepaper PDF (v4) before pushing it to a repo.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /opt/truesight_autopilot && grep -rn "sync_beta_to_prod" --include="*.py" -l | head -10 && echo "---" && grep -rn "agroverse_shop; cd /opt/truesight_autopilot && grep -n "sync_beta_to_prod\|sunmint_prod" tests/test_policy_enforcement.py | head -20 && echo "=== context.py ref ===" && sed -n; cd /opt/truesight_autopilot && git fetch origin fix/sync-beta-to-prod-sunmint -q 2>/dev/null; echo "=== compile ===" && python3 -m compileall -q; cd /opt/truesight_autopilot && echo "=== full pytest ===" && python3 -m pytest -q 2>&1 | tail -6
+• `git push changes` → https://github.com/TrueSightDAO/truesight_autopilot/pull/349 (branch fix/sync-beta-to-prod-sunmint, sha 6233daee5b)
+• `merge pr` → ✅ PR #349 on truesight_autopilot merged successfully (sha: 243b91cdc4340a1a72904681a12bc4f9c84ecbf6). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /opt/truesight_autopilot && grep -rn "sync_beta_to_prod" --include="*.py" -l | head -10 && echo "---" && grep -rn "agroverse_shop_prod.*t; cd /opt/truesight_autopilot && echo "=== test refs ===" && grep -n "sync_beta_to_prod\|sunmint_prod" tests/test_policy_enforcement.py | head; cd /opt/truesight_autopilot && git fetch origin fix/sync-beta-to-prod-sunmint -q 2>/dev/null; echo "=== compile ===" && python3 -m compileal; …(+1 more)
+• `merge pr` → ✅ PR #349 on truesight_autopilot merged successfully (sha: 243b91cdc4340a1a72904681a12bc4f9c84ecbf6). Pull Request successfully merged
 
