@@ -3097,3 +3097,72 @@ So the remaining open item isn't the identity at all — it's whether dao_protoc
 
 **RESUME HERE** — if you'd like, check those logs and paste the dispatch lines (or tell me it's not there), and I'll confirm whether the routing fired or we have a race/deploy issue on the box. I can also re-fire the @37 webhook manually to confirm row 11975 parses cleanly, which isolates "handler works" from "dispatcher fired". I won't re-register unless you explicitly direct it — I believe it would damage the ledger for zero benefit.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Converging — signature fixed (root cause found); auto-dispatch timing still unconfirmed
+
+### ✅ Root cause of the `signature_verification: error` — FOUND AND FIXED
+Comparing the successful row 11953
+
+
+### 🤖 Autopilot
+
+👍 Go received. Let me verify whether the auto-dispatch/cron has since processed my correctly-formatted row 11975 — checking the tracking tab tail and the row itself in parallel:
+
+
+### 🤖 Autopilot
+
+The tracking read was truncated mid-row (saved to artifact). The tail of that artifact will show whether rows beyond 11957 (my 22:19 submission) were processed. Let me read it:
+
+
+### 🤖 Autopilot
+
+The tracking tab still ends at **11957** (03:25:03Z) — my correctly-formatted row 11975 (`Edgar_20260830221906_015`, 22:19Z) is **still unprocessed**. No auto-dispatch observed. Let me (1) fire the @37 webhook manually to prove the handler can process the row, and (2) read `dispatch_event`'s full flow to pinpoint why the box isn't auto-firing:
+
+
+### 🤖 Autopilot
+
+The @37 webhook just processed **"0 linked, 2 rejected, 0 errors"** — it DID process rows now (including my 11975). The "2 rejected" likely = my row (487 already INVALID → correctly refused) + the earlier stub row. Let me confirm the tracking tab tail now shows my row processed:
+
+
+### 🤖 Autopilot
+
+## Converging — the correctly-formatted submission is FULLY processed; auto-dispatch still unconfirmed
+
+### ✅ The decisive positive result
+My manual @37 webhook fire just now returned **"0 linked, 2 rejected, 0 errors"** and the tracking tab now shows **my correctly-formatted row processed**:
+
+| Row | Telegram Update ID | QR Code | Message ID | Outcome | Reason | Timestamp |
+|---|---|---|---|---|---|---|
+| 11958 | `Edgar_20260830145259_007` | (unlinked) | `…_487` | REJECTED | **Signer is not a registered governor or sentinel** | 22:22:40Z |
+| **11962** | **`Edgar_20260830221906_015`** | (unlinked) | `…_487` | REJECTED | **SunMint submission status is "INVALID", expected NEW or LINKED** | 22:22:42Z |
+
+Row **11962 is my correctly-formatted submission** — and it got **past signature verification and col A matching**, correctly refused because 487 is *already* INVALID. That closes the signature-format bug completely: **correct format → signature accepted → row found by col A → correct handling.**
+
+(The 11958 row was my earlier broken-format submission — its `Signer is not a registered governor` reason confirms the old format failed at signature resolution, exactly as diagnosed.)
+
+### ⏳ The one remaining open item: dao_protocol auto-dispatch
+- My submission landed at 22:19:06Z; the tracking rows show **22:22:40/42Z — which is MY manual webhook fire, not auto-dispatch**. So the box's `dispatch_event` did **not** fire the webhook for row 11962 on its own.
+- The merged `dispatch.py` routing entry + env var are confirmed correct in code (I re-read the file: `("[TREE PLANTING REJECT EVENT]", [("TREE_PLANTING_REJECT", "processTreePlantingLinksFromTelegramChatLogs")])` is right there). 
+- So the likely causes, in order: (a) the box isn't running the **merged** `dispatch.py` (needs `git pull` + restart on the box), (b) the BackgroundTask fires **before** the sheet row append lands (race), or (c) the dispatch silently errored. All three are box-side — **you have access, I don't by design.**
+
+### Everything else is DONE
+| Item | State |
+|---|---|
+| 061 + 487 trees invalidated + removed from index | ✅ proven |
+| Signature format root cause + fix | ✅ proven (`success` + row 11962 processed) |
+| Handler col A match | ✅ proven (row 11962 found + correctly refused) |
+| `dao_protocol #150` routing + env var | ✅ merged + provisioned |
+| Auto-dispatch proof | ⏳ box-side only |
+
+---
+**RESUME HERE → next turn:**
+1. **On the dao_protocol box** (you): `cd /home/ubuntu/dao_protocol && git pull --ff-only && sudo systemctl restart truesight-dao-protocol.service` — ensure the **merged** dispatch.py is running (the governor provisioned env but the code must also be current), then submit another test reject (or wait for the next one) and check `journalctl -u truesight-dao-protocol --since "2 min ago" | grep -i dispatch` for `TREE_PLANTING_REJECT` webhook firing.
+2. If the webhook fires but GAS shows nothing new, it's the **append race** — confirm by checking whether the GAS execution log (Apps Script `Executions` page for project `1UrBg…`) shows the call and whether it saw the row.
+3. Then close out the remaining open PRs: merge+deploy `tokenomics #451` (dispatch-failure visibility), promote `sunmint_beta #46` to prod after your review.
+
+No further writes this turn; nothing destructive; no money movement.
+
