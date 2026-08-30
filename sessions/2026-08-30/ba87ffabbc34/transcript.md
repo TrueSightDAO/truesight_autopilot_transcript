@@ -3435,11 +3435,13 @@ This is a two-part task: (1) add the on-chain carbon credit lifecycle (the tree-
 ### 🤖 Autopilot
 
 Wait — I need to check for a Python escaping issue (`\\u2014` in the heredoc may have written literal backslash sequences instead of real em-dashes). Verifying and fixing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — the em-dashes were already real (the heredoc interpreted them correctly; 31 em-dashes, 0 literal escapes). The section is correctly formatted. Let me verify the final section renders properly, then push as a PR (truesight_me_beta, beta-first flow):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3616,4 +3618,100 @@ Not only is it a good idea, **it's essentially required** by the program's logic
 **V1 recommendation:** ship the map now with **anonymous WMS tiles (no key)** + our tree markers. **V1.1:** add the caching job (free CDSE account) → then the date-slider history view becomes the *differentiator* — "watch our trees grow from space" — which is both marketing gold and real audit evidence.
 
 Want me to start the V1 PR (sunmint.html + Leaflet + anonymous Sentinel-2 WMS layer + tree markers from index.geojson)?
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: I think the satellite images should probably be cached in the sunmint repo isnt it under its own subfolder... And perhaps each image should have its own dedicate lat lng file name for easy reconsitution
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] By the way Paul just asked this question regarding the PDF generated
+
+Wondering How does It measures The carbon of our trees
+
+I believe we have a formula isn't it? We should include it in the PDf document as well as the white paper and also a clean one liner that I could quickly copy and paste and share with him
+
+ thoughts?
+
+
+### 🤖 Autopilot
+
+Good instinct on both. Let me ground the formula in the actual analysis script (not ad-lib) and check what the whitepaper already has, so the one-liner is exact:
+
+
+### 🤖 Autopilot
+
+The formula is real and exact — here it is from the actual analysis script (not guessed), plus a copy-paste one-liner for Paul.
+
+## The carbon formula (exact, from `tree_growth_analysis.py`)
+
+```
+AGB  = a × DBHᵇ            (above-ground biomass, kg — species allometric, Chave et al. 2014)
+BGB  = AGB × 0.32          (below-ground / roots — IPCC root:shoot)
+C    = (AGB + BGB) × 0.47  (carbon — IPCC fraction)
+CO₂e = C × 44/12           (CO₂ equivalent — molar ratio)
+```
+Species coefficients (cacao: a=0.0673, b=2.397; brazil nut, açai, mahogany, jatobá each have their own; default = pantropical Chave). Plus 10% achievement reserve + 20% risk buffer at the project level.
+
+**Concrete example** (nice for Paul): a cacao tree at DBH 10 cm → **≈ 38 kg CO₂e**. Each measurement (photo + card) drives this chain.
+
+## Copy-paste one-liner for Paul
+> *"We measure each tree's trunk diameter from a photo with a calibration card, convert it to biomass using the standard tropical allometric equation (Chave et al. 2014), then apply IPCC factors (roots ×0.32, carbon ×0.47, CO₂ ×44/12) — so every tree has a verifiable, method-backed CO₂e number."*
+
+## On the satellite caching + the docs
+Agreed on both:
+1. **Satellite cache in the sunmint repo** — own subfolder (e.g. `satellite/<lat>_<lng>/` with scene-date in the filename) — lat/lng-keyed so reconstituting an area's history is trivial. The daily rebuild job fetches low-cloud L2A previews → repo → map layers them by date.
+2. **Formula into the PDF + whitepaper** — I'll add the formula section to the field PDF and the whitepaper now.
+
+Let me update both documents:
+
+
+### 🤖 Autopilot
+
+PDF generated with the formula section. Sending it, then updating the whitepaper with the same formula section:
+
+
+### 🤖 Autopilot
+
+Rate-limited — retrying the send after the cooldown:
+
+
+### 🤖 Autopilot
+
+Still rate-limited — trying once more:
+
+
+### 🤖 Autopilot
+
+Telegram is rate-limiting the send right now (repeated "Too Many Requests"). I'll stop retrying and hand you the state — the PDF is ready on the box and I'll push it through the moment the limit clears.
+
+## ✅ What's done this turn
+
+**1. The carbon formula — exact, from the actual analysis script (not guessed):**
+
+```
+AGB  = a × DBHᵇ        above-ground biomass (kg) — species allometric (Chave et al. 2014)
+BGB  = AGB × 0.32      roots — IPCC root:shoot ratio
+C    = (AGB + BGB) × 0.47   carbon (kg) — IPCC carbon fraction
+CO₂e = C × 44/12       CO₂ equivalent (kg) — molar ratio
+```
+
+**Copy-paste one-liner for Paul:**
+> *"We measure each tree's trunk diameter from a photo with a calibration card, convert it to biomass using the standard tropical allometric equation (Chave et al. 2014), then apply IPCC factors (roots ×0.32, carbon ×0.47, CO₂ ×44/12) — so every tree has a verifiable, method-backed CO₂e number."*
+
+**2. Field PDF (v6) built** — new section 5 "How Carbon Is Calculated / Como o Carbono É Calculado" with the formula chain, a worked example (cacao at DBH 10 cm ≈ 38 kg CO₂e), and the partner one-liner — all bilingual. **Ready at `/tmp/sunmint_field_week_altamira.pdf`** (4 pages, 10,102 B) — sending as soon as Telegram's rate limit clears.
+
+**3. Whitepaper formula section — pending.** I'll add the same formula section (§13.1 or a new §14) to the whitepaper PR next.
+
+**4. Satellite caching — agreed with your design:** `sunmint/satellite/<lat>_<lng>/` subfolder, scene-date in the filename, fetched by the daily rebuild job, layered by date on the map. I'll fold this into the impact-map V1 plan.
+
+## 📌 RESUME HERE
+- **Next:** (a) deliver the PDF (rate limit clear), (b) add the formula section to the whitepaper PR #318, (c) start the impact-map V1 PR (sunmint.html + Leaflet + anonymous Sentinel-2 WMS + markers from index.geojson) with the satellite-cache layout as designed
+
+Say "go" and I'll push through all three.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== tree_growth_analysis.py: allometric + carbon constants ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/; cd /tmp && echo "=== exact constants + allometric table ===" && sed -n '40,66p' tga.py && echo "=== CO2_MOLAR_RATIO / CARBON_FRACTION values
 
