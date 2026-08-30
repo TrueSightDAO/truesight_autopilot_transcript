@@ -3214,6 +3214,11 @@ Fair point — reframing that line. The goal is farmer self-sufficiency, not tra
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Updated PDF sent. The change:
 
 - **Goal section** now reads: *"Train each farmer to take a correct measurement ON THEIR OWN — the farmers run it themselves"* (PT: *"Treinar cada agricultor a medir corretamente SOZINHO — os agricultores conduzem o processo"*)
@@ -3231,16 +3236,24 @@ Anything else to adjust — sign-off sheet, card template, or a 1-page quick ref
 ### 🤖 Autopilot
 
 Good idea — the farmers need the exact download link in the field. Let me verify the actual APK/download URL from the current page before baking it into the PDF (no guessing URLs):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Got the real APK URL from the page (`sunmint_mobile` release v0.3.0). Let me verify it resolves before putting it in the PDF:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 APK URL verified (HTTP 200). Adding a clear "Download the app" section to the PDF with the verified links:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3272,6 +3285,12 @@ Note on your "depth URL" — I used the **monitor-tree-growth page** as the mobi
 ### 🤖 Autopilot
 
 Simplifying — removing the mobile-website option, keeping just the Android APK link. Regenerating:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3318,11 +3337,13 @@ And a strategic note: the satellite hooks in *after* the ground layer is flowing
 ### 🤖 Autopilot
 
 You've just described exactly the TrueChain design. Let me ground it in the actual architecture doc so I map it correctly rather than ad-lib:
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the scenario mapping section — that's where tree↔transaction flows are laid out:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3358,21 +3379,25 @@ Want me to sketch the concrete registry/transaction schema for the SunMint carbo
 ### 🤖 Autopilot
 
 Let me find what exists on the TrueSight.me site and whether there's already a SunMint whitepaper page before I update anything:
+[3 tool result(s) compacted: search_code, search_code, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No existing SunMint whitepaper found. Let me check what's on the TrueSight.me site structure — which repo hosts it and what content exists:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's already a whitepaper section on the site (`agroverse/whitepaper/`) — let me see what's actually there before updating anything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's already a **`sunmint/whitepaper/index.html`** on the site. Let me see what it currently contains before updating:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3460,4 +3485,53 @@ Added a new section **"How Your Measurement Becomes a Carbon Credit / Como Sua M
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /tmp && TS=$(date +%s) && echo "=== truesight_me_beta repo tree (top) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/truesigh; cd /tmp && TS=$(date +%s) && echo "=== assets/whitepaper tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/g; cd /tmp && TS=$(date +%s) && echo "=== sunmint/whitepaper/index.html ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesig; …(+9 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Do you think we should embed the satellite imaging on this page?
+
+https://truesight.me/sunmint.html
+
+Or somewhere else thoughts?? 
+
+Also perhaps as a next step what should be the initial implementation
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018]
+
+
+### 🤖 Autopilot
+
+Let me look at the current sunmint.html first so my recommendation is grounded in what's actually there.
+
+
+### 🤖 Autopilot
+
+Good — sunmint.html is a marketing/impact page (no map, no satellite refs). Let me look at the IMPACT REGISTRY + Highlights sections to see where a satellite map would fit best:
+
+
+### 🤖 Autopilot
+
+Good question — here's my honest take on where and how, grounded in what's actually on the page now.
+
+**Where it belongs:** yes, sunmint.html is the right home — but for a specific reason. That page is your **public trust page** (merch buyers, donors, partners). Satellite imagery there is *proof and story* — "see our trees from space" is the single most convincing transparency signal you can show a donor. The monitor page is the wrong home — it's operational, for farmers measuring individual trees, and satellite can't see trunk diameter, so it adds noise there. Long-term, build it as a **reusable "impact map" component** so the same embed can appear on sunmint.html, the monitor page, and linked from the whitepaper.
+
+**What the initial implementation should be (keep it small and honest):**
+1. **A Leaflet map** embedded in a new "Live Impact Map" section on sunmint.html (near IMPACT REGISTRY / Highlights — right where the impact story lives)
+2. **Layer 1 — our actual data:** tree/parcel markers pulled from the existing `index.geojson` we already publish — no new pipeline needed
+3. **Layer 2 — Sentinel-2 imagery** of the pilot area (true-color + a simple green-vegetation NDVI view), via the free Copernicus Data Space API the whitepaper already names — no API key cost
+4. **Honest labeling:** acquisition date + "satellite cross-check, ~5-day revisit" — never promise real-time
+5. **A "how to read it" one-liner** — green = healthy canopy — so a donor instantly gets it
+
+**What NOT to do first:** no live Sentinel Hub iframe (needs paid key), no per-tree satellite analysis (19 trees don't need it), no drone layer (whitepaper already defers it). And honestly — with 19 trees, the map is symbolic for now, but that's exactly what a marketing page needs: the *system* shown working, before scale.
+
+**After the map works:** wire it to regenerate on the same rebuild workflow that refreshes the tree index, so markers stay current automatically.
+
+Want me to build it? I'd do it beta-first — a PR on truesight_me_beta adding the map section to sunmint.html (Leaflet + markers from the live index + Sentinel-2 layer), you review it on the beta site, then promote. Say go and I'll start.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && TS=$(date +%s) && echo "=== sunmint.html: current structure ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/trues; cd /tmp && echo "=== IMPACT REGISTRY + Highlights sections ===" && grep -n "IMPACT REGISTRY\|Highlights\|impact-registry\|highlights" sunmin
 
