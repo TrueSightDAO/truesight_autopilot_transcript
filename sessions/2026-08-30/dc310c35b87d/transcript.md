@@ -1325,11 +1325,13 @@ However, the repo's **README is now factually wrong**: it still claims `www/inde
 ### 🤖 Autopilot
 
 PR #26 opened. It's a docs-only change (README), so the standard local test suite doesn't strictly apply, but let me run a quick sanity check on the edit and confirm no other stale references:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verified — the PR branch README is correct (0 stale claims remain). Merging PR #26:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1401,16 +1403,19 @@ Which would you like next?
 ### 🤖 Autopilot
 
 Good architectural critique — the enum is a second source of truth that drifts from `settings.prod_repos`. Let me look at how the tool's schema is actually built to see the right way to standardize on one source.
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 You're right — that's a genuine dual-source-of-truth smell. The runtime check uses `settings.prod_repos`, but the LLM-facing schema enum is hardcoded, so the two can drift (a repo added to settings but not the enum won't be callable; a stale enum entry gets runtime-rejected). Let me check how ToolSpec validates enums and what tests exist, then derive the enum from settings:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 You're right — and it's a legit smell. The runtime guard reads `settings.prod_repos`, but the LLM-facing schema enum is hardcoded, so the two can drift (add a prod repo to settings → tool can't be called; forget to remove from enum → runtime-rejected). The fix is to **derive the enum from `settings.prod_repos` at module load**, with a JSON-schema-friendly note that it's the live source of truth. Let me check the tests + ToolSpec shape first so I don't break the registry:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1418,16 +1423,19 @@ You're right — and it's a legit smell. The runtime guard reads `settings.prod_
 This is a great catch — and there's already a **regression test** (`tests/test_sync_beta_to_prod_tool.py`) whose docstring literally says: *"the tool's enum (and its human-facing description) must derive from `settings.prod_repos`, never be a hand-maintained duplicate."* But the code still hand-maintains the enum — the test only *catches* drift after someone forgets. The right fix is to actually **derive** both the enum and the description from `settings.prod_repos` at module load, so there's nothing to forget.
 
 Let me make the change:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #351 opened. Per the hard rule, run the local test suite before merging — this changes Python code, so all four checks matter:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The full suite shows **6 failed, 817 passed** — but earlier baseline was "3 pre-existing in test_chat_observe.py". Now there are 3 more failures in `test_events_catalog.py`. My change only touched `sync_beta_to_prod.py` — let me verify these are pre-existing on main (network-dependent tests, most likely) before merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1572,4 +1580,54 @@ Note: the beta deploy may also pick up other open truesight_me_beta PRs (282, 28
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/sunmint-wp-carbon-registry-roadmap/sunmint/whitepaper/i; cd /tmp && echo "=== all heading-like anchors ===" && grep -n 'id="[0-9]\|class="whitepaper-heading"' wp_pr.html | head -30; echo "=== secti; cd /tmp && echo "=== 10,000 ha mentions ===" && grep -n "10,000\|10000" wp_pr.html | head -20; echo "=== SBTi / Science Based ===" && grep -; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: The authoritative API content confirms everything landed on PR #292's branch: **all v4 markers present** (FLUID BY DESIGN, SBTi V2.0, member registry, Re.green, €74, 482+), and the hard ceilings are *
+
+
+### 🤖 Autopilot
+
+Go-signal received — executing the next unit: **merge PR #292 → beta live → promote to prod**. Checking the manifest per protocol, then merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merge attempt failed — stopping here per the one-PR-per-turn rule and reporting the blocker.
+
+## What happened this turn
+
+**Attempted to merge PR #292** (whitepaper v4 content) → **❌ failed: "Pull Request has merge conflicts" (HTTP 405).**
+
+The PR branch (`sunmint-wp-carbon-registry-roadmap`) has drifted from `truesight_me_beta`'s `main` — the file was created Aug 17, and other PRs/content changes have touched `sunmint/whitepaper/index.html` (or nearby files) since. The conflict is in the whitepaper file itself.
+
+Also reviewed the handoff manifest per protocol — no whitepaper plan row exists (this is a direct governor execution from this thread), so the resume pointer I set last turn is the governing sequence: **merge → beta live → promote to prod**. That sequence is now blocked on the conflict.
+
+## RESUME HERE → next unit (one unit, resolves the blocker)
+
+**Resolve the merge conflict on PR #292, then merge → beta → promote to prod:**
+
+1. Fetch `main` and the PR branch; diff `sunmint/whitepaper/index.html` to see exactly what changed on `main` since Aug 17 (likely one of the open content PRs — #282/#284–#289 or a direct main edit)
+2. Re-apply my v4 changes (fluid roadmap, trees-not-ceilings, Section 14 buyers/market) on top of current `main` — preserving any legit `main`-side changes (e.g. a nav/footer edit)
+3. Push the resolved branch → verify tags balanced + v4 markers present (as before)
+4. Merge PR #292 → confirm beta live (`beta.truesight.me/sunmint/whitepaper/`) → **promote to prod** via `sync_beta_to_prod("truesight_me_prod")` (now supported by the tool I fixed)
+
+Note: before promoting, I'll also confirm no *other* open truesight_me_beta PRs ride along in the sync (the open list includes #282, #284–289 — unrelated content — so I'll check what's on beta `main` before the promote to keep it clean).
+
+Say go and I'll resolve the conflict and complete the merge → beta → prod chain.
+
+———
+**Actions this turn:** `read_context_file` (handoff manifest — no whitepaper row, direct-execution confirmed) · `merge_pr #292` → ❌ 405 merge conflict (blocker). No PR opened or merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
 
