@@ -2531,36 +2531,43 @@ The key format must be different. Let me inspect it safely (metadata only, no se
 ### 🤖 Autopilot
 
 The key is **raw base64 DER** (no PEM armor). Let me load it as DER and submit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 HTTP 200 but `signature_verification: error` (vs `success` for the 061 test) — the submission was ingested but may fail the handler's auth gate. Let me check whether my row landed in Chat Logs and what the verifier expects:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My submission row exists (`Edgar_20260830032134_129`) — but the signature verification was `error`, unlike the 061 test's `success`. Let me check the row's content and compare with what the 061 test produced (which worked). Let me read the row:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The row is there (col A `Edgar_20260830032134_129`) but signature verification returned `error`. The difference from the successful 061 test: the 061 one used the same script... let me check what the row F (message content) contains, and compare to the working 061 row's signature handling. Let me read column F for this row and for the 061 reject row to compare:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Row 11954 has no F content — it may be an empty/placeholder row, and my actual content may be elsewhere. Let me search the tail for the reject text:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I'm burning tool rounds on diagnostics. Let me do one focused read of the last 25 rows (col A + F first line) to locate my reject content and check the status of the row:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two tool rounds left for diagnosis — let me compare the working 061 reject row (11953) vs my new one (11954) to find the format difference:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2799,4 +2806,102 @@ No deploy, no Edgar submissions, no money movement this turn.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /home/ubuntu/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v 2>/dev/null && echo "=== getGithubTo; cd /home/ubuntu/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v 2>/dev/null && echo "=== dispatch bl; cd /tmp && python3 - <<'EOF' import json, urllib.request env = {} for line in open("/opt/truesight_autopilot/.env"): line=line.strip() if '=; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+— you're unblocked. I have dao_protocol box access (you don't, by design). Added DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_REJECT=https://script.google.com/a/macros/agroverse.shop/s/AKfycbyoFCTzIdC1g69ZX3AK894h2siQOKoNSEiuyLDtZJTtarQPHHa5Zl8rjot0vPFUquV2/exec to /home/ubuntu/dao_protocol/.env (appended, existing vars untouched), restarted truesight-dao-protocol.service, and confirmed the new var is loaded in the running process's environ. Go ahead and verify/continue.
+
+
+### 🤖 Autopilot
+
+👍 Understood — governor provisioned the env var and restarted the service. Let me verify the merged routing code reads exactly that env key (naming convention), then run a live end-to-end test of the auto-dispatch.
+
+
+### 🤖 Autopilot
+
+Verified the wiring on my side:
+
+- **Routing code reads exactly the env key you set**: `ROUTING` entry `("[TREE PLANTING REJECT EVENT]", [("TREE_PLANTING_REJECT", "processTreePlantingLinksFromTelegramChatLogs")])` → `_webhook_url("TREE_PLANTING_REJECT")` → `os.environ.get("DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_REJECT")` — **matches your var name exactly** ✅
+- Sheet state: 061 = INVALID, 487 = INVALID (both already removed from index)
+
+Now the meaningful verification: **prove the auto-dispatch fires without a manual webhook**. I'll submit a fresh reject for `487` (already INVALID) — the handler will *refuse* it ("only NEW or LINKED can be invalidated") — a **non-destructive** E2E test of: Edgar intake → `dispatch_event` → GAS webhook auto-fire → outcome logged. No data changes, no rebuild needed. Submitting:
+
+
+### 🤖 Autopilot
+
+HTTP 200 — Edgar ingested it (the `signature_verification: "error"` is Edgar's intake-time check; the **GAS handler does its own verification which already passed for Sophia** — that's how 487 got INVALID'd earlier). Now the decisive question: **did dao_protocol auto-fire the webhook** (no manual call this time)? The handler should refuse the reject ("already INVALID") and record an outcome with a fresh timestamp. Checking:
+
+
+### 🤖 Autopilot
+
+The tracking tab shows rows up to 11951 — I need the tail (11951+) to see my new submission's processing. Let me read the last rows of the tracking tab and find my new Chat Logs row (the tab is likely "Telegram Chat Logs"):
+
+
+### 🤖 Autopilot
+
+The tracking tab tells a nuanced story. Rows processed at 03:25: `11954` (my 03:21 487 reject) → **"Signer is not a registered governor or sentinel"** (auth FAILED), then `11955` (03:24:36) → **"Not a valid tree"** (success — this is what actually invalidated 487), `11956/57` → refused (already INVALID). Critically: **nothing processed after 03:25** — so my submission *this* turn was NOT auto-dispatched. Let me check whether it even landed in Chat Logs, and inspect what my 03:21 row actually contains (to understand the auth failure):
+
+
+### 🤖 Autopilot
+
+My submission landed at row **11972** (`Edgar_20260830145259_007`). The tracking tab hasn't processed it yet (still ends at 11957, 03:25) — the question is whether dao_protocol's auto-dispatch fires the webhook now. Let me wait briefly, then check the tracking tail + the content of my new row:
+
+
+### 🤖 Autopilot
+
+Now let me check the tracking tab tail and the content of my new row:
+
+
+### 🤖 Autopilot
+
+## Converging — auto-dispatch verification is INCONCLUSIVE; two anomalies found
+
+### What I verified this turn
+1. **Env wiring is correct on the code side**: `dispatch.py` `ROUTING` entry `("[TREE PLANTING REJECT EVENT]", [("TREE_PLANTING_REJECT", "processTreePlantingLinksFromTelegramChatLogs")])` → `_webhook_url("TREE_PLANTING_REJECT")` → reads `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_REJECT` — **exactly the var you set** ✅
+2. **Sheet state**: 061 = INVALID, 487 = INVALID (both removed from index) ✅
+3. Submitted a fresh reject for 487 (non-destructive — already INVALID) → **HTTP 200**, landed at Chat Logs row **11972** (`Edgar_20260830145259_007`)
+
+### Anomaly A — auto-dispatch did NOT fire (yet)
+Tracking tab ("Tree Planting Link") still ends at row **11957** (03:25:03Z, from yesterday's manual @37 webhook). My new row 11972 is **unprocessed**. So either:
+- dao_protocol's `dispatch_event` didn't fire the webhook for my submission, **or**
+- it fired but the GAS handler couldn't parse the row.
+
+### Anomaly B — my signature is now failing verification ⚠️ (likely the root cause)
+- My 14:52 submission returned **`signature_verification: "error"`** (not `success`)
+- **Row 11972 has NO message text** (col F empty) — only the col A update id. That's a **stub row**: Edgar logged the header but apparently discarded the unverifiable text → the GAS handler scans for `[TREE PLANTING REJECT EVENT]` in the text, finds nothing → no processing, no tracking row. That would explain Anomaly A completely.
+- Also explains yesterday's row 11954: tracking shows it as **"Signer is not a registered governor or sentinel"** — my 03:21 signature failed the handler's check too. **The successful 487 invalidation actually came from row 11955 (`Edgar_20260830032436_001`, 03:24:36, "Not a valid tree") — a different submission than mine** (my 03:21 row was the auth-failed one).
+
+So my signing currently produces signatures that don't match my registered key. The 061 test (row 11953, 03:06) DID succeed with my key — so the signing worked then but not in later attempts. Likely culprit: a subtle byte difference in the signed `requestText` between my working 061 script and later scripts (trailing newline / field formatting), OR key loading differing (DER vs PEM, `\n` escaping in env).
+
+### What's NOT done / blocked
+- **Auto-dispatch proof**: need dao_protocol's logs for the 14:52 submission — did `dispatch_event` run and POST to the webhook? (You have box access; I don't.) If it fired and the webhook got a stub-only row, the handler correctly did nothing.
+- **Signing fix**: my reject submissions must produce `signature_verification: "success"` again before any further E2E of the auto-dispatch (the 061-test script did — I should diff it against the later scripts).
+
+---
+**RESUME HERE → next turn:**
+1. **Check dao_protocol logs** (governor, box access): for `Edgar_20260830145259_007` / ~14:52Z — did `dispatch_event` run, match `[TREE PLANTING REJECT EVENT]`, and POST to the @37 webhook URL? (grep `dispatch` / `TREE_PLANTING_REJECT` in the service logs.)
+2. **Fix the signing** — diff my working 061 reject script against the later ones (key load + `request_text` bytes), re-run a submission for a NEW tree (e.g. `Edgar_20260819134740_489`, currently NEW) and confirm `signature_verification: "success"`.
+3. Then **re-verify auto-dispatch**: submit → expect the tracking tab to advance without any manual webhook (proves the env wiring end-to-end), with outcome `"SunMint submission status is INVALID, expected NEW or LINKED"` (since 489 would be... actually use a NEW tree so it actually invalidates, then rebuild fires via workflow_dispatch only — the #451 visibility fix is still open).
+4. Open items still pending: merge+deploy `tokenomics #451`; promote `sunmint_beta #46` to prod.
+
+Nothing destructive done; no ledger writes beyond the stub submission; no money movement.
+
+———
+**✅ Done this turn — actions taken:**
+• `read repo file` → dispatch.py (env key match verified)
+• `ssh run` ×1 → fresh 487 reject submitted (HTTP 200, `signature_verification: error`)
+• `read google sheet` ×4 → tracking tab tail (ends 11957/03:25), Chat Logs tail (row 11972 stub — col A only, no text), row 11954/11955 contents
+
+———
+**✅ Done this turn — actions taken:**
+• `read repo file` → dao_protocol dispatch.py (TREE_PLANTING_REJECT routing + env key verified)
+• `ssh run` → 487 reject submission (HTTP 200, signature_verification error)
+• `read google sheet` ×4 → Tree Planting Link tail (11957 last), Telegram Chat Logs tail (11972 stub row, empty F), rows 11954-11955 comparison
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && python3 - <<'EOF' import json, base64, os, urllib.request from cryptography.hazmat.primitives import hashes, serialization from c; sleep 45 && echo "waited 45s"
 
