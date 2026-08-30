@@ -681,6 +681,7 @@ Critical finding: `sunmint` is listed in **`api_only_repos`** (line 237) — not
 ### 🤖 Autopilot
 
 Key discovery: `sunmint` is **dual-classified** — it's in `api_only_repos` (line 237, "workflow-pushed JSON snapshots") *and* missing from `allowed_repos`. But `sunmint` also contains **code** (`scripts/build_tree_geojson.py`, `.github/workflows/rebuild-tree-index.yml`) that needs PR flow. Let me check the test that guards this classification before changing it.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -688,11 +689,13 @@ Key discovery: `sunmint` is **dual-classified** — it's in `api_only_repos` (li
 `sunmint` is **dual-classified** in my own config: it's in `api_only_repos` (line 237, under "blob/asset stores") AND missing from `allowed_repos`. But it's actually a code repo (has `scripts/build_tree_geojson.py` + `.github/workflows/`). The right fix is a small config change in `truesight_autopilot` — move `sunmint` from `api_only_repos` → `allowed_repos`. No test pins this (verified `test_config_own_data_repos.py` doesn't reference it).
 
 Per the hard rule, running the local test suite before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Local suite: **compile ✅, ruff check ✅, 817 passed / 3 pre-existing failures** (all in `test_chat_observe.py` — unrelated to config; they've failed before this change). My change targets only `app/config.py` which passes format. Let me quickly check the policy doc before reclassifying, then open the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -966,4 +969,91 @@ PR #348 is mergeable. Merging the revert:
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot/pulls/348" | python3 -c "import json,sys; d=json.load(sys.
 • `merge pr` → ✅ PR #348 on truesight_autopilot merged successfully (sha: 2f42b064da448a47e5ea7e2b01e85c86379e2590). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**Go received 👍 → merged the revert that restores `sunmint` to API-only.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `truesight_autop
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **merge `tokenomics #449`** (the reject-path fix). Per one-PR-per-turn, I'll merge it and stop — the clasp deploy is the following unit. Verifying it's mergeable first:
+
+
+### 🤖 Autopilot
+
+PR #449 is mergeable — small, focused diff (+8/-1, one file). Let me sanity-check the actual diff content before merging:
+
+
+### 🤖 Autopilot
+
+The diff is exactly the intended fix: reject rows now match by **col A (Telegram Update ID) OR col D (Telegram Message ID)** — closing the `_487` vs `_488` mismatch that made rejects a silent no-op. It references `TELEGRAM_UPDATE_ID_COL` (already in shared scope, used by the link path). Merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**Go received 👍 → merged the GAS reject-path fix.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `tokenomics` | **[#449](https://github.com/TrueSightDAO/tokenomics/pull/449)** | ✅ **MERGED** (sha `ffe9acd`) |
+
+**What changed** (`process_tree_planting_link.js`, +8/−1, one file): the `[TREE PLANTING REJECT EVENT]` handler now matches the SunMint sheet row by **col A (Telegram Update ID) OR col D (Telegram Message ID)**, instead of col D only. This closes the root-cause mismatch — the monitor page submits the **tree id** (`…_487`, = col A), but the handler only looked in col D (`…_488`) → every reject for an unlinked tree logged `REJECTED — submission not found` and silently left the tree `NEW`. That was the "tree came back on reload" bug.
+
+**Pre-merge verification:** `mergeable: True`; full patch reviewed — references `TELEGRAM_UPDATE_ID_COL` (already in shared scope, same as the link path); no other files touched.
+
+### Chain status
+| Item | State |
+|---|---|
+| Builder skip-INVALID → `sunmint` (Contents API `b9545d8`) | ✅ delivered |
+| Config revert `truesight_autopilot #348` | ✅ merged |
+| UI fix `sunmint_beta #46` (no QR fabrication) | ✅ merged — beta only |
+| **Reject-path fix `tokenomics #449`** | ✅ **merged now** |
+| Clasp deploy of #449 → GAS `1UrBg…` | ⏸ next unit (needs your explicit go — deploy is gated) |
+| `deploy_autopilot` | ⏸ optional, your call |
+
+No runtime deploys, no ledger writes, no Edgar submissions, no money movement.
+
+---
+**RESUME HERE → next units (each a fresh turn):**
+1. **Clasp-deploy `tokenomics #449`** to GAS project `1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v` — dry-run first, then `push=true` with your explicit "go" (deploys always ask).
+2. **End-to-end repro**: re-mark `Edgar_20260819134722_487` invalid on the monitor page → (now) GAS finds the row by col A, marks it `INVALID` → trigger `tree-index-rebuild` → builder (with the INVALID-skip) drops it from `index.geojson` → tree finally stops reappearing. Verify on `beta.sunmint.truesight.me` first.
+3. **Beta review → prod**: Gary reviews the beta (`sunmint_beta #46` UI fix is already there) → `sync_beta_to_prod(sunmint_prod)`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → verified PR #449 mergeable + reviewed full patch (+8/−1, col A OR col D match)
+• `merge pr` → ✅ PR #449 on tokenomics merged (sha: ffe9acda026efd671303f2a19518bddc6283c829)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/449" | python3 -c "import json,sys; d=json.load(sys.
+• `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/449/files" | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+for f in d:
+    print(f.get('patch','(no patch)'))
+"
+• `merge pr` → ✅ PR #449 on tokenomics merged successfully (sha: ffe9acda026efd671303f2a19518bddc6283c829). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/449" | python3 -c "import json,sys; d=json.load(sys.stdin); p; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/449/files" | python3 -c " import json,sys d=json.load(sys.std
+• `merge pr` → ✅ PR #449 on tokenomics merged successfully (sha: ffe9acda026efd671303f2a19518bddc6283c829). Pull Request successfully merged
 
