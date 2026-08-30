@@ -1087,11 +1087,13 @@ for f in d:
 ### 🤖 Autopilot
 
 👍 Go received. Next unit: **clasp-deploy the merged reject-path fix (#449) to GAS project `1UrBg…`**. Running the deploy dry-run first to see what would change:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dry-run clean — project `1UrBg…` has `process_tree_planting_link.js` (the merged file) + 2 siblings, clasp owner `garyjob@agroverse.shop`. The 👍 covers this deploy (it's the gated step I flagged, and the governor approved). Pushing for real:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1302,4 +1304,81 @@ Suite: compile ✅ (rc=0 on the real checkout), ruff ✅, **817 passed / 3 faile
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && echo "=== rebuild-tree-index.yml ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/.github/workflows/r; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; cd /opt/truesight_autopilot && ls && echo "=== find app dir ===" && find / -maxdepth 4 -name "config.py" -path "*truesight_autopilot*" 2>/de
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (one PR opened — stopped per one-PR-per-turn)
+
+**Go received 👍 → opened the dispatch-on-reject PR that makes invalidated trees vanish immediately.**
+
+| Repo | PR | Status |
+|--
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **merge `tokenomics #450`** (dispatch-on-reject). Verifying it's mergeable and reviewing the diff, then merging:
+
+
+### 🤖 Autopilot
+
+PR #450: mergeable, clean, 1 file +23/−0 — exactly the dispatch block. Let me review the actual patch content once more before merging:
+
+
+### 🤖 Autopilot
+
+Patch verified — clean, correct placement (inside the reject branch after `setValue('INVALID')`, before `continue`), reuses the existing PAT helper. Merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**Go received 👍 → merged the dispatch-on-reject fix.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `tokenomics` | **[#450](https://github.com/TrueSightDAO/tokenomics/pull/450)** | ✅ **MERGED** (sha `9584835`) |
+
+**What changed** (`process_tree_planting_link.js`, +23/−0, reject branch): after the GAS handler marks a SunMint row `INVALID`, it now fires a best-effort GitHub `repository_dispatch` of type `tree-index-rebuild` to `TrueSightDAO/sunmint`. The workflow already listens for that dispatch; the builder (delivered via Contents API `b9545d8`) already skips INVALID rows. **This closes the last code gap** — rejected trees now drop from `trees/index.geojson` immediately instead of waiting up to 24h for the 06:00 UTC cron.
+
+**Pre-merge verification:** `mergeable: True` / `mergeable_state: clean`; full patch reviewed — correct placement (inside reject branch, after `setValue('INVALID')`, before `continue`), reuses `TGM_GITHUB_OWNER`/`REPO` + `getGithubToken_()` (existing sunmint-scoped PAT), wrapped in try/catch so a dispatch failure never fails the reject.
+
+### Full chain status
+| Item | State |
+|---|---|
+| Builder skip-INVALID (`sunmint`, Contents API `b9545d8`) | ✅ delivered |
+| Reject-path col A OR col D (`tokenomics #449`) | ✅ merged + **deployed to GAS** |
+| UI no-QR-fabrication (`sunmint_beta #46`) | ✅ merged — beta only |
+| **Dispatch-on-reject (`tokenomics #450`)** | ✅ **merged now** |
+| GAS deploy of #450 | ⏸ next unit (gated — needs explicit go) |
+
+### Gates NOT crossed
+- **#450 not yet deployed** to GAS `1UrBg…` (clasp deploy is a gated step — I'll dry-run and ask)
+- `sunmint_beta #46` still **beta-only** — prod promotion awaits Gary's review
+- No ledger writes / no Edgar submissions / no money movement
+
+---
+**RESUME HERE → next units (each a fresh turn):**
+1. **Clasp-deploy `tokenomics #450`** to GAS `1UrBg…` (dry-run first, then `push=true` with your explicit go).
+2. **Live end-to-end repro**: mark `Edgar_20260819134722_487` invalid via the monitor page button (a *real* Edgar submission — the pasted text block does nothing) → GAS matches by col A → row INVALID → dispatch fires → workflow rebuilds → builder drops the tree → **verify it's gone from `index.geojson` and stops reappearing**.
+3. **Promote `sunmint_beta #46` to prod** (`sync_beta_to_prod(sunmint_prod)`) — your explicit approval required.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → verified PR #450 mergeable/clean; reviewed full patch (+23/−0)
+• `merge pr` → ✅ PR #450 on tokenomics merged (sha: 95848350cca0b1542d73fe3c60744da928d07c16)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/450" | python3 -c "import json,sys; d=json.load(sys.stdin); p; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/450/files" | python3 -c "import json,sys; d=json.load(sys.std
+• `merge pr` → ✅ PR #450 on tokenomics merged successfully (sha: 95848350cca0b1542d73fe3c60744da928d07c16). Pull Request successfully merged
 
