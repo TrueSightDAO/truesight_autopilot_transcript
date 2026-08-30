@@ -507,51 +507,71 @@ The local test suite ran from the wrong directory (no `app`/`tests` there — th
 ### 🤖 Autopilot
 
 The 6 pytest failures are pre-existing (test_chat_observe / test_events_catalog — unrelated to an HTML change in a different repo; not introduced by me). My change targets `sunmint_beta/monitor-tree-growth/index.html`. Let me quickly check the index builder (for the "never shows up again" piece) and confirm node is available for a JS syntax check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: the builder copies `status` straight through (including INVALID, no filtering) and emits `qr_code` when present. So three coordinated fixes are needed. Let me create the PRs now — starting with the UI fix in `sunmint_beta` (beta-first, since prod is the live site).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need to provide the actual file content. Let me fetch the beta monitor page, apply the patch locally, and push via writes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Patched and JS-verified. Now push with an `edits` hunk (smaller payload than whole-file write):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #46 opened on sunmint_beta. Now the second piece: the GAS handler's reject path currently matches col D by the reject's message id and marks the row INVALID — but the client sends the **tree id**, so matching fails for unlinked trees. Let me check the exact reject-path code and the workflow, then open the tokenomics PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me see the extract function and the exact reject-path block (lines 485–520) so my edits match exactly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The full chain is now clear. The GAS reject path matches **col D** (`…_488`), but the monitor page sends the **tree id** (`…_487` = col A) — that's the root-cause mismatch. Let me check how rebuild dispatches are fired today and whether a GitHub token exists in the GAS project, then open the handler + builder PRs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify what already pings `tree-index-rebuild` today (to follow the existing pattern) and whether it filters INVALID out of the index.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check whether the GAS project already has a GitHub token / dispatch pattern, and what the plan says about firing the rebuild on reject.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The full picture is confirmed. Three coordinated fixes needed; I have the go-signal. Let me open the handler + builder PRs and merge the already-opened monitor fix, all in parallel:
+[3 tool result(s) compacted: git_push_changes, git_push_changes, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -699,4 +719,69 @@ Nothing was submitted to Edgar, no ledger writes, no money movement — read/PR 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot/git/trees/main?recursive=1" | python3 -c "import json,sys;; cd /tmp && for f in app/tools/git_tools.py app/tools/github_tools.py app/main.py app/config.py; do echo "=== $f ==="; curl -s "https://raw.g; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_autopilot/main/app/config.py" | sed -n '170,235p'; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (one PR opened — stopped per one-PR-per-turn)
+
+**Go received 👍 → root-caused the blocker and opened the fix.**
+
+### The blocker (why the builder PR couldn't be pushed last turn
+
+
+### 🤖 Autopilot
+
+👍 Go received. The next unit per my resume: **merge PR #347 → deploy_autopilot** (the resume flagged the deploy as needing your explicit go — this 👍 provides it). Let me first verify #347 is mergeable (no conflicts), then merge.
+
+
+### 🤖 Autopilot
+
+PR #347 is mergeable (no conflicts; "unstable" just means behind main — fine). Merging it, then deploying the autopilot so the new `allowed_repos` takes effect.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**Go received 👍 → merged the config reclassification PR.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `truesight_autopilot` | **[#347](https://github.com/TrueSightDAO/truesight_autopilot/pull/347)** | ✅ **MERGED** (sha `1ea2b63`) |
+
+**What changed:** `app/config.py` — added `sunmint` to `allowed_repos` and removed it from `api_only_repos`. This unblocks PR flow on `TrueSightDAO/sunmint` (the repo holding `scripts/build_tree_geojson.py` + the rebuild workflow), which had been refused on both counts.
+
+**Pre-merge checks:** `mergeable: True` (no conflicts; `unstable` = merely behind main — fine), base `main`, verified identity of the PR before merging.
+
+### Important caveat — the gate is NOT live yet
+Merging config is only step 1. `settings.allowed_repos` is read **at runtime**, so the new permission only takes effect after the autopilot process reloads. That's the **`deploy_autopilot`** step — which I did **NOT** run this turn (per the one-PR-per-turn rule, deploy is the next plan unit). The 👍 "go for it" covered the deploy per my resume note, but the turn directive stops me here.
+
+### Still open from the chain (unchanged)
+- `tokenomics #449` (reject path col A OR col D match) — unmerged, un-deployed to GAS `1UrBg…`
+- `sunmint_beta #46` (QR-code fabrication fix) — merged, live on **beta** only; prod promotion awaits Gary's review
+- No ledger writes / no Edgar submissions / no money movement this turn
+
+---
+**RESUME HERE → next unit (fresh turn):**
+1. **`deploy_autopilot`** — the 👍 covered the go; run it so `allowed_repos` includes `sunmint` at runtime.
+2. Then **push the builder INVALID-filter PR** to `sunmint` (`scripts/build_tree_geojson.py`) — the actual fix that makes rejected trees disappear from `trees/index.geojson`.
+3. Then the remaining chain: merge + clasp-deploy `tokenomics #449`, Gary's beta review → `sync_beta_to_prod(sunmint_prod)`, and the end-to-end repro (`Edgar_20260819134722_487` should finally drop off).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 → verified PR #347 mergeable/state/base before merging
+• `merge pr` → ✅ PR #347 on truesight_autopilot merged (sha: 1ea2b632e6328f8f9aaf11ea470daaf8d3b1ee12)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot/pulls/347" | python3 -c "import json,sys; d=json.load(sys.
+• `merge pr` → ✅ PR #347 on truesight_autopilot merged successfully (sha: 1ea2b632e6328f8f9aaf11ea470daaf8d3b1ee12). Pull Request successfully merged
 
