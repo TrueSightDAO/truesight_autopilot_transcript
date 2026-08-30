@@ -2216,16 +2216,19 @@ Found the PATs — `TRUESIGHT_DAO_AUTOPILOT` (`github_pat_...`) is the org PAT. 
 ### 🤖 Autopilot
 
 The rebuild workflow is running but the index hasn't updated yet (19 features, tree still present). The workflow may take a couple minutes. Let me check the run status and register a watcher so I'm notified when it completes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The workflow run completed **successfully** (id 33289623447, 03:09:36Z) — but the index still shows 19 features with 061. The INVALID-skip didn't take effect. Let me check the run logs to see what the builder actually did:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The run succeeded but the logs download was only 180 bytes (empty). The builder ran and committed, but the index still has 061 — suspicious. Possibility: the workflow's `GH_PAT_TOKEN` checkout committed but the tree is still there because the **builder is reading the sheet and the INVALID row is being... included?** Let me check whether the builder's INVALID-skip actually matches (maybe the status cell is "INVALID" vs the builder checking something else), and check the actual commit the workflow pushed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2451,4 +2454,141 @@ The code is merged, but the webhook URL is read from env at runtime: **`DAO_PROT
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/pulls/150" | python3 -c " import json,sys d=json.load(sys.stdin) 
 • `merge pr` → ✅ PR #150 on dao_protocol merged successfully (sha: 2830c02db3d914fcfd6e4bedebb10515ed91b6a0). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**Go received 👍 → merged the reject-event routing entry.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `dao_protocol` | **[#150](https:
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **invalidate the original thread tree `Edgar_20260819134722_487`** — resolving Gary's original complaint end-to-end. Since the env step on the dao_protocol box isn't done yet, I'll use the proven @37 webhook path directly. First, let me confirm the tree's current sheet row (col A match) and status:
+
+
+### 🤖 Autopilot
+
+Tree `487` is still in the index (20 features). Let me confirm its sheet row (col A for the match), then submit the reject. Reading the SunMint Tree Planting tab:
+
+
+### 🤖 Autopilot
+
+The sheet has 26 rows but the output is truncated. Let me read the artifact to find the exact row for `487`:
+
+
+### 🤖 Autopilot
+
+The full rows are huge (contribution text). Let me read just the key columns (A=tree id, D=message id, M=status) to locate the 487 row efficiently:
+
+
+### 🤖 Autopilot
+
+Row **13** (index 12) = `Edgar_20260819134722_487` — the original thread tree, present in the sheet (col A). Let me check its current status (col M) and message id (col D):
+
+
+### 🤖 Autopilot
+
+Row 13 confirmed: col A `Edgar_20260819134722_487`, col D `..._488`, Status **NEW**. This is the original thread tree. I'll submit the reject via the proven @37 webhook path (same as the successful 061 test) — signing with my sentinel key, POSTing to Edgar, then firing the webhook. Building and submitting now:
+
+
+### 🤖 Autopilot
+
+The private key needs unescaping (stored with `\n` literals). Let me fix the loading:
+
+
+### 🤖 Autopilot
+
+The key format must be different. Let me inspect it safely (metadata only, no secret exposure):
+
+
+### 🤖 Autopilot
+
+The key is **raw base64 DER** (no PEM armor). Let me load it as DER and submit:
+
+
+### 🤖 Autopilot
+
+HTTP 200 but `signature_verification: error` (vs `success` for the 061 test) — the submission was ingested but may fail the handler's auth gate. Let me check whether my row landed in Chat Logs and what the verifier expects:
+
+
+### 🤖 Autopilot
+
+My submission row exists (`Edgar_20260830032134_129`) — but the signature verification was `error`, unlike the 061 test's `success`. Let me check the row's content and compare with what the 061 test produced (which worked). Let me read the row:
+
+
+### 🤖 Autopilot
+
+The row is there (col A `Edgar_20260830032134_129`) but signature verification returned `error`. The difference from the successful 061 test: the 061 one used the same script... let me check what the row F (message content) contains, and compare to the working 061 row's signature handling. Let me read column F for this row and for the 061 reject row to compare:
+
+
+### 🤖 Autopilot
+
+Row 11954 has no F content — it may be an empty/placeholder row, and my actual content may be elsewhere. Let me search the tail for the reject text:
+
+
+### 🤖 Autopilot
+
+I'm burning tool rounds on diagnostics. Let me do one focused read of the last 25 rows (col A + F first line) to locate my reject content and check the status of the row:
+
+
+### 🤖 Autopilot
+
+Two tool rounds left for diagnosis — let me compare the working 061 reject row (11953) vs my new one (11954) to find the format difference:
+
+
+### 🤖 Autopilot
+
+## Converging — 487 reject submitted but signature verification flagged `error`
+
+### What happened this turn
+1. **Located the tree**: SunMint sheet row 13 = `Edgar_20260819134722_487` (col D `..._488`), Status **NEW** — the original thread tree, still in `index.geojson` (20 features).
+2. **Submitted the reject** via the proven @37 path — my sentinel key (DER base64, loaded correctly), RSA-SHA256 sign, multipart POST to Edgar.
+3. **Result**: HTTP 200, row landed in Chat Logs (`Edgar_20260830032134_129`, row 11954) — **but `signature_verification: "error"`** (the 061 test got `"success"`).
+
+### What's blocking
+The signature verification error means Edgar's verifier couldn't validate my signature this time. The 061 test used the identical script and got `success` — so the difference is in **which** row/format landed. I have 2 tool rounds left and haven't yet seen col F of either row (both reads returned empty — col F may not be where the message text lives, or the rows' content is in a different column; the earlier working reads showed the message text in col F for other rows, so the empty result for 11953/11954 is suspicious).
+
+**Hypothesis to check next turn**: the reject text uses `QR Code: (unlinked)` — the verifier may require a non-`(unlinked)` QR value to parse/sign-verify, or the row landed with different column mapping. Alternatively the `signature_verification: "error"` is non-fatal (Edgar still ingested + logged), and the GAS handler's own gate (resolve my key → Sophia → sentinel) will still pass — the 061 test proved the handler accepts my signature.
+
+### Chain status
+- 061 (test tree): ✅ fully invalidated & removed from index (proven earlier)
+- 487 (original thread tree): 🟡 reject submitted, awaiting verification + handler processing
+- All code fixes deployed (@37): #449 col A OR col D, #450 dispatch, builder skip-INVALID
+- Routing entry merged (`dao_protocol #150`) — env step still pending (dao_protocol box access)
+
+---
+**RESUME HERE → next turn (verify + finish 487):**
+1. **Read Chat Logs col F for rows 11953 & 11954** (and check which column actually holds the message text — my two col-F reads returned empty, which is itself a finding) to confirm the 487 reject content landed intact.
+2. **Compare formats** — if 11954's text differs from 11953's (the 061 success), re-submit 487's reject with the exact working format.
+3. **Fire the @37 webhook** (`.../exec?action=processTreePlantingLinksFromTelegramChatLogs`) to process the new row → expect row 13 → INVALID, then trigger rebuild (`workflow_dispatch`) → verify 487 drops from `index.geojson` (20 → 19).
+4. Confirm whether `signature_verification: "error"` blocks the handler's auth gate (the 061 case proved my key resolves to Sophia/sentinel, so likely not — but verify).
+
+No ledger/money writes beyond the already-submitted reject; nothing destructive done.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → located 487 (row 13, NEW), built+submitted reject (HTTP 200, sig err), inspected key format (DER base64), row 11954 landed in Chat Logs
+• `read google sheet` ×4 → row 13 status/IDs, Chat Logs tail (11950–11968), col F reads (empty — to investigate)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && for p in /home/ubuntu/truesight_autopilot/.env /opt/truesight_autopilot/.env /home/ubuntu/.truesight_autopilot/.env; do [ -f "$p" ] && echo "FOUND: $p"; done; echo "---"; python3 - <<'EOF' import json, base64, os, sys, urllib.request from cryptography.hazmat.primitives import hashes, serialization from cryptography.hazmat.primitives.asymmetric import padding; cd /tmp && python3 - <<'EOF' import json, base64, os, sys, urllib.request from cryptography.hazmat.primitives import hashes, serialization from cryptography.hazmat.primitives.asymmetric import padding; cd /tmp && python3 - <<'EOF' env = {} for line in open("/opt/truesight_autopilot/.env"): line=line.strip() if '=' in line and not line.startswith('#'): k,v=line.split('=',1) pk = env.get('PRIVATE_KEY','') print("len:", len(pk)) print("first 40 chars repr:", repr(pk[:40])); cd /tmp && python3 - <<'EOF' import base64, os, urllib.request from cryptography.hazmat.primitives import hashes, serialization from cryptography.hazmat.primitives.asymmetric import padding …(+1 more)
+• `read google sheet` ×4 → A13:M13 (487 row NEW), A11954:E11954 + A11950:A11968 (Chat Logs tail), F11953/F11954 (empty)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && for p in /home/ubuntu/truesight_autopilot/.env /opt/truesight_autopilot/.env /home/ubuntu/.truesight_autopilot/.env; do [ -f "$p" ] && echo "FOUND: $p"; done; echo "---"; python3 - <<'EOF' import json, base64, os, sys, urllib.request from cryptography.hazmat.primitives import hashes, serialization from cryptography.hazmat.primitives.asymmetric import padding; cd /tmp && python3 - <<'EOF' import json, base64, os, sys, urllib.request from cryptography.hazmat.primitives import hashes, serialization from cryptography.hazmat.primitives.asymmetric import padding; cd /tmp && python3 - <<'EOF' env = {} for line in open("/opt/truesight_autopilot/.env"): line=line.strip() if '=' in line and not line.startswith('#'): k,v=line.split('=',1) pk = env.get('PRIVATE_KEY','') print("len:", len(pk)) print("first 40 chars repr:", repr(pk[:40])); cd /tmp && python3 - <<'EOF' import base64, os, urllib.request from cryptography.hazmat.primitives import hashes, serialization from cryptography.hazmat.primitives.asymmetric import padding …(+1 more)
+• `read google sheet` ×4 → A13:M13 (487 row NEW), A11954:E11954 + A11950:A11968 (Chat Logs tail), F11953/F11954 (empty)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && echo "=== sheet row for 487 (SunMint Tree Planting) ===" && python3 - <<'EOF' # Find the row for 487 in the sheet via the same re; cd /tmp && for p in /home/ubuntu/truesight_autopilot/.env /opt/truesight_autopilot/.env /home/ubuntu/.truesight_autopilot/.env; do [ -f "$p"; cd /tmp && python3 - <<'EOF' import json, base64, os, sys, urllib.request from cryptography.hazmat.primitives import hashes, serialization f; …(+3 more)
 
