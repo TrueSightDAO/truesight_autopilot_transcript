@@ -845,6 +845,7 @@ Understood — course-corrected. `sunmint` stays an **API-only data repo** (PAT 
 3. Open a **revert PR** for #347 on truesight_autopilot (restore `sunmint` → `api_only_repos`), then stop
 
 Applying the builder patch and verifying the current config state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -856,11 +857,13 @@ Governor's direction is clear — course-correcting: **`sunmint` stays API-only;
 3. Stop (one PR this turn — the Contents API write isn't a PR)
 
 Delivering the patched builder to `sunmint` via Contents API first:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Builder fix delivered to `sunmint` via Contents API (PAT) — commit `b9545d8`. Now the revert PR to restore `sunmint`'s api-only classification:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -921,11 +924,13 @@ No ledger writes, no Edgar submissions, no money movement this turn.
 ### 🤖 Autopilot
 
 👍 Go received. Next unit: **merge #348** (the revert restoring `sunmint` to api-only). Verifying it's mergeable, then merging.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #348 is mergeable. Merging the revert:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -992,16 +997,19 @@ PR #348 is mergeable. Merging the revert:
 ### 🤖 Autopilot
 
 👍 Go received. Next unit: **merge `tokenomics #449`** (the reject-path fix). Per one-PR-per-turn, I'll merge it and stop — the clasp deploy is the following unit. Verifying it's mergeable first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #449 is mergeable — small, focused diff (+8/-1, one file). Let me sanity-check the actual diff content before merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The diff is exactly the intended fix: reject rows now match by **col A (Telegram Update ID) OR col D (Telegram Message ID)** — closing the `_487` vs `_488` mismatch that made rejects a silent no-op. It references `TELEGRAM_UPDATE_ID_COL` (already in shared scope, used by the link path). Merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1222,4 +1230,76 @@ Nothing submitted to Edgar, no ledger writes, no money movement this turn — re
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: I'm at my tool budget for this turn — converging with findings.
+
+## End-to-end verification results (this turn)
+
+**Direct answer to "is it sent to Edgar right now today?" → NO, and here's the proof:**
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **dispatch-on-reject PR** — make the GAS reject branch fire a `tree-index-rebuild` repository_dispatch after marking INVALID, so rejected trees vanish immediately instead of at the next 06:00 UTC cron. First, let me check the workflow's dispatch trigger and whether any GAS file already calls the GitHub API (to follow an existing PAT pattern):
+
+
+### 🤖 Autopilot
+
+The workflow already listens for `repository_dispatch` type `tree-index-rebuild` ✅, and `process_tree_growth_monitoring.gs` already has a `TGM_GITHUB_TOKEN` PAT pattern (sunmint-scoped) in the **same GAS project** (global scope shared). Let me read the exact reject-branch hunk and the TGM constants so my edit reuses them precisely:
+
+
+### 🤖 Autopilot
+
+The pattern is perfect: the workflow already listens for `tree-index-rebuild` dispatch ✅, and the same GAS project already has `TGM_GITHUB_OWNER/REPO` + `getGithubToken_()` (sunmint-scoped PAT) in shared global scope ✅. My edit: after the `setValue('INVALID')` write, fire the dispatch best-effort (wrapped in try/catch — the 06:00 cron remains the safety net so a dispatch failure never fails the reject). Running the local test suite first (hard rule), then pushing:
+
+
+### 🤖 Autopilot
+
+Suite: compile ✅ (rc=0 on the real checkout), ruff ✅, **817 passed / 3 failed** — the 3 failures are the same pre-existing `test_chat_observe.py` failures (observed-message tests, unrelated to GAS JS). My change is a JS edit in the tokenomics repo (not in this Python suite's scope, and no Python touched). Now opening the PR with the dispatch-on-reject edit:
+
+
+### 🤖 Autopilot
+
+## What I did this turn (one PR opened — stopped per one-PR-per-turn)
+
+**Go received 👍 → opened the dispatch-on-reject PR that makes invalidated trees vanish immediately.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `tokenomics` | **[#450](https://github.com/TrueSightDAO/tokenomics/pull/450)** | 🟡 **OPENED** (not merged) |
+
+**What changed** (`process_tree_planting_link.js`, reject branch): after the handler writes `INVALID` to the SunMint row, it now fires a best-effort GitHub `repository_dispatch` of type `tree-index-rebuild` to `TrueSightDAO/sunmint`. The workflow (`.github/workflows/rebuild-tree-index.yml`) **already listens** for that exact dispatch type, and the builder (already delivered via Contents API `b9545d8`) **already skips INVALID rows** — so the full chain now closes: reject → INVALID row → immediate rebuild → tree drops from `index.geojson` → **never reappears** (no more 24h wait for the 06:00 cron).
+
+**Design details:**
+- Reuses `TGM_GITHUB_OWNER`/`TGM_GITHUB_REPO`/`getGithubToken_()` — the sunmint-scoped PAT already in this GAS project's shared global scope (`process_tree_growth_monitoring.gs`), no new secrets
+- `try/catch` — dispatch failure never fails the reject; daily cron stays the safety net
+- Verified: `node --check` clean (edit is JS), local suite 817 passed / 3 pre-existing `test_chat_observe.py` failures (unrelated)
+
+### Chain status
+| Item | State |
+|---|---|
+| Builder skip-INVALID (`sunmint`, Contents API) | ✅ delivered |
+| Reject-path col A OR col D (`tokenomics #449`) | ✅ merged + **deployed to GAS** |
+| UI no-QR-fabrication (`sunmint_beta #46`) | ✅ merged — beta only |
+| **Dispatch-on-reject (`tokenomics #450`)** | 🟡 **open now** |
+
+### Gates NOT crossed (correctly)
+- **#450 not merged** (next unit), **not deployed** to GAS (gated step)
+- `sunmint_beta #46` still **beta-only** — prod promotion awaits your review
+- No ledger writes / no Edgar submissions / no money movement
+
+---
+**RESUME HERE → next units (each a fresh turn):**
+1. **Merge `tokenomics #450`** (say "merge it") → then **clasp-deploy** to GAS `1UrBg…` with your explicit go.
+2. **Re-submit the reject properly** — via the monitor page's mark-invalid button on `Edgar_20260819134722_487` (a real Edgar submission, not a pasted block). With everything deployed: row → INVALID → dispatch → rebuild → tree gone from `index.geojson`.
+3. **Promote `sunmint_beta #46` to prod** (`sync_beta_to_prod(sunmint_prod)`) — your explicit approval required.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && echo "=== rebuild-tree-index.yml ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/.github/workflows/r; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; cd /opt/truesight_autopilot && ls && echo "=== find app dir ===" && find / -maxdepth 4 -name "config.py" -path "*truesight_autopilot*" 2>/de
 
