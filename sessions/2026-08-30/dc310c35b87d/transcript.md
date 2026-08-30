@@ -1094,16 +1094,19 @@ Promotion succeeded — prod's `main` is now at `00a14b1` (includes the merge), 
 ### 🤖 Autopilot
 
 Beta live SW is confirmed 200 (`application/javascript`), and the prod Pages builds API 404s (same token-scope limitation I saw earlier on the Pages API — not a real signal). The prod SW file is in the repo (`main` at `00a14b1`); the live 404 is Pages deploy lag. I'll poll the live prod SW directly to confirm it propagates, then wrap up:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The service worker is now **live on production** (200, correct content) — Pages deploy lag was the only delay. The promotion is fully complete. Let me do one final sanity sweep of both sites and record the deploy in the ledger, then report.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Everything is live and verified on production. Let me record the deploy in the ledger and flag the tooling gap (sunmint missing from the `sync_beta_to_prod` tool enum) — then final report.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1159,41 +1162,49 @@ Open `https://sunmint.truesight.me/` once (fresh load → SW installs), then **a
 ### 🤖 Autopilot
 
 Go-signal received — proceeding with the flagged fix: adding `sunmint_prod` to the `sync_beta_to_prod` tool enum. Let me find the tool definition first.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it. Let me read the `sync_beta_to_prod.py` tool to see the exact code around the enum, the description, and the sync mechanism (to make sure sunmint fits the same flow):
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The fix is clear: the tool already honors `settings.prod_repos` (which includes sunmint) — only the hardcoded description and enum are missing `sunmint_prod`. Let me check the test file and context.py references so the change is complete and consistent:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture. The minimal, correct fix: add `sunmint_prod` to the `sync_beta_to_prod` enum + description (the tool already reads `settings.prod_repos`, which contains sunmint). I'll also update `context.py`'s PRODUCTION-repos list to mention sunmint for consistency (the docstring is the operator-facing rule). Let me apply the changes via `git_push_changes` (self-improvement PR on truesight_autopilot):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The context.py edit failed because the `\u2014` escape didn't match the literal character. Let me fix the search string to use the actual em-dash character:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #349 opened. Before merging (per the hard rule), I must run the local test suite on the box to confirm the changes pass:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `-k` filter deselected everything — let me run the full test suite (hard rule) on the changed files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All checks pass: compile ✓, ruff lint ✓, format ✓, and the full suite shows **817 passed** with only the **3 pre-existing failures** in `test_chat_observe.py` (identical to before this change — untouched by my edit, confirmed earlier). Merging PR #349:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1366,4 +1377,96 @@ Which would you like next?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → echo "=== sunmint_mobile tree (recent) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_mobile/git/trees/main?recursive=1"; echo "=== www/index.html: has SW registration? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_mobile/main/www/index; echo "=== mobile www/index.html: offline queue mechanism? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_mobile/mai; …(+3 more)
 • `merge pr` → ✅ PR #26 on sunmint_mobile merged successfully (sha: 29c51bef0e2eb7694f97eb852ad04399d6c62e92). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] Why not standardize to the same source instead of a separate enum??
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+Good architectural critique — the enum is a second source of truth that drifts from `settings.prod_repos`. Let me look at how the tool's schema is actually built to see the right way to standardize on one source.
+
+
+### 🤖 Autopilot
+
+You're right — that's a genuine dual-source-of-truth smell. The runtime check uses `settings.prod_repos`, but the LLM-facing schema enum is hardcoded, so the two can drift (a repo added to settings but not the enum won't be callable; a stale enum entry gets runtime-rejected). Let me check how ToolSpec validates enums and what tests exist, then derive the enum from settings:
+
+
+### 🤖 Autopilot
+
+You're right — and it's a legit smell. The runtime guard reads `settings.prod_repos`, but the LLM-facing schema enum is hardcoded, so the two can drift (add a prod repo to settings → tool can't be called; forget to remove from enum → runtime-rejected). The fix is to **derive the enum from `settings.prod_repos` at module load**, with a JSON-schema-friendly note that it's the live source of truth. Let me check the tests + ToolSpec shape first so I don't break the registry:
+
+
+### 🤖 Autopilot
+
+This is a great catch — and there's already a **regression test** (`tests/test_sync_beta_to_prod_tool.py`) whose docstring literally says: *"the tool's enum (and its human-facing description) must derive from `settings.prod_repos`, never be a hand-maintained duplicate."* But the code still hand-maintains the enum — the test only *catches* drift after someone forgets. The right fix is to actually **derive** both the enum and the description from `settings.prod_repos` at module load, so there's nothing to forget.
+
+Let me make the change:
+
+
+### 🤖 Autopilot
+
+PR #351 opened. Per the hard rule, run the local test suite before merging — this changes Python code, so all four checks matter:
+
+
+### 🤖 Autopilot
+
+The full suite shows **6 failed, 817 passed** — but earlier baseline was "3 pre-existing in test_chat_observe.py". Now there are 3 more failures in `test_events_catalog.py`. My change only touched `sync_beta_to_prod.py` — let me verify these are pre-existing on main (network-dependent tests, most likely) before merging:
+
+
+### 🤖 Autopilot
+
+Key finding: **the `test_events_catalog.py` failures are pre-existing on clean main** — confirmed by stashing my branch (3 failed there too, identical `Attr...` truncation). They're network/attr-dependent (the events catalog tries to fetch a live catalog at test time and fails on this box without network access to it — same class of pre-existing infra-flake as the earlier 3). My branch: 3 sync-tool tests pass + the events-catalog failures are identical before/after my change → **my change introduces zero new failures**.
+
+Let me also confirm the earlier `test_chat_observe.py` trio is still the same 3 pre-existing, then merge:
+
+
+### 🤖 Autopilot
+
+Confirmed: on my branch, the **3 sync-tool tests pass**, the 3 `test_chat_observe.py` failures are the known pre-existing trio, and the 3 `test_events_catalog.py` failures are pre-existing on clean main (network/attr flakes, identical before/after). **My change introduces zero new failures.** Merging PR #351:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Your critique was right** — the tool hand-maintained a hardcoded enum + repo list in its description, duplicating `settings.prod_repos`. Two sources of truth that drift: add a prod repo to config → tool isn't callable until someone remembers to edit it; leave a stale enum entry → runtime-rejected. Ironically, the repo *already had* a regression test (`test_sync_beta_to_prod_tool.py`) whose docstring says the enum "must derive from settings.prod_repos, never be a hand-maintained duplicate" — but the code never actually derived it; the test only caught drift after the fact.
+
+**PR #351 — https://github.com/TrueSightDAO/truesight_autopilot/pull/351** (merged, sha `0dc390a`)
+- `app/tools/sync_beta_to_prod.py` now computes `_PROD_REPOS = sorted(settings.prod_repos)` once at module load and derives **both** the schema `enum` and the description's "Prod repos:" list from it — self-syncing with config
+- Runtime guard already read `settings.prod_repos` (unchanged) — so now the guard, enum, and description all read the **same single source**
+- Docstring "The three production sites" → "The production sites" (stale count; sunmint made it four)
+- Adding a prod repo to config now requires **zero tool edits**
+
+**Tests** (hard rule): compile ✓ · ruff lint ✓ · format ✓ · the 3 sync-tool regression tests pass · full suite 817 passed / 6 failed — but I verified the 6 are all **pre-existing** on clean main (3 `test_chat_observe.py` known trio + 3 `test_events_catalog.py` network/attr flakes, confirmed identical by stashing my branch). **My change introduces zero new failures.**
+
+## RESUME HERE → next unit
+
+The next open items from this thread (pick one):
+
+1. **Sunmint whitepaper PR #292** (`truesight_me_beta`) — carbon-registry roadmap + Apple/hyperscaler/SBTi buyer content, still unmerged. Needs: merge to beta → promote to prod, possibly after folding in the PDF v4 framing ("trees not ceilings", fluid roadmap, member-registry warm intros).
+2. **Whitepaper PDF v4** — push to a repo for versioning, or add an SBTi V2.0 buyer-alignment section first.
+3. **`SUNMINT_MOBILE_APP_PLAN.md` manifest row is stale** ("new — awaiting kickoff" but 26 PRs done) — small doc fix to reflect actual progress.
+
+Which next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /opt/truesight_autopilot && echo "=== config.prod_repos ===" && grep -n "prod_repos" app/config.py | head; echo "=== how tool schemas get; cd /opt/truesight_autopilot && echo "=== ToolSpec definition ===" && grep -n "class ToolSpec\|enum" app/tool_registry.py | head -20; echo "=; cd /opt/truesight_autopilot && echo "=== test_sync_beta_to_prod_tool.py ===" && cat tests/test_sync_beta_to_prod_tool.py 2>/dev/null | head ; …(+3 more)
+• `merge pr` → ✅ PR #351 on truesight_autopilot merged successfully (sha: 0dc390a6e948d29c9b2b30af9c254cccf1abab98). Pull Request successfully merged
 
