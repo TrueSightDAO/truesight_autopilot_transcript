@@ -4403,46 +4403,55 @@ Let me verify a free no-key satellite basemap that works immediately (ESRI World
 ### 🤖 Autopilot
 
 ESRI World Imagery works (200, real satellite imagery, no key). The fix is clear: **use ESRI as the satellite basemap now** (free, no key), and **drop the live Sentinel-2 WMS layer from V1** — the satellite layer will come from our own **cache** (the scaffold we built) once CDSE creds are set, which is the correct architecture anyway (no live WMS dependency at all). Let me see the rest of the map script to write the fix precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full picture confirmed. The fix: replace the key-requiring Sentinel-2 WMS layers with **ESRI World Imagery** (free, no key, verified 200) as the satellite basemap, repurpose the toggle to Satellite/Map, and note that Sentinel-2 NDVI layers arrive via the CDSE cache pipeline. Applying the patch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 4 patches applied + buttons found. Let me relabel the buttons (TrueColor→Satellite, NDVI→Map) and validate the JS:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All patches clean (0 WMS refs, buttons relabeled, JS OK on the first script). But that first script is only 436 B — let me verify ALL inline scripts validate, then push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 4 scripts validate. Pushing the fix as a PR (two-step: open branch, then upload real file):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool requires explicit edits/writes. Using a precise edit hunk instead:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch doesn't have the SATELLITE_BASEMAP line yet (main still has the old WMS code). Let me use the actual current main content as the edit base — replacing the old WMS block directly:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #320 opened with the base edit applied. Now uploading the full real patched file from disk to the branch:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real content now on the branch (commit `b9ea5396`). Let me verify the PR diff is clean via the authoritative API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4642,4 +4651,94 @@ So you can **skip the broken Copernicus registration entirely**. The caching pip
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp && TS=$(date +%s) && echo "=== map zoom config in live page ===" && curl -s "https://beta.truesight.me/sunmint.html?cb=$TS" -o live_; cd /tmp && echo "=== 1. Earth Search STAC (AWS-hosted Sentinel-2, no registration) ===" && curl -s -m 20 "https://earth-search.aws.element84; cd /tmp && echo "=== wider window + check bbox ===" && curl -s -m 25 "https://earth-search.aws.element84.com/v1/search?collections=sentinel-; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Go for whatever you suggest.
+
+
+### 🤖 Autopilot
+
+Executing both: (a) rewrite the cache script to Earth Search STAC (no registration), (b) widen the map default zoom. First, read the current script + workflow + confirm the exact map lines to patch:
+
+
+### 🤖 Autopilot
+
+Executing both. First, rewrite the cache script for Earth Search (no auth) — writing it locally and linting:
+
+
+### 🤖 Autopilot
+
+Ruff wants formatting — applying it, then a functional test against the real Earth Search endpoint:
+
+
+### 🤖 Autopilot
+
+The STAC 400s — likely the `now` datetime token isn't accepted (my earlier working test used explicit dates). Let me debug quickly:
+
+
+### 🤖 Autopilot
+
+Confirmed: Earth Search doesn't accept the `now` token (needs explicit RFC3339). Fixing the script to use the current UTC timestamp, then re-running the functional test:
+
+
+### 🤖 Autopilot
+
+The script works end-to-end: **9 cells, 36 scenes cached** from the real index — including the FounderHaus cell (`-27.44_-48.5`, 2 trees) with the cloud-free Aug 21 scene (0.01% cloud, 18.5 KB preview). Now update the workflow (drop CDSE env vars — no longer needed) and patch the map zoom (15 → 11 for a regional view):
+
+
+### 🤖 Autopilot
+
+All files ready. Pushing: cache script + workflow to sunmint (established direct-to-main pattern for that data repo), and the map zoom via PR to truesight_me_beta:
+
+
+### 🤖 Autopilot
+
+Both files pushed to sunmint main. Now the map zoom via PR to truesight_me_beta:
+
+
+### 🤖 Autopilot
+
+PR #321 opened with the real edit (replace_all worked this time). Let me verify the diff is clean via the authoritative API:
+
+
+### 🤖 Autopilot
+
+PR #321 is clean (+2/−2, mergeable, both setView calls at zoom 11). Merging it so the regional view goes live, then converging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Here's the turn report.
+
+## ✅ What I did this turn — satellite cache switched to Earth Search (no registration) + map zoom widened
+
+**1. Cache script rewritten — `sunmint/scripts/cache_satellite_scenes.py`** (commit `39ba9abe`, verified):
+- Switched from Copernicus (CDSE — the broken registration) to **Earth Search STAC** (AWS-hosted Sentinel-2 L2A, **anonymous, no API key**)
+- Fixed the `now` datetime token (Earth Search needs explicit RFC3339 — found via live 400 debugging)
+- **Functional test passed against the real index: 9 cells, 36 scenes cached** — including the FounderHaus cell (`-27.44_-48.5`) with the cloud-free **Aug 21 scene (0.01% cloud, 18.5 KB preview)** — the day FounderHaus was planted
+- Still degrades gracefully (STAC down → warn + exit 0); lint clean (compile, ruff check, format)
+
+**2. Workflow updated — `sunmint/.github/workflows/cache-satellite-scenes.yml`** (commit `f006240e`): dropped the CDSE env vars entirely — no credentials needed anymore. Daily 06:30 UTC, writes `satellite/<lat>_<lng>/<scene-date>.jpg` + `manifest.json`.
+
+**3. Map zoom widened — [truesight_me_beta#321](https://github.com/TrueSightDAO/truesight_me_beta/pull/321) merged** (`318802d6`, +2/−2): default zoom **15 → 11** (parcel → regional view) so visitors see the pilot area in context first.
+
+## 📌 RESUME HERE → next units
+1. **Run the cache workflow once** (Actions tab `workflow_dispatch` on sunmint, or I trigger via API) → `satellite/` populates with real scenes → then wire the **date-slider history** on the impact map layered from `manifest.json`
+2. **Verify map zoom 11 on beta** after Pages rebuild (`beta.truesight.me/sunmint.html`)
+3. **Promote truesight_me_beta → prod** (#318 whitepaper, #319 map, #320 ESRI fix, #321 zoom) — after your beta review sign-off: `sync_beta_to_prod(truesight_me_prod)`
+4. **Standing:** `sunmint_prod` `prod_repos` config line + monitor page promotion; test-row cleanup
+
+**No CDSE registration needed anymore** — you can drop that task entirely; Earth Search gives us the same Sentinel-2 data anonymously.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp && echo "=== current cache_satellite_scenes.py (sunmint repo) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmin; mkdir -p /tmp/es_cache && cat > /tmp/es_cache/cache_satellite_scenes.py << 'PYEOF' #!/usr/bin/env python3 """Cache Sentinel-2 preview scenes; cd /tmp/es_cache && python3 -m ruff format cache_satellite_scenes.py && python3 -m ruff check cache_satellite_scenes.py && python3 -m ruff f; …(+4 more)
+• `merge pr` → ✅ PR #321 on truesight_me_beta merged successfully (sha: 318802d6c998b1f02b54f3260500c06f24e8b4d6). Pull Request successfully merged
 
