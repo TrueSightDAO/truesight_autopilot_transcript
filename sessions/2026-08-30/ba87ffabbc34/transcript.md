@@ -3842,31 +3842,37 @@ Now (c) — the **impact-map V1 PR**. Building the Leaflet map section for sunmi
 ### 🤖 Autopilot
 
 Let me see the structure around the Highlights section close (200-230) to insert the map section cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clear insertion point: after `</section>` (line 226, end of Highlights), before the footer div. Now building the map section — Leaflet + tree markers from the live index.geojson + anonymous Sentinel-2 WMS layer + NDVI toggle:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Map section inserted. Now adding the Leaflet init script (load Leaflet CDN, fetch tree index, render markers + Sentinel-2 WMS layers) before `</body>`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Map script added and JS validates. Pushing the map V1 as a PR — using the proven two-step (open branch via git_push_changes with a small edit, then upload the full real file from disk):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #319 opened (placeholder content on branch, as expected). Fixing with the real local file:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real content on the branch. Verifying the PR diff via the authoritative API (raw CDN is unreliable):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4037,4 +4043,30 @@ Say "go" to verify on beta, or to start the satellite caching pipeline.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/contents/sunmint/whitepaper/index.html?ref=docs/sunmint-whit; cd /tmp && python3 << 'PYEOF' import re c = open('/tmp/wp_esc.html', encoding='utf-8').read() # check for any literal backslash-u (single ba
 • `merge pr` ×2 → ✅ PR #318 on truesight_me_beta merged successfully (sha: 37ab680f309efa81cebb28b4011840128916b792). Pull Request successfully merged; ✅ PR #319 on truesight_me_beta merged successfully (sha: 0a7e521a3b8e636b45dffdf1f9ea53608439c16c). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] let me know when you start needing the API key. Let me know which website to go to to get the API key. I believe the caching will probably be a python script in a github repo which gets triggered, reads the API key from the repo's environment setting variables and then write to the sunmint subfolders after ingesting the geojson index or something...
+
+
+### 🤖 Autopilot
+
+Quick verification of the exact CDSE registration URL + credential format so I give you the right link, not a guess:
+
+
+### 🤖 Autopilot
+
+Great news: **we don't need the API key yet** — the V1 map (already merged) uses anonymous Sentinel-2 tiles, no key. We'll need the key when we build the **caching pipeline (V1.1)**, which is exactly the script you just described. Here's the setup.
+
+**When you'll need it:** when I build the caching job — a Python script in the sunmint repo, triggered on the daily rebuild workflow, that (1) reads the tree index (geojson), (2) queries Copernicus for recent low-cloud Sentinel-2 scenes over the pilot area, (3) downloads small previews, and (4) writes them into `sunmint/satellite/<lat>_<lng>/` with scene-date filenames — exactly your design. The script reads the credentials from **GitHub repo environment secrets**, never from the repo itself.
+
+**Where to get the key (one website):**
+1. Go to **https://dataspace.copernicus.eu** → **Register** (top right). Free account; username = your email, plus a password.
+2. After registering, log in → **Dashboard → My Account** → there's a section to create an **OAuth2 client** (gives you a `client_id` + `client_secret` — this is the "API key" pair).
+3. Send me the **client_id + client_secret** via a private channel (never in Telegram chat), and I'll store them as **GitHub repo secrets** (`CDSE_CLIENT_ID`, `CDSE_CLIENT_SECRET`) on the sunmint repo — then the workflow reads them from the environment.
+
+**Timeline:** we don't need it until we start V1.1 (the caching job + date-slider history). The map with markers + live satellite layer works today without it. So — no rush, but whenever you're near a computer, the dataspace.copernicus.eu registration takes ~5 minutes, and once you've got the client credentials, hand them to me and I'll wire the whole pipeline.
+
+One note: I'll also add a fallback in the script so if the CDSE fetch ever fails, the map still shows our tree markers — the satellite layer is enhancement, not a single point of failure.
 
