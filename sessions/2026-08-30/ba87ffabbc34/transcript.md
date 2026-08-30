@@ -3415,6 +3415,7 @@ Let me read the rest — particularly the traceability/MRV sections and whether 
 ### 🤖 Autopilot
 
 The whitepaper is comprehensive but **missing exactly what you just described** — the tree-anchored carbon credit transaction lifecycle (issue → sell → money to tree → payout to farmer, all on-chain). Let me find the insertion point in the HTML (end of section 12 + the "On this page" nav list):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3422,11 +3423,13 @@ The whitepaper is comprehensive but **missing exactly what you just described** 
 Now I have the full picture. The whitepaper's section 7 mentions on-chain verification generally, but **doesn't have a dedicated section on the tree-anchored carbon-credit transaction lifecycle** (issue → sale → proceeds to tree → farmer payout, all recorded on-chain with the tree as anchor) — exactly what you described. I'll add that as a new section with a TOC entry. This is truesight_me_beta (beta-first for the site, like the other apps).
 
 Let me get the exact HTML around section 12's end (line 275-290) to place the new section cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is a two-part task: (1) add the on-chain carbon credit lifecycle (the tree-anchored transaction flow you described) to the **SunMint Whitepaper** on truesight.me, and (2) update the **field PDF** with the same loop so farmers see how measurement → credits → payment works. Starting with the whitepaper — building the new section locally against the current file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3569,4 +3572,48 @@ Good — current picture confirmed. Here's the answer.
 **One honest note:** with 19 trees and 10 m resolution, the map is symbolic-but-real for now — it shows the *system* (trees on a real satellite map) before scale. That's the right message for a marketing page.
 
 **Want me to go with CDSE for V1?** If yes, I'll start the PR (tree markers + Sentinel-2 basemap layer), and we can add the CDSE OAuth token as a follow-up for the live NDVI layer.
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Do you need an API key to call it. Also I wonder if it is necessary to have caching of the satellites image of the area under monitoring so that we can show history
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018]
+
+
+### 🤖 Autopilot
+
+Quick verification on the anonymous-access question so I give you a correct answer, not a guess:
+
+
+### 🤖 Autopilot
+
+Both questions answered, grounded in the current docs:
+
+## 1. Do you need an API key?
+
+**Depends on which access path:**
+- **WMS/WMTS tile serving (what a Leaflet map uses): anonymous access — no API key, no OAuth2 token.** This is the big one for V1: the map in the browser can pull Sentinel-2 tiles straight from the CDSE WMS endpoints with zero secrets on our side. That's exactly what we want for a public page.
+- **STAC/OData catalog search + downloads (metadata, full images): requires a free CDSE account** → client_id/client_secret → OAuth2 bearer token, with per-account quotas. Needed for the *history/caching* leg below (fetching actual scenes), not for the basic map.
+
+So: **V1 map = no key needed.** The caching/history pipeline = needs a free CDSE account (for me to script, stored server-side — never in the page).
+
+## 2. Should we cache satellite images for history? — Yes, absolutely
+
+Not only is it a good idea, **it's essentially required** by the program's logic:
+
+- **The carbon methodologies (VM0047/PM002) are change-over-time claims** — "reforested land that stayed forested" / "no deforestation ≤5 years." A single current image can't prove change; a **time series** can.
+- **History is your audit evidence.** When the VVB audits, they'll want to see the parcel *before* and *after* — a cached archive of ~5-day-revisit imagery is exactly the proof trail.
+- **It also future-proofs the calibration loop** — ground measurements ↔ satellite vegetation trend, compared across time.
+
+**Concrete caching design (small, cheap):**
+- A scheduled job (reuse the daily rebuild workflow) that **queries CDSE STAC for the pilot area's Sentinel-2 L2A scenes** (low-cloud, most recent), and stores **small preview tiles** (not full gigabytes — just the ~1–5 MB JPEG/GeoTIFF previews) in the **sunmint repo / treasury-cache** — same pattern as the tree index.
+- The map then layers **"most recent" + a date slider** showing historical captures for the same area.
+- Storage is trivial (a few MB per scene × handful of parcels), fully under our control, no dependence on CDSE quota at page-load time.
+
+**V1 recommendation:** ship the map now with **anonymous WMS tiles (no key)** + our tree markers. **V1.1:** add the caching job (free CDSE account) → then the date-slider history view becomes the *differentiator* — "watch our trees grow from space" — which is both marketing gold and real audit evidence.
+
+Want me to start the V1 PR (sunmint.html + Leaflet + anonymous Sentinel-2 WMS layer + tree markers from index.geojson)?
 
