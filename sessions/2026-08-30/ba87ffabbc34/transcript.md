@@ -8,323 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-The "card" is the **calibration card** — a small, known-size reference object placed against the trunk in the photo so the analysis can measure the tree.
-
-**Why it's needed:** the PM002 measurement works by **photogrammetry** — the photo shows the trunk at some scale, but the computer can't tell from the image alone whether it's looking at a 10 cm or 30 cm trunk. A credit-card-sized reference object with a **known physical size** (standard ISO-7810 card, 85.6 × 54 mm) lets the analysis compute the pixel-to-centimeter ratio, then measure the trunk diameter at breast height (1.3 m) accurately. This is exactly how TREEO and other certified dMRV tools do it — still photo + in-frame reference for scale.
-
-**In practice:** the field agent holds the card against the trunk at chest height, takes the close-up so both the card and the trunk are fully in frame, and the software does the math. It's the "yardstick in the photo" principle.
-
-**Important question this raises for you:** do the field agents actually **have** a physical calibration card yet? If not, the flow needs a decision:
-- **(a)** Issue printed cards (or a plastic card) to agents — simplest, matches the standard;
-- **(b)** Let the app display a card on-screen (phone-screen card in frame — some tools do this, though harder to calibrate);
-- **(c)** Accept any known-size object (e.g. a bank card) with the size entered manually.
-
-The current UI copy ("card + trunk") assumes the agent has one. Want me to:
-1. **Clarify the label** so it's obvious (e.g. "Close-up: calibration card against the trunk (1.3 m)") plus a small "what is this?" hint under it, and
-2. **flag the physical-card question** to the team — because if agents don't have cards yet, that's a supply/logistics item to solve before field rollout?
-
-Say the word and I'll update the copy + add the help hint.
-
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] Also I think we should indicate how often the measurements need to be made. Can you research? 
-
-I think in the dropdown if the measurement for a tree was not recently made within the critieria, it should show some visual icons.
-
-
-### 🤖 Autopilot
-
-Good asks — let me research the monitoring cadence against real carbon-program requirements, and check what `last_measured` data we actually have in the index to power the overdue indicators.
-[2 tool result(s) compacted: web_search, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Research done, and it surfaced a **data bug** you'll want to know about. Two parts:
-
-## 1. Monitoring cadence (what the carbon programs actually require)
-
-| Standard | Monitoring cadence |
-|---|---|
-| **CAR** | Annual monitoring report; verification within 1 year of each reporting period |
-| **ACR** | Continuous reporting, typically annual field measurement |
-| **Plan Vivo** | Annual reporting / 5-yr verification |
-| **Verra (VCS)** | Assessment every 5 years; continuous reporting with no gaps |
-| **Gold Standard** | 3–5 year audit cycles |
-| **2026 dMRV pilots** | Pushing toward much more frequent (even monthly) measurement + issuance |
-
-**Sensible design for SunMint** (smallholder cacao/agroforestry, dMRV-credible but realistic for field agents): **annual minimum** (≤12 months) — matches the mainstream programs — with a **recommended 6-monthly cadence for young trees (<3 yr)** where growth is fastest and the growth curve benefits most. That gives a defensible "measurement due" criterion: **overdue at >12 months since last measurement**.
-
-## 2. Data bug that blocks the overdue icons
-
-The current `index.geojson` has **`last_measured` set to the tree_id string** (e.g. `last_measured: "Edgar_20260821175134_005"`) and `planted_at: None` for **all 18 trees** — the generator is reading the wrong sheet columns. So the overdue indicator can't be computed until I fix the generator to pull real dates from the SunMint Tree Planting sheet.
-
-## 3. Proposed dropdown UI (once data is fixed)
-
-- 🟢 **Green** — measured within 12 months
-- 🟠 **Amber** — approaching due (9–12 months)
-- 🔴 **Red** — overdue (>12 months)
-- ⚪ **Gray** — planted but never measured (needs first measurement)
-- Plus a small "measurement due" tooltip/text and, on the tree detail panel, "last measured: 2026-08-21 · due: 2027-08-21"
-
-**Proposal:** fix the generator's date columns → regenerate the index → add the status icons to the dropdown + detail panel. Want me to go ahead?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/trees/index.geojson?x=$TS" | python3 -c " i
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-go for it.
-
-
-### 🤖 Autopilot
-
-Executing: fix generator date mapping → regenerate index → add overdue status icons to the dropdown + detail panel. First, let me examine the generator and the actual sheet columns to map the date fields correctly.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The generator bug is visible: `c_time = idx(header, "planted", "date", "time")` → `last_measured` is being filled with the tree_id value — the header match is landing on the wrong column. I need the actual sheet headers to fix the mapping. Also, the agroverse creds path doesn't exist on this box — let me find it and read the headers.
-[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The generator's header matching is too loose — `"id"` matches "Telegram Update ID" and `"date"` matches "Status date". Let me see the rest of the generator (the feature-emission part) and the FounderHaus/LINKED rows to fix the mapping precisely.
-[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have the authoritative picture. The generator's `idx()` matching is too loose — `"date"` matches **"Status date"** (col 7, `20260821`) before **"Tree Planting Time"** (col 17, ISO timestamp), and `"id"` matches **"Telegram Update ID"** (col 1) first. Let me fix the mapping precisely and regenerate locally with the real creds to verify:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found the deeper bug: `idx()` checks **all needles against each header**, so `"planted"` matched **"Photo of Tree Planted"** (col 9) before "Tree Planting Time" — that's why `last_measured` got the photo URL. Fixing with exact-then-prefix matching, needle-priority:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`planted_at` is still None even for FounderHaus (whose col 17 has a timestamp) — the column mapping still isn't resolving. Let me debug the header resolution directly against the live sheet:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The header mapping now resolves **perfectly** — but the local run's `planted_at` was still None because **`/tmp/builder.py` is the pre-patch version**. The debug shows: `c_time → 16` (Tree Planting Time) ✓, FounderHaus row 17 = `2026-08-21T17:51:31.626Z` ✓. Let me re-patch the local builder (the previous patch's `old_cols` had different whitespace — I applied the idx patch but the cols patch silently failed). Redoing both patches and re-running:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The cols patch **did** apply (the check string I used was the old-style `"update id"` without "telegram"). The idx patch is applied, cols are applied — but the run still showed None because that run happened **before** these latest patches (the runs were sequential in the same command; the second run used the patched idx but the file got the cols patch in the same script... let me just re-run now and confirm):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The mapping resolves correctly in the debug (c_time→16, FounderHaus row[16] has the timestamp), yet `planted_at` is still None. Let me trace the actual `load_trees` from the builder file directly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The builder **is correct** — FounderHaus now carries `planted_at: '2026-08-21T17:51:31.626Z'`. The earlier CLI runs returned None because `get_sheet()` uses `GOOGLE_SERVICE_ACCOUNT_JSON` from env — and my heredoc run exported it, but the earlier `/tmp/builder.py` runs were **before the cols patch saved**. Now it works. The `469027268` row has `planted_at: None` legitimately — those older rows have "Status date" (20250711) but no "Tree Planting Time" value (col 17 empty) — they predate the planting-time column.
-
-Now let me upload the fixed builder + regenerated index to the `sunmint` repo, then add the overdue-status UI to the monitor page:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The builder is correct. Now uploading the fixed builder + regenerated index to the `sunmint` repo, then building the overdue-status UI in the monitor page:
-[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Builder + index are live on `sunmint` main. Now the UI: add the overdue/measurement-status icons to the dropdown + detail panel on the monitor page. Let me look at the current dropdown + detail rendering code to wire the status logic:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the full picture. Now let me see how `lastMeasured` is set in `loadTreeIndex` and the rest of `renderTreeDetail`, then build the status logic:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have everything. Now let me build the measurement-status logic and UI. Plan:
-- **Status computation** (from `lastMeasured` / `planted_at`): 🟢 OK (<9 mo) · 🟡 due-soon (9–12 mo) · 🔴 overdue (>12 mo) · ⚪ never-measured
-- **Dropdown**: prepend status emoji to each tree option + a legend
-- **Detail panel**: a status row with the badge + "due date" text
-
-Applying to the monitor page (direct-to-main per the established fast-UAT flow this thread has been using for sunmint_beta after your earlier tacit approval of the direct commit — flagging again that I can switch to PRs if you prefer):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All edits applied and validated (21/21 divs, measureStatus wired, JS syntax OK). Uploading to sunmint_beta:
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Done — both pieces shipped. Here's the full report.
-
-## ✅ What I did this turn — measurement cadence research + overdue indicators
-
-**1. Researched monitoring cadence (real carbon-program standards):**
-- **CAR**: annual monitoring report, verification within 1 yr of each period
-- **ACR / Plan Vivo**: continuous reporting, typically annual field measurement
-- **Verra VCS**: assessment every 5 years, continuous no-gap reporting
-- **Gold Standard**: 3–5 yr audits · **2026 dMRV pilots**: pushing toward monthly
-- **Design adopted: annual minimum (365 days)**, with 6-monthly recommended for young trees — defensible against the mainstream programs
-
-**2. Fixed a data bug** (this was the real blocker for the icons): the generator was reading the wrong columns — `last_measured` was filled with the tree_id or photo URL. The column matcher was too loose (`"date"` hit "Status date", `"planted"` hit "Photo of Tree Planted"). Fixed with needle-priority exact/prefix matching → **real `planted_at` timestamps now flow** (FounderHaus: `2026-08-21T17:51:31.626Z`). Pushed: `sunmint/scripts/build_tree_geojson.py` (`3e377f98`) + regenerated `sunmint/trees/index.geojson` (`4032d760`).
-
-**3. Overdue status UI (live on main, commit `63d6c8ba`):**
-- **Dropdown**: each tree now shows a status emoji — 🟢 up to date (<9 mo) · 🟡 due soon (9–12 mo) · 🔴 overdue (>12 mo) · ⚪ never measured
-- **Detail panel**: new "Measurement:" row with the badge + due date (e.g. "🔴 Overdue · due 2027-08-21")
-- i18n added (pt + en); JS validated (`node --check` OK, 21/21 divs)
-
-**Note:** 7 of the older trees (e.g. `469027268`, Corvallis) have no planting-time value in the sheet, so they show ⚪ "never measured" until a first measurement lands — which is accurate (they've never had a growth measurement).
-
-## 📌 RESUME HERE
-1. **Verify live on beta** — after Pages rebuild: dropdown shows status emojis; detail panel shows the measurement row with due date
-2. **Follow-up decision for you:** the "never measured" Corvallis trees were planted ~2025-07 — they're already **overdue for a first measurement** by the 12-month rule (worth flagging to the field team)
-3. Remaining backlog: `TGM_GITHUB_TOKEN` Script Property, then **UAT** → `sync_beta_to_prod(sunmint_prod)`
-
-⚠️ Process flag (same as before): I committed direct-to-main on sunmint_beta again for speed during UAT iteration. Happy to switch to PRs if you prefer review gates on these.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×14 → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/scripts/build_tree_geojson.py?x=$TS" | pyth; cd /tmp && python3 << 'PYEOF' import json from google.oauth2 import service_account import gspread creds_path = '/opt/truesight_autopilot/co; echo "=== find SA creds on box ===" && find /opt/truesight_autopilot /home/ubuntu -iname "*agroverse*" -o -iname "*qr_code*manager*" 2>/dev/; …(+9 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] So if a tree is too far away from a person's current location unless the person is a Governor, not allowed to take measurements and upload. Also if the person is a Governor, the person can indicate a tree is invalid...
-
-
-### 🤖 Autopilot
-
-Good — this is a proximity + governance gate, which touches the measurement flow end-to-end. Let me ground the design in what already exists (governor identity, GPS capture, the status system) before proposing.
-[2 tool result(s) compacted: search_code, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me look at the governor-check implementation and the current monitor page's GPS/submit flow to design the gate precisely.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me pull the governor list source (the GAS constants) so the client-side gate can mirror the same authoritative list.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-This is a meaningful governance feature — let me lay out the design before building, since three specifics need your call (threshold, how the page knows someone is a governor, and what "mark invalid" emits). Here's the grounded plan:
-
-## Proximity gate + governor override + invalid flag
-
-**1. Proximity gate (field agent flow)**
-- The page already computes `haversine()` distance to each tree (dropdown sort). I'll add a **submission gate**: when the selected tree's distance exceeds a threshold, the "Send measurement" button **disables with a message** ("You appear to be X km from this tree — measurements must be taken on-site"). GPS accuracy is 5–15 m, so on-site = well under threshold.
-- **Threshold — your call:** I propose **200 m** (someone standing at the tree with a bad GPS fix still passes; anyone not on-site fails). Alternatives: 100 m (strict) or 500 m (loose). Carbon programs don't dictate this — it's an anti-fraud control, so it's our choice.
-
-**2. Governor detection (the tricky part — needs your nod)**
-The page is static; the authoritative gate lives server-side (GAS `isGovernorByName_` checks the **Governors tab** on the destination sheet — I confirmed the pattern exists in `process_tree_planting_link.js`). But the page needs to *show* the governor UI (override + invalid button) before submit. Two layers:
-- **Client UX:** publish a small **`governors.json`** (names/emails) into the `sunmint` repo, regenerated by the same rebuild workflow — page fetches it and compares against the linked email / signature name. (Treasury-cache pattern again.)
-- **Server enforcement (the real gate):** the GAS handler `process_tree_growth_monitoring.gs` already resolves the contributor name from the RSA signature — I'll add `isGovernorByName_` **and** re-check the submitted lat/lng against the tree's coords, rejecting out-of-range non-governor events. Client gate = UX only; GAS gate = truth.
-
-**3. Governor "mark invalid"**
-- Governor-only button on the tree detail panel: "Mark tree as invalid" → sets `status: INVALID` in the tracking + index, tree grays out in the dropdown and can't be measured.
-- **Mechanism — your call:** (a) a **new signed event type** (e.g. `[TREE INVALIDATION EVENT]` — cleanest for the audit trail, matches the taxonomy), or (b) a `[TREE GROWTH MONITORING EVENT]` with `- Action: INVALID` flag (simpler, one event type). I lean **(a)** — invalidation is a high-stakes action and deserves its own signed, gated event, but (b) is fine for P1a speed.
-
-## What I'll build once you confirm (threshold + invalid mechanism)
-1. `governors.json` in `sunmint` repo + workflow regeneration
-2. Client gate: distance check + governor override UI + invalid button (i18n pt/en)
-3. GAS handler enforcement: `isGovernorByName_` + server-side distance re-check + invalid handling
-4. Tracking-tab + index updates for INVALID status
-
-**Quick answers needed:** (1) threshold = 200 m OK? (2) invalid via new event type (a) or flag (b)? Then I build it end-to-end.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → cd /tmp && echo "=== isGovernorByName_ impl in process_tree_planting_link.js ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO; cd /tmp && echo "=== monitor page: GPS capture + submit ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/mo; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] I think the camera view port needs to be showing above where it says
-
-Hold the calibration card against the trunk, frame it, and take the photo.
-
-
-### 🤖 Autopilot
-
-You're right — the camera viewport should sit above the instruction text so the agent sees the live feed first, then reads the framing hint. Let me check the current photo-section order and fix it.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The markup confirms it — in both photo panels, the hint `<p>` (line 182/189) sits **above** the `<video>` viewport (183/190). I'll swap so the camera viewport renders above the instruction text. Applying the edit locally:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Swapped and validated — camera viewport now renders above the hint in both panels (video count still 2/2, no duplicates). Uploading:
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Done — shipped.
-
-## ✅ Camera viewport above the instruction
-
-**Committed to `sunmint_beta/main` (`55b7fcfb`)** — in **both** photo panels (Close-up and Context), the live camera viewport `<video>` now renders **above** the hint text ("Hold the calibration card against the trunk…"). The agent sees the live feed first, then the framing instruction.
-
-- Verified: video element now precedes the hint in both panels; no duplicate video tags (2/2); bytes 43,837
-- Will show on `beta.sunmint.truesight.me/monitor-tree-growth/` after the Pages rebuild (~1–2 min)
-
-## 📌 Open threads (unchanged)
-1. **Proximity gate + governor override + invalid-flag** — I laid out the design last message and am waiting on your two calls: (a) threshold = **200 m** OK? (b) invalid via **new signed event type** vs flag on the growth event?
-2. `TGM_GITHUB_TOKEN` Script Property (GAS photo-mirror)
-3. UAT → `sync_beta_to_prod(sunmint_prod)`
-
-Say the word on the proximity/governor design (or "proceed with 200 m + new event type") and I'll build it end-to-end.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html?x=$(date +%s)" -o mon8.h; cd /tmp && python3 << 'PYEOF' p = '/tmp/mon8.html' d = open(p, encoding='utf-8').read() orig = d # Swap: video viewport ABOVE the hint, in b
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11018] when I select a specific tree, the URL should reflect that https://beta.sunmint.truesight.me/monitor-tree-growth/
@@ -3509,6 +3192,7 @@ Clear. The closeup hint doesn't mention the card's dimensions — a farmer can't
 ### 🤖 Autopilot
 
 Validated (JS OK, both languages, divs balanced). Uploading to sunmint_beta main — this is the fast-UAT direct-to-main flow we've been using on this repo, but given it's a user-visible copy change I'll flag it again as usual:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3541,6 +3225,7 @@ Also still open from before, unchanged: the dummy test tree needs re-adding (dro
 ### 🤖 Autopilot
 
 Let me ground this in the actual SunMint plan so the PDF reflects the real state — then I'll build a bilingual field-week checklist PDF.
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3660,4 +3345,26 @@ Updated PDF sent — now pointing farmers at **just the Android APK**:
 - Plus the offline note (works without internet in the field)
 
 Removed the mobile-website option entirely. Everything else unchanged. The PDF's ready for the field.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] So once the farmer started doing that and then we hooked in the satellite what else do we need to do next? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great question — here's what actually comes next, in priority order.
+
+**First: close the data pipeline.** Right now farmers measure and the photos upload, but the automatic DBH computation from the calibration card isn't wired end-to-end yet — that's the backend photo-analysis workflow we flagged as missing. That's the single biggest piece, because without it, every measurement depends on manual entry and there's no consistent quality control.
+
+**Second: build the ground-truth-to-satellite loop.** The satellite gives you wide-area canopy and deforestation signals, but it can't see individual trunk diameters. The real value comes from using the farmers' ground measurements to *calibrate* the satellite model — so you can scale from "19 measured trees" to "thousands of hectares" with confidence. That calibration is exactly what the VM0047 methodology demands, and it's what makes the carbon math defensible.
+
+**Third: get the carbon accounting right per tree.** Species-specific allometric equations → biomass → CO₂e, aggregated per plot and per farmer, mapped into the ledger. We're capturing species in the field now, which is the raw material for this. And remember the key rule from the methodology memo: existing trees are baseline, not additional — only the reform gains are creditable. The numbers have to reflect that.
+
+**Fourth: the verification and certification path.** That's the PDD, the Plan Vivo first-certification decision, and the VVB audit — they'll want to see the sampling design and the audit trail, which we already have through the signed, timestamped measurements.
+
+**Fifth: the farmer payment loop.** The whole reason the measurements happen is that farmers should get paid for the carbon their trees store — so the credit sale → farmer share mechanism needs to be defined. That's also your strongest retention tool, honestly — a farmer who's been paid for their measurement is a farmer who measures again next year.
+
+And a strategic note: the satellite hooks in *after* the ground layer is flowing, not before. Right now the bottleneck is the first two items — the pipeline and the calibration loop. Get those right and everything downstream — certification, credits, payments — follows.
 
