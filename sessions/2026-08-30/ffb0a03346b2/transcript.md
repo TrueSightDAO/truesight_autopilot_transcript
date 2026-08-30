@@ -603,6 +603,7 @@ The guardrail blocked a manual restart (correct — use the sanctioned tool). `d
 ### 🤖 Autopilot
 
 The deploy tool's staleness check returned **noop** — meaning the running process is *not* stale (config.py's mtime predates the process start at 23:15:45, so the auto-pull after the merge already restarted/loaded it). Let me verify the mtimes and then test the gate directly with a dry-run upload.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -610,16 +611,19 @@ The deploy tool's staleness check returned **noop** — meaning the running proc
 The gate is open: the running process (started 23:15:44) loaded the new config (config.py mtime 23:15:26), `fda_fsvp allowed: True`, `api_only: False`. No restart needed — deploy correctly returned noop.
 
 Now executing the deliverable. Let me gather what I need to rebuild the PDF with video frames and update entity.json.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF has placeholders for date/coords (Gary never confirmed them). Let me check the generation script to add the video frames, and then prepare everything for the fda_fsvp PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The generation script (updated 23:15) already includes the video-frames section, but the PDF on disk is from 23:05 — so I need to regenerate it. Let me re-run the script and verify the output.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -787,4 +791,186 @@ If you give me the actual **visit date, site code, and coordinates** (or tell me
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → ls -la /tmp/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf && echo "===" && python3 -c " import sys; sys.path.insert(0,'/opt/truesight_au
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: The photos look stretched too much sideways. Also can you extract the latitude and longitude information form the images themselves?
+
+If you examined the way I generated the original documents
+each facility had an image 
+
+If you looked at the names of the photos I shared with you you should be able to decipher which photos to associated with which facility in the document. as well as the latitude and longitude embedded wtihin the images... verify with me if you can't extract the latitude longitude information... 
+
+Also the document is missing my signature. I believe there is a private repository with my signature asset. Use that
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] I left some feedback
+
+
+### 🤖 Autopilot
+
+Great feedback — let me dig into all three: (1) EXIF GPS from the photos, (2) facility↔photo mapping from filenames, (3) the signature asset in the private repo. Running the investigation now.
+
+
+### 🤖 Autopilot
+
+Key findings so far — let me dig deeper on the signature asset and original filenames in parallel.
+
+
+### 🤖 Autopilot
+
+Found it: **`signature_assets`** (private) — "Private repo for signature images (e.g. Gary's) used by autopilot instances to stamp documents." That's exactly the repo you meant. Let me look at it, plus verify the EXIF/GPS situation thoroughly and find the original photo filenames.
+
+
+### 🤖 Autopilot
+
+Good progress. Key findings: **no EXIF GPS in any of the 3 photos** (Telegram stripped all EXIF — no GPS, no date, no camera info), and the .MOV has no location tags either. Found the `signature_assets` private repo. Let me check the signature folder and examine how the ORIGINAL CEPOTX PDFs placed images per facility.
+
+
+### 🤖 Autopilot
+
+Found the signature repo. Now let me: (1) definitively check for EXIF markers in the raw JPEG bytes, (2) hunt for the original photo filenames in the transcript/message metadata, and (3) grab the signature PNG.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me: (1) hunt for the original photo filenames in the transcript (they were renamed to UUIDs by the adapter), (2) download Gary's signature to disk, and (3) re-verify facility mapping of the 3 photos via vision.
+
+
+### 🤖 Autopilot
+
+The session file references the photo. Let me check it for original filenames, and also look at how the original CEPOTX PDFs were structured (facility-by-facility images with GPS).
+
+
+### 🤖 Autopilot
+
+The UUID renames came from the adapter — Gary says the original filenames would map photos to facilities. Let me find where original filenames are preserved (adapter logs / transcript repo), and re-check the original CEPOTX PDF layout for per-facility images.
+
+
+### 🤖 Autopilot
+
+Timed out on the broad search — let me be targeted: check the transcript repo for the original message filenames, and extract the original CEPOTX PDF layout (per-facility images + GPS) from my local clone.
+
+
+### 🤖 Autopilot
+
+Now I understand the original structure — **each facility page embeds its own image(s)**, not a separate photo section at the back. Let me find the original photo filenames in the transcript repo (the adapter renamed them to UUIDs) and download Gary's signature to disk.
+
+
+### 🤖 Autopilot
+
+The recursive greps keep timing out. Let me be surgical — target the transcript repo's directory structure directly.
+
+
+### 🤖 Autopilot
+
+The adapter renames attachments to UUIDs at line 714 — but the original filename may be captured in the debug log. Let me check.
+
+
+### 🤖 Autopilot
+
+Good — I now have the full picture of what needs fixing. Let me (1) find the signature PNG on disk or clone it, (2) check the adapter log for original photo filenames, and (3) read the current PDF generator to fix the stretch + facility mapping + signature.
+
+
+### 🤖 Autopilot
+
+I have everything I need. Confirmed:
+- **Signature**: cloned from `signature_assets/gary_teh/gary_teh_signature_transparent.png` (342×159, transparent ink)
+- **GPS in photos**: **cannot be extracted** — I verified the raw JPEG bytes on the box have **no EXIF APP1 marker at all** (Telegram strips EXIF when it re-encodes photos; the adapter downloads the re-encoded version). Same for the .MOV (no location tags). Per your instruction, I'm verifying this with you rather than guessing.
+- **Stretch cause**: the generator forced every image to 5.4×4.05in (4:3 landscape), so the **portrait** pod photo (960×1280) got stretched sideways. Fix: aspect-ratio-preserving layout.
+- **Facility mapping**: my vision-based mapping is Photo 2→Facility A (farm/pods), Photo 3→Facility B (fermentation), Photo 1→Facility C (drying shed) — but the adapter renamed your files to UUIDs so I **can't read the original filenames** to confirm. I'll show you the mapping below.
+
+Let me regenerate the PDF properly: per-facility images (like the original CEPOTX docs), aspect-correct, signature stamped, video frames in Facility A.
+
+
+### 🤖 Autopilot
+
+frame_031 doesn't exist — let me check the actual frames available.
+
+
+### 🤖 Autopilot
+
+frame_031 exists (my earlier `ls` brace pattern was wrong). Now let me extract the full original Paulo farm PDF text so I replicate the exact observation wording, then build the corrected PDF.
+
+
+### 🤖 Autopilot
+
+I have the exact original template. Now let me inspect the embedded images in the original Paulo PDF (per-facility layout) and render the current Santa Anna PDF to see the stretch issue.
+
+
+### 🤖 Autopilot
+
+Now I understand the original layout fully. Key differences to fix:
+1. **Original**: each facility section has its photo **inline on the facility page** (portrait photos ~1200×1600) — mine lumped them in a back section and forced them to 4:3 landscape (→ stretched)
+2. **Signature**: the original has a signature page — mine has text-only; need to stamp the PNG from `signature_assets`
+3. **GPS**: the original has real coordinates per facility
+
+Let me verify the inline-image pattern and check for Santa Anna coordinates in parallel.
+
+
+### 🤖 Autopilot
+
+The web search doesn't give reliable Santa Anna coordinates (the Bahia "Fazenda Santa Ana" result is a *different* farm — that's the Coopercabruca one; the Tavily synthesized coords are unreliable). **I cannot extract GPS from the photos** (verified: zero EXIF in the raw bytes — Telegram strips it on re-encode) — so per your instruction I'm flagging that for your verification rather than guessing.
+
+The 827×827 image is the same logo on every page (header logo). Now let me rebuild the PDF properly:
+
+
+### 🤖 Autopilot
+
+PDF regenerated — 8 pages, aspect-ratio preserved (no more stretching), signature stamped from `signature_assets`, photos inline per-facility. Let me quickly render the pages to verify layout visually, then send it.
+
+
+### 🤖 Autopilot
+
+Layout verified — all images now render at their **native aspect ratios** (no stretching):
+- p2: Facility A pod photo — portrait 0.75 ✓
+- p3: Facility B fermentation — landscape 1.33 ✓
+- p4: Facility C drying shed — landscape 1.33 ✓
+- p5–7: video frames — portrait 0.56 ✓ (native 1080×1920)
+- p8: signature — stamped from `signature_assets` ✓
+
+Sending the corrected PDF for your review:
+
+
+### 🤖 Autopilot
+
+📄 **v2 PDF sent** — `20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf` (2.9 MB, 8 pages) in the thread for review.
+
+## What I fixed based on your feedback
+
+| Issue | Fix |
+|---|---|
+| **Photos stretched sideways** | Root cause: the generator forced every image into 4:3 landscape. Now each image renders at its **native aspect ratio** (pod photo portrait 0.75, shed/fermentation landscape 1.33, video frames 0.56) — verified via placement bboxes, no distortion |
+| **Facility images** | Rebuilt to match your original CEPOTX docs — **each facility section carries its own photo inline** (like the Paulo farm PDF), not a lumped photo section at the back: A=cacao farm (pod close-up), B=fermentation (wood box), C=drying (drying shed) |
+| **Missing signature** | Found `signature_assets` (private repo) → cloned → stamped **`gary_teh/gary_teh_signature_transparent.png`** onto the "Sincerely," page, above the Zhiwen Teh / President / TrueTech Inc block |
+
+Also kept: the video-frame evidence pages (Facility A farm walk, frames 1/5/31 from `walk in the forest.MOV`) and the standard 9-row FSVP observation tables with the original CEPOTX wording.
+
+## ⚠️ Needs your verification (per your instruction)
+
+**GPS cannot be extracted from the photos — confirmed at the byte level.** I scanned the raw JPEG files on the box: **zero EXIF APP1 markers** in all 3 photos. Telegram strips EXIF/GPS when it re-encodes photos on upload, so the version I received has no location metadata. The .MOV also has no location tags (ffprobe shows empty stream tags). So the facility pages still show `[Latitude — to confirm]` / `[Longitude — to confirm]` / `[Google Map link]`.
+
+**Please give me either:**
+1. The **lat/lon for Facilities A, B, C** (or a single farm coordinate if all three are on the farm), **or**
+2. A **Google Maps link** for the farm so I can derive them
+
+## Also — photo↔facility mapping
+
+You mentioned the original photo filenames would map each photo to its facility, but **the Telegram adapter renamed all 3 to UUID hashes** (I checked `telegram_adapter.py` line 714 — it saves as `uuid4().hex`). My mapping below is based on **Grok vision analysis of content**, not filenames — please sanity-check:
+
+| Photo (hash) | My assignment | What vision sees |
+|---|---|---|
+| `36d96f…fb` | **Facility C — drying** | Man in teal polo in open-sided wooden drying shed, beans on floor |
+| `3731b1…df` | **Facility A — farm** | Cacao tree trunk, 3 ripening yellow-orange pods |
+| `64f9bb…ed` | **Facility B — fermentation** | Man leaning over open wooden fermentation box |
+
+If the filenames you sent (e.g. from your phone) say otherwise, tell me the original names and I'll re-map instantly.
+
+**Next once you confirm:** fill coordinates → regenerate → push updated PDF to `fda_fsvp` (PR onto the existing record) → done. Want me to also update the `fsvp/SITE_VISIT_PROCESS.md` runbook with a note that **Telegram strips EXIF GPS, so coordinates must come from the governor or a map lookup**? That's a lesson worth codifying.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×19 → cd /tmp/tg_attachments && ls -la | grep -iE "jpg|jpeg" | tail -20; echo "=== EXIF GPS extraction ==="; python3 << 'EOF' from PIL import Imag; cd /tmp/tg_attachments && python3 << 'EOF' from PIL import Image from PIL.ExifTags import TAGS, GPSTAGS import os targets = ['36d96f406d8649; cd /tmp/tg_attachments && echo "=== raw EXIF marker scan ==="; for f in 36d96f406d86499ab17da0a8675670fb.jpg 3731b132cf7448e0a507078cdf38e6d; …(+15 more)
 
