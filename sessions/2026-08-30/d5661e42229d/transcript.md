@@ -2943,16 +2943,19 @@ Nothing destructive done; no ledger writes beyond the stub submission; no money 
 ### 🤖 Autopilot
 
 Col F reads return empty in Chat Logs — the text must live in a different column there, and the verifier code isn't in dao_protocol's indexed default branch. Let me find both: search org-wide for the verifier, and read a wider row to locate the message text column:
+[2 tool result(s) compacted: search_code, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Col G holds the text (F is a separator). The **successful** 11953 row shows my signature with public key `...utpNWeD7...` — matching my .env key (row 164, Sophia). Now let me read the **failed** 11954 row's text + the E2E runbook that documents `signature_verification`:
+[2 tool result(s) compacted: read_google_sheet, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The runbook is gold — it documents the canonical test keys (`/tmp/sophia_keys_clean.env`), the exact verification endpoint (§4.2 `check_digital_signature` — **must URL-encode**), and the incident traps. The key diagnostic: compare my `.env` key vs the canonical `sophia_keys_clean.env`, and check whether my key still registers via the endpoint. One comprehensive check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2962,11 +2965,13 @@ The runbook is gold — it documents the canonical test keys (`/tmp/sophia_keys_
 - **11954 (failed)**: I had it **backwards** — put the raw signature in "My Digital Signature" and random bytes in "Request Transaction ID"
 
 Edgar's verifier resolves the contributor by the **public key** in "My Digital Signature", then verifies the **signature** in "Request Transaction ID". My later scripts swapped them → lookup failed → `signature_verification: error` + stub row. The successful 061 script used the correct order. Let me confirm the site's exact `signText` format, then re-submit correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the exact shareText assembly around line 1070 (markTreeInvalid) to replicate byte-for-byte:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3165,4 +3170,79 @@ Row **11962 is my correctly-formatted submission** — and it got **past signatu
 3. Then close out the remaining open PRs: merge+deploy `tokenomics #451` (dispatch-failure visibility), promote `sunmint_beta #46` to prod after your review.
 
 No further writes this turn; nothing destructive; no money movement.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] Check those logs. Also why are you hand rolling the script each time??
+
+
+### 🤖 Autopilot
+
+You're right on both counts. Let me (1) try the dao_protocol logs myself, and (2) find whether a proper sign+submit script already exists instead of me hand-rolling RSA in heredocs every time.
+
+
+### 🤖 Autopilot
+
+SSH to dao_protocol is denied as expected (by design — you have that access). Let me find whether a canonical sign+submit script already exists so I stop hand-rolling:
+
+
+### 🤖 Autopilot
+
+Let me search the repos for existing sign+submit tooling — there may be a script in dao_client or the runbook I haven't found:
+
+
+### 🤖 Autopilot
+
+The runbook answers your second question directly — there **is** a canonical E2E harness (Playwright in `dapp_beta`, §4.0) that I should have been using instead of hand-rolled Python heredocs. Let me find those scripts:
+
+
+### 🤖 Autopilot
+
+Found them — there's a whole E2E harness including **`e2e_reject.js`** (the mark-invalid test from 08-29). That's the canonical script I should have been using. Let me read it:
+
+
+### 🤖 Autopilot
+
+Two fair points. Let me answer both directly.
+
+## 1. "Check those logs" — I can't, by design
+
+`ssh_run` to `dao_protocol` returns `Permission denied (publickey)` — same as every attempt this whole session. The governor holds that box's key (`ssh dao_protocol_nelanco`, Nelanco PEM), not me. That's the design boundary you stated yourself ("you don't have access, by design").
+
+**What I *can* tell you from the observable evidence:**
+- My correctly-formatted submission landed in Chat Logs at **22:19:06Z** (row 11962)
+- The tracking tab advanced only at **22:22:40/42Z** — which is **my manual @37 webhook fire**, not auto-dispatch
+- → **auto-dispatch did NOT fire** (or fired before the append — but dispatch runs *after* the sheet append per the pipeline map, so more likely it never fired)
+
+**Please run on the box** (2 commands):
+```bash
+cd /home/ubuntu/dao_protocol && git pull --ff-only && sudo systemctl restart truesight-dao-protocol.service
+journalctl -u truesight-dao-protocol --since "2026-08-30 22:18" | grep -iE "dispatch|TREE_PLANTING_REJECT|webhook"
+```
+Two expected outcomes:
+- **Nothing / "no webhook URL"** → box is running **pre-#150 code** (env var provisioned, but code not pulled — restart alone doesn't fetch the new ROUTING entry) → the pull+restart fixes it
+- **A POST to the @37 URL** → dispatch fired; then the issue is the GAS side (check Apps Script `Executions` page for project `1UrBg…`)
+
+## 2. "Why are you hand-rolling the script each time?" — you're right, there's a canonical harness
+
+The runbook (§4.0) + `/home/ubuntu/dapp_beta/` contain the **proper E2E scripts from the 08-29 validation** — including **`e2e_reject.js`** which I just read. It drives the *real* beta page, injects Sophia's keys (`/tmp/sophia_keys_clean.env`) into localStorage, loads `loadContributorIdentity()`, selects a real tree, and invokes the **production `markTreeInvalid()`** — the actual code path, generating the byte-exact share text. I should have used it instead of re-deriving the format from raw HTML each time (that's exactly how I introduced the swapped-fields bug that cost two rounds).
+
+**Proposed fix (self-improvement):** commit a single **reusable, parameterized submit script** so future E2E is one command, never a hand-rolled heredoc:
+- `scripts/sunmint_submit.py` (in `truesight_autopilot`): loads `sophia_keys_clean.env`, takes `--tree-id --reason`, builds the exact site-format requestText, signs (RSA-2048/SHA-256), POSTs to Edgar, prints `signature_verification` + the Chat Logs row — **no format drift possible**
+- Update `SUNMINT_E2E_RUNBOOK.md` §4.5 to reference it (and note the 22:19/22:22 incident: field order = publicKey in "My Digital Signature", signature in "Request Transaction ID")
+
+That's one focused PR in `truesight_autopilot` — with your go I'll open it next turn (per one-PR-per-turn), and also fold in `e2e_reject.js`'s Playwright flow for the browser-side path.
+
+---
+**RESUME HERE:**
+1. **Governor (box)**: run the two commands above, paste the journalctl output → tells us stale-code vs env vs GAS-side for the auto-dispatch gap.
+2. **Me (next turn, with go)**: open the `sunmint_submit.py` reusable-script PR (+ runbook §4.5 update), so reject/link E2E stops being hand-rolled.
+3. Still open: merge+deploy `tokenomics #451` (dispatch-failure visibility), promote `sunmint_beta #46` to prod.
+
+No writes this turn; nothing submitted; no money movement.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → journalctl -u truesight-dao-protocol --since "2026-08-30 22:00" --no-pager 2>/dev/null | grep -iE "dispatch|TREE_PLANTING_REJECT|webhook|sub; ls -la /home/ubuntu/dapp_beta/*.js 2>/dev/null | head -30; echo "---"; ls -la /home/ubuntu/dapp_beta/ 2>/dev/null | grep -iE "e2e|sunmint|tr
 
