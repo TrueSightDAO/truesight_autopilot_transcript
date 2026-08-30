@@ -4383,11 +4383,13 @@ Let me check what the map is actually requesting and what the tile server is ret
 Found it — the WMS base URL is **`https://sh.dataspace.copernicus.eu/`** — that's the **Sentinel Hub** endpoint, which **requires an API key** (it's the paid OGC service; the `/ogc/wms/` path needs a token). That contradicts what I told you earlier ("anonymous, no key"). The **anonymous** path is the **new Copernicus catalogue WMS** (`https://catalogue.dataspace.copernicus.eu/ogc/wms/…`) — which is what I verified earlier but did NOT use in the map. My error: I used the Sentinel Hub URL that everyone's old tutorials reference instead of the verified anonymous catalogue endpoint.
 
 Let me confirm the anonymous catalogue WMS endpoint works with a direct tile request, then fix the map:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The catalogue WMS path 404s as well. Let me probe the correct anonymous OGC paths on the new catalogue (the path structure differs — likely includes the collection):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4395,6 +4397,7 @@ The catalogue WMS path 404s as well. Let me probe the correct anonymous OGC path
 The picture is now clear and it corrects my earlier claim: **there is no anonymous Sentinel-2 WMS anymore** — the new catalogue only exposes STAC publicly (everything else 404s), and `sh.dataspace` requires auth. So the map's "API key required" is real. My "no key needed" statement was wrong — the old anonymous Sentinel Hub access is gone.
 
 Let me verify a free no-key satellite basemap that works immediately (ESRI World Imagery), so the map stops erroring:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4545,4 +4548,98 @@ Say "go" to promote to production, or flag anything on beta first.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && TS=$(date +%s) && echo "=== 1. live beta page: does it serve the ESRI fix? ===" && curl -s "https://beta.truesight.me/sunmint.htm; cd /tmp/e2e && cat > verify_map_esri.js << 'EOF' const puppeteer = require('puppeteer-core'); const sleep = ms => new Promise(r => setTimeou
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: I wonder if the impact map should actually be that low where it was. I noticed I am having problems registering for an account on https://identity.dataspace.copernicus.eu/auth/realms/CDSE/login-actions/registration?client_id=account-console&tab_id=fnF6vgLTLuI&client_data=eyJydSI6Imh0dHBzOi8vaWRlbnRpdHkuZGF0YXNwYWNlLmNvcGVybmljdXMuZXUvYXV0aC9yZWFsbXMvQ0RTRS9hY2NvdW50LyMvcGVyc29uYWwtaW5mbyIsInJ0IjoiY29kZSIsInJtIjoicXVlcnkiLCJzdCI6ImZiNzBiNTA0LThlMTEtNDdhMC04N2E0LWQyMTVjMmJkMDRhMyJ9
+
+The registration button doesn't seem to be responding... Is this the only free satellite site?
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018]
+
+
+### 🤖 Autopilot
+
+Two good questions — let me check the map's actual zoom config and research alternatives to the Copernicus registration in parallel:
+
+
+### 🤖 Autopilot
+
+Good questions on both. Quick reality-check on the alternatives before I answer (the registration pain may be avoidable entirely):
+
+
+### 🤖 Autopilot
+
+Earth Search STAC works (no registration needed!) but returned 0 features for that window — let me check why before recommending it:
+
+
+### 🤖 Autopilot
+
+`context: None` and 0 features suggests the query shape may need adjusting (possibly the `datetime` format or a `GET` vs `POST`). Let me test the POST form + verify the S3 bucket actually has recent scenes:
+
+
+### 🤖 Autopilot
+
+**Breakthrough — this changes everything.** Earth Search STAC (AWS Element84) works with **NO registration, NO API key**, and has **44 matching scenes** for the FounderHaus area including a near-cloud-free one: **S2B_22JGQ_20260821_0_L2A, cloud 0.01%** (Aug 21) — literally the day the FounderHaus tree was planted. This is a **strictly better path than Copernicus**: same Sentinel-2 data, no account needed, and the S3 preview tiles are publicly accessible (HTTP 200).
+
+So: **Copernicus is NOT the only free option** — you can skip the broken registration entirely. The map caching can use Earth Search + S3. Let me update the plan:
+
+**Recommendation — switch the satellite cache pipeline to Earth Search STAC (no registration):**
+1. Rewrite `cache_satellite_scenes.py` to query Earth Search STAC (POST search verified working) → pick lowest-cloud scene → download the public S3 preview (true-color thumbnail) → store in `sunmint/satellite/<lat>_<lng>/<scene-date>.jpg` (your exact design, no CDSE secrets needed)
+2. The impact map already works (ESRI basemap); the high-res Sentinel-2 layer comes from our cache once populated
+3. Copernicus registration becomes **optional/unnecessary** — no blocked account, no waiting
+
+Let me first answer your zoom question, then wire this up:
+
+**On the map zoom:** the map is set to `setView(PILOT_CENTER, 15)` — zoom 15 (~1 km view, good for seeing individual tree markers). That's actually a reasonable default for "where are our trees" — you can zoom out to see the region. If you want it wider on load (show the Altamira/Brazil context), I can change it to zoom 10-12. Your call.
+
+Shall I rewrite the cache script to use Earth Search (no registration needed)?
+
+
+### 🤖 Autopilot
+
+The preview URL pattern was wrong (my guessed path — and I used the wrong grid square: it's `22JGQ`, not `22JGS`). The correct URLs come from the STAC search result's asset links. Let me pull the real asset links for that cloud-free scene:
+
+
+### 🤖 Autopilot
+
+The assets point to **COGS (cloud-optimized GeoTIFF)** files on `sentinel-cogs.s3.us-west-2.amazonaws.com` — including a **`visual`** asset (true-color RGB) and **`thumbnail`**. Those COGS files can be served directly as map tiles (that's the modern way). Let me verify the visual COG is publicly accessible and check its URL pattern:
+
+
+### 🤖 Autopilot
+
+The full URLs are there. Let me verify both are publicly downloadable (thumbnail JPEG + TCI COG) — the caching script will use these:
+
+
+### 🤖 Autopilot
+
+All verified — this is the clean answer to your Copernicus registration pain.
+
+## ✅ Copernicus is NOT the only free option — Earth Search works with zero registration
+
+I found and **live-verified a strictly better path**: **Earth Search STAC** (AWS-hosted Sentinel-2, Element84) — same Sentinel-2 L2A data, **no account, no API key, no registration form**:
+
+| Check | Result |
+|---|---|
+| STAC search over FounderHaus bbox | ✅ 44 scenes (POST search, verified) |
+| Cloud-free scene found | ✅ **S2B_22JGQ_20260821_0_L2A, 0.01% cloud, Aug 21** — the day FounderHaus was planted |
+| Thumbnail preview download | ✅ HTTP 200, real JPEG (343×343, 18.5 KB) |
+| True-color COG (TCI.tif) | ✅ HTTP 206, valid GeoTIFF — can even serve as map tiles |
+| Red band COG | ✅ HTTP 206 |
+
+So you can **skip the broken Copernicus registration entirely**. The caching pipeline can use Earth Search: query STAC (no auth) → pick lowest-cloud scene → download the public preview/COG → store in `sunmint/satellite/<lat>_<lng>/<scene-date>.jpg` — exactly your design, with no CDSE secrets, no blocked signup, no waiting.
+
+**On your zoom question:** the map loads at **zoom 15** (~1 km view — good for seeing individual tree markers near the FounderHaus site). If you want the initial view wider (regional/Brazil context) I can drop it to zoom 10-12. Your call.
+
+## Recommendation
+**Switch the cache script to Earth Search STAC (no registration)** — I'll rewrite `cache_satellite_scenes.py` to use the verified Earth Search endpoint + public S3 COGS, removing the CDSE dependency. The workflow stays the same (daily, writes to `sunmint/satellite/`). Copernicus registration becomes unnecessary entirely.
+
+**Shall I: (a) rewrite the cache script to Earth Search, and (b) adjust the map zoom?** Say the word and I'll build both.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && TS=$(date +%s) && echo "=== map zoom config in live page ===" && curl -s "https://beta.truesight.me/sunmint.html?cb=$TS" -o live_; cd /tmp && echo "=== 1. Earth Search STAC (AWS-hosted Sentinel-2, no registration) ===" && curl -s -m 20 "https://earth-search.aws.element84; cd /tmp && echo "=== wider window + check bbox ===" && curl -s -m 25 "https://earth-search.aws.element84.com/v1/search?collections=sentinel-; …(+5 more)
 
