@@ -8,244 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] make sense: threshold (proposed 200 m)
-I think there is already an exsiting one for this isnt it see the tree to qr code linking dapp? invalid mechanism
-
-
-### 🤖 Autopilot
-
-Good leads — let me check whether the QR-linking flow already has an invalidation/status pattern I can reuse before inventing one.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-You're right — the pattern already exists. Found it in the QR-linking flow:
-
-## The existing invalidation pattern (reuse this)
-
-**`[TREE PLANTING REJECT EVENT]`** — already implemented in `process_tree_planting_link.js`:
-- A **governor (or sentinel)** marks a NEW SunMint submission **INVALID** via `isGovernorByName_` / `isSentinelByName_` (line 477–489)
-- Explicitly: **no QR status change, no ledger booking, no owner email** — "an invalid submission must not..."
-- Outcomes recorded in the "Tree Planting Link" tracking tab (dedup key)
-
-So the DAO's established mechanism for "authorized operator marks a tree/submission invalid" is: **a dedicated signed REJECT event type, governor-gated, with no side effects beyond marking INVALID + tracking-tab log**. That's exactly the shape I proposed as option (a) — and it's **already the convention**, so I'll mirror it rather than invent.
-
-## My plan (mirroring the existing pattern)
-
-**Proximity gate (confirmed 200 m):**
-- Client: if selected tree's distance > **200 m** → "Send measurement" disabled + message ("You appear to be X km from this tree — measurements must be taken on-site"); GPS captured at submit; server re-checks
-- Server (GAS handler): re-compute haversine from submitted lat/lng vs tree coords → reject non-governor events beyond 200 m
-
-**Governor override + invalidation (mirroring `[TREE PLANTING REJECT EVENT]`):**
-- **New signed event: `[TREE GROWTH REJECT EVENT]`** (mirror of the planting REJECT) — governor/sentinel-gated, marks the tree `status: INVALID` in the tracking tab + index, **no ledger booking, no other side effects**
-- Governor detection: `isGovernorByName_`/`isSentinelByName_` server-side (already verbatim-copied in the GAS project — I saw the comment: "GAS clasp projects can't share code across mirrors, so this is a verbatim copy"); client shows the "Mark invalid" button only when the linked email/signature resolves to a governor (via `governors.json` in the sunmint repo, same rebuild pattern)
-- INVALID trees: grayed out in the dropdown, can't be measured (and the server rejects measurements on INVALID trees)
-
-**Build order** (when you give the go):
-1. `governors.json` generator + rebuild workflow addition (sunmint repo)
-2. Client: proximity gate (200 m) + governor-only "Mark invalid" button (i18n pt/en)
-3. GAS: `[TREE GROWTH REJECT EVENT]` handling — `isGovernorByName_`/`isSentinelByName_`, distance re-check, INVALID marking, tracking log (mirrors the planting REJECT path)
-4. Index: INVALID status → dropdown gray-out + no-measure rule
-
-**One decision for you:** should the new event be named **`[TREE GROWTH REJECT EVENT]`** (mirror) or **`[TREE INVALIDATION EVENT]`**? The planting one is "REJECT", so I'd mirror with "REJECT" for consistency — but "INVALIDATION" is more descriptive for a standing tree (vs a one-time submission). Your call, then I build.
-
-Also confirming: **200 m threshold accepted** (your "make sense" + "proposed 200 m"). 👍
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → cd /tmp && echo "=== 1. Search tokenomics GAS for INVALID/status patterns in tree/QR flows ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/token; cd /tmp && echo "=== 2. dapp_beta: tree planting page — any invalid/mark status? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/r
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → cd /tmp && echo "=== 1. Search tokenomics GAS for INVALID/status patterns in tree/QR flows ===" && curl -s "https://raw.githubusercontent.co; cd /tmp && echo "=== 2. dapp_beta: tree planting page — any invalid/mark status? ===" && curl -s "https://raw.githubusercontent.com/TrueSigh
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] No new event. It should be [TREE PLANTING REJECT EVENT] since it is for marking submissions that are not trees.
-
-
-### 🤖 Autopilot
-
-Understood — **no new event**. Invalidation reuses the existing `[TREE PLANTING REJECT EVENT]` (it's for marking submissions that aren't real trees). Let me grab that event's exact format so the monitor page's "Mark invalid" button emits the identical marker the GAS handler already processes.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The REJECT path is clear. Let me see the rest of it (how it parses the event fields + what it writes) so I know exactly what the monitor page must emit.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The REJECT event format is fully mapped. The monitor page's "Mark invalid" must emit exactly what `extractTreePlantingLinkInfo_` parses: marker + QR Code + SunMint Submission Message ID + Updated by + Reason + signature. Let me check the Governors tab (to build the governor list for the client gate) and fetch the current page fresh.
-[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Governors list confirmed (Gary Teh, Jacob Nelan, Elizabeth Wong, Kirsten Ritschel, Shena Davenport, AGL15, Fatima Toledo, Kaon Krasniqi, Andreas Quandt, Claude). One more check — how the page stores the linked email (for the client-side governor gate), then I'll build.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have everything needed. The key realization: **the GAS handler already processes `[TREE PLANTING REJECT EVENT]`** (the planting handler, line 488–513) — so I don't need new GAS code. The monitor page just needs to **emit the identical format** a governor would send, plus the client-side proximity gate and governor UI. Building now.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All the pieces are mapped. The page already resolves the **contributor name** via `checkSignatureRegistration` (returns `contributor_name`) — that's what the client-side governor gate will use. Now building all three features into the monitor page: (1) proximity gate at 200 m, (2) governor-only "Mark invalid" emitting `[TREE PLANTING REJECT EVENT]` in the exact GAS-parsed format, (3) i18n + UI. This is a substantial change — writing it carefully.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The i18n dict structure differs from my assumption. Let me look at the actual dict layout.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The i18n dict uses a different structure. Let me find the actual translations object.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`I18N = { pt: { … } en: { … } }`. Let me see the exact boundaries (pt close at line 278-280, en close at 341-343) and insert the new keys before each close.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Anchors confirmed: pt dict closes at `detailNoPhoto: '…'` then `},` (line 279-280); en dict closes at line 341 (`}`). Now applying the full feature build with correct anchors.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-i18n keys added. Now the core logic — proximity gate (200 m), governor detection via the contributor name, and the "Mark invalid" emitter. Let me apply the JS.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Proximity gate in. Now the governor detection + "Mark invalid" button emitter (REJECT event format), plus the UI button in the detail panel.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now the final wiring: show the invalid button only for governors + show the INVALID note for invalid trees, and call `loadContributorIdentity()` on init.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The validation snippet errored on a missing `import re` before extracting the JS — so `node --check` never actually ran (the `&&` chain stopped). Let me re-validate properly before shipping.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All validations pass (21/21 divs, 1 script tag, JS syntax OK, all 5 features present). Uploading to sunmint_beta main.
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Shipped. Here's the full build report.
-
-## ✅ Proximity gate + governor-only invalidation (no new event)
-
-**Committed to `sunmint_beta/main` (`0133b2c5`) — monitor page:**
-
-**1. Proximity gate (200 m, confirmed):**
-- `PROXIMITY_LIMIT_M = 200` — if the selected tree's distance > 200 m, "Send measurement" is blocked with: *"You appear to be 2,4 km from this tree — measurements must be taken on-site (200 m)."*
-- Uses the existing Haversine distance (already computed for the dropdown); gate runs at submit
-
-**2. Governor-only "Mark invalid" (reuses `[TREE PLANTING REJECT EVENT]` — no new event, per your call):**
-- The monitor page now detects the governor: contributor name resolved from the RSA public key (`loadContributorIdentity()` → `isCurrentUserGovernor()` against the **Governors tab list** — Gary Teh, Jacob Nelan, Elizabeth Wong, Kirsten Ritschel, Shena Davenport, AGL15, Fatima Toledo, Kaon Krasniqi, Andreas Quandt, Claude)
-- Only governors see the **"MARK INVALID"** button on the tree detail panel
-- Emits the exact format the GAS handler already parses: `[TREE PLANTING REJECT EVENT]` + QR Code + SunMint Submission Message ID + Updated by + Reason + RSA signature + Transaction ID (shareable to Telegram like the other events) → the existing `process_tree_planting_link.js` REJECT path marks it **INVALID** (status M on the SunMint sheet), no QR/ledger side effects
-- INVALID trees show a red note ("Tree marked INVALID — cannot be measured") and are blocked from measurement at submit
-
-**Validated:** 21/21 divs, 1 script tag, JS syntax OK, all 5 features present, i18n pt/en added.
-
-## Flags for you
-- **Server-side truth:** the client gate is UX; the authoritative governor check happens in the GAS REJECT path (`isGovernorByName_`/`isSentinelByName_`). The **distance re-check server-side** is NOT yet in the GAS handler — I can add it to `process_tree_growth_monitoring.gs` if you want the 200 m enforced server-side too (recommended for real anti-fraud).
-- **Governor list sync:** the client list is hardcoded mirroring the tab — the `governors.json` in the sunmint repo (from my earlier design) would be the cleaner sync path; say the word and I'll wire it.
-
-## 📌 Open
-1. Server-side distance enforcement in the GAS handler (recommended) — build?
-2. `governors.json` sync (or keep the hardcoded mirror for now)
-3. `TGM_GITHUB_TOKEN` — your/Envoy's side (instructions sent)
-4. UAT → `sync_beta_to_prod(sunmint_prod)`
-
-Say the word on 1–2 and I'll continue.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×14 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; cd /tmp && echo "=== rest of REJECT path (513-570) ===" && sed -n '513,575p' tpl.js && echo "" && echo "=== parse: what fields does REJECT n; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html?x=$(date +%s)" -o monC.h; …(+11 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Go ahead and implement
-
-
-### 🤖 Autopilot
-
-Implementing — starting with the server-side distance enforcement (the recommended item) in the GAS handler. Let me read the current handler to see its exact structure before editing.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the main processing function and the tree-data lookup (to compute distance server-side, the handler needs the tree's coordinates — likely from the same tracking sheet or the index).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now let me see the REJECT path + `isGovernorByName_`/`isSentinelByName_` in the planting handler (to mirror exactly) and how it reads the SunMint tree tab.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The REJECT path only invalidates `NEW` submissions — FounderHaus is `LINKED`, so I'll need to extend that guard too. Let me read the growth handler's constants (lines 1–70) to see what sheet/URL access it has for the server-side distance check.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the full picture. The SunMint sheet (with tree coordinates — the **Latitude/Longitude columns K/L at cols 11/12** of the `SunMint Tree Planting` tab) is on the same spreadsheet as the chat logs. I'll add server-side enforcement to `process_tree_growth_monitoring.gs`:
-
-1. `haversineKm_(lat1,lng1,lat2,lng2)` helper
-2. Resolve the tree's coords from the SunMint tab (match by QR code col 18 / message ID)
-3. If submitter isn't a governor/sentinel AND distance > 200 m → skip (log "TOO FAR")
-4. Also skip if the tree status is INVALID (the no-measure rule server-side)
-5. Extend the REJECT path in the planting handler to allow invalidating **LINKED** trees too (FounderHaus is LINKED)
-
-Let me check the exact col indices for the SunMint tab (lat/lng = cols 11/12, QR = 17, status = 12?) — I have TGM_SUNMINT_QR_COL=17 but need to verify lat/lng/status columns.
-[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have everything: the SunMint tab layout (Lat=K/10, Lng=L/11, Status=M/12, QR=R/17, MsgID=D/3 — 0-based), the REJECT path (currently only allows `NEW`), and the shared GAS project scope (so `isGovernorByName_`/`isSentinelByName_` from tpl.js are callable in tgm.gs). Let me apply the server-side enforcement edits locally.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 TGM handler patched and syntax-OK. Now extending the REJECT path in the planting handler to also allow invalidating **LINKED** trees (FounderHaus is LINKED, not NEW — currently only NEW can be invalidated).
@@ -4610,6 +4372,7 @@ Now uploading the pilot cell (4 scene JPEGs) + trimmed manifest to the sunmint r
 ### 🤖 Autopilot
 
 All 5 files committed to the repo. Now verifying the map zoom 11 on beta (after the #321 merge + Pages rebuild):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4654,11 +4417,13 @@ The pilot-area satellite history is now real and in the repo — the "watch our 
 ### 🤖 Autopilot
 
 Executing — building the date-slider history view on the impact map. First, fetch the current page + manifest structure to wire the slider precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Structure clear. Let me see the full map script (423–500) to wire the slider cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4789,4 +4554,37 @@ Want me to (a) draft the exact sheet column + instructions for Altamira, and (b)
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== 1. manifest: how many cells cached ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/satelli; cd /tmp && echo "=== generator: which sheet/tab feeds the index? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/mai
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] I wonder if we should backfill later basically in our data structure allow the option of both single lat lng coordinates and plot boundaries definition?
+
+
+### 🤖 Autopilot
+
+Yes — and the good news is **GeoJSON already natively supports both**, so we design it in from day one with zero retrofitting. Here's the shape I'd recommend:
+
+## The data model: two entity types in one index
+
+**1. Trees stay as Points** (unchanged — they're the measurement anchor):
+
+
+**2. Plots become Polygon features** (the area entities):
+
+
+**3. The link:** each tree carries a `plot_id`; a tree without one just stays a standalone point (backward compatible — existing 19 trees keep working untouched).
+
+## Why this is the right call (not just nice-to-have)
+
+- **The carbon methodologies (VM0047/PM002) work at plot level** — baseline, additionality, and monitoring are per-plot/per-parcel. Having the boundary is what makes the carbon math defensible, not just tree dots.
+- **Satellite caching clips to the boundary** instead of grid cells — the cache script extends to fetch scenes covering the polygon bbox and crop to it. Much cleaner "watch this plot grow" story.
+- **Display:** plots render as shaded polygons with the tree points on top — instantly readable for scattered sites.
+- **Backfill later is fine** — the structure tolerates missing boundaries (trees float as points until their plot is defined), and you can digitize boundaries in Altamira with the farmers using a free app (Google Earth / SW Maps), or I can auto-generate a rough polygon from the tree cluster.
+
+## The one rule to avoid a mess
+
+**Trees are always Points; plots are always Polygons.** Don't mix a plot boundary into a tree feature. That keeps every consumer (map, cache, carbon calc, TrueChain anchor) working on a stable contract.
+
+**Concrete next step when you're ready:** I add `plot_id` + a `plots` layer to the generator + index (empty to start, degrades gracefully), and the map renders polygons + a plot selector once plots exist. Want me to scaffold that now, or fold it into the Altamira field-plan (you collect plot boundaries + tree→plot mapping while you're with the farmers)?
 
