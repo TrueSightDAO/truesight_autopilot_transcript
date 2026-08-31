@@ -1393,16 +1393,19 @@ Let me check how the satellite cache workflow fetches cells so I can add the Alt
 ### 🤖 Autopilot
 
 The satellite cache workflow (`cache-satellite-scenes.yml`) reads `--index trees/index.geojson` — which is why only the Florianópolis cell got cached (that's where the 2 trees are). The Altamira **plots** aren't in the tree index, so no satellite cell was fetched for them. Let me read `cache_satellite_scenes.py` to see how it derives cells (trees vs plots):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the satellite-history rendering (does it show all cells?) and the cache workflow's schedule:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The satellite cache workflow only feeds off the **tree index** — and there's a telling detail: the manifest is dated 2026-08-30T23:05 and contains only the Floripa cell, no `plot_*` dirs, even though the script has plot-level caching built in. And Esri's placeholder at z18 literally says **"Data not yet available"** — that's the gray (204,204,204) tile I sampled. Let me verify z17 across the plot area (is 17 real or placeholder?) so I cap the map at the right zoom:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1410,26 +1413,31 @@ The satellite cache workflow only feeds off the **tree index** — and there's a
 Esri is actually **REAL at z17** across the plot area (my earlier z18 probe hit the placeholder). So the data DOES exist — the map just allows zooming past z17 to z18, where Esri has no imagery in this region. The fix is to **cap the map's maxZoom at 17** so users can never hit the "data not yet available" gray tiles.
 
 Let me check the map's current maxZoom settings and apply the cap:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No `maxZoom` is set — Leaflet defaults to 18, which is exactly why zooming in hits the z18 placeholder. I'll add `maxZoom: 17` to both `L.map()` calls (the main one and the fallback), and also add a note in the satellite strip explaining the zoom ceiling so it's self-documenting. Applying locally first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The anchor appears twice (main + fallback) — my search string lacked the distinguishing indentation. Let me fix with exact indentation (10 spaces main, 14 spaces fallback):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still 2 matches with 10-space indent — both inits may be at the same indent. Let me look at the raw context of both `L.map(` lines:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Odd — the 10-space version still counted 2. Let me use more surrounding context to disambiguate the two sites uniquely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1595,4 +1603,74 @@ Want me to open the small workflow PR (add `--plots` to the cache job) so plot-l
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp/sunmint6 2>/dev/null || { rm -rf /tmp/sunmint7 && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git /tmp/sunmint7 &; cd /tmp/sunmint6 && echo "=== gh auth scopes ===" && gh auth status 2>&1 | head -8; echo "=== run cache script with plots ===" && timeout 24; cd /tmp/sunmint6 && echo "=== what changed ===" && git status --short | head -20 && echo "=== dirs created ===" && ls -la satellite/ && echo; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: The Altamira satellite cache is **live on main** — and it turns out the data was already pushed by the daily workflow / a parallel run (13 commits, `b2cff5e`), which my local run had independently rep
+
+
+### 🤖 Autopilot
+
+Go received — next unit: **add `--plots plots/index.geojson` to the satellite cache workflow** so plot-level caching runs on the daily schedule. Let me read the current workflow file first:
+
+
+### 🤖 Autopilot
+
+The workflow is missing `--plots` — confirmed. Let me verify the script's CLI flag name before editing:
+
+
+### 🤖 Autopilot
+
+`--plots` is a real flag. Now let me apply the one-line edit locally, then push via git_push_changes (truesight_me_beta is a code repo, but this is the `sunmint` data repo — I'll use the upload path that worked for the plots workflow):
+
+
+### 🤖 Autopilot
+
+Edit applied, YAML valid. Since `sunmint` is a class-2 API-only data repo (git_push_changes blocks it), I'll push via the Contents-API path that worked before — `upload_file_to_github` with the exact new content:
+
+
+### 🤖 Autopilot
+
+Workflow updated. Let me verify it landed correctly on main:
+
+
+### 🤖 Autopilot
+
+Workflow is live on main — line 32 now passes `--plots plots/index.geojson` (commit `c7ece2c`), verified from origin.
+
+## What I did this turn
+
+**Fix: plot-level satellite caching now runs on the daily schedule.**
+
+**Problem:** `cache-satellite-scenes.yml` only passed `--index trees/index.geojson`, so the scheduled 06:30 UTC job cached **cell-level** scenes only — the `plot_RM-P1` / `plot_RM-P2` scene sets existed only because of my one-off manual run last turn. On the next daily run they'd have been orphaned (script regenerates from args).
+
+**Change (`sunmint@main`, commit `c7ece2c`):** added `--plots plots/index.geojson` to the workflow's run line:
+```yaml
+python3 scripts/cache_satellite_scenes.py --index trees/index.geojson --plots plots/index.geojson --out-dir satellite
+```
+- Flag verified against the script's `--help` (`--plots PLOTS` confirmed).
+- Edit applied locally (anchor matched exactly once), YAML parsed clean, then pushed via the class-2 data-repo Contents-API path (same convention as the existing workflows — no PR).
+- Verified live on main at line 32.
+
+**Effect:** every daily 06:30 UTC run now refreshes **both** the Altamira/Floripa cell scenes **and** the per-plot RM-P1/RM-P2 scene sets — the per-plot satellite comparison stays fresh automatically.
+
+## RESUME HERE →
+1. **Governor hard-refreshes beta** → https://beta.truesight.me/sunmint.html — satellite strip should show 4 dated Altamira thumbnails + overlay over plots (from last turn's cache).
+2. **Governor approves beta** → `sync_beta_to_prod(truesight_me_prod)` (promotes #325 #326 #327 #328 #329 together — the whole Altamira + view-switcher + zoom-cap stack).
+3. **SunMint Plots sheet tab** — source of truth for `build_plots_geojson.py`.
+4. **RM-P2 boundary authority** — CAR/INCRA polygon or perimeter walk (5 ha claimed vs 2.9 ha walked).
+5. **Bougainvillea planting event** — confirm Paloma's crew has a proper [TREE PLANTING EVENT] on the ledger.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → read cache-satellite-scenes.yml (confirmed missing --plots), verified --plots flag via script --help, applied edit + YAML parse check
+• `upload file to github` → sunmint `.github/workflows/cache-satellite-scenes.yml` (commit c7ece2c), verified live on main line 32
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/sunmint6 && echo "=== cache-satellite-scenes.yml ===" && cat .github/workflows/cache-satellite-scenes.yml && echo "" && echo "=== al; cd /tmp/sunmint6 && python3 scripts/cache_satellite_scenes.py --help 2>&1 | head -30; cd /tmp/sunmint6 && python3 - <<'PYEOF' p = '.github/workflows/cache-satellite-scenes.yml' s = open(p).read() old = "python3 scripts/cache_s; …(+1 more)
+• `upload file to github` → https://github.com/TrueSightDAO/sunmint/blob/main/.github/workflows/cache-satellite-scenes.yml
 
