@@ -2495,11 +2495,13 @@ Resuming — checking the retry loop and current live count:
 Retry loop is alive and durable (30-min cycles, 30h window — will catch the quota reset at ~07:00 UTC, ~11h away). Dead count stable at 18.
 
 While the loop waits, there's **urgent value** in updating the runbook: the Cleide pipeline running on this box shares the **same YouTube project quota** (`project_number:323153649224`) — so the other Sophias will hit the same 429 and the same dead-ID trap. Let me add those lessons to FARM_MEDIA_PIPELINE.md now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The runbook is missing the two hard-won lessons (shared quota + live-ID verification). Let me add them via PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2545,6 +2547,7 @@ Nothing more needed until the quota resets — the loop handles it unattended. P
 ### 🤖 Autopilot
 
 Checking the retry loop status and whether quota has freed up:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2595,6 +2598,7 @@ One thing worth noting: **PR #864** (the runbook quota/dead-ID lessons) is still
 ### 🤖 Autopilot
 
 Resuming — checking the retry loop's progress (quota may have reset):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2640,21 +2644,25 @@ Meanwhile, **PR #864** (runbook quota/dead-ID lessons) is still open for your me
 ### 🤖 Autopilot
 
 Resuming — while the quota clock ticks, I'll do the non-blocked prep work: regenerate the final manifest doc from the corrected manifest, draft the farm page media.json wiring, then merge the runbook PR #864 so the other Sophias get the lessons now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest doc written (the traceback was just my print using the wrong variable — `d` is the list; the doc file itself saved fine). Farm media.json already has the 8 photos wired from the earlier PR — the remaining wiring is adding curated **video** entries. Let me pick live videos with good metadata for the gallery:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Strong candidates. Note 4 of the top ones (IMG_3950, IMG_3953, IMG_3980, IMG_4013) have yt_ids from the **dead list** — I'll only wire live ones. Let me verify liveness of the shortlist, then merge the runbook PR #864 so other Sophias get the lessons now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 8 shortlisted videos are LIVE with correct titles. Now let me merge PR #864 (runbook lessons — so other Sophias get the quota/dead-ID fixes immediately) per the earlier 👍 coverage:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2834,4 +2842,45 @@ Manifest is live on main and correct (53 LIVE with real yt_ids, 18 PENDING with 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json, datetime, os from google.oauth2.credentials import Credentials from google; /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json p = '/tmp/la-do-sitio.json' doc = json.load(open(p)) for e in doc['videos']; /opt/truesight_autopilot/.venv/bin/python3 -c " import json doc = json.load(open('/tmp/la-do-sitio.json')) # compact but readable: 1-space i
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] [Handoff context — this Telegram topic (thread 17184) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Manifest is live on main and correct (53 LIVE with real yt_ids, 18 PENDING with nulled ids, 1 SOURCE_CORRUPT). Done.
+
+## ✅ Manifest PR shipped — the reference layer is now in place
+
+### What landed th
+
+
+### 🤖 Autopilot
+
+Resuming — checking the retry loop and whether the quota has reset:
+
+
+### 🤖 Autopilot
+
+Status check done — still monitoring mode, but with one small positive:
+
+## Current state (20:06 UTC)
+
+| Item | Value |
+|---|---|
+| Retry loop | ✅ alive (pid 73872, 33 min elapsed), on `[retry 2]` |
+| Live on YouTube | **54/71** (+1 since last check — a video finished YouTube processing and came live) |
+| Dead (pending) | 17 |
+| Quota reset | ~07:00 UTC (~11h away) |
+| Next retry | ~20:32 UTC (30-min cycles, all 429 until reset) |
+
+The 53→54 bump: one of the earlier-uploaded videos was still in YouTube's "processing" state when I did the first sweep — it's now fully live. The retry loop keeps grinding every 30 min and will 429 until the quota resets, then burn through the remaining 17.
+
+**Nothing to do until then.** The manifest on GitHub is already filed (v1 — 53 LIVE honest at time of write); once the re-uploads complete I'll push v1.1 with the corrected 71/71 counts and merge the index PR #866.
+
+Want me to keep it simple like this — status ping each time you check in, no action until the reset? Or is there anything else you'd like me to tackle while the clock ticks (e.g. start drafting the farm-page media.json video wiring so it's ready to land the moment 71/71 is confirmed)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → date -u; echo '=== retry loop ==='; ps -p 73872 -o pid,etime,%cpu 2>/dev/null || echo "LOOP ENDED"; echo '=== retry log tail ==='; tail -6 /
 
