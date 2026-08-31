@@ -92,16 +92,19 @@ Extracted text:
 ### 🤖 Autopilot
 
 Gary's pointing at the lesson learned from this — the GPS metadata extraction only worked because the file preserved its EXIF data, and the WhatsApp screenshot shows him explaining to Jedielcio that sending as **file** (not photo) preserves that info. Let me log the 15 minutes as a contribution. First, checking the event schema and persisting the attachment:
+[2 tool result(s) compacted: lookup_event_docs, append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fixing the transcript append and submitting the 15-minute contribution — I'm logging one CONTRIBUTION EVENT: 15 minutes, Time (Minutes), for Gary, describing the GPS-metadata investigation + the file-vs-photo guidance shared with Jedielcio.
+[2 tool result(s) compacted: append_to_transcript, submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The contribution submission failed. Let me retry — this time I'll match the canonical labels from `lookup_event_docs` exactly ("Contributor(s)" field is canonical; the failed call used "Contributor(s)"). Let me retry the submission.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -139,26 +142,31 @@ Want me to also fold this "send as file, not photo" guidance into a runbook note
 ### 🤖 Autopilot
 
 Good instinct — that guidance shouldn't live only in a WhatsApp message. Let me check what already exists (farmer-facing docs, sunmint content, related runbooks) before proposing where to put it.
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No existing farmer-instruction docs in context. Let me check the sunmint repos and search org-wide for anything farmer-facing.
+[3 tool result(s) compacted: search_code, search_code, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at what exists in the sunmint app and the farm media pipeline docs to find the natural home for farmer-facing instructions.
+[3 tool result(s) compacted: read_context_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the sunmint_beta app structure to see where farmer-facing instructions could live, and check the farm page conventions doc.
+[2 tool result(s) compacted: read_repo_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This connects perfectly to what we just learned — and `AGROVERSE_FARM_PAGE_CONVENTIONS.md` just codified the same lesson: *"Telegram strips EXIF on upload — attachments received via Telegram have zero GPS."* Let me check what pages sunmint_beta already has, so I can propose where the instructions would live.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -214,6 +222,7 @@ Want me to **open the PR** for the instructions page in `sunmint_beta` now? If y
 ### 🤖 Autopilot
 
 Yes — let me build it now. First I'll inspect the nav/JS structure of the existing pages so the new page integrates cleanly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -307,4 +316,84 @@ Merged. Stopping here per the one-PR-per-turn rule — report below, beta verifi
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /tmp/sunmint_beta_probe && grep -n "onNavChange\|pageNav\|window.location\|nav-dropdown" index.html | head -30 && echo "-----MONITOR-----; cd /tmp/sunmint_beta_probe && sed -n '230,270p' index.html && echo "=====NAV JS=====" && sed -n '925,950p' index.html && echo "=====MONITOR ; cd /tmp/sunmint_beta_probe && grep -n "const translations\|translations =\|function t(\|function setLang\|data-i18n\|currentLang\|localStora; …(+9 more)
 • `merge pr` → ✅ PR #50 on sunmint_beta merged successfully (sha: 4ef51f116652a7c55073ea18c686e15bd77eebe6). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17700] [Handoff context — this Telegram topic (thread 17700) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merged. Stopping here per the one-PR-per-turn rule — report below, beta verification is the next unit.
+
+## ✅ Done this turn — Instruções page landed in beta
+
+**PR:** [sunmint_beta#50](https://github.c
+
+
+### 🤖 Autopilot
+
+Go signal received. Checking the handoff registry first, then verifying the beta deploy.
+
+
+### 🤖 Autopilot
+
+The beta page is **live** — `https://beta.sunmint.truesight.me/instrucoes/` returns 200 with the full bilingual page. Now verifying the nav integration on the other two beta pages, and checking what a prod sync would actually promote:
+
+
+### 🤖 Autopilot
+
+All three beta pages verified live:
+
+| Page | Status | Nav has "Instruções" |
+|---|---|---|
+| `beta.sunmint.truesight.me/` | 200 ✅ | ✅ (`<option value="instrucoes">`) |
+| `beta.sunmint.truesight.me/monitor-tree-growth/` | 200 ✅ | ✅ |
+| `beta.sunmint.truesight.me/instrucoes/` | 200 ✅ | ✅ (selected) |
+
+PR #50 merged, content served matches what was pushed (bilingual sections 1–5, PT/EN toggle, offline tip, back link). Beta verification passes. Your 👍 "go for it" on the resume text — which explicitly described the prod sync upon approval — is the promotion go. Running `sync_beta_to_prod`:
+
+
+### 🤖 Autopilot
+
+Prod sync succeeded (deploy ledger: `deploy_20260831T195052Z_sunmint-prod`). Verifying the production site is serving the new page:
+
+
+### 🤖 Autopilot
+
+Prod sync succeeded at the repo level, but `sunmint.truesight.me/instrucoes/` returns **404** — GitHub Pages "file not found." Before concluding anything, let me diagnose where the fault lies: does the prod repo actually have the file, and what's the Pages config?
+
+
+### 🤖 Autopilot
+
+The file **is** in `sunmint_prod` (read_repo_file returned it) and the prod root page already serves the new nav — so the sync landed. The `/instrucoes/` 404 looks like GitHub Pages propagation for a brand-new path (the Pages API 404s because `sunmint_prod` is private). Let me confirm the deploy ledger and retry the URL once:
+
+
+### 🤖 Autopilot
+
+The retry returned **200** — the earlier 404 was GitHub Pages propagation lag on the brand-new path (a few seconds between the sync and the first fetch). Everything is now live. Wrapping up with a summary.
+
+## ✅ Instruções page — LIVE in production
+
+**Where it is now:**
+- **Prod:** [sunmint.truesight.me/instrucoes/](https://sunmint.truesight.me/instrucoes/) → **200**, serving the full bilingual page ✅
+- **Beta:** `beta.sunmint.truesight.me/instrucoes/` → **200** ✅ (beta-first verified)
+- **Nav integration** on prod root `/` and `/monitor-tree-growth/` — both show the new "Instruções" dropdown option ✅
+
+**Ship trail:**
+1. `sunmint_beta#50` — merged → verified on beta
+2. `sync_beta_to_prod` — success, deploy ledger [`deploy_20260831T195052Z_sunmint-prod`](https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260831T195052Z_sunmint-prod.md)
+3. Prod verified live (first fetch 404'd due to Pages propagation on the new path; immediate retry 200 — the file was already in `sunmint_prod` and the root nav had updated, so this was cache propagation, not a sync failure)
+
+**What farmers now have:** a simple PT/EN guide — send as **file not photo** (preserves GPS), turn on location, shoot close to the tree, exact WhatsApp/Telegram steps, and what to write alongside. Directly encoded in it: your message to Jedielcio — *"Envie como arquivo em vez de foto; assim, as informações são preservadas."*
+
+**Mission tie-back:** every photo/video that arrives with real GPS is one more verifiable data point for the 10,000-hectare Amazon rainforest registry.
+
+One suggestion for next: when you share the link with Jedielcio and other farmers, share it as **https://sunmint.truesight.me/instrucoes/** (the WhatsApp/Telegram preview card is already configured via OG tags).
+
+———
+**✅ Done this turn — actions taken:**
+• `read context file` → handoffs/HANDOFF_MANIFEST.md
+• `http fetch` ×6 → beta/instrucoes 200, beta/ 200 (nav ✅), beta/monitor 200 (nav ✅), sunmint.truesight.me/instrucoes 404→200, sunmint.truesight.me/ 200 (nav ✅), api.github.com pages 404 (private repo)
+• `read repo file` → sunmint_prod/instrucoes/index.html (present) + deploys/entries/deploy_20260831T195052Z_sunmint-prod.md
+• `list prs` → sunmint_beta#50 merged
+• `sync beta to prod` → success — deploy_20260831T195052Z_sunmint-prod
 
