@@ -3290,6 +3290,7 @@ The heredoc-in-subshell mangled the quoting. Let me write it as a small script f
 ### 🤖 Autopilot
 
 PR #236 opened. Merging per the standing go-signal:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3340,21 +3341,25 @@ https://beta.agroverse.shop/assets/images/farms/rancho-maranta-IMG_7660.jpg
 ### 🤖 Autopilot
 
 The governor prefers IMG_7660 as the header. Let me inspect it first (dimensions, content — skin-tone heuristic for warmth/people, since it's from the original gallery batch), then swap all header refs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 /tmp/agb3 was cleaned up. Let me fetch the image from beta directly and inspect it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 IMG_7660 is portrait (1200×1600), 13.8% skin (people present), medium brightness. The header uses a 1600×900 `center/cover` crop — a portrait source gets center-cropped hard, so let me find where the people are (skin cluster) and crop a landscape window around them:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The people are at the **bottom** of the frame (y=120–160 in the 160-row grid = bottom 25%). A center-crop header would cut them off. Let me make a landscape 1600×900 crop anchored to the bottom (where the people are) and use that as the header:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3540,4 +3545,90 @@ PR #238 opened. Merging per the standing go:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && rm -rf rmh2 && mkdir -p rmh2 && cd rmh2 && curl -s -o orig.jpg "https://beta.agroverse.shop/assets/images/farms/rancho-maranta-IM; cd /tmp/rmh2 && python3 - <<'PYEOF' from PIL import Image im = Image.open('orig.jpg').convert('RGB') W,H = im.size # 1200x1600 target_ratio ; cd /tmp && rm -rf agb5 && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git agb5 2>&1 | tail -1; cd agb5 && cp ; …(+1 more)
 • `merge pr` → ✅ PR #238 on agroverse_shop_beta merged successfully (sha: a6877faba95ae4b16aa8ba083ce5a32cf733e80f). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: also make sure the two plots here https://truesight.me/sunmint.html when dialogue box is showing links back to the profile page of the farm on agroverse
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] status?
+
+
+### 🤖 Autopilot
+
+Let me check the plot popup code on both the beta and prod sunmint maps, then add the farm-profile link.
+
+
+### 🤖 Autopilot
+
+Both beta AND prod already have the popup link code (line 658) — but it's gated on `fid`/`fslug`. Let me read the full condition to see why it might not show for the Rancho Maranta plots:
+
+
+### 🤖 Autopilot
+
+The link code is already on prod — gated on `fid` (`props.farm_id`). So the question is whether the plots registry actually carries `farm_id`. Let me check the live `plots/index.geojson`:
+
+
+### 🤖 Autopilot
+
+The registry already carries `farm_id: rancho-maranta` for both plots, and the map code maps that to the farm slug. So the link logic should already be live — let me verify the **actual deployed pages** (both prod truesight.me and beta) contain the popup link:
+
+
+### 🤖 Autopilot
+
+Both live pages (prod + beta) returned the 43KB map page — the impact map IS there (the inline preview was just truncated). Let me confirm the live pages actually contain the popup link code and check whether the target farm URL resolves:
+
+
+### 🤖 Autopilot
+
+The live page contains the full map code including view chips and plots. Let me confirm the popup link code is present in the live HTML and that the farm URL resolves:
+
+
+### 🤖 Autopilot
+
+The live prod page already has the full map code (view chips, plots, satellite history). Let me verify the popup link string is in the live HTML, and — critically — whether the link's target (prod agroverse.shop farm page) actually resolves, since the farm page currently lives only on beta:
+
+
+### 🤖 Autopilot
+
+Both farm URLs resolve (prod 200 with the original IMG_7625 header, beta 200 with the new 7660 header — prod is behind beta). Now let me confirm the live truesight.me page actually contains the popup link code:
+
+
+### 🤖 Autopilot
+
+Status confirmed — the feature you asked for is **already live on both prod and beta**. Here's the full status:
+
+## ✅ Already working — no code change needed
+
+The plot popup → farm profile link is **live on truesight.me/sunmint.html right now** (verified live, not just in the repo):
+
+- **Popup link code** present on live prod (1 match) and live beta (1 match)
+- **`FARM_SLUG` mapping** contains `'rancho-maranta': 'rancho-maranta-para'` ✓
+- **Registry** carries `farm_id: rancho-maranta` on both RM-P1 and RM-P2 (plus SA-P1 → Santa Anna, CL-P1 → Fazenda Cleide) ✓
+- **Link target resolves** — https://agroverse.shop/farms/rancho-maranta-para/ returns 200 (prod), beta 200 ✓
+
+**So when you click a Rancho Maranta plot polygon on https://truesight.me/sunmint.html (or beta), the popup now shows:** name, status, boundary, hectares, owner, region, and a **"View farm profile on Agroverse ↗"** link → https://agroverse.shop/farms/rancho-maranta-para/
+
+This came from the earlier #325 wiring (the link was gated on `farm_id`, and the registry already had it).
+
+## ⚠️ One thing to be aware of (prod vs beta divergence)
+
+- **Prod agroverse.shop** farm page = **older version** (hero still `IMG_7625`, no heads-fix)
+- **Beta agroverse.shop** = newest (header-7660 + heads fix + 3 videos + 12 images)
+
+The map popup links to **prod** (`agroverse.shop/...`), which is still the old page. If you want the map to point at the *beta* page until prod is promoted, I can change the link base — otherwise everything stays consistent once you approve the **prod promotion** of agroverse_shop (#229 + #233 + #234 + #235 + #236 + #237 + #238) which brings prod up to beta.
+
+## RESUME HERE →
+
+1. **Governor verifies** — open https://truesight.me/sunmint.html, click RM-P1/RM-P2 polygon → confirm "View farm profile on Agroverse ↗" appears and goes to the farm page.
+2. **Prod promotion** (gated on your explicit approval): `sync_beta_to_prod(agroverse_shop_prod)` — brings prod farm page up to beta (warm header + heads fix + videos); `sync_beta_to_prod(truesight_me_prod)` — impact map #325–#329.
+3. **Optional:** if you'd rather the map link to beta until then, say the word (1-line change).
+
+**Nothing was changed this turn** — verification only; the link was already live.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && rm -rf tmb7 && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git tmb7 2>&1 | tail -1; cd tmb7 && echo ; cd /tmp && rm -rf tmpd && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_me_prod.git tmpd 2>&1 | tail -1; cd tmpd && echo ; cd /tmp/tmpd && sed -n '622,665p' sunmint.html; …(+3 more)
 
