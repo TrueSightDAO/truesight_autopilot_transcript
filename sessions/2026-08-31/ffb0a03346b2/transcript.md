@@ -2949,11 +2949,13 @@ An `agroverse/` folder exists in agentic_ai_context — the right home. Let me c
 ### 🤖 Autopilot
 
 I see the style. The `agroverse/` folder in agentic_ai_context is the right home for this convention. Let me codify it — a new `AGROVERSE_FARM_PAGE_CONVENTIONS.md` capturing the farm-page conventions (including the hero-with-humans rule from this feedback).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The empty edit array entry caused the error. Let me remove it and retry.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3004,26 +3006,31 @@ https://beta.agroverse.shop/cacao-journeys/brazilian-path/index.html
 The governor wants the farmers photo on the Brazilian Path journey stop too. The journey currently points at the grove shot (`santa_anna_profile_photo.jpg`); I'll switch it to the farmers hero — and since that asset only exists on the #231 branch, I'll include it in the same PR so it's self-contained on main.
 
 Let me first confirm the exact mapping text on main and that the asset is on disk locally.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: the journey mapping at line 999–1000 points to the grove shot (`santa_anna_profile_photo.jpg`), and the farmers asset isn't on main yet. I'll switch the journey to the farmers photo and include the asset in the same PR so it's self-contained. Opening the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Disk full from the temp clones. Let me clean up and retry.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Root filesystem is 100% full (137M free). Multiple large clones to clean. Let me remove the stale temp dirs and free space.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Freed 5.5 GB (86% used now). I kept the media assets. But note the local `agroverse_shop_look` clone is gone — the hero asset on disk for upload is gone too. The asset is already on the #231 branch though. Let me retry the journey-image PR — the edit doesn't need the local asset, and I can reference the #231 branch asset after merge. Retrying:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3242,4 +3249,41 @@ Production is fully in sync with everything we've built: farm page → journey s
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → sleep 20; echo "=== prod farm page hero refs ==="; curl -s https://agroverse.shop/farms/santa-anna-fazenda-para/ | grep -oE "santa_anna_farm; sleep 90; echo "=== retry: prod farm page hero refs ==="; curl -s https://agroverse.shop/farms/santa-anna-fazenda-para/ | grep -oE "santa_an; echo "=== prod main has asset? ==="; curl -s -o /dev/null -w "raw asset: %{http_code} " https://raw.githubusercontent.com/TrueSightDAO/agrov; …(+2 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Also Jedielcio captured 2 photos of the boundaries of the property on his phone what is the best way for him to send the photos over, I know that WhatsApp and Telegram both strip away the lat and long information from the photos when they are uploaded. Jedielcio uses whatsapp. I wonder if Email would work
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593]
+
+
+### 🤖 Autopilot
+
+Good question — and yes, **email works**. Here's the breakdown:
+
+## Why WhatsApp/Telegram strip GPS
+Both re-encode images (compression pipeline) and drop the EXIF metadata block — GPS, camera, date all gone. That's exactly what happened to your first 3 photos (I verified at the byte level: zero EXIF APP1 markers).
+
+## ✅ Email preserves EXIF
+When a photo is attached **as a file attachment** (not pasted into the body), email systems pass the original bytes through untouched. Gmail does **not** strip EXIF from attachments. So:
+
+**Best path for Jedielcio:**
+1. Open his Photos app → select the 2 boundary photos
+2. **Share → Mail** (attach as files — do NOT paste inline in the body)
+3. Send to **admin@truesight.me** (or gary@truesight.me if he prefers)
+
+I'll watch the inbox and grab them as soon as they land, then pull the GPS from EXIF and use it to extend the property-boundary data on the farm page.
+
+## Alternatives if email is awkward
+- **WhatsApp "Document" send** (📎 paperclip → Document → photos) — WhatsApp preserves the **original file** when sent as a document, unlike sending as a photo. This works too.
+- **Google Drive / cloud link** — original file preserved, but he'd need to share a link.
+- Email is still the most foolproof — no compression step, no "original vs HD" ambiguity.
+
+## Why this matters for us
+We already have the farm's core GPS (-3.292475, -52.57225) from the HEIC EXIF. The 2 boundary photos will give us the **property extent** — which would let me draw an actual boundary polygon on the farm page map (Leaflet supports it), a nice provenance upgrade over a single point marker.
+
+Want me to set a reminder to check admin@truesight.me for the photos, or just let you know when you tell me he's sent them?
 
