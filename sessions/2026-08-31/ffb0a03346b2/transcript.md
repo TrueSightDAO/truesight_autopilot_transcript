@@ -2641,3 +2641,93 @@ One quick confirm before I touch production: shall I **promote this fix to prod*
 
 Say **"promote"** and I'll sync it, then verify the journey page on agroverse.shop shows the Santa Anna image.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] By the way, can you make sure to place my signature properly above my signature head in the document? Right now it's center line, but really examine where the signature is supposed to go. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me examine how the signature is currently placed in the PDF versus where it should go. I'll check the generation script, the rendered signature page, and compare with the original CEPOTX documents.
+
+
+### 🤖 Autopilot
+
+The originals have no signature image (just the typed block) — the v3 added yours. Let me see exactly how v3 places it.
+
+
+### 🤖 Autopilot
+
+Let me examine the actual rendered v3 PDF signature page geometry — where the signature image sits relative to "Sincerely," and the typed name block.
+
+
+### 🤖 Autopilot
+
+The v3 PDF isn't matching my glob — let me find the actual file and check its signature-page geometry.
+
+
+### 🤖 Autopilot
+
+The v3 PDF exists. Let me examine its signature page geometry precisely.
+
+
+### 🤖 Autopilot
+
+Now I can see the problem clearly. Page 10 (A4) current geometry:
+
+- **"Sincerely,"** → left-aligned at x=56, y 108–122
+- **Signature image** → **CENTERED** (x 204–391, center ≈ 297) — this is the "center line" you noticed
+- **Typed block** ("Zhiwen Teh / President / …") → left-aligned at x=56, y 223–289
+
+In the original CEPOTX documents (Paulo/Cleide), the entire signature block is **left-aligned at x=56** — "Sincerely," and the typed name share the same left margin. My v3 centered the signature image, which breaks the letter convention. The fix: left-align the signature image at x=56, directly above the typed "Zhiwen Teh" line (its "signature head").
+
+Let me regenerate with the corrected placement:
+
+
+### 🤖 Autopilot
+
+v4 generated. Let me verify the signature image is now left-aligned directly above the typed name block.
+
+
+### 🤖 Autopilot
+
+Signature placement now correct — **left-aligned** (x=56, same margin as "Sincerely," and the typed block), sitting directly **above the "Zhiwen Teh" line** (image y128–218 → name y223). Sending the corrected PDF for review:
+
+
+### 🤖 Autopilot
+
+PDF verified — 10 pages, 15.3 MB. Sending to you:
+
+
+### 🤖 Autopilot
+
+✅ **v4 PDF sent** — signature placement fixed.
+
+## What changed
+
+**Before (v3):** signature image was **centered** (x 204–391, middle of the page) — the "center line" you noticed.
+
+**After (v4):**
+- Signature image now **left-aligned at x=56** — the same margin as "Sincerely," and the typed block below it
+- Sits directly **above the "Zhiwen Teh" line** (your "signature head"): image y128–218, name block y223 — classic letter convention where the handwritten signature goes right above the typed name/title
+- Matches the original CEPOTX documents (Paulo/Cleide), where the whole block is left-aligned at the same margin
+
+**Verified geometry on page 10:**
+| Element | Position |
+|---|---|
+| "Sincerely," | x=56, y108–122 |
+| Signature image | x=56, y128–218 (left-aligned ✓) |
+| "Zhiwen Teh / President / …" | x=56, y223–289 |
+
+---
+
+**RESUME HERE → next unit:**
+1. **Your review of v4** — confirm the signature placement looks right now
+2. Once approved, I'll push the v4 PDF to `fda_fsvp` (replacing the v3 record) — and still pending: the **site code from Jedielcio** for finalization
+3. Also still queued: **promote the journey-image fix (#230) to prod** once you've eyeballed it on beta (you said "Looking good" on beta — say "promote" when ready)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → echo "=== current gen script: signature placement ==="; ls -la /tmp/gen_santa_anna*.py 2>/dev/null; grep -n -i "signature\|sincerely\|sign" ; echo "=== original Paulo PDF signature page layout ==="; cd /tmp/fda_fsvp_local/suppliers/cepotx 2>/dev/null && python3 << 'EOF' import sys ; echo "=== v3 signature section ==="; sed -n '140,175p' /tmp/gen_santa_anna_v3.py; echo; echo "=== SIG asset ==="; ls -la /tmp/sig_assets/gar; …(+5 more)
+
