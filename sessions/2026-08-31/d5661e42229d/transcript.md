@@ -4157,12 +4157,24 @@ ReportId computed. Now creating the placeholder photo and uploading it to `sunmi
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Photo uploaded (commit `720d814`). Now signing + submitting the plant event via a small script (extending the reusable pattern — same signText + shareText + POST):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Plant event submitted — `signature_verification: success`!** Now the auto-dispatch should fire the planting webhook (@7, `processTreePlantingTelegramLogs`) via the routing table. Let me wait briefly, then check the SunMint Tree Planting tab for my row:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4337,4 +4349,93 @@ No new PRs/deploys this turn; no money movement; the only writes were the signed
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && echo "=== index.geojson (authoritative, ref=main): my tree present? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/su; cd /tmp && python3 - <<'EOF' import json, urllib.request, os env = {} for line in open('/opt/truesight_autopilot/.env'): line=line.strip() i; sleep 45; cd /tmp && echo "=== index.geojson (authoritative): my tree gone? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmi
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] Can you go and do number two?
+
+
+### 🤖 Autopilot
+
+Yes — I have the `dao_protocol_nelanco` access from earlier this session. Doing it now: add `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING` → @7 planting webhook URL to the box `.env`, restart, and verify. First, checking the current state of the .env for that key:
+
+
+### 🤖 Autopilot
+
+Interesting finding — **`DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING` already exists** (line 42, `AKfycbyLQjTlM8nzAP...` — the same deployment I fired manually earlier, just without the `/a/macros/agroverse.shop/` workspace prefix). So task #2 may already be provisioned. Let me verify (a) it's loaded in the running process, and (b) the URL actually responds — then confirm plant auto-dispatch works:
+
+
+### 🤖 Autopilot
+
+Key finding: the `.env` line was added **2026-08-30 03:23** — that predates this conversation, and dispatch.py's `[TREE PLANTING EVENT]` routing (#149) is already in the git log. So **plant routing was already provisioned** (by an earlier run of this plan) — my earlier grep only searched a limited pattern and the manual @7 fire wasn't needed because auto-dispatch may not have fired for a different reason. The `pgrep` returned no pid (systemd process name differs) — let me verify the env is actually in the process and test the plant auto-dispatch for real with a second planted tree:
+
+
+### 🤖 Autopilot
+
+**Confirmed: the env var IS loaded in the service process** (MainPID 963906 has the match, service restarted 00:06:26Z after my earlier `git pull` + restart). So plant routing was already provisioned and live. That means my earlier manual @7 fire may have been **unnecessary** — the auto-dispatch should have fired for my plant event. Let me check why it didn't: the plant event landed at 01:11, but was the webhook fired? Let me check the GAS processing record and whether the box logged anything (journalctl returned empty — likely needs different flags). Let me check the dispatch code path for the plant event and any errors:
+
+
+### 🤖 Autopilot
+
+**Finding: #2 is already provisioned.** The env line `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING` exists (line 42, added 2026-08-30 03:23 — before this session), the service restart at 00:06:26Z loaded it into the process (MainPID 963906 confirmed), and dispatch.py's `[TREE PLANTING EVENT]` routing (#149) is in the git log. So no env change needed — the honest test is whether plant auto-dispatch **actually fires**. Let me prove it live: submit a second plant event and **do NOT touch the webhook** — if the row lands by itself, auto-dispatch works:
+
+
+### 🤖 Autopilot
+
+Key loading — DER, not PEM (same as before). Let me check how the reusable script handles it and reuse that exact loading:
+
+
+### 🤖 Autopilot
+
+The reusable script uses `load_der_private_key` — my inline script used `load_pem_private_key`. That's the bug. Let me use the script's exact loading (DER) and re-submit:
+
+
+### 🤖 Autopilot
+
+**Plant event #2 submitted — HTTP 200, `signature_verification: success`, tree id `Edgar_20260831015149_192`.** Now the decisive test: **do NOT touch the webhook** — if the auto-dispatch (routing #149 + env var in process) works, the row lands in the SunMint tab on its own. Waiting ~60s, then checking the tab:
+
+
+### 🤖 Autopilot
+
+**Row 29 landed — `Edgar_20260831015152_009` at 01:51:52Z, three seconds after my submission — and I did NOT fire the webhook.** That's the plant auto-dispatch proof. Let me confirm the row content is my plant event (species/contributor/photo) to be certain:
+
+
+### 🤖 Autopilot
+
+# ✅ **PLANT AUTO-DISPATCH PROVEN — #2 is done and verified**
+
+## The result
+`DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING` was **already provisioned** (line 42, added 2026-08-30 03:23, loaded in the running service process MainPID 963906), and the routing entry (#149) was already in the box's git log. My earlier manual @7 fire was **unnecessary** — the auto-dispatch was live the whole time.
+
+**Live proof (this turn):** planted `Edgar_20260831015149_192` via a signed `[TREE PLANTING EVENT]` (HTTP 200, `signature_verification: success`) → **did NOT touch the webhook** → row `Edgar_20260831015152_009` appeared in the SunMint Tree Planting tab **3 seconds later**, fully parsed: Species "Cacao (Native)", Contributor **Sophia Truesight**, photo URL, Status NEW.
+
+| Check | Result |
+|---|---|
+| Env var in `.env` | ✅ line 42 (pre-existing) |
+| Loaded in service process | ✅ MainPID 963906, restart 00:06:26Z |
+| Routing entry | ✅ `[TREE PLANTING EVENT]` → `processTreePlantingTelegramLogs` (#149) |
+| **Live auto-dispatch (no manual webhook)** | ✅ **row landed in 3s** |
+
+## Both event paths are now proven event-driven
+| Event | Routing | Auto-dispatch proof |
+|---|---|---|
+| `[TREE PLANTING EVENT]` (plant) | ✅ #149 + env | ✅ **this turn** (row landed in 3s) |
+| `[TREE PLANTING REJECT EVENT]` (invalidate) | ✅ #150 + env | ✅ earlier (row 11963/64 auto-processed) |
+
+**The only remaining manual step in the whole loop is the index rebuild** (the `TGM_GITHUB_TOKEN` Script Properties scope fix — operator action, 2 min, documented earlier). Everything else — plant, ledger, reject, invalidate — is fully automatic.
+
+Also worth noting: the journal shows the box is getting hammered with PHPUnit/ThinkPHP **scanning attacks** (all 404s, harmless but noisy) — unrelated to our work; mention it if you want it logged.
+
+---
+**RESUME HERE → next units:**
+1. **Operator (2 min)**: set `TGM_GITHUB_TOKEN` (repo-scoped PAT, e.g. the `.env` `TRUESIGHT_DAO_AUTOPILOT` one) in GAS Project Settings → Script Properties → then INVALID **auto-fires the rebuild too** and the loop is 100% automatic.
+2. **Cleanup (optional)**: my two test trees (row 28 INVALID, row 29 NEW) + the placeholder photo — keep as signed test records or remove per runbook §6.
+3. **Close out**: mark SUNMINT plan UAT-complete in the handoff manifest; runbook §4.5 pointer to `sunmint_submit.py`.
+
+No new PRs/deploys this turn; no money movement; writes were only the signed plant test event + the earlier reject/rebuild.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no dao_protocol_nelanco 'grep -n "TREE_PLANTING" /home/ubuntu/dao_protocol/.env; echo "---; ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no dao_protocol_nelanco ' echo "=== 1. env var loaded in running process? ===" pid=$(pgrep; ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no dao_protocol_nelanco ' echo "=== 1. env in service process? ===" for p in $(pgrep -f "p; …(+5 more)
 
