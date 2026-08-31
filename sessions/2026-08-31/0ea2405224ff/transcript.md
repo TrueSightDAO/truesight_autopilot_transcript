@@ -878,11 +878,13 @@ The runbook is clean — the "demo" framing only lives in the two `sunmint.html`
 ### 🤖 Autopilot
 
 Both edits applied, JS clean, no "demo" left in the map script. Pushing the fix:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #327 opened. Merging (go-signal from earlier covers this fix):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -944,36 +946,43 @@ You're right, and I was wrong to call it a demo. The Bougainvillea (`Edgar_20260
 ### 🤖 Autopilot
 
 Go received — next unit: **triage the tree registry** (now that Florianópolis is confirmed legit, the non-Amazon entries need the same scrutiny). This is pure investigation: read the full registry, trace the source-of-truth sheet rows, and check the QR records. Let me start.
+[2 tool result(s) compacted: ssh_run, lookup_qr_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 21 trees now (was 19 earlier — two **new Altamira entries** appeared: `Edgar_20260830154309_009` and `Edgar_20260831011117_005` at -3.29609, -52.58318, matching the planting-event coords). And the QR lookup **confirms the Bougainvillea is real**: `ASSIGNED_TO_TREE`, email `paloma@founderhaus.club`, manager Gary. Now let me read the source-of-truth sheet to trace where the junk coordinates actually come from:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet is the source of truth and it's rich — let me see the remaining rows (the earlier read truncated at row ~10) to complete the triage:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the tail of the sheet data to complete the triage — especially the Bougainvillea row (what coords/QR it carries) and the newest Altamira rows:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The nested artifacts are eating the output — let me pull just the key columns (ID, lat, lng, status, species, QR) for all rows in one compact read:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full triage complete — I have everything. Let me check the OPEN_FOLLOWUPS.md structure so I can persist this triage as a follow-up entry (so future agents don't redo the work):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Triage is nearly complete. Key finding: the builder already skips `TEST`/`E2E` and `INVALID` rows — the Oregon/China entries show as `NEW` so they leak into the public map. The Bougainvillea's coords in the geojson come from somewhere other than the sheet (sheet lat/lng is empty — they were backfilled at QR-link time). Let me check the no-coords trees' photo EXIF for recoverable GPS, and pull the exact photo/submitted-name columns:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1143,4 +1152,69 @@ Want me to also trigger a one-off **plots** rebuild sanity-check (the plots gene
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /tmp && rm -rf sunmint4 && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git sunmint4 2>&1 | tail -1; cd sunmint4 && ech; echo "=== gh CLI? ===" && which gh 2>/dev/null && gh --version 2>/dev/null | head -1 || echo "no gh"; echo "=== gh auth ===" && gh auth stat; cd /tmp/sunmint4 && echo "=== triggering rebuild ===" && gh workflow run rebuild-tree-index.yml --repo TrueSightDAO/sunmint 2>&1 && echo "tr; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Verified — the map data is now honest and matches the cleaned sheet:
+
+- **`trees/index.geojson`** (commit `1dc11c6`) now has exactly **2 trees**, regenerated from the sheet:
+  1. **Bougainvillea** — F
+
+
+### 🤖 Autopilot
+
+Go received — running the one-off plots rebuild sanity-check: run the generator with the SA creds (no "SunMint Plots" tab exists yet, so it must preserve the curated RM-P1/RM-P2 seed) and diff against what's live:
+
+
+### 🤖 Autopilot
+
+The preserve logic keys off the **out path** — pointing at a non-existent `/tmp/plots_rebuilt.json` gave it nothing to preserve. In the real workflow the out path is `plots/index.geojson` inside the checkout, where the seed exists. Let me test the actual workflow invocation to confirm it preserves correctly:
+
+
+### 🤖 Autopilot
+
+The plots generator behaves exactly as designed: with no "SunMint Plots" tab, it warns and **preserves the curated RM-P1/RM-P2 seed byte-for-byte** — and the diff confirms it would have produced no push. Let me restore the working-tree copy to live (the test overwrote it with the identical content, but to be clean) and confirm nothing changed on main:
+
+
+### 🤖 Autopilot
+
+Sanity-check complete — everything verified clean:
+
+## Plots rebuild sanity-check ✅
+
+Ran the generator exactly as the workflow will (SA creds, `--out plots/index.geojson`):
+- **WARN: no 'SunMint Plots' tab → preserved existing registry** ✓
+- Output **byte-identical** to live → no push needed, no spurious commit ✓
+- Working tree restored clean (`git status` empty) ✓
+- `plots/index.geojson` on main untouched: **RM-P1 (planted) + RM-P2 (proposed)** ✓
+
+## Full current state (all live on beta)
+
+| Component | State |
+|---|---|
+| `plots/index.geojson` | 2 plots — RM-P1 (planted), RM-P2 (proposed, ~5 ha family) |
+| `trees/index.geojson` | 2 trees — Florianópolis Bougainvillea (LINKED) + Altamira Cacao Native (NEW) |
+| Impact map | Altamira-centered, plots + view switcher (Altamira / Florianópolis (planted) / All trees), after #325 #326 #327 |
+| Generator + workflow | `build_plots_geojson.py` + `rebuild-plots-index.yml` (daily 06:05 UTC, preserves seed when no tab) |
+| Tree index | rebuilt via `build_tree_geojson.py` after your cleanup |
+
+**→ https://beta.truesight.me/sunmint.html** (hard refresh) — should show 2 plot polygons + 2 tree markers.
+
+## RESUME HERE →
+1. **Governor reviews beta map** (plots + 2 trees + view switcher) → **explicit approval** → `sync_beta_to_prod(truesight_me_prod)`.
+2. **Create the "SunMint Plots" tab** in the ledger spreadsheet (farm + plot rows: RM-P1, RM-P2, hectares, lat/lng, status) so the generator's source of truth exists and new plots can be added without hand-editing.
+3. **RM-P2 boundary authority** — Jedielcio's CAR/INCRA polygon or full perimeter walk (5 ha claimed vs 2.9 ha walked).
+4. **Ledger anchor** — register Rancho Maranta farm + plot event on-chain (TREE PLANTING EVENT precedent exists).
+5. **Bougainvillea planting event** — confirm Paloma's crew has a proper [TREE PLANTING EVENT] recorded on the ledger for the QR-linked tree (worth a check with Paloma).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → ran build_plots_geojson.py with SA creds exactly as workflow (no tab → preserved 2 features), diffed identical to live, restored tree clean, confirmed origin/main plots untouched (RM-P1 planted + RM-P2 proposed)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/sunmint6 && echo "=== generator exists? ===" && ls -la scripts/build_plots_geojson.py && echo "=== run with SA creds (no Plots tab -; cd /tmp/sunmint6 && cp plots/index.geojson /tmp/plots_live_backup.json && echo "=== run exactly as workflow does (--out plots/index.geojson); cd /tmp/sunmint6 && git checkout -- plots/index.geojson 2>/dev/null; echo "=== git status ===" && git status --short && echo "(empty = clean
 
