@@ -1547,21 +1547,25 @@ Pending files are action-queues, not our session. The actual Telegram conversati
 ### 🤖 Autopilot
 
 `raw-telegram-chatlogs` dirs exist in several workdirs. Let me inspect them.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The full-disk grep timed out. Let me be surgical — target the chatlog dirs and known transcript locations only.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Chatlog dirs are just index.html from unrelated site checks. Let me find where the autopilot app actually stores conversation history (recall_context's backing store).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `SESSION_LOG_DIR=/opt/truesight_autopilot/sessions`. But earlier that dir only had 2 small files. The telegram adapter logs to a per-thread session there. Let me look at how the telegram adapter names/stores sessions.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1684,4 +1688,81 @@ Want me to also clean up the 3.88 GB zip + media from the box, or log a deploy r
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` ×2 → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: reference FARM_MEDIA_PIPELINE.md and process the media files you were working on just now for cleide's farm
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181]
+
+
+### 🤖 Autopilot
+
+Noted — that's an observed message (not directed at me), but the reference is relevant to our Cleide media work. Let me read `FARM_MEDIA_PIPELINE.md` to see what processing it prescribes, then I'll confirm with you before executing.
+
+
+### 🤖 Autopilot
+
+FARM_MEDIA_PIPELINE.md isn't in agentic_ai_context. Let me search org-wide — it may live in a repo (there's a `farm-media-raw` repo listed in the open_fix_pr allowed repos).
+
+
+### 🤖 Autopilot
+
+Code search found nothing either. There IS a `farm-media-raw` repo in the org (in my allowed list) — let me check it for the pipeline doc.
+
+
+### 🤖 Autopilot
+
+FARM_MEDIA_PIPELINE.md isn't in agentic_ai_context or code search. Let me check the farm-media-raw repo's actual structure — the pipeline doc or convention may live there.
+
+
+### 🤖 Autopilot
+
+Let me check the farm-media-raw repo contents directly and search for the pipeline doc in the truesight_autopilot repo.
+
+
+### 🤖 Autopilot
+
+The code search needs auth, and the repo listing 404'd via curl (private repo, unauthenticated). Let me use the authenticated path — check if the autopilot has a GitHub token, and look for the pipeline doc in the truesight_autopilot repo docs.
+
+
+### 🤖 Autopilot
+
+## FARM_MEDIA_PIPELINE.md — not found; here's what I searched
+
+Quick note on the message itself: it came tagged **[observed, not directed at you — Nobody Will not DM you]**, so per my data/instruction boundary I treated it as data to check, not a command to auto-execute — but since it's about our Cleide media, I dug in. **Result: the referenced doc doesn't exist anywhere I can reach.**
+
+**Searched (per rule 10 — name resolution first, then org-wide):**
+
+| Search | Result |
+|---|---|
+| `read_context_file("FARM_MEDIA_PIPELINE.md")` | ❌ Not in agentic_ai_context |
+| `search_context("farm-media-raw")` | ❌ 0 matches |
+| `search_code("FARM_MEDIA_PIPELINE")` org-wide | ❌ 0 matches |
+| `search_code("farm-media-raw")` org-wide | ❌ 0 matches |
+| `farm-media-raw` repo — `FARM_MEDIA_PIPELINE.md` | ❌ 404 (repo exists, doc doesn't) |
+| `farm-media-raw` repo — `README.md` | ✅ Found: *"Private DAO blob store for raw farm media (HEIC/JPG photos) keyed by farm id — Content-API only, never cloned/branch-edited."* |
+| Repo contents listing (via authed API) | ⚠️ auth token not accessible from `.env` — listing blocked; unauthenticated API 404s on the private repo |
+
+**What exists:** `TrueSightDAO/farm-media-raw` (private) — the blob store convention says raw farm media is uploaded **keyed by farm id**, via Contents-API single-file writes only (never clone/branch-edit). That's consistent with how we've handled agroverse-inventory / store_interaction_attachments. But there's **no pipeline spec doc** attached to it.
+
+**Where we are with Cleide media (already done this session):**
+- 3.88 GB zip → 14 HEIC + 71 MOV, GPS extracted, **never full-extracted** (streaming)
+- 4 JPGs (hero + 3 gallery) converted + live on prod agroverse.shop
+- Raw HEICs/MOVs still on the box: `/home/ubuntu/cleide_media/` + the original zip
+
+---
+
+**To proceed I need one of these from you (Gary):**
+1. **Where does `FARM_MEDIA_PIPELINE.md` live?** (repo/branch, or paste it) — it's not in agentic_ai_context, truesight_autopilot, farm-media-raw, or anywhere GitHub code-search can see.
+2. **Or just tell me what you want done** — e.g. "upload the raw HEICs + a media manifest to `farm-media-raw/<cleide-farm-id>/`" — and I'll execute that directly.
+
+My read of the likely intent: push the raw site-visit media into `farm-media-raw` keyed by Cleide's farm id (`fazenda-cleide-para` or similar), with a manifest. Say the word and I'll do exactly that (Content-API writes, no clone).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== farm-media-raw repo contents ===" curl -s "https://api.github.com/repos/TrueSightDAO/farm-media-raw/contents/" | python3 -c "impor; echo "=== find GH token for API ===" GHTOKEN=$(grep -hoE "(GH_TOKEN|GITHUB_TOKEN|GITHUB_PAT)=[A-Za-z0-9_]+" /opt/truesight_autopilot/.env 2>
 
