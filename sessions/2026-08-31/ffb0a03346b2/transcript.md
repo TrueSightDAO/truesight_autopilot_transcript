@@ -1080,11 +1080,13 @@ Grok classification succeeded (parse_error is cosmetic — raw output has everyt
 | IMG_7742, 7743 | **C — drying** (shed, beans on floor) |
 
 All at **-3.2925, -52.5722** — same farm location for all three facilities (matches the Paulo doc pattern). Now let me extract frames from the 3 MOVs and classify them too.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 12 video frames extracted. Let me classify them with Grok too.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1095,21 +1097,25 @@ All video frames classified too:
 - **IMG_7741** (6 frames, last frame 12 didn't get classified but it's the same video as frames 6-11 = **C — drying**)
 
 Full mapping now. Let me regenerate the PDF with the original media, real GPS, and correct facility mapping:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The IMG_7741 video has 7 frames, not 8. Let me fix the frame references and regenerate.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fixed — 7 frames in IMG_7741, now using 02/06/07. Regenerating:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated — 10 pages with real GPS, signature, correct facility mapping. One caption bug: p9 says "frame 8" but I'm using frame_07. Let me fix that and also render a visual check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1274,4 +1280,26 @@ If Marcelo is a third farm in the CEPOTX network that hasn't been documented yet
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp/fda_fsvp_local && echo "=== grep Marcelo in fda_fsvp ==="; grep -rni "marcelo" --include="*.json" --include="*.md" --include="*.txt"; cd /tmp/fda_fsvp_local/suppliers && for f in cepotx/*.pdf; do echo "=== $f ==="; python3 -c " import sys; sys.path.insert(0,'/opt/truesight_; cd /tmp/fda_fsvp_local/suppliers && for f in black_king/*.pdf coopercabruca/*.pdf hau_cacau/*.pdf mu_gelato/*.pdf koala_peru/*.pdf; do pytho; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] Once we have inserted the site code for Santa Ana Fazenda, I wonder if we we should just have the document uploaded directly If I get up or you know whether we should have it done via the DAPP but bound for that location, what are your thoughts? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here are my thoughts on this, Gary.
+
+**Short answer: I'd recommend doing both, but for different jobs.**
+
+**1. The FSVP document itself → upload directly to the `fda_fsvp` repo.** That's the established pattern — all 12+ prior CEPOTX records (Paulo, Cleide, packing storage) live in `suppliers/cepotx/` and are indexed in `entity.json`. The FDA compliance record is a regulatory document whose canonical home is that repo, alongside the written assurance letter, supplier evaluation, lab tests, and nota fiscal. The DApp has no "site visit" event type in its catalog — so uploading there wouldn't actually create a proper FSVP record type; it'd be a loose document with no schema.
+
+**2. The location binding → use the DApp's FARM REGISTRATION EVENT.** This is the piece where the DApp genuinely adds value. Registering Santa Anna Fazenda as a farm with its name, location (we now have the real GPS: -3.2925, -52.5722), and owner creates the ledger-level, location-bound identity. Then the site-visit PDF in the repo can reference the farm ID, and anything downstream — future QR codes, provenance claims, tree-planting links — can bind to that registered farm.
+
+**3. Why not upload the PDF via the DApp bound to the location:** the DApp events don't carry PDF attachments well, the FSVP index (`entity.json` → `source_documents`) wouldn't know about it, and future FDA audits would look for the record in the repo with the rest of the file. Putting it only in the DApp would fragment the regulatory file.
+
+So my suggestion: **once Jedielcio gives us the Santa Anna site code, I finalize the PDF with the code + GPS, PR it into `fda_fsvp` (the record), and submit a FARM REGISTRATION EVENT for Santa Anna Fazenda with its location (the ledger binding).** That gives you the audit trail AND the location-bound registry entry.
+
+Want me to prepare the FARM REGISTRATION EVENT submission now (it only needs Farm Name + Location, and I have both), or wait until the site code lands and we do the full push together?
 
