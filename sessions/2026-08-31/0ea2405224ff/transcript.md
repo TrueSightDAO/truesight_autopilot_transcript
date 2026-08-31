@@ -3219,41 +3219,54 @@ Go received — resuming the mid-flight work. First: check if the family-video e
 ### 🤖 Autopilot
 
 The encode has been frozen at the same size (18025540 bytes) across multiple polls — likely hung, not progressing. Let me check the process state and log:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The x264 summary in the log means the encode **completed** — the `pgrep` matches were stale. But duration reads 20.9s, not ~31s — let me check the source duration and validate the output file properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The encode is actually **complete and valid**: source IMG_7684 is 20.9s (I misread earlier — it's a 21s clip, not 31s), output is a clean H.264+AAC MP4 (1280×2276 — portrait, faststart, 23.6MB). The `pgrep` matches were stale sleeping shells. Uploading to YouTube public now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Family video uploaded public: **https://www.youtube.com/watch?v=H9ZSF1-ahIo**. Now the header swap + gallery additions on the farm page. Let me apply all changes to the page in one pass:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Header swapped (all 4 refs: og:image, twitter:image, CSS hero, inline hero) + 5 new photos staged. Now update media.json: new hero reference + family video + new photos:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gallery updated (15 items: 3 videos + 12 images), JSON valid. Also the journey-listing card uses `IMG_7625` via the hardcoded switch — let me update that to the new warm header too, then commit + PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Push failed — likely on a detached HEAD (the clone was fresh). Let me check and create the branch properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The commit landed on main first (before the branch was created), and the branch now points at the same commit. Let me check the git state carefully — I must not accidentally push main directly; the changes should go via PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3406,4 +3419,42 @@ PR #237 opened. Merging per the standing go:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp/agb3 && ls -la assets/images/farms/rancho-maranta-IMG_7660.jpg && python3 - <<'PYEOF' from PIL import Image im = Image.open('assets/; cd /tmp && mkdir -p rmh && cd rmh && curl -s -o IMG_7660.jpg "https://beta.agroverse.shop/assets/images/farms/rancho-maranta-IMG_7660.jpg" &; cd /tmp/rmh && python3 - <<'PYEOF' from PIL import Image im = Image.open('IMG_7660.jpg').convert('RGB') # skin mask per row band to find whe; …(+4 more)
 • `merge pr` → ✅ PR #237 on agroverse_shop_beta merged successfully (sha: 8c5174599ca4489ad0d1d95345458e895b5bb881). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn
+
+**Header image swapped to IMG_7660 per your preference — PR #237 merged.**
+
+**PR #237 → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/237** (merged, sha `8c51745`):
+
+
+### 🤖 Autopilot
+
+Go received — next unit: confirm the new header is live on beta so you can review it. Let me verify the deploy propagated (page HTML refs + image 200):
+
+
+### 🤖 Autopilot
+
+Both checks pass — the header swap is **live on beta**:
+
+## Verified live
+
+1. **Page HTML (200)** — https://beta.agroverse.shop/farms/rancho-maranta-para/ now references `rancho-maranta-header-7660.jpg` in **all** the right places: `og:image`, `twitter:image`, and the `.farm-hero` CSS `url('...header-7660.jpg') center center/cover`. Meta title/description unchanged (correct).
+2. **Header image (200)** — https://beta.agroverse.shop/assets/images/farms/rancho-maranta-header-7660.jpg serves the exact file (449,389 bytes — the bottom-anchored crop with the family visible).
+
+## What you should now see (hard refresh)
+
+→ **https://beta.agroverse.shop/farms/rancho-maranta-para/** — hero background is IMG_7660, cropped to landscape with the people (lower band of the portrait source) in frame. The journey card on the Brazilian Path page uses the same image.
+
+## RESUME HERE →
+
+1. **Governor reviews the header on beta** — if the crop window isn't right (too low, too tight, want more of the scene), say so and I'll re-crop from IMG_7660 in seconds (it's a 1-command change, no new uploads).
+2. **Prod promotion** (gated on your explicit approval) — `sync_beta_to_prod(agroverse_shop_prod)`: farm page #229 + card fix #233 + video embeds #234 #235 + media update #236 + header swap #237. And `sync_beta_to_prod(truesight_me_prod)`: impact map #325–#329.
+3. **Optional:** archive media masters (currently only in /tmp; YouTube hosts the 3 public videos as canonical copies); Plot-2 walk video + family video are already public on the channel.
+
+**Everything on the beta side of this effort is now live and consistent** — plots (extended RM-P1), trees (2 real), satellite cache, farm page with warm header + 3 videos + 12 images, journey card image, and the SEO rows. Only your prod-approval gate remains for the promotion stack.
 
