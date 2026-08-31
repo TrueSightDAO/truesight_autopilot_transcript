@@ -2844,6 +2844,7 @@ Now I have the complete diagnosis:
 - ⏳ **Uploader (70457): sleeping in its wait loop** — it's waiting for 70179's *bash wrapper* to exit, but 70179 spawned fix_gps_pass2 as a child and is blocked on `wait`. The fix-pass just finished (log written) — so 70179's `wait` should return momentarily and the uploader will wake. 
 
 But I notice the manifest still shows `yt_ids 0 / gps 0 / objects 0` in the earlier check — because fix_gps_pass2's final `json.dump` happens at the **end** of its loop, and it just wrote. So the manifest should now have `mp4_gps_ok` flags. The uploader will read the fresh manifest once 70179 exits. Let me confirm 70179 has exited and the uploader is awake.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3130,4 +3131,28 @@ The one thing I'd add to make "any Sophia reads the YT ID" trivial: a tiny read-
 So the repo ends up with: the daemon (uploads + writes yt_id), the queue reader (status), and the manifest committer (GitHub). Three small tools, one contract.
 
 Want me to write this up as the DESIGN.md now — either here in chat first, or straight into the new repo? I'm ready when you are.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Just what's uploaded, what's pending, but what's also already updated in the ROM media repository that's pointing at YouTube, isn't it? That way I can just midstream switch over to a new telegram thread and ask that Sophia to see what's up. And then it actually knows what is the state of the queue and it can even actually go ahead and do the updates of the manifest. In the GitHub. And then others, Sophia's can just read what's on the GitHub and like read to me, responds on the state of the media, isn't it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes — exactly. You've just defined the full state model, and the key insight is that **GitHub is the shared source of truth**, so any Sophia in any new thread can answer "what's up" without ever touching this box.
+
+So the picture is:
+
+1. **The queue (working state)** — inbox + sidecars on the box. Sophia drops files in; the daemon uploads and writes the YT ID back into each sidecar.
+2. **GitHub (the committed state)** — `FARM_MEDIA_MANIFESTS/<farm>.json` is the durable record, and *that's* what points at YouTube: each video's entry carries its yt_id → watch URL. Plus `index.json` as the directory across farms.
+3. **Any Sophia, any thread** — reads GitHub, sees uploaded vs pending vs committed, and can *also* perform the commit step (aggregate sidecars → manifest → push). So midstream handoff works: a fresh Sophia in a new Telegram thread just reads the repo and picks up where the last one left off.
+
+So the daemon's only job stays tiny (upload → yt_id in sidecar), and the GitHub manifest becomes the thing every Sophia converges on. The one nuance I want to lock in: **the daemon never commits to GitHub itself** — a Sophia (or a small committer tool) does that deliberately. That keeps the repo history readable and reviewable, and keeps the daemon dumb.
+
+One thing to decide: should the GitHub commit happen **automatically** (a lightweight committer that, say, every few minutes aggregates done sidecars into the manifests and pushes), or **on-demand** (a Sophia runs `commit <farm>` when you or she wants the state refreshed)? Automatic keeps GitHub always current — which makes the "ask any Sophia" pattern work instantly; on-demand keeps commits human-reviewed. My lean: automatic with a throttle (e.g. commit no more than once per N minutes, or when a batch finishes), because you want midstream handoff to just work.
+
+I'm ready to write DESIGN.md with all of this — the queue contract, the sidecar schema, the daemon loop, the committer, and the "how any Sophia reads state" section. Want me to draft it here first for your review, or create the repo and put it straight in?
 
