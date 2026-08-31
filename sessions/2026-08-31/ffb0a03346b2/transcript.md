@@ -4547,21 +4547,25 @@ PR #239 opened. Now uploading the 6 optimized images to the branch:
 ### 🤖 Autopilot
 
 All 6 images uploaded to the branch. Let me verify the branch is complete (media.json edit + 6 assets) and report.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The asb_check clone was made before the branch existed. Let me re-fetch properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Shallow clone issue — let me fetch the branch explicitly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch verified complete: **12 gallery items** (9 images + 3 YouTube) and all 9 image assets present. Merging (approved media-add unit, standing "go"):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4772,4 +4776,65 @@ Same `item-link` styling, `target=_blank`, `rel=noopener noreferrer`.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/asb_check 2>/dev/null && git fetch -q origin && git pull -q origin main 2>&1 | tail -1; echo "=== farm page sections (h2/h3 + map/lo; cd /tmp/asb_check && sed -n '558,566p' farms/santa-anna-fazenda-para/index.html; cd /tmp/asb_check && git fetch -q origin feat/santa-anna-sunmint-link:refs/remotes/origin/feat/santa-anna-sunmint-link && echo "=== SunMint 
 • `merge pr` → ✅ PR #241 on agroverse_shop_beta merged successfully (sha: 4d760166b719029f30f5727c0854737a38913c73). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Done this turn — `agroverse_shop_beta#241` merged — SunMint cross-link added
+
+**"Santa Anna farm page: link to SunMint plot map"** → merged (sha `4d76016`)
+
+### What changed
+Added an explicit lin
+
+
+### 🤖 Autopilot
+
+👍 Go signal received — verifying the SunMint link is live on beta (accounting for the Pages deploy).
+
+
+### 🤖 Autopilot
+
+Deploy lag again — beta still serves the 14:51 build (pre-#241), while main has the link (grep=1). Same pattern as before. Let me wait for the Pages build and re-verify.
+
+
+### 🤖 Autopilot
+
+## ✅ Verified live on beta — SunMint cross-link is up
+
+| Check | Result |
+|---|---|
+| Beta farm page | HTTP 200, **"View plot on SunMint map" link present** ✅ |
+| Last-modified | **14:55:24** (deploy completed after the #241 merge at 14:54) |
+| GitHub main | Link confirmed (grep=1) ✅ |
+
+The **bidirectional linkage is now fully live on beta**:
+- **SunMint popup → farm profile**: "View farm profile on Agroverse ↗" (already in prod)
+- **Farm profile → SunMint map**: "View plot on SunMint map" (this link, now on beta)
+
+Both live on `beta.agroverse.shop/farms/santa-anna-fazenda-para/` in the Farm Location section: **View on Google Maps | View plot on SunMint map**.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Your eyeball** — beta.agroverse.shop/farms/santa-anna-fazenda-para/ → Farm Location should show both links. When it looks good, say **"promote"** and I'll `sync_beta_to_prod` (this link + the 6-photo gallery expansion from #239 ride together into prod)
+2. **Still parked:** merge `agentic_ai_context#851` (farm-page conventions doc — still open); plot-impact-embed idea on the farm profile; optionally codify the bidirectional-link convention in the runbook
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → beta check (link 0, stale 14:51) vs main (link 1); pages build status (4d76016 checks skipped); wait-loop ×4 (15s each) → deploy completed 14:55:24 → **link_count=1 LIVE**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → curl beta page (0 links, stale last-modified 14:51) → raw main (1 link); Actions API (build for 4d76016); poll loop (check 4: last-modified 14:55:24, link_count=1) → **LIVE**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== beta farm page: SunMint link present? ==="; curl -s "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/" | grep -c "View plot on SunMint; echo "=== pages build status ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/actions/runs?per_page=3" | /opt; echo "=== wait for deploy ==="; for i in $(seq 1 10); do sleep 15; LM=$(curl -sI "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/" | grep -i last-modified | sed 's/.*: //'); CNT=$(curl -s "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/" | grep -c "View plot on SunMint map"); echo "check $i: last-modified=$LM link_count=$CNT"; if [ "$CNT" = "1" ]; then echo "=== LIVE ==="; break; fi; done
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== beta farm page: SunMint link present? ==="; curl -s "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/" | grep -c "View p; echo "=== pages build status ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/actions/runs?per_page=3" | /opt/tr
 
