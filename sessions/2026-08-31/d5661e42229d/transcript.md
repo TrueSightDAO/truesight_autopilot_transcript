@@ -4305,11 +4305,13 @@ The box's `.env` has **no `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING`** (onl
 ### 🤖 Autopilot
 
 **Row 28 = INVALID ✅ — the auto-dispatch worked for the reject!** My test tree was marked INVALID automatically (no manual webhook). But the index still shows it (21 features) — the **auto-rebuild still doesn't fire** (the known TGM_GITHUB_TOKEN scope issue; #451 makes it visible but the token itself still needs operator provisioning). Completing the loop with a manual rebuild:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rebuild dispatched (204). Waiting for the workflow to complete, then verifying my tree dropped from the index — the final proof of the full loop:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4510,4 +4512,78 @@ A hidden-by-default text input that lets a user **type any tree ID manually** �
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -s "https://sunmint.truesight.me/monitor-tree-growth/" -o live_mon.html && echo "=== treeIdManual references ===" && grep -n; cd /tmp && for n in 599 668 1002 1086 1199 1223; do echo "=== around $n ==="; sed -n "$((n-8)),$((n+4))p" live_mon.html; echo; done 2>/dev/n
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Scoped — here's what removing `#treeIdManual` entails** (analysis only — the message was an observation, not directed at me, so I've made no changes; your go is needed to proceed):
+
+## What `#treeId
+
+
+### 🤖 Autopilot
+
+👍 Go received. Checking the manifest, then pulling the exact beta source so the PR edits are precise.
+
+
+### 🤖 Autopilot
+
+The beta source matches the live page (12 references, lines 161–1224). Let me pull the exact context for each usage site in the beta file so my edits anchor precisely, then make the edits:
+
+
+### 🤖 Autopilot
+
+I have all usage sites mapped. Let me grab the exact listener block (1200–1225) so my edit hunks match byte-for-byte, then push the PR:
+
+
+### 🤖 Autopilot
+
+All usage sites mapped. Now pushing the PR with the 9 precise edit hunks (one-PR-per-turn — this is this turn's single PR):
+
+
+### 🤖 Autopilot
+
+## What I did this turn (one PR opened — stopped per one-PR-per-turn)
+
+**Go received 👍 → opened the `#treeIdManual` removal PR.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `sunmint_beta` | **[#48](https://github.com/TrueSightDAO/sunmint_beta/pull/48)** | 🟡 **OPENED** (commit `e852a95`, 9 edits applied) |
+
+**What changed** (`monitor-tree-growth/index.html`): removed the free-text tree-ID input and all 8 usage sites so **only signed & planted trees** (from the ledger-backed index) can be monitored:
+1. Deleted the `<input id="treeIdManual">` element + both i18n placeholder keys
+2. `populateTreeDropdown()` — empty index no longer falls back to manual entry
+3. `onTreeSelectChange()` — no manual field toggling
+4. `getSelectedTree()` → **select-only** (returns `''` when nothing selected; existing validation rejects empty)
+5. Mark-invalid reset — no manual re-show
+6. Init — empty index → "no trees found" (no free-text path)
+7. **Deep link `?tree=<id>` unknown** → clean "not found" state (no fabricated-id capture) — this is the direct fix for the observation
+
+**Verification:** 9/9 edit hunks applied (each anchored exactly once), branch pushed, PR opened with full rationale. The PR body documents the beta-first flow (prod promotion awaits your explicit approval).
+
+### Why this matters (tying to what we proved)
+We just demonstrated the full pipeline is now **event-driven and ledger-backed** — trees only exist after a signed `[TREE PLANTING EVENT]` → auto-dispatch → SunMint row → index. The manual field was the one remaining path letting a **non-signed, non-planted ID** flow into a monitoring measurement. This closes it.
+
+### Gates NOT crossed
+- **#48 not merged** (next unit — it's a behavior change; I'll merge on your go after noting it's been reviewed)
+- No deploy, no Edgar submission, no ledger writes, no money movement this turn
+
+---
+**RESUME HERE → next units (each a fresh turn):**
+1. **Merge `sunmint_beta #48`** (say "merge it") → verify on `beta.sunmint.truesight.me/monitor-tree-growth/`: dropdown is select-only, unknown `?tree=` shows "not found", no manual input anywhere (`grep treeIdManual` = 0).
+2. **Promote to prod** (`sync_beta_to_prod(sunmint_prod)`) — your explicit approval required, then re-verify the live page.
+3. **Still open from earlier**: operator sets `TGM_GITHUB_TOKEN` (repo-scoped) in GAS Script Properties for full auto-rebuild; optional cleanup of my 2 test trees + photo; close out SUNMINT plan in the manifest.
+
+———
+**✅ Done this turn — actions taken:**
+• `read context file` ×1 → HANDOFF_MANIFEST (SUNMINT plan active)
+• `ssh run` ×3 → beta source pulled (12 refs), all 9 usage sites mapped with exact context
+• `git push changes` → sunmint_beta PR #48 opened (9 edits, commit e852a95)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/monitor-tree-growth/index.html" -o beta_monitor2.html &; cd /tmp && for n in 599 668 1002 1086 1199 1202 1223; do echo "=== around $n ==="; sed -n "$((n-10)),$((n+8))p" beta_monitor2.html; echo; do; cd /tmp && sed -n '1196,1226p' beta_monitor2.html | cat -A | sed 's/\$$//' | head -40
 
