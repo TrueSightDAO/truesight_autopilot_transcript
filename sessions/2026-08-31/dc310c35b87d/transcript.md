@@ -3855,46 +3855,55 @@ GPS Latitude                    : 3 deg 17' 45.96" S
 GPS Longitude                   : 52 deg 34' 59.39" W
 ```
 DMS with `deg ' "` and N/S/E/W ref. My parser will handle this. Now I have everything — the credential path, the sheet-write precedent, the generator pattern, and exiftool's real output. Building `extract_plot_gps.py`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The script compiles. Let me fix a small bug (duplicate plot_id write in the new-plot path), improve media path handling (repo-relative vs absolute), and write the unit test with GPS-tagged fixtures:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me write the unit test with GPS-tagged fixture images (create 4 small JPEGs with distinct GPS tags around a rectangle), covering DMS parsing, hull, ring closure, and the dry-run flow:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The fixtures didn't get GPS written — the 1x1 JPEG is too minimal for exiftool to embed GPS. Let me check and use a real image as the base for fixtures:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The fixtures were written with signed decimals, which exiftool stores *without* a ref letter — so read-back is `3 deg 17' 45.96"` (no S). Real phones write explicit refs. Fixing the fixture generation to use explicit DMS+ref (matching real device output):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GPS extraction works now. Let me see the final test result:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One test failure remaining — let me see which one:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The single-point case: `build_ring` correctly returns a 1-element ring (first == last so no append needed) — but a 1-point "polygon" is degenerate and shouldn't be written as a plot boundary at all. Let me add a proper guard (≥3 distinct points required, matching "don't invent a polygon from a photo cluster") and fix the test expectation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the final pass/fail count:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4033,4 +4042,140 @@ The script: exiftool GPS → DMS→decimal → convex hull → closed `[lng,lat]
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp/extract && python3 - <<'PYEOF' content = open('test_extract_plot_gps.py').read() old = "self.assertTrue(all(l < 0 for l in lats)) # ; cd /tmp && echo "=== sunmint_farmer tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_farmer/git/trees/main?recursive=; cd /tmp && echo "=== sunmint repo full tree (how is it classified? scripts exist there) ===" && curl -s "https://api.github.com/repos/TrueSi; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Both files landed on `sunmint/main` ✅ — **PR1 complete** (via the sanctioned Contents-API path for api_only data repos, since `sunmint` is classified machine-owned and the PR gate blocks it by design)
+
+
+### 🤖 Autopilot
+
+Resuming PR2 per the plan. Let me read the plan's PR2 spec and the current farmer-app state in parallel:
+
+
+### 🤖 Autopilot
+
+Plan PR2 spec confirmed. The farmer app has a nav dropdown (plant/monitor/instrucoes). Let me read the `onNavChange` function + section structure to add the "Limites da Fazenda" module:
+
+
+### 🤖 Autopilot
+
+The nav navigates to separate pages — so the boundary module should be a new page `limites-da-fazenda/index.html` (matching the `monitor-tree-growth/` / `instrucoes/` pattern) + a nav option. Let me check the offline-queue pattern to mirror it, and the instrucoes page structure:
+
+
+### 🤖 Autopilot
+
+I have everything I need. The module is a new page `limites-da-fazenda/index.html` + nav option + SW cache entry. Let me build it — a self-contained page mirroring the app's patterns (IndexedDB queue, i18n, camera, geolocation):
+
+
+### 🤖 Autopilot
+
+I have all the patterns. Now building the `limites-da-fazenda/index.html` page — self-contained, mirroring the app's nav/i18n/IndexedDB-queue/camera patterns:
+
+
+### 🤖 Autopilot
+
+Input mismatch is expected (void elements — `<input>` has no closing tag). Now updating the nav dropdowns on the other pages + SW cache list, then pushing:
+
+
+### 🤖 Autopilot
+
+I have the nav blocks. Let me check the other pages' `onNavChange` functions so the routing edits match exactly:
+
+
+### 🤖 Autopilot
+
+I have all the anchors. Now let me apply the nav updates to all 3 existing pages + SW cache list, and prepare the full set of files for the PR. Building all edits:
+
+
+### 🤖 Autopilot
+
+The monitor/instrucoes edits used wrong quote style. Let me fix with the correct anchors:
+
+
+### 🤖 Autopilot
+
+Monitor is done; instrucoes failed at the route step (its onNavChange must differ). Let me check instrucoes' exact onNavChange and fix:
+
+
+### 🤖 Autopilot
+
+The instrucoes nav option edit already applied (route step was the only failure — its `onNavChange` has `monitor` before `instrucoes`, so my `instrucoes … else {` anchor was wrong). Let me fix the route with the correct anchor:
+
+
+### 🤖 Autopilot
+
+Instrucoes needs the nav-option + i18n edits (the earlier assert aborted before writing them). Let me apply those now:
+
+
+### 🤖 Autopilot
+
+All verified. Pushing PR2 — new page + nav on all 3 existing pages + SW cache entry:
+
+
+### 🤖 Autopilot
+
+PR #51 opened. Let me verify the PR branch matches my validated local build (byte-compare), then merge same-turn (drift window is minutes):
+
+
+### 🤖 Autopilot
+
+The pushed page differs from my local draft by 85 bytes (I hand-tweaked the `writes` content — different `esc()` usage and hardcoded `pt-BR`). I must validate the **pushed** file's JS syntax + tags before merging:
+
+
+### 🤖 Autopilot
+
+Pushed file validates (tags balanced, both scripts pass `node --check`). Now merging PR #51:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — PR2 shipped. Stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**PR2 — "Limites da Fazenda" boundary capture module** (from SUNMINT_BOUNDARY_SUBMISSION_PLAN §5 PR2 checklist).
+
+**PR #51 — https://github.com/TrueSightDAO/sunmint_beta/pull/51** (merged, sha `c028596e`) — branch `farm-boundaries-capture-module` (new page + 3 page edits + SW)
+
+### Changes to `sunmint_beta`:
+1. **NEW `limites-da-fazenda/index.html`** (13,305 B) — the boundary-capture page:
+   - **Farm picker** = union of device-local IndexedDB farms + remote `farms/index.json` seed + **"➕ Nova fazenda…"** free-text (governor rules 1–3: farm selectable before repo record exists; free-text fallback; typed name persists for next event via IndexedDB)
+   - **Camera/photo capture** (`capture="environment"`, image+video, multiple) with thumbnails
+   - **Offline queue** (IndexedDB `sunmint-boundary-queue`) mirroring the tree-report pattern; pending badge; auto-flush on reconnect
+   - **Boundary evidence record**: `type: FARM_BOUNDARY_EVIDENCE`, farm_name, `is_new_farm` flag, media list, captured_at, device GPS (rule 4 hook — backend upsert is PR4)
+   - i18n (pt-BR default), service-worker registration
+2. **Nav dropdown** on all 4 pages (`/`, `/monitor-tree-growth/`, `/instrucoes/`, + new) — "Limites da Fazenda" (pt) / "Farm Boundaries" (en) + routing to `/limites-da-fazenda/`
+3. **`service-worker.js`** — caches the new page for offline load
+
+### Verification (hard rule)
+- ✅ New page: tags balanced (input void per convention), both inline scripts pass `node --check` (validated the *pushed* file, not just my local draft)
+- ✅ All 3 edited pages: `navLimites` present (×3) + route added, JS `node --check` clean
+- ✅ SW cache list updated
+- ✅ `mergeable: True`, merged same turn
+
+**Live on beta now** (`beta.sunmint.truesight.me/limites-da-fazenda/` — GitHub Pages auto-deploys on merge).
+
+## RESUME HERE → PR3 (next unit, fresh turn)
+
+**Machine-generated farms seed** (plan §5 PR3): `scripts/build_farms_index.py` (mirror plots generator) → `sunmint/farms/index.json`, so the farmer-app dropdown has the remote seed for rule 1 across all devices. Steps:
+1. Mirror `build_plots_geojson.py` (same SHEET_ID + Farms tab) → emit `farms/index.json` (farm_id + name list)
+2. Add/update the rebuild workflow (or extend `rebuild-plots-index.yml`)
+3. Land on `sunmint` via Contents API (api_only repo — the sanctioned path, as with PR1)
+4. Report + note the farmer-app already consumes `farms/index.json` (PR2's `REMOTE_FARMS_URL`)
+
+Plan status: **PR0 ✅ · PR1 ✅ · PR2 ✅ · PR3 next · PR4 (backend upsert + `FARM BOUNDARY EVIDENCE EVENT`) · PR5 = `gate: UAT`**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → cd /tmp && echo "=== sunmint_beta tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/git/trees/main?recursive=1" |; cd /tmp && echo "=== onNavChange + section show/hide logic ===" && sed -n '930,1000p' sunmint_index.html; echo "=== section ids ===" && grep; cd /tmp && echo "=== IndexedDB queue pattern in index.html ===" && grep -n "indexedDB\|openDB\|putTreeReport\|flushTreeReportQueue\|TREE_REP; …(+11 more)
+• `merge pr` → ✅ PR #51 on sunmint_beta merged successfully (sha: c028596eb093780862c1a5b53685cacd9d3df102). Pull Request successfully merged
 
