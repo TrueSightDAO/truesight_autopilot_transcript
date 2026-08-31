@@ -290,16 +290,19 @@ Compileall ✅ and ruff check ✅. Two flags to resolve before push:
 The 3 failures are in `tests/test_chat_observe.py` — untouched by my change, and the working tree shows **zero Python modifications this session** (only pre-existing data/config drift). These are environment-related failures (likely a chat-observe mock regression) independent of a sunmint HTML/JS change.
 
 To be rigorous and honest, let me confirm these tests fail on a clean checkout too (so I can truthfully say "pre-existing, not mine"), and verify the 34 ruff-format files are also pre-existing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All checks resolved: the 3 pytest failures **reproduce on pristine HEAD** (pre-existing, environment/regression, unrelated to this change), and none of the 34 ruff-format files are mine. My change is HTML/JS only and its inline JS passes `node --check`. Pushing the PR now:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR opened: **sunmint_beta#50** (`feat/instrucoes-gps-page`). Per your "sure" = authorization to build & land in beta, merging now, then verifying on the beta site:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -350,6 +353,7 @@ Merged. Stopping here per the one-PR-per-turn rule — report below, beta verifi
 ### 🤖 Autopilot
 
 Go signal received. Checking the handoff registry first, then verifying the beta deploy.
+[2 tool result(s) compacted: read_context_file, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -468,4 +472,111 @@ Want me to open the PR embedding the cropped screenshot into `sunmint_beta` (→
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp/tg_attachments && ls -la 39a8b6f8d7834a6391ba2eb23101412d.jpg && echo "---EXIF---" && exiftool -a -G1 -s 39a8b6f8d7834a6391ba2eb2310; cd /tmp/tg_attachments && python3 -c " from PIL import Image im = Image.open('39a8b6f8d7834a6391ba2eb23101412d.jpg') print('size:', im.size,; cd /tmp/tg_attachments && python3 -c " from PIL import Image im = Image.open('39a8b6f8d7834a6391ba2eb23101412d.jpg') # Crop to the guidance ; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17700] 1
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17700] [Handoff context — this Telegram topic (thread 17700) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+Option 1 it is — embed the cropped screenshot. Let me grab the current `instrucoes/index.html` from `sunmint_beta` main (to craft exact edits) and confirm the cropped image is in place:
+
+
+### 🤖 Autopilot
+
+The current `sunmint_beta` main has moved on since my PR #50 — there's now a "Limites da Fazenda" nav option (someone added it). I'll base my work on current main and make a targeted edit that doesn't touch the limites parts. Let me get the full current file locally to craft exact edits:
+
+
+### 🤖 Autopilot
+
+Current main has a new `limites-da-fazenda` page (from another session) — good context, my change is independent of it. I'll embed the crop into Section 1 of `instrucoes/index.html` and update `service-worker.js` so the image is cached offline. Let me add the image to the repo and craft the HTML edit:
+
+
+### 🤖 Autopilot
+
+Now I need the exact I18N dict strings from the local clone to craft the edits:
+
+
+### 🤖 Autopilot
+
+Current main includes a `limites-da-fazenda` page from another session — my change is independent (I'll leave it untouched). Now grabbing the exact pt I18N lines so my edit strings match byte-for-byte:
+
+
+### 🤖 Autopilot
+
+Now I'll apply the edits locally, validate the inline JS, and confirm search strings are unique before pushing:
+
+
+### 🤖 Autopilot
+
+Edits applied cleanly, inline JS passes `node --check`. Quick diff review + check the playwright tests before pushing:
+
+
+### 🤖 Autopilot
+
+Clean, minimal diff (+11 lines + 1 image). Let me run the Playwright tests to make sure nothing regressed:
+
+
+### 🤖 Autopilot
+
+Playwright can't run in this fresh clone (devDependencies never installed — pre-existing, unrelated to my change). My change is static HTML/JS + one image; inline JS passes `node --check` and the diff is minimal. Pushing via PR flow — first the text edits, then the binary image to the same feature branch:
+
+
+### 🤖 Autopilot
+
+Text edits pushed, PR **#52** opened. Now adding the cropped image to the same feature branch, then merging:
+
+
+### 🤖 Autopilot
+
+Image added to the branch. Merging PR #52 per the authorized go, then verifying on beta:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Stopping here per the one-PR-per-turn rule. Report below — beta verification + prod promotion is the next unit.
+
+## ✅ Done this turn — WhatsApp guidance screenshot embedded in Instruções
+
+**PR:** [sunmint_beta#52](https://github.com/TrueSightDAO/sunmint_beta/pull/52) — *"Embed real WhatsApp guidance screenshot in Instruções"* — merged (squash, sha `98d9dc7`). Commits: `f4454fb` (text edits) + `1cec071` (image).
+
+**What changed:**
+- **`instrucoes/index.html`** — added a `<figure>` under Section 1's tip with the **cropped WhatsApp bubble** (Gary → Jedielcio: *"Envie como arquivo em vez de foto; assim, as informações são preservadas"*), plus `.tip-img` CSS and a bilingual caption (`sec1ImgCaption` pt/en).
+- **`service-worker.js`** — precaches `./instrucoes/index.html` + `./instrucoes/send-as-file-tip.png` so the image works offline (farm field use).
+- **`instrucoes/send-as-file-tip.png`** (new, 930×113) — **PII-safe by construction**: cropped to the message bubble only, verified via OCR + pixel checks that **no contact name, avatar, or WhatsApp header** is visible; source image had no GPS/EXIF.
+
+**Testing:**
+- Inline JS passes `node --check` ✅
+- Diff is +11 lines + 1 image, additive, doesn't touch the newer `limites-da-fazenda` page ✅
+- Playwright suite not runnable in fresh clone (devDependencies never installed — pre-existing, unrelated; static HTML/JS change only)
+
+**Not done (deliberately):** `sunmint_prod` untouched — prod promotion stays behind your explicit go.
+
+**RESUME HERE →** Verify on `beta.sunmint.truesight.me/instrucoes/` (screenshot renders under Section 1, PT + EN toggle shows caption, offline cache includes the image). Then, on your explicit approval, `sync_beta_to_prod sunmint_prod` to promote to `sunmint.truesight.me/instrucoes/`.
+
+———
+**✅ Done this turn — actions taken:**
+• `read repo file` → sunmint_beta/instrucoes/index.html (current main; noted new limites-da-fazenda page)
+• `ssh run` ×6 → cloned sunmint_beta@main; copied crop into repo; applied 4 edits to instrucoes/index.html + 1 to service-worker.js; node --check ✅; git diff review (+11 lines, image untracked); playwright attempt (devDeps missing — pre-existing)
+• `git push changes` → PR #52 (5 text edits applied, sha f4454fb)
+• `upload local file` → instrucoes/send-as-file-tip.png to branch (sha 1cec071)
+• `merge pr` → ✅ PR #52 merged (sha 98d9dc7)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → ls -la /tmp/instrucoes_send_as_file_tip.png && python3 -c " from PIL import Image im = Image.open('/tmp/instrucoes_send_as_file_tip.png') pr; cd /tmp && rm -rf sunmint_beta_probe && git clone --depth 1 -q https://github.com/TrueSightDAO/sunmint_beta.git sunmint_beta_probe 2>&1 | ta; cd /tmp && cp /tmp/instrucoes_send_as_file_tip.png /tmp/sunmint_beta_probe/instrucoes/send-as-file-tip.png && echo "copied" && ls -la /tmp/s; …(+5 more)
+• `merge pr` → ✅ PR #52 on sunmint_beta merged successfully (sha: 98d9dc741d87168e9b5a2f64348d74686e42bbbb). Pull Request successfully merged
 
