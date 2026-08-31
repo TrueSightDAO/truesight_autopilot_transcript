@@ -2646,16 +2646,19 @@ Let me read the loadPlots / viewSelector / plotSelector logic in full (lines 500
 ### 🤖 Autopilot
 
 Let me read the rest of the loadPlots function (the plot filter + view interplay):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the final part of loadPlots (the view-chip interplay and end of function):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact is nesting — let me read the tail of loadPlots directly with sed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2807,5 +2810,102 @@ Say go and I'll resolve the conflict, merge PR2, and proceed to PR3.
 
 ———
 **✅ Done this turn — actions taken:**
+• `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merge attempt failed — stopping here per the one-PR-per-turn rule and reporting the blocker.
+
+## What happened this turn
+
+**Attempted to merge PR #332 (PR2 — farms selector)** → **❌ failed: "Pull Requ
+
+
+### 🤖 Autopilot
+
+Go-signal received — resolving the PR #332 conflict. First, let me diagnose exactly what changed on `main` vs my PR2 branch:
+
+
+### 🤖 Autopilot
+
+The diff shows `main` has moved ahead (43,155 vs my branch base 42,877 — main now includes the PR1 legend AND something else). Let me get a precise unified diff to see exactly what changed on main since my PR2 branch was cut:
+
+
+### 🤖 Autopilot
+
+Diagnosis clear: `main` gained a **"View farm profile on Agroverse"** link in the popup after my PR2 branch was cut — both sides touched the `L.polygon` region, hence the conflict. The fix: rebuild the PR2 file on **current main** (which absorbs main's Agroverse link) so the PR branch becomes main + my 8 hunks → clean three-way merge.
+
+
+### 🤖 Autopilot
+
+Resolved file is clean: built on **current main** (43,132 bytes) → 47,053 bytes, tags balanced, JS syntax OK, **Agroverse link preserved**, all 9 PR2 markers present. Pushing the resolved file to the PR2 branch, then attempting merge:
+
+
+### 🤖 Autopilot
+
+Pushed. Now attempting the merge of PR #332:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merge still fails — stopping here per the one-PR-per-turn rule and reporting the blocker precisely.
+
+## What happened this turn
+
+**Resolved the content conflict; the merge still won't take.** Sequence:
+
+1. **Diagnosed the conflict** — `main` gained a **"View farm profile on Agroverse"** link in the plot popup (in the same `L.polygon` region my PR2 touches) after my branch was cut. Both sides touched that region → three-way merge conflict.
+2. **Rebuilt PR2 on current `main`** — took fresh `main` (43,132 bytes), re-applied all 8 hunks (farmSelector div, treeMarkers refs, plotLayers/plotFarms/farmNames, applyFarmFilter + pointInPoly, chip-hiding, farms selector). Result: 47,053 bytes, **tags balanced**, **JS syntax OK**, **Agroverse link preserved**, all PR2 markers present.
+3. **Pushed resolved file** to PR #332's branch (commit `9c32bfc`)
+4. **Merge attempt → ❌ still 405 "merge conflicts"**
+
+## Why it still fails
+
+Same root cause as whitepaper PR #292: the **PR branch history is tangled**. Even though the file content at the branch tip is now built on current main, GitHub's three-way merge computes against the **original merge-base** (old main) — and since main moved in the same region afterward, the merge sees both-sides-changed and refuses. Pushing the resolved file to the existing branch doesn't reset the merge-base.
+
+## RESUME HERE → next unit (clean redo — the path that fixed #292)
+
+**Close PR #332 and open a fresh PR** from a branch cut directly off current `main`:
+
+1. Re-verify latest `main` hasn't moved past the 43,132-byte file I built on (re-diff if needed)
+2. Create **new branch** off current main (`impact-map-farms-selector-v2`), push the resolved 47,053-byte file as a **single new commit** (clean one-file diff vs current main → merges cleanly)
+3. Open **new PR**, close **PR #332** as superseded
+4. **Merge** → confirm beta live (farms dropdown on `beta.truesight.me/sunmint.html`)
+5. Then **PR3 — Farms Registry section** (plan §5 PR3): `#farms` section fed from plots data (farm name, plots count, total ha, status mix, region), scroll/link from the farms dropdown
+
+The resolved file is already built and verified locally (`/tmp/p2_resolved.html`) — the fresh PR is a 2-minute push. Say go and I'll execute the fresh-PR path.
+
+———
+**Actions this turn:** `ssh run` ×2 (diagnose main-vs-branch diff; rebuild on current main + verify tags/JS/Agroverse) · `upload_file_to_github` (commit `9c32bfc`) · `merge_pr #332` → ❌ 405 persists. No PR opened or merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== current main sunmint.html size + head ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint.html" -o main_now.html && wc -c m; cd /tmp && python3 - <<'PYEOF'
+html = open('/tmp/main_now.html').read()
+orig = len(html)
+
+def rep(old, new, label):
+    global html
+    c = html.count(old)
+    assert c == 1, f'{label}: count={c}'
+    html = html.replace(old, new)
+
+# 1) farmSelector div
+rep('<div id="plotSelector" style="display:none; margin-bottom:10px; align-items:center; flex-wrap:wrap; gap:6px;"></div>',
+    '<div id="farmSelector" style="display:none; margin-bottom:10px; align-items:center; flex-wrap:wrap; gap:6px;"></div>\n        <div id="plotSelector" style="display:none; margin-bottom:10px; align-items:center; flex-wrap:wrap; gap:6px;"></div>',
+    '1 farmSelector div')
+…(+2 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && echo "=== current main sunmint.html size + head ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta; cd /tmp && echo "=== what changed on main since PR1 merge (main_now vs p2_base 42877?) ===" && curl -s "https://raw.githubusercontent.com/Tr; cd /tmp && python3 - <<'PYEOF' html = open('/tmp/main_now.html').read() orig = len(html) def rep(old, new, label): global html c = html.coun
 • `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
 
