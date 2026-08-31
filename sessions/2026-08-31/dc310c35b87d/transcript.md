@@ -2122,21 +2122,25 @@ What is the URL to the caches and information you think might be useful. Perhaps
 ### 🤖 Autopilot
 
 Good — let me verify the live URLs that would be most useful to a prospective partner (registries, impact map, whitepaper, satellite), then compile them into a shareable PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The main site URL needs checking — let me find the correct sunmint page on truesight.me, and also grab the latest cache stats (trees count, plots count, satellite scenes) so the PDF has real numbers.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All URLs verified and current data pulled. Now generating the partner information pack PDF with the verified links + real snapshot:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated. Sending it to you:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2182,21 +2186,25 @@ For this implementation plan, can you draft up implementation plan, roadmap and 
 ### 🤖 Autopilot
 
 Let me check the handoff manifest per protocol, and gather the current state of the SunMint page + relevant plans so the implementation plan is grounded.
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the plots registry runbook and the current impact-map page so the plan is precise.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me ground the plan: pull the latest manifest (protocol step 1), the impact-map JS on the page, and the current Farms sheet structure.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the impact-map JS detail (the existing plotSelector/viewSelector logic) and the Farms sheet structure so the plan is precise about what changes where.
+[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2348,4 +2356,55 @@ Also pending from earlier: **merge PR #853** (the plan) so it lands on `main` �
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && echo "=== PROD sunmint.html ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_prod/main/sunmint.html" ; cd /tmp && echo "=== confirm PR #853 branch head ===" && curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/pulls/853" | ; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/sunmint-impact-map-extension-plan/plans/SUNMINT_IMPACT; …(+1 more)
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/sunmint-impact-map-extension-plan/plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go for it
+
+
+### 🤖 Autopilot
+
+Go-signal received — executing. Per protocol, checking the manifest row, and merging the plan PR (#853) to complete PR0:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**PR0 complete — merged the implementation plan for the SunMint Impact Map Extension.**
+
+**PR #853 — https://github.com/TrueSightDAO/agentic_ai_context/pull/853** (merged, sha `923bf9a`)
+- `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md` — full implementation plan/roadmap/checklist, including your correction that the impact map is **already live in prod** (byte-identical beta/prod, verified)
+- `handoffs/HANDOFF_MANIFEST.md` — new row for the plan (thread 11074, auto-start, "in progress — PR0 committed")
+
+## RESUME HERE → PR1 (next unit, fresh turn)
+
+**Enriched plot popups** on `truesight_me_beta/sunmint.html` — per the plan's §5 checklist:
+1. Read the current popup builder (`bindPopup` in `loadPlots()`)
+2. Add boundary-authority label (approx | gps_walk | car | incra) with friendly text
+3. Add status, hectares, owner, region, verified_at lines
+4. Add legend chip(s) in the `#plotSelector` area/controls
+5. Verify tags balanced + JS syntax; run local suite (compile/lint/format)
+6. Open PR, report URL
+
+Then PR2 (farms selector/filter) → PR3 (farms registry section) → PR4 (status styling + legend + media thumbnails) → PR5 (UAT gate on beta) → promote to prod only with your approval.
+
+———
+**✅ Done this turn — actions taken:**
+• `read context file` → handoffs/HANDOFF_MANIFEST.md (protocol check — row present, auto-start)
+• `merge pr` → ✅ PR #853 on agentic_ai_context merged (sha 923bf9a9e7015d0b44b8328b186bac6e2f48f8aa)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #853 on agentic_ai_context merged successfully (sha: 923bf9a9e7015d0b44b8328b186bac6e2f48f8aa). Pull Request successfully merged
 
