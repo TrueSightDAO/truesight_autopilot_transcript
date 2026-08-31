@@ -1272,16 +1272,19 @@ Let me see the actual assertion failures with full traceback.
 ### 🤖 Autopilot
 
 Both failures are clear: the test file predates the `payload` field (added in PR #354's verification fix) and the per-event retarget. I'll update the test to match the current script contract, then run the full suite.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One more failure at line 104 — the `out["events"]["172"]` assertions (growth event in chat logs but not in growth tab). Let me check the current contract: does `build_signatures` include chat-log-only events?
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Root cause found: the test's mock chat rows use `"MIIB_PUBKEY_ABC"` / `"TXN_HASH_123"` placeholder keys, which fail the `public_key.startswith(_SPKI_PREFIX)` real-key check — so they're bucketed as test events and `events` is empty (count 0). The dry-run is fine (real data), the test mocks need a realistic SPKI-prefixed key. Let me fix the test fixtures.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1496,4 +1499,114 @@ Note: the box still has the pre-merge working-tree copy of the script; after the
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #355 on truesight_autopilot merged successfully (sha: ca8c1eb002387c6ee72cf289645692dd1e1e8f49). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+After UAT, we should also do a back fill too for all the historical RSA signed events. What are your thoughts?
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Seems redeployment is completed. Proceed to next step
+
+
+### 🤖 Autopilot
+
+Gary — two things: my thoughts on the **historical backfill**, then I'll execute **A2b (first live push)** since the gate is cleared and redeployment is confirmed.
+
+**On the backfill — yes, strongly agree, and it's the natural final act of this ledger.** A few thoughts on scope and sequencing:
+
+- **What "all historical" means:** the canonical source is the **Telegram Chat Logs** sheet (11,994 rows) — *every* submission Edgar ever received, including non-SunMint RSA-signed events (CONTRIBUTION, SALES, INVENTORY MOVEMENT, PARTNER ADD/CHECK-IN, EMAIL VERIFICATION). The current parser only extracts the SunMint event types (74 production events). A backfill = extend the parser to **all RSA-signed event types** and emit them into their planned folders (`contribution/`, `sales/`, `inventory_movement/`, `partner/`, …).
+- **Ordering:** doing it **after UAT (A5)** is right — locks the SunMint path end-to-end first, then widens. I'll add it as **A6**.
+- **Two known wrinkles:** (1) EMAIL VERIFICATION events contain farmer emails — redaction breaks verification, so that folder needs a redaction-preserving design (hash-of-email vs. note-verification-applies-to-unredacted-text) before it goes public — that's the existing OPEN_FOLLOWUPS item; (2) test/malformed rows get bucketed the same way (already handled).
+- **Idempotent by message ID** — backfill can re-run safely; every record goes through the same gates (dry-run diff review → PII scan → 3/3 offline verification).
+
+I'll fold this into the plan as A6 when we get there. Now executing A2b.
+
+
+### 🤖 Autopilot
+
+The dry-run needs the GAS credentials env (the cron sets them). The local `_ledger/` already shows the per-event output. Let me run with the proper env from the crontab (token never printed).
+
+
+### 🤖 Autopilot
+
+Dry-run succeeds with credentials (interesting — the ledger now shows more reject events; counts will differ from the earlier snapshot since new events land daily). Let me get the summary line + file counts, then run the real `--push`.
+
+
+### 🤖 Autopilot
+
+Dry-run confirms: **79 ledger files = 74 events + 5 indexes**, PII scan passed. Now the **first real push** to `verify_public_signatures`.
+
+
+### 🤖 Autopilot
+
+The script needs GITHUB_TOKEN in env (it's set in the crontab line, not the shell). Let me extract it from the crontab and run the push with it (never printing the token).
+
+
+### 🤖 Autopilot
+
+Push succeeded — all files written to `verify_public_signatures` with sha hashes. Let me confirm the live raw URLs (root index + a sample event) and re-verify 3 samples offline from the live paths.
+
+
+### 🤖 Autopilot
+
+All live and correct. Now the final A2b gate: **offline re-verify 3 samples** from the live raw URLs (one per event type).
+
+
+### 🤖 Autopilot
+
+The folder index schema differs — let me check its actual keys and fix the verify loop.
+
+
+### 🤖 Autopilot
+
+Folder indexes use `events` (dict keyed by ID), root uses `event_types` — good to know for the README. Re-running the 3-sample offline verification with the correct key.
+
+
+### 🤖 Autopilot
+
+Non-zero exit with no output — likely an early exit in the loop (e.g. first ID empty). Let me run it verbosely to see where it fails.
+
+
+### 🤖 Autopilot
+
+The public key is bare SPKI base64 — openssl needs PEM headers. Wrapping it and re-verifying.
+
+
+### 🤖 Autopilot
+
+**3/3 Verified OK** from the live `verify_public_signatures` paths. A2b complete.
+
+## A2b complete ✅ — org-wide ledger is LIVE
+
+### What happened
+| Step | Result |
+|---|---|
+| **First real push** | ✅ 79 files written to `TrueSightDAO/verify_public_signatures` (74 events + 5 indexes) via sha-aware incremental PUT |
+| **Live raw URLs** | ✅ `index.json` (root: 74 events, 25 test bucketed) · `tree_planting/` 24 · `tree_planting_link/` 8 · `tree_planting_reject/` 41 · `tree_growth_monitoring/` 1 |
+| **Sample record verified** | `tree_planting/171.json` — Gary's planting, full triple (`public_key` + `signature` + `signed_payload` = exact bytes signed), `verifiable: true` |
+| **`gate: 3/3 re-verifications`** | ✅ **3/3 Verified OK** offline via openssl from the live raw URLs (planting / link / growth) — wrapped bare SPKI in PEM headers to verify |
+
+### Live URLs
+- Root index: `https://raw.githubusercontent.com/TrueSightDAO/verify_public_signatures/main/index.json`
+- Sample event: `https://raw.githubusercontent.com/TrueSightDAO/verify_public_signatures/main/tree_planting/171.json`
+
+### One schema note (for the README)
+Root `index.json` groups by `event_types` (with `count` + `index_url`); **folder** `index.json` uses `events` (dict of id → url/event_type/submitted_at/contributor_name). Documenting this distinction in A3.
+
+## RESUME HERE → **A3: ledger README**
+Write `verify_public_signatures/README.md` (API-only data repo → single-file Contents-API write): purpose, layout (`tree_<type>/<id>.json` + folder indexes + root index), **schema** (record triple, index schemas incl. the root-vs-folder difference), the **openssl verification how-to** (incl. the PEM-wrap step discovered this turn), no-PII guarantee, cron reconciliation note, and the future event-type folders (contribution/sales/inventory_movement). Then ask Gary re: **decommissioning the legacy `sunmint/signatures.json` mirror** (plan §4 — I will not touch it without his go), then **A4 (dao_protocol emit hook)**.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → verified deployed script targets `verify_public_signatures` (3 refs); dry-run with GAC creds → 79 ledger files, PII passed; real `--push` → all 79 written; confirmed live root/folder indexes + sample record; 3-sample offline openssl re-verify → **3/3 Verified OK** (bare SPKI wrapped in PEM headers)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /home/ubuntu/scripts && echo "=== deployed script targets verify_public_signatures? ===" && grep -c "verify_public_signatures" sync_sunmi; cd /home/ubuntu/scripts && CRON=$(crontab -l 2>/dev/null | grep -i "sync_sunmint" | grep -v "^#") && echo "cron line exists: $([ -n "$CRON" ; cd /home/ubuntu/scripts && GAC=/home/ubuntu/creds/google_credentials.json && echo "=== summary ===" && GOOGLE_APPLICATION_CREDENTIALS="$GAC"; …(+6 more)
 
