@@ -4517,26 +4517,31 @@ All 4 edits applied cleanly, merged to main. Future Sophias now have the playboo
 ### 🤖 Autopilot
 
 👍 Go signal received. Resuming with the next unit: media additions to the farm page. Let me check the handoff registry and locate the shortlisted media.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Handoff manifest noted — no new plan needed for this media-add unit (the farm/shipment media.json pattern is established). Shortlisted photos all present. Let me convert the 6 to web-optimized JPGs and check the current media.json structure.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 6 converted and web-optimized. Now let me check the current media.json gallery structure and read the conventions doc to match the exact format.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full picture confirmed — the gallery pattern is clean (images + youtube items, single container). Adding the 6 shortlisted photos. Opening the PR with the media.json edit:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #239 opened. Now uploading the 6 optimized images to the branch:
+[6 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4691,4 +4696,80 @@ The initial "still 6 items" was the **GitHub Pages build in_progress** (deploy s
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → echo "=== media.json on beta ==="; curl -s "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/media.json" | /opt/truesight_autopilot; echo "=== GitHub main has the merge? ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/santa-anna; echo "=== beta media.json headers ==="; curl -sI "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/media.json" | grep -iE "HTTP|las; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] still not seeing an explicit link from https://agroverse.shop/farms/santa-anna-fazenda-para/ to https://truesight.me/sunmint.html
+
+
+### 🤖 Autopilot
+
+Gary wants the reverse cross-link too: farm profile → SunMint plot map. Let me inspect the farm page structure to find the right spot and how other links are styled.
+
+
+### 🤖 Autopilot
+
+The perfect spot is the **Farm Location** section (line 560–562) — right next to the existing "View on Google Maps" link. Let me add the SunMint plot-map link there, mirroring the same style.
+
+
+### 🤖 Autopilot
+
+PR #241 opened. Verifying the edit landed correctly, then merging (part of the cross-link unit you asked for):
+
+
+### 🤖 Autopilot
+
+Edit verified on the branch. Merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `agroverse_shop_beta#241` merged — SunMint cross-link added
+
+**"Santa Anna farm page: link to SunMint plot map"** → merged (sha `4d76016`)
+
+### What changed
+Added an explicit link in the **Farm Location** section of `farms/santa-anna-fazenda-para/index.html` (line 562), right next to the existing "View on Google Maps" link:
+
+> **View on Google Maps** &nbsp;|&nbsp; **View plot on SunMint map** → https://truesight.me/sunmint.html
+
+Same `item-link` styling, `target=_blank`, `rel=noopener noreferrer`.
+
+### The bidirectional linkage is now complete
+| Direction | Link | Status |
+|---|---|---|
+| **SunMint map → farm profile** | Plot popup "View farm profile on Agroverse ↗" (truesight_me_beta #333/#335, prod live) | ✅ |
+| **Farm profile → SunMint map** | "View plot on SunMint map" (this PR) | ✅ new |
+
+---
+
+**RESUME HERE → next unit:**
+1. **Verify on beta** — after the ~1–3 min Pages deploy: `beta.agroverse.shop/farms/santa-anna-fazenda-para/` → Farm Location section should show both links. (I can re-fetch to confirm)
+2. **Promote to prod** — on your eyeball-approval, `sync_beta_to_prod` (this link + the 6-photo gallery expansion from #239 ride together)
+3. **Still parked:** merge `agentic_ai_context#851` (farm-page conventions doc — still open); the plot-impact-embed idea on the farm profile; optionally note the bidirectional-link convention in the runbook
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → inspected farm page structure (Farm Location section, item-link style); located exact anchor line 562
+• `git_push_changes` → **PR #241** (1 edit: +SunMint link)
+• `ssh run` → verified edit on branch (line 562)
+• `merge_pr` → ✅ merged (sha 4d760166b719029f30f5727c0854737a38913c73)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → grep farm page sections; sed 558–566 (anchor)
+• `git_push_changes` → PR #241 (feat/santa-anna-sunmint-link)
+• `ssh run` → branch verify (line 562, both links)
+• `merge_pr` → ✅ sha 4d760166b719029f30f5727c0854737a38913c73
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/asb_check 2>/dev/null && git fetch -q origin && git pull -q origin main 2>&1 | tail -1; echo "=== farm page sections (h2/h3 + map/lo; cd /tmp/asb_check && sed -n '558,566p' farms/santa-anna-fazenda-para/index.html; cd /tmp/asb_check && git fetch -q origin feat/santa-anna-sunmint-link:refs/remotes/origin/feat/santa-anna-sunmint-link && echo "=== SunMint 
+• `merge pr` → ✅ PR #241 on agroverse_shop_beta merged successfully (sha: 4d760166b719029f30f5727c0854737a38913c73). Pull Request successfully merged
 
