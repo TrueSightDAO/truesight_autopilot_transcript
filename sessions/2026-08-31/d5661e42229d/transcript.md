@@ -3948,16 +3948,19 @@ The CONTEXT_UPDATES edit anchor fails because that line doesn't exist yet (I was
 ### 🤖 Autopilot
 
 PR opened, but the **SUNMINT_TREE_GROWTH_MONITORING_PLAN.md edits did NOT apply** (only 2 of 3 applied — the plan-file edits were in the first call's `edits` array, which I dropped in the retry). Let me verify and add them to the same branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — the plan-file edits are missing from the PR. Adding them to the same branch (the SUNMINT_TREE_GROWTH_MONITORING_PLAN.md updates):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch has my first push (from the successful call) but this fresh clone doesn't have it — the tool's clone is from main, not the existing branch. The branch needs the plan-file edit added on top. Let me use the Contents API to update the plan file directly on the branch (single-file write, no clone):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4210,4 +4213,73 @@ I fetched `OPERATING_INSTRUCTIONS.md` (758 lines) to find the insertion point fo
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #847 on agentic_ai_context merged successfully (sha: 8700cba6ff36e3538638d8142b91e813415b10bc). Pull Request successfully merged
 • `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/OPERATING_INSTRUCTIONS.md" -o oi.md && echo "===
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**"merge it. and then 2 as well" received → merged the manifest close-out.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `agentic_ai_co
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **the OPERATING_INSTRUCTIONS.md pointer PR** — adding the `GAS_SCRIPT_PROPERTIES.md` row to the runbook index. Reading the table structure around line 26 to anchor the edit precisely:
+
+
+### 🤖 Autopilot
+
+The table format is clear. Adding the `GAS_SCRIPT_PROPERTIES.md` row after the SOPHIA_HANDOFFS row (unique anchor), then pushing:
+
+
+### 🤖 Autopilot
+
+## What I did this turn (one PR opened — stopped per one-PR-per-turn)
+
+**Go received 👍 → opened the OPERATING_INSTRUCTIONS.md pointer PR.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `agentic_ai_context` | **[#848](https://github.com/TrueSightDAO/agentic_ai_context/pull/848)** | 🟡 **OPENED** (1 row added to the reading-order index) |
+
+**What changed** (`OPERATING_INSTRUCTIONS.md`, "What to read (in order)" table): added the row —
+> `| — | GAS_SCRIPT_PROPERTIES.md | GAS Script Properties registry + convention. Secrets live in GAS Script Properties (never committed); web-app deployments pinned to numbered versions (not @HEAD). TGM_GITHUB_TOKEN SET 2026-08-31 — do NOT re-check; see registry for full list + webhook/deployment URL table. Read when touching any Google Apps Script project. |`
+
+placed right after the `sophia/SOPHIA_HANDOFFS.md` row (unique anchor, exact single match). Now every future session that reads the master reading-order will discover the registry — closing the "waste time checking again" loop Gary flagged.
+
+### Chain status
+| Item | State |
+|---|---|
+| `GAS_SCRIPT_PROPERTIES.md` registry (#846) | ✅ merged |
+| Manifest close-out (#847) | ✅ merged |
+| **Reading-order pointer (#848)** | 🟡 **open now** |
+
+### Gates NOT crossed
+- **#848 not merged** (next unit)
+- No deploy, no Edgar submission, no ledger writes, no money movement this turn
+
+---
+**RESUME HERE → next turn:**
+1. **Merge `agentic_ai_context #848`** (say "merge it" / 👍) — the pointer goes live and the SunMint loose ends are fully closed.
+2. The **only remaining SunMint action is yours**: explicit go for the **first real LINK** (cacao QR → tree), which books the ledger + emails the owner (irreversible, governance-gated — I'll never self-authorize it).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 → OPERATING_INSTRUCTIONS.md table structure mapped (reading-order table, SOPHIA_HANDOFFS row anchor)
+• `git push changes` → agentic_ai_context PR #848 opened (1 row, commit 63e028e)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && sed -n '1,45p' oi.md
+• `git push changes` → https://github.com/TrueSightDAO/agentic_ai_context/pull/848
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && sed -n '1,45p' oi.md
 
