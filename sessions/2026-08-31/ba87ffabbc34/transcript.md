@@ -10,82 +10,6 @@
 
 ### 🧑 Governor
 
-[observed, not directed at you — Envoy TrueSight]: Verified sunmint_beta#21 independently via GitHub API -- clean  2/-2 diff, exactly the two trailer lines, correctly appended AFTER signing (signature computed on requestText before shareText adds the trailer), so this does not break Edgar's signature verification. Merge it, then run the real end-to-end test on beta.sunmint.truesight.me/monitor-tree-growth/ (submit a test email link, confirm the emailed verification URL points back to the monitor page) before considering this closed.
-
----
-
-Go -- run the real end-to-end verification on beta.sunmint.truesight.me/monitor-tree-growth/ now: submit a test email link, check the actual resulting emailed verification URL, confirm it points back to the monitor page (not some other default). Report the exact evidence (the actual link text/URL you observed) -- not just "looks correct". Hold off on anything related to prod promotion until this comes back and Gary reviews it; the prod_repos config gap (sunmint_prod still missing from truesight_autopilot/app/config.py) also still needs to land separately before promotion is even possible, but that is a separate step for after this test.
-
-
-### 🤖 Autopilot
-
-Running the real end-to-end verification. First: confirm the beta page is serving the merged fix, and grab the exact submit URL + signing implementation so my test submission is byte-faithful to what the page sends.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Live page confirms the fix is served (trailer line present, 57,613 B). Now the signing implementation so my test is byte-faithful:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Everything confirmed: `EDGAR_BASE = https://edgar.truesight.me`, submit URL `…/dao/submit_contribution`, RSASSA-PKCS1-v1_5 SHA-256, base64 SPKI/PKCS8. Now the real end-to-end test — a Node harness that replicates the fixed page's exact `submitEmailEvent()` bytes (same keygen, same sign, same shareText trailer), submits a **real** email registration to Edgar, then I'll read the actual emailed verification link:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Submission reached Edgar: **HTTP 200, `signature_verification: success`** — the format is accepted. But the GAS mailer step timed out (`script.googleusercontent.com read timeout`), so the verification email may not have been sent. Let me check the mailboxes for the emailed link, then retry if needed:
-[2 tool result(s) compacted: gmail_search, gmail_search — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The verification email **was sent** — and the snippet already shows the decisive evidence. Let me read the full sent message to capture the exact link:
-[1 tool result(s) compacted: gmail_read_message — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Decisive evidence captured.** Let me confirm the emailed link actually resolves (serves the monitor page) to close the loop:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**End-to-end verification PASSED — real test evidence captured.**
-
-## ✅ The fix works: emailed verification link points back to the monitor page
-
-**Test performed (live, against beta):**
-1. **Replicated the fixed page's exact `submitEmailEvent()` bytes** (RSASSA-PKCS1-v1_5 SHA-256 keygen + sign, same `[EMAIL REGISTERED EVENT]` requestText, same trailer template with `generationSource = https://beta.sunmint.truesight.me/monitor-tree-growth`) and POSTed to Edgar (`edgar.truesight.me/dao/submit_contribution`) with test email `sophia.tgm.beta.test@truesight.me`
-2. **Edgar accepted it:** `HTTP 200 · signature_verification: success` (format valid — trailer lines outside the signed payload, as designed)
-3. **The GAS mailer sent the verification email** (SENT copy captured from the gary mailbox — `from: garyjob@agroverse.shop`, subject "Verify your TrueSight DAO digital signature"):
-   - **Exact emailed link:**
-   ```
-   https://beta.sunmint.truesight.me/monitor-tree-growth?em=sophia.tgm.beta.test%40truesight.me&vk=9nI6je3ltLcHTGLMfKNDiJkz1gxpAB8NhWwt0EeMoV0
-   ```
-   - This is the **monitor page on beta** — NOT some other/default URL. Pre-fix, this link came from a legacy fallback.
-4. **The link resolves:** `HTTP 200`, serves the Monitor Tree page (3× "Monitor Tree", 7× "Monitorar Árvore", 2× "monitor-tree-growth" in the served HTML) — GitHub Pages normalizes `/monitor-tree-growth` → `/monitor-tree-growth/`, params intact.
-
-**Notes:**
-- The test email address itself is synthetic (bounced at delivery — "Address not found", expected for a fake address); the SENT copy is the authoritative evidence of what the mailer sent.
-- The `signature_verification: success` also independently confirms the trailer-line placement is correct (signature covers only the event body).
-- Edgar's GAS mailer call showed a transient `read timeout` in the HTTP response, yet the email was sent seconds later (SENT at 03:44:41) — a benign Edgar-side response timing, not a format issue.
-
-**No prod promotion performed** — `sunmint_prod` untouched, awaiting your review of this evidence + separate approval (and the `prod_repos` config entry, which you noted still needs to land).
-
-**Suggested next step:** when you're ready, I can promote via `sync_beta_to_prod(sunmint_prod)` after (a) you approve promotion and (b) the `sunmint_prod: sunmint_beta` entry is added to `truesight_autopilot/app/config.py` `prod_repos` (currently missing — the same one-liner pattern as the other three apps). Your call on ordering.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → cd /tmp && TS=$(date +%s) && curl -s "https://beta.sunmint.truesight.me/monitor-tree-growth/?x=$TS" -o live_beta.html && echo "=== live page; cd /tmp && echo "=== EDGAR_BASE ===" && grep -n "EDGAR_BASE\s*=" live_beta.html && echo "=== 445-500: ensureKeyPair + signText ===" && sed -; cd /tmp && node - << 'NODEEOF' // Byte-faithful replication of the FIXED page's submitEmailEvent() for a test email const { webcrypto } = re; …(+1 more)
-
-
-### 🧑 Governor
-
 [observed, not directed at you — Envoy TrueSight]: Go -- run the real end-to-end verification on beta.sunmint.truesight.me/monitor-tree-growth/ now: submit a test email link, then check the actual emailed verification URL and confirm it points back to the monitor page. Report the exact evidence (the link itself) before we talk about promotion.
 
 ---
@@ -4719,11 +4643,13 @@ Executing option 1 — reconciliation PR on truesight_me_prod (beta content **mi
 ### 🤖 Autopilot
 
 Trees are **identical** (no additions/deletions) — the conflict is purely the **CNAME + merge-commit history**, so the reconciliation is clean: take beta's file content, keep prod's CNAME (`truesight.me`), commit as a feature branch PR. Building it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean reconciliation: **3 files** — `sunmint.html` (+337), `sunmint/whitepaper/index.html` (+39), `stats/current.json` (±1), with prod's CNAME preserved. Committing + pushing the PR (I will **not** merge it — that's your review gate):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4777,6 +4703,7 @@ Say "merged" once you've landed it and I'll run the production verification.
 ### 🤖 Autopilot
 
 Checking whether the reconciliation PR has been merged (if it has, I run the production verification; if it's still open, I'll confirm before touching a prod repo):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4997,4 +4924,66 @@ The production impact map + whitepaper are done and verified. Say "go" for the `
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && TS=$(date +%s) echo "=== 1. how the strip fetches the manifest (prod page) ===" curl -s "https://truesight.me/sunmint.html?cb=$TS; cd /tmp && echo "=== strip DOM ids + render code (545-640) ===" sed -n '545,640p' prod_sm3.html | grep -nE "getElementById|createElement|que; cd /tmp/e2e && cat > verify_prod2.js << 'EOF' const puppeteer = require('puppeteer-core'); const sleep = ms => new Promise(r => setTimeout(r
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Everything works on prod — my earlier check was just a wrong selector.** Full verification:
+
+## ✅ PROD SATELLITE HISTORY CONFIRMED WORKING (my earlier `satThumbs: 0` was a test artifact, not a bug)
+
+
+### 🤖 Autopilot
+
+Executing the flagged unit — add `sunmint_prod: sunmint_beta` to the `prod_repos` config so `sync_beta_to_prod(sunmint_prod)` becomes possible. First, read the current config:
+
+
+### 🤖 Autopilot
+
+Let me find the `prod_repos` section specifically:
+
+
+### 🤖 Autopilot
+
+The config **already contains `"sunmint_prod": "sunmint_beta"`** in `prod_repos` — my standing flag was stale. Let me confirm the deployed copy matches (so the running instance has it too):
+
+
+### 🤖 Autopilot
+
+The `sunmint_prod: sunmint_beta` config line **already exists on the deployed box** — my "missing config line" flag was stale (added in an earlier config change, before this thread). So that unit is already done. No config change needed.
+
+This means the remaining production work for SunMint is the **monitor page promotion** (the original E2E thread) — but that goes through `sync_beta_to_prod(sunmint_prod)`, which the guardrail will allow now that the mapping exists. That's a **separate beta→prod gate** requiring your explicit approval of the beta monitor page state.
+
+Here's the turn report.
+
+## ✅ What I did this turn — stale flag cleared, no change needed
+
+- **Checked** `app/config.py` on the deployed box: **`prod_repos` already contains `"sunmint_prod": "sunmint_beta"`** (present in both the repo and the running instance)
+- **Root cause of my repeated flag:** I'd been flagging it as missing since early in this thread — it was actually added in a prior config change (`2f42b06`/`1ea2b63`, the sunmint reclassification commits) that predates this conversation. **No config change needed.**
+
+**Net state:** `sync_beta_to_prod(sunmint_prod)` is now available (mapping in place) whenever you want to promote the monitor-tree-growth page from beta to production — that's the original E2E's final gate, and it's **your explicit approval** to trigger it.
+
+## 📌 RESUME HERE → next units
+1. **Monitor page promotion** (the original E2E thread's final gate) — when you're ready: I review the beta monitor page state, then on your explicit "promote" I run `sync_beta_to_prod(sunmint_prod)` (which will use the now-available mapping). Note: sunmint_prod is a fork of sunmint_beta and will likely hit the same CNAME-divergence conflict as truesight_me — I'd prepare a reconciliation PR (human-merged) if so, same as #21.
+2. **Standing:** test-row cleanup (FounderHaus DBH 12.5, TEST_TREE_E2E measurements, e2e email identities); Altamira plot-boundary upgrades (RM approx → verified)
+
+No open config work remains. Say "go" to prep the monitor-page promotion, or to handle the test-data cleanup.
+
+———
+**✅ Done this turn — actions taken:**
+• `read repo file` ×2 → confirmed `prod_repos` already has `"sunmint_prod": "sunmint_beta"` in repo main; `ssh run` ×1 → confirmed the deployed box copy matches (same 4 mappings); git log shows the line arrived via the sunmint reclassification commits (#347/#348) predating this thread — my flag was stale, no change needed
+
+———
+**✅ Done this turn — actions taken:**
+• `read repo file` → app/config.py full read (Settings, prod_repos confirmed); `read tool result` → prod_repos block: `{"agroverse_shop_prod": "agroverse_shop_beta", "truesight_me_prod": "truesight_me_beta", "dapp_prod": "dapp_beta", "sunmint_prod": "sunmint_beta"}`; `ssh run` → deployed copy identical (same 4 mappings); git log → line predates this thread (#347/#348)
+
+———
+**✅ Done this turn — actions taken:**
+• `read repo file` ×2 → app/config.py (Settings + prod_repos block found: sunmint_prod: sunmint_beta present); `ssh run` ×1 → deployed config identical; git log confirms line predates this thread — stale flag cleared, zero changes needed
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== deployed config.py prod_repos (this box) ===" grep -A6 "prod_repos" /opt/truesight_autopilot/app/config.py 2>/dev/null | head -8 e
 
