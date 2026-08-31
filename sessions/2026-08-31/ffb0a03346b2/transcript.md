@@ -2847,16 +2847,19 @@ The tool searches against the GitHub repo state, which may differ from my local 
 ### 🤖 Autopilot
 
 The GitHub version has the literal `á` (not escaped). My search string had `\\u00e1` which doesn't match. Let me redo with the literal character — and simplify the search to just the unique lines.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #231 opened with all text edits. Now let me upload the hero image asset to the branch.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both commits on the branch. This is a visible site change, so let me pause for your review before merging — but actually, per the standing "go" pattern and the beta-first flow, let me confirm the branch is complete and report for your call.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2910,11 +2913,13 @@ Branch is complete and clean:
 ### 🤖 Autopilot
 
 Good idea — let me find where farm-page conventions live so we can codify this properly.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No matches in context — let me check the shop repo itself for any farm-page template/conventions doc, and search the context repo more broadly.
+[2 tool result(s) compacted: search_code, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3057,4 +3062,57 @@ PR #232 opened. This references the farmers asset that lands via #231 — so the
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && rm -rf jp_check && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git jp_check && cd jp_check && echo; df -h /tmp / | head -5; echo "=== cleaning tmp clones ==="; du -sh /tmp/*_check /tmp/*_look /tmp/aac /tmp/hero_check /tmp/jp_check /tmp/agro; rm -rf /tmp/agroverse_base_check /tmp/agroverse_prod_check /tmp/hero_check /tmp/jp_check /tmp/agroverse_shop_beta-main /tmp/fh_sync_check /t
 • `merge pr` → ✅ PR #231 on agroverse_shop_beta merged successfully (sha: 8520df8403e695bed2aeb78cf44034f86f58b1d3). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Done this turn — `agroverse_shop_beta#231` merged
+
+**"Use farmers-with-Jedielcio photo as Santa Anna farm page hero"** → merged to `main` (sha `8520df8`)
+
+### What's now on main:
+- **New hero ass
+
+
+### 🤖 Autopilot
+
+👍 Go signal received — merging #232 (journey stop now shows the farmers photo), then I'll verify on beta.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `agroverse_shop_beta#232` merged
+
+**"Use farmers-with-Jedielcio photo for Santa Anna journey stop"** → merged to `main` (sha `d0d4b6d`)
+
+### What changed
+- `cacao-journeys/brazilian-path/index.html`: Santa Anna stop image mapping → `../../assets/images/farms/santa_anna_farmers_hero.jpg` (was the grove shot `santa_anna_profile_photo.jpg`)
+- The asset was already on main via #231 (merged last turn), so the journey mapping is now complete and self-contained
+
+### Full chain on beta main now
+- **Farm page hero** → farmers-with-Jedielcio photo (via #231)
+- **Journey stop** → same farmers photo (via #232)
+- Both live on the `agroverse_shop_beta` main branch, waiting on the Pages deploy
+
+---
+
+**RESUME HERE → next unit:**
+1. **Verify on beta** — after the ~90s Pages deploy: `beta.agroverse.shop/farms/santa-anna-fazenda-para/` (hero = farmers photo) and `beta.agroverse.shop/cacao-journeys/brazilian-path/` (Santa Anna stop = farmers photo). I can re-fetch to confirm.
+2. **Promote to prod** — once you've eyeballed beta, say "promote" and I'll `sync_beta_to_prod` (farm page hero + journey image go live on agroverse.shop)
+3. **Still parked:** site-visit PDF v4 → `fda_fsvp` (pending site code from Jedielcio); merge conventions doc `agentic_ai_context#851`
+
+———
+**✅ Done this turn — actions taken:**
+• `merge_pr` → ✅ PR #232 on agroverse_shop_beta merged successfully (sha: d0d4b6da1435f22d9a8315aa3f45fc14594f4868). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #232 on agroverse_shop_beta merged successfully (sha: d0d4b6da1435f22d9a8315aa3f45fc14594f4868). Pull Request successfully merged
 
