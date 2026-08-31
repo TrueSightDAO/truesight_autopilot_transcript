@@ -5456,31 +5456,37 @@ Full rename confirmed. Let me grab the exact name fields in the journey data, fa
 ### 🤖 Autopilot
 
 Full rename confirmed. Applying across all surfaces: farm page (title/og/twitter/h1/subtitle/story), journey stop, farms-data.js, CEPOTX card, plus the SunMint plot name. Opening the rename PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #252 opened with all 8 edits applied. Let me verify the rename is complete on the branch (no stray "Santa Anna Fazenda" display-name refs) before merging.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Almost complete — one display-name ref remains: the **Leaflet map popup** (line 591) still says "Santa Anna Fazenda". Let me update that too (it should show the registered name, keeping the map popup consistent).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The push was rejected because my local clone is out of sync with the remote branch (I fetched it into a separate ref earlier, and the tool's clone is stale). Let me apply the popup fix directly via the Contents API to the existing branch, then re-verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Popup renamed locally. Now uploading the updated file to the branch via the Contents API (same file path, branch = the rename branch).
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Popup fix committed to the branch. Now let me do the final verification — no display-name "Santa Anna Fazenda" refs should remain except the intentional alias mention in the story — then merge.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5672,4 +5678,86 @@ This is the same file already committed to `fda_fsvp` (merged PR #10) — so wha
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → ls -la /tmp/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf 2>/dev/null || find /tmp /home/ubuntu -maxdepth 2 -iname "*santa_anna*.pdf" 2>; sleep 30 && echo "waited 30s, ready to retry"
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] Make sure formating is done correctly. I see some overlapping words. Also perhaps we should call this farm Santa Ana. Do you think this is more accurate or with Anna instead?
+
+
+### 🤖 Autopilot
+
+Two things to handle: the PDF overlap fix, and the spelling question. Let me investigate the overlap in the generator first, and check what we know about the spelling.
+
+
+### 🤖 Autopilot
+
+Found it — **page 1 only**: 99 overlapping word-boxes where the info table (Site/Registered owner column) overlaps the Purpose text below it. Pages 2–7 are clean. Let me inspect the generator's page-1 layout code to fix the table/body overlap.
+
+
+### 🤖 Autopilot
+
+Found it — **page 1 only** (pages 2–7 clean: 0 overlaps). The bug: the v5 meta table grew to **11 rows** (added Site name / Registered owner / Contact host etc.), so it now extends from y=757pt down to **597pt** — but the "Purpose" block starts at **250mm (708pt)**, which sits *inside* the table's range. Result: Purpose text collides with the lower table rows (Site code, Registered owner).
+
+The fix: make `meta_table` return its end position and place Purpose *below* the table (computed, not fixed).
+
+Now on your spelling question — quick honest take: **"Santa Ana" is the more accurate spelling.** The CEPOTX registration Jedielcio sent lists only the owner (*Ana Lucia Araujo de Sousa*) — no farm name — so it can't arbitrate. But in Brazilian Portuguese, place/farm names are "Santa Ana" or "Sant'Ana"/"Santana"; the double-N "Santa Anna" is a transliteration artifact (it came from our working filenames, not from any source document). It also matches the existing Bahia page's convention ("Fazenda Santa Ana"). So I'd recommend **Santa Ana**, and the registered display name stays **Ana Lucia Araujo de Sousa** either way.
+
+Let me fix the PDF generator first, then we can do the spelling rename on your confirm:
+
+
+### 🤖 Autopilot
+
+The patch failed to apply (my search strings used `\u` escapes but the file has literal em-dashes/· characters) — so the PDF regenerated is the **same old file** (identical byte size). The overlap is NOT fixed yet. Let me re-patch using literal unicode characters:
+
+
+### 🤖 Autopilot
+
+Patched and regenerated (new byte size 20155412 — the layout changed). Let me re-run the overlap check to confirm page 1 is now clean:
+
+
+### 🤖 Autopilot
+
+Close — down from 99 to 22, but the Purpose block lines are still too tight (4mm ≈ 11pt between title/desc/list at 9–10pt font). Let me widen the spacing:
+
+
+### 🤖 Autopilot
+
+**TOTAL: 0 overlaps — all 7 pages clean.** The overlap is fixed. Let me verify page 1's text extraction still shows the fields correctly (no clipping), then send the corrected PDF.
+
+
+### 🤖 Autopilot
+
+All fields intact and page 1 is clean. Sending the corrected PDF:
+
+
+### 🤖 Autopilot
+
+## ✅ Corrected PDF sent — overlap fixed
+
+**`20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf`** (message 17867) — now with **0 overlapping words across all 7 pages** (was 99 on page 1).
+
+### What was wrong & fixed
+- **Root cause:** the v5 cover table grew to 11 rows (adding Site name / Registered owner / Contact / COOPOXIN), pushing it down into the "Purpose" text block which was hard-coded at a fixed y-position → the Purpose title + bullet list collided with the lower table rows
+- **Fix:** `meta_table()` now returns its end position; the Purpose block is drawn *relative to* the table bottom (9mm gap), no hard-coded y → **0 overlaps, verified programmatically** (word-box intersection check, all 7 pages)
+- All content verified intact: B-06-58, owner, COOPOXIN, GPS, 3 facilities, video frames, signature
+
+### ⚠️ One caveat
+This corrected PDF is **local only** — the version committed to `fda_fsvp` (PR #10) still has the overlap. I should push this corrected file up to replace it (small update) — say "go" and I'll update the record.
+
+---
+
+## On the spelling: **Santa Ana** (my recommendation)
+
+Honest analysis:
+- The CEPOTX registration Jedielcio sent doesn't arbitrate (it lists only the **owner's name** — *Ana Lucia Araujo de Sousa* — no farm name string)
+- **Brazilian Portuguese** place/farm names are "Santa Ana" / "Sant'Ana" / "Santana" — the double-N "Anna" is a transliteration artifact that came from *our* working filenames, not from any source document
+- It also **matches the existing Bahia page convention** ("Fazenda Santa Ana", Coopercabruca) — consistency across both farms
+- "Anna" isn't wrong, but "Ana" is more accurate + consistent
+
+**So: rename to "Santa Ana"** — display "Ana Lucia Araujo de Sousa", alias "Santa Ana Fazenda", slug stays `santa-anna-fazenda-para` (URLs stable). If you agree, say the word and I'll run the spelling rename across: farm page (title/hero/story/popup), journey stop, CEPOTX card, SunMint plot name, PDF (v6), + push the corrected PDF to fda_fsvp at the same time.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → ls -la /tmp/gen_santa_anna_v5.py 2>/dev/null; echo "=== pages render check ==="; cd /tmp && /opt/truesight_autopilot/.venv/bin/python3 -c " ; sed -n '1,120p' /tmp/gen_santa_anna_v5.py; cd /tmp && /opt/truesight_autopilot/.venv/bin/python3 << 'EOF' import re src = open('/tmp/gen_santa_anna_v5.py').read() # 1) meta_table retu; …(+2 more)
 
