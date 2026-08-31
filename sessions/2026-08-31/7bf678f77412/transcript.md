@@ -1009,16 +1009,19 @@ Empty result — let me check the full error log to see what happened with the A
 ### 🤖 Autopilot
 
 Round 2 returned empty with no errors — the parsed JSON likely lacked an `images` key. Let me debug with raw response output on a small test.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The API works — Grok echoes tags correctly with a simpler schema (`tag` + `description`). Round 2's strict scoring schema made it return empty. Let me re-run with the working format + scoring fields, saving raw responses for robustness.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Grok returned real filenames but dropped the numeric scores — it's giving `description` text instead. That's fine: **the descriptions are the signal**. Let me read them and score against farm-profile criteria myself.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1210,4 +1213,16 @@ Byte-exact sizes confirm the **new** images (not cached old ones) are live. The 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== beta page status ===" curl -s -o /dev/null -w "page: %{http_code} " "https://beta.agroverse.shop/farms/fazenda-cleide-para" echo "; echo "=== follow redirect to final page ===" curl -sL -o /tmp/cleide_page.html -w "final: %{http_code} url: %{url_effective} " "https://beta
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] Hey the hater of the pages mashering properly. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Glad to hear it's rendering properly now — that's the new header photo of yours live on the beta page, plus the three real farm shots: the beans sun-drying on the tarp, the fermentation barrel, and the sorting.
+
+Everything's verified — the page and all four images are loading clean. The only step left is pushing it to the public production shop. Say the word, and I'll promote it.
 
