@@ -2830,6 +2830,7 @@ Now the full picture is clear:
 - The `/tmp/reupload_retry.sh` is **La do Sitio's** retry loop (other Sophia's or a prior run) — unrelated to Cleide, not touching my files.
 
 The chain is actually **working as designed** — just slower than I estimated (fix-pass is the current active stage). Let me verify fix-pass is progressing and check its log.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3107,4 +3108,26 @@ farm_media_inbox/<farm_id>/
 Daemon: scan → sidecar present & complete? → upload → write yt_id → next. Nothing else.
 
 Should I go ahead and write this up as the design doc? I'd put it in the repo as `DESIGN.md` once it exists — or, if you want to review before we create the repo, I'll draft it here first. Your call on sequencing, but I'm ready to write it either way.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] I'm actually wondering, so basically the Soviets, they will queue their own drops and then probably what happens is that they'll be there many fast once it's done, it has the YT underscore ID, then probably we can have like any Soviet just read the YT underscore ID and then update them many fast and GitHub isn't it, where the role is. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Exactly right — that's the clean division of labor, and it matches what I was circling around. Let me say it back to make sure we're aligned:
+
+- **Sophias queue drops** — they drop processed mp4 + sidecar into the shared inbox
+- **Daemon does the dumb fast part** — picks it up, uploads, writes the YT ID back into the sidecar, moves on. It never touches GitHub.
+- **Sophias finish the loop** — any Sophia can read the queue, see which sidecars now have YT IDs, and commit the manifest to GitHub. That's the human/agent-facing role.
+
+So the daemon's only responsibility to the outside world is: *write yt_id into the sidecar*. Everything after that — aggregating into `FARM_MEDIA_MANIFESTS/`, updating `index.json`, wiring the farm page — stays in the hands of whichever Sophia reads the queue, which is exactly what you're saying.
+
+The one thing I'd add to make "any Sophia reads the YT ID" trivial: a tiny read-only CLI in the repo, like `farm-media-queue list --farm cleide --with yt_id`, so a Sophia (or you) can answer "what's uploaded, what's pending" in one command instead of parsing files. And maybe a `farm-media-manifest commit <farm_id>` that regenerates the GitHub manifest from the sidecars — so the commit step is one command, not a bespoke script each Sophia writes.
+
+So the repo ends up with: the daemon (uploads + writes yt_id), the queue reader (status), and the manifest committer (GitHub). Three small tools, one contract.
+
+Want me to write this up as the DESIGN.md now — either here in chat first, or straight into the new repo? I'm ready when you are.
 
