@@ -8,108 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Done this turn — PR opened: `agroverse_shop_beta#225`
-
-**"Add Santa Anna Fazenda farm page + Brazilian Journey stop"** → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/225
-
-### What's i
-
-
-### 🤖 Autopilot
-
-👍 Go signal received — merging the farm page PR to make it live on beta.
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-## ✅ Done this turn — `agroverse_shop_beta#225` merged
-
-**"Add Santa Anna Fazenda farm page + Brazilian Journey stop"** merged to `main` (sha `a1f44bf`).
-
-### What's now live in the beta branch:
-- **New farm page**: `farms/santa-anna-fazenda-para/index.html` — Santa Anna Fazenda (Pará), CEPOTX member, site-visited 2026-08-30, Leaflet map at real GPS **-3.292475, -52.57225**
-- **Media**: `media.json` + 4 web-optimized images (profile photo + grove/fermentation/drying gallery)
-- **Journey**: added as a stop on the Brazilian Path right before CEPOTX (after Paulo)
-- **CEPOTX coop page**: Santa Anna member-farm card under "Member Farms"
-- **Navigation data**: `js/farms-data.js` + `js/brazilian-path-data.js` updated
-
-### Naming disambiguated
-Slug `santa-anna-fazenda-para`, labeled "CEPOTX Cooperative Member Farm" — distinct from the existing Fazenda Santa Ana (Bahia, Coopercabruca) page.
-
----
-
-**RESUME HERE → next unit:**
-1. **Verify on beta** — the merged page should appear on **beta.agroverse.shop** (I can check `/farms/santa-anna-fazenda-para/` renders correctly once the beta deploy picks it up)
-2. **Your review** — look at the beta page; if it looks good, say the word and I'll `sync_beta_to_prod` to promote to production
-3. **Still parked:** Santa Anna site-visit PDF finalization (needs site code from Jedielcio), and the DApp FARM REGISTRATION EVENT (you said hold off)
-
-—
-**✅ Done this turn — actions taken:**
-• `merge_pr` → ✅ PR #225 on agroverse_shop_beta merged successfully (sha: a1f44bfd3aecc00a1822da2c553ae39a66de0b2d)
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #225 on agroverse_shop_beta merged successfully (sha: a1f44bfd3aecc00a1822da2c553ae39a66de0b2d). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Done this turn — `agroverse_shop_beta#225` merged
-
-**"Add Santa Anna Fazenda farm page + Brazilian Journey stop"** merged to `main` (sha `a1f44bf`).
-
-### What's now live in the beta branch:
-- **N
-
-
-### 🤖 Autopilot
-
-👍 Go signal received. Next unit: verify the farm page renders on beta (prod promotion still needs your explicit review first). Let me find the beta deploy config and check the live page.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The repo's CNAME is `beta.agroverse.shop` — main branch auto-deploys. Let me verify the new page is live.
-[1 tool result(s) compacted: http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Page is live on beta (HTTP 200, correct title/description/OG tags). Let me verify the key content sections and image assets resolve.
-[2 tool result(s) compacted: http_fetch, read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The page is live on beta with the farm story, highlights, map at the real GPS — but I spotted a **corrupted Google Maps link** in the output (my earlier regex mangle left remnants of Paulo's old URL inside the Santa Anna link). Let me check and fix it.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The Google Maps link is corrupted — my earlier regex mangled it (left remnants of Paulo's old URL appended to the new coordinates). Let me fix it locally with a robust replacement and verify.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The regex was a no-op (the apostrophe right after `15z` stopped the match, so nothing was actually trimmed). Let me fix it properly — strip everything after `15z` up to the closing quote/backslash in both contexts.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 The junk after `15z` contains apostrophes so my character class failed. Let me match lazily until the closing quote instead.
@@ -5206,11 +5104,13 @@ PDF verified — all key fields present (site code **B-06-58**, owner **Ana Luci
 ### 🤖 Autopilot
 
 Rate-limited by Telegram (28s). Retrying shortly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Retrying the send after the rate-limit wait:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5249,11 +5149,13 @@ This is the same file already committed to `fda_fsvp` (merged PR #10) — so wha
 ### 🤖 Autopilot
 
 Two things to handle: the PDF overlap fix, and the spelling question. Let me investigate the overlap in the generator first, and check what we know about the spelling.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — **page 1 only**: 99 overlapping word-boxes where the info table (Site/Registered owner column) overlaps the Purpose text below it. Pages 2–7 are clean. Let me inspect the generator's page-1 layout code to fix the table/body overlap.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5436,4 +5338,89 @@ Also still open from before (just a reminder, no rush):
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && /opt/truesight_autopilot/.venv/bin/python3 -c " import fitz doc = fitz.open('/tmp/20260830_CEPOTX_site_visit_to_santa_anna_farm.p; cd /tmp && /opt/truesight_autopilot/.venv/bin/python3 << 'PYEOF' # -*- coding: utf-8 -*- src = open('/tmp/gen_santa_anna_v5.py', encoding='u
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] Also the images overlapping outside of the page and words
+
+
+### 🤖 Autopilot
+
+Let me check the images in the PDF — their positions, whether any extend past the page edge, and whether they overlap text:
+
+
+### 🤖 Autopilot
+
+Found the remaining issues — **pages 5 and 6 (Video Evidence)**:
+- **Top image on each page starts at y=-78** — half off the top of the page (OOB)
+- **Caption words overlap the images** (16 and 17 words inside image bboxes) — the "frame 1 — grove walk" / "IMG_7740 — fermentation box" captions are drawn over the photos
+
+Let me inspect and fix the video-evidence page layout:
+
+
+### 🤖 Autopilot
+
+Let me read the full video-evidence page code (lines 185–225) to see the exact layout math:
+
+
+### 🤖 Autopilot
+
+The bug is clear: `y = 200*mm = 567pt` is the **baseline**, but `drawImage` draws the image **upward** from y (y is the *bottom* of the image). So the top image spans y=567 to y=567+353=920pt — far off the page top (842). The fix: start lower and draw the image with `y` as its bottom, accounting for the aspect ratio. Since these are 16:9 landscape frames (ratio ≈ 0.56), a 70mm-wide image is only ~40mm tall — but the current code computes `dh = dw*ratio` where ratio = ih/iw (correct) yet the y math puts them off-page.
+
+Let me fix the video-page layout properly (draw images with correct bottom-up geometry + captions below, no overlap):
+
+
+### 🤖 Autopilot
+
+The patch failed again — my search strings use `\u2014` escapes but the file has literal em-dashes. The regen used the unpatched code (same OOB images). Let me patch using literal unicode characters:
+
+
+### 🤖 Autopilot
+
+The template f-string interpolated `{FRAMES_DIR}` in my heredoc before writing. Let me fix by escaping the braces properly:
+
+
+### 🤖 Autopilot
+
+**TOTAL: 0 overlaps, 0 out-of-bounds words, 0 out-of-bounds images, 0 words inside images — all 7 pages fully clean.** Let me quickly verify the video pages look right textually, then send:
+
+
+### 🤖 Autopilot
+
+All content intact. Sending the fully-corrected PDF:
+
+
+### 🤖 Autopilot
+
+## ✅ Corrected PDF sent — all layout issues resolved
+
+**`20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf`** (message 17897)
+
+### What was wrong (you caught all three)
+1. **Words overlapping each other** (page 1: Purpose block vs table rows) — fixed with relative positioning
+2. **Words off the page edge** (page 2: "Pesticide…" running past x=595) — fixed with proper text wrapping in `meta_table`
+3. **Images off the page + captions over images** (pages 5–6: video frames started at y=-78, captions drawn on top) — fixed: frames now drawn top-down within the page (90mm wide, capped height), captions placed *below* each image
+
+### Verification (programmatic, all 7 pages)
+| Check | Result |
+|---|---|
+| Word overlaps | **0** |
+| Out-of-bounds words | **0** |
+| Out-of-bounds images | **0** |
+| Words inside images | **0** |
+
+All content verified intact: B-06-58 · Ana Lucia Araujo de Sousa · COOPOXIN · GPS · facilities A/B/C with photos · video frames with captions · declaration + signature.
+
+---
+
+**RESUME HERE — remaining open items:**
+1. **Push this corrected PDF to `fda_fsvp`** — the record still holds the buggy version from PR #10. Say "go" and I'll upload this exact file as the record update.
+2. **farm-media-raw archive** — Santa Anna's 45 raw originals still not in the private blob store (only rancho/la-do-sitio/cleide). ~390 MB, ~45 uploads — say the word.
+
+Both are one-word-away. Otherwise, anything else on the PDF layout?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && /opt/truesight_autopilot/.venv/bin/python3 -c " import fitz doc = fitz.open('/tmp/20260830_CEPOTX_site_visit_to_santa_anna_farm.p; cd /tmp && grep -n "frame\|IMG_7734\|IMG_7740\|IMG_7741\|video\|Video" gen_santa_anna_v5.py | head -40; cd /tmp && sed -n '185,225p' gen_santa_anna_v5.py; …(+1 more)
 
