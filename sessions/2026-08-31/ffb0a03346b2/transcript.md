@@ -10,112 +10,6 @@
 
 ### 🤖 Autopilot
 
-## Done this turn
-
-### ✅ Merged: `truesight_autopilot#352` — *"Allow fda_fsvp repo writes (FSVP documentation)"*
-- **What changed:** one-line addition of `fda_fsvp` to `settings.allowed_repos` in `app/config.py` (sha `1ce140f` on main)
-- **Why:** unblocks writing the Santa Anna site-visit PDF + entity.json updates into the `fda_fsvp` repo (TrueSightDAO org, confirmed `github.com/TrueSightDAO/fda_fsvp.git`), which the allowed_repos gate was refusing
-- Local suite before push: compileall ✅, ruff check ✅ (4 pre-existing failures in untouched `test_chat_observe.py`/`test_vault.py` — unrelated to config.py)
-
-### ✅ Verified state on the box
-- Santa Anna PDF exists: `/tmp/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf` (1.08 MB)
-- Video frames ready: `/tmp/forest_frames/frame_001.jpg` (549 KB), `frame_005.jpg`, `frame_031.jpg` — the 3 selected Facility-A evidence frames
-- Local `fda_fsvp` clone clean at `cfc480a` (main), ready for the feature branch
-
----
-
-**RESUME HERE → next unit:**
-1. **`deploy_autopilot`** — the running autopilot process still has the old config loaded; it must be redeployed before the `fda_fsvp` gate opens
-2. **Regenerate the Santa Anna PDF** embedding the 3 video frames (frame_001/005/031) as Facility-A evidence with Grok captions, alongside the 3 still photos (drying shed / pod close-up / fermentation box)
-3. **PR into `fda_fsvp`** on `feat/santa-anna-site-visit`: the PDF at `suppliers/cepotx/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf` + updated `suppliers/cepotx/entity.json` (`source_farms` + `source_documents` + Santa Anna)
-4. **Add the .MOV analysis process** to agentic_ai_context `fsvp/` — new `VIDEO_EVIDENCE_PROCESS.md` (or a section in SITE_VISIT_PROCESS.md): ffprobe → ffmpeg fps=4 frame extraction → Grok vision batch analysis with fsVP_evidence flagging → representative frame selection → embed with captions
-5. Still need from you for the final PDF: **visit date, site code, farm coordinates, farm owner name**
-
-—
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #352 on truesight_autopilot merged successfully (sha: 1ce140fe5d96111de794116e4c753eeb69de4236)
-• `ssh run` ×1 → verified PDF + frames present; fda_fsvp clone clean at cfc480a
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #352 on truesight_autopilot merged successfully (sha: 1ce140fe5d96111de794116e4c753eeb69de4236). Pull Request successfully merged
-• `ssh run` → ls -la /tmp/*.pdf /tmp/forest_frames/frame_00{1,5,31}.jpg 2>/dev/null; echo "=== pdf gen scripts ==="; ls /tmp/*.py 2>/dev/null | head; find
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Done this turn
-
-### ✅ Merged: `truesight_autopilot#352` — *"Allow fda_fsvp repo writes (FSVP documentation)"*
-- **What changed:** one-line addition of `fda_fsvp` to `settings.allowed_repos` in `app
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
-
-
-### 🤖 Autopilot
-
-👍 Go signal received. Resuming the plan: deploy the config change → regenerate the PDF with video frames → PR into fda_fsvp. First let me check how the deploy works and whether the running process picks up config without a restart.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The running service loads `settings = Settings()` at import time — so it has the old config. I need to deploy to pick up merged #352. The `deploy_autopilot` tool handles this (pull + restart).
-[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Deploy says the checkout is already at the merge commit (`1ce140f`) — but the service may not have restarted to reload it. Let me verify the running config and whether a restart is needed.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Local HEAD has the merge, config.py includes `fda_fsvp` — but the service started at 23:15:45 and the config is loaded at import time. The deploy tool's noop means the disk commit is current, but the **running process** may still have the old config in memory. Let me restart the service to load the new config, then verify the gate opens.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The guardrail blocked a manual restart (correct — use the sanctioned tool). `deploy_autopilot` returned noop though, so let me understand its restart logic — whether it restarts on config changes or only on new commits.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The deploy tool's staleness check returned **noop** — meaning the running process is *not* stale (config.py's mtime predates the process start at 23:15:45, so the auto-pull after the merge already restarted/loaded it). Let me verify the mtimes and then test the gate directly with a dry-run upload.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The gate is open: the running process (started 23:15:44) loaded the new config (config.py mtime 23:15:26), `fda_fsvp allowed: True`, `api_only: False`. No restart needed — deploy correctly returned noop.
-
-Now executing the deliverable. Let me gather what I need to rebuild the PDF with video frames and update entity.json.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The PDF has placeholders for date/coords (Gary never confirmed them). Let me check the generation script to add the video frames, and then prepare everything for the fda_fsvp PR.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The generation script (updated 23:15) already includes the video-frames section, but the PDF on disk is from 23:05 — so I need to regenerate it. Let me re-run the script and verify the output.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 The PDF is regenerated: **7 pages** with 3 photo pages (photos 1-2) + 2 video-frame pages (3 frames embedded) + signature. Now let me commit to fda_fsvp via git_push_changes (allowed_repos now includes it).
 [1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
@@ -5577,6 +5471,7 @@ The branch has empty files — my writes were empty strings. Let me fix by uploa
 ### 🤖 Autopilot
 
 Real content now on the branch. Let me verify all three files are correct, then merge.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5763,4 +5658,129 @@ Want me to execute all 5 updates now (I'll hold items needing the COOPOXIN confi
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && rm -rf fsvp_check && git clone -q --depth 1 https://github.com/TrueSightDAO/fda_fsvp.git fsvp_check 2>&1 | tail -1; echo "=== cep
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **🔗 Links from my response:**
+
+• https://github.com/TrueSightDAO/fda_fsvp.git
+
+
+### 🤖 Autopilot
+
+👍 Go received — executing the correction updates. Starting with the fda_fsvp record (PDF v5 with the site code + registered owner + entity.json), then the SunMint plot owner. Let me inspect the PDF generator first.
+
+
+### 🤖 Autopilot
+
+The generator script was cleaned up earlier (when I freed disk). I'll regenerate the PDF from the existing v4 PDF + patch approach, or rebuild the generator. Let me check what PDF is on disk and locate the media assets.
+
+
+### 🤖 Autopilot
+
+The v4 PDF and sig assets were cleaned up with the disk-free purge. I have the media, but I need to rebuild the generator + signature. Let me re-clone the signature and rebuild the generator script with the confirmed data (B-06-58, Ana Lucia Araujo de Sousa, date, GPS, real photos).
+
+
+### 🤖 Autopilot
+
+Signature re-cloned. Now let me rebuild the generator with the confirmed data. First, converting the facility photos for embedding.
+
+
+### 🤖 Autopilot
+
+Facility photos ready. Now let me rebuild the v5 PDF generator with all confirmed data (site code B-06-58, registered owner Ana Lucia Araujo de Sousa, COOPOXIN, visit date, GPS, facility photos, signature).
+
+
+### 🤖 Autopilot
+
+PDF v5 generated (20 MB, 7 pages). Let me verify the content — especially the site code B-06-58, owner name, and signature placement.
+
+
+### 🤖 Autopilot
+
+Images all present (7 pages, 8 images), but page 1 text extraction fails for the key fields — likely a text-rendering/encoding issue with the accented characters (ó, ã) in reportlab's default encoding. Let me check what page 1 actually contains.
+
+
+### 🤖 Autopilot
+
+Found the bug: `meta_table` double-multiplies by `mm` — I pass `y` already in points (`H-30*mm`) but the loop does `y_cursor*mm` again, pushing the table ~21,000pt off-page (invisible). Fixing the function and regenerating.
+
+
+### 🤖 Autopilot
+
+Regenerated. Let me re-verify page 1 now contains all the key fields.
+
+
+### 🤖 Autopilot
+
+All key fields verified on page 1. Now let me push the finalized PDF + entity.json update to fda_fsvp. First the entity.json update.
+
+
+### 🤖 Autopilot
+
+Now updating entity.json (source_farms with the registered name + site code, add COOPOXIN note) and pushing the PDF. Opening the PR with the entity edit, then uploading the PDF.
+
+
+### 🤖 Autopilot
+
+PR #10 opened with the entity.json update. Now uploading the finalized v5 PDF to the branch (replacing the v4 draft record).
+
+
+### 🤖 Autopilot
+
+Both commits on the branch. This is the finalized FSVP record — merging (part of the approved correction scope).
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `fda_fsvp#10` merged — FSVP record finalized
+
+**"entity.json: Santa Anna registered owner + site code B-06-58 (CEPOTX/COOPOXIN)"** → merged (sha `67f75ce`)
+
+### What changed
+1. **PDF regenerated (v5, final)** — `suppliers/cepotx/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf` (7 pages, 20 MB) with all confirmed data:
+   - **Site code: B-06-58**
+   - **Registered owner: Ana Lucia Araujo de Sousa**
+   - **Sub-cooperative: COOPOXIN**
+   - Contact/host: Jedielcio (CEPOTX liaison) — correctly separated from owner
+   - Visit date 30 Aug 2026 · GPS -3.292475/-52.572250 · 3 ha · Facilities A/B/C with photos · video frames · signature
+   - All fields verified via text extraction (page 1 contains B-06-58, owner name, COOPOXIN ✓)
+2. **entity.json updated** — `source_farms` entry now: *"Santa Anna Fazenda (Pará) — site code B-06-58, registered owner Ana Lucia Araujo de Sousa (COOPOXIN)"*
+3. Fixed a generator bug along the way (meta_table double-mm multiplication pushed the table off-page — caught by text verification, patched, re-verified)
+
+### The last open placeholder on the Santa Anna thread is now CLOSED
+Site code + registered owner were the only remaining unknowns — both now filed in the authoritative FSVP record.
+
+---
+
+**RESUME HERE → next unit (remaining corrections from my earlier list):**
+1. **SunMint SA-P1 plot row** — owner `Jedielcio (CEPOTX)` → `Ana Lucia Araujo de Sousa (CEPOTX)`, Jedielcio → verified-by/contact; regenerate `plots/index.geojson` → push to sunmint (DATA-repo path)
+2. **Agroverse farm page** — check if it names Jedielcio as owner anywhere (story section); update to note Ana Lucia as registered owner + Jedielcio as CEPOTX liaison if it does
+3. **Runbook note** — add the "registered owner ≠ hosting contact" pattern to `AGROVERSE_FARM_PAGE_CONVENTIONS.md` (I offered this; say go if you want it)
+4. **Optional:** send you the v5 PDF for the record (it's on disk at /tmp/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf — happy to attach)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → re-cloned signature_assets; converted facility photos (7732/7735/7742); rebuilt generator v5 with confirmed data; extracted video frames; fixed meta_table mm bug (double-multiply pushed table off-page); regenerated + verified all key fields; cloned fda_fsvp; opened **PR #10** (entity.json edit); uploaded PDF to branch; **merged** ✅ sha 67f75ce
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → re-clone sig; convert 3 facility HEICs; write gen_santa_anna_v5.py; verify (page1 fields missing → found meta_table *mm bug); patch; regen; verify all fields True; clone fda_fsvp; PR #10; upload PDF; merge ✅
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → sig_assets re-clone; convert IMG_7732/7735/7742; gen v5 script; extract frames; PDF gen; **bug**: meta_table y*mm double-multiply → table off-page; patch; regen; verify B-06-58/owner/COOPOXIN all True; entity.json edit; PDF upload; **PR #10 merged** (67f75cef51f1773518856df4ab965ad2ffebadba)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /tmp && ls -la gen_santa_anna*.py 2>/dev/null; echo "=== placeholders in generator ==="; grep -n "TBD\|to confirm\|SITE CODE\|DATE OF VIS; ls -la /tmp/*.pdf 2>/dev/null | grep -i santa; echo "=== media for PDF ==="; ls ~/santa_anna_new/ 2>/dev/null | head -8; echo "=== /tmp/sa_w; cd /tmp && rm -rf sig_assets && git clone -q --depth 1 https://github.com/TrueSightDAO/signature_assets.git sig_assets 2>&1 | tail -1; find ; …(+6 more)
+• `merge pr` → ✅ PR #10 on fda_fsvp merged successfully (sha: 67f75cea51f1773518856df4ab965ad2ffebadba). Pull Request successfully merged
 
