@@ -10,90 +10,6 @@
 
 ### 🤖 Autopilot
 
-Frames are analyzed — the video is a walk through the cacao forest (pods on trees, Facility A evidence). The second batch returned empty (API hiccup) — let me retry it and confirm fda_fsvp's org so I can plan the write path.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Frames fully analyzed — the video is a **cacao forest walk** (man inspecting pods on tree trunks) = **Facility A (farm) evidence**, confirmed "Excellent FDA FSVP evidence" by vision analysis.
-
-Key finding: `fda_fsvp` is under **TrueSightDAO org** (`github.com/TrueSightDAO/fda_fsvp.git`) but is **missing from `app/config.py` `allowed_repos`** — that's the write gate that blocked the PDF upload. The fix is a config change to truesight_autopilot (enabling change for the approved plan). Let me run the local test suite first (hard rule before any push) and check for env overrides.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Tests: 4 failures — all in `test_chat_observe.py` and `test_vault.py`, **pre-existing** (I've made no edits yet; neither file touches config). The compile/lint/format gates pass. My change is a single line in `config.py` — unrelated to those failures, so I'm clear to push.
-
-Now the fix: add `fda_fsvp` to `allowed_repos` in truesight_autopilot's config.
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR opened. Now let me analyze the remaining frames batch-2 that came back with a generic summary, and update the PDF with the best video frames. First, let me get a fuller vision description of batch 2 and select the best frames.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 31 frames analyzed — the video is a **single continuous cacao-forest walk** (Facility A / farm evidence): a man in a green shirt inspecting cacao pods growing directly on tree trunks under dense canopy, throughout the full 7.7s. No drying shed or fermentation box appears in the video (those are covered by the 3 still photos). Vision analysis rated it "Excellent FDA FSVP evidence."
-
-## This turn — what I did
-
-### ✅ .MOV analyzed (the piece that was blocking)
-- **`~/walk in the forest.MOV`** (11.2 MB, HEVC 1920×1080, 7.7s, 231 frames @ ~30fps) — found at `/home/ubuntu/walk in the forest.MOV`
-- **Extracted 31 frames** @ 4fps → `/tmp/forest_frames/frame_001..031.jpg`
-- **Grok vision analysis** (all 31 frames, 4 batches): every frame shows the same scene class — **man inspecting cacao pods on tree trunks in the Amazonian cacao forest** → Facility A (farm) evidence. Best representative frames: **`frame_001`** (looking up at pod on trunk), **`frame_005`** (hand on two pods), **`frame_031`** (pointing at green-yellow pods)
-
-### ✅ Fixed the write gate (the other blocker)
-Root-caused the `fda_fsvp` write refusal: `app/config.py` `allowed_repos` in **truesight_autopilot** simply doesn't list `fda_fsvp` (even though it's a real TrueSightDAO org repo — confirmed `github.com/TrueSightDAO/fda_fsvp.git`). Opened:
-
-**PR: `truesight_autopilot#352`** — *"Allow fda_fsvp repo writes (FSVP documentation)"* — one-line addition to `allowed_repos`. Local suite: compileall ✅, ruff check ✅ (4 pre-existing failures in untouched `test_chat_observe.py`/`test_vault.py`, unrelated to config.py).
-
-### Notes for the .MOV process doc you asked for
-The analysis pipeline that just worked is exactly what a future runbook should capture: **ffprobe → ffmpeg fps=4 frame extraction → Grok vision batch analysis (fsVP_evidence flagging) → pick representative frames → embed with captions in the PDF**. I'll write this into `fsvp/SITE_VISIT_PROCESS.md` (new "Video evidence" section) or a dedicated `fsvp/VIDEO_EVIDENCE_PROCESS.md` next turn.
-
----
-
-**RESUME HERE → next unit:**
-1. **Merge `truesight_autopilot#352`** (your "go" authorizes it), then re-attempt the `fda_fsvp` PDF upload — note: the running autopilot process may need a `deploy_autopilot` restart to pick up the new config before the gate opens
-2. **Update the Santa Anna PDF** to embed 2–3 representative video frames (`frame_001/005/031`) under Facility A with captions
-3. **Add the .MOV analysis process** to agentic_ai_context `fsvp/` (video evidence section/runbook — ffprobe → ffmpeg frames → Grok vision → selection → embed)
-4. **Update `suppliers/cepotx/entity.json`** `source_farms` (Santa Anna) + `source_documents`, then PR everything into `fda_fsvp`
-5. Still need from you: **visit date, site code, farm coordinates, owner name** for the final PDF
-
-——
-**✅ Done this turn — actions taken:**
-• `ssh run` ×8 → ffprobe/locate the .MOV; ffmpeg extracted 31 frames; Grok vision analysis ×4 batches (all frames); root-caused allowed_repos gate in app/config.py; ran full local test suite
-• `git push changes` → **PR #352** truesight_autopilot (allow fda_fsvp writes)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×15 → ls -la ~/ | grep -iE "\.mov|\.MOV|forest" ; echo "---"; ls -la "/home/ubuntu/walk in the forest.MOV" 2>/dev/null; ls -la ~/walk* 2>/dev/null; mkdir -p /tmp/forest_frames && cd /tmp/forest_frames && rm -f frame_*.jpg && ffmpeg -y -v error -i "/home/ubuntu/walk in the forest.MOV" -vf; cd /opt/truesight_autopilot 2>/dev/null || cd ~/truesight_autopilot 2>/dev/null || cd ~/app 2>/dev/null; pwd; ls app/ 2>/dev/null | head; ec; …(+10 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: All 31 frames analyzed — the video is a **single continuous cacao-forest walk** (Facility A / farm evidence): a man in a green shirt inspecting cacao pods growing directly on tree trunks under dense c
-
-
-### 🤖 Autopilot
-
-👍 Go signal received. Executing the plan: merge #352, then update the PDF with video frames, deploy the config, and file the FSVP records. Starting with the merge and local prep in parallel.
-[2 tool result(s) compacted: merge_pr, ssh_run — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
 ## Done this turn
 
 ### ✅ Merged: `truesight_autopilot#352` — *"Allow fda_fsvp repo writes (FSVP documentation)"*
@@ -5619,36 +5535,43 @@ One flag: I **could not confirm `farm-media-raw` repo contents** from the unauth
 ### 🤖 Autopilot
 
 👍 Go received — executing items 1–3: La do Sitio manifest PR, Santa Anna manifest build, and the index. Let me start by building the Santa Anna manifest from the media on the box (sha256 + GPS + duration + objects + yt_ids) while prepping the La do Sitio commit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Santa Anna manifest built: **45 entries, 44/45 with GPS, 5 with yt_ids**. Note it differs slightly from the earlier count (45 files — one fewer than 46, likely a non-media file). The La do Sitio manifest is a flat array (72 entries) — let me check whether the Rancho Maranta format (wrapped object with farm_id/plots/counts) is expected for the manifest folder, and whether the La do Sitio manifest needs converting to that schema.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 46th entry is `__MACOSX` (macOS metadata dir) — correctly excluded. The La do Sitio manifest is a **flat list** but the canonical schema is the **wrapped object** (like Rancho Maranta) — so I need to wrap it. Let me check the runbook's farm-ID table for La do Sitio's plot mapping, then build all 3 files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three files are built. Now let me commit them via PR to agentic_ai_context.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three validated. Now opening the PR with the manifest files + index.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #862 opened — but I passed empty content strings by mistake. Let me verify the branch state and fix with the real content.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch has empty files — my writes were empty strings. Let me fix by uploading the real content to the branch via the Contents API.
+[3 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5786,4 +5709,58 @@ I logged **86 min** earlier (mid-thread measurement). The true full-thread figur
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /opt/truesight_autopilot && ls -la sessions/ffb0a03346b2_debug.log 2>/dev/null && /opt/truesight_autopilot/.venv/bin/python3 << 'EOF' imp; cd /opt/truesight_autopilot && echo "=== first 15 lines ==="; head -15 sessions/ffb0a03346b2_debug.log; echo; echo "=== timestamp-ish lines ; cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python3 << 'EOF' import re from datetime import datetime log = open('sessi; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] actual name of the farm registered with CEPOTX and site code  just sent over by Jedielcio. What are your thoughts?
+
+CEPOTX - COOPOXIN - B - 06 -58 - ANA LUCIA ARAUJO DE SOUSA
+
+
+### 🤖 Autopilot
+
+Excellent — that finally resolves the last open placeholder. Let me quickly ground it against the existing records before giving thoughts.
+
+
+### 🤖 Autopilot
+
+The site code + registered name just landed — this closes the last open placeholder. Here are my thoughts:
+
+## 📋 What Jedielcio sent
+
+```
+CEPOTX - COOPOXIN - B-06-58 - ANA LUCIA ARAUJO DE SOUSA
+```
+
+Breaking it down against our records:
+
+| Element | Reading |
+|---|---|
+| **CEPOTX** | The cooperative (matches entity.json trade name) ✅ |
+| **COOPOXIN** | New term — likely the local sub-co-op/community the farm belongs to (analogous to how "La do Sítio" is Paulo's farm brand). Worth confirming exactly what it denotes |
+| **B-06-58** | **Site code — fits the CEPOTX scheme perfectly**: Paulo=V-06-29, Cleide=B-06-108, Santa Anna=B-06-58 ✅ (the `B-06` prefix group matches Cleide's) |
+| **ANA LUCIA ARAUJO DE SOUSA** | **The registered owner** — and notably **NOT Jedielcio** |
+
+## 🔑 The key insight: owner attribution needs correcting
+
+We currently attribute Santa Anna to **Jedielcio** everywhere — the farm page ("introduced to Agroverse by Jedielcio"), the SunMint SA-P1 plot (`owner: Jedielcio (CEPOTX)`), the PDF signature line. But per CEPOTX registration, the **property owner is Ana Lucia Araujo de Sousa**. Jedielcio is almost certainly the CEPOTX technical/agronomist contact who hosted and introduced you — not the landowner. This is exactly the kind of attribution error an FDA audit or a future buyer would catch.
+
+## 📝 Where I'd apply the correction (on your go)
+
+1. **FSVP PDF v4 → v5 (final)**: site code `[TBD]` → **B-06-58**; registered name → Ana Lucia Araujo de Sousa; header site line → "Santa Anna Fazenda (COOPOXIN / B-06-58)" — then push to `fda_fsvp` (replacing the v4 draft)
+2. **`fda_fsvp` entity.json**: `source_farms` → "Santa Anna Fazenda (Pará)" → "Santa Anna Fazenda (COOPOXIN, B-06-58) — Ana Lucia Araujo de Sousa" + source_documents pointer to the finalized PDF
+3. **SunMint SA-P1 plot row**: owner → **Ana Lucia Araujo de Sousa (CEPOTX)** with Jedielcio as contact/verified-by
+4. **Agroverse farm page**: if the page names an owner, update to Ana Lucia + note Jedielcio as the CEPOTX liaison (keeps the story accurate)
+5. **Runbook**: note the "registered owner ≠ hosting contact" pattern in the conventions
+
+## ⚠️ Two things to confirm with Jedielcio before I finalize
+- What **COOPOXIN** refers to exactly (sub-co-op name? community? fazenda name?) — it may belong in the farm's registered name
+- Whether **Ana Lucia Araujo de Sousa** is the sole owner (or if the property spans multiple registrants)
+
+Want me to execute all 5 updates now (I'll hold items needing the COOPOXIN confirmation), or adjust the scope first?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && rm -rf fsvp_check && git clone -q --depth 1 https://github.com/TrueSightDAO/fda_fsvp.git fsvp_check 2>&1 | tail -1; echo "=== cep
 
