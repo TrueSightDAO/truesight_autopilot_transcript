@@ -3881,21 +3881,30 @@ I have everything: plots schema (14 cols from the sheet) + trees schema (6 prope
 ### 🤖 Autopilot
 
 Let me get the trees FIELD_COLUMNS too, then write the SCHEMA.md.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have both schemas fully. Now writing `SCHEMA.md` for the sunmint repo — documenting both registries (plots 14 cols + trees 9 cols), their sources of truth, the geojson output shapes, and the SA-P1 extension pattern.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Right — sunmint is an API-only DATA repo; the sanctioned path is the Contents API (as I used for the geojson). Let me push SCHEMA.md directly to main.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SCHEMA.md is live on sunmint main. Let me verify it's reachable and report.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3948,16 +3957,19 @@ Note: this directly answers your earlier question — **the schema was implicit 
 ### 🤖 Autopilot
 
 Good idea — linking the plot popup to the farm's agroverse profile. Let me investigate how the map popup is built and what farm_id the existing plots carry.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The popup builder is at lines 640–657. Let me read that block fully to see what props are available and how to add the farm-profile link.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The popup builder is clear. The plots already carry `farm_id` (RM-P1/RM-P2 → `rancho-maranta`, SA-P1 → `santa-anna-fazenda`) — and agroverse pages exist for both (`rancho-maranta-para`, `santa-anna-fazenda-para`). Adding a farm-profile link to the popup is a clean one-line change in the popup builder. Opening the PR on truesight_me_beta:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4169,4 +4181,90 @@ One note on the link target: I linked to **`https://agroverse.shop/farms/santa-a
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → echo "=== what serves beta.truesight.me/sunmint.html ==="; curl -s https://beta.truesight.me/sunmint.html -o /tmp/live_sunmint.html -w "HTTP; echo "=== context around the link code in LIVE page ==="; grep -n -B 3 -A 2 "farm profile on Agroverse" /tmp/live_sunmint.html; echo; echo "; echo "=== PLOTS_URLS in live page ==="; grep -n -A 4 "PLOTS_URLS = \[" /tmp/live_sunmint.html; echo; echo "=== what raw serves RIGHT NOW (fa; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] Link is showing but linking to 404
+
+
+### 🤖 Autopilot
+
+Let me verify the 404 and confirm the slug mismatch.
+
+
+### 🤖 Autopilot
+
+Root cause found — clean **slug mismatch**:
+
+| `farm_id` in registry | Agroverse URL built | Actual page slug | Status |
+|---|---|---|---|
+| `santa-anna-fazenda` | `/farms/santa-anna-fazenda/` | `santa-anna-fazenda-para` | **404** |
+| `rancho-maranta` | `/farms/rancho-maranta/` | `rancho-maranta-para` | **404** |
+
+The registry `farm_id` is the logical ID; the agroverse page slugs carry the `-para` suffix. The popup should map farm_id → the actual profile URL. I'll add a small lookup in the popup builder (keeps the registry canonical, fixes both plots, future-proof with a direct fallback):
+
+
+### 🤖 Autopilot
+
+PR #335 opened with the slug-mapping fix. Verifying the edit, then merging (part of the approved popup-link unit):
+
+
+### 🤖 Autopilot
+
+Edit verified on the branch. Merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `truesight_me_beta#335` merged — 404 fixed
+
+**"Fix sunmint plot popup farm link 404 (slug mapping)"** → merged (sha `eb732bc`)
+
+### Root cause
+The popup built `https://agroverse.shop/farms/<farm_id>/` but the registry `farm_id` values don't match the actual agroverse page slugs:
+
+| farm_id (registry) | URL built | Real page slug | Before |
+|---|---|---|---|
+| `santa-anna-fazenda` (SA-P1) | `/farms/santa-anna-fazenda/` | `santa-anna-fazenda-para` | **404** |
+| `rancho-maranta` (RM-P1/RM-P2) | `/farms/rancho-maranta/` | `rancho-maranta-para` | **404** |
+
+### The fix
+Added a `FARM_SLUG` mapping in the popup builder (`sunmint.html` line 656–657):
+```js
+var FARM_SLUG = { 'santa-anna-fazenda': 'santa-anna-fazenda-para', 'rancho-maranta': 'rancho-maranta-para' };
+var fslug = FARM_SLUG[fid] || fid;  // future unmapped plots fall back to farm_id
+```
+Verified against the actual farm slug list in the shop repo (9 pages) — both CEPOTX-pará plots mapped; any future plot whose farm_id already matches a slug keeps working as-is.
+
+Now the popup link points to:
+- SA-P1 → agroverse.shop/farms/**santa-anna-fazenda-para/** (200 ✅)
+- RM-P1/RM-P2 → agroverse.shop/farms/**rancho-maranta-para/** (200 ✅)
+
+---
+
+**RESUME HERE → next unit:**
+1. **Hard-refresh** beta.truesight.me/sunmint.html → click SA-P1 popup link → should land on the live farm profile (200, no 404) after the ~2–10 min Pages deploy
+2. **Promote #333+#335 to prod** — truesight_me_prod sync after your beta eyeball (say "promote")
+3. **Still parked:** media additions to the farm page (shortlist: 7723, 7744, 7751, 7731, 7747, 7750); plot-impact embed idea on the farm profile
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → verified slug mismatch (built URLs 404 vs `-para` slugs 200; listed all 9 farm page slugs); opened **PR #335** (FARM_SLUG map + fallback); verified edit on branch (lines 656–658); merged ✅ sha `eb732bc`
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → HTTP status check of built URLs (404 vs 200) + farm slugs listing from agroverse_shop_beta
+• `git_push_changes` → **PR #335** truesight_me_beta (slug map + fallback)
+• `merge_pr` → ✅ PR #335 merged (sha eb732bc64e4c9a75dc7e6bc4fb95a984a04542f4)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== what the popup builds (from farm_id) ==="; echo "farm_id=santa-anna-fazenda -> https://agroverse.shop/farms/santa-anna-fazenda/"; ; cd /tmp/tmb_check && git fetch -q origin fix/sunmint-popup-farm-url && git show FETCH_HEAD:sunmint.html | grep -n -A 3 "FARM_SLUG" | head -8
+• `merge pr` → ✅ PR #335 on truesight_me_beta merged successfully (sha: eb732bc64e4c9a75dc7e6bc4fb95a984a04542f4). Pull Request successfully merged
 
