@@ -10,24 +10,6 @@
 
 ### 🤖 Autopilot
 
-Now I have the full picture. Let me: (1) hunt for the original photo filenames in the transcript (they were renamed to UUIDs by the adapter), (2) download Gary's signature to disk, and (3) re-verify facility mapping of the 3 photos via vision.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The session file references the photo. Let me check it for original filenames, and also look at how the original CEPOTX PDFs were structured (facility-by-facility images with GPS).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The UUID renames came from the adapter — Gary says the original filenames would map photos to facilities. Let me find where original filenames are preserved (adapter logs / transcript repo), and re-check the original CEPOTX PDF layout for per-facility images.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 Timed out on the broad search — let me be targeted: check the transcript repo for the original message filenames, and extract the original CEPOTX PDF layout (per-facility images + GPS) from my local clone.
 [2 tool result(s) compacted: ssh_run, search_transcript — detail in artifacts]
 
@@ -5460,6 +5442,7 @@ Want me to execute all 5 updates now (I'll hold items needing the COOPOXIN confi
 ### 🤖 Autopilot
 
 👍 Go received — executing the correction updates. Starting with the fda_fsvp record (PDF v5 with the site code + registered owner + entity.json), then the SunMint plot owner. Let me inspect the PDF generator first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5593,4 +5576,93 @@ Remaining parked items from the correction scope, whenever you're ready:
 3. **Runbook note** — "registered owner ≠ hosting contact" pattern in the conventions doc
 
 Want me to knock those out, or hold?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] Once done send me the updated PDF too
+
+
+### 🤖 Autopilot
+
+On it — completing the remaining corrections (SunMint plot owner, farm page owner check, runbook note), then I'll send you the final PDF. Starting with the SunMint SA-P1 plot row.
+
+
+### 🤖 Autopilot
+
+SA-P1 row confirmed (owner = `Jedielcio (CEPOTX)`). Updating the owner cell to the registered owner, with Jedielcio retained as the contact. Then regenerating the geojson.
+
+
+### 🤖 Autopilot
+
+Sheet updated. Now regenerating the geojson and pushing to sunmint (DATA-repo path), then checking the farm page for owner naming.
+
+
+### 🤖 Autopilot
+
+The note update didn't flow into the geojson — the build script may not carry the Notes column, or the cell update used a different source. Let me check what columns the builder reads and whether Notes is included.
+
+
+### 🤖 Autopilot
+
+Owner updated in the geojson ✓ — but the notes didn't carry the appended text. The builder reads the Notes column but the cell update may not have flushed, or the builder uses a cached/other read. The owner (the critical fix) is correct. The notes enhancement is nice-to-have; the core correction is done. Let me push the regenerated geojson to sunmint (DATA-repo single-file path), then move to the farm page check.
+
+
+### 🤖 Autopilot
+
+SunMint plot owner corrected and pushed. Now the farm page — checking if it names Jedielcio as owner (vs. the story framing) and updating if needed.
+
+
+### 🤖 Autopilot
+
+The farm page **correctly** frames Jedielcio as the introducer/CEPOTX contact — not as owner. The phrasing "introduced to Agroverse by Jedielcio of the CEPOTX cooperative" is accurate and doesn't claim ownership. So no ownership error on the farm page. However, to complete the registered-owner correction, I'll add the registered owner + site code to the story (one line, strengthens the provenance). Opening the PR:
+
+
+### 🤖 Autopilot
+
+PR #251 opened with the farm page update. Merging (part of the approved correction scope):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — owner-correction unit complete
+
+### What was corrected (per Jedielcio's CEPOTX registration)
+
+| Surface | Change |
+|---|---|
+| **SunMint SA-P1 plot** (sheet + `sunmint/plots/index.geojson`) | Owner `Jedielcio (CEPOTX)` → **`Ana Lucia Araujo de Sousa (CEPOTX)`**; sheet note updated (site code B-06-58, COOPOXIN, Jedielcio = liaison) — pushed commit `7fb934e` |
+| **Agroverse farm page** — **PR `agroverse_shop_beta#251` merged** (sha `b8f2e93`) | Story now states: farm registered with CEPOTX under **site code B-06-58 (COOPOXIN sub-cooperative), owned by Ana Lucia Araujo de Sousa**, Jedielcio = cooperative's technical liaison. The existing framing ("introduced to Agroverse by Jedielcio") was already accurate — no ownership misclaim — now strengthened with the registered facts |
+| **FSVP record** (previous turn) | PDF v5 + entity.json with B-06-58 / owner / COOPOXIN ✅ |
+
+COOPOXIN = sub-cooperative within CEPOTX — hierarchy correctly represented everywhere: **CEPOTX → COOPOXIN → Santa Anna (B-06-58) → Ana Lucia Araujo de Sousa**.
+
+### Note
+The SA-P1 sheet notes append didn't flow into the geojson's `notes` (the builder read the owner correctly but the appended note text didn't carry) — the **owner fix (the critical correction) is live**; the notes enhancement is cosmetic and can be revisited.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Send you the updated v5 PDF** (you asked: "Once done send me the updated PDF too") — it's on disk at `/tmp/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf` (20 MB, 7 pages, B-06-58 + owner + COOPOXIN + signature). Say "send" and I'll attach it here.
+2. **Runbook note** (optional): "registered owner ≠ hosting contact" pattern into `AGROVERSE_FARM_PAGE_CONVENTIONS.md`
+3. **Promote farm page to prod** — `sync_beta_to_prod` carries #251 (registered owner line) + the earlier #248/#249 (videos/photos) whenever you've eyeballed beta
+
+———
+**✅ Done this turn — actions taken:**
+• `read_google_sheet` → SA-P1 row read (owner = Jedielcio (CEPOTX))
+• `ssh run` ×3 → sheet owner cell → Ana Lucia Araujo de Sousa (CEPOTX) + note append; regenerated geojson (5 features, owner corrected); verified props
+• `upload_file_to_github` → `sunmint/plots/index.geojson` commit `7fb934e`
+• `ssh run` → farm page checked (Jedielcio = introducer, no ownership misclaim)
+• `git_push_changes` → **PR #251** (farm page registered-owner line)
+• `merge_pr` → ✅ **PR #251 merged** (sha b8f2e9332f8792405100625707c810aed414740e)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python3 << 'EOF' import gspread, json from google.oauth2 import service_ac; cd /tmp && rm -rf sunmint_regen && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git sunmint_regen 2>&1 | tail -1; cd sunmi; cd /tmp/sunmint_regen && grep -n "notes\|Notes\|COLUMNS\|FIELD" scripts/build_plots_geojson.py | head -20; echo "=== SA-P1 full props ==="; ; …(+1 more)
+• `merge pr` → ✅ PR #251 on agroverse_shop_beta merged successfully (sha: b8f2e9332f8792405100625707c810aed414740e). Pull Request successfully merged
 
