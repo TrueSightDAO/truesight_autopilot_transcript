@@ -4221,11 +4221,13 @@ farm-media-raw is the blob store, no pipeline doc there. Let me search the shop 
 ### 🤖 Autopilot
 
 Let me check the local box for the doc (it may be a working doc) and search org-wide once more with different terms:
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me try a more targeted find on the box (the broad find timed out) and check the farm-media-raw repo structure:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4261,51 +4263,61 @@ Which would you like — the path to the doc, or shall I proceed with the establ
 ### 🤖 Autopilot
 
 Let me look again — maybe the filename differs slightly. I'll list the repo's files via the GitHub API to find anything with MEDIA or PIPELINE:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ **Critical issue spotted before I continue:** this fresh clone shows `OPEN_FOLLOWUPS.md` at **0 bytes** — the single cross-session backlog I filed #850 and #857 into. That should be ~139KB. Either my #857 restore silently failed or something wiped it. Let me investigate immediately — this is the file the rules call THE backlog (never clobber, never duplicate):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ **Incident: `OPEN_FOLLOWUPS.md` is 0 bytes on main** — the cross-session backlog is gone. This is the file the rules call THE single backlog. My #857 merge appears to have landed the empty-content version despite my "restore". I need to recover immediately — first, get the pre-merge content from the parent commit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ **Confirmed: my merge commit `ec25176` DELETED all 1,937 lines of OPEN_FOLLOWUPS.md** (138,734 bytes → 0). The parent `545d901` still has the full content. My earlier "restore" verification was flawed — the branch showed 139,930 bytes, but the merge that landed (via the PR squash) used the empty `writes` content. This is a serious incident. I will fix it now: **restore the file from the parent commit** (which has the full 138,734-byte original) — I'll keep the #857 entry too since it's the only addition I intended. Let me do a proper restore:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The parent `545d901` has the full 138,734-byte original (without my #857 entry — that was the only thing I intended to add). The merge `ec25176` deleted the entire file. I need to restore the original AND add my entry back, then push a fix. Let me do this properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture. **The incident:** my PR #857 squash-merge (`ec25176`) landed with an **empty** `OPEN_FOLLOWUPS.md` — my local "restore" verification was on the wrong branch and never made it into the merged PR content. The parent `545d901` has the full 138,734-byte original. Recovery plan: restore from parent + re-append my #857 entry, push as a fix branch, PR, merge. Executing now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is restored: 139,513 bytes (138,734 original + 779-byte entry), the #857 entry present, and the old entries (podream-tech-followup, ## Pending) intact. Let me commit and push the fix branch, then open a PR and merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed. Opening the PR via the autopilot PAT (the same path used for earlier PRs):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #859 opened. Let me verify the diff is exactly original + entry, then merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The diff is **exactly** original + the #857 entry (7 added lines: 1 blank + the 6-line entry) — the 1,937 lines of backlog are fully restored. Merging PR #859:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4363,21 +4375,25 @@ https://api.github.com/repos/TrueSightDAO/agentic_ai_context/pulls/858
 ### 🤖 Autopilot
 
 Let me look at PR #858 on agentic_ai_context:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #858 is exactly it — **"Add FARM_MEDIA_PIPELINE.md — handoff-ready runbook for processing farm media"** was merged (by a parallel Sophia/agent, it seems). So the doc exists on main now — my earlier searches just predated the merge. Let me pull it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #858 merged at 14:22 -0300 (17:22 UTC) — the FARM_MEDIA_PIPELINE.md runbook exists on main now. But the merge stat looks **suspiciously large** (ADVISORY_SNAPSHOT +597, many files) — that could mean it was based on an old main and squash-merged over everything, potentially reverting my OPEN_FOLLOWUPS restore. Let me verify the critical file state at HEAD:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The state is healthy: `OPEN_FOLLOWUPS.md` is **139,513 bytes with my `## [857]` entry intact** at HEAD — my restore was **not** reverted. The big merge stat was the shallow-clone artifact (the depth-1 clone shows the full diff vs the empty parent). The FARM_MEDIA_PIPELINE.md doc is on main. Let me now read it — the actual runbook I'm supposed to follow:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4385,36 +4401,43 @@ The state is healthy: `OPEN_FOLLOWUPS.md` is **139,513 bytes with my `## [857]` 
 The runbook is clear — and reading it against what I already did reveals **real gaps in my earlier work** (most importantly: the pipeline warns ffmpeg **drops QuickTime GPS** and mandates exiftool re-injection + verification before upload — I never did that for the 3 videos I uploaded). Let me process the media properly per the pipeline now.
 
 First: gather current state — the 3 zips, the extracted work dirs, and what's already in `farm-media-raw`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `farm-media-raw` has `la-do-sitio/` processed by the pipeline — but **no `rancho-maranta/` yet**. So per FARM_MEDIA_PIPELINE.md, the Rancho Maranta media still needs: SHA-256 dedupe, GPS re-injection on videos (critical — ffmpeg drops QuickTime GPS, and my 3 uploads predate this runbook), HEIC originals → farm-media-raw, and the manifest PR. Let me build the complete manifest with dedupe + GPS from all three zips:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All extracted: **30 HEICs** (15 real + 15 AppleDouble junk) + **74 MOVs** (37 real + 37 junk). Now the pipeline's mandatory steps — SHA-256 dedupe + GPS sweep on the real files (excluding `._` junk):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dedupe: **all 15 HEICs and 37 MOVs unique** — good. But the GPS sweep returned empty — the spaces in the zip paths (`rancho maranta plot 1/`) broke the for-loop. Let me use exiftool recursively (handles spaces natively):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — the HEIC GPS count shows only 3 (the recursive exiftool had path issues), but the **MOVs have full GPS: 77 of them carry QuickTime `GPSCoordinates`**. Wait — the runbook's example format was `3°23'10.68"S, 51°51'5.04"W` but here it's `3 deg 17' 45.96" S, 52 deg 34' 59.52" W` — same DMS format, fine. Let me get a clean per-file GPS table (the recursion with `-if` was flaky), and check the HEIC GPS properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The spaces in the paths broke the loop again (splitting `rancho maranta plot 1/` into tokens). But the earlier recursive exiftool showed the data exists. Let me use a Python-based sweep that handles paths properly — this is the definitive GPS table for the manifest:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Complete GPS picture: **0/15 HEICs have GPS** (iPhone strips it from stills when shared) but **37/37 MOVs have QuickTime GPS** — the full walking track (34 unique coords) that defines the plot boundaries. This is exactly the data the manifest needs. Now per the pipeline: **Step 6 is the critical gap** — ffmpeg drops QuickTime GPS, so my 3 earlier uploads (AriHjXTsLio, o3_nWticYQc, H9ZSF1-ahIo) went up WITHOUT re-injected GPS. Let me check whether those uploaded MP4s carry GPS, and build the proper manifest:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4422,6 +4445,7 @@ Complete GPS picture: **0/15 HEICs have GPS** (iPhone strips it from stills when
 The earlier MP4s are gone (tmp cleanup) — so I can't verify whether they carried GPS. This is exactly why the pipeline mandates re-injection. Per FARM_MEDIA_PIPELINE.md, the right move now is to process the Rancho Maranta media **properly and completely**: build the manifest (sha256 + GPS + duration for all 37 MOVs), do the MOV→MP4 conversion **with GPS re-injection** for the videos worth uploading, upload with the pipeline's exact title pattern (with GPS), push HEIC originals to `farm-media-raw/rancho-maranta/photos/`, and file the manifest PR.
 
 Given the scale (37 MOVs, ~60s each encode), let me build the manifest first and prioritize: the 3 already-uploaded videos are the key ones (they need GPS re-injection verification), and the plot-2 boundary walk is the most valuable un-uploaded set. Let me build the full manifest now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4431,16 +4455,19 @@ Manifest built: **52 items (37 MOV + 15 HEIC), 37/37 MOVs with GPS, 835 MB raw v
 **Plan:** (1) The 3 uploaded videos already serve the farm page — I'll leave them (re-uploading = churn; the farm page works). (2) Process the valuable Plot-2 walk segments properly with GPS injection. (3) Push all 15 HEIC originals to `farm-media-raw/rancho-maranta/photos/` (step 8). (4) File the manifest to `agentic_ai_context/FARM_MEDIA_MANIFESTS/rancho-maranta-para.json` (step 10).
 
 Let me do step 3 (photos → farm-media-raw) first — 15 files via Content API. Let me check the farm-media-raw repo naming convention first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Structure confirmed: `farm-media-raw/<farm-id>/photos/*.HEIC` (la-do-sitio precedent). Now pushing all 15 Rancho Maranta HEIC originals via the Content API (step 8 — the pipeline mandates Content-API only, never clone/branch-edit). Let me upload them:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 First HEIC uploaded. Let me batch the remaining 14 — the tool takes one file per call, so I'll loop through them (each is a Content-API write to the api-only repo, the pipeline-sanctioned path):
+[8 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4528,4 +4555,68 @@ Stopping at the turn limit — here's the state of the FARM_MEDIA_PIPELINE proce
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×19 → curl -s https://api.github.com/repos/TrueSightDAO/agentic_ai_context/pulls/858 | python3 -c "import json,sys; d=json.load(sys.stdin); print(; cd /tmp && rm -rf aac4 && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aac4 2>&1 | tail -1; cd aac4 && echo; cd /tmp/aac4 && echo "=== OPEN_FOLLOWUPS.md at HEAD ===" && wc -c OPEN_FOLLOWUPS.md && grep -c "## \[857\]" OPEN_FOLLOWUPS.md && echo "=== i; …(+16 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Stopping at the turn limit — here's the state of the FARM_MEDIA_PIPELINE processing for Rancho Maranta.
+
+## What I did this turn (media processing per FARM_MEDIA_PIPELINE.md)
+
+**Found the runbook:** P
+
+
+### 🤖 Autopilot
+
+Go received — resuming: verify PR #860 (manifest) and merge, then tackle the GPS re-injection decision for the 3 uploaded videos.
+
+
+### 🤖 Autopilot
+
+Diff verified: only the manifest added (566 lines), OPEN_FOLLOWUPS untouched. Merging PR #860:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Manifest filed — PR #860 merged.**
+
+**PR #860 → https://github.com/TrueSightDAO/agentic_ai_context/pull/860** (merged, sha `7a9c8ee`): `FARM_MEDIA_MANIFESTS/rancho-maranta-para.json` — the full Rancho Maranta media manifest per FARM_MEDIA_PIPELINE.md step 10. This establishes the `FARM_MEDIA_MANIFESTS/` directory (la-do-sitio never filed one — mine is the first).
+
+**Diff verified before merge** (the lesson from the #857 incident applied):
+- Exactly **1 file added, 566 insertions**, `OPEN_FOLLOWUPS.md` untouched (0 lines diff)
+- Base `d89e429` (clean, post-#859 restore)
+- Content: farm_id, plots (RM-P1/RM-P2), source zips (all 3), counts (37 MOV + 15 HEIC), GPS coverage (37/37 MOV), per-item sha256 + lat/lng + durations + yt_ids for the 3 uploaded videos
+
+**Combined with the prior turn's work, the FARM_MEDIA_PIPELINE for Rancho Maranta is now:**
+- ✅ Intake (3 zips → 52 real files) · ✅ SHA-256 dedupe (all unique) · ✅ GPS sweep (37/37 MOV)
+- ✅ Photos → `farm-media-raw/rancho-maranta/photos/` (all 15 HEIC originals)
+- ✅ Manifest → `FARM_MEDIA_MANIFESTS/rancho-maranta-para.json` (this turn, #860)
+- ✅ Farm-page wiring (done earlier: 3 public YouTube videos + 12 images + warm header)
+
+## RESUME HERE →
+
+1. **Decide on the GPS re-injection for the 3 uploaded videos** (the one open pipeline item): my uploads (AriHjXTsLio, o3_nWticYQc, H9ZSF1-ahIo) predate FARM_MEDIA_PIPELINE.md; ffmpeg drops QuickTime GPS and the temp MP4s are gone so GPS presence is unverifiable. Options: (a) re-encode IMG_7621/7671/7684 with exiftool GPS injection → verify → re-upload → update media.json + manifest yt_ids, or (b) accept as-is (page works; GPS absent from the public videos).
+2. **Optional:** batch-encode the Plot-2 boundary-walk clips (~20s each) with GPS injection for the full walk on YouTube; object-detection step only if you want cacao-pod counts.
+3. **RM-P2 boundary authority** — CAR/INCRA polygon or perimeter walk (still open; manifest GPS supports the ~2.9 ha walked).
+
+**Nothing else gated.** The FARM_MEDIA_PIPELINE processing is complete except the video-GPS decision — say "re-inject" or "leave as-is" and I'll close it out.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 → verified PR #860 diff (1 file, 566 insertions, OPEN_FOLLOWUPS untouched, base d89e429)
+• `merge pr` → ✅ PR #860 merged (sha: 7a9c8eea61461553caf45d6c528f9bbf6f5649d6)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/aac4 && git fetch -q origin main 2>&1 | tail -1; echo "=== HEAD main ===" && git rev-parse --short origin/main && echo "=== diff mai
+• `merge pr` → ✅ PR #860 on agentic_ai_context merged successfully (sha: 7a9c8eea61461553caf45d6c528f9bbf6f5649d6). Pull Request successfully merged
 
