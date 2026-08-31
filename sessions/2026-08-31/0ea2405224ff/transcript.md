@@ -683,11 +683,13 @@ Interesting — the Florianópolis "PILOT_CENTER" wasn't random: there are **rea
 ### 🤖 Autopilot
 
 Let me read the full map script to understand the tree-marker logic vs the plots fitBounds:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the full properties of the Florianópolis tree records (and the other odd-location ones) so I can tell you exactly what's there:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -735,16 +737,19 @@ go for it.
 ### 🤖 Autopilot
 
 Governor's go — executing the view-switcher PR (plus quick investigation of the junk-coordinate source so the switcher handles reality correctly). Let me first understand the full map script — I noticed there are **two** map inits (line 441 and 662), so I need to see the whole structure before editing:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full structure — one `initMap` (line ~438) + a fallback, `PILOT_CENTER` Altamira, tree markers added for every valid-coord tree, plots auto-fit at line 592. The Florianópolis demo trees are still on the map, just off-screen. I'll add a **view switcher** (Altamira / Florianópolis / All trees) mirroring the plot-chip pattern, and make the plot auto-fit run only on first load so it doesn't fight the user's view choice. Let me grab exact anchors:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Anchors located. Let me see the exact code between the marker loop and the `loadSatelliteHistory` call so I can place the view-switcher wiring precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -913,4 +918,91 @@ You're right, and I was wrong to call it a demo. The Bougainvillea (`Edgar_20260
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && rm -rf tmb4 && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git tmb4 2>&1 | tail -1; cd tmb4 && grep ; cd /tmp/tmb4 && echo "=== all 'demo' refs in repo ===" && grep -rn "demo" --include="*.html" --include="*.js" --include="*.md" . | grep -iv ; cd /tmp && rm -rf aac2 && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aac2 2>&1 | tail -1; cd aac2 && echo; …(+1 more)
 • `merge pr` → ✅ PR #327 on truesight_me_beta merged successfully (sha: 651bd5e106283e954804e8c60b27bd016e5fa001). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn
+
+**Corrected the framing: Florianópolis is real planting, not a demo.**
+
+You're right, and I was wrong to call it a demo. The Bougainvillea (`Edgar_20260821175134_005`, QR `FOU
+
+
+### 🤖 Autopilot
+
+Go received — next unit: **triage the tree registry** (now that Florianópolis is confirmed legit, the non-Amazon entries need the same scrutiny). This is pure investigation: read the full registry, trace the source-of-truth sheet rows, and check the QR records. Let me start.
+
+
+### 🤖 Autopilot
+
+21 trees now (was 19 earlier — two **new Altamira entries** appeared: `Edgar_20260830154309_009` and `Edgar_20260831011117_005` at -3.29609, -52.58318, matching the planting-event coords). And the QR lookup **confirms the Bougainvillea is real**: `ASSIGNED_TO_TREE`, email `paloma@founderhaus.club`, manager Gary. Now let me read the source-of-truth sheet to trace where the junk coordinates actually come from:
+
+
+### 🤖 Autopilot
+
+The sheet is the source of truth and it's rich — let me see the remaining rows (the earlier read truncated at row ~10) to complete the triage:
+
+
+### 🤖 Autopilot
+
+Let me read the tail of the sheet data to complete the triage — especially the Bougainvillea row (what coords/QR it carries) and the newest Altamira rows:
+
+
+### 🤖 Autopilot
+
+The nested artifacts are eating the output — let me pull just the key columns (ID, lat, lng, status, species, QR) for all rows in one compact read:
+
+
+### 🤖 Autopilot
+
+Full triage complete — I have everything. Let me check the OPEN_FOLLOWUPS.md structure so I can persist this triage as a follow-up entry (so future agents don't redo the work):
+
+
+### 🤖 Autopilot
+
+Triage is nearly complete. Key finding: the builder already skips `TEST`/`E2E` and `INVALID` rows — the Oregon/China entries show as `NEW` so they leak into the public map. The Bougainvillea's coords in the geojson come from somewhere other than the sheet (sheet lat/lng is empty — they were backfilled at QR-link time). Let me check the no-coords trees' photo EXIF for recoverable GPS, and pull the exact photo/submitted-name columns:
+
+
+### 🤖 Autopilot
+
+Triage complete — I have the full picture from the source-of-truth sheet (28 rows) vs the public index (21 features). Here's what the data actually says:
+
+## Triage: what's really in `trees/index.geojson` (21 trees on the map)
+
+**4 REAL, geolocated program plantings:**
+
+| Tree | Location | Species | Submitter | Status |
+|---|---|---|---|---|
+| `Edgar_20260819134740_489` | Florianópolis (-27.4386, -48.4997) | Cacao Criolla | Unknown | NEW |
+| `Edgar_20260821175134_005` | Florianópolis (-27.4390, -48.4997) | Bougainvillea | **Paloma Lecheta** | **LINKED** (QR `FOUNDERHAUS_BOUGAINVILLEA_20260821_1` → ASSIGNED_TO_TREE) |
+| `Edgar_20260830154309_009` | **Altamira** (-3.29609, -52.58318) | Cacao Criolla | Gary Teh | NEW — matches planting event |
+| `Edgar_20260831011117_005` | **Altamira** (-3.29609, -52.58318) | Cacao Native | Sophia Truesight | NEW — same plot 1 coords |
+
+**17 non-program artifacts polluting the public map:**
+- **9 Oregon/California** (44.56/-123.26 Corvallis, 45.51/-122.63 Portland, 42.22/-122.74, 41.36/-122.20) — all 2025-07/08, submitted by Gary from **`file:///Users/garyjob/...report_tree_planting.html`** — these are **dapp development test submissions**, species "unknown" for the first 5. Cacao can't grow outdoors in Oregon.
+- **1 Shenzhen, China** (22.94/113.89, 2026-08-11, "Unknown" name, beta site) — suspicious, likely a test from the beta.
+- **3 Sophia Truesight rows (2026-08-29)** — **reuse the same Oregon coords** (44.560058/-123.262181 etc.) — automated test submissions.
+- **4 no-GPS rows** (2026-08-21/23, Cacao Criolla, empty lat/lng) — real submissions but missing location; **GPS recoverable from photo EXIF** if we want them.
+
+Also: `Edgar_20250809202528_061` exists in the sheet but not the index; `Edgar_20260819134722_487` is a rejected **duplicate** of the Floripa Criolla (INVALID — correctly excluded).
+
+## My recommendation
+
+The builder **already excludes** `TEST*`/`E2E` IDs and `INVALID` status rows. So the clean fix requires **zero code changes** — just set `Status = INVALID` on the 17 artifact rows in the sheet. They stay in the sheet as audit history (per the builder's design comment) but vanish from the public index/map. The map counter would honestly read **4 trees** (2 Florianópolis + 2 Altamira).
+
+The 4 no-GPS rows could instead get EXIF-recovered coords before disposition, if they're real.
+
+**Before I touch the sheet (it's the source of truth):** do you want me to
+1. Mark all 17 as `INVALID` (simplest, honest map), **or**
+2. Recover GPS from the 4 no-coord photos first, then decide row-by-row, **or**
+3. Keep the Oregon/Shenzhen rows but move them out of the live index another way (e.g. a `status: "test"` I can add to the builder)?
+
+Say which and I'll execute. (And yes — this means the "Florianopolis is not a demo" point is even more important: it's 1 of only 4 real geolocated trees on the whole map.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && rm -rf sunmint3 && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git sunmint3 2>&1 | tail -1; cd sunmint3 && ech; cd /tmp/sunmint3 && echo "=== build_tree_geojson.py: coord/status logic ===" && sed -n '50,140p' scripts/build_tree_geojson.py; cd /tmp/aac2 && echo "=== header + first lines ===" && head -30 OPEN_FOLLOWUPS.md && echo "..." && echo "=== '## Pending' location ===" && g
 
