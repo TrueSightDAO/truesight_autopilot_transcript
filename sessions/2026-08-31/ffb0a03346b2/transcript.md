@@ -3532,21 +3532,25 @@ Fieldname changed when I added the date tag (exiftool uses "Date/Time Original")
 ### 🤖 Autopilot
 
 Found the bug — I piped exiftool into a heredoc-fed python (the heredoc overrides stdin, so python read the script itself as CSV → 0 rows). Let me write exiftool output to a file first, then parse.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 44 GPS points cluster in the same ~85×85 m compound area (0.26 ha) — spanning 15:28–15:58 during the visit. So the zip captures the **compound** (grove, fermentation, drying), not the full 3-ha property boundary. The 3-ha figure is the real property size; the perimeter needs Jedielcio's boundary photos (email preserves EXIF). Let me test whether I can write the plot row to the sheet.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Z1 is out of range (sheet is A–N). Let me retest with an in-range scratch cell.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The error is a gspread arg-marshaling quirk, not a permission denial. Let me use the simpler `update_acell` API.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3609,16 +3613,19 @@ Every HEIC + MOV in `~/santa_anna_new` carries GPS
 ### 🤖 Autopilot
 
 👍 Go signal received. Resuming: (1) test the last 2 SAs for sheet write, (2) run the Grok vision pass on the new media to shortlist page-worthy items.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Write access confirmed** — `agroverse_qr_code_manager` SA can write to the SunMint Plots sheet. That unblocks the plot creation. Now let me compute the hull and run the vision pass on the new media in parallel.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hull computed: **8 vertices, ~0.31 ha, centroid -3.292243, -52.572044**. The vision helper returned empty (its key loader misses the .env) — let me use the direct API approach that worked for the .MOV frames.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3670,16 +3677,19 @@ Say "go" and I'll start with the plot row + geojson, then the media additions.
 ### 🤖 Autopilot
 
 Good catch — let me check whether the SunMint Plots sheet schema is documented anywhere (SCHEMA.md) and whether I'd be extending it.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No `SCHEMA.md` in the sunmint repo root — let me check the repo structure for where the plot schema is documented.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the README and the build script to see how the plot schema is documented, and whether adding SA-P1 needs a schema change.
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3831,4 +3841,82 @@ Centroid **-3.292243, -52.572044** — the same farm the agroverse.shop profile 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → /opt/truesight_autopilot/.venv/bin/python3 << 'EOF' import gspread, json from google.oauth2 import service_account CR = "/opt/truesight_auto; cd /tmp/sunmint_check && export GOOGLE_SERVICE_ACCOUNT_JSON="$(cat /opt/truesight_autopilot/config/google/agroverse_qr_code_manager_gdrive_k; cd /tmp/sunmint_check && /opt/truesight_autopilot/.venv/bin/python3 -c " import json d = json.load(open('plots/index.geojson')) for f in d['; …(+6 more)
 • `upload file to github` → https://github.com/TrueSightDAO/sunmint/blob/main/plots/index.geojson
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] I hthink that is a good idea
+
+
+### 🤖 Autopilot
+
+Let me first answer your question definitively — checking whether a SCHEMA.md exists anywhere and how the plot/tree schemas are currently documented.
+
+
+### 🤖 Autopilot
+
+Good news — the org convention is clear: `tokenomics/SCHEMA.md` and `lineage-assets/SCHEMA.md` are the established patterns, but **sunmint has no SCHEMA.md** (the `find` came back empty). The plot schema is only implicit in `build_plots_geojson.py`'s FIELD_COLUMNS + the sheet headers. Let me gather the trees registry schema and build scripts so the SCHEMA.md documents both registries completely.
+
+
+### 🤖 Autopilot
+
+I have everything: plots schema (14 cols from the sheet) + trees schema (6 property keys from the geojson). Now let me write a `SCHEMA.md` documenting both registries, following the org convention (like `tokenomics/SCHEMA.md`). Let me first check the build script FIELD_COLUMNS to be exact.
+
+
+### 🤖 Autopilot
+
+Let me get the trees FIELD_COLUMNS too, then write the SCHEMA.md.
+
+
+### 🤖 Autopilot
+
+I have both schemas fully. Now writing `SCHEMA.md` for the sunmint repo — documenting both registries (plots 14 cols + trees 9 cols), their sources of truth, the geojson output shapes, and the SA-P1 extension pattern.
+
+
+### 🤖 Autopilot
+
+Right — sunmint is an API-only DATA repo; the sanctioned path is the Contents API (as I used for the geojson). Let me push SCHEMA.md directly to main.
+
+
+### 🤖 Autopilot
+
+SCHEMA.md is live on sunmint main. Let me verify it's reachable and report.
+
+
+### 🤖 Autopilot
+
+## ✅ Done — SCHEMA.md added to the sunmint repo
+
+**`sunmint/SCHEMA.md`** now live on main (commit `702e02f`): https://github.com/TrueSightDAO/sunmint/blob/main/SCHEMA.md
+
+### What it documents
+| Registry | Schema captured |
+|---|---|
+| **Plots** (`plots/index.geojson`) | All 14 columns (A–N): Plot ID, Farm ID, Plot Name, Hectares, Status, Boundary Authority, Owner, Region, Verified At, Media, Notes, Coordinates (closed `[lng,lat]` ring), Latitude, Longitude — plus **status conventions** (`proposed`/`planted`/`linked`) and **boundary-authority conventions** (`approx`/`walk-approx`/`CAR-pending`) |
+| **Trees** (`trees/index.geojson`) | 9 columns → 6 properties (`tree_id`, `species`, `photo_url`, `status`, `qr_code`, `last_measured`) + geometry Point |
+| **Satellite** | STAC source + cache script |
+| **Extension pattern** | SA-P1 documented as the worked example; rule: new columns must update sheet + generator + this file together |
+
+### Following the org convention
+`SCHEMA.md` matches the established pattern (`tokenomics/SCHEMA.md`, `lineage-assets/SCHEMA.md`) — sunmint was the gap, now closed. Also honored the DATA-repo path: direct Contents-API write to main (no PR/branch, consistent with how `plots/index.geojson` was updated).
+
+Note: this directly answers your earlier question — **the schema was implicit in `build_plots_geojson.py` + the sheet headers; now it's explicitly documented**, and the SA-P1 extension is recorded as the canonical example of a no-schema-change addition.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Your visual check** of the new plot: beta.truesight.me/sunmint.html → Santa Anna Fazenda Plot 1 polygon at -3.2922/-52.5720
+2. **Farm-profile ↔ plot cross-link** (the other "good idea" from earlier) — still to design: embed/link the sunmint plot view on agroverse.shop/farms/santa-anna-fazenda-para/
+3. **Media additions** to the farm page — shortlist ready (7723, 7744, 7751, 7731, 7747, 7750)
+4. **SCHEMA.md cross-reference** — optionally add a pointer from agentic_ai_context (e.g. PROJECT_INDEX or a sunmint note) so future sessions find it
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → confirmed no SCHEMA.md in sunmint (org convention: tokenomics + lineage-assets have them); read trees geojson schema (6 keys) + both generators' column matchers (plots 14 cols, trees 9 cols); README structure
+• `upload file to github` → **SCHEMA.md** to sunmint main (commit `702e02f`), verified reachable + repo root listing
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → echo "=== sunmint repo tree ==="; cd /tmp/sunmint_check 2>/dev/null && ls -R . | head -40 || (cd /tmp && rm -rf sunmint_check && git clone -; cd /tmp/sunmint_check && echo "=== scripts/ ==="; ls -la scripts/ 2>/dev/null; echo "=== trees/index.geojson first feature ==="; /opt/truesi; cd /tmp/sunmint_check && echo "=== build_plots_geojson.py FIELD_COLUMNS ==="; grep -n "FIELD_COLUMNS\|COLUMN\|= \[" scripts/build_plots_geoj; …(+3 more)
+• `upload file to github` → https://github.com/TrueSightDAO/sunmint/blob/main/SCHEMA.md
 
