@@ -659,6 +659,7 @@ Let me read the rest of the plan (PR2-4 gates) and check where the script lives 
 ### 🤖 Autopilot
 
 Let me read the rest of the plan to get PR2's exact definition and gates.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -928,4 +929,95 @@ Cron sync_sunmint_signatures.py = reconciliation/backfill only (already built, c
 2. Then either implement the emit hook in dao_protocol (deploy-gated) **or** land the per-event file layout in `sync_sunmint_signatures.py` first (migration of the 73 + index.json) — I'd actually do **the layout change first** so the emit hook writes straight into the final format.
 
 Want me to go with that order? And confirm: **dao_protocol as primary emitter, cron as reconciliation** — yes?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+I actually wonder if the emissions should be all consolidated in sunmint at this point or in subfolders somewhere
+
+Because I am also considering other RSA events like contribution reporting, sales and inventory movement.... thoughts.
+
+
+### 🤖 Autopilot
+
+Good instinct to step back — this is exactly the moment to get the layout right before it hardens. Let me ground the answer in what the org already has.
+
+
+### 🤖 Autopilot
+
+The repo list surfaced something important — **`verify_public_signatures`** (public) already exists. Let me check what it is, since it may be the natural home for an org-wide signature ledger.
+
+
+### 🤖 Autopilot
+
+`verify_public_signatures` is an **empty placeholder repo** — created but never used. That's a strong signal. Let me check the parallel architecture repos to ground the recommendation.
+
+
+### 🤖 Autopilot
+
+The org already has the answer in its own conventions. Let me confirm the dao_protocol emit-hook point is real before recommending.
+
+
+### 🤖 Autopilot
+
+Great question to raise *now* — before this hardens. And the org already has strong signals on the answer. Here's my grounded take:
+
+## What the org already tells us
+
+**1. `TrueSightDAO/verify_public_signatures` exists — and it's EMPTY.**
+A public repo created, never used, named *exactly* for this. That's the natural home for an org-wide signature ledger.
+
+**2. The house convention is already "one file per entity, not one big aggregate."**
+- `lineage-assets`: `qrs/<qr-id>.json` — one JSON per asset, and its README has a **"Why JSON-per-QR, not aggregated"** section (append-only diffs, independently fetchable, git history = audit trail, scales linearly)
+- `lineage-credentials`: `programs/<p>/pk-<hash>/practice/` — per-person per-event files
+- `sunmint` itself: `trees/index.geojson`, `plots/index.geojson` — index convention
+
+So your per-event-file instinct matches established architecture. 
+
+## Where to put it: **not** sunmint, not subfolders of sunmint
+
+`sunmint` is tree-planting-specific ("repository of all the photos submitted for our DAO's tree planting efforts"). Contribution reporting, sales, and inventory movement are **not** sunmint events — shoehorning them into sunmint would be wrong at the repo-name level and mix concerns.
+
+**Recommendation: consolidate in `verify_public_signatures`, bucketed by event type:**
+
+```
+verify_public_signatures/            # org-wide public RSA attestation ledger
+├── README.md                        # purpose, schema, openssl verify how-to
+├── index.json                       # org-wide index: event_type → count → link
+├── tree_planting/
+│   ├── index.json
+│   └── 171.json                     # one immutable file per event (message ID)
+├── tree_growth_monitoring/
+│   ├── index.json
+│   └── Edgar_20260829143953_012.json
+├── tree_planting_link/  …           # (existing 73 migrate here)
+├── tree_planting_reject/  …
+├── contribution/        …           # future RSA events land here
+├── sales/               …
+└── inventory_movement/  …
+```
+
+## Why this beats "all in sunmint"
+
+| | sunmint (current) | verify_public_signatures (proposed) |
+|---|---|---|
+| Scope | tree events only — wrong home for sales/inventory | **org-wide by name** — every RSA event has a home |
+| Emission hook | cron reads sheets after the fact | **dao_protocol emits at verify time** (the single choke point that sees *every* event type — sunmint today, contribution/sales/inventory tomorrow) |
+| Growth | sunmint becomes a grab-bag | clean taxonomy by event type, matches the event catalog |
+| Naming | misleading for a general ledger | self-describing |
+
+Sunmint keeps its **tree-data caches** (`trees/index.geojson`, `plots/index.geojson`, measurements data) — the ledger holds the **attestations**.
+
+## Migration path (small, safe)
+1. Init `verify_public_signatures` (README + layout + index schema)
+2. Migrate the 73 live events out of `sunmint/signatures.json` → per-event files + indexes (one-time script run; sunmint's file can stay as a deprecated pointer or be removed)
+3. Point `sync_sunmint_signatures.py` at the new repo (cron stays as reconciliation)
+4. dao_protocol emit hook (deploy-gated) as the primary writer — future event types ride the same path
+
+## My recommendation
+**Adopt `verify_public_signatures` as the org-wide ledger, per-event-type subfolders, per-event files, emit-at-dao_protocol.** It's the architecture you're describing, pre-named in the org, and matches every existing convention.
+
+Want me to: (a) draft the plan amendment + repo init as the next PR, or (b) just start with migrating the 73 into the new layout while we settle dao_protocol emission separately? Your call on scope — I'll build whichever you pick.
 
