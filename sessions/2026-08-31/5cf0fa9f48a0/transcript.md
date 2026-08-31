@@ -173,36 +173,53 @@ kcal, 20.4 °Brix, K 128 mg/100 g).
 ### 🤖 Autopilot
 
 Let me pull the relevant context before advising on this — the mission doc, marketing principles, and whether there's any existing blog/channel guidance for TrueSight vs Agroverse.
+[4 tool result(s) compacted: read_context_file, read_context_file, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The blog decision doc exists — let me read it plus the marketing principles and the content-calendar repo.
+[3 tool result(s) compacted: read_context_file, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CMO file lives under `growth/` and the blog voice spec is `EDITORIAL_TONE.md`. Let me read those plus check the market_research content-calendar setup.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tone guide cut off mid-agroverse section. Let me get the rest, and check the market_research content calendar setup for how posts are tracked.
+[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_tool_result, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact chain is nesting on itself. Let me get the full tone doc directly from the repo, plus see what market_research holds for content planning.
+[2 tool result(s) compacted: read_repo_file, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the rest of the tone guide (the agroverse "Bean to Bliss" section) to complete the picture.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The decision rule table — the exact thing I need — is in the last chunk.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -256,57 +273,73 @@ Want me to draft the Field Signals post? I'd write it to the **beta** blog (true
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_context_file, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The manifest was truncated — let me check whether this thread (17381) has a dedicated plan row, and also search for any cacao blog plan.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No registered plan for this thread — this is the current conversation continuing: the 👍 is the go-signal for the Field Signals draft I proposed. Let me study the beta blog structure and an existing Field Signals post so the draft matches house style.
+[2 tool result(s) compacted: list_prs, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the blog structure in the beta repo and find the existing Field Signals posts.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the actual Field Signals posts to match structure and series-tag conventions exactly.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The structure is clear. Let me check the Sophia byline format, the latest Field Signals numbering, and the assets/blog directory.
+[3 tool result(s) compacted: read_repo_file, search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The structure is clear. Let me find the latest Field Signals number by scanning the blog index for series pills.
+[2 tool result(s) compacted: read_tool_result, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The blog index is large; let me grep the live beta blog index for the Field Signals series numbers via web_extract, which will resolve all pills at once.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The series numbering matters — let me confirm which posts carry Field Signals pills so the new post gets the right number.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need to determine the current Field Signals series number. Let me scan the full blog index for series pills.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The blog index cards don't carry the pills (they're only on the post pages). Let me check the remaining candidate posts for the latest Field Signals number.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Field Signals runs up to #5 in what I've seen. Let me check the context repo for any canonical series numbering, and spot-check a few more posts for the highest number.
+[2 tool result(s) compacted: search_context, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -401,4 +434,54 @@ The first push (PR **#336**) only carried the hero SVG — the tool rejects re-p
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → date -u +%Y-%m-%d && ls -la /tmp/tg_attachments/ 2>/dev/null | tail -5
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] [Handoff context — this Telegram topic (thread 17381) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Converging now — here's where things stand.
+
+## ✅ Done this turn
+
+**Drafted the Field Signals post and opened the PR** on the beta blog:
+- **PR #337** → https://github.com/TrueSightDAO/truesight_me_be
+
+
+### 🤖 Autopilot
+
+👍 Go received — executing the resume: merging PR #337 (beta blog), then verifying it renders. #336 stays unmerged (no close tool available — it's the redundant SVG-only PR; I'll flag it for manual close).
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Merged — Field Signals · #8 is live on the beta blog
+
+**PR #337 merged** (sha `ad5e522`) → https://github.com/TrueSightDAO/truesight_me_beta/pull/337
+
+**What's now on beta.truesight.me/blog:**
+- **Post:** *The tree the industry despises feeds the family every month* — Field Signals · #8, by Gary Teh, dated 2026-08-31
+- **Hero:** two-panel SVG (Ponta Verde vs traditional Pará pod)
+- **Index card** added at the top of the blog grid
+- Facts traced to your dossier + `CACAO_SOURCING_NETWORK_OVERVIEW.md` (CEPOTX, Altamira lane, La Do Sitio); links agroverse.shop; carries the 10,000-ha mission quietly
+
+## ⚠️ Two loose ends (flagged, not blocking)
+1. **PR #336** (the earlier SVG-only PR) is still open and redundant — please **close it without merging** (it would conflict on the SVG path). I have no close-PR tool; it just needs a manual close on GitHub.
+2. **Transcript append** for the original PDF (session persistence) — still owed from last turn's round-limit.
+
+## RESUME HERE → next steps
+1. **Verify the beta render** — open `https://beta.truesight.me/blog/` (or the post URL) and confirm the card + post + hero look right. If anything's off, tell me and I'll fix on a new branch.
+2. **Prod promotion** — only on your explicit go: I'll call `sync_beta_to_prod(truesight_me_prod)` to push it to truesight.me. I will NOT promote without your approval.
+3. **Cleanup** — I still owe the `append_to_transcript` for the PDF (next turn, first tool call).
+
+The post is reviewed-and-live on beta; prod awaits your word.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #337 on truesight_me_beta merged successfully (sha: ad5e5228886ca586b977277d6fdaa9910e92c800). Pull Request successfully merged
 
