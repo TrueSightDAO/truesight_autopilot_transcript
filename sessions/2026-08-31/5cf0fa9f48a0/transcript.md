@@ -351,11 +351,13 @@ Field Signals numbering observed so far: #2, #4, #5, #7. Let me check the remain
 ### 🤖 Autopilot
 
 Confirmed so far: #2, #3, #4, #5, #6, #7. Let me check the more recent posts for any #8+ before assigning the number.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the remaining recent posts for series pills to pin down the latest Field Signals number.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -526,4 +528,98 @@ Per the hard rule, I do **not** promote without the governor reviewing the beta 
 - **Transcript append** for the original PDF — I still need the session_id to persist it; I'll do it at the start of the next turn if you can confirm the session, or it can ride along with the promote turn.
 
 **RESUME HERE →** after you review the beta post: reply **"promote"** and I'll run `sync_beta_to_prod(truesight_me_prod)` + log the contribution. Until then, the post is live on beta and ready for your eyes.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] Can we use actual photos I believe there is a zip file somewhere which contains rancho maranata photos. Examine those, I believe there is a video about this. extract the appropriate frames
+
+
+### 🤖 Autopilot
+
+Let me find that Rancho Maranata zip/photos and any video.
+
+
+### 🤖 Autopilot
+
+No hits for "Maranata" in context or code. Let me look on disk for the zip/photos/video.
+
+
+### 🤖 Autopilot
+
+Found several candidates on disk. Let me inspect the contents — especially for a video.
+
+
+### 🤖 Autopilot
+
+Found the archive — `rancho_maranata.zip` has 13 MOV videos (IMG_7683–7699) + 5 HEIC photos, and there are plot 1/plot 2 sets too. The PDF's analyzed clips were IMG_7654/7669/7672/7673. Let me locate those specific videos and see what else exists.
+
+
+### 🤖 Autopilot
+
+There's already an extraction pipeline — `/home/ubuntu/to_analyze/frames/` has frames from exactly the PDF's four clips (IMG_7654, 7669, 7672, 7673). Let me see the full inventory of that directory and find the source videos.
+
+
+### 🤖 Autopilot
+
+There's already an extraction pipeline from when the PDF was built — source MOVs in `/home/ubuntu/to_analyze/to analyze/` and frames in `/home/ubuntu/to_analyze/frames/` (plus `cmp/` comparison frames). I can't eyeball images directly, so I'll pick the "appropriate frames" data-driven: color analysis to find the both-varieties-in-one-frame shot (green + crimson present), the yellow-pod frame, and the year-round-tree frame — exactly the images the PDF describes.
+
+
+### 🤖 Autopilot
+
+Let me examine the farm metadata and the source videos' properties to plan frame extraction.
+
+
+### 🤖 Autopilot
+
+Found everything. The four source clips are on disk at full res (1920×1080 MOVs — the exact clips the PDF was built from), plus the farm's media.json shows the plot photos. Now I'll extract frames from each clip and score them for the features the PDF describes (yellow pod, crimson furrowed pod, lush foliage) to pick the *appropriate* frames.
+
+
+### 🤖 Autopilot
+
+Frame analysis complete. I have the data to pick the right frames — and I found something worth checking: the PDF says IMG_7654 contains the money shot (farmer holding the crimson pod against smooth green pods), but my coarse samples never caught green+crimson together. Let me do a dense scan of that clip to find the true contrast frame, extract the best candidates full-res, and build a labeled preview montage.
+
+
+### 🤖 Autopilot
+
+The money shot found: **IMG_7654 @ t=5.00s** has crimson+green together (both varieties in one frame), and t=11.00s is the crimson-pod close-up. Now extracting the best frames full-res and building a labeled preview montage:
+
+
+### 🤖 Autopilot
+
+Frames extracted and montage built. Let me send the montage so you can confirm these are the right frames before I wire them into the post.
+
+
+### 🤖 Autopilot
+
+Rate-limited — retrying the send:
+
+
+### 🤖 Autopilot
+
+## 📸 Frames extracted — montage sent for your confirmation
+
+**What I found:** The "Rancho Maranta" archive is already on this box at `/home/ubuntu/rancho_maranata.zip` — 13 videos (IMG_7683–7699) + 5 HEIC photos, plus plot 1/plot 2 sets. The four clips your PDF analyzed (**IMG_7654/7669/7672/7673**, full-res 1920×1080 MOVs) are in `/home/ubuntu/to_analyze/to analyze/`.
+
+**Frame extraction (data-driven):** I dense-scanned the clips for the exact features your dossier describes and pulled the best candidates:
+1. **IMG_7654 @ 5.0s** — *both varieties in one frame* (crimson pod against green pods) — the money shot the PDF cites
+2. **IMG_7654 @ 11.0s** — crimson furrowed pod close-up (B-type)
+3. **IMG_7669 @ 17.2s** — year-round tree with yellow pods (A-type)
+4. **IMG_7672 @ 8.7s** — large smooth yellow pod (A-type)
+5. **IMG_7669 @ 22.5s** — lush foliage year-round tree
+
+Full-res frames + a labeled **PREVIEW_montage.jpg** are now in `/home/ubuntu/rm_media/fs8_frames/` (montage just sent to this topic — message 17504).
+
+## Next step — needs your eyes
+**Please look at the montage** and confirm these 5 frames (or tell me which to swap). On your OK, I'll:
+- Replace the SVG hero + add these as inline figure images in the post (with proper `alt` text, captions, and attribution to the clips)
+- Push as a follow-up PR on `truesight_me_beta` → beta review → then prod on your "promote"
+
+I did **not** touch the merged beta post yet — the photos are an upgrade on top of the SVG, so I'll put them in a new PR once you've eyeballed the frames. Also noting: `IMG_7654 @ 5.0s` has the green + crimson together per color analysis, so it's the natural hero.
+
+**RESUME HERE →** reply with confirmation (or "use frames 1,3,5" etc.) and I'll build the photo-version PR + replace the hero.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → ls -la /tmp/tg_attachments/ 2>/dev/null; echo '---'; find /tmp /home/ubuntu /var/tmp -maxdepth 4 -iname '*maranata*' -o -iname '*.zip' 2>/de; echo '=== rancho_maranata.zip ==='; unzip -l /home/ubuntu/rancho_maranata.zip 2>/dev/null | head -60; echo; echo '=== plot_1.zip ==='; unzip; echo '=== find the PDF clips ==='; find / -maxdepth 6 \( -iname 'IMG_7654*' -o -iname 'IMG_7669*' -o -iname 'IMG_7672*' -o -iname 'IMG_7673*; …(+6 more)
 
