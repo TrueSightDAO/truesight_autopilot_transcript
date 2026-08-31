@@ -1135,11 +1135,13 @@ Now I have the true post-cleanup state. The governor cleared **more** than the o
 | `Edgar_20260831015152_009` | Altamira Plot 1 | Cacao (Native) | **NEW** ✓ |
 
 Also now INVALID (beyond the artifacts): the Florianópolis **Criolla `_489`**, the Altamira Criolla `_009` (08-30), and the Altamira Native `_005` (08-31 01:11) — the latter **shares the same photo** as the kept `_009` row, so it looks like a deliberate de-dup. I'll respect the cleanup and push the regenerated 2-feature index so the map matches the sheet:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Index updated. Let me verify the pushed state and confirm the map will now read it correctly (raw URL + the impact map's fetch path):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1177,16 +1179,19 @@ Want me to also trigger a one-off **plots** rebuild sanity-check (the plots gene
 ### 🤖 Autopilot
 
 Go received — running the one-off plots rebuild sanity-check: run the generator with the SA creds (no "SunMint Plots" tab exists yet, so it must preserve the curated RM-P1/RM-P2 seed) and diff against what's live:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The preserve logic keys off the **out path** — pointing at a non-existent `/tmp/plots_rebuilt.json` gave it nothing to preserve. In the real workflow the out path is `plots/index.geojson` inside the checkout, where the seed exists. Let me test the actual workflow invocation to confirm it preserves correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plots generator behaves exactly as designed: with no "SunMint Plots" tab, it warns and **preserves the curated RM-P1/RM-P2 seed byte-for-byte** — and the diff confirms it would have produced no push. Let me restore the working-tree copy to live (the test overwrote it with the identical content, but to be clean) and confirm nothing changed on main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1245,11 +1250,13 @@ At any point only one can be active
 ### 🤖 Autopilot
 
 Let me look at exactly how the plot pills and view pills interact in the current code — whether they share one active-state or are independent groups:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the two chip groups in full — the view chips (around 500-525) and the plot chips (around 610-680) — to see how active state is tracked and whether selecting one clears the other:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1257,21 +1264,25 @@ Let me read the two chip groups in full — the view chips (around 500-525) and 
 Now I see it clearly: the two groups are **independent** — clicking a view chip doesn't deactivate the plot chips, and clicking a plot chip doesn't deactivate the view chips. Two chips can be highlighted simultaneously. I'll make them a single exclusive group: selecting a view clears all plot chips, selecting a plot clears all view chips.
 
 Applying the two edits locally first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both edits applied, JS clean. Pushing via git_push_changes with the same two hunks:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #328 opened. Verifying the pushed branch, then merging per the standing go-signal:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed branch verified — JS clean, both exclusivity branches present (lines 522, 668). Merging PR #328:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1330,26 +1341,31 @@ No map-behavior change — `flyTo`/`flyToBounds` untouched; purely active-state 
 ### 🤖 Autopilot
 
 Good catch — that's the classic Leaflet "tile missing at this zoom" symptom. Let me look at the base/satellite tile layers in the map init (URLs, min/maxZoom) to find why zooming in breaks:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the actual map init block — the tile layer definitions, maxZoom, and SATELLITE_BASEMAP:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the satellite history strip code and any zoom limits — the "not available" symptom usually comes from tiles failing at higher zoom:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The map uses **Esri World Imagery** as the satellite basemap. "Data not yet available when I zoom in" is the classic symptom of the tile server having no imagery at that zoom in a remote region (Amazon) — Esri serves a "no data" tile instead. Let me verify by probing actual Esri tiles at the Altamira center across zooms:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Esri returns tiles at all zooms — but the sizes are suspiciously small and uniform (12–19 KB), which is exactly what Esri's "Data not yet available" placeholder tiles look like (solid gray + text). A real aerial tile at z16 in an area with detail would be 40–80 KB. Let me check the actual pixel content of a high-zoom tile:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1360,6 +1376,7 @@ Diagnosis confirmed:
 - **z18** — flat **gray (204,204,204), sd≈6** — that's Esri's **"Data not yet available at this scale" placeholder** — the tile server simply has **no imagery at z17+ in this remote Amazon region**
 
 So the "map data not yet available when I zoom in" is **Esri World Imagery having no tiles above z16** for Altamira, PA. The map itself works; the tile provider runs out of detail. This is a **tile-source limit, not a code bug** — but we *can* do better: the whole point of the satellite pipeline is to serve our own high-res Sentinel-2 imagery. Let me check what the CDSE cache pipeline has cached for this area, and look at the satellite history strip's data:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1477,4 +1494,21 @@ The satellite cache (`satellite/manifest.json`) has **only the Florianópolis ce
 **✅ Done this turn — actions taken:**
 • `ssh run` ×17 → cd /tmp/tmb6 && echo "=== map init: tile layers (base/sat) ===" && grep -n "tileLayer\|L.tileLayer\|maxZoom\|minZoom\|TILE_URL\|OSM\|openstr; cd /tmp/tmb6 && sed -n '427,495p' sunmint.html; cd /tmp/tmb6 && echo "=== map init options + satellite history (590-745) ===" && sed -n '590,745p' sunmint.html; …(+14 more)
 • `merge pr` → ✅ PR #329 on truesight_me_beta merged successfully (sha: 5423c725c56b6a0cf6dcd969308e46c3921a87b8). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn
+
+**Fixed: "map data not yet available when I zoom in" on the impact map.**
+
+**Diagnosis (verified, not guessed):** Probed Esri World Imagery tiles at the Altamira pilot center
+
+
+### 🤖 Autopilot
+
+Go received — next unit: **cache the Altamira satellite cell** (run `cache_satellite_scenes.py` with plots so the pilot area gets real Sentinel-2 history). First, let me check what push credentials exist on the box (the script generates many files; pushing via the workflow's own mechanism beats dozens of single-file uploads):
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
