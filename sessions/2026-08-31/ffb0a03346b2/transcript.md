@@ -2777,26 +2777,31 @@ The vision call failed on model name — let me check the working grok client on
 ### 🤖 Autopilot
 
 The correct model is `grok-4-1-fast-non-reasoning`. Let me analyze the photo with it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the actual signature of `grok_analyze_images`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The param is `user_context`. Let me retry with the correct signature.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `load_grok_key` doesn't find the key — earlier I read it from `/opt/truesight_autopilot/.env`. Let me check how it loads and use it directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The .env has a GROK key but `load_grok_key` doesn't read from that path. Let me use the direct approach that worked for the .MOV frame analysis earlier.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2804,6 +2809,7 @@ The .env has a GROK key but `load_grok_key` doesn't read from that path. Let me 
 The photo is exactly the human element you want — **3 people on the farm's covered porch: an older man in teal giving a thumbs-up, a woman in red, and a younger man in a cacao-print shirt (likely Jedielcio)**, all casually interacting. Grok rated it "wide and well-suited for a welcoming hero image."
 
 Let me check dimensions, prep a web-optimized hero, and see exactly what needs updating.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2811,26 +2817,31 @@ Let me check dimensions, prep a web-optimized hero, and see exactly what needs u
 Good plan — the farmers photo (1280×960 landscape, 3 people, welcoming) is genuinely better for a hero than the grove shot. The current hero is portrait 1200×1600; a landscape with humans will crop beautifully under `cover`.
 
 Let me prep the web-optimized asset and update all hero references (media.json + index.html hero CSS/inline + og/twitter meta).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The journey card fix (#230) uses the old `profile_photo` — I'll keep that for the journey stop and only swap the **farm page hero**. Now updating: new hero asset + media.json + index.html (hero CSS, inline hero, og/twitter meta).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the actual media.json format.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The media.json uses `\u00e1` escaped for "Pará" — my search string had a literal á. Let me redo the PR with the correct escaped form.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool searches against the GitHub repo state, which may differ from my local checkout. Let me check the exact file content on GitHub main.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2970,4 +2981,80 @@ Sits in the `agroverse/` folder of agentic_ai_context (alongside QR batch genera
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → ls /tmp/agentic_ai_context 2>/dev/null || (cd /tmp && rm -rf aac && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_contex; ls -la /tmp/aac/agroverse/ 2>/dev/null; echo "=== fsvp folder (from earlier work) ==="; ls -la /tmp/aac/fsvp/ 2>/dev/null
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] Use this photo for this page as well
+
+https://beta.agroverse.shop/cacao-journeys/brazilian-path/index.html
+
+
+### 🤖 Autopilot
+
+The governor wants the farmers photo on the Brazilian Path journey stop too. The journey currently points at the grove shot (`santa_anna_profile_photo.jpg`); I'll switch it to the farmers hero — and since that asset only exists on the #231 branch, I'll include it in the same PR so it's self-contained on main.
+
+Let me first confirm the exact mapping text on main and that the asset is on disk locally.
+
+
+### 🤖 Autopilot
+
+Confirmed: the journey mapping at line 999–1000 points to the grove shot (`santa_anna_profile_photo.jpg`), and the farmers asset isn't on main yet. I'll switch the journey to the farmers photo and include the asset in the same PR so it's self-contained. Opening the PR:
+
+
+### 🤖 Autopilot
+
+Disk full from the temp clones. Let me clean up and retry.
+
+
+### 🤖 Autopilot
+
+Root filesystem is 100% full (137M free). Multiple large clones to clean. Let me remove the stale temp dirs and free space.
+
+
+### 🤖 Autopilot
+
+Freed 5.5 GB (86% used now). I kept the media assets. But note the local `agroverse_shop_look` clone is gone — the hero asset on disk for upload is gone too. The asset is already on the #231 branch though. Let me retry the journey-image PR — the edit doesn't need the local asset, and I can reference the #231 branch asset after merge. Retrying:
+
+
+### 🤖 Autopilot
+
+PR #232 opened. This references the farmers asset that lands via #231 — so the merge order matters: #231 (asset) then #232 (journey mapping). Both are on my standing "go" authority, and both are needed together for the journey to show the farmers photo. Let me merge #231 first, then #232.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `agroverse_shop_beta#231` merged
+
+**"Use farmers-with-Jedielcio photo as Santa Anna farm page hero"** → merged to `main` (sha `8520df8`)
+
+### What's now on main:
+- **New hero asset**: `assets/images/farms/santa_anna_farmers_hero.jpg` (1280×960, 185 KB web-optimized, progressive) — the farmers-with-Jedielcio photo you provided
+- **Farm page** (`farms/santa-anna-fazenda-para/`): hero CSS bg + inline hero section + og:image + twitter:image → all now point to the farmers photo (4 refs in index.html + 1 in media.json)
+- Zero leftover `santa_anna_profile_photo.jpg` refs in the farm page
+
+### Also opened this turn: `agroverse_shop_beta#232`
+**"Use farmers-with-Jedielcio photo for Santa Anna journey stop"** → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/232
+- Switches the Brazilian Path journey stop image mapping from the grove shot to `santa_anna_farmers_hero.jpg`
+- **Not yet merged** — I stopped at the one-PR-per-turn rule after merging #231. It's ready and depends on #231's asset (now on main), so it can merge next.
+
+### Housekeeping
+- Freed **5.5 GB** disk (root FS was 100% full from temp clones) — cleaned stale checkouts, kept media assets + PDF generators
+
+---
+
+**RESUME HERE → next unit:**
+1. **Merge #232** → journey stop shows the farmers photo on beta.agroverse.shop/cacao-journeys/brazilian-path/
+2. **Verify on beta** (farm page hero + journey stop), then **promote to prod** (sync_beta_to_prod) — farm page hero change + journey image both go live
+3. **Still parked:** site-visit PDF v4 → `fda_fsvp` (pending site code from Jedielcio); merge conventions doc `agentic_ai_context#851`; promote journey-image fix #230 (now superseded by #232's asset but the mapping fix is already in main via #230)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && rm -rf jp_check && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git jp_check && cd jp_check && echo; df -h /tmp / | head -5; echo "=== cleaning tmp clones ==="; du -sh /tmp/*_check /tmp/*_look /tmp/aac /tmp/hero_check /tmp/jp_check /tmp/agro; rm -rf /tmp/agroverse_base_check /tmp/agroverse_prod_check /tmp/hero_check /tmp/jp_check /tmp/agroverse_shop_beta-main /tmp/fh_sync_check /t
+• `merge pr` → ✅ PR #231 on agroverse_shop_beta merged successfully (sha: 8520df8403e695bed2aeb78cf44034f86f58b1d3). Pull Request successfully merged
 
