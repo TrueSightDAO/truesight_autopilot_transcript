@@ -1798,16 +1798,19 @@ Great instinct — this ties the farm boundary evidence to the plot data model. 
 ### 🤖 Autopilot
 
 Good context — `register_farm.html` already exists (captures farm name/location, lat/lng, area, ownership, PIX/Wise payout details, entrance photo → `[FARM REGISTRATION]` to Edgar). Now let me check the sunmint site structure (for the dropdown) and whether a plots/farms data model already exists.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good picture forming. Let me check the FARM REGISTRATION event contract and whether any plot/farm registry exists before I give you a full design.
+[2 tool result(s) compacted: lookup_event_docs, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Very useful — there ARE farm pages (Santa Anna Fazenda, FounderHaus, Rancho Maranta) in the agroverse_shop ecosystem. Let me check what the farm-page data model looks like (how farms are represented — pages, JSON, or ledger) and how the sunmint index dropdown is built.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2023,4 +2026,69 @@ Want me to start with **PR1 (the local farm store + dropdown)** — it's the fou
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && echo "=== sunmint repo: any farms index? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recurs; cd /tmp && echo "=== register_farm submit tail (what happens after whatsapp message) ===" && sed -n '860,910p' reg_farm.html; echo; echo "==; cd /tmp && echo "=== register_farm submit tail (910-975) ===" && sed -n '910,975p' reg_farm.html; echo; echo "=== EDGAR refs in register_far
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] I think we should just extract the boundary from the lat and longitude of what is embedded in the images uploaded
+
+
+### 🤖 Autopilot
+
+Agreed — that's the right simplification, and it matches what we already proved with RM-P1 (the plot was built from the HEIC/MOV GPS cluster). Let me confirm what extraction tooling already exists so the plan is precise:
+
+
+### 🤖 Autopilot
+
+`exiftool` is on the box and the scripts exist. Let me see how `build_plots_geojson.py` currently works — whether it already consumes image GPS or takes sheet coordinates:
+
+
+### 🤖 Autopilot
+
+Now I understand the current pipeline fully. Let me look at how it parses the coordinates column (whether it supports an image-GPS-derived polygon) and the rest of the script:
+
+
+### 🤖 Autopilot
+
+Agreed — that's the cleanest path, and the tooling is already in place. Here's the refined design with your simplification as the core.
+
+## What your simplification means
+
+Instead of walk-tracks, CAR polygons, or manual sheet entry — **the farmer walks the boundary taking photos (or short videos); the polygon is derived from the GPS embedded in those files.** This is exactly how RM-P1 was seeded (HEIC/MOV GPS cluster → polygon), and `exiftool` is already installed on the box (`/usr/bin/exiftool`), with the runbook's DMS→decimal conversion documented.
+
+## The pipeline (no new storage, no parallel registry)
+
+```
+Farmer walks boundary, photos/videos geotagged
+   → uploaded to sunmint/images/<plot_id>/ (existing pattern)
+   → exiftool -GPSLatitude -GPSLongitude extracts each point
+   → convex hull of points = boundary polygon (approx authority)
+   → upsert plot row in the SunMint Plots sheet (coordinates column)
+   → build_plots_geojson.py regenerates plots/index.geojson
+   → impact map renders the new polygon automatically
+```
+
+This slots **straight into the existing generator** — `build_plots_geojson.py` already accepts a `coordinates` JSON polygon column. The only new piece is **`scripts/extract_plot_gps.py`**: image/video paths → exiftool GPS → convex hull (monotonic chain, no heavy deps) → closed `[lng, lat]` ring → upsert into the sheet.
+
+## The one integrity guardrail (important for carbon credits)
+
+The runbook is explicit: *"Don't invent a polygon from a photo cluster and label it authoritative."* So the hull from photos gets `boundary_authority: "approx"` — honest labeling until a proper walk or the farmer's CAR/INCRA polygon exists (that's the `verified` upgrade path). For credit verification, the boundary authority tier matters to auditors; `approx` is fine as the *default first pass*, then upgradeable. I'd keep that distinction loud in the UI and the ledger.
+
+## Updated phases
+
+| # | Deliverable | Repo |
+|---|---|---|
+| **1** | **`extract_plot_gps.py`** — exiftool GPS → convex hull → polygon ring → upsert sheet row (the automation you described) | `sunmint` |
+| **2** | **Farmer-app boundary module** — "Limites da Fazenda" in dropdown: farm picker (device-local union + "New farm…" free-text) → walk photo capture → offline queue → upload to `images/<plot_id>/` | `sunmint_beta` |
+| **3** | **Farms local store + union dropdown** (the farm-availability rules from before) — can fold into #2 | `sunmint_beta` |
+| **4** | **Backend farm upsert on boundary event** (new farm name → create record) | `dao_protocol`/`tokenomics` |
+| **5** | Catalog event + runbook update | `dao_protocol`/`agentic_ai_context` |
+
+My suggestion: start with **Phase 1** — the extraction script is the core of what you asked for ("python script to update a plot or create a new plot"), it's self-contained in the `sunmint` repo, and it immediately proves the loop with the RM-P1/RM-P2 media already on hand. Then the farmer-app UI (Phase 2/3) rides on a working pipeline.
+
+Shall I build **Phase 1** (`extract_plot_gps.py` + tests) as the first PR?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && echo "=== existing sunmint scripts ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recursive=1"; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/build_plots_geojson.py" -o build_plots.py && wc -l b; cd /tmp && sed -n '80,244p' build_plots.py
 
