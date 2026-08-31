@@ -685,21 +685,25 @@ Uploaded to the wrong path — the site serves from repo root, so `../../assets/
 ### 🤖 Autopilot
 
 Photos are in the correct root path. Now the PR for the farm page code edits: new media.json (with field photos), index.html (updated map pin → GPS centroid, LD-P1 polygon overlay, SunMint link), and delete the misplaced nested copies.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The edit search didn't match — likely whitespace/escaping differences. Let me pull the exact bytes from the local copy.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The mismatch was my `\u00e1` escape — the file has the literal `á` byte. Let me redo the edits with the exact file bytes.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #244 opened with all edits applied cleanly. Per the go-signal (beta repo, own feature PR), I'll merge it now, then verify the beta site renders.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -887,4 +891,81 @@ Prod promotion complete and recorded in the deploy ledger. Now logging the contr
 ———
 **✅ Done this turn — actions taken:**
 • `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] [Handoff context — this Telegram topic (thread 17184) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I was think across the 4 farms we have been analyzing raw media files this past 24 hours, perhaps it might be a good idea to store these images and videos somewhere free of charge and we can continue to reference back to them in the future. what are your thoughts
+
+Farms
+- la dio sitio
+- santa anna fazenda para
+- rancho maranata
+- cleide
+
+
+### 🤖 Autopilot
+
+Good question — before I give you a recommendation, let me check what's actually sitting on the box (sizes per farm) and whether the DAO already has a media-storage convention.
+
+
+### 🤖 Autopilot
+
+No existing convention in context. Let me see the actual raw media dirs per farm (extracted content) and check what the "to analyze" / cleide_media / plot1/2 dirs hold.
+
+
+### 🤖 Autopilot
+
+Full inventory assembled. One more quick check — whether the DAO's AWS accounts already have S3 buckets I can reuse (vs. creating a new one):
+
+
+### 🤖 Autopilot
+
+Let me check whether `assets.truesight.me` is a live CDN bucket (naming/structure) to decide reuse vs new bucket:
+
+
+### 🤖 Autopilot
+
+Good — full picture now. Here's my honest assessment and recommendation.
+
+## What's on the box right now (raw media from the 4 farms)
+
+| Farm | Zip | Extracted | Files |
+|---|---|---|---|
+| **La do Sitio** | 2.3 GB | `la_do_sitio_work/` 2.2 GB | 124 (52 HEIC + 72 MOV) |
+| **Cleide** | 3.7 GB | `cleide_media/` 38 MB (partial) | 171 in zip |
+| **Santa Anna** | 373 MB | `santa_anna_fazenda/` 70 MB + `santa_anna_new/` 375 MB | ~102 |
+| **Rancho Maranata** | 236 MB + 71 MB + 537 MB | `plot1/` 72 MB + others | ~7+ |
+| *(to analyze)* | 109 MB | `to_analyze/` 160 MB | 133 |
+
+**Total ≈ 7–8 GB raw**, sitting on a 78 GB disk (46% used, 43 GB free — not imminently critical, but these files **should not live only on this ephemeral EC2 box**).
+
+## My recommendation: S3 + a GitHub index — cheap, durable, referenceable
+
+**Storage: S3** — there's already a live bucket `assets.truesight.me` (nelanco). I'd create a dedicated prefix, e.g. `s3://assets.truesight.me/farm-media-raw/la-do-sitio/…` — but honestly a **dedicated bucket** (`truesight-dao-farm-media-raw` or similar) is cleaner for lifecycle policies + access control. Cost ≈ **$0.023/GB/mo → ~$0.20/mo** for ~8 GB, and can tier to Glacier later. S3 durability = 11 nines; the zip files upload as-is, no conversion needed, and we can keep HEIC/MOV originals (which GitHub is NOT suited for).
+
+**Why not GitHub** — the repos (sunmint, agroverse_shop) already carry the *web-optimized* JPEGs, which is correct for git. The **raw 8 GB of HEIC/MOV doesn't belong in git** (repo bloat, 100 MB/file limits, and git isn't built for binary archives). GitHub is the right home for the *curated* outputs; S3 is the right home for the *raw* originals.
+
+**Index/reference layer: a small manifest** — a `farm_media_manifest.json` (or a `FARM_MEDIA_ARCHIVE.md`) in `agentic_ai_context` listing, per farm: bucket prefix, file count, total size, GPS-coverage note, and the SHA-256 of each zip for integrity. That gives us "continue to reference back to them" — the manifest becomes the pointer, S3 the durable store.
+
+## Proposed next step (needs your go — creates a bucket + uploads)
+
+1. Create bucket `truesight-dao-farm-media-raw` (private, nelanco, us-east-1) with versioning + lifecycle (STANDARD → Glacier after 90 days).
+2. Upload the 7 zips + extracted dirs as-is under `farm/<slug>/`.
+3. Write the manifest into `agentic_ai_context` (PR) so future sessions can find everything.
+4. Report the s3:// URLs + manifest link; **nothing public** unless you want a signed/CDN view.
+
+Questions before I execute:
+- **Bucket name** — `truesight-dao-farm-media-raw` OK, or do you prefer `farm-media.truesight.me`?
+- **Include "to analyze.zip"** (109 MB, unlabeled) — yes/no?
+- Want me to keep the **local copies** on the box after upload (as working cache) or delete to free disk?
+- GitHub **repo limits** — the extracted HEIC/MOV originals could also go to a **new private repo** if you'd rather avoid AWS, but I strongly recommend S3 (free-tier-adjacent cost, no git bloat). Say the word and I'll proceed.
+
+Nothing irreversible yet — bucket creation + upload is additive, and I'll confirm before any deletion. Your call on the 4 questions.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo '=== zips ==='; ls -lah /home/ubuntu/*.zip 2>/dev/null; echo '=== work dirs ==='; du -sh /home/ubuntu/*_work 2>/dev/null; echo '=== any; for d in /home/ubuntu/to_analyze /home/ubuntu/cleide_media /home/ubuntu/plot1 /home/ubuntu/rancho_maranata* /home/ubuntu/santa_anna*; do [ -
 
