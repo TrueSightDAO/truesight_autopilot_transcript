@@ -5065,11 +5065,13 @@ The transcript repo has batch commits without per-message timestamps. Let me che
 ### 🤖 Autopilot
 
 The box has the per-session JSON with real timestamps. Let me analyze it — this is the authoritative source for actual time spent.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The JSON has `full_history` — let me examine its structure with timestamps.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5302,4 +5304,56 @@ So the ledger entry stands correct: **85 min autopilot** (I logged 85, measured 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → /opt/truesight_autopilot/.venv/bin/python3 << 'EOF' import re, json from datetime import datetime p = '/opt/truesight_autopilot/sessions/ffb
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Precise numbers from the authoritative per-round timestamps (`ffb0a03346b2_debug.log`). Here's the exact accounting:
+
+## ⏱️ Exact time spent — Santa Anna thread (Aug 30 22:53 → Aug 31 16:57 UTC)
+
+###
+
+
+### 🤖 Autopilot
+
+👍 Go received — finalizing the exact figure. Submitting the corrected contribution (86 min, measured exact) as a superseding entry for the same unit of work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done — exact time figure logged
+
+**CONTRIBUTION EVENT submitted** (supersedes the provisional 85-min entry):
+
+| Field | Value |
+|---|---|
+| Type | Time (Minutes) |
+| Amount | **86** (exact measured: 86.05 min) |
+| Contributor(s) | Sophia Truesight (autopilot) |
+| Description | Notes it **supersedes the provisional 85-min entry** for the same Santa Anna unit — 86.05 min measured from per-round transcript timestamps (session `ffb0a03346b2`) |
+
+### Final exact figures (for the record)
+| Party | Exact time |
+|---|---|
+| **Autopilot** | **86.05 min (1.43 h)** — 59 turns, measured from LLM-round clock |
+| **Governor** | ~1.5–2.5 h focused (28 real messages; interactive gaps 4.4 h wall, overnight 7.9 h excluded) |
+
+The ledger now carries the exact, transcript-measured figure — no rounding ambiguity.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Handoff manifest** has active plans awaiting kickoff: `SUNMINT_PUBLIC_SIGNATURES_PLAN` (PR1), `SUNMINT_IMPACT_MAP_EXTENSION_PLAN` (PR1), `SUNMINT_MOBILE_APP_PLAN` (awaiting kickoff)
+2. Anything else on the Santa Anna thread, or shall we close it out?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully. (86 min exact, supersedes 85-min provisional)
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
