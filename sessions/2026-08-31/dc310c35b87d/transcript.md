@@ -1604,6 +1604,7 @@ Note: the beta deploy may also pick up other open truesight_me_beta PRs (282, 28
 ### 🤖 Autopilot
 
 Go-signal received — executing the next unit: **merge PR #292 → beta live → promote to prod**. Checking the manifest per protocol, then merging:
+[2 tool result(s) compacted: read_context_file, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1658,36 +1659,43 @@ Say go and I'll resolve the conflict and complete the merge → beta → prod ch
 ### 🤖 Autopilot
 
 Go-signal received — resolving the PR #292 conflict, then merge → beta → promote. First, let me see what changed on `main` vs the PR branch for the whitepaper file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Big divergence found — `main` has moved substantially (Community-First MRV, PM002/VM0047 methodology detail, funding, milestones M0–M8, first funded tree). My PR branch is based on older main. I need to **rebase the v4 content onto current main**. Let me see the full main structure and the complete diff:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Main has evolved significantly — it now has section 13 "On-Chain Carbon Credit Lifecycle" (13.1 How Carbon Is Calculated) where my branch had "13. Carbon Credit Registry Roadmap". Let me see the full main structure (TOC + remaining sections) to plan the rebase correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand the conflict fully. `main` has evolved: its section 13 is now **"On-Chain Carbon Credit Lifecycle"** (added after my branch was created), while my branch's section 13 is the Registry Roadmap. The correct rebase: **start from current `main`**, apply my v4 changes on top (trees-based section 12, then Registry Roadmap as **14** and Target Buyers as **15**), preserving main's new content (Community-First MRV, funding, milestones, lifecycle section). Let me check main's section 6 staged-path bullet first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. `main` has evolved: its section 13 is now "On-Chain Carbon Credit Lifecycle", section 6 already carries the VM0047/PM002 staged path, and section 12 has funding + milestones. The correct rebase: **start from current `main`**, apply the v4 framing on top (trees-based section 12, Registry Roadmap as **14**, Target Buyers as **15**), preserving all of main's new content. Let me check the exact TOC/article-tail anchors and confirm the PR branch touches only this file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PR only touches the one file, so the rebase is clean. Now I'll build the resolved file: start from current `main`, apply the v4 framing on top (trees-based section 12, Registry Roadmap → **14**, Target Buyers → **15**), preserving all of main's new content (Community-First MRV, funding, milestones, lifecycle section):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One tag mismatch (`</p>` 85 vs `<p` 84) — let me check whether that's pre-existing on `main` or introduced by my edit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1858,4 +1866,78 @@ Want me to start with **Phase 1** (Sunmint dropdown — quick, visible) or go st
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/register_farm.html" -o register_farm.html && wc -c registe; cd /tmp && echo "=== sunmint_beta tree (pages) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/git/trees/main?recurs; cd /tmp && echo "=== sunmint index dropdown JS (nav change) ===" && sed -n '932,990p' sun_index.html; echo "=== sunmint pageNav options ==="
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Check the impact map on https://beta.truesight.me/sunmint.html
+
+I believe there is already architecture in place where plots live.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074]
+
+
+### 🤖 Autopilot
+
+Good pointer — let me check the impact map on the beta site and find where the plot data actually lives.
+
+
+### 🤖 Autopilot
+
+The page mentions a **Farms Registry** — let me read the impact-map section of the page and find the underlying data.
+
+
+### 🤖 Autopilot
+
+There it is — **`SUNMINT_PLOTS_REGISTRY.md`** exists! You're right, there's already plot architecture. Let me read it and find the actual machine-readable registry (the impact map's data source).
+
+
+### 🤖 Autopilot
+
+Found it — you're right, the architecture exists. Let me verify the live data and how the impact map consumes it.
+
+
+### 🤖 Autopilot
+
+You're right — the architecture is **already in place**, and it even has seed data from Jedielcio's farm. Here's the map of what exists vs. what your idea adds.
+
+## What already exists (your instinct, already built)
+
+| Piece | Where | Status |
+|---|---|---|
+| **Plots registry** | `sunmint/plots/index.geojson` (FeatureCollection of `Polygon` features) | ✅ Live |
+| **Generator script** | `sunmint/scripts/build_plots_geojson.py` (mirrors `build_tree_geojson.py`) | ✅ Exists |
+| **Rebuild workflow** | `.github/workflows/rebuild-plots-index.yml` | ✅ Exists |
+| **Source of truth** | SunMint Farms sheet tab (gspread) | ✅ |
+| **Impact map renders polygons** | `truesight_me_beta/sunmint.html` (`#impact-map`, Leaflet) — loads `plots/index.geojson` + `trees/index.geojson` w/ CDN fallback | ✅ Live on beta |
+| **Seed plots** | **RM-P1** (house, `planted`, TREE PLANTING EVENT at -3.29609,-52.58318) + **RM-P2** (family, `proposed`, ~2.9 ha walk < 5 ha claimed → get CAR polygon) | ✅ Rancho Maranta, Jedielcio family — from the 2026-08-30 visit |
+| **GPS extraction runbook** | `SUNMINT_PLOTS_REGISTRY.md` §3: `exiftool -GPSLatitude -GPSLongitude`, DMS→decimal, **never decode video frames** (HEIC/MOV container metadata) | ✅ Documented |
+
+The runbook even documents your exact three boundary tiers: **`gps_walk`** (perimeter walk, recommended — the pillar-and-log walk Jedielcio did), **`car`/`incra`** (farmer's CAR/INCRA polygon = authoritative), **`approx`** (hull of photo/video GPS points only, clearly labeled).
+
+## What your idea would actually ADD (the deltas)
+
+1. **Sunmint dropdown entry** — currently only *Registrar Plantio / Monitorar Árvore*. Add **"Registrar Fazenda"** (deep-link to `register_farm.html` on the dapp) + **"Limites da Fazenda"** (boundary capture). Trivial `onNavChange()` addition.
+
+2. **Farmer-facing boundary-capture UI** — today the workflow is *manual* (agent runs exiftool → enters sheet row → runs generator). A `register_farm_boundary.html` module (dapp) would let the farmer/field agent **upload photo/video of the boundary markers directly** — auto-extract GPS client-side (or via a script), submit as evidence.
+
+3. **Media → plot automation script** — a script that reads uploaded media's GPS and **upserts a plot row** in the sheet/`plots.json` (create or extend), rather than the manual sheet entry. This is the "python script to update a plot or create a new plot" you described — but it should feed the **existing** Farms-sheet → `build_plots_geojson.py` pipeline, not a parallel one.
+
+4. **(Optional) On-chain anchor** — `FARM BOUNDARY EVIDENCE EVENT` (new catalog entry) or a geo-located `TREE PLANTING EVENT`-style anchor so the parcel has ledger identity, per runbook §3.7.
+
+## My read
+
+The **infrastructure is done — the gap is farmer-facing capture + the media→plot automation**, not storage or registry. So the highest-value work is:
+
+- **Phase 1:** Sunmint dropdown (quick, visible)
+- **Phase 2:** `register_farm_boundary.html` — camera/upload UI → extract GPS → submit boundary evidence (with the existing exiftool runbook as the processing step)
+- **Phase 3:** the upsert script wired into the existing generator workflow (not a new parallel pipeline)
+
+Want me to start Phase 1 (the dropdown), or go straight to designing Phase 2 (boundary capture UI)? And should I check `sunmint/scripts/build_plots_geojson.py` first to see exactly how the sheet→geojson generation works so the new script slots in cleanly?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== sunmint repo tree (plots?) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recursive=; cd /tmp && echo "=== sunmint.html impact map JS (how plots load) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_m
 
