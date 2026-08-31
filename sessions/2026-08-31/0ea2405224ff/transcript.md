@@ -2703,16 +2703,24 @@ The 7623 encode likely completed but the concat is still running. Let me check s
 ### 🤖 Autopilot
 
 All three clips encoded. The concat timed out — let me run just the concat (fast, no re-encode):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The concat left a corrupt partial (moov atom issue from the earlier timeout kill). Simpler and cleaner: the 27s IMG_7621 IS the hero — one self-contained encode, verify, then upload. Let me do a single clean encode:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The encode keeps getting killed by the 60s timeout mid-write. Let me run it in the background and poll:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2848,4 +2856,126 @@ No page change needed — the embed on the farm page (media.json `videoId: AriHj
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → ls -la /opt/truesight_autopilot/config/youtube/ && echo "=== scripts in config ===" && find /opt/truesight_autopilot/config/youtube/ -name "; sed -n '1,60p' /opt/truesight_autopilot/config/youtube/upload_video_to_youtube.py; cat > /tmp/set_privacy.py <<'PYEOF' #!/usr/bin/env python3 """Set a YouTube video's privacy status using stored OAuth creds (same auth as up
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Done — the video is now **public**:
+
+## ✅ Rancho Maranta video is public
+
+- **URL:** https://www.youtube.com/watch?v=AriHjXTsLio
+- **Title:** "Rancho Maranta — Cacao tree planting site, Altamira, Pará
+
+
+### 🤖 Autopilot
+
+Go received — next unit: **Plot 2 boundary-walk video** (cut a ~20s representative clip from the 23 MOVs, upload public, add as second gallery video). Let me extract Plot 2's clips and probe them:
+
+
+### 🤖 Autopilot
+
+The zip was at `~/` (home dir), not /tmp. Let me check:
+
+
+### 🤖 Autopilot
+
+Zips are in `~/` (home). Extracting Plot 2's MOVs:
+
+
+### 🤖 Autopilot
+
+The pattern didn't match — let me list the actual zip entries to get the exact paths:
+
+
+### 🤖 Autopilot
+
+Flat paths (no folder prefix). Extracting all MOVs:
+
+
+### 🤖 Autopilot
+
+22 real MOV clips (plus 22 AppleDouble `._` junk). Total walk ≈ 7 min. The smart cut: one representative mid-walk clip (~26s) — IMG_7671 (16:42, middle of the boundary walk). Encoding in the background (the 60s tool cap killed inline encodes before), then polling:
+
+
+### 🤖 Autopilot
+
+The background job should still be running (nohup detaches). Let me poll for completion:
+
+
+### 🤖 Autopilot
+
+Still encoding (frame 670/790, ~21.9s of 26.3s, speed 0.35× — HEVC decode is slow). Let me wait and poll again:
+
+
+### 🤖 Autopilot
+
+Encode complete — VALID 26.26s MP4. Uploading to YouTube as public:
+
+
+### 🤖 Autopilot
+
+The pkill triggered the safety guard (pattern matched broadly) — but I don't need it anyway: the encode is complete and valid. Uploading directly:
+
+
+### 🤖 Autopilot
+
+Plot 2 walk video uploaded (public): **https://www.youtube.com/watch?v=o3_nWticYQc**. Now adding it to the farm page gallery via PR:
+
+
+### 🤖 Autopilot
+
+PR #235 opened. Merging per the standing go:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Plot 2 boundary-walk video produced, uploaded public, and embedded — PR #235 merged.**
+
+**1. Extracted + probed Plot 2 media** — zips live at `~/` (not /tmp); Plot 2 zip has flat paths (no folder prefix) with 22 real MOVs + 22 AppleDouble `._` junk files. Walk clips span 16:36–16:49, total ≈ 7 min.
+
+**2. Cut one representative clip** — IMG_7671 (16:42, middle of the boundary walk, 26.3s) → encoded to 1280px H.264 MP4 (`+faststart`, crf 27) via background nohup (inline encodes keep hitting the 60s tool cap at ~0.35× speed — HEVC decode is slow). Verified VALID (26.26s) before upload.
+
+**3. Uploaded public:** → **https://www.youtube.com/watch?v=o3_nWticYQc** — "Rancho Maranta — Walking the boundary of Plot 2, family land near Altamira, Pará" on the admin@truesight.me channel. (One guardrail trip: my `pkill -f "IMG_7671"` cleanup pattern got blocked as a potential service-kill — not needed anyway since the encode had finished; upload succeeded on retry without it.)
+
+**4. PR #235 → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/235** (merged, sha `9af9fe1c`): inserted as the **second** gallery item in `farms/rancho-maranta-para/media.json` (`type: "youtube"`, `videoId: "o3_nWticYQc"`, title + caption). JSON validated; gallery now = video (Plot 1) → video (Plot 2) → 7 images.
+
+## Farm page gallery now
+
+1. 🎬 **Plot 1 walk** (AriHjXTsLio, public)
+2. 🎬 **Plot 2 boundary walk** (o3_nWticYQc, public)
+3–9. 7 photos (IMG_7624 → IMG_7678)
+
+**Live on beta (hard refresh):** → https://beta.agroverse.shop/farms/rancho-maranta-para/
+
+## RESUME HERE →
+
+1. **Governor reviews** → beta farm page (2 embedded videos + gallery) and YouTube channel (2 public videos). If good → **explicit approval** → prod promotion stack: `sync_beta_to_prod(agroverse_shop_prod)` (page #229 + card fix #233 + video embeds #234 #235) and `sync_beta_to_prod(truesight_me_prod)` (impact map #325–#329).
+2. **Optional follow-ups:** the 22 Plot-2 clips + masters live only in /tmp — decide whether to archive masters (or rely on YouTube as the canonical host, which is fine for the public-facing story). Also the ad-hoc `/tmp/set_privacy.py` could be promoted to a proper repo script if you want repeatable privacy flips.
+3. **RM-P2 boundary authority** — CAR/INCRA polygon or perimeter walk; update SunMint Plots sheet row.
+4. **Ledger anchor** — register Rancho Maranta farm + plot event on-chain.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → found zips in ~/, extracted 22 MOVs, probed durations, encoded IMG_7671 via nohup (polled 2×), uploaded public (o3_nWticYQc), added to media.json, pushed + PR #235, merged
+• `merge pr` → ✅ PR #235 on agroverse_shop_beta merged (sha: 9af9fe1c1328371de2756151906528dc0ab51f6e)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /tmp && rm -rf rmv2 && mkdir -p rmv2 && unzip -o -q ~/rancho_maranta_plot_2.zip -d rmv2 "rancho maranta plot 2/*.MOV" 2>&1 | tail -1; unzip -l ~/rancho; cd /tmp/rmv2 && nohup ffmpeg -y -i IMG_7671.MOV -vf "scale=1280:-2" -c:v libx264 -crf 27 -preset veryfast -pix_fmt yuv420p -mo; sleep 25; cd /tmp/rmv2 && pgrep -f "IMG_7671" >/dev/null && echo "STILL RUNNING" || echo "DONE"; tail -2 encode2.log; ffprobe -v error; timeout 55 /opt/truesight_autopilot/.venv/bin/python /opt/truesight_autopilot/config/youtube/upload_video_to_youtube.py /tmp/rmv2/rancho-maranta-plot2-walk.mp4 --title "Rancho Maranta — Walking the; …(+6 more)
+• `merge pr` → ✅ PR #235 on agroverse_shop_beta merged successfully (sha: 9af9fe1c1328371de2756151906528dc0ab51f6e). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /tmp && rm -rf rmv2 && mkdir -p rmv2 && unzip -o -q rancho_maranta_plot_2.zip -d rmv2 "rancho maranta plot 2/*.MOV" && find rmv2 -name "*; ls -la ~/rancho_maranta_plot_1.zip ~/rancho_maranta_plot_2.zip 2>/dev/null; ls /tmp/rmv/ 2>/dev/null | head; cd /tmp && rm -rf rmv2 && mkdir -p rmv2 && unzip -o -q ~/rancho_maranta_plot_2.zip -d rmv2 "rancho maranta plot 2/*.MOV" && echo "=== extrac; …(+8 more)
+• `merge pr` → ✅ PR #235 on agroverse_shop_beta merged successfully (sha: 9af9fe1c1328371de2756151906528dc0ab51f6e). Pull Request successfully merged
 
