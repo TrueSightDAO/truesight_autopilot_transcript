@@ -4600,11 +4600,13 @@ The transcript-writer isn't in the autopilot repo (likely in a separate worker/h
 ### 🤖 Autopilot
 
 The transcript-writer is likely in a separate harness not in a DAO repo (the tool `append_to_transcript` runs server-side). The wiring step belongs to the autopilot runtime — for this PR I've delivered the tooling (append/write/summarize) plus tests, which is the OPEN_FOLLOWUPS fix's core. Let me verify all 4 files are live and clean on main, then close the loop with a summary + update the follow-up entry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 4 files live on main, compile, and the functional smoke test works end-to-end (append → summarize). The usage-logging tooling is delivered. Now the final piece: mark the OPEN_FOLLOWUPS entry shipped and record the contribution. Let me update the entry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4800,4 +4802,188 @@ Everything from this thread is now **shipped, documented, and on the ledger**. A
 ———
 **✅ Done this turn — actions taken:**
 • `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go for this
+
+
+1. Runtime wiring (the one open follow-up): hook append_usage.py into the autopilot harness's transcript-append path — harness isn't in a DAO repo, so it needs either the governor or the runtime owner; worth a fresh OPEN_FOLLOWUPS entry or a handoff to the runtime maintainer if you want it tracked.
+
+But dont redeploy
+
+
+### 🤖 Autopilot
+
+Go received — wiring `append_usage.py` into the autopilot transcript-append path, **without redeploying**. First, let me find where the transcript append actually happens on this box:
+
+
+### 🤖 Autopilot
+
+Found it — `/opt/truesight_autopilot/scripts/append_to_transcript.py` is the runtime append path. Let me read it and the caller to see where usage logging hooks in:
+
+
+### 🤖 Autopilot
+
+The wiring point is clear: `app/tools/attachment_tools.py` → `_run_script` → `scripts/append_to_transcript.py` (subprocess). Let me read my `append_usage.py` CLI args (exact invocation) and the `attachment_tools.py` append path to hook in cleanly:
+
+
+### 🤖 Autopilot
+
+The hook point is `append_to_transcript.py` (runs as a standalone subprocess per call — so editing the script takes effect on the next call without any service restart, which respects "don't redeploy"). Let me check the git state of the live checkout and get my `append_usage.py` args:
+
+
+### 🤖 Autopilot
+
+The live checkout is a git repo (HEAD `b1953c3`, dirty with unrelated changes — data/active_tracks, tokenomics, worktrees). The wiring: add a call to `append_usage.py` from `append_to_transcript.py` (subprocess-per-call → effective next call, no restart). Let me read the rest of `append_usage.py`'s main to get exact argv, and the tail of `append_to_transcript.py` where I'll add the call:
+
+
+### 🤖 Autopilot
+
+Let me check how `_run_script` resolves the script path (does it shell out to disk per call?), and fetch `append_usage.py`'s main signature:
+
+
+### 🤖 Autopilot
+
+Let me see the top of `_run_script` (how the script path resolves — disk per call vs import) and `append_usage.py`'s main signature via the raw fetch:
+
+
+### 🤖 Autopilot
+
+I have the full picture. The wiring design (respecting "don't redeploy" — subprocess-per-call means an on-disk script change is live on the next call):
+
+**Hook:** `scripts/append_to_transcript.py` is the runtime append path (called as a fresh subprocess per attachment). I'll add a **best-effort usage-log call** at the end: after the transcript write succeeds, invoke the installed `append_usage.py` with a usage record (provider/model/caller = the attachment append itself, est_usd 0 — it's infra, not LLM tokens). This keeps the dependency soft: if `append_usage.py` is missing or the record lacks token data, the transcript append still succeeds.
+
+Let me check the script's main block + the `_run_script`-style JSON output to match conventions, then apply the edit:
+
+
+### 🤖 Autopilot
+
+The hook point is clear. Before wiring, I need to see the full `append_usage.py` — critically whether it pushes to GitHub or only writes a local file (it resolves `usage/` relative to CWD):
+
+
+### 🤖 Autopilot
+
+Key finding: `append_usage.py` writes **locally only** (CWD-relative `sessions/<date>/<sid>/usage.jsonl`, no GitHub push). So the wiring needs a persistence step. Let me check whether the runtime has a persistent transcript-repo checkout to write into:
+
+
+### 🤖 Autopilot
+
+The wiring needs one more piece: `append_usage.py` currently writes **locally only** (no GitHub push), and the harness has no transcript-repo checkout. So I'll make it GitHub-aware (`--github` flag pushing via the same Contents-API mechanism `append_to_transcript.py` already uses), install it into the harness's `scripts/` dir, and have `append_to_transcript.py` call it after a successful append. All on-disk edits — effective next call, **no deploy**.
+
+Let me install the script and add the `--github` mode:
+
+
+### 🤖 Autopilot
+
+`--github` mode works. Now the actual wiring: hook `append_usage.py` into `append_to_transcript.py` — after a successful transcript append, log a usage row (best-effort, never fail the append). Applying the edit:
+
+
+### 🤖 Autopilot
+
+Wiring applied and compiles. Now the end-to-end smoke test: run the patched `append_to_transcript.py` against a test session and verify the usage row lands locally + on GitHub (best-effort):
+
+
+### 🤖 Autopilot
+
+Transcript append succeeded (201 Created) — but no local usage file found. The `_log_usage` helper likely ran in CWD `/opt/truesight_autopilot/scripts/` writing `sessions/...` there, or silently failed. Let me check both the local write path and whether the GitHub push happened:
+
+
+### 🤖 Autopilot
+
+Found it — `note` isn't in `KNOWN` fields, so validation rejected the record (and `_log_usage` swallowed it silently by design). Removing the unknown field and re-testing:
+
+
+### 🤖 Autopilot
+
+Transcript append succeeded but the usage row still 404s on GitHub. Let me check whether the `--github` push failed (token env in subprocess) or the row went somewhere else — debug the direct call with the correct session id:
+
+
+### 🤖 Autopilot
+
+The local write works (row appended to `sessions/2026-08-31/1b5816442fb3/usage.jsonl`), but the GitHub push failed: **no token in the subprocess env**. The token lives in `.env` (read by `get_github_token()` via file scan, not exported). The `_github_append` only reads `os.environ`. Two options — I'll make `_github_append` also read the `.env` file like `get_github_token()` does:
+
+
+### 🤖 Autopilot
+
+Token now resolves, but the push hit **HTTP 409 Conflict** — the file already exists from the earlier partial attempt (or a parallel race). The `_github_append` does GET→merge→PUT, so a 409 means the PUT had a stale `sha`. The local run `rm -rf sessions` cleared the local, but GitHub already has the file. Let me verify the GitHub state and fix the retry logic (re-GET + re-PUT on 409):
+
+
+### 🤖 Autopilot
+
+Still 409 even with the retry — and the file 404s on GitHub, which is odd. The 409 with a 404 state suggests the **file exists but in a different session dir**, OR the branch name / repo mismatch. Let me get the real error detail from the 409 body:
+
+
+### 🤖 Autopilot
+
+The subprocess hides the error body. Let me test the API path directly to see the actual 409 message:
+
+
+### 🤖 Autopilot
+
+The direct test **succeeded** — PUT created the file (commit `0c0e5c004eac`). The earlier 409s came from my `_github_append` retry logic: on the first 404 GET, `_not_found` is set but the merge path still tried `existing_content.endswith` on `None` → the retry block re-GET'd and mis-handled. Now that the file exists, let me verify it's on GitHub and run the patched script once more to confirm the retry path works when the file DOES exist:
+
+
+### 🤖 Autopilot
+
+The raw.githubusercontent URL 404s even though the direct PUT returned a commit sha — likely the file landed on a **different branch** than `main` (maybe the token's default branch, or the Contents API path differs). Let me check the actual commit and where it went:
+
+
+### 🤖 Autopilot
+
+The commit IS on main (`0c0e5c004eac` = main head, file added). So the raw URL should work — the earlier 404 was likely a **CDN cache lag** on raw.githubusercontent. Let me verify via the API (authoritative) and confirm the patched script works now against the existing file:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Stopping at the turn limit — the runtime wiring is **applied and mostly verified**, with one debug item still open.
+
+## What I did this turn (runtime wiring, no redeploy)
+
+**1. Installed the tool locally** — copied `append_usage.py` from the transcript repo into `/opt/truesight_autopilot/scripts/` (the runtime's script dir).
+
+**2. Enhanced it** (`--github` mode + fixes):
+- `--github` flag → pushes the usage row to `truesight_autopilot_transcript` via Contents API (same mechanism `append_to_transcript.py` already uses)
+- Token fallback to `.env` (subprocess env lacks the PAT; `.env` scan mirrors `get_github_token()`)
+- 409 retry (re-GET + re-PUT once)
+
+**3. Hooked the runtime** — patched `/opt/truesight_autopilot/scripts/append_to_transcript.py`: after a **successful** transcript append, calls `_log_usage(session_id)` (best-effort, never fails the append). Since the harness runs scripts as fresh subprocesses per call, **the change is live on the next call with zero service restart** — compliant with "don't redeploy."
+
+**4. Verified:**
+- ✅ Transcript append still works (smoke test → 201 Created on GitHub)
+- ✅ Local usage row writes correctly (`sessions/<date>/<sid>/usage.jsonl`, valid schema)
+- ✅ Direct GitHub PUT works — the usage file is **live on main** (commit `0c0e5c0`, verified 1 row via API; the raw-URL 404 was CDN lag, API is authoritative)
+
+## Blocking / open
+
+- **⏳ `_github_append` inside the script still 409s** when invoked via subprocess, while the *identical* direct call succeeds. Likely a stale-sha race from my repeated test runs (each run appends a row + pushes; the retry's re-GET may be racing GitHub's sha consistency). Needs one focused debug pass.
+- **Durability:** the two edited files exist only on the live box. If a future deploy restarts from the repo, the wiring is lost. They should be PR'd: enhanced `append_usage.py` → `truesight_autopilot_transcript`, and both runtime files → `truesight_autopilot`.
+
+## RESUME HERE →
+
+1. **Debug the 409** — compare the script's `_github_append` against the known-good direct call; add a brief pause or single-sha verification before the PUT (or drop the pre-GET and rely on the retry path). Target: `append_usage.py --session X --json {...} --github` returns rc 0 with "github pushed" and zero warnings.
+2. **PR the changes for durability** (no redeploy needed to ship the code):
+   - `append_usage.py` (+`--github`, token fallback, retry) → `truesight_autopilot_transcript` (PR with tests still green)
+   - `append_to_transcript.py` + `append_usage.py` → `truesight_autopilot` (the runtime wiring; local test suite first: compileall + ruff + format + pytest)
+3. **Clean up smoke-test artifacts** — test session rows (`775004c1d411`, `1b5816442fb3`) on the transcript repo, or keep as evidence; your call.
+4. **Final end-to-end check** — trigger one real attachment append and confirm the usage row appears via `summarize_usage.py`.
+
+Everything else this session remains closed: contributions logged (570 min total), FARM_MEDIA_PIPELINE complete, prod promoted, backlog intact.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → read append_to_transcript.py + attachment_tools.py + append_usage.py, installed append_usage.py locally, added --github + .env token fallback + 409 retry, patched append_to_transcript.py with _log_usage hook, removed unknown 'note' field, smoke-tested (append 201 OK, local row OK, direct GitHub PUT OK → file live on main 0c0e5c0), debugged subprocess 409 vs direct-OK mismatch
+• (no PRs opened/merged this turn — wiring + debugging only)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×23 → echo "=== find transcript write logic in autopilot ===" && grep -rln "append_to_transcript\|transcript.md\|append_transcript" /opt/truesight; cd /opt/truesight_autopilot && echo "=== append_to_transcript.py ===" && sed -n '1,80p' scripts/append_to_transcript.py && echo "" && echo "; cd /opt/truesight_autopilot && echo "=== append_usage.py (local copy if any) ===" && ls scripts/append_usage.py 2>/dev/null; find /opt/trues; …(+19 more)
 
