@@ -4131,21 +4131,25 @@ The code is deployed and the data is correct — so the link **should** render. 
 ### 🤖 Autopilot
 
 The live page **has** the new code and the geojson **has** `farm_id` — yet you see the old popup ending at "Verified: 2026-08-31". Let me check whether there's a **second** popup/dialog builder (e.g. the plotSelector side panel) that renders the details you quoted — the Leaflet popup may not be the "dialogue box" you're looking at.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live code is correct and the data has `farm_id` — yet you still see the old popup. Let me check the plot-selector buttons (lines 675–690) — you may be seeing a **different dialog** (the selector panel) than the Leaflet popup I modified.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live page I fetch **has** the link code and the data has `farm_id` — yet you're seeing the old popup. Let me check two things: the page's charset (the `↗` arrow could break under a wrong charset) and whether you might be hitting a cached/different copy.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me do two more decisive checks — a service worker (which would cache the old page regardless of headers) and whether a second repo claims the beta CNAME.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4393,4 +4397,94 @@ Your GitHub-UI merge did the job — prod now matches beta for all the popup wor
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && rm -rf tmb_prod_check && git clone -q --depth 20 https://github.com/TrueSightDAO/truesight_me_prod.git tmb_prod_check 2>&1 | tail; echo "=== live truesight.me/sunmint.html ==="; curl -s https://truesight.me/sunmint.html -o /tmp/prod_sunmint.html -w "HTTP %{http_code} | l; sleep 45; echo "=== re-check live truesight.me/sunmint.html ==="; curl -s https://truesight.me/sunmint.html -o /tmp/prod_sunmint2.html -w "H
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] I wonder if there is any updating required on the agentic_ai_context on future scenarios like these?
+
+
+### 🤖 Autopilot
+
+Good instinct — let me check what's already documented vs. what these scenarios taught us, so we only add what's missing.
+
+
+### 🤖 Autopilot
+
+There's already a `SUNMINT_PLOTS_REGISTRY.md` — let me read it to see what's covered and what this session's lessons are still missing.
+
+
+### 🤖 Autopilot
+
+The runbook exists and is solid, but this session taught us **5 new lessons not captured**. Yes — updating is warranted:
+
+| # | Lesson (this session) | Gap in `SUNMINT_PLOTS_REGISTRY.md` |
+|---|---|---|
+| 1 | **SA-P1 added** (Santa Anna) | §6 seed data only has RM-P1/RM-P2 |
+| 2 | **Popup → farm profile link** (#333/#335) — `farm_id` ≠ agroverse slug (404 gotcha, FARM_SLUG map) | Not documented anywhere |
+| 3 | **beta→prod sync conflict** — CNAMEs intentionally differ (`beta.truesight.me` vs `truesight.me`); resolution = GitHub UI fork-sync keeping prod CNAME | No runbook covers this (org-wide gap) |
+| 4 | **Which SA writes the sheet** — `agroverse_qr_code_manager` has write; cypher_defense/edgar_dapp_listener/tdg_scoring all 403 | §2 says only "gspread via GOOGLE_SERVICE_ACCOUNT_JSON" |
+| 5 | **`sunmint/SCHEMA.md`** now exists (repo-level canonical schema) | §5 inlines the schema but doesn't cross-reference it |
+| 6 | **Email preserves EXIF** for boundary photos (WhatsApp/Telegram strip) | §3 capture-media step could note it |
+
+Let me update the runbook with all of these:
+
+
+### 🤖 Autopilot
+
+The exact whitespace differs. Let me read the exact bytes of the table section to craft matching edits.
+
+
+### 🤖 Autopilot
+
+The Source-of-truth line ends with a trailing `|` I missed. Let me redo the PR with exact strings.
+
+
+### 🤖 Autopilot
+
+PR #854 opened — all 4 edits applied. Merging (documentation, standing "go" pattern):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `agentic_ai_context#854` merged — runbook updated for future scenarios
+
+**"SunMint plots runbook: SA-P1 seed data + popup farm-link + beta/prod CNAME conflict lessons"** → merged (sha `c92076f`)
+
+### Yes — there was updating required, and now it's done. What `SUNMINT_PLOTS_REGISTRY.md` gained (6 lessons from this session):
+
+| # | Addition |
+|---|---|
+| 1 | **SA-P1 seed data** — Santa Anna compound: hull coords, centroid -3.292243/-52.572044, ~0.31 ha photo-hull vs 3 ha claimed, boundary photos pending from Jedielcio |
+| 2 | **§5b Plot popup → farm profile link** — the FARM_SLUG convention + the `farm_id` ≠ agroverse-slug **404 gotcha** (from #333/#335), fallback rule |
+| 3 | **§5c Beta→prod CNAME conflict** — `truesight_me` CNAMEs intentionally differ (`beta.truesight.me` vs `truesight.me`); `sync_beta_to_prod` refusing is **expected**; GitHub-UI Sync-fork resolution keeping prod CNAME; never force |
+| 4 | **Sheet write access** — `agroverse_qr_code_manager` SA has write; the other 3 SAs verified read-only (403) |
+| 5 | **SCHEMA.md cross-ref** — canonical schema now lives repo-side in `sunmint/SCHEMA.md` |
+| 6 | **EXIF note** — WhatsApp/Telegram strip GPS; **email preserves EXIF** for farmer boundary photos (or WhatsApp "Document" / Drive / scp) |
+
+All 4 edits applied cleanly, merged to main. Future Sophias now have the playbook for: adding a new plot, linking popups to farm profiles, and handling the CNAME-conflict promotion.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Still parked:** media additions to the agroverse farm page (shortlist: 7723, 7744, 7751, 7731, 7747, 7750); the plot-impact-embed idea on the farm profile; merge conventions doc `agentic_ai_context#851` (farm-page conventions — opened earlier, still open)
+2. **Optional:** OPEN_FOLLOWUPS entry for Jedielcio's boundary photos (email) → full 3-ha boundary for SA-P1
+
+———
+**✅ Done this turn — actions taken:**
+• `search_context` ×2 (sunmint plot, sync beta prod conflict) + `list_prs` — found existing SUNMINT_PLOTS_REGISTRY.md, confirmed gaps
+• `read_context_file` — read the runbook
+• `ssh run` ×2 — got exact byte strings for edits (trailing `|`, em-dashes)
+• `git_push_changes` → **PR #854** (4 edits applied)
+• `merge_pr` → ✅ merged (sha c92076faf36276d652c5461c5683a383afe4bb73)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && rm -rf aac_check && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aac_check 2>&1 | tail -1; echo 
+• `merge pr` → ✅ PR #854 on agentic_ai_context merged successfully (sha: c92076faf36276d652c5461c5683a383afe4bb73). Pull Request successfully merged
 
