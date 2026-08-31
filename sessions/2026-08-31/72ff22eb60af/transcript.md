@@ -451,6 +451,7 @@ The screenshot has **no GPS/identity metadata** (clean — nothing to leak from 
 ### 🤖 Autopilot
 
 Crop includes some neighboring text ("Can you send me some…" + timestamp). Tightening to just the tip bubble:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -496,21 +497,25 @@ Want me to open the PR embedding the cropped screenshot into `sunmint_beta` (→
 ### 🤖 Autopilot
 
 Option 1 it is — embed the cropped screenshot. Let me grab the current `instrucoes/index.html` from `sunmint_beta` main (to craft exact edits) and confirm the cropped image is in place:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The current `sunmint_beta` main has moved on since my PR #50 — there's now a "Limites da Fazenda" nav option (someone added it). I'll base my work on current main and make a targeted edit that doesn't touch the limites parts. Let me get the full current file locally to craft exact edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Current main has a new `limites-da-fazenda` page (from another session) — good context, my change is independent of it. I'll embed the crop into Section 1 of `instrucoes/index.html` and update `service-worker.js` so the image is cached offline. Let me add the image to the repo and craft the HTML edit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I need the exact I18N dict strings from the local clone to craft the edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -649,4 +654,58 @@ Prod sync succeeded (deploy ledger `deploy_20260831T201344Z_sunmint-prod`). Veri
 - Consider pinning the instructions as a WhatsApp-forwardable image card for quick sharing
 
 That's the full chain complete: GPS extraction → 15-min contribution → Instruções page → beta → prod → real-screenshot embed → prod. Nothing pending except anything you'd like to add.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17700] No need for that. How much time you spent on this? And then report your contribution. Use the transcription timestamp to derive that. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me pull the session transcript to derive the timestamps.
+
+
+### 🤖 Autopilot
+
+The transcript gives me clear timestamps. Let me verify the contribution schema before logging.
+
+
+### 🤖 Autopilot
+
+Let me get the full transcript with any session metadata to derive accurate timestamps.
+
+
+### 🤖 Autopilot
+
+Let me pin the session end time from the transcript repo's git log.
+
+
+### 🤖 Autopilot
+
+Timeline derived from the transcript timestamps:
+
+- **19:19:58Z** — GPS image received → extraction
+- **19:33:41Z** — WhatsApp screenshot received → guidance drafted (this is the 15 min already logged)
+- **19:50:52Z** — first prod deploy (Instruções page live)
+- **20:13:44Z** — second prod deploy (screenshot embed live)
+- **~20:21Z** — last transcript write
+
+**Total window ≈ 60 minutes.** Minus the 15 min already logged = **45 min** of additional build work (Instruções page, screenshot embed, both beta→prod deploys, verification). Logging that now:
+
+
+### 🤖 Autopilot
+
+**Time spent:** ~60 minutes total this session (19:19Z → ~20:21Z, per transcript timestamps).
+
+**Already logged:** 15 min — the GPS extraction + guidance to Jedielcio.
+
+**Just logged now:** 45 min — the build + ship: Instruções page (PR #50), screenshot embed (PR #52), offline caching, and both beta→prod promotions. Total contribution: **60 min logged** ✅
+
+And no — no need for the extra graphics, noted. That's it for this chain, all wrapped up.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && rm -rf transcript_probe && git clone --depth 1 -q https://github.com/TrueSightDAO/truesight_autopilot_transcript.git transcript_p; cd /tmp/transcript_probe && echo "=== last commits touching this session file ===" && git log --format="%h %aI %s" -5 -- sessions/2026-08-31
+• `submit contribution` → Contribution submitted successfully.
 
