@@ -1703,11 +1703,13 @@ One tag mismatch (`</p>` 85 vs `<p` 84) — let me check whether that's pre-exis
 The `</p>` imbalance is **pre-existing on `main`** (57 vs 58 — a stray close in main's own content, which browsers auto-handle); my insert region added **zero** imbalance (file went from −1 to −1). My PR branch version (built on old main) happened to be balanced, but the resolved file correctly inherits main's current state. This is not a regression.
 
 Pushing the resolved file (built on current `main` + my v4 changes) to the PR branch, then attempting the merge:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed the resolved file. Now attempting the merge again:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1784,11 +1786,13 @@ thoughts?
 ### 🤖 Autopilot
 
 Great instinct — this ties the farm boundary evidence to the plot data model. Let me research the existing pieces before giving you a design: what `register_farm.html` does, how plots/farms are currently modeled, and where media storage lives.
+[3 tool result(s) compacted: read_repo_file, search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `register_farm.html` is a real module already in dapp_beta. Let me see its submission flow + fields, and understand the current farm/plot data model and media storage.
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1940,4 +1944,83 @@ Want me to start Phase 1 (the dropdown), or go straight to designing Phase 2 (bo
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== sunmint repo tree (plots?) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recursive=; cd /tmp && echo "=== sunmint.html impact map JS (how plots load) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_m
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+So basically when a farmer registers a new farm, the farm should become available in the dropdown even when the farm record doesn't yet exist in our main repository due to either time lag or lack of internet
+
+When the farmer attempts to take a photo of the boundary, the farm should be avaiable in a dropdown for selection, if the farm is not avaiable yet, the farmer can simply include the name
+
+During the next time the farmer, does a boundary event, the farm name should already be in as an option too
+
+This means that if a new farm name is inserted when registering a boundary event, the backend system needs to go ahead and create a new record and the boundary image submission associated with the farm record
+
+Thoughts?
+
+
+### 🤖 Autopilot
+
+Let me check the handoff manifest as directed, and ground the design in what actually exists today (register_farm flow, farm registry index, offline queues).
+
+
+### 🤖 Autopilot
+
+Let me see how register_farm actually lands the record (the WhatsApp message tail) and whether any machine-readable farms list exists for dropdown population:
+
+
+### 🤖 Autopilot
+
+Let me see the tail of the submit function — whether it POSTs to Edgar or only opens WhatsApp (this determines the backend work):
+
+
+### 🤖 Autopilot
+
+Your model is exactly right — and it maps to a pattern we already use. Here's my read, grounded in the current code.
+
+## Verdict: this is "local-first, eventually consistent" — and we already do it for tree reports
+
+The sunmint farmer app already keeps tree submissions in an **IndexedDB queue** that flushes when the connection returns. Your proposal is the same pattern applied to **farm identity**: the farm name becomes real on the farmer's device at the moment of first use, and the backend consolidates it lazily. That's the correct architecture for a farmer in the Amazon with intermittent connectivity.
+
+## How your three rules map to mechanics
+
+**Rule 1 — "farm available in dropdown even before the record exists in our repo"**
+The dropdown is a **union of two sources**:
+- **Remote seed** — a machine-generated `farms/index.json` (mirror of the `trees/index.geojson` / `plots/index.geojson` pattern, built from the Farms sheet via the existing workflow) fetched when online
+- **Device-local names** — every farm the farmer has registered or typed on *this device*, stored in IndexedDB
+
+Union, deduped case-insensitively. Offline → device list still shows. Time-lag → device list still shows. No dependency on the repo at all.
+
+**Rule 2 — "if the farm isn't there, the farmer just types the name"**
+Dropdown gets an explicit **"New farm…" free-text option** (same pattern as the tree-species picker on the plant page). Typed name is saved to the device list immediately → it becomes an option *for the next event on that device* (your rule 3), no backend round-trip needed.
+
+**Rule 3 — "backend creates the record and associates the submission"**
+The boundary payload carries the farm name + an `is_new_farm` flag. The Edgar receiver (GAS/dao_protocol routing) **upserts**: if the farm isn't in the Farms sheet → create the row (FARM REGISTRATION-style record), then append the boundary evidence + media + plot reference to it. The existing `build_plots_geojson.py` workflow then regenerates the plot → it appears on the impact map automatically. So the boundary submission **is** what births the farm record.
+
+## Key decisions to nail before building
+
+1. **Identity key** — canonical slug (e.g. `rancho-maranta`) normalized from the name, so "Rancho Maranta" and "rancho-maranta" dedupe to one farm. Display name stays human.
+2. **Where boundary media lands** — per the existing runbook (`SUNMINT_PLOTS_REGISTRY.md`): compressed photos → `sunmint/images/<plot_id>/`; raw videos referenced by URL, never committed to git. Don't invent a parallel store.
+3. **Event contract** — there's no `FARM BOUNDARY EVIDENCE EVENT` in Edgar's catalog today (I checked). I'd add it (canonical labels: Farm Name, Plot ID, Boundary Type, Media URL(s), Extracted GPS list, Area ha) so the evidence is on-chain-anchored from day one, matching the runbook's "anchor on-chain" step.
+4. **Cross-device** — device list is per-phone; a new phone re-seeds from the remote index (which will have the farm by then). Fine for now; note it.
+
+## Phased plan (beta-first, one PR per turn)
+
+| # | Deliverable | Repo |
+|---|---|---|
+| 1 | **Local farm store + union dropdown** in the farmer app (device list, "New farm…" free-text, dedupe) | `sunmint_beta` |
+| 2 | **`farms/index.json`** machine-generated remote seed (generator + workflow, mirroring plots) | `sunmint` |
+| 3 | **Boundary capture UI** ("Limites da Fazenda" — dropdown + camera/upload + GPS + queue) | `sunmint_beta` (farmer app is the right home — it already has camera, geolocation, IndexedDB queue, SW) |
+| 4 | **Backend upsert** — create-or-append farm on boundary event + GAS receiver | `dao_protocol` / `tokenomics` |
+| 5 | **Catalog event** `FARM BOUNDARY EVIDENCE EVENT` + runbook update | `dao_protocol` / `agentic_ai_context` |
+
+One thing worth confirming: **should boundary capture live in the farmer app (sunmint.truesight.me) rather than the dapp?** The farmer app already has camera, geolocation, the offline queue, and the service worker — adding "Registrar Fazenda / Limites da Fazenda" to its dropdown is the natural home, and `register_farm.html` on the dapp stays the deeper web-entry point. 
+
+Want me to start with **PR1 (the local farm store + dropdown)** — it's the foundation everything else sits on, and it's self-contained in the farmer app?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && echo "=== sunmint repo: any farms index? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recurs; cd /tmp && echo "=== register_farm submit tail (what happens after whatsapp message) ===" && sed -n '860,910p' reg_farm.html; echo; echo "==; cd /tmp && echo "=== register_farm submit tail (910-975) ===" && sed -n '910,975p' reg_farm.html; echo; echo "=== EDGAR refs in register_far
 
