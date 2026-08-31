@@ -2799,6 +2799,7 @@ Go for it
 ### 🤖 Autopilot
 
 Go received — resuming. Let me check both: Paulo's beta page (site-code card) and the Cleide chain status.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3004,4 +3005,31 @@ Two questions before I build it:
 - **Priority/fairness** — strict round-robin across farms, or do you want a priority flag (e.g. "Cleide is the active campaign, give it 2:1")?
 
 Say the word and I'll write the design doc + build the daemon.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] If it's the latter, then we should probably have either it in a new script or a totally standalone repository. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Agreed — this is exactly the kind of thing that deserves to be standalone. It's not a Sophia thing, it's infrastructure: a daemon that any Sophia, or any future bot, points at. So a dedicated repo makes sense — call it something like `truesight-video-uploader` or `farm-media-daemon`.
+
+Here's what I'd put in it:
+
+**The repo would contain:**
+- `uploader_daemon.py` — the singleton loop (scan inboxes → upload missing → update manifests → sleep)
+- `config.yaml` — the shared daily quota, farm priorities, the inbox map, which channel credentials to use
+- A `systemd/` unit file so it runs as a service on this box, survives reboots
+- `README.md` — the contract: *how farms register, how videos land, how the manifest gets updated* — so every Sophia reads one spec instead of re-implementing
+- The manifest schema — single source of truth
+
+**The key architectural rule I'd bake in:** the daemon never touches GitHub directly. It updates a local manifest, and a separate deliberate step commits it. Keeps the repo clean and the daemon simple.
+
+**And the important piece:** the credentials stay out of the repo — `config/youtube/*.json` are already gitignored on this box, so the daemon reads them from a local path, and the repo documents where they live.
+
+One more thing worth deciding now: should the daemon also handle **the quota across multiple channels** later? I'd structure the config so adding a second YouTube project is just a config entry — so if we ever verify the project or add another channel, the daemon scales without a rewrite.
+
+Want me to sketch the design doc in the repo first — a `DESIGN.md` laying out the loop, the manifest schema, and the fairness rules — and then we review it together before I write the code? That way the contract's agreed before the implementation, and both of us (and other Sophias) can hold the design accountable.
 
