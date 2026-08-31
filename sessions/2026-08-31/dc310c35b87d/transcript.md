@@ -4150,11 +4150,13 @@ PR #51 opened. Let me verify the PR branch matches my validated local build (byt
 ### 🤖 Autopilot
 
 The pushed page differs from my local draft by 85 bytes (I hand-tweaked the `writes` content — different `esc()` usage and hardcoded `pt-BR`). I must validate the **pushed** file's JS syntax + tags before merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed file validates (tags balanced, both scripts pass `node --check`). Now merging PR #51:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4241,41 +4243,49 @@ Reply 'go' to continue.
 ### 🤖 Autopilot
 
 Go-signal received — resuming **PR3: farms seed (`farms/index.json`)**. Gathering the plan spec + generator pattern in parallel:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Plan + generator pattern in hand. PR2 already wired the farmer-app side (`REMOTE_FARMS_URL` fetches `farms/index.json` + unions with local) — so PR3 is the **seed side**: generator + `farms/index.json` + workflow. Let me see the generator's output/write pattern and the rebuild workflow to mirror them:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR3 spec confirmed (generator → `farms/index.json`, farmer app already fetches it from PR2). Let me get the exact farm_ids from the live plots registry, then build the generator + seed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 4 farms confirmed: rancho-maranta, santa-anna-fazenda, fazenda-cleide, paulo-la-do-sitio-para. Now building `build_farms_index.py` (mirroring the plots generator) + the seed + a new workflow:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ruff isn't on PATH in this shell — let me use the venv/python module path used by the hard-rule suite (as in prior turns):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Lint passes; format needs one pass. Let me apply it, re-verify, and build the seed from the live plots data (so the seed matches reality — 4 farms):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Seed built with all 4 farms. Now creating the rebuild workflow (mirroring the plots one) and pushing all three files to `sunmint` via the sanctioned api_only path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three PR3 artifacts built and validated. Pushing to `sunmint` (api_only repo → sanctioned Contents-API path):
+[3 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4329,56 +4339,67 @@ Plan status: **PR0 ✅ · PR1 ✅ · PR2 ✅ · PR3 ✅ · PR4 next · PR5 = `ga
 ### 🤖 Autopilot
 
 Executing **PR4: backend farm upsert + `FARM BOUNDARY EVIDENCE EVENT` catalog entry**. First, checking the event catalog and how events get proposed/added:
+[2 tool result(s) compacted: lookup_event_docs, lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `FARM BOUNDARY EVIDENCE EVENT` confirmed **not in the catalog** (only `FARM REGISTRATION EVENT` exists). PR4 = add the new event + receiver logic. Let me find where the events catalog lives in code:
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dao_protocol search hit venv noise. Let me find the actual events catalog + FARM REGISTRATION handler directly:
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 EVENTS.md is the cacao event playbook, not the DAO event catalog. Let me find the actual catalog definition and the FARM REGISTRATION receiver in dao_protocol:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 dao_protocol is the API/signature layer, not the event catalog. The catalog with `FARM REGISTRATION EVENT` (canonical labels, dapp_page) is served by **Edgar** (`edgar.truesight.me/events-catalog`), which lives in the GAS layer. Let me find where the catalog source of truth is — checking tokenomics for the events catalog / GAS app:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The event catalog lives in one of the GAS projects in tokenomics. Let me find where `FARM REGISTRATION EVENT` is defined:
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `qr_code_web_service.js` (GAS) defines/handles FARM REGISTRATION. Let me see how it handles farm events and where the receiver logic lives:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GAS file has `farm_name` fields but not the event catalog. The catalog is served by Edgar at `/events-catalog`. Let me find the actual catalog source — checking the live endpoint structure and searching dao_protocol for the catalog definition:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The catalog has `events` — let me find the FARM entries and the catalog's source repo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The catalog events are strings, not dicts. Let me list them to see the exact event names:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The catalog has 37 events including FARM REGISTRATION EVENT. Let me see the full structure of the catalog to understand how events are defined (they have canonical labels etc. that lookup_event_docs pulls):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4479,4 +4500,78 @@ Do NOT merge PR #152 until the files are corrected. Say go and I'll fix it first
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×19 → cd /tmp && echo "=== events catalog in dao_protocol? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/git/trees/main?; cd /tmp && echo "=== dao_protocol tree (top-level, filtered) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/git/tre; cd /tmp && echo "=== tokenomics: events catalog? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/git/trees/main?recurs; …(+16 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Yeah, go for it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Go-signal received — fixing the PR #152 empty-file bug first thing. Pushing the real validated content to the branch:
+
+
+### 🤖 Autopilot
+
+Both files corrected on the branch. Verifying the PR diff is now the intended change before merging:
+
+
+### 🤖 Autopilot
+
+Files are real now (catalog 21,267 B, dispatch 10,612 B), `mergeable: True`. The diff shows +542/−75 and +186/−46 because the empty-file commit forced a full-rewrite view — let me confirm the *content* is correct (not whitespace noise hiding a wipe) before merging:
+
+
+### 🤖 Autopilot
+
+Both files verified correct on the branch: catalog has the new event + `limites-da-fazenda/index.html` + version 2; dispatch has the routing row. (The larger diff is cosmetic — my `json.dump` reformatted the catalog's whitespace/unicode — functionally identical, validated JSON.) Merging PR #152:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — PR4 shipped (after fixing my empty-file bug). Stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**1. Fixed the PR #152 empty-file bug** (flagged last turn): the initial `git_push_changes` had created the branch with empty file contents. Overwrote both files with the real validated content via the Contents API:
+- `/tmp/ec_new.json` → `events_catalog.json` (commit `ed9568f`)
+- `/tmp/dispatch_new.py` → `dispatch.py` (commit `339c875c`)
+
+**2. Verified before merging** — both files non-empty (21,267 B / 10,612 B), `mergeable: True`, and the diff contains the intended additions:
+- Catalog: `FARM BOUNDARY EVIDENCE EVENT` present, `limites-da-fazenda/index.html` dapp_page, version 2 ✓
+- Dispatch: `[FARM BOUNDARY EVIDENCE EVENT]` routing + `processFarmBoundaryEvidenceFromTelegramChatLogs` ✓
+
+**3. Merged PR #152 — https://github.com/TrueSightDAO/dao_protocol/pull/152** (sha `7f2950f1`)
+
+### What landed (PR4 — backend upsert foundation)
+- **`events_catalog.json`** (v1→v2, 37→38 events): new **`FARM BOUNDARY EVIDENCE EVENT`** — canonical labels: Farm Name, Plot ID, Boundary Type, Media URLs, Extracted GPS, Area Hectares, Submission Source; required: Farm Name, Media URLs; `dapp_page: limites-da-fazenda/index.html`
+- **`dispatch.py`**: ROUTING row `"[FARM BOUNDARY EVIDENCE EVENT]"` → (`FARM_BOUNDARY_EVIDENCE`, `processFarmBoundaryEvidenceFromTelegramChatLogs`) with doc comment (media → `sunmint/images/<plot_id>/`, `extract_plot_gps.py` → hull, backend upsert → new-farm auto-create per plan rule 4)
+- Note: catalog JSON is now reformatted whitespace (json.dump) — functionally identical, JSON-validated
+
+**Plan status: PR0 ✅ · PR1 ✅ · PR2 ✅ · PR3 ✅ · PR4 ✅ (catalog + dispatch; GAS handler `processFarmBoundaryEvidenceFromTelegramChatLogs` is the remaining piece in tokenomics) · PR5 = `gate: UAT`**
+
+## RESUME HERE → next unit
+
+**PR5 — the `gate: UAT`** (end-to-end boundary submission verification) per plan §5 PR5:
+1. Confirm Edgar serves the new event (`edgar.truesight.me/events-catalog` → 38 events, v2 — may need a dao_protocol redeploy; I'll check the healthz endpoint)
+2. Confirm `lookup_event_docs("FARM BOUNDARY EVIDENCE EVENT")` now resolves
+3. Live walk: `beta.sunmint.truesight.me/limites-da-fazenda/` → pick farm (or "New farm…") → capture boundary photo → queue → submit; verify the event flows (GAS webhook needs the handler — flagged as follow-on in tokenomics)
+4. Verify `farms/index.json` + plots still resolve after the catalog change
+5. Report pass/fail per step; **this is the always-stop gate — after UAT I STOP and wait for your explicit approval before any prod promote**
+
+**Also flagged (deferred):** the GAS handler `processFarmBoundaryEvidenceFromTelegramChatLogs` in tokenomics (mirror media + upsert sheet row) — without it, the dispatched webhook has no receiver yet (GAS cron is the fallback per dispatch.py's standard pattern).
+
+Say go and I'll run the UAT gate.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== PR #152 state ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/pulls/152" | python3 -c " import ; cd /tmp && echo "=== dispatch diff: new row present? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/pulls/152/files
+• `merge pr` → ✅ PR #152 on dao_protocol merged successfully (sha: 7f2950f1c31fc1dfecf03bc6abc627775206005d). Pull Request successfully merged
 
