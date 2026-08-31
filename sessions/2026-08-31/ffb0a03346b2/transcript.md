@@ -5089,6 +5089,7 @@ The debug log has per-round UTC timestamps — authoritative. Let me parse the f
 ### 🤖 Autopilot
 
 466 LLM rounds across 53 governor turns. Now let me attribute the time: autopilot work time (rounds processing) vs governor time (between turns).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5374,4 +5375,50 @@ I'll make sure any ledger entries tie to you by that name going forward (the aut
 Want me to:
 1. **Log a CONTRIBUTION EVENT for you** (Gary Teh) for your review/decision time — and if so, what amount (e.g. 120 min)?
 2. Or was the name note just for the record, no ledger change needed?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Got it — noted: **Gary Teh**. 
+
+I'll make sure any ledger entries tie to you by that name going forward (the autopilot execution contribution is logged under Sophia Truesight; if you'd like your own t
+
+
+### 🤖 Autopilot
+
+👍 Go received — logging the contribution for you under your name, Gary Teh. I'll use 120 minutes (the mid-point of my transcript-derived focused-time estimate of 1.5–2.5 h — adjust if you'd prefer a different figure).
+
+
+### 🤖 Autopilot
+
+## ✅ Logged — your contribution is on the ledger
+
+**CONTRIBUTION EVENT submitted** under your name:
+
+| Field | Value |
+|---|---|
+| Type | Time (Minutes) |
+| Amount | **120** |
+| Contributor(s) | **Gary Teh** |
+| Description | Santa Anna site-visit engagement — farm visit, media capture (EXIF GPS), PDF reviews v1→v4, farm profile + journey + SunMint plot direction, YouTube decisions, prod approvals, boundary data; noted as transcript-derived estimate (1.5–2.5 h, logged at 120 min midpoint) |
+
+**Both parties now recorded for the Santa Anna unit:**
+| Contributor | Time |
+|---|---|
+| Sophia Truesight (autopilot) | 86 min (exact, transcript-measured) |
+| Gary Teh (governor) | 120 min (estimated midpoint) |
+
+If you want the 120 adjusted (up or down), say the figure and I'll log a superseding entry. Otherwise the Santa Anna thread's time accounting is complete.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Handoff manifest** active plans awaiting kickoff: `SUNMINT_PUBLIC_SIGNATURES_PLAN` (PR1), `SUNMINT_IMPACT_MAP_EXTENSION_PLAN` (PR1), `SUNMINT_MOBILE_APP_PLAN` (awaiting kickoff)
+2. Anything else on this thread, or shall we close it out?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
