@@ -4107,21 +4107,25 @@ Pointing to https://beta.agroverse.shop/farms/santa-anna-fazenda-para/
 ### 🤖 Autopilot
 
 Let me diagnose why the link isn't showing — checking which repo actually serves beta.truesight.me/sunmint.html and what the live page contains.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live page **does** contain the link code (grep=1) and serves fresh content (last-modified 14:25:14, after the merge). So the deploy went through but Gary isn't seeing the link — let me check for a JS-level issue (encoding of the ↗ arrow, or the `farm_id` read).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live page has the new code (grep=1) and reads `farm_id`. So the link logic is deployed — the missing link must mean the **geojson the map actually fetches doesn't carry `farm_id`** (stale cache) or the browser cached the old page. Let me check what the map fetches right now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The code is deployed and the data is correct — so the link **should** render. Let me check the cache headers — Gary's browser may be serving the old page.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4326,4 +4330,67 @@ Say the word and I'll execute the option you choose.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && rm -rf tmb_prod_check && git clone -q --depth 5 https://github.com/TrueSightDAO/truesight_me_prod.git tmb_prod_check 2>&1 | tail ; cd /tmp && rm -rf tmb_check tmb_prod_check && git clone -q --depth 20 https://github.com/TrueSightDAO/truesight_me_beta.git tmb_check 2>&1 |
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] I just fixed it via Github UI
+
+
+### 🤖 Autopilot
+
+Let me verify the fix landed correctly on prod — checking prod main now has the popup changes and the CNAME is intact.
+
+
+### 🤖 Autopilot
+
+Your UI fix merged cleanly — prod main now has everything and CNAME is intact (`truesight.me`). Let me verify the live production site serves the popup link (accounting for Pages deploy lag).
+
+
+### 🤖 Autopilot
+
+The live production page doesn't have the code yet — this is the Pages deploy lag (like we saw with agroverse.shop earlier, ~90s–5min). Prod main has the code (grep=1) — it just needs the deploy to catch up. Let me wait briefly and re-check.
+
+
+### 🤖 Autopilot
+
+✅ **Verified live on production** — the popup link is now serving on `truesight.me/sunmint.html`.
+
+## Confirmation
+
+| Check | Result |
+|---|---|
+| **Prod repo** (after your UI merge) | HEAD `d8199b9` — has #331, #333, #335 ✅ |
+| **CNAME intact** | `truesight.me` (the intentional divergence preserved) ✅ |
+| **Live page** `truesight.me/sunmint.html` | HTTP 200, **popup link code present** (grep=1), **FARM_SLUG map present** (grep=2) ✅ — deployed at 14:45 UTC |
+| **Geojson** | SA-P1 → `farm_id: santa-anna-fazenda`, RM-P1/P2 → `rancho-maranta` ✅ |
+
+The full popup chain is now live end-to-end on **production**:
+- Click SA-P1 (or RM-P1/RM-P2) polygon on truesight.me/sunmint.html
+- Popup shows plot details + **"View farm profile on Agroverse ↗"**
+- Link → `agroverse.shop/farms/santa-anna-fazenda-para/` (or `rancho-maranta-para/`) — **200, no 404**
+
+Your GitHub-UI merge did the job — prod now matches beta for all the popup work.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Your eyeball** — hard-refresh truesight.me/sunmint.html (or wait ~10 min for browser cache, `max-age=600`) → click a plot → link lands on the farm profile
+2. **Still parked:** media additions to the farm page (shortlist: 7723, 7744, 7751, 7731, 7747, 7750); the plot-impact-embed idea on the farm profile; SCHEMA.md cross-ref from agentic_ai_context (optional)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → verified prod repo after UI merge (HEAD d8199b9, CNAME intact, popup code + FARM_SLUG present); checked live page (deploy lag — absent at 14:44, present at 14:45 after 45s wait); confirmed geojson farm_ids
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && rm -rf tmb_prod_check && git clone -q --depth 20 https://github.com/TrueSightDAO/truesight_me_prod.git tmb_prod_check 2>&1; sleep 45 + re-curl live page (link code + FARM_SLUG now present, deploy completed 14:45 UTC)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cloned prod (HEAD d8199b9: CNAME update + #331/#333/#335); grep link code (1) + FARM_SLUG (2) in prod sunmint.html; live-page check (deploy lag), 45s wait, re-check → deployed ✅; geojson farm_ids confirmed
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && rm -rf tmb_prod_check && git clone -q --depth 20 https://github.com/TrueSightDAO/truesight_me_prod.git tmb_prod_check 2>&1 | tail; echo "=== live truesight.me/sunmint.html ==="; curl -s https://truesight.me/sunmint.html -o /tmp/prod_sunmint.html -w "HTTP %{http_code} | l; sleep 45; echo "=== re-check live truesight.me/sunmint.html ==="; curl -s https://truesight.me/sunmint.html -o /tmp/prod_sunmint2.html -w "H
 
