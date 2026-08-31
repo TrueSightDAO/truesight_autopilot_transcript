@@ -1571,41 +1571,49 @@ Found it — `SESSION_LOG_DIR=/opt/truesight_autopilot/sessions`. But earlier th
 ### 🤖 Autopilot
 
 The session JSONs are named by session id — our thread maps via `build_session_id(chat_id, thread_id)`. The two files touched at 16:57 (last message time) are `d77dbad6aeb3.json` and `ffb0a03346b2.json`. Let me grep them for our thread and "cleide".
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `ffb0a03346b2.json` is **our session** (562 messages, updated 16:57, thread 17181). Let me extract the exact timestamps to compute time spent.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This session file (`ffb0a03346b2`) already contains a prior time-accounting for the Santa Anna thread — same format I'll use for Cleide. The per-message JSON has no timestamps, but the debug log does. Let me parse it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The debug log has per-round timestamps. Let me parse it and attribute rounds to the Cleide work.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The debug log mixes multiple threads. Let me find the exact session for thread 17181 by its distinctive content.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — **`7bf678f77412.json`** is our Cleide session. Let me analyze its debug log for exact timing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the session. Now let me parse the debug log to compute exact time spent.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me extract Gary's side — user message count and timing from the session.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1765,4 +1773,91 @@ My read of the likely intent: push the raw site-visit media into `farm-media-raw
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== farm-media-raw repo contents ===" curl -s "https://api.github.com/repos/TrueSightDAO/farm-media-raw/contents/" | python3 -c "impor; echo "=== find GH token for API ===" GHTOKEN=$(grep -hoE "(GH_TOKEN|GITHUB_TOKEN|GITHUB_PAT)=[A-Za-z0-9_]+" /opt/truesight_autopilot/.env 2>
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] https://api.github.com/repos/TrueSightDAO/agentic_ai_context/pulls/858
+
+
+### 🤖 Autopilot
+
+Gary's pointing me to the PR — let me fetch it to see what it contains.
+
+
+### 🤖 Autopilot
+
+Found it — PR #858 added `FARM_MEDIA_PIPELINE.md` (93 lines) and it's **merged**. My earlier `search_context` missed it likely because it was merged after my searches or the search index lagged. Let me read the actual doc now.
+
+
+### 🤖 Autopilot
+
+The pipeline doc is now in hand (PR #858, merged). It prescribes the full farm-media treatment — and it names **Cleide (`cleide`, CL-P1, `cleide/`) as a target farm**. Gap analysis vs what's already done this session:
+
+| Pipeline step | Status |
+|---|---|
+| 1. Intake (count files) | ✅ done via archive listing (14 HEIC + 71 MOV) |
+| 2. GPS sweep + plot registration | ✅ done (all GPS extracted; CL-P1 registered in sheet + geojson) |
+| **3. SHA-256 dedupe** | ⬜ not done |
+| **4. Manifest build** | ⬜ not done |
+| **5. Object detection (YOLO)** | ⬜ not done (needs `ultralytics` install) |
+| **6. MOV→MP4 w/ GPS re-inject** | ⬜ not done (71 videos) |
+| **7. Public YouTube upload** | ⬜ not done (71 videos → admin@truesight.me) |
+| **8. Photos → farm-media-raw** | ⬜ not done (14 HEIC → `cleide/photos/`) |
+| 9. Farm page wiring | 🟡 partial (page + images live; no `media.json` yet) |
+| **10. Manifest PR** | ⬜ not done |
+
+Per your earlier "go easy on it," I'll process **streaming** (never full-extract 3.9GB). Running steps 3+4 now — one script that sha256s, GPS-checks, and measures duration for all 85 objects via extract→read→delete per file:
+
+
+### 🤖 Autopilot
+
+39GB free — plenty of room. Running the full manifest build now: extract each of the 85 files one-at-a-time → sha256 → GPS (exiftool) → duration (ffprobe) → write manifest → delete temp (per-file streaming keeps disk flat). HEICs get parked in `cleide_work/photos/` for step 8.
+
+
+### 🤖 Autopilot
+
+Manifest built — 85 objects hashed (14 HEIC parked in `photos/`, 71 MOV streamed). One gap: the two HEICs show `gps=-` because `GPSCoordinates` is a QuickTime tag — HEICs store EXIF GPS under `GPSLatitude/GPSLongitude`. Let me backfill those + summarize coverage.
+
+
+### 🤖 Autopilot
+
+All 14 HEICs have EXIF GPS (QuickTime tag read needed `-GPSLatitude/-GPSLongitude` — got them). Full coverage: **77/85 geotagged** (63 MOV + 14 HEIC), 71 videos totaling **52.2 min**.
+
+| Pipeline step | Status |
+|---|---|
+| 1–2. Intake + GPS + plot | ✅ |
+| 3–4. SHA-256 dedupe + manifest | ✅ `cleide_work/manifest.json` (85 objs) |
+| 5. Object detection (YOLO) | ⬜ next |
+| 6. MOV→MP4 w/ GPS re-inject | ⬜ next (71 vids) |
+| 7. YouTube public upload | ⬜ next |
+| 8. Photos → farm-media-raw | ⬜ next (14 HEIC ready in `cleide_work/photos/`) |
+| 9. Farm page media.json | ⬜ |
+| 10. Manifest PR | ⬜ |
+
+I'm 23/30 rounds this turn. **Stopping clean here per directive** — resuming next turn at step 5.
+
+---
+
+**RESUME HERE → step 5 (object detection):**
+1. `pip install ultralytics` in `/opt/truesight_autopilot/.venv` (torch-cpu), YOLOv8n, 3 frames/video (10/50/90%), remap `banana`→`cacao_pods`
+2. Step 6: MOV→MP4 loop with **exiftool GPS re-inject after ffmpeg** (verify each) — 35–60s/video ≈ 45–70 min batch, use nohup + progress file
+3. Step 7: YouTube upload via `config/youtube/upload_video_to_youtube.py` (public, admin channel), title pattern `<Farm name> — <basename> (cacao pods, <lat>, <lng>)`
+4. Step 8: upload 14 HEICs → `farm-media-raw/cleide/photos/` (Content API)
+5. Step 9: `media.json` in agroverse_shop_beta + web JPGs
+6. Step 10: manifest PR `FARM_MEDIA_MANIFESTS/cleide.json` to agentic_ai_context
+
+Governor checkpoint on privacy (public YouTube per Gary default) + plot status (proposed vs planted) — defaulting to doc values unless you say otherwise.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → verified PR #858 merged (added FARM_MEDIA_PIPELINE.md, 93 lines) · read full pipeline doc · built 85-object manifest (sha256 + GPS + duration) with per-file streaming, HEICs parked in cleide_work/photos/ · backfilled 14 HEIC EXIF GPS · totals: 77/85 geotagged, 52.2 min video
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → echo "=== PR 858 metadata ===" curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/pulls/858" | python3 -c "import json; …(more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → echo "=== PR 858 metadata ===" curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/pulls/858" | python3 -c "import json,sy; set -e ZIP="/home/ubuntu/cleide and marcelo's farm.zip" WORK=/home/ubuntu/cleide_work mkdir -p "$WORK/photos" "$WORK/tmp" echo "=== disk bef; set -e ZIP="/home/ubuntu/cleide and marcelo's farm.zip" WORK=/home/ubuntu/cleide_work mkdir -p "$WORK/photos" "$WORK/tmp" cat > "$WORK/build; …(+1 more)
 
