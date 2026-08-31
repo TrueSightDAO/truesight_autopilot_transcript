@@ -3598,21 +3598,25 @@ The registry already carries `farm_id: rancho-maranta` for both plots, and the m
 ### 🤖 Autopilot
 
 Both live pages (prod + beta) returned the 43KB map page — the impact map IS there (the inline preview was just truncated). Let me confirm the live pages actually contain the popup link code and check whether the target farm URL resolves:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live page contains the full map code including view chips and plots. Let me confirm the popup link code is present in the live HTML and that the farm URL resolves:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live prod page already has the full map code (view chips, plots, satellite history). Let me verify the popup link string is in the live HTML, and — critically — whether the link's target (prod agroverse.shop farm page) actually resolves, since the farm page currently lives only on beta:
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both farm URLs resolve (prod 200 with the original IMG_7625 header, beta 200 with the new 7660 header — prod is behind beta). Now let me confirm the live truesight.me page actually contains the popup link code:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3660,11 +3664,13 @@ The map popup links to **prod** (`agroverse.shop/...`), which is still the old p
 ### 🤖 Autopilot
 
 Let me look at the Farm Highlights section on the Rancho Maranta page and add a SunMint program item with a link:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the actual highlight items (lines 522–560) to add the SunMint item consistently:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3824,4 +3830,62 @@ PR #245 opened. Merging per the standing go:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && rm -rf agb7 && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git agb7 2>&1 | tail -1; cd agb7 && ech; cd /tmp && rm -rf dupcheck && mkdir dupcheck && cd dupcheck && echo "=== download all gallery images ===" && for n in IMG_7693 IMG_7694 IMG_; cd /tmp/dupcheck && python3 - <<'PYEOF' from PIL import Image import os, itertools def phash(path, hash_size=16): im = Image.open(path).conv; …(+3 more)
 • `merge pr` → ✅ PR #245 on agroverse_shop_beta merged successfully (sha: 3d7c7e7942e91b8694b6e08d462039322924189d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn
+
+**Removed the duplicate image IMG_7694 from the Rancho Maranta gallery — PR #245 merged.**
+
+**You were right — it was a repeat.** Confirmed with perceptual analysis, not just
+
+
+### 🤖 Autopilot
+
+Go received — checking the handoff manifest first (per the handoff directive), and looking up the right event type for the ledger-anchor unit that's been pending:
+
+
+### 🤖 Autopilot
+
+The manifest shows the SunMint impact map extension plan is in progress (that work is done through the beta reviews), and the events catalog has a **FARM REGISTRATION EVENT** — the natural next non-gated unit is the **ledger anchor** for Rancho Maranta. Let me get the exact schema:
+
+
+### 🤖 Autopilot
+
+The FARM REGISTRATION EVENT is the right type (required: Farm Name, Location; also Owner, Acreage). Per the duplicate guard, let me first check nothing's been registered for Rancho Maranta already:
+
+
+### 🤖 Autopilot
+
+No prior registration found — safe to submit. One line before I do: **submitting a FARM REGISTRATION EVENT to the ledger for Rancho Maranta** (Farm Name, Location Altamira/Pará, Owner Jedielcio, Acreage ~5.4 ha).
+
+
+### 🤖 Autopilot
+
+## Ledger anchor done — Rancho Maranta is now registered on-chain
+
+**Submitted: [FARM REGISTRATION EVENT] to Edgar (the DAO ledger)** ✓
+- **Farm Name:** Rancho Maranta
+- **Location:** Altamira, Pará, Brazil (pilot area -3.294, -52.578)
+- **Owner:** Jedielcio (CEPOTX cooperative)
+- **Acreage:** 5.4 ha (Plot 1: 0.4 ha house plot · Plot 2: ~5 ha family plot)
+
+**Duplicate-guard check done first:** searched agentic_ai_context + 60 days of transcripts — no prior Rancho Maranta farm registration existed, so this is the first on-chain anchor. Event type verified via the live catalog (`FARM REGISTRATION EVENT`, required fields Farm Name + Location met; Owner/Acreage included).
+
+**Why this matters:** the farm now has on-chain identity independent of the website — the same registry that the SunMint plots (RM-P1/RM-P2) and tree plantings reference. This is the foundation the plot events, tree events, and carbon-credit work all hang off.
+
+## RESUME HERE →
+
+1. **Governor reviews beta farm page** → https://beta.agroverse.shop/farms/rancho-maranta-para/ (gallery 14 items, warm header, SunMint highlight, 3 videos) + map https://truesight.me/sunmint.html (plot popups → farm profile link, already live).
+2. **Prod promotion** (gated on your explicit approval) — `sync_beta_to_prod(agroverse_shop_prod)` (farm page #229 + card #233 + videos #234 #235 + media #236 + header #237 + heads #238 + SunMint #242 + dupe removal #245) and `sync_beta_to_prod(truesight_me_prod)` (impact map #325–#329).
+3. **Optional follow-ups from the manifest:** the SunMint impact map extension plan (PR1: enriched plot popups) is queued in `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, and the **SunMint public signatures cache** plan (PR1) is awaiting kickoff — both are next-unit candidates if you want to continue the impact-map/sunmint thread rather than promote to prod.
+
+**This turn:** no PRs — one ledger event (FARM REGISTRATION). The Rancho Maranta pilot is now fully anchored: plot polygons → sheet → registry → impact map → farm profile page → YouTube media → on-chain farm record.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
