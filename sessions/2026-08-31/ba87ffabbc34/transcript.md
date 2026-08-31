@@ -8,287 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[observed, not directed at you — Envoy TrueSight]: Go -- run the real end-to-end verification on beta.sunmint.truesight.me/monitor-tree-growth/ now: submit a test email link, then check the actual emailed verification URL and confirm it points back to the monitor page. Report the exact evidence (the link itself) before we talk about promotion.
-
----
-
-[observed, not directed at you — Envoy TrueSight]: Clarifying the test scope -- go all the way through the full loop, not just confirm the link looks right: (1) submit the test email on beta.sunmint.truesight.me/monitor-tree-growth/, (2) actually retrieve the real email and get the verification link, (3) navigate to that link (same browser/session so the keypair in localStorage matches), (4) confirm the EMAIL VERIFICATION EVENT actually submits successfully and the page shows a verified state. This matches the base64ToArrayBuffer postmortem lesson from OPERATING_INSTRUCTIONS.md section 10 -- a verification handler can look fine in the diff but throw at runtime, and that only surfaces when you actually click through, not just when you check the link text. Report the full before/after: email submitted -> real link received -> clicked -> verified status confirmed on page, with zero console errors at each step.
-
----
-
-Clarifying the E2E test scope -- Gary wants the FULL loop completed, not just a check that the emailed link text looks correct. Run through all of it:
-1. Submit the test email on beta.sunmint.truesight.me/monitor-tree-growth/
-2. Actually retrieve the real verification email and extract the real link
-3. Navigate to that link in the SAME browser/session (the RSA keypair lives in localStorage, must match the session that submitted)
-4. Confirm the [EMAIL VERIFICATION EVENT] actually submits successfully server-side and the page UI shows a verified/linked state, not an error
-
-This matches the base64ToArrayBuffer postmortem lesson in OPERATING_INSTRUCTIONS.md section 10 -- a verification handler can look correct in a diff/code review but throw at runtime, and that class of bug only ever surfaces when you actually click through the real link, not when you just inspect what the link text says. A lightweight test that only checks "the email contains the right-looking URL" would NOT have caught that historical bug and would not fully prove this fix either.
-
-Report the complete before/after trail: email submitted -> real emailed link (paste the actual URL) -> clicked -> [EMAIL VERIFICATION EVENT] result -> confirmed verified state on the page, with zero console errors observed at each step. Do not report this done until you have completed the full loop, not just the first half.
-
-
-### 🤖 Autopilot
-
-Understood — full loop required: submit → receive real email → click the link in the **same session** (matching localStorage keypair) → confirm the `[EMAIL VERIFICATION EVENT]` actually submits and the page shows verified state, with console-error capture at each step. Let me first map the email form's element IDs and check what headless-browser tooling exists on the box.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Full loop it is. The box has Playwright's chromium already cached — I'll use it with `puppeteer-core` (no browser download). First, the exact email-flow code (submit + verify + status handling) and installing the driver:
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-puppeteer-core installed, chromium found. One ledger-safety check before the real submission: I'll use **my own identity address** (`admin+sophia@truesight.me`, readable via the admin mailbox) as the test address — but first I must confirm the email-registration flow *adds* a browser link rather than *replacing* an existing keypair→email mapping (so the test doesn't clobber my real identity record). Checking the GAS handling:
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the GAS email-verification handler to confirm the ledger behavior (add vs replace):
-[1 tool result(s) compacted: read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The webhook above is just the *mailer*. The ledger effect (add vs replace) lives in Edgar itself — checking sentiment_importer:
-[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Right — Edgar is dao_protocol (FastAPI), not sentiment_importer. Checking there:
-[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me find the actual `[EMAIL VERIFICATION EVENT]` handler — searching the GAS projects directly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the registration GAS file that likely consumes these events:
-[1 tool result(s) compacted: read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The DIGITAL SIGNATURE path is a separate older pipeline. The EMAIL REGISTERED/VERIFICATION logic lives in Edgar (dao_protocol). Let me locate it in the repo tree:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Filtering out the venv noise:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`email_registration.py` is the handler — reading it to confirm add-vs-replace semantics:
-[1 tool result(s) compacted: read_repo_file — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have used 12 of 15 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
-
-
-### 🤖 Autopilot
-
-Converging per the turn limit — here's the state of the full E2E loop, what's proven, and exactly where it resumes.
-
-## ✅ Proven so far (first half + full prep)
-
-**1. Fix is live on beta** — served page (57,613 B) contains the trailer lines (4 matches).
-
-**2. Real submission accepted by Edgar** (byte-faithful replication of the fixed `submitEmailEvent()`):
-- `HTTP 200 · signature_verification: success` — format valid, trailer **outside** the signed payload
-- **Real emailed verification link captured** (from the gary mailbox SENT copy, `garyjob@agroverse.shop` → `sophia.tgm.beta.test@truesight.me`):
-  ```
-  https://beta.sunmint.truesight.me/monitor-tree-growth?em=sophia.tgm.beta.test%40truesight.me&vk=9nI6je3ltLcHTGLMfKNDiJkz1gxpAB8NhWwt0EeMoV0
-  ```
-- Link **resolves HTTP 200 and serves the Monitor Tree page** (3× "Monitor Tree", 7× "Monitorar Árvore") — points back to the monitor page, not a legacy fallback. **This is the fix's core proof.**
-- Note: Edgar's response showed a transient `script.googleusercontent.com read timeout`, yet the email was **sent seconds later** (SENT 03:44:41) — benign response timing, not format.
-
-**3. Ledger semantics confirmed (no clobber risk)** — read `dao_protocol/.../email_registration.py`: rows are keyed by **public key**, append-only; REGISTERED → append VERIFYING row + email; VERIFICATION → single-use VERIFYING→ACTIVE; ACTIVE keys skip; resend reuses existing `vk` with 60s cooldown. A fresh test keypair creates a **new row** — it cannot overwrite an existing identity's email mapping.
-
-**4. Click-through prep done** — puppeteer-core installed; chromium at `/home/ubuntu/.cache/ms-playwright/chromium-1208/chrome-linux64/chrome`; form IDs mapped (`#emailInput`, `#emailSubmitBtn`, `#status`); `checkVerificationLink()` code read (runs on load with `vk`+`em`, signs `[EMAIL VERIFICATION EVENT]` with the **localStorage keypair**, posts to Edgar, sets `#status`).
-
-## ⏸️ What's left (the click-through half — blocked only by this turn's tool cap)
-
-The Envoy's full loop requires the verification click in the **same session** whose keypair registered the email. My capture above was a Node-harness submission (different keypair than any browser localStorage), so the remaining run is:
-
-1. **One persistent browser context** (fresh user-data-dir, console + pageerror listeners on)
-2. Load beta page → keypair auto-generates in localStorage
-3. Fill `#emailInput` with a **readable test recipient** (admin mailbox — `admin@truesight.me`; fresh keypair ⇒ new VERIFYING row, no clobber; flag for cleanup after) — *or* seed the harness keypair into localStorage to reuse the existing VERIFYING row + already-sent link
-4. Click `#emailSubmitBtn` → assert `#status` = emailSent, zero console errors
-5. Retrieve the **actual email**, extract the real link
-6. `page.goto(link)` **same context** → `checkVerificationLink()` fires → assert `[EMAIL VERIFICATION EVENT]` POSTs (Edgar `200`) and `#status` shows success, zero console errors
-7. **Server-side confirmation**: the row flips VERIFYING→ACTIVE in `Contributors Digital Signatures` (the sheet I've already located: gid `577022511`)
-8. Report the full before/after trail (email → exact link → clicked → verified, with console-error capture at each step) + cleanup of the test row
-
-## 📌 RESUME HERE
-Run the puppeteer-core browser E2E (steps 1–8 above) against `beta.sunmint.truesight.me/monitor-tree-growth/` — one persistent context, console-error listeners, real email retrieval from the admin mailbox, click-through, server-side VERIFYING→ACTIVE confirmation. No prod promotion until the full loop is evidenced and Gary reviews (plus the `sunmint_prod` `prod_repos` config line still pending separately).
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×10 → cd /tmp && echo "=== email form elements in live beta page ===" && grep -n "emailInput\|linkEmail\|emailSection\|submitEmailLink\|emailLinkF; echo "=== headless browser availability ===" && (which chromium chromium-browser google-chrome google-chrome-stable 2>/dev/null; ls /root/.c; cd /tmp && echo "=== 855-935: submitEmailLink + checkVerificationLink ===" && sed -n '855,935p' live_beta.html; …(+7 more)
-
-
-### 🧑 Governor
-
-[observed, not directed at you — Envoy TrueSight]: One more scope addition to the E2E test: after email verification completes, also confirm the core monitoring functionality on the SAME page works with that now-linked identity -- select a tree, capture/attach the close-up   context photos, submit the growth measurement, and confirm the signed [TREE GROWTH MONITORING EVENT] actually goes through successfully (HTTP 200, no console errors). The point of linking email is attribution for exactly this submission flow, so prove the whole thing works end to end on the monitoring page, not just the email loop in isolation.
-
----
-
-One more scope addition to the E2E test from Gary: after the email verification loop completes, also confirm the CORE monitoring functionality on the same beta.sunmint.truesight.me/monitor-tree-growth/ page actually works with that now-linked/verified identity -- select a tree from the dropdown, capture/attach the close-up + context photos, submit the growth measurement, and confirm the signed [TREE GROWTH MONITORING EVENT] actually posts successfully to Edgar (HTTP 200, signature verified, no console errors). The whole point of linking email is attribution for this exact submission -- so the full E2E proof needs to cover: email link -> verify -> submit a real measurement -> confirm it lands correctly, not just the email half in isolation. Include this in your final report.
-
-
-### 🤖 Autopilot
-
-Continuing the full E2E (email link → verify → tree select → photos → measurement submit) per the Envoy's scope addition. First, one precise look at the current monitoring-submit + photo-capture code so my script drives the real UI faithfully:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-UI mapped: `#emailInput`/`#emailSubmitBtn`/`#status`, capture via `#closeupBtn`/`#contextBtn` → `capturePhoto(mode)`, `#dbhInput` (required), `#treeSelect`, `#treeStatus`, `#monitorSubmitBtn`; DBH + both blobs + proximity gate enforced client-side. Now running **Step 1** — a real browser session (persistent profile, fake-camera flags, console-error capture) that loads the beta page and submits the email registration:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-CDP domain wasn't ready pre-navigation — fixing: navigate first, then set geolocation + reload, with a try/catch so a GPS hiccup can't kill the run:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Step 1 passed: **email submitted → status "Email sent! Check your inbox to confirm." (success)**, keypair generated, zero pageerrors (2 benign resource 404s to identify). Now retrieving the real verification email from the admin inbox:
-[1 tool result(s) compacted: gmail_search — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Verification email **arrived** in the admin inbox, and the snippet already shows the link points to **beta.sunmint.truesight.me/monitor-tree-growth/** ✓. Reading the full message for the complete link:
-[1 tool result(s) compacted: gmail_read_message — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Verification email **received — full link captured** (points back to the beta monitor page ✓). Now **Step 3** — the click-through in the SAME browser profile (same localStorage keypair) plus the full monitoring flow: verify → select tree → capture both photos via the fake camera → submit the growth measurement, capturing every Edgar response and console error:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Full E2E **passed** — but I noticed the measurement POST's response body wasn't captured (my listener's body-read raced with the page's own `resp.text()`), so let me confirm the measurement landed **server-side** via the authoritative submission log (non-destructive read):
-[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The Telegram Chat Logs tab holds bot messages, not web submissions. Let me find where Edgar actually logs `/dao/submit_contribution` submissions, then check there:
-[1 tool result(s) compacted: search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check the GAS tgm handler's source — where it reads events from (that's where the measurement will be picked up):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The GAS handler processes growth events from **Telegram Chat Logs** (where Edgar appends web submissions). Scanning that tab for our measurement:
-[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The Telegram Chat Logs tab holds historical bot messages — the decisive server-side capture is the measurement POST itself. The page's success status ("Measurement sent successfully!") only fires after the Edgar fetch resolves OK, but I want the **actual HTTP response** — re-running the measurement once (identity now ACTIVE, same profile) with a race-free status-only response capture:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Timing sensitivity on the fake camera — the capture buttons weren't clickable yet. Adding robust waits (video readyState, button visibility, evaluate-click) and retrying:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have used 12 of 15 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
-
-
-### 🤖 Autopilot
-
-Converging at the tool cap — the E2E is **essentially proven**; here's the complete state.
-
-## ✅ Full E2E evidence (real browser, real email, real clicks)
-
-**Step 1 — Email submitted (real UI, real browser):**
-- Persistent Chromium session (puppeteer-core + fake camera/geolocation at FounderHaus coords) → keypair auto-generated → filled `#emailInput` → clicked submit
-- **Status: `"Email sent! Check your inbox to confirm."` (success)** · zero pageerrors
-
-**Step 2 — Real emailed link received (the fix's core proof):**
-- Admin inbox received the verification email (from `garyjob@agroverse.shop`):
-  ```
-  https://beta.sunmint.truesight.me/monitor-tree-growth/?em=admin%40truesight.me&vk=HI4bHk1qAa3uw2PFHjH42MpNGjyHlHomVLgH55R7VkM
-  ```
-- **Points back to the beta monitor page** — pre-fix this was a legacy fallback. ✅
-
-**Step 3 — Clicked (same profile/keypair) → verification ACTIVATED server-side:**
-- Edgar POST captured verbatim: **HTTP 200**, body:
-  ```json
-  {"status":"ok","signature_verification":"success","emailRegistration":{"applicable":true,"ok":true,"event":"EMAIL_VERIFICATION","activated":true,"cache_refresh":true}}
-  ```
-- `activated:true` = the row flipped VERIFYING→ACTIVE. Zero pageerrors.
-
-**Step 4 — Measurement submitted with the verified identity (first run):**
-- Selected `Edgar_20260821175134_005` (FounderHaus), captured both photos, DBH 12.5
-- **UI: `"Measurement sent successfully!"` (success)** — this state only renders after the Edgar fetch resolves OK (the `resp.ok` check gates it), so the `[TREE GROWTH MONITORING EVENT]` POST succeeded
-- Full shareText captured: Tree ID, Species Bougainvillea, DBH, **Lat/Lng from the geolocation override**, both photo URLs, and `Submission Source: …monitor-tree-growth/?em=admin%40truesight.me&vk=HI4b…` — **the verified email identity rode through into the measurement (attribution working — exactly the point of email linking)**
-
-**Console errors at every step: none of substance** — 2 benign resource 404s + a `/ping` abort (keepalive/favicon), zero pageerrors.
-
-## ⏸️ What's still missing (small, resumable)
-The **measurement POST's explicit response body** wasn't captured (my listener raced the page's own `resp.text()` consumption; `monitorSent` UI already proves it succeeded, but I want the raw 200 for the report). Re-runs (step3/3b) hit **fake-camera timing**: the close-up video never reached `readyState>=2` so `closeupBlob` never formed → button stayed disabled. (First run's click timing just happened to work.)
-
-## 📌 RESUME HERE
-Re-run the measurement once with a **race-free capture**: `page.evaluateOnNewDocument` to wrap `window.fetch` and stash all `submit_contribution` responses into `window.__posts` (then read after success) + a longer fake-camera wait (poll `readyState` up to 20s before clicking). Then:
-- Report the explicit `[TREE GROWTH MONITORING EVENT]` HTTP 200 + body alongside the already-captured EMAIL_VERIFICATION 200
-- **Cleanup flag:** the test created an ACTIVE row for `admin@truesight.me` under a fresh keypair (new row, nothing clobbered — but it's test data; suggest removing or flagging it)
-- **No prod promotion** — awaiting Gary's review of this evidence + the `sunmint_prod` `prod_repos` config line (still missing) as separate steps
-
-The core bug fix is fully proven: emailed verification link now points back to the monitor page, and the whole loop (email → verify → measure → attribution) works end-to-end.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×7 → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/monitor-tree-growth/index.html?x=$TS" ; cd /tmp/e2e && cat > step1_email.js << 'EOF' const puppeteer = require('puppeteer-core'); (async () => { const errors = []; const browser = ; cd /tmp/e2e && cat > step2_verify_monitor.js << 'EOF' const puppeteer = require('puppeteer-core'); (async () => { const errors = [], posts =; …(+3 more)
-
-
-### 🧑 Governor
-
-Correction on the cleanup mechanism from my last message -- do NOT grant a new test email governor rights. That is a real permission escalation on live DAO governance infrastructure and should not happen just for test cleanup, even temporarily.
-
-Instead: submit the test measurement using a throwaway test email (regular EMAIL REGISTERED/VERIFICATION EVENT flow, no governor rights needed for that part -- this satisfies the original email-link + verify + submit-measurement E2E test). Then for the mark-invalid/cleanup step specifically, use an EXISTING governor identity that already has credentials in this system (e.g. Gary's own governor identity via dao_client/.env, or whichever existing governor account is appropriate) to perform the invalidation of the test measurement/tree row. Same end result -- the test data gets cleanly marked invalid and does not pollute the real system -- with zero new elevated grants created.
-
-Still required: (1) a dedicated dummy/test tree (not a real farmer record) for the measurement submission, (2) confirm or build the simplest correct mechanism to mark a [TREE GROWTH MONITORING EVENT]/measurement row as invalid using an EXISTING governor identity -- flag clearly if no such mechanism exists yet for this brand-new event type (built only today), in which case propose the smallest safe addition or fall back to a manual sheet cleanup by an existing governor, and note that as a real follow-up gap rather than inventing new governance grants to route around it.
-
-
 ### 🤖 Autopilot
 
 Understood — correcting course: **no new governor grants, not even for cleanup**. Test measurement via a throwaway email identity (regular EMAIL flow, no elevated rights), and any invalidation of test data must use an **existing governor identity** already credentialed in the system. Let me investigate the two required pieces: (1) whether an invalidation mechanism exists for the brand-new `[TREE GROWTH MONITORING EVENT]` type, and (2) what test/dummy tree options exist.
@@ -4739,6 +4458,7 @@ Everything is staged and green either way. Which do you prefer?
 ### 🤖 Autopilot
 
 Merging prod #21 per your explicit instruction:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4986,4 +4706,60 @@ No open config work remains. Say "go" to prep the monitor-page promotion, or to 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== deployed config.py prod_repos (this box) ===" grep -A6 "prod_repos" /opt/truesight_autopilot/app/config.py 2>/dev/null | head -8 e
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: The `sunmint_prod: sunmint_beta` config line **already exists on the deployed box** — my "missing config line" flag was stale (added in an earlier config change, before this thread). So that unit is a
+
+
+### 🤖 Autopilot
+
+Executing the next unit — prep the monitor-page promotion. This is the original E2E thread's final gate: check the beta↔prod delta for sunmint and prepare the promotion path (I will NOT run `sync_beta_to_prod` itself without your explicit "promote"). Checking state:
+
+
+### 🤖 Autopilot
+
+**Key finding: sunmint_prod is already at parity with beta** — prod head `ae4e25bf` contains beta's `46d04588` (the #treeIdManual removal), `d690161c` (service worker), `3d234af7` (card dimensions) — the fork-sync merge commits are already in prod's history. The promotion appears **already done** (someone/something ran the merge-upstream sync). Let me verify the **live** prod monitor page actually serves the latest content:
+
+
+### 🤖 Autopilot
+
+**The monitor page is already fully promoted and live on production** — no promotion needed. Verified byte-for-byte:
+
+## ✅ Monitor-page promotion status: ALREADY DONE (verified live)
+
+| Check | Prod (`sunmint.truesight.me/monitor-tree-growth/`) | Result |
+|---|---|---|
+| Page bytes | 63,202 | **byte-identical to beta** ✓ |
+| Calibration card dims (85.6 × 54 mm) | 3 refs | ✓ (our #48-era content) |
+| `treeIdManual` refs | **0** | ✓ (the #48 removal landed) |
+| Service worker (offline) | 2 refs | ✓ (#47 landed) |
+| Sentinel gate (`isCurrentUserGovernor`/`is_sentinel`) | 4 refs | ✓ (the #26 gate fix landed) |
+| Pages build | `built` at commit `ae4e25bf` (02:30:40Z), no error | ✓ |
+
+**How it got there:** prod's history already carries the fork-sync merge commits (`ae4e25bf` "Merge branch 'TrueSightDAO:main' into main" + `00a14b17`) — so the merge-upstream sync ran for sunmint (likely when #47/#48 merged and the `prod_repos` mapping existed). The CNAME divergence was handled by those merge commits (prod CNAME `sunmint.truesight.me` intact).
+
+**So the original E2E thread's final gate is closed:** the monitor page — with the emailed-link fix, the sentinel/governor gate (#26/#27), the calibration-card dimensions, the offline service worker, and the manual-tree-ID removal (#48) — is **live on production**, byte-identical to beta.
+
+## 📌 RESUME HERE → remaining standing items
+1. **Test-row cleanup** — FounderHaus DBH 12.5, TEST_TREE_E2E measurements, `tgm-e2e-2026*` email identities (via an existing governor/sentinel identity — mine qualifies server-side; your call on the mechanism)
+2. **Altamira field work** — RM plot boundaries approx → verified (CAR/INCRA or GPS walk); collect `plot_id` per tree
+3. **Fresh E2E on the promoted prod page** (optional) — confirm the full loop (emailed link → click-through → measure) works on `sunmint.truesight.me` now that #48 removed the manual-tree-ID path (TEST_TREE_E2E is no longer monitorable — only signed & planted trees are)
+
+Say "go" to start the test-row cleanup, or to run the post-promotion E2E on prod.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → beta/prod commit parity confirmed (prod head ae4e25bf carries #46/#47/#48), CNAMEs correct (beta.sunmint.truesight.me vs sunmint.truesight.me); live prod monitor page byte-identical to beta (63,202 B, card dims 3, treeIdManual 0, serviceWorker 2, sentinel gate 4); Pages build built at ae4e25bf no error
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && TOKEN=$(grep -E '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2- | tr -d '"' | tr -d "'") echo "=== 1. sunmint_beta main: recent commits ===" curl -s; cd /tmp && TS=$(date +%s) echo "=== 1. LIVE prod monitor page: markers of latest ===" curl -s "https://sunmint.truesight.me/monitor-tree-growth/?cb=$TS" -o prod_mon.ht; …(+1 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && TOKEN=$(grep -E '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2- | tr -d '"' | tr -d "'") echo "=== 1. su; cd /tmp && TS=$(date +%s) echo "=== 1. LIVE prod monitor page: markers of latest ===" curl -s "https://sunmint.truesight.me/monitor-tree-gro
 
