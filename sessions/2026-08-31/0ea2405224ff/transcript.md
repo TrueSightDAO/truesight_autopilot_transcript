@@ -3676,26 +3676,31 @@ Let me see the actual highlight items (lines 522–560) to add the SunMint item 
 ### 🤖 Autopilot
 
 Adding a SunMint program highlight with a link to the SunMint page — applying the edit, verifying, then pushing via the same branch+PR path that worked for the earlier farm-page changes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Python escape for the emoji (surrogate pair) doesn't match the literal UTF-8 file bytes. Let me match with the actual characters:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `\U0001F4CD` escape works (count 1). The earlier failure was the surrogate-pair `\ud83d\udccd`. Now applying the insertion:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Inserted correctly (the 🌱 emoji renders as surrogate pair in grep output — fine, it's valid UTF-8). Let me commit, push, and open the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #242 opened. Merging per the standing go:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3888,4 +3893,110 @@ No prior registration found — safe to submit. One line before I do: **submitti
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] This is already in production.
+
+Examine how much time was spent processing this. See the transcript
+
+
+### 🤖 Autopilot
+
+Let me examine the transcript to reconstruct how much time this effort consumed.
+
+
+### 🤖 Autopilot
+
+Let me find this session's transcript and the usage records to quantify time/cost:
+
+
+### 🤖 Autopilot
+
+Let me find the session transcript for this thread in the transcript repo:
+
+
+### 🤖 Autopilot
+
+The transcript repo's usage/meta files are still "planned" (not implemented per AGENTS.md). Let me check what's actually on disk locally — the autopilot service may keep session logs on this box:
+
+
+### 🤖 Autopilot
+
+Found several transcripts mentioning "rancho" — this thread (16631) is one of the 2026-08-31 sessions. Let me identify the right one and examine its time/cost data:
+
+
+### 🤖 Autopilot
+
+The 0ea2405224ff session (199 hits on rancho/16631) is clearly this thread. Only `transcript.md` exists — no usage/meta JSONL (those are still "planned" per AGENTS.md). Let me examine the transcript structure to estimate time spent:
+
+
+### 🤖 Autopilot
+
+The transcript is this session (3891 lines, Gary Teh, thread 16631). No usage.jsonl exists (still "planned" per AGENTS.md), so I'll reconstruct from the transcript's turn/tool-round structure + PR timestamps:
+
+
+### 🤖 Autopilot
+
+Let me reconstruct the actual time spent from commit/merge timestamps (the most reliable clock) across the repos touched:
+
+
+### 🤖 Autopilot
+
+Let me get the authoritative PR merge timestamps via the GitHub API (the clock for the whole effort) and check what I logged as contributions:
+
+
+### 🤖 Autopilot
+
+Now let me check my contribution records (what time I actually logged) and the PR numbers I'm missing (there may be sunmint data commits too):
+
+
+### 🤖 Autopilot
+
+I have enough to reconstruct the full picture. Let me verify the two contribution submissions I made earlier in this session:
+
+
+### 🤖 Autopilot
+
+Here's the reconstruction from the transcript + authoritative PR merge timestamps. Note upfront: **the structured usage logs (usage.jsonl, meta.json) don't exist yet** — they're still "planned" per the transcript repo's own AGENTS.md — so exact token/cost figures aren't recorded. The best clock available is the git/PR merge timeline, which I pulled live.
+
+## Time spent — the Rancho Maranta / SunMint impact-map effort (this thread, session `0ea2405224ff`)
+
+**16 PRs merged across 3 repos (from the GitHub API, authoritative):**
+
+| # | PR | Merged (UTC) |
+|---|---|---|
+| 1 | agentic_ai_context #844 — plots registry runbook | Aug 30, 23:35 |
+| 2 | truesight_me_beta #325 — wire plots + fix center | Aug 31, 00:02 |
+| 3 | truesight_me_beta #326 — view switcher | Aug 31, 00:43 |
+| 4 | truesight_me_beta #327 — Floripa "planted" label | Aug 31, 01:07 |
+| 5 | truesight_me_beta #328 — exclusive pills | Aug 31, 02:35 |
+| 6 | truesight_me_beta #329 — zoom cap 17 | Aug 31, 02:44 |
+| 7 | agroverse_shop_beta #229 — farm page | Aug 31, 03:11 |
+| 8 | agentic_ai_context #850 — SEO gap filed | Aug 31, 12:14 |
+| 9 | agroverse_shop_beta #233 — card image fix | Aug 31, 12:55 |
+| 10 | agroverse_shop_beta #234 — Plot 1 video | Aug 31, 13:07 |
+| 11 | agroverse_shop_beta #235 — Plot 2 video | Aug 31, 13:51 |
+| 12 | agroverse_shop_beta #236 — warm header + media | Aug 31, 14:00 |
+| 13 | agroverse_shop_beta #237 — IMG_7660 header | Aug 31, 14:30 |
+| 14 | agroverse_shop_beta #238 — heads fix | Aug 31, 14:36 |
+| 15 | agroverse_shop_beta #242 — SunMint highlight | Aug 31, 15:01 |
+| 16 | agroverse_shop_beta #245 — dupe removal | Aug 31, 15:04 |
+
+**Plus non-PR work in the same thread:** sunmint data commits (plots index, satellite cache, workflows — the class-2 repo path), Google-Sheet writes (SunMint Plots tab, SEO sheet), 3 YouTube uploads, 2 ffmpeg encodes, the FARM REGISTRATION ledger event, and 2 contribution submissions logged (120 min + 90 min earlier in the session).
+
+## The honest reading
+
+- **Wall-clock span:** ~15.5 hours (Aug 30 23:35 → Aug 31 15:04 UTC) — but that's *not* continuous work; there's a **~9-hour gap (03:11 → 12:14)** where nothing happened (overnight/other threads). Active working time ≈ **6 hours of PR-merges + the interleaved data work**.
+- **Transcript size:** 3,891 lines, **330 compacted tool rounds**, **94 governor/autopilot message turns**, ~35 git pushes/merges.
+- **What I logged on the ledger:** two contribution submissions (120 min for the registry+map integration, 90 min for the plots tab round-trip) — **only ~210 of the estimated ~360 active minutes**, and both were for the *early* units, not the later farm-page/media/header work (which ran on the "go" loop without per-unit logging).
+
+**The caveat you should know:** this is a *lower bound reconstructed from merge timestamps* — the per-call token/usage logs the transcript repo was designed for aren't written yet (ROADMAP.md lists them as planned), so I can't give you exact token spend. If you want exact cost, the fix is to land the usage-logging infrastructure (the transcript repo's `usage.jsonl` writer) — that's a real gap worth filing, since you've now twice had to ask "how much did this cost?"
+
+**Want me to (a) file that usage-logging gap in OPEN_FOLLOWUPS.md (small PR), and/or (b) log a make-up contribution for the remaining ~150 active minutes (farm page + media + videos + SEO) on the ledger?** Both are quick and I can do them next.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → echo "=== transcript repo sessions ===" && ls /tmp/transcript_check 2>/dev/null; cd /tmp && rm -rf tcheck && git clone -q --depth 1 https://; cd /tmp/tcheck && echo "=== which sessions mention 16631 / rancho-maranta ===" && for d in sessions/2026-08-30/* sessions/2026-08-31/*; do i; cd /tmp/tcheck && echo "=== 0ea2405224ff transcript head ===" && head -60 sessions/2026-08-31/0ea2405224ff/transcript.md && echo "" && echo ; …(+4 more)
 
