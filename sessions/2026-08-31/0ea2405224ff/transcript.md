@@ -3365,21 +3365,25 @@ The people are at the **bottom** of the frame (y=120–160 in the 160-row grid =
 ### 🤖 Autopilot
 
 Header crop created — bottom-anchored 1600×900 with 32.4% skin (people clearly visible, up from 13.8% in the uncropped). Now let me check the current header file and swap it. Let me clone fresh and apply the change:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All refs swapped (4 page + 1 card + media.json hero). Note: the old `rancho-maranta-header-warm.jpg` file remains in assets (harmless, but I'll leave it to avoid a breaking change — actually let me remove it since nothing references it anymore). Let me commit, push, PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed with the header swap. Opening the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #237 opened. Merging per the standing go:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3443,6 +3447,7 @@ PR #237 opened. Merging per the standing go:
 ### 🤖 Autopilot
 
 Go received — next unit: confirm the new header is live on beta so you can review it. Let me verify the deploy propagated (page HTML refs + image 200):
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3475,11 +3480,13 @@ Both checks pass — the header swap is **live on beta**:
 ### 🤖 Autopilot
 
 The heads are getting cut — my bottom-anchored crop put the people's *bodies* in frame but the heads sit at the top edge, and the hero's `center/cover` on a tall viewport crops even further. Let me re-crop **centered on the heads** instead. First, find the exact head positions:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Heads sit at the **top of the skin band (~975px)** — my bottom-anchor put the crop edge right at them. The fix: anchor the crop window **above the heads** with headroom, instead of to the very bottom. Let me re-crop with the heads comfortably inside:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3489,6 +3496,7 @@ New crop: box (0, 815, 1200, 1490) — heads at ~975px now sit at 160px below th
 The `.farm-hero` is `min-height: 100vh` with `background: ... center center/cover`. On a typical laptop (16:9 viewport) the 16:9 crop fills exactly. On a **taller** viewport (portrait phones, or ultrawide), `cover` crops the top/bottom of the image — heads at the top of the crop band would get cut. So the robust fix is **both**: (a) re-crop with headroom (done: heads now at ~16% from top), and (b) change the CSS from `center center` to `center 30%` so the background focal point sits on the heads, not the geometric center.
 
 Let me apply the CSS tweak too so heads never get cropped regardless of viewport:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3631,4 +3639,86 @@ The map popup links to **prod** (`agroverse.shop/...`), which is still the old p
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && rm -rf tmb7 && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git tmb7 2>&1 | tail -1; cd tmb7 && echo ; cd /tmp && rm -rf tmpd && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_me_prod.git tmpd 2>&1 | tail -1; cd tmpd && echo ; cd /tmp/tmpd && sed -n '622,665p' sunmint.html; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] I think under the Farm Highlights section there should be a metnion of part of the sunmint program and then link to https://truesight.me/sunmint.html
+
+
+### 🤖 Autopilot
+
+Let me look at the Farm Highlights section on the Rancho Maranta page and add a SunMint program item with a link:
+
+
+### 🤖 Autopilot
+
+Let me see the actual highlight items (lines 522–560) to add the SunMint item consistently:
+
+
+### 🤖 Autopilot
+
+Adding a SunMint program highlight with a link to the SunMint page — applying the edit, verifying, then pushing via the same branch+PR path that worked for the earlier farm-page changes:
+
+
+### 🤖 Autopilot
+
+The Python escape for the emoji (surrogate pair) doesn't match the literal UTF-8 file bytes. Let me match with the actual characters:
+
+
+### 🤖 Autopilot
+
+The `\U0001F4CD` escape works (count 1). The earlier failure was the surrogate-pair `\ud83d\udccd`. Now applying the insertion:
+
+
+### 🤖 Autopilot
+
+Inserted correctly (the 🌱 emoji renders as surrogate pair in grep output — fine, it's valid UTF-8). Let me commit, push, and open the PR:
+
+
+### 🤖 Autopilot
+
+PR #242 opened. Merging per the standing go:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Added the SunMint Program highlight to the Rancho Maranta Farm Highlights — PR #242 merged.**
+
+**PR #242 → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/242** (merged, sha `424fef8`), 1 file (`farms/rancho-maranta-para/index.html`):
+
+New highlight item in the Farm Highlights grid, after "Region" (line 551):
+- **🌱 SunMint Program** → "Part of the SunMint tree-planting program" linking to **https://truesight.me/sunmint.html** (opens new tab, `rel="noopener"`)
+
+Style matches the existing items (border-left accent card, inherit color, underline link — same pattern as the CEPOTX cooperative link in the same section). The story copy above already mentions the SunMint program; this makes it a clickable highlight.
+
+**Process note:** the first insert attempt failed because Python's surrogate-pair escape (`\ud83d\udccd`) doesn't match literal UTF-8 file bytes — fixed by using the proper `\U0001F4CD` codepoint escape (matched exactly once, verified before write).
+
+## RESUME HERE →
+
+1. **Governor hard-refreshes** → https://beta.agroverse.shop/farms/rancho-maranta-para/ — the Farm Highlights grid should now show "🌱 SunMint Program · Part of the SunMint tree-planting program →" linking to truesight.me/sunmint.html.
+2. **Prod promotion** (gated on your explicit approval) — `sync_beta_to_prod(agroverse_shop_prod)` now carries: farm page #229 + card fix #233 + video embeds #234 #235 + media update #236 + header swap #237 + heads fix #238 + **SunMint highlight #242**. And `sync_beta_to_prod(truesight_me_prod)` — impact map #325–#329 (which includes the plot→farm-profile popup link).
+3. **Optional:** if you'd like the same SunMint highlight + link added to the **Santa Anna** farm page (it's also a SunMint planting site), say the word — same 1-item insert.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cloned agroverse_shop_beta, read highlights section, inserted SunMint Program highlight (fixed emoji escape: \U0001F331), committed + pushed `feat/rancho-sunmint-highlight`, opened PR #242
+• `merge pr` → ✅ PR #242 on agroverse_shop_beta merged (sha: 424fef8faecd8faad7c29695fcedea4b2ca8d019)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && rm -rf agb6 && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git agb6 2>&1 | tail -1; cd agb6 && grep; cd /tmp/agb6 && sed -n '518,565p' farms/rancho-maranta-para/index.html; …(+1 more)
+• `merge pr` → ✅ PR #242 on agroverse_shop_beta merged successfully (sha: 424fef8faecd8faad7c29695fcedea4b2ca8d019). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && rm -rf agb6 && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git agb6 2>&1 | tail -1; cd agb6 && ech; cd /tmp/agb6 && sed -n '518,565p' farms/rancho-maranta-para/index.html; cd /tmp/agb6 && python3 - <<'PYEOF' src = open('farms/rancho-maranta-para/index.html').read() anchor = '''<div class="highlight-item"> <stro; …(+3 more)
+• `merge pr` → ✅ PR #242 on agroverse_shop_beta merged successfully (sha: 424fef8faecd8faad7c29695fcedea4b2ca8d019). Pull Request successfully merged
 
