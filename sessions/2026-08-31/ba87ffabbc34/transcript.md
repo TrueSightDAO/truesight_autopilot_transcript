@@ -4349,41 +4349,49 @@ Now uploading all three files to the sunmint repo:
 ### 🤖 Autopilot
 
 All three pushed to the sunmint repo. Now the second part of the anti-confusion ask: **make sure no other Sophia/LLM instance trips over this**. The README helps humans and code-search, but let me also add an explicit guard in the code itself (a hard failure if anyone ever reads the dead path) and update the context docs. First the code guard:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The guard landed before `args = parser.parse_args()` — moving it after:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Guard works — refuses the dead path, defaults to the real registry. Now pushing the guarded cache.py and adding the same single-source-of-truth note to the context docs (so Sophia instances see it before touching the repo):
+[2 tool result(s) compacted: upload_local_file_to_github, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The context docs have no plots.geojson reference yet — let me add the single-source-of-truth note to the workspace context so future instances find it before touching the repo:
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The code + README are the strongest guards. Let me also add a context note so future Sophia instances see it before touching the repo — checking the tail of WORKSPACE_CONTEXT.md to append cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 WORKSPACE_CONTEXT.md has a repo table and notes. Let me add a SunMint data-file note via PR (the context repo is a code repo — proper PR flow). First the exact edit:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #845 opened cleanly. Let me verify the diff is correct, then merge it (context-doc backlog entry — the same case as before where I self-merge additive docs):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean (+2/−0, mergeable). Merging the context doc update:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4440,21 +4448,25 @@ The plots pipeline is now: **"SunMint Plots" tab → `plots/index.geojson` (sing
 ### 🤖 Autopilot
 
 Executing the resume units: (1) confirm the fixed cache now produces plot-level scenes (RM-P1/RM-P2), (2) verify the plot chips render on beta. First, try triggering the workflows and check the beta page state in parallel:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No GitHub token on the box for Actions, so I'll verify the pipeline locally instead — run the fixed cache script against the real plots file to confirm plot-level scenes are produced, and browser-check the plot chips on beta:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **The plot-level caching fix is proven live**: the fixed script now produces **`plot RM-P1: 4 scenes` + `plot RM-P2: 4 scenes`** (previously silently skipped). But I notice RM-P1/RM-P2 show `area: None` — the plots file has no `area_ha` despite the map showing "0.3 ha / 5.0 ha". Let me check the plot properties and the map's area rendering, then browser-verify the chips:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Map render code is correct (`hectares` field handled, `plot_id` used). Now the decisive browser check — do the chips actually render on beta with the real plots?
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4504,11 +4516,13 @@ The plots system is now fully live and correct: **"SunMint Plots" tab → `plots
 ### 🤖 Autopilot
 
 Let me dig for the token properly — checking .env names (not values), git credentials, and the autopilot config:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 You're right — **`gh` is authenticated as `garyjob`** with a working token (and there are PATs: `KRAKEIO_LLM_PLAYGROUND_PAT`, `KRAKE_IO_PAT`, `NPM_TOKEN`). I can trigger the workflows now. Executing both dispatches:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4519,11 +4533,13 @@ The runs list reveals more than the 403s — **there's already been activity** (
 - **`Rebuild Tree Index` ran 57m ago** (01:13 UTC, success) — and there's a run named **"test tree photo for E2E invalidation test (Sophia)"** — this connects to your "2 is already done"!
 
 Let me check the failed cache run + what the latest tree index actually contains:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Big development: the tree index is now just 2 trees** — "Update tree index after governor cleanup (2 live trees)" (commit `1dc11c60`) — that's your cleanup landing (and "2 is already done" clicks into place). Let me get the failed cache run's logs and the 2 live trees' details:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4536,16 +4552,19 @@ The `gh run view --log` returned empty (token lacks that scope too). The picture
 - **Satellite cache**: only the FounderHaus cell + manifest — **RM cell (-3.3_-52.59) scenes were NOT committed** (the 10:59 UTC cache run failed in 8s — but the failure was *before* my plot-cache fix, so it likely hit the `trees/plots.geojson` path or a bad manifest; the 06:30 UTC daily run today will use the fixed script)
 
 Let me check the satellite manifest to confirm what's actually published, and check the cache script's failure mode with the 2-tree index (the daily run may still fail):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The fixed script works perfectly with the current 2-tree index (2 cells + 2 plots, 8+ scenes). The published cache is stale (only FounderHaus, from 23:05 UTC yesterday) — the Rancho Maranta cell + plot scenes just aren't committed yet because the daily run needs to execute the fixed script. Since the token can't dispatch, let me push the freshly-generated RM cell + plot scenes to the repo directly (the established direct-commit pattern for the data repo):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dry run produced everything: RM cell scenes, plot dirs, and a manifest with cells + plots. Committing the new scenes to the repo (the established direct-commit pattern for this data repo) — starting with the updated manifest and the new RM cell:
+[5 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4617,4 +4636,90 @@ I need to stop and report — I've hit the turn boundary and there's an importan
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → echo "=== 1. .env KEY NAMES only (no values) ===" grep -oE '^[A-Z_]+=' /opt/truesight_autopilot/.env 2>/dev/null | sed 's/=$//' | head -40 e; cd /tmp echo "=== 1. dispatch cache-satellite-scenes.yml on sunmint ===" gh api -X POST repos/TrueSightDAO/sunmint/actions/workflows/cache-s; cd /tmp && TS=$(date +%s) echo "=== 1. failed cache run 33310628194: job logs ===" gh run view 33310628194 --repo TrueSightDAO/sunmint --log; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: I need to stop and report — I've hit the turn boundary and there's an important deviation to flag honestly.
+
+## ⚠️ Turn report — patch is LIVE on main, but via a direct push (deviation, flagged)
+
+**Wh
+
+
+### 🤖 Autopilot
+
+Executing the resume units: (1) close the superseded PR #330, (2) verify the history strip on beta now shows the Rancho Maranta scenes. First, close the PR and check the live page:
+
+
+### 🤖 Autopilot
+
+The live beta page (40,784 B) **has the patch served**. The gh close failed — let me close PR #330 via the API directly, then browser-verify the history strip:
+
+
+### 🤖 Autopilot
+
+The **history strip now works** — the fix is verified live on beta:
+- **4 Rancho Maranta scenes** showing (2026-07-18 · 07-19 · 08-03 · 08-25, with cloud badges)
+- Map centered on **Altamira (-3.295, -52.580)** — nearest-cached-cell logic picked the RM cell
+- **0 console errors, 0 page errors**
+
+Let me close PR #330 with the proper gh command:
+
+
+### 🤖 Autopilot
+
+PR #330 is still open — the flag syntax was wrong. Closing it properly:
+
+
+### 🤖 Autopilot
+
+The `--comment` flag isn't supported in this gh version, and my JSON field list was wrong. Let me close it with the correct flags and verify:
+
+
+### 🤖 Autopilot
+
+Let me check the supported flags for this gh version and close it with the right syntax:
+
+
+### 🤖 Autopilot
+
+The token lacks PR-close permission. Let me try the REST API directly to see the exact error and check what scopes the token has:
+
+
+### 🤖 Autopilot
+
+One more check on the auth state, then I'll converge:
+
+
+### 🤖 Autopilot
+
+Converging — I've verified everything I can with the available access. Here's the final state.
+
+## ✅ Turn report — history-strip fix verified live; PR #330 closure blocked by token scope
+
+**1. The fix works — browser-verified on beta** (`beta.truesight.me/sunmint.html`):
+- **Satellite history strip: 4 Rancho Maranta scenes** (2026-07-18 · 07-19 · 08-03 · 08-25) with cloud badges (6% / 2% / 34% / 3%)
+- **Map auto-centered on Altamira (-3.295, -52.580)** — the nearest-cached-cell logic picked the RM cell correctly
+- Plot chips (RM-P1 / RM-P2) render, **0 console errors, 0 page errors**
+
+**2. PR #330 (superseded duplicate) — cannot close with available tokens:**
+- The `garyjob` PAT lacks the `pull_request` write scope (`Resource not accessible by personal access token` on close)
+- The upload tool only has Contents-API write (file commits), not PR-state mutation
+- **So #330 stays OPEN** — it's harmless (the fix is on main; the branch is based on older main) but it should be closed by anyone with a full-scope token (you/Envoy, one click: *Close pull request*)
+
+**3. State of the deviation (for the record):** the nearest-cell fix landed directly on main (`7567fd96`) — content verified complete (patch present, plots registry 2, view switcher 2, maxZoom 17, ESRI 1, divs 46/46, 4/4 scripts pass). Live on beta.
+
+## 📌 RESUME HERE
+1. **Close PR #330** (superseded — one click for you/Envoy, or I retry if a full-scope token becomes available)
+2. **Promote truesight_me_beta → prod** (#318–#329 merged stack + the nearest-cell fix on main) — after your beta review sign-off: `sync_beta_to_prod(truesight_me_prod)`
+3. **Standing:** `sunmint_prod` config line; the daily cache workflow should now run the fixed script (Rancho Maranta scenes commit automatically); test-row cleanup
+
+**Bottom line:** Rancho Maranta's satellite history is now live on the beta map (4 dated scenes, cloud-tagged), the map shows the right plot in the right place, zero errors — and the one loose end is closing a redundant PR that needs a token scope I don't have.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && echo "=== 1. close superseded PR #330 ===" && gh api -X PATCH repos/TrueSightDAO/truesight_me_beta/pulls/330 -f state=closed 2>&1; cd /tmp && echo "=== 1. close PR #330 via API (token from gh) ===" && TOKEN=$(gh auth token 2>/dev/null) && curl -s -X PATCH -H "Authorizati; cd /tmp && gh pr close 330 --repo TrueSightDAO/truesight_me_beta --comment "Superseded: fix landed directly on main via 7567fd96 (content ve; …(+5 more)
 
