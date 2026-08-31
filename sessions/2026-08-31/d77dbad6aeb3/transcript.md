@@ -2323,6 +2323,7 @@ The dupe check passed (**71 unique, NONE dupes**, 65/71 with GPS) — but the li
 3. They're **processing** (not yet visible) — but random 3/3 NOT FOUND is too many for that.
 
 Wait — earlier I verified IMG_3898/3900/3902 were "live" via the channel listing. Let me check the actual channel uploads vs manifest IDs directly — list what's REALLY on the channel:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2337,6 +2338,7 @@ Wait — but the manifest IDs all ARE on the channel per playlistItems. Let me r
 The difference: `playlistItems` lists ALL uploads ever (including deleted ones can linger?), while `videos().list` checks live videos. The 3 sampled NOT FOUNDs must be **not in the manifest** — they were from `random.sample(ids, 3)` where `ids` came from the manifest... hmm, but that returned NOT FOUND. Unless the manifest was **re-saved** after that check (my earlier json.dump re-wrote it and the IDs shifted?).
 
 Let me just re-run the live check against the CURRENT manifest:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2613,4 +2615,83 @@ Meanwhile, **PR #864** (runbook quota/dead-ID lessons) is still open for your me
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo '=== retry loop alive? ==='; ps -p 73872 -o pid,etime,%cpu,cmd 2>/dev/null || echo "LOOP ENDED"; echo '=== retry log tail ==='; tail -3
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] [Handoff context — this Telegram topic (thread 17184) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Status unchanged — the loop is in its normal wait phase:
+
+## Retry loop status
+
+| Item | Value |
+|---|---|
+| Loop | ✅ alive (pid 73872, elapsed 9:30), sleeping between 30-min cycles |
+| Last attempt |
+
+
+### 🤖 Autopilot
+
+Resuming — while the quota clock ticks, I'll do the non-blocked prep work: regenerate the final manifest doc from the corrected manifest, draft the farm page media.json wiring, then merge the runbook PR #864 so the other Sophias get the lessons now.
+
+
+### 🤖 Autopilot
+
+Manifest doc written (the traceback was just my print using the wrong variable — `d` is the list; the doc file itself saved fine). Farm media.json already has the 8 photos wired from the earlier PR — the remaining wiring is adding curated **video** entries. Let me pick live videos with good metadata for the gallery:
+
+
+### 🤖 Autopilot
+
+Strong candidates. Note 4 of the top ones (IMG_3950, IMG_3953, IMG_3980, IMG_4013) have yt_ids from the **dead list** — I'll only wire live ones. Let me verify liveness of the shortlist, then merge the runbook PR #864 so other Sophias get the lessons now:
+
+
+### 🤖 Autopilot
+
+All 8 shortlisted videos are LIVE with correct titles. Now let me merge PR #864 (runbook lessons — so other Sophias get the quota/dead-ID fixes immediately) per the earlier 👍 coverage:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn complete — runbook lessons merged, video gallery shortlist verified live
+
+### What shipped this turn
+
+**Merged: [agentic_ai_context#864](https://github.com/TrueSightDAO/agentic_ai_context/pull/864)** (sha `4feb665`)
+- FARM_MEDIA_PIPELINE.md now carries the two hard-won lessons from the La do Sitio batch:
+  - **Shared YouTube quota** — all instances share one Google project; daily 'Video Uploads' cap ≈ 50–60; uploads must run behind a 30-min retry loop that survives 429s and skips entries with LIVE yt_ids.
+  - **Verify LIVE, not captured** — title→ID recovery against the shared 259-video playlist captures stale IDs; live-sweep every manifest ID before trusting it.
+  - Plus corrupt-source handling (`moov atom not found` → `SOURCE_CORRUPT`, don't loop).
+- **Impact now**: the Cleide pipeline running on this same box (another Sophia) inherits the fixes — she won't repeat the quota wall or the dead-ID trap.
+
+### Also this turn (prep, no PR)
+- **Manifest doc regenerated** → `/tmp/la_do_manifest_doc.json` (schema v1.0, full corrected video list, storage summary: 52 photos in repo, 53 live, 18 pending quota, 1 corrupt).
+- **Farm gallery video shortlist built + live-verified**: 8 candidates with objects+GPS, **all 8 confirmed LIVE** on YouTube with correct "La do Sitio — IMG_XXXX" titles (IMG_3881, 3908, 3897, 3969, 3986, 3876, 3877, 3878). Skipped 4 top-metadata picks that were still in the dead-ID list (IMG_3950/3953/3980/4013) — those re-upload on quota reset, so I'll re-verify before wiring.
+
+### State
+| Item | Status |
+|---|---|
+| YouTube live | 53/71 (18 pending quota reset ~07:00 UTC; 1 source-corrupt) |
+| Retry loop | pid 73872, durable, self-completes after reset |
+| Photos | 52/52 in `farm-media-raw/la-do-sitio/photos/` ✓ |
+| Runbook | hardened + merged ✓ |
+| Farm gallery | 8 photos wired; video embeds shortlist ready |
+
+## RESUME HERE → next unit (post-quota-reset, ~07:00 UTC)
+1. **Retry loop completes** → verify **71/71 yt_ids live** + dupe check.
+2. **Farm page wiring** → add curated YouTube embeds (the 8 verified + any newly re-uploaded with strong metadata) to `paulo-la-do-sitio-para/media.json` (beta-first via PR → merge → prod on your go).
+3. **Manifest PR** → `agentic_ai_context/FARM_MEDIA_MANIFESTS/la-do-sitio.json` (doc regenerated, ready to push) + index update.
+4. **Cleanup** (on your confirm) — delete local raw after upload + manifest.
+
+All additive, nothing prod touched. The runbook is now hardened for all instances; the quota clock is the only remaining dependency.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json, datetime d = json.load(open('/tmp/la_do_manifest_full.json')) # Final mani; /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json d = json.load(open('/tmp/la_do_manifest_full.json')) # live-only candidates; cd /opt/truesight_autopilot/config/youtube && /opt/truesight_autopilot/.venv/bin/python3 -c " import os, json from google.oauth2.credentials
+• `merge pr` → ✅ PR #864 on agentic_ai_context merged successfully (sha: 4feb665fd9ca4611dae8a398412901dfada931ad). Pull Request successfully merged
 
