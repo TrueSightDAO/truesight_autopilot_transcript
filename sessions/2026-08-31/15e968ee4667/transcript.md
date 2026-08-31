@@ -877,3 +877,55 @@ measurements/
 
 My recommendation: **adopt it.** Say the word and I'll implement the migration + script change as the next PR (and fold the README update in). Want me to go?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+So basically a new JSOn cache file is generated each time a new RSA event is sent.
+
+Where do you think should be the emission done at dao_protocol python or GAS level?
+
+
+### 🤖 Autopilot
+
+My recommendation: **emit at dao_protocol (Python) — the Edgar verify point.** Here's the reasoning:
+
+## Why dao_protocol wins as the emitter
+
+| Criterion | dao_protocol (Edgar) | GAS webhook |
+|---|---|---|
+| **Verification** | **It IS the verifier** — signature is checked at submission (`check_digital_signature`). Emit-at-verify = only *verified* attestations ever published. Zero chance of the malformed REJECT records we hit. | Second-hand parser — trusts the sheet's content, never re-verifies. |
+| **Event coverage** | Sees **every** event type at ingest (EMAIL REGISTERED, PLANTING, GROWTH, REJECT, LINK) | Only what it's wired to parse (planting + growth + link) |
+| **PII policy** | Enforceable at the exact moment — e.g. EMAIL REGISTERED (contains farmer email) can be **redacted-or-skipped deterministically before publish** | Would need its own PII logic + it may not even see those events |
+| **Freshness** | **Instant** — public the moment the farmer submits | Same-ish, but downstream of the sheet |
+| **Exact bytes** | Publishes the exact string Edgar verified | Re-parsed text — drift risk |
+| **Reliability** | Server-side, logged, retryable | 6-min exec cap; a failed PUT silently drops the event until reconciliation |
+
+GAS's advantages (zero new deploy, `TGM_GITHUB_TOKEN` already set) are real, but they're *convenience* advantages, not *correctness* ones. For a **public audit ledger**, correctness wins — you want the emitter to be the authoritative verifier.
+
+## My proposed end-state (a plan amendment, decision 0.5 flips)
+
+```
+Farmer signs → POST → Edgar (dao_protocol)
+   ├─ verify signature  ── FAIL → reject (as today)
+   └─ verify OK ──► [NEW] emit signatures/<msg_id>.json to TrueSightDAO/sunmint (immediate, idempotent by message ID)
+                    └─► append to Telegram Chat Logs (as today) → GAS tabs (unchanged)
+Cron sync_sunmint_signatures.py = reconciliation/backfill only (already built, covers 73 historical events + any emit gap)
+```
+
+- **Emit = append-only, one small immutable file per event** — no read-modify-write, no races, no size ceiling. Exactly the model you described.
+- **Cron stays as safety net** — so even if an emit fails, the 30-min reconciliation heals it within half an hour.
+- **Idempotency** — keyed by Telegram message ID, so a retried emit can't duplicate.
+
+## Ops prerequisites for the dao_protocol path
+1. **PR to `dao_protocol`** adding a post-verify emit hook (small — reuse the Contents-API PUT pattern, PII fail-closed gate, `--dry-run` style safety).
+2. **A repo-scoped PAT in dao_protocol's env** (autopilot's token stays put; keep them separate).
+3. **Deploy to the dao_protocol box** — that's a live-API code change, so I'd do it only on your explicit go (I can PR + stage it, then you approve the deploy).
+
+## What I'd do next if you approve
+1. Update the plan (decision 0.5 → "dao_protocol emit + cron reconciliation") via PR to agentic_ai_context.
+2. Then either implement the emit hook in dao_protocol (deploy-gated) **or** land the per-event file layout in `sync_sunmint_signatures.py` first (migration of the 73 + index.json) — I'd actually do **the layout change first** so the emit hook writes straight into the final format.
+
+Want me to go with that order? And confirm: **dao_protocol as primary emitter, cron as reconciliation** — yes?
+
