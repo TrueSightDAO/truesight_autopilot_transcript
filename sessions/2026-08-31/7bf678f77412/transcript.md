@@ -2850,6 +2850,7 @@ But I notice the manifest still shows `yt_ids 0 / gps 0 / objects 0` in the earl
 ### 🤖 Autopilot
 
 Now I see the real failure: the uploader woke, tried IMG_4832.MOV → **FAILED rc=1** → hit the `STOP on` break. The uploader is dead (70457 gone). Also interesting: `objects 0` in manifest (detect results didn't persist — but that's secondary). Let me find out exactly why the upload failed (rc=1) — earlier the same script worked for the test upload.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3155,4 +3156,24 @@ So the daemon's only job stays tiny (upload → yt_id in sidecar), and the GitHu
 One thing to decide: should the GitHub commit happen **automatically** (a lightweight committer that, say, every few minutes aggregates done sidecars into the manifests and pushes), or **on-demand** (a Sophia runs `commit <farm>` when you or she wants the state refreshed)? Automatic keeps GitHub always current — which makes the "ask any Sophia" pattern work instantly; on-demand keeps commits human-reviewed. My lean: automatic with a throttle (e.g. commit no more than once per N minutes, or when a batch finishes), because you want midstream handoff to just work.
 
 I'm ready to write DESIGN.md with all of this — the queue contract, the sidecar schema, the daemon loop, the committer, and the "how any Sophia reads state" section. Want me to draft it here first for your review, or create the repo and put it straight in?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] And I think more importantly than like all Sophia's I can just query any of them and say hey Can you find me like a set of assets in our repository? I can just like return me whatever from which farm to [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes — and that's actually the payoff of this whole design. Once GitHub is the committed source of truth, **any Sophia becomes a query interface to the entire media library** — not a worker you have to ask "did you finish?" but a librarian you ask "what do we have?"
+
+So: *"find me cacao-processing videos from Cleide"* or *"which farms have fermentation footage?"* — any Sophia reads the manifests and answers instantly, from any thread, without needing to know which box did the upload or which session started it. The manifests are the index; the query is just reading them.
+
+And it scales beyond video: the same manifest pattern already covers the photos in `farm-media-raw` (14 HEICs for Cleide are committed). So a query could span *"all media assets for Fazenda Cleide — photos + videos"* in one answer: here are the 14 raw photos, here are the 71 videos with their YouTube links, here's the state of each.
+
+That's also the seed of something bigger — the "lineage of media" idea. Each asset already has provenance (farm, GPS, date, produced_by). Queries like *"show me everything from CEPOTX farms with organic certification"* become possible once the manifests carry the farm metadata alongside the media.
+
+So the design doc should include a **"Query patterns"** section — the canonical questions a governor can ask any Sophia, and how she answers from the manifests. That makes the doc not just a spec for the daemon but the contract for the whole media library.
+
+Ready to write it up — shall I draft DESIGN.md here in chat first so you can react line by line, or spin up the repo and put it in? My vote: draft here first — it's a 1-page doc, we react together, then it goes in as the repo's founding document.
 
