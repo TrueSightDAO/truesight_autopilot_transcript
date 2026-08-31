@@ -513,21 +513,25 @@ The "SunMint Plots" tab **doesn't exist yet** in the spreadsheet — so the gene
 ### 🤖 Autopilot
 
 Good catches: ruff flagged one unused variable (`source`). Let me fix that, then also add a `--from-local <seed.json>` mode so the workflow can regenerate deterministically from a checked-in seed file when the sheet tab isn't populated yet — actually, simpler: the preserve-on-missing-tab behavior already covers that. Let me just fix the lint error:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Compile + ruff clean + formatted. Now let me run a real functional test of the preserve behavior with a fake seed, and test the square-fallback geometry from lat/lng/ha, before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Test caught a real bug: `get_sheet()` calls `sys.exit()` which raises `SystemExit` — not a subclass of `Exception`, so my preserve-fallback `except Exception` never catches it. Fixing the handler to catch both:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All checks pass — the preserve-fallback now catches `SystemExit` correctly (the functional test proved a missing tab keeps the curated RM-P1/RM-P2 registry intact instead of blanking the map). Now the workflow file, mirroring `rebuild-tree-index.yml`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -710,4 +714,108 @@ Say the word and I'll open the view-switcher PR (and separately investigate the 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp/sunmint2 && echo "=== trees/index.geojson ===" && python3 - <<'PYEOF' import json d = json.load(open('trees/index.geojson')) print("; cd /tmp && rm -rf tmb2 && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git tmb2 2>&1 | tail -1; cd tmb2 && echo ; cd /tmp/tmb2 && sed -n '420,600p' sunmint.html; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go for it.
+
+
+### 🤖 Autopilot
+
+Governor's go — executing the view-switcher PR (plus quick investigation of the junk-coordinate source so the switcher handles reality correctly). Let me first understand the full map script — I noticed there are **two** map inits (line 441 and 662), so I need to see the whole structure before editing:
+
+
+### 🤖 Autopilot
+
+Now I have the full structure — one `initMap` (line ~438) + a fallback, `PILOT_CENTER` Altamira, tree markers added for every valid-coord tree, plots auto-fit at line 592. The Florianópolis demo trees are still on the map, just off-screen. I'll add a **view switcher** (Altamira / Florianópolis / All trees) mirroring the plot-chip pattern, and make the plot auto-fit run only on first load so it doesn't fight the user's view choice. Let me grab exact anchors:
+
+
+### 🤖 Autopilot
+
+Anchors located. Let me see the exact code between the marker loop and the `loadSatelliteHistory` call so I can place the view-switcher wiring precisely:
+
+
+### 🤖 Autopilot
+
+I have the complete structure. The Florianópolis trees (2) are still on the map — just off-screen; and interestingly **there are zero Altamira trees in `trees/index.geojson`** — the pilot-area trees aren't registered as tree rows yet (only the plots polygons are). So the view switcher is exactly the right fix: Altamira (plots) / Florianópolis (demo trees) / All.
+
+Let me apply the edits locally, syntax-check, then push:
+
+
+### 🤖 Autopilot
+
+All 6 edits applied, JS syntax OK — but let me verify the checked script was actually the map script (there were 4 inline scripts), then push via git_push_changes:
+
+
+### 🤖 Autopilot
+
+The map script (index 3) contains all the new refs, and `node --check` passed on it. Let me get the exact current diff for the PR and push:
+
+
+### 🤖 Autopilot
+
+Diff is exactly the intended 51-line change, JS syntax verified. Pushing the PR now with the same edits via git_push_changes:
+
+
+### 🤖 Autopilot
+
+PR #326 opened. Verifying the pushed branch's JS is clean, then merging per the go-signal:
+
+
+### 🤖 Autopilot
+
+Pushed branch verified — JS clean, all new refs present. Merging PR #326:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Governor's "go for it" → answered the Florianópolis question with a real fix.**
+
+**1. Diagnosed where the Florianópolis trees live** — they're in `trees/index.geojson` and were always on the map; PR #325's Altamira re-center just pushed them **off-screen**:
+- `Edgar_20260819134740_489` — Cacao Criolla (2026-08-19), photo `20260819104739_...`
+- `Edgar_20260821175134_005` — **Bougainvillea, LINKED** (2026-08-21), QR `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`, photo `20260822_130000_FOUNDERHAUS_GROUP.jpg` — this is the **Founderhaus (Florianópolis coworking) demo tree**, the original reason the map was centered there.
+
+**2. Built the view switcher** — mirroring the existing plot-chip pattern:
+- **Altamira (pilot)** → -3.294, -52.578, zoom 12 (where the Rancho Maranta plots are)
+- **Florianópolis (demo)** → -27.44, -48.50, zoom 15 (Founderhaus trees)
+- **All trees** → fit bounds over every registered tree
+- Chips show live per-view tree counts; selecting a view sets `__viewChosen` so the plot auto-fit **no longer overrides** the user's choice.
+
+**3. PR #326 — merged** (`feat/impact-map-view-switcher`, sha abd73b3): 51 insertions / 1 deletion in `sunmint.html` — `#viewSelector` div, `__viewChosen` flag, `treePoints[]` collection, chip rendering + `flyTo`/`flyToBounds`, guarded plot auto-fit.
+
+**4. Testing:** all 6 edits exact-anchored; inline map script extracted → `node --check` passed **both** locally and on the pushed branch (`viewSelector`×1, `treePoints`×4, `__viewChosen`×3 present).
+
+**5. Data-quality flag (for follow-up):** 13 of 19 registry entries are non-Amazon (8 Oregon/CA, 1 China, 4 no coords) — mostly early import/test artifacts. The switcher makes everything reachable; triaging the junk coords is a separate data fix, not a map fix.
+
+## Live for review
+
+→ **https://beta.truesight.me/sunmint.html** — hard-refresh (Ctrl/Cmd+Shift+R). You should now see **View: Altamira (pilot) · Florianópolis (demo) (2) · All trees** chips above the map. Click **Florianópolis (demo)** to fly to the Founderhaus Bougainvillea + Criolla.
+
+## RESUME HERE →
+1. **Governor reviews view switcher on beta** → if good, **explicit approval** → `sync_beta_to_prod(truesight_me_prod)` (promotes both the Altamira wiring #325 and the switcher #326).
+2. **Triage the 13 non-Amazon tree entries** — identify import/test artifacts vs real trees; propose `status: "test"` flagging or a separate demo/tree registry so the "n registered trees" count stays honest (data change in `sunmint`).
+3. **Create the "SunMint Plots" tab** in the ledger spreadsheet so `build_plots_geojson.py` has a real source of truth.
+4. **RM-P2 boundary authority** — CAR/INCRA polygon or full perimeter walk (5 ha claimed vs 2.9 ha walked).
+5. **Register Altamira trees on-chain** — currently **zero** tree rows exist at the pilot; the plots are mapped but the planted trees aren't in the registry yet.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → read map script (both inits + fallback), located anchors, applied 6 exact edits, extracted map script → node --check OK, verified pushed branch JS, diff reviewed
+• `git push` → truesight_me_beta PR #326
+• `merge pr` → ✅ PR #326 merged (sha: abd73b38fedf30bdf72a63ff87beb3e65709d236)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp/tmb2 && echo "=== lines 380-470 (map init 1) ===" && sed -n '380,470p' sunmint.html && echo "=== lines 600-700 (map init 2) ===" && ; cd /tmp/sunmint2 && echo "=== build_tree_geojson.py ===" && cat scripts/build_tree_geojson.py 2>/dev/null | head -120; cd /tmp/tmb2 && echo "=== viewSelector anchor candidates ===" && grep -n "plotSelector\" style" sunmint.html && echo "=== fitBounds plot lin; …(+5 more)
+• `merge pr` → ✅ PR #326 on truesight_me_beta merged successfully (sha: abd73b38fedf30bdf72a63ff87beb3e65709d236). Pull Request successfully merged
 
