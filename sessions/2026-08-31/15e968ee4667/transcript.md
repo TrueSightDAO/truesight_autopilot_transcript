@@ -1951,56 +1951,67 @@ Let me look at the server side — where submissions are verified server-side (t
 ### 🤖 Autopilot
 
 Let me look at the routes (where submit_contribution is handled) and the crypto directory (where verification happens).
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `verify.py` is the verification module. Let me read it — this is where the emit hook would attach.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **This is the emit hook's home.** `verify.py` returns exactly the fields the ledger needs: `payload` (the exact `signed_payload`), `signature`, `public_key`. Now I need to find where `verify()` is called after submission — the route handler where verified submissions flow through. Let me check the dao route.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the submission flow. I need to see where `verify.verify()` is called in the route handler and where the Telegram Chat Logs row is written — that's the emit hook's anchor point. Let me read the submission handler part.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I'm converging toward the A4 implementation. I have the flow map; now I need the exact anchor points: where `verify()` is called and where the Telegram Chat Logs row is written, plus the config for the PAT/repo. Let me batch these lookups.
+[3 tool result(s) compacted: search_code, search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me find the exact anchor point in the route handler — where `verify()` succeeds and the row is appended. Let me search the dao.py content for the verify call site.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the sheet-writer. Now the anchor: where `add_record` is called in the route after verification. Let me find that call site.
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Code search isn't finding it (likely index lag). Let me read the dao.py route handler's submission section directly — the part after verification where the row is appended.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the anchor. The main submission path is at **line 372–495** (`POST /dao/submit_contribution`): verify → `add_record` at 434 → email onboarding → dispatch. Let me read that exact block to design the emit hook precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full anchor map. The emit hook goes right after `telegram_raw_log.add_record(...)` (line 434), guarded by `signature_verification == "success"` — with the `verification_result` (payload/signature/public_key) right there, plus the message ID from `add_record`'s generated ID. Now let me check the github_upload service (existing Contents-API pattern) and how the message ID flows back.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have the complete A4 picture: the emit hook attaches in `dao.py` right after `telegram_raw_log.add_record(...)` (line 434), reusing `github_upload._put_file`'s exact Contents-API pattern with a new config `github_ledger_repo` + the existing `github_pat`. One nuance: the message ID used in the ledger must match what the **cron** uses — the cron keys by the chat-log's `message_id` (col D). Let me verify what ID the cron uses vs. what `add_record` writes, so the emit hook and reconciliation agree.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2062,41 +2073,49 @@ One open item to confirm with Gary at the gate: **PAT provisioning** — I'll ne
 ### 🤖 Autopilot
 
 Resuming A4: implementing the dao_protocol emit hook. Let me set up a working copy of the dao_protocol repo and inspect the exact files I'll modify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clone into /opt was denied — I'll use a writable path (/home/ubuntu). Let me clone dao_protocol there and verify its layout.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean clone at HEAD `2830c02`. Now let me look at the exact code I'll modify: `add_record` (to return message_id), the submit route (line ~430 anchor), and the existing tests for the route so my changes stay consistent.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tests live at repo root `tests/`, not under the package. Let me check `tests/test_dao.py` for `add_record` mocks and confirm nothing depends on `add_record` returning a bool.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two `add_record` call sites (line 434 submit + 635 review). The test at line 24 monkeypatches `add_record` — let me see how it mocks it (returns bool? None?), so my change to return `str` doesn't break the test.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the cron's record-builder field names so the emit hook produces schema-identical records (parity with the 74 live files).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The cron record schema is captured exactly. The emit hook will produce **identical records** (same field names), but — key insight — at verify time the emit hook can do better on `contributor_name` (resolve from the signer's registered entry via `sigs.find_by_public_key`, like `_resolve_governor_authority` does) and `submitted_at` (now). It also needs the event-type→folder mapping and the PII fail-closed check. Let me write the module now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 New module written and compiles. Now: (1) config settings, (2) `add_record` returns message_id, (3) wire the hook into the route. Let me check the config field style and the exact add_record body, then apply all three edits.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2218,4 +2237,61 @@ Clean diff: **5 files, +238/−9** (2 new, 3 modified).
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×22 → cd /opt/truesight_autopilot && ls truesight_dao_client 2>/dev/null; echo "=== clone if needed ==="; [ -d /opt/dao_protocol/.git ] && echo "d; cd /home/ubuntu && [ -d dao_protocol/.git ] && echo "exists" || git clone -q https://github.com/TrueSightDAO/dao_protocol.git dao_protocol 2; cd /home/ubuntu/dao_protocol && echo "=== telegram_raw_log add_record ===" && grep -n "def add_record\|return" truesight_dao_client/server/s; …(+19 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Clean diff — exactly 5 files, +238/−9, no noise. A4 PR is at the gate. Reporting.
+
+## A4 PR ready — at gate ✅
+
+### [dao_protocol PR #151: emit verified RSA events to public attestation ledger](https:/
+
+
+### 🤖 Autopilot
+
+Gary's 👍 clears the A4 gate. Merging PR #151.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**A4 code merged — emit hook is in dao_protocol.** ✅
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **PR** | [dao_protocol #151](https://github.com/TrueSightDAO/dao_protocol/pull/151) — merged (squash, `a200487`) |
+| **What changed** | Post-verify emit hook in `POST /dao/submit_contribution`: verified RSA events now publish an immutable per-event JSON to `verify_public_signatures/<event_type>/<msg_id>.json` at ingest time (idempotent, keyed by the same message_id the reconciliation cron uses; PII fail-closed; non-fatal — cron heals gaps) |
+
+## Roadmap state
+| Unit | Status |
+|---|---|
+| A1 pivot | ✅ |
+| A2 retarget + A2b live push | ✅ |
+| A3 ledger README | ✅ |
+| **A4 emit hook (code)** | ✅ **merged** |
+| **→ A4b: live deploy (deploy-gated)** | ⏭️ **next** |
+| A5 docs + UAT (+ A6 backfill) | not started |
+
+## RESUME HERE → **A4b: deploy the emit hook (deploy-gated)**
+
+The A4 gate is: **Gary approves deploy after review** — the code is reviewed/merged; the **live deploy** still needs your explicit go. Deploy steps:
+1. Provision a repo-scoped `DAO_PROTOCOL_GITHUB_LEDGER_PAT` (write: `verify_public_signatures`) in the dao_protocol box's `.env`
+2. Deploy the updated service to the dao_protocol box — ⚠️ **blocker flagged:** direct SSH to `dao_protocol` failed last turn (`Permission denied (publickey)`) — needs your help fixing access, or deploy via the repo's release/CI path
+3. **Smoke test:** submit a test-verified `[TREE PLANTING EVENT]` through Edgar → confirm `verify_public_signatures/tree_planting/<id>.json` appears immediately (before the 30-min cron)
+4. Then **A5** (docs + UAT — plan §6 checklist) and **A6** (historical backfill across all RSA event types)
+
+Please confirm the deploy go + the PAT/SSH access situation, and I'll execute A4b.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #151 on dao_protocol merged successfully (sha: a200487a9a953fe64b4656024eeca6b8f80109cf). Pull Request successfully merged
 
