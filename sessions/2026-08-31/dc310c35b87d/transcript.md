@@ -2863,6 +2863,7 @@ Resolved file is clean: built on **current main** (43,132 bytes) → 47,053 byte
 ### 🤖 Autopilot
 
 Pushed. Now attempting the merge of PR #332:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3032,4 +3033,57 @@ Wat is dat later? [System note: the user sent this as a VOICE message via the Te
 ### 🤖 Autopilot
 
 "Later" is just my way of saying the next step happens in a fresh turn — I work one step per turn to keep things safe and reviewable. Right now, the farms dropdown (PR #334) is ready to merge. When you say go, I merge it, then build the farms registry section next, then the final polish, then a quick check on beta, and only then promote to production. So "later" isn't vague — it's literally the next step, waiting on your go. Want me to go ahead now?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: "Later" is just my way of saying the next step happens in a fresh turn — I work one step per turn to keep things safe and reviewable. Right now, the farms dropdown (PR #334) is ready to merge. When yo
+
+
+### 🤖 Autopilot
+
+Go-signal received — merging PR #334 (PR2 v2, farms selector):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merge failed again (405) — stopping here per the one-PR-per-turn rule and reporting the pattern, which now looks significant.
+
+## What happened this turn
+
+**Attempted to merge PR #334 (PR2 v2, clean base)** → **❌ 405 "Pull Request has merge conflicts"** — even though I verified `mergeable: True` and a clean +80/−2 diff *last turn*.
+
+## The emerging pattern (worth flagging)
+
+This is the **third consecutive time** `truesight_me_beta/sunmint.html` on `main` has moved while I was mid-flight:
+
+| PR | Cause of conflict |
+|---|---|
+| #292 (whitepaper) | main gained new sections (Community-First MRV, milestones, lifecycle §13) after branch cut |
+| #332 (farms selector) | main gained **"View farm profile on Agroverse"** popup link in the same polygon region |
+| **#334 (farms selector v2)** | main apparently moved **again** since I verified mergeable — my clean-base branch was cut ~an hour ago |
+
+The mergeable state went from `True` (verified via API last turn) to conflicting — **something is actively committing to `main` between my turns.** Candidates: (a) another autopilot/agent instance editing `sunmint.html` (this thread is an auto-start handoff — possibly running alongside another executor), (b) a GitHub Action / Pages-rebuild writing to main, (c) the governor editing live. This is no longer "stale branch" — it's a **concurrent-writer problem** on this one file.
+
+## RESUME HERE → next unit (same blocker, new approach)
+
+1. **Diagnose the concurrent writer first** — `git log --oneline main/sunmint.html` (last ~15 commits with authors/timestamps), check open PRs and Actions runs on `truesight_me_beta`. If another agent is editing, I need to coordinate (check_handoffs / handoff manifest) rather than keep fighting it
+2. **Rebuild once on the freshest main, then merge in the SAME turn** — fetch → rebuild (re-apply 8 hunks) → push → merge immediately, so the drift window is minutes, not hours
+3. If the file keeps moving, **escalate to you**: options are a coordinated edit window, or moving the work to a subpage that doesn't collide with the live-edited file
+
+Say go and I'll run the diagnose → rebuild → merge-in-one-turn sequence.
+
+———
+**Actions this turn:** `merge_pr #334` → ❌ 405 conflict (blocker). No PR opened or merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
 
