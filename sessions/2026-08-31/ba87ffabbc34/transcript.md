@@ -4616,6 +4616,7 @@ PR #323 opened. Now uploading the full patched whitepaper file to the branch:
 ### 🤖 Autopilot
 
 Now verifying the PR diff is clean via the authoritative API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4660,6 +4661,7 @@ Say "go" to merge #323, or to build the map's plot-rendering V2 next.
 ### 🤖 Autopilot
 
 Merging truesight_me_beta#323 — the whitepaper §3.1 geospatial data model.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4708,21 +4710,25 @@ Say "go" to build the plot-rendering V2 map, or to verify §3.1 on beta first.
 ### 🤖 Autopilot
 
 Executing — build the plot-rendering V2 on the impact map. Fetching the current page and map script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me read the full map init function (437–560) to see where to add the plots layer:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the fetch/init block and the HTML section structure to wire the plots layer + selector:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full structure mapped. Building the plot V2: a `plots.geojson` fetch → polygon rendering → plot selector chips → fly-to-plot, all degrading gracefully when empty. Applying the patches:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4851,4 +4857,61 @@ Which is it — where did you record the plot assignments? Or shall I add the sh
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && echo "=== 1. plots.geojson in sunmint repo (current) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main; cd /tmp && echo "=== generator: exact spreadsheet id + tabs ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scr; cd /tmp && echo "=== list all sheet tabs via metadata ===" && curl -s -m 20 "https://sheets.googleapis.com/v4/spreadsheets/1qbZZhf-_7xzmDTri; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] How are we recording the plot boundaries for the rancho maranata plot right now
+
+
+### 🤖 Autopilot
+
+Let me check what actually exists for Rancho Maranata — searching the context, the tree data, and the sheets:
+
+
+### 🤖 Autopilot
+
+No "Maranata" in the context files or the tree index. Let me search the repos and the sheets to see where Rancho Maranata lives:
+
+
+### 🤖 Autopilot
+
+No "Maranata" anywhere in context, code, or the tree sheet so far. Let me check the rest of the sheet rows and the other spreadsheet for a Plots tab or Maranata references:
+
+
+### 🤖 Autopilot
+
+One more check — the session transcripts and handoffs (in case Maranata came through as an attachment or the Onaya handoff):
+
+
+### 🤖 Autopilot
+
+Here's the honest, complete answer.
+
+## How plot boundaries are recorded for Rancho Maranata right now: **they aren't**
+
+I searched **everywhere** for "Maranata" / "Rancho" and found **zero records**:
+- **agentic_ai_context** (all runbooks/docs): 0 matches
+- **All GitHub repos** (org-wide code search): 0 matches
+- **SunMint Tree Planting sheet** (the source of truth, 21 trees): 0 matches; no plot column exists (headers stop at "Linked At")
+- **tree index / plots.geojson**: `plots.geojson` is **empty** (0 features); all trees have `plot_id: None`
+- **Session transcripts** (60 days, 50 transcripts): 0 attachments mentioning Maranata
+
+**So the plot-boundary recording system is currently 100% contract, 0% data.** The infrastructure is ready (whitepaper §3.1, `plot_id` pickup, `plots.geojson` layer, plot-aware caching, map polygon rendering) — but nothing has been recorded yet for Rancho Maranata or any plot.
+
+## The two missing pieces to actually record it
+
+1. **A "Plots" tab in the SunMint spreadsheet** (the `1qbZZhf-…` sheet) — columns: `Plot ID`, `Name`, `Polygon WKT` (or corner lat/lng pairs), `Area (ha)`, `Status`, `Notes`. I need to wire the generator to read this tab and emit real polygons into `plots.geojson` (it currently always writes an empty layer — contract only).
+2. **A "Plot ID" column in the SunMint Tree Planting tab** — per-tree assignment (e.g. `RANCHO_MARANATA`) so trees link to the plot.
+
+**How you'd capture the actual boundary in Altamira** (3 options, simplest first):
+- **Google Earth** (free) — walk/drive the boundary once, save as KML → I convert KML → GeoJSON polygon
+- **SW Maps** (free Android app, made for this — records GPS tracks/polygons in the field) → export KML/GeoJSON
+- **On a map from the desk** — if you know the approximate corners, I can build the polygon from a handful of corner coordinates you send me
+
+**Want me to wire the Plots-tab reader into the generator now** (so the moment you have a KML/GeoJSON or a sheet row, it flows end-to-end)? That's the one remaining code piece — after that, recording Rancho Maranata's boundary is just: capture polygon → paste into the sheet tab → generator rebuild → map + satellite cache light up.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && echo "=== 1. index.geojson: any Maranata / plot refs ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main
 
