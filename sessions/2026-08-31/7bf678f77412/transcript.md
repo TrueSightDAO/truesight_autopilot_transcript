@@ -2625,6 +2625,7 @@ I'll pick up automatically when the chain completes (build `cleide.json` manifes
 ### 🤖 Autopilot
 
 Go received — checking the chain.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2664,21 +2665,30 @@ I'll pick up automatically when the chain completes. Ping anytime for status.
 ### 🤖 Autopilot
 
 Gary, let me pull the site codes from the fda_fsvp supplier docs for all three CEPOTX farms.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The files are all there. Let me extract the site codes from each farm's PDF (Paulo, Cleide, Santa Anna) plus the cooperative's packing facility doc.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 pymupdf isn't available in the default python — the autopilot venv has it. Let me use the venv.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Paulo's code found: **V-06-29**. Santa Anna's PDF shows the site-code fields (need the filled values — let me look deeper), and I need to re-confirm Cleide's from the earlier extraction. Let me pull the full site sections.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2713,16 +2723,19 @@ Want me to add a site-code reference into the farm profiles (e.g. a "FSVP site c
 ### 🤖 Autopilot
 
 Gary's approving the site-code addition to the farm profiles. Let me pull the current farm pages to find the right spot for the FSVP site-code line.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — Cleide (B-06-108) and Santa Anna (B-06-58) already carry their site codes on the pages; **Paulo's page has none**. Let me confirm the exact context on each and fix Paulo's.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Cleide and Santa Anna already have their site codes inline in the story text. Paulo's page (line 518 story + facts card) lacks it. Let me look at Paulo's facts section to add "CEPOTX site code: V-06-29" consistently.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2885,4 +2898,70 @@ Say 1, 2, or 3 and I'll proceed.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → echo "=== PAULO beta page: site code present? ===" curl -sL "https://beta.agroverse.shop/farms/paulo-la-do-sitio-para/" | grep -o "FSVP Site; cd /home/ubuntu/cleide_work echo "=== fix-gps log (new pass) ===" ls -la gps_fix_log*.txt fix_gps*.log 2>/dev/null | head tail -5 gps_fix_lo; cd /home/ubuntu/cleide_work echo "=== arm_upload2.py — what it waits on ===" cat arm_upload2.py 2>/dev/null | head -50 echo "=== reupload_re; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Turn report — Site codes confirmed + Paulo's page updated ✅
+
+**What you asked:** the site codes for the CEPOTX farms.
+
+| Farm | Site code | Source (fda_fsvp) |
+|---|---|---|
+| Cooperative (packing/
+
+
+### 🤖 Autopilot
+
+Go received — proceeding with option 1 (throttled auto-uploader, my recommendation). Building the resume-safe 6/day uploader that starts after the quota reset, plus fixing the manifest state (IMG_4832 FAILED → retry-ready, objects backfill).
+
+
+### 🤖 Autopilot
+
+Detect never persisted (YOLO RAM warning = it crashed before writing any per-video results; objects=0). I'll fix that separately. Writing the throttled, resume-safe uploader now and arming it:
+
+
+### 🤖 Autopilot
+
+Uploader launched (PID 105025). The initial log is empty — it may be sleeping to the quota-reset window. Let me verify it's alive and behaving (waiting for tomorrow 07:05 UTC, or attempting an upload if today's cap isn't hit).
+
+
+### 🤖 Autopilot
+
+The throttled uploader is live and **already produced the first upload**:
+
+**Live status:**
+
+| Item | Result |
+|---|---|
+| Uploader | PID 105025, alive, resume-safe, 6/day cap, 429-backoff |
+| **IMG_4832.MOV** | ✅ **UPLOADED** → `https://www.youtube.com/watch?v=NGQ9BP97_t4` (public, rc=0) |
+| IMG_4833.MOV | ⚠️ FAILED rc=1 (YouTube 429 quota) — uploader auto-retries in 600s, doesn't mark done |
+| Manifest | reset clean: 71 to-upload, IMG_4832 now has yt_id |
+
+**What the uploader does:**
+- Processes remaining 70 mp4s in order, public, titles `Fazenda Cleide — <file> (GPS)` 
+- **Daily cap 6 attempts** (successes + quota-failures both count) — conservative for the unverified OAuth project; sleeps to ~07:05 UTC when cap hit, resumes next day
+- Every success writes `yt_id` to manifest → **resume-safe** across days/crashes
+- On 429 it clears yt_id and sleeps 600s, so it rides through transient quota windows
+
+**Honest note:** IMG_4832 went through but IMG_4833 hit 429 immediately after — so today's quota is nearly spent (the project likely did La do Sitio's 71 over prior days). Expect **~1–6 uploads today, then ~12 days** to finish all 71 at 6/day. If you ever verify the Google Cloud project (or grant a second project), the cap jumps to 100/day and it finishes in a day — say the word if you want to pursue that.
+
+**Also flagged:** YOLO object detection crashed before persisting (RAM warning — same OOM family as before). Videos still carry GPS + titles + descriptions, so the manifest remains rich; I'll backfill objects in the final manifest build or skip them (your call).
+
+---
+
+**RESUME HERE → next turn:**
+1. Check uploader: `tail throttled_uploader.log` + `wc -l yt_upload_log.txt` (expect several yt_ids by then)
+2. When all 71 done: build `FARM_MEDIA_MANIFESTS/cleide.json` (sha256/GPS/yt_ids) + add cleide to `index.json` → PR
+3. Step 9: farm-page `media.json` (YouTube gallery) on agroverse_shop_beta → PR
+4. Backfill objects in manifest if you want YOLO content tags (needs a low-mem re-run)
+
+The uploader runs unattended; I'll hold here and report when uploads land.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /home/ubuntu/cleide_work echo "=== detect_log: can we recover objects? ===" head -5 detect_log.txt 2>/dev/null | tr -d ' ' grep -c "^IMG"; cd /home/ubuntu/cleide_work # reset the FAILED marker so IMG_4832 gets retried python3 - <<'PY' import json m=json.load(open('manifest.json'; cd /home/ubuntu/cleide_work sleep 20 echo "=== uploader process ===" ps -p 105025 -o pid,etime,rss,cmd --no-headers 2>/dev/null | cut -c1-90
 
