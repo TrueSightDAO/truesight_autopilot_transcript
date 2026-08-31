@@ -4050,6 +4050,7 @@ Plan-file edit committed to the branch (`42d4065`). Let me verify PR #846 now co
 ### 🤖 Autopilot
 
 Merging PR #846 (the GAS Script Properties registry):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4108,16 +4109,19 @@ Merging PR #846 (the GAS Script Properties registry):
 ### 🤖 Autopilot
 
 👍 Go received. Next unit: **close out the SunMint plans in `HANDOFF_MANIFEST.md`** — marking them UAT-complete. Reading the manifest first to get the exact entry format:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Reading the manifest, I need the exact raw text of the SUNMINT_TREE_QR_LINKING_PLAN row to edit it precisely (the read output shows escaped unicode). Let me fetch the raw file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest row uses literal `\u2014` escape sequences in the raw file — good, I can anchor exact substrings. The row's UAT gate is the **first real link** (books ledger + emails owner, needs Gary's explicit go), so the honest status is: **reject/invalid path fully proven, LINK UAT still pending Gary's go**. Updating the manifest via PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4171,6 +4175,7 @@ The manifest row uses literal `\u2014` escape sequences in the raw file — good
 ### 🤖 Autopilot
 
 Merging #847, and in parallel fetching `OPERATING_INSTRUCTIONS.md` to find where to add the pointer:
+[2 tool result(s) compacted: merge_pr, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4233,6 +4238,7 @@ I fetched `OPERATING_INSTRUCTIONS.md` (758 lines) to find the insertion point fo
 ### 🤖 Autopilot
 
 👍 Go received. Next unit: **the OPERATING_INSTRUCTIONS.md pointer PR** — adding the `GAS_SCRIPT_PROPERTIES.md` row to the runbook index. Reading the table structure around line 26 to anchor the edit precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4423,4 +4429,47 @@ Most of your messages were **👍 go-signals, short directives** ("go for it", "
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot_transcript/git/trees/main?recursive=1" | python3 -c " impo; cd /tmp && echo "=== search transcripts for thread 16362 ===" && for f in 2026-08-29 2026-08-30 2026-08-31; do curl -s "https://api.github.c; cd /tmp && echo "=== full structure of one 08-31 session ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_autopilot; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] report contribution
+
+
+### 🤖 Autopilot
+
+Reporting the contribution. First, verifying the correct event format:
+
+
+### 🤖 Autopilot
+
+Recording the contribution for this SunMint work (≈3.5h active execution across 08-30/08-31):
+
+
+### 🤖 Autopilot
+
+✅ **Contribution reported**
+
+| Field | Value |
+|---|---|
+| Event | CONTRIBUTION EVENT |
+| Type | Time (Minutes) |
+| Amount | **210 min** (~3.5h active execution, 08-30 + 08-31) |
+| Contributor | Sophia Truesight |
+| TDG Issued | 0 |
+| Status | **Submitted successfully** |
+
+**Covered work:**
+- Root-caused the reject-path failure (GAS col D vs col A mismatch + stale webhook @32 vs @37 + swapped signature fields in my scripts)
+- Merged + deployed GAS fixes `tokenomics #449/#450`; proved the full E2E loop (plant → live → invalidate → gone) with my own test tree
+- Verified auto-dispatch via `dao_protocol` ROUTING (`#149/#150`, box pull + restart)
+- Promoted `sunmint_beta #46` (no QR fabrication) and `#48` (`#treeIdManual` removal) to prod
+- Built reusable `sunmint_submit.py` (`truesight_autopilot #353`)
+- Created `GAS_SCRIPT_PROPERTIES.md` registry + manifest close-out (`agentic_ai_context #846/#847/#848`)
+
+If you want the amount in USD instead, or a different TDG Issued, tell me and I'll adjust (or I can file a correcting event).
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
