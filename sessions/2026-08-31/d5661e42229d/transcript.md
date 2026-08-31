@@ -4203,7 +4203,13 @@ The reusable script uses `load_der_private_key` — my inline script used `load_
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 **Row 29 landed — `Edgar_20260831015152_009` at 01:51:52Z, three seconds after my submission — and I did NOT fire the webhook.** That's the plant auto-dispatch proof. Let me confirm the row content is my plant event (species/contributor/photo) to be certain:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4259,11 +4265,13 @@ Only trees that have been signed and planted should be considered
 ### 🤖 Autopilot
 
 Let me check what `#treeIdManual` is on the live page and how it's used, so I can scope that change properly (read-only — this is an observation from the thread; I won't change code without your go).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me scope the actual usages (lines 599, 668, 1002, 1086, 1199–1224) so I can propose a precise removal plan:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4320,6 +4328,7 @@ A hidden-by-default text input that lets a user **type any tree ID manually** �
 ### 🤖 Autopilot
 
 👍 Go received. Checking the manifest, then pulling the exact beta source so the PR edits are precise.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4532,4 +4541,38 @@ No new PRs this turn; no ledger writes; no money movement.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && curl -s "https://sunmint.truesight.me/monitor-tree-growth/" -o prod_check.html && echo "=== treeIdManual references on LIVE PROD ; cd /tmp && echo "=== authoritative: sunmint_prod repo, monitor-tree-growth/index.html ===" && curl -s "https://api.github.com/repos/TrueSigh; cd /tmp && echo "=== service worker on live site? ===" && curl -s "https://sunmint.truesight.me/monitor-tree-growth/sw.js" | head -20; echo ; …(+1 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: what is the url to set the TGM_GITHUB_TOKEN value?
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362]
+
+
+### 🤖 Autopilot
+
+The TGM_GITHUB_TOKEN lives in **Google Apps Script Project Settings → Script properties** for the project `1UrBg…` (the tree-planting GAS project).
+
+**URL to open the project's settings:**
+```
+https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/settings
+```
+
+**Steps once there:**
+1. You'll land on **Project Settings** (gear/settings view of the project)
+2. Scroll to the **Script properties** section
+3. Click **Add script property** → `Property` = `TGM_GITHUB_TOKEN`, `Value` = your **repo-scoped** PAT (the `.env` `TRUESIGHT_DAO_AUTOPILOT` one — `github_pat_…` — is proven to work for `repository_dispatch`; it returned HTTP 204 for me earlier)
+4. Click **Save script properties**
+
+**Important — deployment pin:** the webhook deployment @37 (`AKfycbyoFCTz…/exec`) runs a **snapshot (v37)**, so Script Properties changes **do** apply (properties are read at execution time from the project, not baked into the version), but code changes would need a new version. The `getGithubToken_()` reads `PropertiesService.getScriptProperties().getProperty('TGM_GITHUB_TOKEN')` at call time — so once you save the property, the very next dispatch should pick it up, no re-deploy needed.
+
+**Alternative (if you prefer a URL that opens the whole project):**
+```
+https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v
+```
+
+After you set it, the loop becomes fully automatic: reject → INVALID → dispatch → rebuild → tree gone, with zero manual steps. (And to confirm — this was the last open item in the chain; everything else is live.)
 
