@@ -3438,6 +3438,7 @@ Let me now look at what the current plots geojson has, check the SunMint Plots s
 ### 🤖 Autopilot
 
 The plot data source is the **SunMint Plots sheet** (regenerated to `sunmint/plots/index.geojson`, fetched live by sunmint.html). Let me check the sheet and the rest of the build script.
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3445,11 +3446,13 @@ The plot data source is the **SunMint Plots sheet** (regenerated to `sunmint/plo
 I now have the full picture. The plot system: **Google Sheet "SunMint Plots" tab** (source of truth) → `build_plots_geojson.py` regenerates `sunmint/plots/index.geojson` → `sunmint.html` (truesight_me_beta, beta.truesight.me/sunmint.html) renders it live. Existing plots are **Rancho Maranta** (Jedielcio family farm at -3.296, -52.583 — a *different* location ~1.3 km from Santa Anna's cluster at -3.2923, -52.5721).
 
 Let me check write creds for the sheet + gspread, and quickly assess the new media for page-worthy content.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet is readable (I already pulled it). Let me check the write creds and glance at the new media content to pick page-worthy items.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3654,4 +3657,53 @@ Say "go" and I'll start with the plot row + geojson, then the media additions.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → for sa in agroverse_qr_code_manager upc_barcode; do /opt/truesight_autopilot/.venv/bin/python3 - "$sa" << 'EOF' import gspread, sys from goo; cd /opt/truesight_autopilot && grep -n "def grok_analyze_images" app/grok_client.py | head -3; sed -n "$(grep -n 'def grok_analyze_images' a; cat > /tmp/hull_compute.py << 'PYEOF' import csv, re rdr = csv.DictReader(open('/tmp/gps_all.csv')) def dms(s, hc): m = re.match(r"(\d+)\s+d; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] Is the Pilot Sheet schema also appended to SCHEMA.md? Sounds like you are extending the schema.
+
+
+### 🤖 Autopilot
+
+Good catch — let me check whether the SunMint Plots sheet schema is documented anywhere (SCHEMA.md) and whether I'd be extending it.
+
+
+### 🤖 Autopilot
+
+No `SCHEMA.md` in the sunmint repo root — let me check the repo structure for where the plot schema is documented.
+
+
+### 🤖 Autopilot
+
+Let me read the README and the build script to see how the plot schema is documented, and whether adding SA-P1 needs a schema change.
+
+
+### 🤖 Autopilot
+
+Good question — checked, and the answer is **no schema extension needed**. Here's the honest state:
+
+## Where the plot schema actually lives
+
+There is **no `SCHEMA.md` in the sunmint repo** (I checked — 404, and the repo root has only README.md, plots/, trees/, satellite/, scripts/). The schema is defined by two things:
+
+1. **`scripts/build_plots_geojson.py` → `FIELD_COLUMNS`** (the authoritative parser): `plot_id, farm_id, name, hectares, status, boundary_authority, owner, region, verified_at, media, notes, coordinates, lat, lng`
+2. **The sheet headers** ("SunMint Plots" tab, 14 cols A–N: Plot ID, Farm ID, Plot Name, Hectares, Status, Boundary Authority, Owner, Region, Notes, Coordinates, Latitude, Longitude, Media, Verified At)
+
+## SA-P1 fits the existing schema — no extension
+
+The Santa Anna row uses only existing columns:
+- Plot ID: `SA-P1` · Farm ID: `santa-anna-fazenda` · Plot Name: "Santa Anna Fazenda Plot 1" · Hectares: `3` · Status: `proposed` · Boundary Authority: `approx` · Owner: `Jedielcio (CEPOTX)` · Region: `Altamira, Pará` · Coordinates: the 8-vertex hull JSON · Notes: compound-track + pending boundary photos
+
+Nothing new — same shape as RM-P1/RM-P2.
+
+## What I'd suggest (optional, small)
+
+Since you raised it: the schema is currently *implicit* (only in the build script + sheet headers). If you'd like, I can add a **`SCHEMA.md`** to the sunmint repo documenting both registries (plots + trees columns) so future extensions like this are reviewable as a doc change — a 15-minute PR. Say the word and it goes into the same PR as the SA-P1 plot work.
+
+**RESUME HERE → next unit:** on your go — (1) add the SA-P1 row via `agroverse_qr_code_manager` SA (write access confirmed), (2) run `build_plots_geojson.py` → PR sunmint, (3) verify on beta.truesight.me/sunmint.html, (4) optionally add `SCHEMA.md` in the same PR, (5) then the farm-page media additions + profile↔plot cross-link discussion.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp 2>/dev/null; rm -rf sunmint_check && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git sunmint_check 2>&1 | tail -1; cd /tmp/sunmint_check && echo "=== build_plots_geojson.py ==="; cat scripts/build_plots_geojson.py
 
