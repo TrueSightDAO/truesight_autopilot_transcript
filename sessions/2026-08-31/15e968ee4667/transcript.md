@@ -653,6 +653,7 @@ Gary cleared the PR1 gate with 👍. Before executing PR2, let me re-read the pl
 ### 🤖 Autopilot
 
 Let me read the rest of the plan (PR2-4 gates) and check where the script lives on the box vs. where the cron runs.
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -822,4 +823,57 @@ openssl dgst -sha256 -verify pub.pem -signature sig.bin payload.txt   # => Verif
 ```
 
 Want me to attach a sample of the JSON so you can eyeball the shape directly (e.g. one planting event record), or proceed with **PR4** (docs/UAT — the final roadmap unit)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+I think instead of one big file, we should for each signature have its own separate JSOn file that way there is no possibility of a JSOn file getting to big. Also makes it easier to hook up the emit business logic to do_protocol python or the GAS... thoughts?
+
+
+### 🤖 Autopilot
+
+Strong idea — I'm actually in favor. Here's my honest read:
+
+## Why per-event files is the better design here
+
+| Concern | One big file (current) | Per-event files |
+|---|---|---|
+| Size ceiling | 220 KB now, ~3 KB/event → 3 MB @ 1k events, grows forever, every sync rewrites all of it | None — each event = one small immutable file |
+| Per-attestation URL | `…/signatures.json#<msg_id>` — **fragment anchors don't actually work on raw JSON**, that was a design smell | `…/signatures/171.json` — a **real stable URL** a VVB or a future `[CARBON CREDIT ISSUANCE EVENT]` can cite directly |
+| "Emit" business logic | Emitter must read-modify-write the whole file (race-prone, full rewrite per event) | **Append-only**: dao_protocol Python or the GAS webhook writes exactly one file per event at ingest time — no merge, no races |
+| Sync cost | Full-file sha PUT every 30 min | **Incremental**: sha-aware skip per file; only new/changed events touch GitHub |
+| Audit trail | Single diffable file | Per-event immutable commits + one index (see below) |
+| Enumeration | trivial | needs an index — but **the repo already has this convention** (`trees/index.geojson`, `plots/index.geojson`) |
+
+## Recommended layout (matches existing repo convention)
+
+```
+signatures/
+  index.json          # registry: message_id -> url, event_type, submitted_at (the enumeration surface)
+  171.json            # one file per event — immutable once written (message ID is the stable dedup key)
+  Edgar_20260820112723_046.json
+  ...
+measurements/
+  index.json          # same pattern for growth measurements
+  <msg_id>.json
+```
+
+- **Index = the "all events" surface** (compact, ~1 KB/event metadata) — consumers who want everything fetch `index.json` then fan out, or just hit a single event URL.
+- **Share URL becomes clean:** `https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/signatures/171.json`
+- **Emit path gets real:** the GAS growth webhook (`1UrBgq…`) or dao_protocol already parses each event at ingest → it can emit `signatures/<id>.json` **immediately** (TGM_GITHUB_TOKEN is already set). The 30-min cron stays as **reconciliation/backfill**, not the primary writer. That's the plan's decision 0.5 flipping from "cron only" to "emit-at-ingest + cron reconciliation" — strictly better for freshness.
+
+## Tradeoffs (honest)
+- Repo tree gets busier (73 files now, ~thousands eventually) — mitigated by `signatures/` dir + index; GitHub handles this fine.
+- Two files to document instead of one — README already has a home for this.
+- Migration needed: split the existing 73 events out of `signatures.json` into per-event files + index (one-time script run, keeps commit history).
+
+## Impact if you approve
+1. **PR**: modify `sync_sunmint_signatures.py` → write `signatures/<id>.json` + `signatures/index.json` (+ same for `measurements/`), keep sha-aware incremental PUT, migrate existing 73 events
+2. Update README (URLs + layout)
+3. Cron unchanged (now incremental + reconciliation)
+4. Optionally note the GAS/dao_protocol emit hook for near-real-time (can be a follow-up — the cron path alone is complete)
+
+My recommendation: **adopt it.** Say the word and I'll implement the migration + script change as the next PR (and fold the README update in). Want me to go?
 
