@@ -678,11 +678,13 @@ Let me read the final chunk of the post (the close + ledger section) to know exa
 ### 🤖 Autopilot
 
 PR #338 opened with the text edits. Now uploading the 5 JPG frames to `assets/blog/` on the same branch — all in one batch:
+[5 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 5 photos uploaded to the PR branch. PR #338 now has the complete change (8 text edits + 5 JPGs). Merging it so the real-photo version goes live on beta:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -732,21 +734,25 @@ The real-photo version is live on beta for your review; prod waits for your word
 ### 🤖 Autopilot
 
 Gary's saying the images still look messed up on the page — let me diagnose what's wrong before touching anything. The zip had 5 HEIC **photos** (not just videos) that I never looked at — those may be the actual good-quality images. Let me inspect both the video frames I used and those HEIC photos.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tool call error — forgot the host param. Retrying:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The heredoc likely broke the tool's parsing. Let me try simpler commands.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The zip has 13 MOVs + **5 HEIC photos** (IMG_7693–7698) — those are the actual photos Gary mentioned, and I never used them (I only pulled video frames). The feedback "images still look messed up" fits: video frames are often dark/blurry/compressed. Let me diagnose quality and convert the HEIC originals.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -883,4 +889,36 @@ Montage sent to this topic (message 17591). Once you confirm (or tell me "use 2,
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → echo '=== 1. img tags on live beta post ==='; curl -s https://beta.truesight.me/blog/posts/the-tree-the-industry-despises-feeds-the-family-e; echo '=== 1. sharpness via PIL (no cv2) ==='; python3 - <<'PYEOF' from PIL import Image, ImageFilter import os d = '/home/ubuntu/rm_media/fs; SRC='/home/ubuntu/to_analyze/to analyze'; ls -la "$SRC" | grep -E 'IMG_7654|IMG_7669|IMG_7672|IMG_7673' ; echo '---'; python3 - <<'PYEOF' im; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] 7669 not good
+
+
+### 🤖 Autopilot
+
+Gary — pulling IMG_7669 candidate frames so you can pick a better one. Extracting the sharpest moments (t=1.0, 4.5, 5.0, 6.0, 6.5, 14.5s) and sending them as a labeled montage:
+
+
+### 🤖 Autopilot
+
+Montage of IMG_7669 candidates built. Sending for your pick:
+
+
+### 🤖 Autopilot
+
+## 📸 IMG_7669 candidates sent (message 17616)
+
+Pulled 6 candidate frames from IMG_7669 (the year-round Ponta Verde tree clip) at the sharpest, most content-rich moments — t=1.0, 4.5, 5.0, 6.0, 6.5, 14.5s — all cropped 4:3 and labeled in the montage.
+
+**Please tell me:**
+- Which timestamp looks right (e.g. **"t=5.0"**), **or**
+- "**none, drop it**" and I'll cut the tree figure from the post entirely (we still have hero + crimson + yellow pod)
+
+Once you pick, I'll build the final fix PR: new hero (IMG_7654 @4.0s, 16:9), your chosen tree shot, crimson close-up @8.0s, yellow pod @10.5s — all web-ratio cropped and sharp — push to beta, then prod on your "promote".
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → SRC='/home/ubuntu/to_analyze/to analyze'; OUT=/home/ubuntu/rm_media/fs8_7669_pick; mkdir -p $OUT; cd $OUT for T in 1.0 4.5 5.0 6.0 6.5 14.5;
 
