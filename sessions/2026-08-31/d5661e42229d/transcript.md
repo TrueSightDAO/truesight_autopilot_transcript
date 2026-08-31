@@ -3918,6 +3918,7 @@ There's already scattered precedent (ETSY, EasyPost, Wix, ANTHROPIC/GROK keys, A
 ### 🤖 Autopilot
 
 No single GAS registry exists — the closest is scattered notes (plans, OPEN_FOLLOWUPS). Let me check for any existing GAS-project registry/convention doc before creating one:
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4080,4 +4081,75 @@ Merging PR #846 (the GAS Script Properties registry):
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #846 on agentic_ai_context merged successfully (sha: 55d58fa67a58a76cdab1a2d6efb75c9be59b0c93). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**"merge it" received → merged the GAS Script Properties registry.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `agentic_ai_context` |
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **close out the SunMint plans in `HANDOFF_MANIFEST.md`** — marking them UAT-complete. Reading the manifest first to get the exact entry format:
+
+
+### 🤖 Autopilot
+
+Reading the manifest, I need the exact raw text of the SUNMINT_TREE_QR_LINKING_PLAN row to edit it precisely (the read output shows escaped unicode). Let me fetch the raw file:
+
+
+### 🤖 Autopilot
+
+The manifest row uses literal `\u2014` escape sequences in the raw file — good, I can anchor exact substrings. The row's UAT gate is the **first real link** (books ledger + emails owner, needs Gary's explicit go), so the honest status is: **reject/invalid path fully proven, LINK UAT still pending Gary's go**. Updating the manifest via PR:
+
+
+### 🤖 Autopilot
+
+## What I did this turn (one PR opened — stopped per one-PR-per-turn)
+
+**Go received 👍 → updated the SunMint handoff manifest to close out the reject/invalid path.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `agentic_ai_context` | **[#847](https://github.com/TrueSightDAO/agentic_ai_context/pull/847)** | 🟡 **OPENED** (2 edits to `handoffs/HANDOFF_MANIFEST.md`) |
+
+**What changed (honest status, not overclaiming):**
+- **Status**: `active — UAT pending` → **`active — reject/invalid UAT done (2026-08-31); first real LINK pending Gary go`**
+- **Resume tracker**: appended the full 2026-08-31 close-out — 061 + 487 invalidated & removed from `index.geojson`; plant → live → invalidate → gone E2E on my own test tree; auto-dispatch proven for both plant and reject events (dao_protocol ROUTING #149/#150, box pulled + restarted); `#treeIdManual` removed on prod (`sunmint_beta #48` → sync); `TGM_GITHUB_TOKEN` SET (see `GAS_SCRIPT_PROPERTIES.md`); reusable submit script `#353` merged
+- **RESUME HERE** kept as-is: the **first real LINK still needs Gary's explicit go** (it books the ledger + emails the owner — an irreversible, governance-gated step I will not self-authorize)
+- **Last manifest update** → 2026-08-31
+
+**Why "UAT done" is scoped to the reject/invalid path only:** the LINK path's UAT (first real cacao-QR → tree link) is a ledger-booking + owner-emailing action requiring Gary's explicit go — correctly left parked.
+
+### Gates NOT crossed
+- **#847 not merged** (next unit)
+- No deploy, no Edgar submission, no ledger writes, no money movement this turn
+
+---
+**RESUME HERE → next turn:**
+1. **Merge `agentic_ai_context #847`** (say "merge it") — manifest close-out is live.
+2. **Optional**: add the `GAS_SCRIPT_PROPERTIES.md` pointer to `OPERATING_INSTRUCTIONS.md` runbook index (canonical file — needs your explicit approval).
+3. **The only remaining SunMint action is yours**: give the explicit go for the **first real LINK** (QR → tree) when you're ready — that books the ledger + emails the owner and completes the last UAT gate.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 → raw manifest fetched; SUNMINT_TREE_QR_LINKING row located (line 26, literal `\u2014` escapes)
+• `git push changes` → agentic_ai_context PR #847 opened (2 manifest edits, commit f903701)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/handoffs/HANDOFF_MANIFEST.md" -o manifest.md && grep -n "SUNMINT_TREE_QR_LINKING_PLAN" manifest.md | head -3 && grep -n "active \\\\u2014 UAT pending" manifest.md | head -5
+• `git push changes` → https://github.com/TrueSightDAO/agentic_ai_context/pull/847
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/handoffs/HANDOFF_MANIFEST.md" -o manifest.md && e
 
