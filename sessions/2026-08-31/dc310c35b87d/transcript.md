@@ -2451,51 +2451,61 @@ Let me read the full `loadPlots` function and the tree popup for reference — l
 ### 🤖 Autopilot
 
 PR1 executing — I have the current popup builder. Let me see the map section HTML (lines 225–260) to place a legend correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture. Now let me check the existing CSS for `.plot-chip` / `.view-chip` (to match legend styling) and find a good CSS insertion point:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No `<style>` block — styling is inline. I'll build the enriched popup with inline styles (consistent with the page's approach) plus a compact legend below the map controls. Let me create the edits — the popup builder in `loadPlots()` and a legend row after the map controls:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wait — I need to verify what actually landed. Both my edits had replace identical to search (a paste error — no real change). Let me check the PR content:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My edits were botched — the second edit accidentally **removed the `<div id="satelliteHistory">` opening tag** and the first was a no-op. The PR currently breaks the satellite-history section. Let me fix this properly by building the correct file locally and pushing the whole corrected file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Right — I fetched fresh `main` (which is intact), so the "restore" step was wrong there. Let me redo with only the enrichment + legend edits (steps 2 & 3):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 File is correct now (42,877 bytes, all tags balanced, satelliteHistory intact, legend + enriched popup present). JS syntax check needs a real node run — the extraction succeeded (4 inline scripts). Let me verify JS syntax and then push the corrected whole file to the PR branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 JS syntax OK. Now let me fix the broken PR #331 — the current PR branch has the bad edit (removed satelliteHistory div). I'll push the corrected whole file to the same branch via the Contents API (which worked for the whitepaper PR), replacing the botched content:
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I accidentally wrote a placeholder string instead of the real content — let me immediately replace it with the actual corrected file via `upload_local_file_to_github` (reads the local file):
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the PR branch has the real corrected file. Let me verify the PR #331 diff is now clean (only enrichment + legend, satelliteHistory intact):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2503,6 +2513,7 @@ Now the PR branch has the real corrected file. Let me verify the PR #331 diff is
 PR #331 is now clean: **+22 / −3**, exactly the enrichment + legend, satelliteHistory intact, all tags balanced, JS syntax OK. This is the PR1 deliverable. Let me do a final verification that the PR branch file is well-formed end-to-end, then report (I'll stop here — merge is part of the flow but per the one-PR-per-turn rule I report first and merge on the next go):
 
 Actually — the plan says PRs get merged as part of executing the plan (go-signal authorizes merge). The turn directive says stop after opening/merging a PR. I've opened/updated PR #331 this turn. Let me verify final state and report with the merge pending the next unit, consistent with the established rhythm.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2563,6 +2574,7 @@ Say go and I'll merge PR1 + start PR2.
 ### 🤖 Autopilot
 
 Go-signal received — executing. Per the plan, first merge PR #331 (PR1 complete), then start PR2 (farms selector). Let me merge and check the plan file to confirm PR2's exact spec:
+[2 tool result(s) compacted: merge_pr, read_context_file — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2622,11 +2634,13 @@ I'll auto-start PR2 on the next go per the plan's auto-start manifest row — or
 ### 🤖 Autopilot
 
 Executing **PR2: Farms selector/filter dropdown** — auto-start confirmed. Let me read the current page state (post-PR1) focusing on the selector/load logic:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the loadPlots / viewSelector / plotSelector logic in full (lines 500–700) to plan the farms selector integration precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2743,4 +2757,55 @@ I'll auto-start PR3 on the next go per the plan's auto-start manifest row — or
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint.html" -o sunmint_p2.html && wc -c sunmint_; cd /tmp && sed -n '480,700p' sunmint_p2.html; cd /tmp && sed -n '700,780p' sunmint_p2.html; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: PR #332 is verified: **+80/−2**, byte-identical to my locally-validated version (tags balanced, JS syntax OK). PR2 is complete. Stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**
+
+
+### 🤖 Autopilot
+
+Go-signal received — per the plan rhythm, first merging PR #332 (PR2 complete), and reading the plan to confirm PR3's spec:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merge attempt failed — stopping here per the one-PR-per-turn rule and reporting the blocker.
+
+## What happened this turn
+
+**Attempted to merge PR #332 (PR2 — farms selector)** → **❌ failed: "Pull Request has merge conflicts" (HTTP 405).**
+
+Also read the plan (§5 PR3 checklist + roadmap) to confirm the next unit's spec — the plan itself is unchanged and correct.
+
+**Likely cause (same as the earlier whitepaper PR #292):** `truesight_me_beta/main` moved after my PR2 branch was created. My branch was built on the `main` that already contained merged PR1 (42,877 bytes, verified) — but `main` has since advanced further (likely one of the unrelated open content PRs — #282/#284–289 — merged, or a direct main edit), so GitHub's three-way merge against the original merge-base now sees a conflict on `sunmint.html`.
+
+## RESUME HERE → next unit (resolves the blocker, then PR3)
+
+1. **Fetch latest `main`** — diff `main/sunmint.html` vs the PR2 branch base to see exactly what moved
+2. **Rebuild the PR2 changes onto current `main`** — same surgical approach that fixed whitepaper PR #292 (start from fresh `main`, re-apply the 8 hunks: `#farmSelector` row, `treeMarkers` refs, `plotLayers`/`plotFarms`/`farmNames`, `applyFarmFilter` + `pointInPoly`, chip-hiding)
+3. **Verify**: tags balanced, JS `node --check`, byte-identical to locally-validated build
+4. **Update PR #332's branch** with the resolved file → **merge PR #332** → confirm beta live
+5. Then **PR3 — Farms Registry section** (plan §5 PR3): `#farms` section fed from plots data (farm name, plots count, total ha, status mix, region), scroll/link from the farms dropdown, open PR
+
+Say go and I'll resolve the conflict, merge PR2, and proceed to PR3.
+
+———
+**Actions this turn:** `merge_pr #332` → ❌ 405 conflict (blocker) · `read_context_file` (plan — PR3 spec confirmed). No PR opened or merged this turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
 
