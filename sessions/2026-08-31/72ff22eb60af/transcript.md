@@ -359,6 +359,7 @@ Go signal received. Checking the handoff registry first, then verifying the beta
 ### 🤖 Autopilot
 
 The beta page is **live** — `https://beta.sunmint.truesight.me/instrucoes/` returns 200 with the full bilingual page. Now verifying the nav integration on the other two beta pages, and checking what a prod sync would actually promote:
+[3 tool result(s) compacted: http_fetch, http_fetch, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -372,21 +373,25 @@ All three beta pages verified live:
 | `beta.sunmint.truesight.me/instrucoes/` | 200 ✅ | ✅ (selected) |
 
 PR #50 merged, content served matches what was pushed (bilingual sections 1–5, PT/EN toggle, offline tip, back link). Beta verification passes. Your 👍 "go for it" on the resume text — which explicitly described the prod sync upon approval — is the promotion go. Running `sync_beta_to_prod`:
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod sync succeeded (deploy ledger: `deploy_20260831T195052Z_sunmint-prod`). Verifying the production site is serving the new page:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod sync succeeded at the repo level, but `sunmint.truesight.me/instrucoes/` returns **404** — GitHub Pages "file not found." Before concluding anything, let me diagnose where the fault lies: does the prod repo actually have the file, and what's the Pages config?
+[3 tool result(s) compacted: read_repo_file, http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file **is** in `sunmint_prod` (read_repo_file returned it) and the prod root page already serves the new nav — so the sync landed. The `/instrucoes/` 404 looks like GitHub Pages propagation for a brand-new path (the Pages API 404s because `sunmint_prod` is private). Let me confirm the deploy ledger and retry the URL once:
+[2 tool result(s) compacted: read_repo_file, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -428,16 +433,19 @@ One suggestion for next: when you share the link with Jedielcio and other farmer
 ### 🤖 Autopilot
 
 Good idea — a real screenshot makes the "send as file" tip concrete for farmers. But there's one thing to handle before embedding: **privacy**. Let me check the screenshot's metadata and content first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The screenshot has **no GPS or identity EXIF tags** (clean for location), but it *does* show a real WhatsApp conversation with **Jedielcio's name** (and likely his number/avatar) — that's PII we shouldn't publish on a public farmer-facing page. The right move: **crop to just the message bubbles** and redact the header. Let me locate the text precisely so I can crop accurately (OCR bounding boxes):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The screenshot has **no GPS/identity metadata** (clean — nothing to leak from EXIF), but the full image shows a real WhatsApp header with **Jedielcio's name** — that's PII we shouldn't publish on a public page. The right approach: crop it down to just the guidance message bubble. Let me crop and verify the result contains only the instructional text:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -579,4 +587,66 @@ Stopping here per the one-PR-per-turn rule. Report below — beta verification +
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → ls -la /tmp/instrucoes_send_as_file_tip.png && python3 -c " from PIL import Image im = Image.open('/tmp/instrucoes_send_as_file_tip.png') pr; cd /tmp && rm -rf sunmint_beta_probe && git clone --depth 1 -q https://github.com/TrueSightDAO/sunmint_beta.git sunmint_beta_probe 2>&1 | ta; cd /tmp && cp /tmp/instrucoes_send_as_file_tip.png /tmp/sunmint_beta_probe/instrucoes/send-as-file-tip.png && echo "copied" && ls -la /tmp/s; …(+5 more)
 • `merge pr` → ✅ PR #52 on sunmint_beta merged successfully (sha: 98d9dc741d87168e9b5a2f64348d74686e42bbbb). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17700] [Handoff context — this Telegram topic (thread 17700) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Stopping here per the one-PR-per-turn rule. Report below — beta verification + prod promotion is the next unit.
+
+## ✅ Done this turn — WhatsApp guidance screenshot embedded in Instruções
+
+**PR:** [sun
+
+
+### 🤖 Autopilot
+
+Go received. Resuming the next unit: beta verification → prod promotion. Checking the beta site now (image, page, service-worker):
+
+
+### 🤖 Autopilot
+
+Beta verified across the board:
+- **`/instrucoes/`** → 200, page now renders the `<figure class="tip-img">` with the cropped WhatsApp screenshot + bilingual caption ✅
+- **`/instrucoes/send-as-file-tip.png`** → 200, image/png, 127,587 bytes ✅
+- **`/service-worker.js`** → 200, precache list includes both new entries ✅
+
+Your 👍 "go for it" on the resume text — which explicitly names `sync_beta_to_prod sunmint_prod` upon approval — is the promotion go. Running it:
+
+
+### 🤖 Autopilot
+
+Prod sync succeeded (deploy ledger `deploy_20260831T201344Z_sunmint-prod`). Verifying production now — page, image, and service worker:
+
+
+### 🤖 Autopilot
+
+## ✅ Embedded screenshot — LIVE in production
+
+**Prod:** [sunmint.truesight.me/instrucoes/](https://sunmint.truesight.me/instrucoes/) now shows the real WhatsApp guidance bubble under Section 1's tip — with the bilingual caption ("Exemplo real de orientação a um parceiro da fazenda (WhatsApp)" / "Real example of guidance sent to a farm partner (WhatsApp)").
+
+**Verified on both environments:**
+
+| URL | Beta | Prod |
+|---|---|---|
+| `/instrucoes/` (page w/ figure) | 200 ✅ | 200 ✅ |
+| `/instrucoes/send-as-file-tip.png` | 200 ✅ (127,587 B) | 200 ✅ (127,587 B) |
+| `/service-worker.js` (precache incl. page+image) | 200 ✅ | 200 ✅ |
+
+**Ship trail (this unit):**
+1. Beta verification after merge of [sunmint_beta#52](https://github.com/TrueSightDAO/sunmint_beta/pull/52) — all three URLs confirmed serving the new content
+2. `sync_beta_to_prod sunmint_prod` → success, deploy ledger [`deploy_20260831T201344Z_sunmint-prod`](https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260831T201344Z_sunmint-prod.md)
+3. Prod verification — page, image, and service worker all 200 with the new content (no propagation lag this time; everything up on first fetch)
+
+**What farmers now see** on the public page: the actual WhatsApp message you sent Jedielcio (*"Envie como arquivo em vez de foto; assim, as informações são preservadas"*) — cropped to the message bubble only, so **no contact name, avatar, or header** is exposed. PII-safe by construction.
+
+**Mission tie-back:** the real-message screenshot is the trust anchor that gets farmers to actually send photos as *files* — which is what keeps GPS intact and makes every field photo a verifiable data point for the 10,000-hectare Amazon rainforest registry.
+
+**Optional next steps** (whenever you want):
+- Share **https://sunmint.truesight.me/instrucoes/** with Jedielcio and other farmers (OG preview card is configured)
+- Later, a "📷 vs 📎 side-by-side" graphic teaching the mechanism (option 2 from earlier) — I can build it anytime
+- Consider pinning the instructions as a WhatsApp-forwardable image card for quick sharing
+
+That's the full chain complete: GPS extraction → 15-min contribution → Instruções page → beta → prod → real-screenshot embed → prod. Nothing pending except anything you'd like to add.
 
