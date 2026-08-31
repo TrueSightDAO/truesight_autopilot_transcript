@@ -3083,66 +3083,79 @@ Right sheet ID: `1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ`. Let me read the 
 ### 🤖 Autopilot
 
 Now I have the full picture. Three workstreams: (1) extend RM-P1 boundary with the new GPS walk, (2) pick a human-warmth header + interesting media, (3) wire it all. Let me first find the most human moment across the new clips by sampling frames and running the skin-tone heuristic:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Strong human moments: **IMG_7688 (40.9%)** and **IMG_7684 (39.7%)** — these clips (17:05–17:16, during the house walk) clearly show people. IMG_7684 at 40% of its duration (mid-frame) is a great header candidate. Let me extract full frames from the top candidates for visual inspection:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 IMG_7684_0.5 (47% skin) is the warmest frame — that's the header candidate. Let me create a landscape crop from it (portrait source) and prep everything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Header crop ready (1600×900). Now let me check the current media.json gallery + pick a video (IMG_7684 has the humans — it's the natural Plot-1 "people at the house" video). Let me prep the Plot-1 human video and check the current gallery structure:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full picture ready. Plan: (1) extend RM-P1 boundary in the sheet + regenerate the plots index, (2) replace the header with the warm human frame, (3) add the 5 new photos + a family video to the gallery. Starting with the boundary extension (sheet → builder → index):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The update call needs a values list, not a raw string. Fixing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sheet updated (boundary extended, hectares 0.3→0.4, authority walk-approx). Now regenerate the plots index from the sheet and push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Regenerated correctly. Pushing the updated plots index to sunmint:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Push succeeded but the raw CDN shows stale data (CDN lag). Let me verify via the git API directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed on main (e710b7c): RM-P1 now 0.4 ha, 6-pt polygon, walk-approx authority. The raw CDN was just cache lag. Now the farm page work: new header + gallery additions. Let me prep the Plot-1 family video (IMG_7684 has the humans) and check what the current header looks like:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The nohup should still be running (same as before). Let me poll:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still encoding (frame 620, ~20s of ~30s). Let me wait and poll again:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wait — duration shows 20.9s but it says STILL RUNNING. The IMG_7684 clip is 30.9s. The encode may have just finished writing (20.9s is partial or the file duration is still being written). Let me wait for the process to finish cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3200,6 +3213,7 @@ Stopping here per the turn limit — work is mid-flight with the family-video en
 ### 🤖 Autopilot
 
 Go received — resuming the mid-flight work. First: check if the family-video encode finished, then upload it and continue the header/gallery work.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3298,4 +3312,98 @@ PR #236 opened. Merging per the standing go-signal:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → cd /tmp/rmn && pgrep -f "IMG_7684" >/dev/null && echo "STILL RUNNING" || echo "DONE"; ls -la rancho-maranta-family.mp4 2>/dev/null; ffprobe ; cd /tmp/rmn && ps aux | grep -i "IMG_7684" | grep -v grep | awk '{print $3, $4, $10}' ; echo "=== log tail ===" && tail -5 encode3.log; echo; cd /tmp/rmn && echo "=== source duration ===" && ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 IMG_7; …(+10 more)
 • `merge pr` → ✅ PR #236 on agroverse_shop_beta merged successfully (sha: f2f2cda9c44c7b9b6279117dafd5069b6f682c77). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] PErhaps use this image as header image instead?
+
+https://beta.agroverse.shop/assets/images/farms/rancho-maranta-IMG_7660.jpg
+
+
+### 🤖 Autopilot
+
+The governor prefers IMG_7660 as the header. Let me inspect it first (dimensions, content — skin-tone heuristic for warmth/people, since it's from the original gallery batch), then swap all header refs:
+
+
+### 🤖 Autopilot
+
+/tmp/agb3 was cleaned up. Let me fetch the image from beta directly and inspect it:
+
+
+### 🤖 Autopilot
+
+IMG_7660 is portrait (1200×1600), 13.8% skin (people present), medium brightness. The header uses a 1600×900 `center/cover` crop — a portrait source gets center-cropped hard, so let me find where the people are (skin cluster) and crop a landscape window around them:
+
+
+### 🤖 Autopilot
+
+The people are at the **bottom** of the frame (y=120–160 in the 160-row grid = bottom 25%). A center-crop header would cut them off. Let me make a landscape 1600×900 crop anchored to the bottom (where the people are) and use that as the header:
+
+
+### 🤖 Autopilot
+
+Header crop created — bottom-anchored 1600×900 with 32.4% skin (people clearly visible, up from 13.8% in the uncropped). Now let me check the current header file and swap it. Let me clone fresh and apply the change:
+
+
+### 🤖 Autopilot
+
+All refs swapped (4 page + 1 card + media.json hero). Note: the old `rancho-maranta-header-warm.jpg` file remains in assets (harmless, but I'll leave it to avoid a breaking change — actually let me remove it since nothing references it anymore). Let me commit, push, PR:
+
+
+### 🤖 Autopilot
+
+Branch pushed with the header swap. Opening the PR:
+
+
+### 🤖 Autopilot
+
+PR #237 opened. Merging per the standing go:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Header image swapped to IMG_7660 per your preference — PR #237 merged.**
+
+**PR #237 → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/237** (merged, sha `8c51745`):
+
+1. **Inspected IMG_7660** (1200×1600 portrait, 13.8% skin-tone = people present). Key finding: the people are at the **bottom** of the frame (densest band y=120–160/160) — a plain center-crop header would have **cut the family out**.
+2. **Created a bottom-anchored 1600×900 landscape crop** (box `(0, 925, 1200, 1600)`) → `rancho-maranta-header-7660.jpg` — **32.4% skin-tone** in the crop, so the family is clearly visible in the header.
+3. **Swapped all refs** to the new file: 4 page refs (og:image, twitter:image, CSS `.farm-hero`, inline hero) + journey card image + media.json hero (src + alt updated).
+4. **Removed** the now-unreferenced `rancho-maranta-header-warm.jpg` (kept the repo clean — nothing points to it).
+5. Verified: 4 refs on page, 1 on card, hero src correct in media.json.
+
+## Live on beta (after Pages rebuild ~1 min + hard refresh)
+
+→ **https://beta.agroverse.shop/farms/rancho-maranta-para/** — the header should now be IMG_7660 with the family visible in the lower band. Journey card (https://beta.agroverse.shop/cacao-journeys/brazilian-path/) also updated.
+
+## RESUME HERE →
+
+1. **Governor checks the new header on beta** — if you'd like the crop window adjusted (e.g. more sky, wider framing, different aspect), say the word and I'll re-crop from the same source — it's a 1-command change.
+2. **Prod promotion** (gated on your explicit approval): `sync_beta_to_prod(agroverse_shop_prod)` — farm page #229 + card fix #233 + video embeds #234 #235 + media update #236 + header swap #237; `sync_beta_to_prod(truesight_me_prod)` — impact map #325–#329.
+3. **Optional:** archive the media masters (currently only in /tmp; YouTube hosts the 3 videos as canonical public copies).
+
+**FYI:** if IMG_7660 doesn't read as "warmer" than the IMG_7684 crop once you see it live, we can also try IMG_7694 (30% skin) — same 1-command swap.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → fetched IMG_7660 from beta, skin-tone + luminance analysis, found people at bottom band, created bottom-anchored 1600×900 crop (32.4% skin), cloned fresh (agb4), copied crop, swapped all refs (4 page + 1 card + media.json), removed old header file, committed + pushed `feat/rancho-header-7660`, opened PR #237
+• `merge pr` → ✅ PR #237 on agroverse_shop_beta merged (sha: 8c5174599ca4489ad0d1d95345458e895b5bb881)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && mkdir -p rmh && cd rmh && curl -s -o IMG_7660.jpg "https://beta.agroverse.shop/assets/images/farms/rancho-maranta-IMG_7660.jpg" && python3 - <<'PYEOF' from PIL import Image im = Image.open; cd /tmp/rmh && python3 - <<'PYEOF' from PIL import Image im = Image.open('IMG_7660.jpg').convert('RGB') im2 = im.resize((120,160)) px = im2.load() rows = [] for y in range(160; …(+5 more)
+• `merge pr` → ✅ PR #237 on agroverse_shop_beta merged successfully (sha: 8c5174599ca4489ad0d1d95345458e895b5bb881). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp/agb3 && ls -la assets/images/farms/rancho-maranta-IMG_7660.jpg && python3 - <<'PYEOF' from PIL import Image im = Image.open('assets/; cd /tmp && mkdir -p rmh && cd rmh && curl -s -o IMG_7660.jpg "https://beta.agroverse.shop/assets/images/farms/rancho-maranta-IMG_7660.jpg" &; cd /tmp/rmh && python3 - <<'PYEOF' from PIL import Image im = Image.open('IMG_7660.jpg').convert('RGB') # skin mask per row band to find whe; …(+4 more)
+• `merge pr` → ✅ PR #237 on agroverse_shop_beta merged successfully (sha: 8c5174599ca4489ad0d1d95345458e895b5bb881). Pull Request successfully merged
 
