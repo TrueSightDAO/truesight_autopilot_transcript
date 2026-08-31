@@ -340,11 +340,13 @@ Strong material coming in — CCN-51 history, genetics (1.1% Nacional, 45.4% IMC
 ### 🤖 Autopilot
 
 Good research base. Two quick targeted searches to firm up the **common/traditional Pará cacao** side (Parazinho, local varieties, flavor/chemistry), then I'll build the image-rich PDF with reportlab.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent research base — I have everything I need. Building the PDF now with reportlab (available, v4.5.1), embedding the 5 comparison frames + the full research dossier.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -553,4 +555,59 @@ Want any further tweaks (size, color, spacing) — or archive this as the final 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && python3 - << 'PYEOF' s = open('make_pdf3.py').read() # ---- 1. Subdue H1 (title): regular weight, smaller, softer color ---- s =
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16817] I think just remove the bold header styling. Also make sure words dont overlap outside of borders also for words in tables
+
+
+### 🤖 Autopilot
+
+Two fixes: (1) kill the bold headers entirely (section headers + table header rows → regular weight), (2) the overlap — the real culprit is that my tables' column widths summed to **7.25″ while the printable width is only 7.1″**, so table borders/text ran past the page frame; plus long label text in the in-image bands could exceed photo width. Fixing both (shrink-to-fit text in bands/badges, table widths ≤ 7.0″):
+
+
+### 🤖 Autopilot
+
+Pattern mismatch — in the script those two FONTNAME commands are on the **same line**, not separate lines. Fixing the replacement string:
+
+
+### 🤖 Autopilot
+
+v5 built — all fixes applied. Sending it:
+
+
+### 🤖 Autopilot
+
+📄 **v5 delivered** — `Cacau_Para_Two_Varieties_Report_v5.pdf` (7 pages, 4.4 MB) attached above.
+
+## What changed
+
+**1. Bold headers removed everywhere**
+- Title: regular Helvetica, 16pt (was bold)
+- Section headers: regular Helvetica, 12pt, muted taupe
+- **Table header rows**: now regular Helvetica too (both the comparison table and chemistry table) — the only remaining emphasis is the subtle dark background bar
+
+**2. No more words outside borders**
+- **Tables**: the comparison & chemistry tables were 7.25″ wide but the printable area is only 7.1″ — they've been rebalanced to fit inside the page (now ≤ 7.0″ total, including the legend table which also had oversized badges)
+- **In-image bands**: long label text now **auto-shrinks** to always fit within the photo width (with padding)
+- **Badges**: text auto-shrinks to fit inside the pill, so nothing bleeds past the rounded border
+
+Please flip through and check the tables specifically (sections 5 & 8) and the long labels on the side-by-side photo (section 4) — those were the two spots words could overlap the borders before.
+
+On disk: `~/to_analyze/pdf/Cacau_Para_Two_Varieties_Report_v5.pdf`.
+
+Want to call this the final, or any more polish?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && python3 - << 'PYEOF' s = open('make_pdf4.py').read() def rep(old, new, cnt=1): global s assert s.count(old) == cnt, f"count {s.count(old)} != {cnt} for: {old[:70]!r}" s = s; cd /opt/truesight_autopilot && ./.venv/bin/python /tmp/make_pdf5.py
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && python3 - << 'PYEOF' s = open('make_pdf4.py').read() def rep(old, new, cnt=1): global s assert s.count(old) == cnt, f"count {s.count(old)} != {cnt} for: {old[:70]!r}" s = s
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && python3 - << 'PYEOF' s = open('make_pdf4.py').read() def rep(old, new, cnt=1): global s assert s.count(old) == cnt, f"count {s.co
 
