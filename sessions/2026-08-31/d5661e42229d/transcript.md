@@ -3924,21 +3924,25 @@ No single GAS registry exists — the closest is scattered notes (plans, OPEN_FO
 ### 🤖 Autopilot
 
 No existing registry — so I'll create one. Let me check the OPEN_FOLLOWUPS.md format and the CONTEXT_UPDATES.md convention (which is where decisions get recorded) so my new doc slots in cleanly:
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No existing registry — I'll create the convention + registry doc. First, getting the exact text at the two plan lines that still say "to set", so my edits anchor precisely:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything I need. Plan: (1) create `GAS_SCRIPT_PROPERTIES.md` — the convention + registry of every GAS Script Property, including the confirmed `TGM_GITHUB_TOKEN` (set 2026-08-31, repo-scoped, GAS project `1UrBg…`), plus the deployment/webhook URL registry; (2) update the two stale plan lines; (3) append a CONTEXT_UPDATES line. One PR to agentic_ai_context:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CONTEXT_UPDATES edit anchor fails because that line doesn't exist yet (I was anchoring on the line I'm adding). Fix: use a real existing anchor — the first line of the log (after the header). Let me retry with a correct anchor:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4152,4 +4156,58 @@ The manifest row uses literal `\u2014` escape sequences in the raw file — good
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/handoffs/HANDOFF_MANIFEST.md" -o manifest.md && e
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] merge it. and then 2 as well
+
+
+### 🤖 Autopilot
+
+Merging #847, and in parallel fetching `OPERATING_INSTRUCTIONS.md` to find where to add the pointer:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**"merge it. and then 2 as well" received → merged the manifest close-out.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `agentic_ai_context` | **[#847](https://github.com/TrueSightDAO/agentic_ai_context/pull/847)** | ✅ **MERGED** (sha `8700cba`) |
+
+**What's live now:** `HANDOFF_MANIFEST.md` row for SUNMINT_TREE_QR_LINKING shows **`active — reject/invalid UAT done (2026-08-31); first real LINK pending Gary go`**, with the full 2026-08-31 close-out in the resume tracker (E2E loop proven, auto-dispatch, `#treeIdManual` removed on prod, `TGM_GITHUB_TOKEN` SET, submit script merged). RESUME HERE correctly kept: **first real LINK still needs your explicit go** (books ledger + emails owner).
+
+**Item "2 as well" — prep done, edit not yet made (next unit):**
+I fetched `OPERATING_INSTRUCTIONS.md` (758 lines) to find the insertion point for the `GAS_SCRIPT_PROPERTIES.md` pointer. It uses a runbook/index-table structure (`| — | file | what it's for |` rows around line 26) — I have the anchor pattern, but per the one-PR-per-turn rule the pointer edit is the **next turn's PR**.
+
+### Gates NOT crossed
+- No deploy, no Edgar submission, no ledger writes, no money movement this turn.
+
+---
+**RESUME HERE → next turn:**
+1. **Open the OPERATING_INSTRUCTIONS.md pointer PR** — add one row to the context-file table: `GAS_SCRIPT_PROPERTIES.md` → "GAS Script Properties registry + convention (secrets in Script Properties, version-pinned web-app deployments; `TGM_GITHUB_TOKEN` SET 2026-08-31 — do NOT re-check)". One row, docs-only. Say "go" and I'll open + (per your standing "merge it" pattern) merge it.
+2. That closes every SunMint loose end except the **first real LINK**, which waits on your explicit go.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #847 on agentic_ai_context merged (sha: 8700cba6ff36e3538638d8142b91e813415b10bc)
+• `ssh run` ×1 → OPERATING_INSTRUCTIONS.md fetched + structure mapped (758 lines, index-table at ~line 26) for next turn's pointer edit
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #847 on agentic_ai_context merged successfully (sha: 8700cba6ff36e3538638d8142b91e813415b10bc). Pull Request successfully merged
+• `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/OPERATING_INSTRUCTIONS.md" -o oi.md && grep -n "GAS\|runbook\|CONTEXT FILES\|context files\|read_context_file" oi.md | head -20 && wc -l oi.md
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #847 on agentic_ai_context merged successfully (sha: 8700cba6ff36e3538638d8142b91e813415b10bc). Pull Request successfully merged
+• `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/OPERATING_INSTRUCTIONS.md" -o oi.md && echo "===
 
