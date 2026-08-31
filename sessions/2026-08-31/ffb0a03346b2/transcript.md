@@ -10,229 +10,6 @@
 
 ### 🤖 Autopilot
 
-The PDF is regenerated: **7 pages** with 3 photo pages (photos 1-2) + 2 video-frame pages (3 frames embedded) + signature. Now let me commit to fda_fsvp via git_push_changes (allowed_repos now includes it).
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #9 opened on fda_fsvp with the entity.json edits — but the PDF itself (binary) needs to go onto the branch. Let me push it via Contents API to the feature branch.
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The PDF landed on the branch. Now let me also add the video evidence process doc to agentic_ai_context (`fsvp/VIDEO_EVIDENCE_PROCESS.md`) — the second part of the governor's ask. First let me verify what's in the fsvp folder on main.
-[1 tool result(s) compacted: read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The README is comprehensive. Now let me add the video-evidence process doc the governor asked for — a new `fsvp/VIDEO_EVIDENCE_PROCESS.md` capturing the exact pipeline that just worked (ffprobe → ffmpeg frames → Grok vision → selection → embed), and reference it from the README.
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #843 opened on agentic_ai_context (video evidence runbook + README links). Now let me check the fda_fsvp PR #9 — the PDF upload happened after the git_push_changes, so let me verify the branch state is complete and merge it.
-[1 tool result(s) compacted: list_prs — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #9 is open. Let me verify the PDF is on the branch (the Contents-API upload may have landed after the PR was created — confirm the branch has both commits), then merge it.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The fetch only updated FETCH_HEAD, not the local ref. Let me use FETCH_HEAD to inspect the branch contents.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both commits verified on the branch — the PDF (2.8 MB, `477b22d`) and the entity.json update (`deb2260`) are both on `feat/santa-anna-site-visit`. PR #9 is complete and ready to merge. Per the one-PR-per-turn rule, I'll stop here and hand off.
-
-## This turn — what I did
-
-### ✅ Confirmed the write gate is open (no restart needed)
-- `fda_fsvp` is now in `settings.allowed_repos` (config.py loaded at service start 23:15:44, after the 23:15:26 config change → deploy correctly returned **noop**, process not stale)
-- Verified: `fda_fsvp allowed: True`, `api_only: False`
-
-### ✅ Regenerated the Santa Anna site-visit PDF with video frames
-- Re-ran `/tmp/gen_santa_anna.py` → **7 pages, 6 embedded images**: 2 still-photo pages (drying shed, cacao pod close-up, fermentation box) + 2 video-frame pages (3 frames from `walk in the forest.MOV` — pod-on-trunk, hand-on-pods, pointing at ripening pods) + signature block
-
-### ✅ Opened PR: `fda_fsvp#9` — *"CEPOTX site visit to Santa Anna Fazenda (2026-08-30) + entity.json update"*
-- `suppliers/cepotx/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf` (2.8 MB, via Contents API `477b22d`)
-- `suppliers/cepotx/entity.json` — added `Santa Anna Fazenda (Pará)` to `source_farms`, added the PDF to `source_documents` (`deb2260`)
-- **Both commits verified on the branch** — ready to merge
-
-### ✅ Opened PR: `agentic_ai_context#843` — *"FSVP: video evidence (MOV) analysis process for site visits"*
-- **New `fsvp/VIDEO_EVIDENCE_PROCESS.md`** — the full validated pipeline: ffprobe → ffmpeg @4fps frame extraction → Grok vision batch analysis (`fsVP_evidence` flagging) → representative frame selection → reportlab embedding → filing; plus gotchas (MOV may not land in attachments, Grok batch throttling, no GPS EXIF in phone video)
-- `fsvp/README.md` — links the new runbook from category #1 and the farm quick-path
-
-## RESUME HERE → next unit
-1. **Merge `fda_fsvp#9`** (your "go" authorizes it) → Santa Anna record is officially filed
-2. **Merge `agentic_ai_context#843`** → video-evidence process becomes a permanent runbook
-3. **Still need from you** for a fully-finalized PDF (currently placeholders): visit date, site code, Facility A/B/C geo-coordinates + Google Map links, farm owner name — I can fill them and regenerate if you provide them
-4. Optional: `submit_contribution` a [CONTRIBUTION EVENT] logging the visit-work (or leave it — say the word)
-
-—
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → deploy logic inspection; config/process staleness check; gate test (`fda_fsvp allowed: True`); entity.json + gen script review; PDF regen + page/image verification; branch content verification (PDF 2.8MB + entity.json on branch)
-• `git push changes` → **fda_fsvp#9** (entity.json + PR) — PDF added via Contents API
-• `git push changes` → **agentic_ai_context#843** (VIDEO_EVIDENCE_PROCESS.md + README links)
-• `deploy_autopilot` → noop (already current, process not stale)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×10 → cd /opt/truesight_autopilot && grep -rn "def deploy\|deploy_autopilot" app/ --include="*.py" | grep -v __pycache__ | head -10; echo "=== how; cd /opt/truesight_autopilot && echo "=== local HEAD ===" && git log --oneline -1 && echo "=== fda_fsvp in working config.py? ===" && grep -n; sudo systemctl restart truesight-autopilot.service && sleep 4 && systemctl is-active truesight-autopilot.service && echo "=== verify config ; …(+7 more)
-• `deploy autopilot` → Already on the latest commit 1ce140fe — no deploy needed. Did NOT restart. Do not retry.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⚙️ ssh run …
-
-
-### 🤖 Autopilot
-
-👍 Go signal received — merging both PRs to close out this unit.
-[2 tool result(s) compacted: merge_pr, merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-## ✅ Done this turn — both PRs merged
-
-### `fda_fsvp#9` merged — Santa Anna Fazenda site-visit record is officially filed
-- `suppliers/cepotx/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf` (2.8 MB, 7 pages, 6 embedded images: 3 still photos + 3 video frames from `walk in the forest.MOV`)
-- `suppliers/cepotx/entity.json` — `source_farms` now includes **Santa Anna Fazenda (Pará)**, PDF added to `source_documents`
-- Merge sha: `0479104`
-
-### `agentic_ai_context#843` merged — video evidence process is now a permanent runbook
-- New `fsvp/VIDEO_EVIDENCE_PROCESS.md` — the validated pipeline: ffprobe → ffmpeg @4fps frames → Grok vision batch analysis (`fsVP_evidence` flagging) → representative frame selection → reportlab embed → file; plus gotchas (MOV may not land in attachments, Grok throttling, no GPS EXIF)
-- `fsvp/README.md` — video evidence linked from category #1 and the farm quick-path
-- Merge sha: `99a5f02`
-
-**Full deliverable now live:**
-| Repo | What | Status |
-|---|---|---|
-| `fda_fsvp` | Santa Anna site-visit PDF + entity.json | ✅ merged |
-| `agentic_ai_context` | `fsvp/` folder: README (13-category taxonomy), SITE_VISIT, SUPPLIER_ONBOARDING, SHIPMENT_DOCUMENTATION, RECURRING_VERIFICATION, VIDEO_EVIDENCE | ✅ merged (all 6 files) |
-
-The FDA FSVP documentation system is now fully documented as processes, and the first video-evidence-backed site visit is filed.
-
-## RESUME HERE → next unit (optional, no rush)
-1. **Finalize placeholders** — the PDF currently shows `[DATE OF VISIT]`, `[TBD]` site code, and `[LATITUDE/LONGITUDE — to confirm]`. If you give me the actual visit date, site code, and Santa Anna's coordinates + Google Map links (Facilities A/B/C), I'll regenerate the PDF and update the filed record.
-2. **Optional: [CONTRIBUTION EVENT]** via `submit_contribution` to log this site-visit documentation work on the DAO ledger (or skip — say the word).
-3. If you later visit more farms, the `fsvp/` runbooks now cover the whole flow end-to-end — just send the photos/video and say "file a site visit."
-
-—
-**✅ Done this turn — actions taken:**
-• `merge_pr` → ✅ PR #9 on fda_fsvp merged (sha `0479104`)
-• `merge_pr` → ✅ PR #843 on agentic_ai_context merged (sha `99a5f02`)
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` ×2 → ✅ PR #9 on fda_fsvp merged successfully (sha: 0479104a212204b8191bcfd7be7f96378d8718da). Pull Request successfully merged; ✅ PR #843 on agentic_ai_context merged successfully (sha: 99a5f02ddd5d2d6f1b1232fcc54485374c7cabe4). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=16593] can you share the generated PDF for my review first?
-
-
-### 🤖 Autopilot
-
-Of course — let me pull up the generated PDF and send it to you for review.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The PDF is on disk (2.8 MB, 7 pages). Sending it to you now for review.
-[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-📄 **PDF sent** — `20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf` (2.8 MB, 7 pages) is now in this thread for your review.
-
-**Quick map of the document:**
-- **Page 1–2:** Supplier/dates table, facilities visited (1 cacao farm / 1 fermentation / 1 drying), FSVP observation tables for Facilities A/B/C (microbial contamination, insect infestation, foreign objects, mold, pesticide residues, etc.)
-- **Page 3–4:** Still-photo evidence — drying shed, cacao pod close-up, fermentation box (captioned)
-- **Page 5–6:** Video frames from `walk in the forest.MOV` — Facility A cacao farm walk (3 frames, captioned)
-- **Page 7:** Signature block — Zhiwen Teh, President, TrueTech Inc (EIN 88-3411514)
-
-**⚠️ Placeholders still in the doc** (they were never confirmed):
-1. `[DATE OF VISIT]` — header + Date field
-2. `[TBD]` — Site code
-3. `[LATITUDE / LONGITUDE / Google Map location]` — for Facilities A, B, C
-
-If you give me the actual **visit date, site code, and coordinates** (or tell me to look them up), I'll regenerate the PDF with real values, update the filed record in `fda_fsvp`, and re-send the corrected version. Otherwise, review the current draft and let me know any changes.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → ls -la /tmp/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf && echo "===" && python3 -c " import sys; sys.path.insert(0,'/opt/truesight_au
-
-
-### 🧑 Governor
-
-[observed, not directed at you — Nobody Will not DM you]: The photos look stretched too much sideways. Also can you extract the latitude and longitude information form the images themselves?
-
-If you examined the way I generated the original documents
-each facility had an image 
-
-If you looked at the names of the photos I shared with you you should be able to decipher which photos to associated with which facility in the document. as well as the latitude and longitude embedded wtihin the images... verify with me if you can't extract the latitude longitude information... 
-
-Also the document is missing my signature. I believe there is a private repository with my signature asset. Use that
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=16593] I left some feedback
-
-
-### 🤖 Autopilot
-
-Great feedback — let me dig into all three: (1) EXIF GPS from the photos, (2) facility↔photo mapping from filenames, (3) the signature asset in the private repo. Running the investigation now.
-[3 tool result(s) compacted: ssh_run, search_context, search_transcript — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Key findings so far — let me dig deeper on the signature asset and original filenames in parallel.
-[3 tool result(s) compacted: list_org_repos, search_code, search_transcript — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found it: **`signature_assets`** (private) — "Private repo for signature images (e.g. Gary's) used by autopilot instances to stamp documents." That's exactly the repo you meant. Let me look at it, plus verify the EXIF/GPS situation thoroughly and find the original photo filenames.
-[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Good progress. Key findings: **no EXIF GPS in any of the 3 photos** (Telegram stripped all EXIF — no GPS, no date, no camera info), and the .MOV has no location tags either. Found the `signature_assets` private repo. Let me check the signature folder and examine how the ORIGINAL CEPOTX PDFs placed images per facility.
-[2 tool result(s) compacted: read_repo_file, list_directory — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found the signature repo. Now let me: (1) definitively check for EXIF markers in the raw JPEG bytes, (2) hunt for the original photo filenames in the transcript/message metadata, and (3) grab the signature PNG.
-[3 tool result(s) compacted: ssh_run, read_repo_file, list_org_repos — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 Now I have the full picture. Let me: (1) hunt for the original photo filenames in the transcript (they were renamed to UUIDs by the adapter), (2) download Gary's signature to disk, and (3) re-verify facility mapping of the 3 photos via vision.
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
@@ -5477,16 +5254,19 @@ Real content now on the branch. Let me verify all three files are correct, then 
 ### 🤖 Autopilot
 
 Raw fetch failing — let me check the HTTP status and the actual branch file state.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The API confirms the file is there (13,542 bytes) but raw returns empty bodies — likely a CDN lag. Let me verify via the API content endpoint (base64) instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three files are valid on the branch (the raw CDN was just lagging — the API confirms real content). Merging PR #862.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5539,36 +5319,43 @@ All three files are valid on the branch (the raw CDN was just lagging — the AP
 ### 🤖 Autopilot
 
 Re-measuring the full thread's time from the transcript — the earlier 86-min figure was cut off mid-thread, so let me get the complete, current total.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Log format differs from my regex — let me inspect the actual structure.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the format: `=== 2026-08-30T22:53:15 llm-round-1 ===` — ISO with `===` markers. Let me parse properly with round numbers (each llm-round-N has a timestamp, and rounds cluster into turns).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 10-min boundary heuristic is too coarse (merges turns around governor pauses). Let me delimit turns properly by finding user-message entries in the log.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No user-role markers in the log (it logs assistant rounds only). Let me use a smarter turn boundary: gaps between consecutive llm-rounds that are long (governor idle) mark turn ends. Let me analyze the gap distribution to find the natural threshold.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clear bimodal distribution: 487 gaps ≤1 min (in-turn tool loops), and a long tail. The natural turn boundary is a gap >5 min (16 gaps = governor think time between turns). Let me compute work time with the 5-min boundary.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check threshold sensitivity to give a defensible range.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5616,6 +5403,7 @@ CEPOTX - COOPOXIN - B - 06 -58 - ANA LUCIA ARAUJO DE SOUSA
 ### 🤖 Autopilot
 
 Excellent — that finally resolves the last open placeholder. Let me quickly ground it against the existing records before giving thoughts.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5783,4 +5571,26 @@ Site code + registered owner were the only remaining unknowns — both now filed
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /tmp && ls -la gen_santa_anna*.py 2>/dev/null; echo "=== placeholders in generator ==="; grep -n "TBD\|to confirm\|SITE CODE\|DATE OF VIS; ls -la /tmp/*.pdf 2>/dev/null | grep -i santa; echo "=== media for PDF ==="; ls ~/santa_anna_new/ 2>/dev/null | head -8; echo "=== /tmp/sa_w; cd /tmp && rm -rf sig_assets && git clone -q --depth 1 https://github.com/TrueSightDAO/signature_assets.git sig_assets 2>&1 | tail -1; find ; …(+6 more)
 • `merge pr` → ✅ PR #10 on fda_fsvp merged successfully (sha: 67f75cea51f1773518856df4ab965ad2ffebadba). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] COOPOXIN is a sub Cooperative within CEPOTX.
+
+
+### 🤖 Autopilot
+
+Good — that confirms exactly how I've recorded it. **COOPOXIN as the sub-cooperative within CEPOTX** is already captured in both places:
+
+- **PDF v5** (just filed to `fda_fsvp`): header shows `Supplier: CEPOTX — Cooperativa Central…` / `Sub-cooperative: COOPOXIN`
+- **entity.json**: `Santa Anna Fazenda (Pará) — site code B-06-58, registered owner Ana Lucia Araujo de Sousa (COOPOXIN)`
+
+So no correction needed there — the hierarchy is right: **CEPOTX (central coop) → COOPOXIN (sub-co-op) → Santa Anna Fazenda / B-06-58 / Ana Lucia Araujo de Sousa**.
+
+Remaining parked items from the correction scope, whenever you're ready:
+1. **SunMint SA-P1 plot row** — owner → Ana Lucia Araujo de Sousa (CEPOTX), Jedielcio as verified-by
+2. **Agroverse farm page** — check/update owner naming if it lists Jedielcio as owner
+3. **Runbook note** — "registered owner ≠ hosting contact" pattern in the conventions doc
+
+Want me to knock those out, or hold?
 
