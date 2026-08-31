@@ -2280,6 +2280,7 @@ The long batch is self-running and verified — no action needed until it comple
 ### 🤖 Autopilot
 
 Resuming — checking pipeline progress:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2287,6 +2288,7 @@ Resuming — checking pipeline progress:
 Huge progress! **71/72 converted, 71/72 uploaded** — but two things:
 1. **IMG_4011.MOV FAILED rc=1** — the one failure, and the watch loop is stuck skipping it (mp4 missing). It's the only video not uploaded.
 2. **A new process**: `IMG_4840.mp4` in `/home/ubuntu/cleide_work/mp4/` — a **Cleide** farm conversion running?! That's from another Sophia instance or leftover — I need to check, but it's NOT mine (mine is la do sitio). Wait — the runbook is out, other Sophias may have started. But this is on MY box. Let me check both:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2298,6 +2300,7 @@ Two clear findings:
 2. **The Cleide conversion is another Sophia's work** — `/home/ubuntu/cleide_work/` with mp4s converting (IMG_4832–4840). The runbook went live, so **another Sophia instance is processing Cleide concurrently** on this same box. That's exactly what Gary wanted. I must **NOT touch it** — it's not my farm.
 
 Let me finalize La do Sitio: mark IMG_4011 as corrupt in the manifest, then verify the final counts:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2522,4 +2525,45 @@ Nothing more needed until the quota resets — the loop handles it unattended. P
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo '=== retry loop alive? ==='; ps -p 73872 -o pid,etime,%cpu,cmd 2>/dev/null || echo "LOOP ENDED"; echo '=== retry log tail ==='; tail -2; cd /tmp && curl -sL "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/FARM_MEDIA_PIPELINE.md" -o farm_pipeline.md && w
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] Retry loop.
+
+
+### 🤖 Autopilot
+
+Checking the retry loop status and whether quota has freed up:
+
+
+### 🤖 Autopilot
+
+**Retry loop is alive and healthy** — here's the exact state:
+
+## Status
+
+| Item | Value |
+|---|---|
+| Loop process | ✅ pid 73872, running (elapsed 5:43) |
+| Last attempt | `[retry 1]` at 19:32 UTC — hit 429 quota immediately (as expected) |
+| Dead remaining | 18/71 (53 live ✓) |
+| Next attempt | ~20:02 UTC (30-min sleep between cycles) |
+| Quota reset | ~07:00 UTC (~11h from now, midnight PT) |
+| Loop ceiling | 60 cycles × 30 min = 30h — **survives the reset comfortably** |
+
+The loop is in its normal 30-minute sleep between retry attempts. Every cycle it:
+1. Re-runs the fixer (skips entries whose yt_id is already **live**, re-uploads only the dead ones)
+2. Writes fresh yt_ids to the manifest on each success
+3. Exits early if dead count hits 0
+
+So the timeline looks like: retries every 30 min → all will 429 until ~07:00 UTC → first successful batch after the reset → **18 videos re-uploaded within ~30–60 min of the reset** → loop self-terminates when 0 dead remain.
+
+No action needed from you or me until then — it's fully unattended. I'll pick up verification + the manifest PR once the sweep shows 71/71 live.
+
+One thing worth noting: **PR #864** (the runbook quota/dead-ID lessons) is still open for your review — merge it whenever you like so the Cleide/Santa Anna/Rancho pipelines inherit the fixes. Other than that, we're just waiting on YouTube's clock.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo '=== retry loop alive? ==='; ps -p 73872 -o pid,etime,%cpu,cmd 2>/dev/null || echo "LOOP ENDED"; echo '=== retry log tail ==='; tail -2
 
