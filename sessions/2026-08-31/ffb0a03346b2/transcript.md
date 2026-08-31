@@ -5053,11 +5053,13 @@ The Santa Anna conversation is in session `ffb0a03346b2` (both 08-30 and 08-31).
 ### 🤖 Autopilot
 
 The transcripts are markdown without per-message timestamps. The git commit history holds the save timestamps — let me reconstruct the session timeline from git for `ffb0a03346b2` (the Santa Anna conversation on both days).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript repo has batch commits without per-message timestamps. Let me check for the raw per-message logs on the box (which would carry exact timestamps), plus the flush cadence docs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5239,4 +5241,65 @@ Merging the conventions doc now.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #851 on agentic_ai_context merged successfully (sha: f8766193619ab43320b473b2752ba3ce48172ee1). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] figure out how much time exactly do we have spent via the transcript.
+
+
+### 🤖 Autopilot
+
+Let me do a precise, rigorous pass on the transcript — exact per-turn timestamps, both parties, both days.
+
+
+### 🤖 Autopilot
+
+Precise numbers from the authoritative per-round timestamps (`ffb0a03346b2_debug.log`). Here's the exact accounting:
+
+## ⏱️ Exact time spent — Santa Anna thread (Aug 30 22:53 → Aug 31 16:57 UTC)
+
+### 🤖 Autopilot (me) — **86.05 min (1.43 h) active**
+Sum of all 59 per-turn work spans (first LLM round → last round before your next message):
+
+| Day | Turns | Active time |
+|---|---|---|
+| Aug 30 | 10 | 22.0 min |
+| Aug 31 | 49 | 64.0 min |
+| **Total** | **59** | **86.05 min** |
+
+Longest single turn: **8.3 min** (the video-frame vision analysis at 23:28). Median turn ≈ 1 min.
+
+### 🧑💼 Governor (you) — measured as time between turns
+
+| Measure | Value |
+|---|---|
+| **Total wall-clock span** | 18.07 h (22:53 → 16:57) |
+| **All gaps between your messages** | 997.9 min (16.6 h) |
+| ↳ Overnight gap (03:07 → 11:01) | **472.4 min (7.9 h)** — sleep, not work |
+| ↳ Remaining awake gaps | **525.5 min (8.8 h)** |
+| ↳ Big breaks (100, 71, 58, 32 min) | 261.4 min — review/other work |
+| ↳ **Interactive gaps ≤ 30 min** | **264.1 min ≈ 4.4 h** |
+| Your real messages (non-injected) | 28 |
+
+### Honest interpretation
+- **My time is exact: 86 min.** It's measured from the LLM round clock.
+- **Your time can only be bounded, not measured exactly** — the transcript records *gaps between your pings*, not what you were doing. Defensible bounds:
+  - **Upper bound (engaged wall-clock): ~4.4 h** — the sum of gaps ≤ 30 min (interactive pacing across both days; Aug 30 was a tight 23-min session, Aug 31 spread out).
+  - **Likely focused time: 1.5–2.5 h** — reading my reports, reviewing PDFs/screens, deciding, plus the site visit itself happened *before* the thread (the photos arrived already taken).
+  - The 472-min overnight gap and 261 min of >30-min breaks are **not** attributable to you.
+
+### Day-by-day
+| Day | Me | You (interactive gaps) | Your messages |
+|---|---|---|---|
+| Aug 30 | 22.0 min | ~22 min | 4 |
+| Aug 31 | 64.0 min | ~4.2 h wall (focused ≈ 1–2 h) | 24 |
+
+---
+
+So the ledger entry stands correct: **85 min autopilot** (I logged 85, measured 86.05 — within rounding). Want me to update the contribution to 86 min for exactness, or leave the logged 85?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → /opt/truesight_autopilot/.venv/bin/python3 << 'EOF' import re, json from datetime import datetime p = '/opt/truesight_autopilot/sessions/ffb
 
