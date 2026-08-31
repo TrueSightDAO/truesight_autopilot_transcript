@@ -2362,16 +2362,19 @@ Go received — next unit: **SEO sheet row for the Rancho Maranta page** (one ro
 ### 🤖 Autopilot
 
 The context doc doesn't exist in agentic_ai_context (README points to it but it's missing), and the script search came up empty. Let me search more broadly for the SEO scripts and workflow:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The SEO scripts aren't in the searched repos. Let me check the market_research repo directly and look at the SEO sheet structure:
+[2 tool result(s) compacted: list_org_repos, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The SEO sheet exists with the exact schema (Change_log: changed_date, author, site_area, change_type, url_or_path, summary, link_pr_or_commit, expected_impact). The README referenced `market_research/scripts/seo_workbook_append.py` — let me check that repo for the append script and whether a write path exists:
+[2 tool result(s) compacted: search_code, list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2509,4 +2512,108 @@ Filed under `## Pending` with Owner: unclaimed — follows the "file new tooling
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #850 on agentic_ai_context merged successfully (sha: 180dd2755a7867e468d537cd89985cb05d867d9a). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+Listing page missing an image
+
+[Attachment auto-processed: **c5b4e9525a2f49f6a846a419cb17334d.jpg**]
+- Type: Image (OCR confidence: 93.1%, quality: good)
+
+Extracted text:
+```
+beta.agroverse.shop Day 61 Rancho Maranta ? Altamira, Para, Amazon Rainforest, Brazil The family land of Jedielcio of the CEPOTX cooperative in the Amazon Rainforest of Para. Two plots — one beside the family house where our first ceremonial cacao trees were planted, and a ~5 hectare family plot offered for the next phase of tree planting. Site visit August 2026, GPS-traced and visible on the SunMint impact map. 0.8 miles from previous stop (1 day travel) Visit Farm Page >
+```
+
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⚠️ Autopilot hit an error (the thread self-heals — please resend): deepseek/deepseek-v4-flash: litellm.BadRequestError: DeepseekException - {"error":{"message":"Insufficient Balance","type":"unknown_e
+
+
+### 🤖 Autopilot
+
+Let me look at the Rancho Maranta listing card I added — likely an image path mismatch (thumbnail referenced but never created). Checking the card HTML and how Santa Anna's card image is referenced:
+
+
+### 🤖 Autopilot
+
+The Rancho Maranta entry has no `img` field — let me check whether other cards (Santa Anna, Paulo's) carry one, and how the card renderer uses it:
+
+
+### 🤖 Autopilot
+
+Found it — the card renderer (lines ~974–1010) has a hardcoded image-path switch per slug. Santa Anna maps to `../../assets/images/farms/santa_anna_farmers_hero.jpg`; **Rancho Maranta has no case** → falls through to an empty path → missing image. Let me read the full switch to see the fallback and the exact santa_anna line to mirror:
+
+
+### 🤖 Autopilot
+
+Root cause confirmed — the journey card renderer has a hardcoded image-path switch per farm slug, and `rancho-maranta-para` isn't in it. The fallback builds `../../assets/images/farms/rancho-maranta-para.jpg`, but our files are named `rancho-maranta-IMG_*.jpg`, so the img 404s and the `onerror` hides it → blank card. The farm page hero is `IMG_7625`; I'll add the case mapping to that. Applying the fix:
+
+
+### 🤖 Autopilot
+
+Fix applied and JS validates. Pushing the fix:
+
+
+### 🤖 Autopilot
+
+Branch pushed, but my token extraction path was wrong. Let me find the actual credential helper used earlier for PR #229:
+
+
+### 🤖 Autopilot
+
+The credential helper is `/opt/truesight_autopilot/scripts/git-credential-sophia.sh` (it holds the PAT with PR rights — how PR #229 was opened). Let me use it to extract the token and open the PR:
+
+
+### 🤖 Autopilot
+
+PR #233 opened. Merging per the standing go:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Fixed the missing listing-card image for Rancho Maranta — PR #233 merged.**
+
+**Root cause (verified, not guessed):** The Brazilian Path journey page (`cacao-journeys/brazilian-path/index.html`) builds stop cards with a **hardcoded per-slug image switch** (~lines 996–1012). `rancho-maranta-para` had **no case**, so it fell to the fallback `../../assets/images/farms/${slug}.jpg` → `rancho-maranta-para.jpg`. Our farm images are named `rancho-maranta-IMG_*.jpg` — the fallback 404'd, and the card's `onerror="this.style.display='none'"` **hid the broken image entirely** → the blank card you saw. Santa Anna worked because it has an explicit case (`santa_anna_farmers_hero.jpg`).
+
+**PR #233 → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/233** (merged, sha `db0a971`): one-line addition to the switch, mirroring the Santa Anna case:
+```js
+} else if (stop.slug === 'rancho-maranta-para') {
+    imagePath = `../../assets/images/farms/rancho-maranta-IMG_7625.jpg`;
+}
+```
+(IMG_7625 = the farm page hero — the Plot 1 house photo, consistent with the card's 0.8-mi/1-day context.)
+
+**Testing:** anchor matched exactly once; inline journey script extracted → `node --check` passed before push; branch `fix/rancho-card-image` pushed; PR opened via the sophia credential helper (93-char PAT, same path that opened #229).
+
+## RESUME HERE →
+
+1. **Governor hard-refreshes** → https://beta.agroverse.shop/cacao-journeys/brazilian-path/ — the Rancho Maranta card should now show the IMG_7625 photo (was blank). Also re-check https://beta.agroverse.shop/farms/rancho-maranta-para/.
+2. **Prod promotion** (both gated on your explicit approval, still pending): `sync_beta_to_prod(agroverse_shop_prod)` — now includes the farm page (#229) + this card-image fix (#233); `sync_beta_to_prod(truesight_me_prod)` — impact map #325–#329.
+3. **YouTube upload (blocked on creds)** — 26 MOV clips need OAuth creds; then slot videoIds into `media.json` → small PR.
+4. **RM-P2 boundary authority** — CAR/INCRA polygon or perimeter walk; update SunMint Plots sheet row.
+5. **Ledger anchor** — register Rancho Maranta farm + plot event on-chain.
+
+**Note for future audits:** the per-slug hardcoded image switch is a brittle pattern — any new farm/experience added to a journey needs a case added here too, or the card silently goes imageless. Worth a small refactor (default to a `media.json`-driven thumbnail lookup) as a follow-up; I can file it in OPEN_FOLLOWUPS if you want.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cloned agroverse_shop_beta, found hardcoded image switch + missing case, confirmed file naming mismatch, applied fix + node --check, pushed branch, opened PR #233 via sophia credential helper, merged
+• `merge pr` → ✅ PR #233 on agroverse_shop_beta merged (sha: db0a9714cd55d146815eeda49f67e828f77485f3)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp && rm -rf agb2 && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git agb2 2>&1 | tail -1; cd agb2 && ech; cd /tmp/agb2 && echo "=== all img/image keys in journey data ===" && grep -n "img\|image\|photo" cacao-journeys/brazilian-path/index.html | ; cd /tmp/agb2 && echo "=== lines 970-1030 (image switch) ===" && sed -n '970,1035p' cacao-journeys/brazilian-path/index.html && echo "" && ec; …(+4 more)
+• `merge pr` → ✅ PR #233 on agroverse_shop_beta merged successfully (sha: db0a9714cd55d146815eeda49f67e828f77485f3). Pull Request successfully merged
 
