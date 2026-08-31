@@ -4479,36 +4479,43 @@ First HEIC uploaded. Let me batch the remaining 14 — the tool takes one file p
 ### 🤖 Autopilot
 
 All 15 HEIC originals are now in `farm-media-raw/rancho-maranta/photos/` (step 8 ✓). Now step 10: the manifest PR to `agentic_ai_context/FARM_MEDIA_MANIFESTS/rancho-maranta-para.json`. Let me check the existing manifest format (la-do-sitio's) and the FARM_MEDIA_MANIFESTS dir, then file mine:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No `FARM_MEDIA_MANIFESTS/` dir yet — my manifest will establish it. Per the pipeline step 10, I'll create `FARM_MEDIA_MANIFESTS/rancho-maranta-para.json` with the full manifest data (52 items, sha256, GPS, durations). Let me finalize the manifest file and push it via PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest is ready (17,305 bytes, 52 items, 3 yt_ids). Let me push it to `agentic_ai_context/FARM_MEDIA_MANIFESTS/rancho-maranta-para.json` via git_push_changes — this time I'll be **careful with the content** (no empty writes — the lesson from the #857 incident):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean base confirmed (OPEN_FOLLOWUPS.md intact at 139,513 bytes, HEAD = d89e429). Only the new manifest is staged. Committing + pushing the branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Push failed — likely a branch-name collision or auth issue. Let me see the full error:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The first push had the branch creation inside the heredoc but the `-q` swallowed the actual error — the real issue is I need `HEAD:refs/heads/...` fully qualified. Let me create the local branch first and push with the full refspec:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed. Opening the PR via the PAT path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4572,11 +4579,13 @@ Stopping at the turn limit — here's the state of the FARM_MEDIA_PIPELINE proce
 ### 🤖 Autopilot
 
 Go received — resuming: verify PR #860 (manifest) and merge, then tackle the GPS re-injection decision for the 3 uploaded videos.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff verified: only the manifest added (566 lines), OPEN_FOLLOWUPS untouched. Merging PR #860:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4636,31 +4645,37 @@ Diff verified: only the manifest added (566 lines), OPEN_FOLLOWUPS untouched. Me
 ### 🤖 Autopilot
 
 Go received — executing the GPS re-injection for the 3 uploaded videos (the pipeline's critical step I missed earlier). Starting by locating the source MOVs and their GPS:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two of three have GPS; the 7621 read broke on the path spaces. Let me get 7621's GPS properly, then run the full pipeline: encode MOV→MP4, inject GPS with exiftool, verify, and upload:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The command timed out (likely the first ffmpeg foregrounded somehow or the startup was slow). Let me check what actually started and wait for the encodes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three encodes are running (5 ffmpeg processes — the timeout earlier was the foregrounded first command, but the background jobs are alive). Files are growing. Let me wait for completion, then inject GPS + verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The wait loop timed out — encodes are still going (HEVC decode is slow). Let me check status with a shorter wait:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Encode speed is slow (0.05× — HEVC on 2 vCPUs, and 5 ffmpeg processes suggests 2 stale ones from earlier turns are contending for CPU). Let me identify and kill the stale ones, then poll:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4782,4 +4797,100 @@ PR #250 opened. Merging per the standing go, then updating the manifest with the
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → cd /home/ubuntu/rancho_work 2>/dev/null || { mkdir -p /home/ubuntu/rancho_work && cd /home/ubuntu/rancho_work && unzip -o -q ~/rancho_marant; cd /home/ubuntu/rancho_work && echo "=== 7621 GPS (quoted) ===" && exiftool -s3 -GPSCoordinates "/home/ubuntu/rancho_work/plot1/rancho maran; sleep 45; cd /home/ubuntu/rancho_work && echo "=== encode logs ===" && for l in 7621 7671 7684; do echo "--- $l: $(tail -1 /tmp/enc_$l.log 2; …(+15 more)
 • `merge pr` → ✅ PR #250 on agroverse_shop_beta merged successfully (sha: bc27b06aaa603c4be2ad362290e62503e65bcb60). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+Go received — next unit: update the manifest's yt_ids to the GPS-tagged videos (and optionally handle the old GPS-less uploads). Let me read the current manifest:
+
+
+### 🤖 Autopilot
+
+The manifest still has the 3 old yt_ids. Let me see the structure around them and update to the new GPS-tagged ids:
+
+
+### 🤖 Autopilot
+
+Clear mapping. Updating the three yt_ids to the GPS-tagged versions, then PR:
+
+
+### 🤖 Autopilot
+
+Manifest updated. Let me verify the diff (careful — no empty writes, the #857 lesson), then commit + push + PR:
+
+
+### 🤖 Autopilot
+
+The `indent=2` rewrite reformatted the whole file (the original used `indent=1`) — a noisy 1,128-line diff for a 3-id change. Let me redo it minimally: restore the original from main and apply only the 3 yt_id string replacements, preserving all formatting:
+
+
+### 🤖 Autopilot
+
+Clean 6-line diff (3 swaps, exactly). Committing, pushing, PR:
+
+
+### 🤖 Autopilot
+
+PR #861 opened. Merging per the standing go:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Manifest yt_ids updated to the GPS-tagged uploads — PR #861 merged.**
+
+**PR #861 → https://github.com/TrueSightDAO/agentic_ai_context/pull/861** (merged, sha `9fe30f7`): `FARM_MEDIA_MANIFESTS/rancho-maranta-para.json` — the 3 `yt_id`s swapped to the GPS re-injected uploads:
+
+| Source | Old yt_id | New yt_id (GPS-tagged, public) |
+|---|---|---|
+| IMG_7621 (Plot 1 house) | AriHjXTsLio | **NZThWnbWZE8** |
+| IMG_7684 (Plot 1 family) | H9ZSF1-ahIo | **CQMPvCXaHfs** |
+| IMG_7671 (Plot 2 boundary) | o3_nWticYQc | **BZRo4yPl8us** |
+
+**Process note (lesson applied from the #857 incident):** my first edit rewrote the JSON with `indent=2`, creating a noisy 1,128-line diff for a 3-id change. I caught it, restored the file from main, and did **string-only replacements** — final diff was **exactly 3 lines changed** (verified before push). No formatting churn, no risk to the rest of the manifest.
+
+## The FARM_MEDIA_PIPELINE for Rancho Maranta is now COMPLETE
+
+- ✅ Intake + dedupe (52 unique files) · ✅ GPS sweep (37/37 MOV)
+- ✅ 15 HEIC originals → `farm-media-raw/rancho-maranta/photos/`
+- ✅ MOV→MP4 encode **with exiftool GPS re-injection + verification** (all 3)
+- ✅ Public YouTube uploads with GPS in title/description
+- ✅ Farm page media.json → GPS-tagged videos (PR #250)
+- ✅ Manifest filed (PR #860) + yt_ids synced (PR #861, this turn)
+
+## RESUME HERE →
+
+1. **Governor verifies** — farm page https://beta.agroverse.shop/farms/rancho-maranta-para/ (3 GPS-tagged videos playing) + YouTube channel (old GPS-less uploads still public: AriHjXTsLio, o3_nWticYQc, H9ZSF1-ahIo — **decision: flip to unlisted/private or delete?** I recommend unlisting to avoid duplicate confusion).
+2. **Prod promotion of the video swap** — the media.json change (#250) is on beta; prod still shows the old 3 videos. Since you approved the earlier stack promotion, say the word and I'll `sync_beta_to_prod(agroverse_shop_prod)` again to push the GPS-tagged videos live.
+3. **Optional:** batch-encode remaining Plot-2 boundary-walk clips with GPS injection; object detection only if wanted; RM-P2 boundary authority (CAR/INCRA) still open.
+
+**Everything on the media side is now pipeline-compliant** — the only open items are the old-video disposition and (if you want) the prod re-sync.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cloned aac5, read manifest yt_ids, rewrote (caught indent=2 churn), restored from main + string-only swap (6-line diff), committed + pushed `fix/manifest-gps-ytids`, opened PR #861, merged
+• `merge pr` → ✅ PR #861 on agentic_ai_context merged (sha: 9fe30f7e5d9feb247abccaa3af841549dc05f2dd)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && rm -rf aac5 && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aac5 2>&1 | tail -1; cd aac5 && echo "=== manifest exists? ==="; cd /tmp/aac5 && python3 - <<'PYEOF' import json d = json.load(open("FARM_MEDIA_MANIFESTS/rancho-maranta-para.json")); ; cd /tmp/aac5 && python3 - <<'PYEOF' import json p = "FARM_MEDIA_MANIFESTS/rancho-maranta-para.json" d = json.load(open(p)) swap = {"AriHjXTsLio": "NZThWnbWZE8", "H9ZSF1-ahIo": "CQMPvCXaHfs", "o3_nWticYQc": "BZRo4yPl8us"} for i in d.get("items", []):  if isinstance(i, dict) and i.get("yt_id") in swap:  old = i["yt_id"]; i["yt_id"] = swap[old]; print(f"{old} -> {i['yt_id']}") json.dump(d, open(p,"w"), indent=2) ; cd /tmp/aac5 && git checkout main -- FARM_MEDIA_MANIFESTS/rancho-maranta-para.json && python3 - <<'PYEOF' p = "FARM_MEDIA_MANIFESTS/rancho-maranta-para.json" s = open(p).read() swap = {"AriHjXTsLio": "NZThWnbWZE8", "H9ZSF1-ahIo": "CQMPvCXaHfs", "o3_nWticYQc": "BZRo4yPl8us"} for old,new in swap.items():  print(f"{old} -> {new}: {s.count(old)}"); s = s.replace(old,new) open(p,"w").write(s)
+• `merge pr` → ✅ PR #861 on agentic_ai_context merged successfully (sha: 9fe30f7e5d9feb247abccaa3af841549dc05f2dd). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && rm -rf aac5 && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aac5 2>&1 | tail -1; cd aac5 && echo; cd /tmp/aac5 && python3 - <<'PYEOF' import json d = json.load(open("FARM_MEDIA_MANIFESTS/rancho-maranta-para.json")) # find entries with yt_; cd /tmp/aac5 && python3 - <<'PYEOF' import json p = "FARM_MEDIA_MANIFESTS/rancho-maranta-para.json" d = json.load(open(p)) swap = {"AriHjXTs; …(+3 more)
+• `merge pr` → ✅ PR #861 on agentic_ai_context merged successfully (sha: 9fe30f7e5d9feb247abccaa3af841549dc05f2dd). Pull Request successfully merged
 
