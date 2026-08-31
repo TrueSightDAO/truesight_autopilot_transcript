@@ -2493,6 +2493,7 @@ Site visit (Aug 30) → FSVP record (fda_fsvp) → farm page (beta #225) → map
 ### 🤖 Autopilot
 
 👍 Go signal received. The prod promotion is complete — let me verify the full end-to-end chain on production (journey page, CEPOTX coop page, home page farm listing) to make sure the sync carried everything.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2533,41 +2534,49 @@ Anything else on this thread, or shall we call Santa Anna done?
 ### 🤖 Autopilot
 
 Let me check how the journey page renders stop images and what Santa Anna's entry has (likely missing the image field in `brazilian-path-data.js`).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `brazilian-path-data.js` has Paulo + CEPOTX but **no santa-anna entry** — my stop data went into the inline journey page instead. Let me check where the journey stop with the image field lives and what the renderer expects.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The journey renderer derives image paths by stop type (line 952-967). Let me read that full section to see what `farm` type expects — that's where the missing image comes from.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The farm-image logic has per-slug entries + a fallback that builds `../../assets/images/farms/${slug}.jpg` — for Santa Anna that's `santa-anna-fazenda-para.jpg`, which **doesn't exist** (our file is `santa_anna_profile_photo.jpg`), so the `<img onerror="hide">` renders nothing. Let me find where the santa-anna stop data lives and confirm the path.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The santa-anna entry isn't in the journey `index.html` either — so where did the prod journey page get it from? Let me check the actual stops data source (external JS or embedded) and how prod/beta render the Santa Anna stop.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The stops data must be defined in a script block around line 575-768. Let me find the actual stops array definition in the inline script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `BRAZILIAN_PATH_DATA` is the stops object — let me read its definition and find the santa-anna entry within it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local checkout is stale — the live page has the Santa Anna stop (verified earlier) but my local clone predates #225. Let me confirm from the live prod page and locate the exact fix needed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2730,4 +2739,141 @@ PDF verified — 10 pages, 15.3 MB. Sending to you:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → echo "=== current gen script: signature placement ==="; ls -la /tmp/gen_santa_anna*.py 2>/dev/null; grep -n -i "signature\|sincerely\|sign" ; echo "=== original Paulo PDF signature page layout ==="; cd /tmp/fda_fsvp_local/suppliers/cepotx 2>/dev/null && python3 << 'EOF' import sys ; echo "=== v3 signature section ==="; sed -n '140,175p' /tmp/gen_santa_anna_v3.py; echo; echo "=== SIG asset ==="; ls -la /tmp/sig_assets/gar; …(+5 more)
+
+
+### 🧑 Governor
+
+https://agroverse.shop/farms/santa-anna-fazenda-para/ photo of the farmers with Jedielcio. I wonder if we should be using these for the leading header image. The current one doesn’t show any humans
+
+[Attachment auto-processed: **193f5c0fe5074276b4addda8f2234df4.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Let me analyze the photo and check the current hero setup on the page.
+
+
+### 🤖 Autopilot
+
+The vision call failed on model name — let me check the working grok client on the box and retry.
+
+
+### 🤖 Autopilot
+
+The correct model is `grok-4-1-fast-non-reasoning`. Let me analyze the photo with it.
+
+
+### 🤖 Autopilot
+
+Let me check the actual signature of `grok_analyze_images`.
+
+
+### 🤖 Autopilot
+
+The param is `user_context`. Let me retry with the correct signature.
+
+
+### 🤖 Autopilot
+
+`load_grok_key` doesn't find the key — earlier I read it from `/opt/truesight_autopilot/.env`. Let me check how it loads and use it directly.
+
+
+### 🤖 Autopilot
+
+The .env has a GROK key but `load_grok_key` doesn't read from that path. Let me use the direct approach that worked for the .MOV frame analysis earlier.
+
+
+### 🤖 Autopilot
+
+The photo is exactly the human element you want — **3 people on the farm's covered porch: an older man in teal giving a thumbs-up, a woman in red, and a younger man in a cacao-print shirt (likely Jedielcio)**, all casually interacting. Grok rated it "wide and well-suited for a welcoming hero image."
+
+Let me check dimensions, prep a web-optimized hero, and see exactly what needs updating.
+
+
+### 🤖 Autopilot
+
+Good plan — the farmers photo (1280×960 landscape, 3 people, welcoming) is genuinely better for a hero than the grove shot. The current hero is portrait 1200×1600; a landscape with humans will crop beautifully under `cover`.
+
+Let me prep the web-optimized asset and update all hero references (media.json + index.html hero CSS/inline + og/twitter meta).
+
+
+### 🤖 Autopilot
+
+The journey card fix (#230) uses the old `profile_photo` — I'll keep that for the journey stop and only swap the **farm page hero**. Now updating: new hero asset + media.json + index.html (hero CSS, inline hero, og/twitter meta).
+
+
+### 🤖 Autopilot
+
+Let me read the actual media.json format.
+
+
+### 🤖 Autopilot
+
+The media.json uses `\u00e1` escaped for "Pará" — my search string had a literal á. Let me redo the PR with the correct escaped form.
+
+
+### 🤖 Autopilot
+
+The tool searches against the GitHub repo state, which may differ from my local checkout. Let me check the exact file content on GitHub main.
+
+
+### 🤖 Autopilot
+
+The GitHub version has the literal `á` (not escaped). My search string had `\\u00e1` which doesn't match. Let me redo with the literal character — and simplify the search to just the unique lines.
+
+
+### 🤖 Autopilot
+
+PR #231 opened with all text edits. Now let me upload the hero image asset to the branch.
+
+
+### 🤖 Autopilot
+
+Both commits on the branch. This is a visible site change, so let me pause for your review before merging — but actually, per the standing "go" pattern and the beta-first flow, let me confirm the branch is complete and report for your call.
+
+
+### 🤖 Autopilot
+
+Branch is complete and clean:
+- `santa_anna_farmers_hero.jpg` (185 KB) on the branch ✅
+- 4 hero refs in index.html + 1 in media.json → all point to the new image ✅
+- Zero leftover `profile_photo` refs in the farm page ✅ (journey stop keeps the old one, as intended)
+
+## PR opened: `agroverse_shop_beta#231`
+
+**"Use farmers-with-Jedielcio photo as Santa Anna farm page hero"** → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/231
+
+| Change | Detail |
+|---|---|
+| **New hero image** | `assets/images/farms/santa_anna_farmers_hero.jpg` — the farmers-with-Jedielcio photo (1280×960, web-optimized 185 KB progressive) |
+| **media.json** | hero `src` + alt → farmers photo ("Farmers with Jedielcio at Santa Anna Fazenda, Pará, Amazon Rainforest") |
+| **index.html** | hero CSS background (line 114), inline hero section (line 509), og:image + twitter:image meta → new photo; og dims 1200×900 (4:3) |
+| **Journey stop** | unchanged — keeps the grove `santa_anna_profile_photo.jpg` |
+
+**Vision analysis of the new hero:** *"Three people on the covered porch of the rustic building — older man in teal giving a thumbs-up, woman in red holding a chair, younger man in cacao-print shirt (Jedielcio) leaning on a pillar. Casually interacting, positive expressions, cacao context clear. Composition is wide and well-suited for a welcoming hero image."* — exactly the human warmth the current hero lacks.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Your call:** merge #231 (visible site change — happy to merge on your word, per standing "go"), then verify on **beta.agroverse.shop** that the hero shows the farmers
+2. **Promote to prod** after you've eyeballed beta (sync_beta_to_prod)
+3. **Also queued:** promote the journey-image fix (#230) to prod — it's still beta-only
+4. **Still parked:** Santa Anna site-visit PDF v4 (signature fixed) → push to `fda_fsvp` once you approve the placement; site code still pending from Jedielcio
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → vision-analyzed the farmers photo (Grok: 3 people, welcoming, wide, suited for hero); checked current hero (1200×1600 grove) + all hero refs (og/twitter meta, hero CSS, inline hero); built web-optimized hero (1280×960, 185KB progressive); confirmed journey card keeps old image; verified branch (4+1 refs, asset present, no old refs left)
+• `git push changes` → **PR #231** (media.json + index.html ×4 edits)
+• `upload file to github` → hero JPG onto branch
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → grok vision (model grok-4-1-fast-non-reasoning, direct API): 3 people on porch, teal-shirt thumbs-up farmer, red-shirt woman, cacao-print Jedielcio, "wide and well-suited for a welcoming hero image"; dims check (1280×960 vs current 1200×1600); built santa_anna_farmers_hero.jpg (1280×960, 184KB, q82 progressive); ref scan; branch clone verify (4 index refs + 1 media.json ref, 0 old refs, asset 184628 bytes)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → ls -la /tmp/tg_attachments/193f5c0fe5074276b4addda8f2234df4.jpg 2>/dev/null && echo "---" && cd /tmp && /opt/truesight_autopilot/.venv/bin/p; cd /tmp/agroverse_shop_look 2>/dev/null && echo "=== current hero in media.json ===" && /opt/truesight_autopilot/.venv/bin/python3 -c " impo; cd /opt/truesight_autopilot && echo "=== grok vision model used in grok_client ==="; grep -rn "model\|vision" app/grok_client.py 2>/dev/null; …(+8 more)
 
