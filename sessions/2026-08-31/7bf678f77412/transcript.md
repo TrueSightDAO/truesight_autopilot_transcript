@@ -2741,11 +2741,13 @@ Cleide and Santa Anna already have their site codes inline in the story text. Pa
 ### 🤖 Autopilot
 
 Paulo's page has a clear facts-card pattern — I'll add the site code as a highlight item (consistent with how Cleide/Santa Anna carry theirs in the story). Opening the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #255 opened. Merging it (you approved the site-code addition):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2964,4 +2966,42 @@ The uploader runs unattended; I'll hold here and report when uploads land.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /home/ubuntu/cleide_work echo "=== detect_log: can we recover objects? ===" head -5 detect_log.txt 2>/dev/null | tr -d ' ' grep -c "^IMG"; cd /home/ubuntu/cleide_work # reset the FAILED marker so IMG_4832 gets retried python3 - <<'PY' import json m=json.load(open('manifest.json'; cd /home/ubuntu/cleide_work sleep 20 echo "=== uploader process ===" ps -p 105025 -o pid,etime,rss,cmd --no-headers 2>/dev/null | cut -c1-90
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] I think perhaps we should have a background process running that is shared by all the Sofias, what do you think? Such that the background process will just simply look at what are the videos in the folder and if not already uploaded, then it should and meanwhile the manifest should just point to the video names and then once it's uploaded then update the manifest itself. What do you think? Come over the design and let's chat about this. Otherwise, I think all the farms or videos will be stuck. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+I think it's a great idea — and honestly it's the natural evolution of what I've been running ad hoc. Right now each farm gets its own uploader script (I've got one for Cleide, there's one for La do Sitio's retry loop), and they don't talk to each other — which is exactly how we end up with one farm eating the whole daily quota. So yes: one shared daemon, one throttle, one state model.
+
+Here's how I'd design it:
+
+**Core loop (dead simple):**
+1. Watch a set of farm inboxes — e.g. `/home/ubuntu/farm_media_inbox/<farm_id>/mp4/`
+2. For each video, check its manifest entry: **yt_id present = done, skip; no yt_id = upload**
+3. Upload → write yt_id back to the manifest → move on
+4. The manifest IS the state — no separate database, crash-safe by construction, resume-safe by design
+
+**The design decisions I'd want your call on:**
+
+1. **Quota as a shared daily budget** — the single most important point. One global counter (e.g. 6/day on this unverified project), round-robin across farms so La do Sitio can't starve Cleide. When the budget's spent, the daemon sleeps until the reset (~07:00 UTC) and picks up where it left off, interleaving farms fairly.
+
+2. **Singleton** — only ONE daemon may write to the manifests (two writers = corrupted state). Enforce with a PID lockfile, run as a systemd service on this box so it survives reboots. Other Sophias don't run their own uploaders — they just drop videos into the inbox and the daemon picks them up. That's the "shared by all the Sophias" part.
+
+3. **Scope** — should the daemon only handle the upload step (transcode/GPS/detect stay per-farm, done before dropping into the inbox), or also do the full pipeline? I'd recommend **upload-only**: transcode and GPS-fix are farm-specific and memory-heavy (we OOM'd earlier), while upload is the choke point that benefits from sharing. Drop fully-processed mp4s in, daemon pushes them out.
+
+4. **Failure semantics** — 429 quota → sleep till reset; network error → exponential backoff; corrupt file → mark `error` in the manifest and move on, don't wedge the queue. Every upload logged with timestamp so the quota counter is auditable.
+
+5. **Publish step stays manual/PR** — the daemon updates a local working manifest; committing to `FARM_MEDIA_MANIFESTS/<farm_id>.json` on GitHub stays a separate deliberate step so we don't spam the repo with per-video commits.
+
+**My honest take:** this is the right architecture, it's ~1 small script + a systemd unit, and my current Cleide throttled uploader (PID 105025, already got IMG_4832 up) becomes the seed of it — I'll generalize it, add the fairness logic, and point it at a shared inbox.
+
+Two questions before I build it:
+- **Where do videos land?** A shared inbox like `/home/ubuntu/farm_media_inbox/<farm_id>/`, or do you want the daemon to watch each farm's existing work dir directly?
+- **Priority/fairness** — strict round-robin across farms, or do you want a priority flag (e.g. "Cleide is the active campaign, give it 2:1")?
+
+Say the word and I'll write the design doc + build the daemon.
 
