@@ -1064,6 +1064,7 @@ Meanwhile the map, plot registry, generator, and runbook are all live and untouc
 ### 🤖 Autopilot
 
 Let me verify the cleanup landed — checking the sheet (source of truth) and the current registry state, then I'll trigger the rebuild.
+[3 tool result(s) compacted: read_google_sheet, read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1073,11 +1074,13 @@ Sheet verified — your cleanup landed. Marking the picture straight:
 **Your statuses now (29 rows):** all 17 artifacts → `INVALID` ✓ (Oregon ×10, Shenzhen, 3 no-GPS Criolla, 2 Sophia-test rows, 08-30 Altamira test, plus the 487 duplicate). The Bougainvillea stays **LINKED** ✓. The TEST rows are `LINKED` but the builder skips `test`/`e2e` IDs anyway. And there's a **new row 29**: `Edgar_20260831015152_009` at Altamira Plot-1 coords, status NEW.
 
 The public index is **stale** — still shows 20 features including the Oregon `NEW` rows (the daily 06:05 UTC rebuild hasn't run since your edits). Let me check the new row's details and trigger the rebuild so the map reflects your cleanup now:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Row 29 is a **real new Altamira planting**: `Edgar_20260831015152_009`, Cacao (Native), planted 2026-08-31T01:51:49Z (submitted by Sophia Truesight, Plot-1 coords). And I can see the rebuild workflow supports `workflow_dispatch`, with `gh` authenticated — so I can trigger the rebuild right now instead of waiting for 06:05 UTC. Let me fire it and watch it complete:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1217,4 +1220,97 @@ Ran the generator exactly as the workflow will (SA creds, `--out plots/index.geo
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/sunmint6 && echo "=== generator exists? ===" && ls -la scripts/build_plots_geojson.py && echo "=== run with SA creds (no Plots tab -; cd /tmp/sunmint6 && cp plots/index.geojson /tmp/plots_live_backup.json && echo "=== run exactly as workflow does (--out plots/index.geojson); cd /tmp/sunmint6 && git checkout -- plots/index.geojson 2>/dev/null; echo "=== git status ===" && git status --short && echo "(empty = clean
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] I think between the pills Plots:
+Rancho Maranta Plot 1 (house)
+Rancho Maranta Plot 2 (family ~5 ha)
+View:
+Altamira (pilot) (1)
+Florianopolis (planted) (1)
+All trees (2)
+
+At any point only one can be active
+
+
+### 🤖 Autopilot
+
+Let me look at exactly how the plot pills and view pills interact in the current code — whether they share one active-state or are independent groups:
+
+
+### 🤖 Autopilot
+
+Let me read the two chip groups in full — the view chips (around 500-525) and the plot chips (around 610-680) — to see how active state is tracked and whether selecting one clears the other:
+
+
+### 🤖 Autopilot
+
+Now I see it clearly: the two groups are **independent** — clicking a view chip doesn't deactivate the plot chips, and clicking a plot chip doesn't deactivate the view chips. Two chips can be highlighted simultaneously. I'll make them a single exclusive group: selecting a view clears all plot chips, selecting a plot clears all view chips.
+
+Applying the two edits locally first:
+
+
+### 🤖 Autopilot
+
+Both edits applied, JS clean. Pushing via git_push_changes with the same two hunks:
+
+
+### 🤖 Autopilot
+
+PR #328 opened. Verifying the pushed branch, then merging per the standing go-signal:
+
+
+### 🤖 Autopilot
+
+Pushed branch verified — JS clean, both exclusivity branches present (lines 522, 668). Merging PR #328:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Fix: plot pills and view pills are now a single exclusive group.**
+
+You're right — previously the two groups were independent: clicking a view chip left a plot chip highlighted and vice versa, so two pills could be active at once. Now **only one pill can be active at any time**.
+
+**PR #328 — merged** (`fix/impact-map-exclusive-pills`, sha `11ce24d`) — two small edits in `sunmint.html`:
+1. **View-chip click** now also clears any active `.plot-chip` (resets to white bg / border color) — added after the view chip's own highlight.
+2. **Plot-chip click** now also clears any active `.view-chip` (resets to white bg / green text) — added after the plot chip's own highlight.
+
+No map-behavior change — `flyTo`/`flyToBounds` untouched; purely active-state styling on the pill groups.
+
+**Testing:** both anchors matched exactly once; inline map script extracted → `node --check` passed both locally and on the pushed branch; both "exclusive pill group" branches verified present in the pushed branch (lines 522, 668).
+
+## Resulting behavior on the beta map
+
+- **Plots:** Rancho Maranta Plot 1 (house) · Rancho Maranta Plot 2 (family ~5 ha)
+- **View:** Altamira (pilot) (1) · Florianopolis (planted) (1) · All trees (2)
+- Clicking any pill **deactivates the other group** — exactly one active pill, always.
+
+**Live on beta (hard refresh):** → https://beta.truesight.me/sunmint.html
+
+## RESUME HERE →
+1. **Governor reviews the exclusive-pill behavior on beta** → if good, **explicit approval** → `sync_beta_to_prod(truesight_me_prod)` (promotes #325 #326 #327 #328 together).
+2. **Create the "SunMint Plots" tab** in the ledger spreadsheet (RM-P1, RM-P2 rows) so the plots generator has a real source of truth.
+3. **RM-P2 boundary authority** — Jedielcio's CAR/INCRA polygon or full perimeter walk (5 ha claimed vs 2.9 ha walked).
+4. **Ledger anchor** — register Rancho Maranta farm + plot event on-chain.
+5. **Bougainvillea planting event** — confirm Paloma's crew has a proper [TREE PLANTING EVENT] recorded for the QR-linked tree.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cloned tmb5, read both chip groups, applied 2 edits + node --check, cloned pushed branch tmb6, verified JS + exclusivity branches
+• `git push` → truesight_me_beta PR #328
+• `merge pr` → ✅ PR #328 merged (sha: 11ce24d6149b5faa480309dd41295654a01fc2db)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && rm -rf tmb5 && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git tmb5 2>&1 | tail -1; cd tmb5 && echo ; cd /tmp/tmb5 && echo "=== view chips block ===" && sed -n '495,535p' sunmint.html && echo "" && echo "=== plot chips block ===" && sed -n '6; cd /tmp/tmb5 && cp sunmint.html /tmp/sunmint_html_bak.html && python3 - <<'PYEOF' import re src = open('sunmint.html').read() # Edit 1: view; …(+1 more)
+• `merge pr` → ✅ PR #328 on truesight_me_beta merged successfully (sha: 11ce24d6149b5faa480309dd41295654a01fc2db). Pull Request successfully merged
 
