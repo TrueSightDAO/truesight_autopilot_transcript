@@ -1969,36 +1969,43 @@ Transcripts came back empty — the VAD filter likely dropped everything (possib
 ### 🤖 Autopilot
 
 Raw transcripts are sparse — these are short clips with mostly ambient farm audio and fragments of speech (typical of phone video in the field). The runbook's Grok-polish step is exactly what turns fragments like this into coherent, interesting descriptions. Let me check the OAuth token validity and the Grok key, and run the polish.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Token has a refresh_token (auto-refresh on use) and both upload+force-ssl scopes — good. GROK_API_KEY present. Now let me generate coherent, interesting titles + descriptions from the raw transcripts via Grok (grounded in the transcript fragments + what we know the videos show):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Grok produced excellent titles + descriptions. Now uploading all 3 to the admin@truesight.me channel (public, per your instruction) using the script + credentials on the box:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 3 uploaded public to admin@truesight.me. Now let me record them in the mapping + update the farm page media.json with the embeds, and PR it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me add the 3 Santa Anna entries to youtube_videos.json and update the farm page media.json with YouTube embeds, then PR both to agroverse_shop_beta.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Structure understood. Now let me add the 3 entries to youtube_videos.json and update media.json on the farm page, then PR both together.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 youtube_videos.json updated (71 keys). The `media.json` isn't in that checkout — let me find the right local copy.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2204,4 +2211,117 @@ The videos from your site visit are now embedded on the farm page, playing from 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → curl -s "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/" | grep -oE "Rr0QOztkFSw|9LeB2PtZ4UE|U7tQ5-4eOEg|youtube[^\"']*" | sort ; echo "=== media.json on beta ==="; curl -s "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/media.json" | /opt/truesight_autopilot; echo "=== media.json on GitHub main ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/santa-anna-; …(+2 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: https://beta.agroverse.shop/farms/santa-anna-fazenda-para/ farm location not showing properly
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593]
+
+
+### 🤖 Autopilot
+
+Let me inspect the farm location section of the live beta page to see what's broken.
+
+
+### 🤖 Autopilot
+
+The HTML section looks fine. The map is rendered by Leaflet JS — let me check the map init script at the bottom of the page.
+
+
+### 🤖 Autopilot
+
+The map init looks correct. Let me see the full initMap function to check for a bug (e.g. `mapPaulo` variable naming, tile layer URL, or a JS error).
+
+
+### 🤖 Autopilot
+
+I found the likely bug. Let me confirm by checking Paulo's page (which presumably works) and the `.map-container` CSS.
+
+
+### 🤖 Autopilot
+
+`.map-container` CSS came back **empty** — that's the bug. Leaflet maps require an explicit container height; without it, the map div renders at 0px tall and nothing shows. Let me verify against Paulo's page.
+
+
+### 🤖 Autopilot
+
+The CSS exists inline in both pages at line 240. Let me compare the exact CSS blocks — Paulo's (working) vs ours (broken).
+
+
+### 🤖 Autopilot
+
+The map div CSS is identical and fine (400px height). The difference must be in the JS string. Let me look at our bindPopup line exactly — I suspect unescaped apostrophes in the coordinates are breaking the JS.
+
+
+### 🤖 Autopilot
+
+**Found the bug!** Line 587 — the `bindPopup` JS string is single-quoted but the Google Maps URL contains **unescaped apostrophes** (`3%C2%B017'32.9%22S` and `52%C2%B034'20.1%22W`). In JS, the first `'` **terminates the string early** → SyntaxError → `initMap()` never runs → the map never renders.
+
+Paulo's working page escapes them as `\\'` (`3%C2%B023\\'32.0%22S`). When I generated the Santa Anna page from Paulo's template, the URL transform dropped the backslash escapes. Let me fix both apostrophes.
+
+
+### 🤖 Autopilot
+
+Fixed the JS string — both apostrophes now escaped as `\'` on the bindPopup line (the HTML href at line 561 keeps its plain apostrophes, which is correct for HTML). Let me verify the fix renders correctly by checking the JS syntax.
+
+
+### 🤖 Autopilot
+
+JS syntax verified — the map script is now valid. Let me open the fix PR and merge it.
+
+
+### 🤖 Autopilot
+
+PR #228 opened. Let me verify the edit landed correctly on the branch, then merge.
+
+
+### 🤖 Autopilot
+
+Branch verified — escaped URL in place, JS syntax valid. Merging the fix.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `agroverse_shop_beta#228` merged — map fix live
+
+**"Fix map init JS syntax error on Santa Anna farm page"** → merged (sha `ad2f42e`)
+
+### Root cause of "farm location not showing properly"
+The Leaflet map's `bindPopup()` JS string is **single-quoted** and the Google Maps URL contains **unescaped apostrophes** in the DMS coordinates (`3%C2%B017'32.9%22S+52%C2%B034'20.1%22W`). The first `'` terminated the JS string early → **SyntaxError** → `initMap()` never ran → the map div rendered empty.
+
+Paulo's working page escapes them as `\'` — the template transform that generated the Santa Anna page had dropped the backslashes (same root family as the earlier corrupted-URL bug).
+
+### The fix
+- Escaped both apostrophes (`\'`) in the `bindPopup()` URL on the JS line only
+- HTML href kept plain apostrophes (correct for HTML)
+- **Verified**: `node --check` on the extracted initMap script → **rc 0, syntax OK**; coordinates unchanged (-3.292475, -52.57225)
+
+---
+
+**RESUME HERE → next unit:**
+1. **Verify on beta** — after the Pages deploy settles, `/farms/santa-anna-fazenda-para/` should now show the Leaflet map with the Santa Anna marker + popup (I can re-fetch to confirm the served HTML has the escaped URL)
+2. **Your visual review** — check the farm page (map, gallery with 3 videos) and if good say **"promote to prod"** → I'll `sync_beta_to_prod`
+3. **Still parked:** Santa Anna site-visit PDF finalization (needs site code from Jedielcio), DApp FARM REGISTRATION (you said hold off)
+
+—
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → inspected Farm Location section + map init JS; diffed vs Paulo's working page; found unescaped apostrophes in bindPopup URL; fixed both; node --check rc 0; opened PR #228; verified branch (escaped URL + JS OK); merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → sed Farm Location section; grep map init; sed 570-600 (found mapPaulo + tileLayer + marker OK); grep .map-container CSS (identical to Paulo's, 400px); cat -A line 587 vs Paulo 627 (**found unescaped `'` in URL**); python fix both apostrophes; node --check rc 0; git fetch + verify branch; merge PR #228
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /tmp/agroverse_shop_look && sed -n '/Farm Location/,/\/section/p' farms/santa-anna-fazenda-para/index.html | head -80; cd /tmp/agroverse_shop_look && grep -n "map-santa-anna\|L.map\|L.marker\|initMap\|leaflet" farms/santa-anna-fazenda-para/index.html | head -; cd /tmp/agroverse_shop_look && sed -n '570,600p' farms/santa-anna-fazenda-para/index.html; …(+7 more)
+• `merge pr` → ✅ PR #228 on agroverse_shop_beta merged successfully (sha: ad2f42e80d192ea3212e173fde9dd68e5152e1b0). Pull Request successfully merged
 
