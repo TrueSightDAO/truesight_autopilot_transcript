@@ -664,12 +664,19 @@ Let me read the rest of the plan to get PR2's exact definition and gates.
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The artifact is nesting. Let me read the final chunk with the PR2-4 definitions.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact chain is nesting — let me read the plan's PR2-4 section directly from the local agentic_ai_context clone on the box instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -678,21 +685,25 @@ PR2 definition confirmed (from plan §4):
 > **PR2** — autopilot box (ops): add crontab `*/30 * * * *` mirroring `sync_pending_caches`; run once for real; confirm both JSONs live on raw.githubusercontent.com; **offline re-verify 3 sample signatures** (openssl over signed_text) → `gate: 3/3 re-verifications pass`
 
 Executing PR2 now. First: confirm the script's push target repo, then deploy it to the cron location (`/home/ubuntu/scripts`) alongside `sync_pending_caches.py`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Script deployed to cron location, targets `TrueSightDAO/sunmint` (Contents-API). Now run it for real (`--push`) — the first live publish — then confirm the files on raw.githubusercontent.com.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files pushed. Now confirm they're live on raw.githubusercontent.com and verify 3 sample signatures offline from the live URL.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **3/3 gate passed.** Both files live, 3 samples across event types verify offline from the raw URL. Now the last PR2 piece: add the crontab line mirroring `sync_pending_caches.py`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1020,4 +1031,98 @@ Sunmint keeps its **tree-data caches** (`trees/index.geojson`, `plots/index.geoj
 **Adopt `verify_public_signatures` as the org-wide ledger, per-event-type subfolders, per-event files, emit-at-dao_protocol.** It's the architecture you're describing, pre-named in the org, and matches every existing convention.
 
 Want me to: (a) draft the plan amendment + repo init as the next PR, or (b) just start with migrating the 73 into the new layout while we settle dao_protocol emission separately? Your call on scope — I'll build whichever you pick.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+I think this is a great idea.
+
+
+### 🤖 Autopilot
+
+Gary's approval locks the new architecture. Per the handoff protocol, the plan is the execution authority — I'll amend it first (one PR this turn) so RESUME HERE reflects the new design, then subsequent turns execute the migration. Let me read the current plan.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the plan to capture PR4/UAT and the §5/§6 sections I need to amend.
+
+
+### 🤖 Autopilot
+
+Let me read the final chunk (PR3-4 + §5/§6) so the amendment covers the full unit list.
+
+
+### 🤖 Autopilot
+
+The plan is fully captured. I have the decisions (0.1–0.5), pre-flight, architecture (3.1–3.3), and the sequencing table start. Let me grab the remaining tail (§4 table rows PR2-4 + §5/§6) from the local clone to amend precisely.
+
+
+### 🤖 Autopilot
+
+Full plan captured. The pivot is clear: **org-wide ledger in `verify_public_signatures`, per-event-type subfolders, one immutable JSON per event, dao_protocol emit-at-verify + cron reconciliation**. I'll land the plan amendment as this turn's PR (docs-only, agentic_ai_context), then stop per one-PR-per-turn.
+
+
+### 🤖 Autopilot
+
+Retrying with the parameters passed directly.
+
+
+### 🤖 Autopilot
+
+PR #856 open with the full pivot amendment. Per the one-PR-per-turn rule, I'll stop here and report — the governor's 👍 authorizes merging my own docs PRs, and this is a docs-only roadmap amendment with no gate, so I'll merge it now to keep the manifest/plan in sync.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**A1 landed — the plan is pivoted to the org-wide ledger.** ✅
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **PR** | [agentic_ai_context #856](https://github.com/TrueSightDAO/agentic_ai_context/pull/856) — merged (squash, `545d901`) |
+| **What changed** | `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md` rewritten from the SunMint-only aggregate-cache design to the **org-wide public RSA signature ledger** |
+
+## What the pivot locks in
+
+| Decision | Before (PR0) | After (A1) |
+|---|---|---|
+| **0.1 Home** | `sunmint/signatures.json` | **`TrueSightDAO/verify_public_signatures`** (empty public repo, purpose-built name) |
+| **0.1b Layout** | one big JSON file | **one immutable JSON per event** in per-event-type folders (`tree_planting/171.json`, …) + `index.json` per folder + root `index.json` — no size ceiling, real per-attestation URLs, append-only emission (matches `lineage-assets` `qrs/<qr-id>.json` convention) |
+| **0.2 Scope** | SunMint events only | **all RSA event types** — contribution reporting, sales, inventory movement land here later |
+| **0.5 Writer** | cron only | **dao_protocol emit hook at verify time** (primary, deploy-gated, A4) + **cron as reconciliation** |
+
+Also captured: the verification algorithm fact (§2.3 — payload = text up to & incl. `--------` separator), EMAIL REGISTERED exclusion pending a redaction-preserving design (§5, OPEN_FOLLOWUPS item), and the full A2–A5 sequencing table with gates.
+
+## State of roadmap
+| Unit | Status |
+|---|---|
+| PR0–PR3 (legacy sunmint path) | ✅ done/live (superseded) |
+| **A1 pivot amendment** | ✅ **merged this turn** |
+| A2 retarget script + migrate 73 events | ⏭️ next |
+| A3 ledger README | not started |
+| A4 dao_protocol emit hook | not started |
+| A5 docs + UAT | not started |
+
+## RESUME HERE → **A2**
+
+`truesight_autopilot` + `verify_public_signatures` (one PR): retarget `scripts/sync_sunmint_signatures.py` from the aggregate sunmint layout to the **per-event layout** — write `verify_public_signatures/tree_planting/<msg_id>.json` etc. + per-folder `index.json` + root `index.json` (sha-aware incremental PUT per file); **one-time migration of the 73 live events** out of `sunmint/signatures.json` into the new folders; local test suite (compileall / ruff check / ruff format / pytest) + `--dry-run`; then **`gate: dry-run diff review with Gary`** (layout + PII scan) before the first real push. Remember: `verify_public_signatures` is API-only → Contents-API single-file writes, never branch-edit PRs.
+
+———
+**✅ Done this turn — actions taken:**
+• `git push changes` → agentic_ai_context #856 opened (`09b063c`)
+• `merge pr` → #856 merged (sha `545d901`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /home/ubuntu/agentic_ai_context 2>/dev/null && git pull -q origin main 2>/dev/null; sed -n '/| \*\*PR2\*\*/,/^## 7/p' /home/ubuntu/agenti
+• `merge pr` → ✅ PR #856 on agentic_ai_context merged successfully (sha: 545d9014f7ad1320dd4b21972421c1929c3baf0e). Pull Request successfully merged
 
