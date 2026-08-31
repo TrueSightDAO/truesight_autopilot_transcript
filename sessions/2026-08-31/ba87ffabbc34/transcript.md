@@ -8,70 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-Understood — correcting course: **no new governor grants, not even for cleanup**. Test measurement via a throwaway email identity (regular EMAIL flow, no elevated rights), and any invalidation of test data must use an **existing governor identity** already credentialed in the system. Let me investigate the two required pieces: (1) whether an invalidation mechanism exists for the brand-new `[TREE GROWTH MONITORING EVENT]` type, and (2) what test/dummy tree options exist.
-[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-REJECT handling exists **only** in the planting flow; the growth handler is separate. Let me check whether the growth handler has any invalid/reject path for measurement rows, and what it writes per measurement (so "invalidation" has a concrete target):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The growth handler appends measurement rows to a **"Tree Growth Measurements" tracking tab** (dedup by Telegram Message ID) and writes per-tree JSON history — with **no reject/invalidate path for measurement rows** (only the "skip if tree INVALID" input gate). Let me see the exact row structure and the tracking tab layout:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The growth handler **has no invalidation path for measurement rows** — confirmed: it only has input gates (skip INVALID trees, 200 m proximity) and appends rows with `Status='PROCESSED'`. Let me confirm the cleanup tooling available (existing governor identity via dao_client) and how the page treats manual/unknown tree IDs (for a dummy-tree test):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The manual-ID path works for unknown trees (no coords → proximity gate passes), so a **dummy test tree needs no real record**. Let me do one last check — whether my earlier E2E measurement actually landed a row in the "Tree Growth Measurements" tab (so cleanup has exact targets):
-[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Everything's mapped — here's the corrected plan and the honest gap assessment.
-
-## ✅ Correction accepted
-No new governor grants — not even temporarily for cleanup. That was a real escalation risk on live governance infra; agreed.
-
-## 🚩 Gap flag (as requested): **no invalidation mechanism exists for growth measurement rows**
-
-Verified by reading the handler (`process_tree_growth_monitoring.gs`, deployed today):
-- It has **input gates only** — skips measurements on `INVALID` trees, enforces the 200 m proximity (governor/sentinel exempt) — then **appends rows to the `Tree Growth Measurements` tab with `Status='PROCESSED'`** and writes per-tree JSON history. **There is no reject/invalidate path for measurement rows.**
-- The existing `[TREE PLANTING REJECT EVENT]` invalidates **trees** (planting submissions) — it does **not** touch measurement rows.
-- I also confirmed **I cannot act as an existing governor from this box**: `dao_client` is not checked out, and the autopilot's `.env` identity (`EMAIL`/`PUBLIC_KEY`/`PRIVATE_KEY`) is **Sophia's**, not a governor's. So invalidation must be done **by you** (or via a small addition you approve).
-
-**Smallest safe addition (proposed, your call):** a governor-gated `rejectTreeGrowthMeasurement_(msgId)` in the growth handler — mirrors the planting REJECT pattern exactly (`isGovernorByName_`/`isSentinelByName_` gate → flips the row's `Status` to `REJECTED` + records `Updated By`). One small PR + deploy. **Immediate fallback (no code):** you set `Status` manually on the test row(s) in the `Tree Growth Measurements` tab — I'll give you exact cell refs.
-
-## 📋 Cleanup of data already created (needs your decision)
-
-1. **FounderHaus measurement (DBH 12.5)** — my earlier E2E (pre-correction) submitted it; Edgar returned **200 / signature_verification success**. The `Tree Growth Measurements` tab currently has **headers only** (cron hasn't picked it up yet), but it **will** land as a `PROCESSED` row for the real tree `Edgar_20260821175134_005`. → needs invalidation (manual or the proposed function) once it lands.
-2. **`admin@truesight.me` ACTIVE email row** under a fresh keypair (from the verification click-through) → test identity; suggest removing/flagging it.
-
-## ✅ Remaining test plan (per your correction)
-
-1. **Throwaway email** (`tgm.e2e.20260829@…`, regular EMAIL REGISTERED/VERIFICATION flow) → verify → measure
-2. **Dummy tree — no real record needed:** I verified the **manual Tree ID path** works for unknown IDs (`getSelectedTree()` → `treeIdManual`; no coords → proximity gate passes; handler processes with `treeRow=null`, gates skipped). I'll use `TEST_E2E_MEASUREMENT_20260829` — zero farmer data touched. (If you'd rather it appear in the dropdown, I can add a dedicated `TEST` row to the SunMint sheet instead — your call.)
-3. **Invalidation of that test row** — via the proposed governor-gated function (once you approve it) or your manual sheet edit.
-
-**Next step — your call:** (a) approve the small `rejectTreeGrowthMeasurement_` addition (PR + deploy) so we have a real mechanism, and/or (b) I run the throwaway-email + dummy-tree E2E now with manual-cleanup-prep (I'll hand you exact row refs to invalidate). I will not invent any elevated access to route around this.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30x; cd /tmp && echo "=== measurement row append (300-345) ===" && sed -n '300,350p' tgm3.gs && echo "=== tracking headers (40-75) ===" && sed -n; cd /tmp && echo "=== dao_client on box? .env key names (no values) ===" && ls /opt/truesight_autopilot/context/dao_client 2>/dev/null | head
-
-
 ### 🧑 Governor
 
 [observed, not directed at you — Envoy TrueSight]: Correction on the cleanup mechanism -- do NOT grant a new test email governor rights (that is a real permission escalation on live governance infra, not something to do casually for test cleanup). Instead: submit the test measurement using a throwaway test email (no governor rights needed for that part), then for the mark-invalid/cleanup step, use an EXISTING governor identity already in the system (Gary's own, or whichever governor identity dao_client already has credentials for) to perform the invalidation. Same end result -- test data gets cleanly marked invalid/removed -- with no new elevated grants created. Still need: (1) a dedicated dummy/test tree, not a real record, (2) confirm/build the simplest correct mechanism to mark a growth measurement invalid using an existing governor identity, flagging if that mechanism does not exist yet for this new event type.
@@ -4506,11 +4442,13 @@ So the guardrail I noted last turn is enforced at the tool level, not just conve
 ### 🤖 Autopilot
 
 Verifying the merge landed, then running the production verification:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The merge **did** land — prod main now carries the full stack (`7567fd96` nearest-cell + `5423c725` maxZoom + `0b986c75 Update CNAME`) — but the **live Pages site is still serving the old build** (the recurring Pages rebuild lag). Let me check the CNAME + Pages deployment status:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4526,6 +4464,7 @@ Everything is confirmed — the **production deploy is in progress right now**:
 | **Pages build** | **`status: building`** on commit `0b986c75`, started **03:09:41Z**, no error ✓ |
 
 The live site was still serving the old build at check time (deploy lag), but GitHub Pages is **actively building the new commit now** — the production verification completes once that build finishes. Registering a watcher to confirm the new content is live:
+[1 tool result(s) compacted: watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4762,4 +4701,53 @@ Say "go" to start the test-row cleanup, or to run the post-promotion E2E on prod
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && TOKEN=$(grep -E '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2- | tr -d '"' | tr -d "'") echo "=== 1. su; cd /tmp && TS=$(date +%s) echo "=== 1. LIVE prod monitor page: markers of latest ===" curl -s "https://sunmint.truesight.me/monitor-tree-gro
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] promote
+
+
+### 🤖 Autopilot
+
+Executing the promotion — Gary's explicit "promote" is the gate. Running the formal fork-sync for sunmint_prod (the tool is no-clone, never-force; if it reports a conflict I'll stop and report, same as truesight_me):
+
+
+### 🤖 Autopilot
+
+**Promotion complete** — the formal fork-sync confirms production is fully current.
+
+## ✅ PROMOTION COMPLETE — sunmint_prod confirmed in sync
+
+**`sync_beta_to_prod(sunmint_prod)`** returned:
+- **`merge_type: none`** → *"This branch is not behind the upstream TrueSightDAO:main"* — prod is **already at full parity** with beta (no delta to apply), matching my live verification last turn (prod head `ae4e25bf` carries #46/#47/#48; Pages built, no error)
+- **Deploy ledgered**: `deploy_20260831T031346Z_sunmint-prod` → evidence at [ecosystem_change_logs/deploys/entries/deploy_20260831T031346Z_sunmint-prod.md](https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260831T031346Z_sunmint-prod.md)
+
+**So the full production state of the SunMint stack is now:**
+| Surface | URL | Status |
+|---|---|---|
+| Monitor page | `sunmint.truesight.me/monitor-tree-growth/` | ✅ live, byte-identical to beta (63,202 B) |
+| Landing | `sunmint.truesight.me` | ✅ (CNAME intact) |
+| Impact map + whitepaper | `truesight.me/sunmint.html` + `/sunmint/whitepaper/` | ✅ live (verified last turns) |
+
+**The entire original E2E thread is closed:** emailed-link fix, sentinel/governor gate, card-dimension hints, offline service worker, manual-tree-ID removal — all live in production, promotion ledgered.
+
+## 📌 RESUME HERE → remaining standing items
+1. **Test-row cleanup** — FounderHaus DBH 12.5, TEST_TREE_E2E measurements, `tgm-e2e-2026*` email identities (via existing governor/sentinel identity — your call on mechanism)
+2. **Altamira field work** — RM plot boundaries approx → verified (CAR/INCRA or GPS walk); `plot_id` per tree
+3. **Fresh prod E2E** (optional) — full loop on `sunmint.truesight.me` now that #48 removed the manual-tree-ID path (only signed & planted trees are monitorable)
+
+Say "go" to start the test-row cleanup, or to run the post-promotion E2E.
+
+———
+**✅ Done this turn — actions taken:**
+• `sync beta to prod` → sunmint_prod: `merge_type: none` ("not behind upstream"), deploy ledgered (deploy_20260831T031346Z_sunmint-prod, evidence URL in ecosystem_change_logs)
+
+———
+**✅ Done this turn — actions taken:**
+• `sync beta to prod` → ✅ sunmint_prod in sync (merge_type: none — already at parity, prod head ae4e25bf), deploy recorded: deploy_20260831T031346Z_sunmint-prod (ecosystem_change_logs evidence URL)
+
+———
+**✅ Done this turn — actions taken:**
+• `sync beta to prod` → status success, merge_type none (not behind upstream TrueSightDAO:main), deploy ledgered (record_id deploy_20260831T031346Z_sunmint-prod, evidence_url ecosystem_change_logs deploys entries)
 
