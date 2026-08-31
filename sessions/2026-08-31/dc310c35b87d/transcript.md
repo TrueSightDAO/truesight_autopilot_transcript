@@ -1896,16 +1896,19 @@ Good pointer — let me check the impact map on the beta site and find where the
 ### 🤖 Autopilot
 
 The page mentions a **Farms Registry** — let me read the impact-map section of the page and find the underlying data.
+[2 tool result(s) compacted: read_tool_result, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There it is — **`SUNMINT_PLOTS_REGISTRY.md`** exists! You're right, there's already plot architecture. Let me read it and find the actual machine-readable registry (the impact map's data source).
+[2 tool result(s) compacted: read_context_file, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — you're right, the architecture exists. Let me verify the live data and how the impact map consumes it.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2161,4 +2164,79 @@ The one URL that was dead (`truesight.me/sunmint/`) is corrected in the pack to 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && for u in "https://truesight.me/sunmint/" "https://truesight.me/sunmint/whitepaper/" "https://sunmint.truesight.me/" "https://beta; cd /tmp && echo "=== truesight.me sunmint paths ==="; for u in "https://truesight.me/sunmint.html" "https://truesight.me/sunmint/index.html"
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+For this implementation plan, can you draft up implementation plan, roadmap and checklist and then once done. Start executing the extension of the https://beta.truesight.me/sunmint.html
+
+
+### 🤖 Autopilot
+
+Let me check the handoff manifest per protocol, and gather the current state of the SunMint page + relevant plans so the implementation plan is grounded.
+
+
+### 🤖 Autopilot
+
+Let me read the plots registry runbook and the current impact-map page so the plan is precise.
+
+
+### 🤖 Autopilot
+
+Let me ground the plan: pull the latest manifest (protocol step 1), the impact-map JS on the page, and the current Farms sheet structure.
+
+
+### 🤖 Autopilot
+
+Let me pull the impact-map JS detail (the existing plotSelector/viewSelector logic) and the Farms sheet structure so the plan is precise about what changes where.
+
+
+### 🤖 Autopilot
+
+Let me get the exact manifest table structure for the new plan row, then draft and commit the plan.
+
+
+### 🤖 Autopilot
+
+I have everything I need: the page structure (40,784 bytes, sections + Leaflet impact map with trees/plots overlays, plot chips, satellite toggle), the data sources (trees/plots geojson, satellite manifest, SunMint Plots sheet schema), and the manifest conventions. Now I'll draft the implementation plan + roadmap + checklist as **PR0** (the roadmap commit), per the manifest's one-PR-per-turn convention.
+
+
+### 🤖 Autopilot
+
+**PR0 committed** — the implementation plan is drafted and parked as the first unit of the sequence. Stopping here per the one-PR-per-turn rule; execution (PR1) runs in a fresh turn.
+
+## What I did this turn
+
+**Drafted the full implementation plan + roadmap + checklist** for extending `beta.truesight.me/sunmint.html`, grounded in verified pre-flight facts:
+
+- **Page** (40,784 bytes): Leaflet impact map with trees markers + plot polygons, `#plotSelector` chips, `#viewSelector`, satellite overlay toggle, CDN fallbacks, `?cb=` cache-busters — all confirmed present
+- **Data sources** (all 200, live): `trees/index.geojson` (1 tree), `plots/index.geojson` (RM-P1 planted/walk-approx, RM-P2 proposed/approx), `satellite/manifest.json`, SunMint Plots sheet (Plot ID / Farm ID / Hectares / Status / Boundary Authority / Owner / Region / Verified At / Media / Notes / Coordinates)
+- **Runbook** (`SUNMINT_PLOTS_REGISTRY.md`) schema + boundary tiers (approx | gps_walk | car | incra) confirmed
+
+**PR #853 — https://github.com/TrueSightDAO/agentic_ai_context/pull/853** (merged-ready, sha `1348f7c`)
+- **New `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`** — scope, current state, constraints, roadmap, checklist, do/don't
+- **`HANDOFF_MANIFEST.md`** — new row: `SUNMINT_IMPACT_MAP_EXTENSION_PLAN` (thread 11074, auto-start, status "in progress — PR0 committed")
+
+### Roadmap (ONE PR PER TURN)
+| # | Deliverable | Repo |
+|---|---|---|
+| PR0 | ✅ **This roadmap + manifest row** | agentic_ai_context |
+| **PR1** | **Enriched plot popups** (boundary authority, status, ha, owner, region, verified_at) | truesight_me_beta |
+| PR2 | Farms selector/filter dropdown (farm → filter plots + trees) | truesight_me_beta |
+| PR3 | Farms Registry section (cards/table aggregated from plots) | truesight_me_beta |
+| PR4 | Status styling + boundary-authority legend + media thumbnails | truesight_me_beta |
+| PR5 | **UAT gate** (7 steps on beta) | truesight_me_beta |
+| post | Promote to prod **only with your approval** (`sync_beta_to_prod`) | — |
+
+## RESUME HERE → PR1 (next unit, fresh turn)
+
+**Enriched plot popups** on `truesight_me_beta/sunmint.html` — upgrade the `bindPopup` in `loadPlots()` to show boundary authority, status, hectares, owner, region, verified_at + legend chips. I'll run the local suite (compile/lint/format) and verify tags + JS syntax before pushing.
+
+One note: since the plan file PR0 is on a branch of `agentic_ai_context` and PR #853 is ready — want me to **merge PR #853** as part of the next turn before starting PR1 (or should it ride along)? Also flagging the manifest row for the **SunMint Mobile App plan** is still stale ("new — awaiting kickoff" though 26 PRs are done) — I can fix that in the same turn if you want.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && echo "=== beta sunmint.html: size + key sections ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_bet; cd /tmp && echo "=== MANIFEST tail (table end) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/hando; cd /tmp && echo "=== sunmint.html impact-map JS (plotSelector / plots load / farm) ===" && grep -n "plotSelector\|plots/index\|index.geojson; …(+2 more)
 
