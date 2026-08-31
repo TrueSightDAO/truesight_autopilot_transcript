@@ -3320,11 +3320,13 @@ All verified: tags balanced 12/12, all 4 inline scripts pass `node --check`, sec
 ### 🤖 Autopilot
 
 PR #340 opened. Verifying the branch matches my validated build, checking mergeability, and merging in the same turn (drift window is minutes):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verified: branch byte-identical to validated build (50,193), `mergeable: True`. Merging now:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3548,4 +3550,123 @@ Want me to **start PR-A now** (the extraction script — it's self-contained, pr
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== sunmint repo: scripts tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recursive=; cd /tmp && echo "=== sunmint_beta tree (any boundary/farm pages?) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/gi
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Can we prioritize this instead. The impact map is more a visual display which is downstream
+
+
+### 🤖 Autopilot
+
+The governor wants to reprioritize — boundary submission pipeline ahead of the impact map UAT. Per protocol, checking the manifest + plots runbook to ground the new plan:
+
+
+### 🤖 Autopilot
+
+Understood — reprioritizing: **boundary submission pipeline first, impact map UAT parked**. Per protocol, let me get the manifest table tail (exact row format) to append the new plan row and mark the impact map row as parked:
+
+
+### 🤖 Autopilot
+
+Let me get the exact tail of the manifest (for the append anchor) before writing the PR:
+
+
+### 🤖 Autopilot
+
+Let me see the exact last table row before the "## How to update" section to place the new plan row correctly:
+
+
+### 🤖 Autopilot
+
+Let me find the exact end of the rows table (the last `| plans/...` row before the status legend):
+
+
+### 🤖 Autopilot
+
+The reprioritization is clear — and the manifest + runbook give me everything needed for a grounded plan. Executing **PR0: the new boundary-submission plan + manifest updates** (impact map row → parked, new row added):
+
+
+### 🤖 Autopilot
+
+PR #863 opened with the plan file. Now adding the manifest updates (impact-map row → parked, new row) as a second commit to the same PR — let me apply those edits:
+
+
+### 🤖 Autopilot
+
+The second git_push_changes failed (tool's clone doesn't have the first commit on this branch). I'll apply the manifest edits via the Contents API instead — fetch the branch file, edit precisely, push back:
+
+
+### 🤖 Autopilot
+
+The file has real UTF-8 chars (the `\u` I see is JSON-escaped in tool output). Let me edit the branch file directly with Python using real characters, then push via the Contents API:
+
+
+### 🤖 Autopilot
+
+Both edits applied (PARKED OK, NEW ROW ADDED). Let me verify the result structure, then push via the Contents API:
+
+
+### 🤖 Autopilot
+
+Both manifest edits are correct on the branch (row 27 parked, row 28 added). Now pushing the updated manifest to the PR branch via the Contents API (the git clone push failed since the branch was created by a different clone):
+
+
+### 🤖 Autopilot
+
+PR0 complete — the reprioritization plan is committed and the manifest reflects it. Let me verify the PR state and report (stopping here per the one-PR-per-turn rule — PR #863 is the plan PR, merge happens on the next go):
+
+
+### 🤖 Autopilot
+
+PR0 complete and verified ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Reprioritized per your direction** — boundary submission pipeline first, impact map parked as downstream.
+
+**PR #863 — https://github.com/TrueSightDAO/agentic_ai_context/pull/863** (branch `sunmint-boundary-submission-plan`, **2 files, 2 commits, `mergeable: True`**)
+
+### 1. New plan: `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`
+The full roadmap for the boundary-capture pipeline, with **your 5 design rules baked in**:
+1. Farm selectable in dropdown **before** the repo record exists (time lag / offline)
+2. Boundary photo → farm dropdown; **free-text "New farm…"** if missing
+3. Next boundary event sees the typed name (device-local persistence)
+4. **Backend auto-creates farm record** on new-name boundary event
+5. **Boundary = lat/lng embedded in uploaded images** (exiftool → convex hull → `approx` polygon)
+
+Plus the grounded pre-flight facts: **5 plots live** (RM-P1 planted, RM-P2/SA-P1/CL-P1/LD-P1 proposed; LD-P1 already carries 8 media items), exiftool installed, runbook extraction caveats (WhatsApp/Telegram strip EXIF), sheet schema, and confirmed gaps (no boundary UI, no `extract_plot_gps.py`, no `FARM BOUNDARY EVIDENCE EVENT` in catalog).
+
+### 2. Manifest updated
+- **Impact-map row → `parked`** — PR0–PR4 done (2026-09-01), UAT+promote resume on governor request, marked superseded by the new plan
+- **New row** for `SUNMINT_BOUNDARY_SUBMISSION_PLAN` (thread 11074, auto-start, PR0 committed)
+
+### Roadmap (ONE PR PER TURN)
+| # | Deliverable | Repo |
+|---|---|---|
+| PR0 | ✅ This roadmap + manifest (impact map parked) | agentic_ai_context |
+| **PR1** | **`scripts/extract_plot_gps.py`** — exiftool GPS → convex hull → polygon → upsert plot row | sunmint |
+| PR2 | Farmer-app "Limites da Fazenda" capture module (farm picker + free-text, offline queue) | sunmint_beta |
+| PR3 | `farms/index.json` machine-generated seed + device-local union | sunmint |
+| PR4 | Backend farm upsert + `FARM BOUNDARY EVIDENCE EVENT` catalog entry | dao_protocol/tokenomics |
+| PR5 | **`gate: UAT`** — end-to-end capture → extract → plot on map | sunmint_beta/sunmint |
+| post | Promote **only with governor approval** | — |
+
+## RESUME HERE → PR1 (next unit, fresh turn)
+
+**`scripts/extract_plot_gps.py`** in `sunmint` (plan §5 PR1):
+1. Read `exiftool -GPSLatitude -GPSLongitude` over a directory of images/videos
+2. DMS→decimal (S/W negative)
+3. Convex hull (monotonic chain, stdlib) → closed `[lng, lat]` ring
+4. Upsert plot row in SunMint Farms sheet (Coordinates, Boundary Authority=approx, Media); create if missing
+5. Regenerate `plots/index.geojson` via existing generator
+6. Local suite + fixture test (LD-P1's 8 media items as fixture); open PR, report URL
+
+Say go and I'll merge PR #863 and start PR1.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/handoffs/HANDOFF_MANIFEST.md" -o manifest.md && w; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/handoffs/HANDOFF_MANIFEST.md" -o manifest.md && e; cd /tmp && grep -n "## How to update" manifest.md && echo "=== rows before it ===" && sed -n "$(($(grep -n '## How to update' manifest.md | ; …(+5 more)
 
