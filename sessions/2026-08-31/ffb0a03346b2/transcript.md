@@ -1501,16 +1501,19 @@ The plan for the PR (single, comprehensive):
 8. **Edit:** `index.html` — add to any farm listing
 
 Let me build the HTML page on the box first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything needed. Let me build the new farm page on the box (copy Paulo's faithful template, transform content for Santa Anna), then open the PR with the data-file edits.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The script hit a Unicode surrogate issue with emoji. Let me redo the transformation with explicit UTF-8 handling.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1642,4 +1645,176 @@ Slug `santa-anna-fazenda-para`, labeled "CEPOTX Cooperative Member Farm" — dis
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #225 on agroverse_shop_beta merged successfully (sha: a1f44bfd3aecc00a1822da2c553ae39a66de0b2d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Done this turn — `agroverse_shop_beta#225` merged
+
+**"Add Santa Anna Fazenda farm page + Brazilian Journey stop"** merged to `main` (sha `a1f44bf`).
+
+### What's now live in the beta branch:
+- **N
+
+
+### 🤖 Autopilot
+
+👍 Go signal received. Next unit: verify the farm page renders on beta (prod promotion still needs your explicit review first). Let me find the beta deploy config and check the live page.
+
+
+### 🤖 Autopilot
+
+The repo's CNAME is `beta.agroverse.shop` — main branch auto-deploys. Let me verify the new page is live.
+
+
+### 🤖 Autopilot
+
+Page is live on beta (HTTP 200, correct title/description/OG tags). Let me verify the key content sections and image assets resolve.
+
+
+### 🤖 Autopilot
+
+The page is live on beta with the farm story, highlights, map at the real GPS — but I spotted a **corrupted Google Maps link** in the output (my earlier regex mangle left remnants of Paulo's old URL inside the Santa Anna link). Let me check and fix it.
+
+
+### 🤖 Autopilot
+
+The Google Maps link is corrupted — my earlier regex mangled it (left remnants of Paulo's old URL appended to the new coordinates). Let me fix it locally with a robust replacement and verify.
+
+
+### 🤖 Autopilot
+
+The regex was a no-op (the apostrophe right after `15z` stopped the match, so nothing was actually trimmed). Let me fix it properly — strip everything after `15z` up to the closing quote/backslash in both contexts.
+
+
+### 🤖 Autopilot
+
+The junk after `15z` contains apostrophes so my character class failed. Let me match lazily until the closing quote instead.
+
+
+### 🤖 Autopilot
+
+Both Google Maps URLs are now clean: `https://www.google.com/maps/place/3%C2%B017'32.9%22S+52%C2%B034'20.1%22W/@-3.292475,-52.57225,15z` — pointing exactly at the farm's coordinates. Now let me open a quick fix PR for this (it's a small correction to the merged page).
+
+
+### 🤖 Autopilot
+
+The search string didn't match — the corrupted URL on the GitHub main branch must differ slightly from what I fetched. Let me read the exact bytes from the repo.
+
+
+### 🤖 Autopilot
+
+The corrupted URL is longer than my search string (has `&amp;g_ep=...` beyond the preview). Rather than fighting exact-match, let me push the whole fixed file from local (it's already cleaned).
+
+
+### 🤖 Autopilot
+
+Still remnants in the local file — the second regex only trimmed to the first backslash boundary but the trailing `\` backslash-quote scenario left part. Let me look at the actual current state of the two lines.
+
+
+### 🤖 Autopilot
+
+Line 562 (the href) is clean. Line 587 (bindPopup) still has a remnant after the `\` escape. The URL in JS context has `\\` before the quote. Let me fix line 587 with a surgical replacement — the remnant starts right after the backslash.
+
+
+### 🤖 Autopilot
+
+The regex isn't matching due to escape complexities. Let me take a direct line-based approach — find the bindPopup line and rebuild it cleanly.
+
+
+### 🤖 Autopilot
+
+Both URLs are now clean, zero remnants. The local file matches what I want on the branch. Now let me push the fix — the whole file as a write (since exact-substring edits kept failing on the encoded chars).
+
+
+### 🤖 Autopilot
+
+The file is fixed locally. Let me extract the exact corrupted URL strings from GitHub main so I can build precise search/replace edits for the fix PR.
+
+
+### 🤖 Autopilot
+
+Now I have the exact corrupted strings. Rather than fight escaping in search/replace, I'll push the whole fixed file as a write. Let me read the full fixed file content.
+
+
+### 🤖 Autopilot
+
+I have the exact corrupted strings now. Let me push the fix PR with precise search/replace edits using the full corrupted URLs.
+
+
+### 🤖 Autopilot
+
+The exact-match edit keeps failing — let me extract the precise byte content of the corrupted segments from the repo file so my search strings match exactly.
+
+
+### 🤖 Autopilot
+
+The exact-match edits keep failing because the corrupted URL has embedded apostrophes that break the matcher. Simplest robust path: create the fix branch with a safe anchor edit, then overwrite the file with the fully-clean local version, then merge. Let me create the branch first.
+
+
+### 🤖 Autopilot
+
+Branch created (PR #226). Now let me overwrite the file on the branch with the fully-clean local version.
+
+
+### 🤖 Autopilot
+
+File replaced with the clean version. Let me verify the branch content and merge the fix.
+
+
+### 🤖 Autopilot
+
+Branch verified clean — both URLs point to the correct farm coordinates, zero remnants. Merging the fix.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `agroverse_shop_beta#226` merged
+
+**"Fix corrupted Google Maps URL on Santa Anna farm page"** → merged (sha `e7101eb`)
+
+### What was wrong
+When I built the farm page, my earlier URL-transformation regex mangled the Google Maps links — it left remnants of **Paulo's old URL** (from the template clone) appended to Santa Anna's new coordinates. So the live beta page had two broken links:
+- the HTML `View on Google Maps` link in the Farm Location section
+- the Leaflet map `bindPopup` link
+
+Both pointed at a garbage URL mixing Santa Anna coords with Paulo's remnants (`...15z'32.0%22S+51%C2%B051'09.1%22W/@-29.31...`).
+
+### The fix
+Both URLs now point cleanly to:
+`https://www.google.com/maps/place/3%C2%B017'32.9%22S+52%C2%B034'20.1%22W/@-3.292475,-52.57225,15z`
+
+- Verified on the branch: both lines clean, **0 remnants** of `51%C2%B051` / `101.1799934` / `EgoyMDI1`
+- Page + hero image confirmed live on **beta.agroverse.shop** (HTTP 200, correct SEO/OG tags, farm story, highlights, map at real GPS, hero photo served)
+
+### Also confirmed this turn
+- **Beta deploy verified**: `/farms/santa-anna-fazenda-para/` renders with the real GPS `-3.292475, -52.57225`, Jedielcio/CEPOTX story, "No shipments yet" placeholder, and clean Google Maps link
+- **Hero image** (`santa_anna_profile_photo.jpg`, 743 KB, iPhone 12 Pro Max HEIC→JPG) serves correctly, EXIF intact
+
+---
+
+**RESUME HERE → next unit:**
+1. **Your review of the beta page**: https://beta.agroverse.shop/farms/santa-anna-fazenda-para/ — when it looks good, say "promote to prod" and I'll `sync_beta_to_prod` to push the farm page + journey stop + CEPOTX card to production
+2. **Still parked:** Santa Anna site-visit PDF finalization (needs site code from Jedielcio — e.g. follows CEPOTX pattern `V-06-29`/`B-06-108`), and the DApp FARM REGISTRATION EVENT (you said hold off)
+3. Optional: once site code + any remaining PDF details are in, regenerate the FSVP PDF and update `fda_fsvp` record
+
+—
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → inspected deploy config (CNAME=beta.agroverse.shop, main auto-deploys); verified page live (HTTP 200, correct title/meta/OG); checked hero image serves (200, 743 KB, EXIF intact); extracted exact corrupted URL bytes from repo main; rebuilt bindPopup line cleanly; verified branch clean (0 remnants)
+• `http_fetch` ×2 → page + hero image live on beta
+• `git_push_changes` → **PR #226** (fix branch, anchor edit)
+• `upload_file_to_github` → clean file onto fix branch
+• `merge_pr` → ✅ **PR #226 merged** (sha `e7101eb`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → cd /tmp/agroverse_shop_look && echo "=== CNAME / deploy config ===" && ls -la CNAME netlify.toml vercel.json .github/workflows/ 2>/dev/null;; cd /tmp/agroverse_shop_look && grep -n 'google.com/maps' farms/santa-anna-fazenda-para/index.html | head -6; cd /tmp/agroverse_shop_look && python3 << 'PYEOF' import re p = 'farms/santa-anna-fazenda-para/index.html' s = open(p, encoding='utf-8').rea; …(+7 more)
+• `merge pr` → ✅ PR #226 on agroverse_shop_beta merged successfully (sha: e7101ebe4224f295f0e8743a64118e6c72050c83). Pull Request successfully merged
 
