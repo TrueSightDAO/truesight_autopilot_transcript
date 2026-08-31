@@ -3611,6 +3611,7 @@ Reading the tail of the tracking artifact to see if my just-submitted reject (vi
 ### 🤖 Autopilot
 
 The tracking tab ends at **11962** (22:22:42Z — my *manual* webhook fire from earlier). My just-submitted reject (HTTP 200, signature success) has **not** been auto-processed. Let me confirm my submission landed in Chat Logs so I can pin the exact row for the governor's journalctl check:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3866,4 +3867,67 @@ PR #451 is mergeable (clean), +9/−1, one file — exactly the dispatch-failure
 
 👍 Go received. Next unit: **clasp-deploy `tokenomics #451`** to GAS `1UrBg…`. Dry-run first to confirm what would push:
 [1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 👍 Go received. Next unit: **clasp-deploy `tokenomics #451`** to GAS `1UrBg…`. Dry-run first to confirm what would push:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+👍 Go confirmed. Completing the deploy — pushing the merged #451 (dispatch-failure visibility) to GAS `1UrBg…`:
+
+
+### 🤖 Autopilot
+
+## What I did this turn (GAS deploy — no PR action, full report allowed)
+
+**Go received 👍 → deployed `tokenomics #451` (dispatch-failure visibility) to GAS `1UrBg…`.**
+
+| Step | Result |
+|---|---|
+| Push (`--push --no-hooks`) | ✅ **Pushed 5 files** at 12:41 AM (lease `L-20260831-004058`) — incl. `process_tree_planting_link.js` with the #451 HTTP-code check |
+| Deploy ledger | ✅ `deploy_20260831T004114Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9` — [evidence](https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260831T004114Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md) |
+
+### ⚠️ One important caveat — version-pin nuance
+This push updated the GAS project **HEAD**, but the **webhook deployment @37 (`AKfycbyoFCTz…`) is pinned to version 37** — a snapshot created *before* #451. So:
+
+| Path | Code it runs | #451 visible? |
+|---|---|---|
+| GAS time-driven trigger | HEAD (just pushed) | ✅ yes |
+| Webhook `@37` (auto-dispatch from dao_protocol) | v37 snapshot | ❌ not yet |
+
+**Practical impact:** none for reject processing (that's #449/#450, already in v37). The #451 visibility note only appears on *dispatch failures* — and only in the timer path for now. To make it live in the webhook path too: create **v38** from HEAD + deploy a new webhook URL (or re-pin) + point `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_REJECT` at it on the box. That's the next unit if you want it.
+
+### Chain status
+| Item | State |
+|---|---|
+| 061 + 487 invalidated & removed from index | ✅ |
+| Reusable submit script (`#353`) | ✅ merged + live |
+| Reject routing (`dao_protocol #150`) | ✅ merged + running on box |
+| Auto-dispatch E2E | ✅ proven |
+| Dispatch visibility (`#451`) | ✅ merged + **pushed to HEAD** (webhook @37 pin pending) |
+| `sunmint_beta #46` → prod | ⏳ pending your review |
+
+No ledger writes, no money movement, no Edgar submissions this turn.
+
+---
+**RESUME HERE → next units (each a fresh turn):**
+1. **Propagate #451 into the webhook path** (optional, belt-and-braces): `clasp version` (v38) → `clasp deploy @38` → update `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_REJECT` on the dao_protocol box → restart. Then re-test auto-dispatch once.
+2. **Verify the live monitor page**: reload `https://sunmint.truesight.me/monitor-tree-growth/?tree=Edgar_20260819134722_487` → tree should be **gone** (the original complaint, fully resolved).
+3. **Promote `sunmint_beta #46` to prod** (`sync_beta_to_prod(sunmint_prod)`) — your explicit approval required (fixes the QR-code fabrication on the live site).
+4. **Runbook §4.5 follow-up** — reference `sunmint_submit.py` in `SUNMINT_E2E_RUNBOOK.md`.
+
+———
+**✅ Done this turn — actions taken:**
+• `gas deploy project` ×1 → pushed 5 files to GAS `1UrBg…` (lease L-20260831-004058), ledger `deploy_20260831T004114Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9`
+• (dry-run result from prior turn confirmed clean before push)
+
+———
+**✅ Done this turn — actions taken:**
+• `gas deploy project` → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260831T004114Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md
 
