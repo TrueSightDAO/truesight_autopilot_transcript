@@ -4608,11 +4608,13 @@ PR #330 opened with the real edit applied. Now uploading the full patched file (
 ### 🤖 Autopilot
 
 ⚠️ The upload went to **`main`**, not the PR branch — the tool defaulted to main. Let me check what happened and correct it immediately:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The upload went to **main** (the tool defaulted) — that's a deviation from the PR flow, and I need to verify the content is correct and handle the now-redundant PR #330. Let me check that main's file is the complete correct version (it should be: I fetched it from live beta = main content, then patched):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4658,6 +4660,7 @@ I need to stop and report — I've hit the turn boundary and there's an importan
 ### 🤖 Autopilot
 
 Executing the resume units: (1) close the superseded PR #330, (2) verify the history strip on beta now shows the Rancho Maranta scenes. First, close the PR and check the live page:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4841,4 +4844,67 @@ Executing the promotion — this is the beta→prod sync for the full verified s
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== 1. truesight_me_beta main: recent commits ===" && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/; cd /tmp && echo "=== 1. prod's last non-stats commit (the divergence point) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/trues
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⚠️ **Promotion BLOCKED — conflict, reported as required (not forced).** Here are the full diagnostics for the reconciliation.
+
+## 🔴 sync_beta_to_prod(truesight_me_prod) → CONFLICT
+
+**Per protocol:** I
+
+
+### 🤖 Autopilot
+
+Executing option 1 — reconciliation PR on truesight_me_prod (beta content **minus** CNAME, which stays `truesight.me`). I'll build it via a feature branch + PR for your review — **not merging myself**. First, clone prod + compare file trees:
+
+
+### 🤖 Autopilot
+
+Trees are **identical** (no additions/deletions) — the conflict is purely the **CNAME + merge-commit history**, so the reconciliation is clean: take beta's file content, keep prod's CNAME (`truesight.me`), commit as a feature branch PR. Building it:
+
+
+### 🤖 Autopilot
+
+Clean reconciliation: **3 files** — `sunmint.html` (+337), `sunmint/whitepaper/index.html` (+39), `stats/current.json` (±1), with prod's CNAME preserved. Committing + pushing the PR (I will **not** merge it — that's your review gate):
+
+
+### 🤖 Autopilot
+
+✅ **Reconciliation PR opened — [truesight_me_prod#21](https://github.com/TrueSightDAO/truesight_me_prod/pull/21)** (open, 3 files, branch pushed).
+
+## What I did this turn
+
+**Built the safe reconciliation path for the blocked promotion (option 1, as agreed):**
+1. Cloned prod + compared trees: **identical file sets** — no additions/deletions, so the conflict is purely **CNAME + merge-commit history**
+2. Applied beta's content over prod → **restored prod's CNAME (`truesight.me`)** — the intentional divergence preserved
+3. Committed as feature branch `reconcile/beta-sunmint-stack` (Sophia identity), pushed, opened **PR #21**
+
+**The PR carries the full verified stack:**
+- `sunmint.html` **+337** — impact map V2 (plots/polygons/selector), view switcher, ESRI basemap, satellite history strip (nearest-cell), maxZoom 17
+- `sunmint/whitepaper/index.html` **+39** — §3.1 Geospatial Data Model, §13 On-Chain Carbon Lifecycle, §13.1 formula
+- `stats/current.json` ±1 (regenerated stat)
+- **CNAME untouched** (truesight.me)
+
+## 📌 RESUME HERE → next units
+1. **You/Envoy review + merge [truesight_me_prod#21](https://github.com/TrueSightDAO/truesight_me_prod/pull/21)** — this is the prod gate; **I will not self-merge a prod repo** (the reconciliation PR exists precisely to put the merge in human hands). Note: the PR's `mergeable` may show null until GitHub computes it against main — it'll resolve to mergeable (3-file diff, no conflicts) once the API settles.
+2. **Post-merge verify**: `truesight.me/sunmint.html` (map + history strip) + `truesight.me/sunmint/whitepaper/` (§3.1/§13/§13.1) serve correctly
+3. **Standing:** `sunmint_prod` config line; test-row cleanup; Altamira plot-boundary upgrades (RM-P1/P2 approx → verified)
+
+Say "merged" once you've landed it and I'll run the production verification.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cloned prod + fetched beta, compared trees (identical file sets), checked CNAME divergence; applied beta tree over prod + restored prod CNAME; committed as reconcile/beta-sunmint-stack; pushed via TRUESIGHT_DAO_AUTOPILOT PAT; opened PR #21 (open, 3 files: sunmint.html +337, whitepaper +39, stats ±1)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && rm -rf recon_prod && git clone --quiet --single-branch --branch main --depth=50 https://github.com/TrueSightDAO/truesight_me_prod.git recon_prod; cd recon_prod && git remote add beta https://github.com/TrueSightDAO/truesight_me_beta.git && git fetch --quiet beta main --depth=1; comm -23 tree diffs (none); CNAME check (beta vs prod divergence confirmed); git checkout -b reconcile/beta-sunmint-stack origin/main; git checkout beta/main -- .; git checkout origin/main -- CNAME (truesight.me restored); git commit + push; POST /pulls → PR #21 open
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && rm -rf recon_prod && git clone --quiet --single-branch --branch main --depth=50 https://github.com/TrueSightDAO/truesight_me_prod; cd /tmp/recon_prod && git checkout --quiet -b reconcile/beta-sunmint-stack origin/main echo "=== apply beta tree over prod (all files) ===" ; cd /tmp/recon_prod && TOKEN=$(grep -E '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2- | tr -d '"' | tr -d "'") git
 
