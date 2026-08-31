@@ -8,51 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Yup. Go for it. Also while you are at it, also examine the other documentation category types for FDA FVSP requirement purposes and then also file .md processes for them?
-
-I wonder if it might make sense to have this as a sub folder within the agentic_ai_context repo for ease of organization?
-
-
-### 🤖 Autopilot
-
-Green light received — proceeding. Let me check the handoff registry, current attachments (movie re-send?), existing FSVP context docs, and the full supplier catalog first.
-[5 tool result(s) compacted: read_context_file, search_context, list_directory, read_repo_file, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Go signal received. Executing the plan: (1) Santa Anna site-visit record into `fda_fsvp`, (2) process runbooks for all FSVP doc categories in a new `fsvp/` subfolder of agentic_ai_context. First, let me map the full repo structure and confirm whether the movie arrived.
-[3 tool result(s) compacted: ssh_run, read_repo_file, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Good — full picture forming. Let me see the remaining supplier folders, the README, and the entities index to catalog every FSVP document category.
-[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Go signal received. Executing: (1) file the Santa Anna site visit in `fda_fsvp`, (2) create process docs for all FSVP documentation categories in a new subfolder of agentic_ai_context. Let me prep the exact template and check tooling.
-[3 tool result(s) compacted: ssh_run, extract_pdf_text, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Go signal received — executing. Three parallel workstreams: (1) generate the Santa Anna site-visit PDF from the established CEPOTX template, (2) PR the FSVP process docs into agentic_ai_context under a new `fsvp/` subfolder (yes — subfolder is the right call, consistent with `brazil/`, `sops/`, `credentials/`), (3) PR the Santa Anna record + entity.json update into fda_fsvp.
-[2 tool result(s) compacted: ssh_run, git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The PDF generated successfully. The `git_push_changes` call had malformed arguments — let me redo it with correct structure.
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 PR #842 opened for the README. Now I'll add the 4 runbook files to that same branch, and push the site-visit PDF to fda_fsvp on a feature branch.
@@ -5502,6 +5457,7 @@ Beta confirmed: **14 gallery items, 5 YouTube players** — deploy landed. Now t
 ### 🤖 Autopilot
 
 All 21 converted. Now running the Grok vision keeper-pass in two batches (classify: keep as gallery-worthy / duplicate / low-value).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5511,21 +5467,25 @@ Vision pass complete — 21 photos → **9 keepers** flagged by Grok. Mapping to
 **Keepers:** IMG_7708 (orchard w/ workers), IMG_7710 (man among cacao trees), IMG_7712 (cut trunk close-up), IMG_7736/7738/7739 (fermentation equipment/interior), IMG_7743 (drying shed), IMG_7746 (farm landscape from porch), IMG_7752 (family portrait)
 
 To avoid bloat (gallery already 14), I'll add the **5 strongest distinct ones** (7708, 7710, 7712, 7739, 7746) — skipping 7736/7738 (fermentation dupes of 7739), 7743 (dupe of existing 7742), 7752 (dupe of existing 7751). Preparing web-optimized assets and the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 5 optimized assets ready. Opening the PR with the media.json edit, then uploading the images to the branch.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The first edit had an empty search — I passed the anchor in the wrong slot. Let me redo with proper search strings (single edit: insert after the IMG_7751 block).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #249 opened. Uploading the 5 images to the branch, then verifying.
+[5 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5757,4 +5717,114 @@ One flag: I **could not confirm `farm-media-raw` repo contents** from the unauth
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → echo "=== 1. farm-media-raw repo contents (top-level) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/farm-media-raw/contents/" | /; echo "=== farm-media-raw top-level (raw API) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/farm-media-raw/contents/" | head -40; ; cd /tmp && rm -rf aac_v && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aac_v 2>&1 | tail -1; echo "=== FAR; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Verified the complaint against the actual state — **mostly accurate, with one important correction**.
+
+## ✅ Confirmed claims
+
+| Claim | Verified |
+|---|---|
+| `FARM_MEDIA_MANIFESTS/` has only Rancho M
+
+
+### 🤖 Autopilot
+
+👍 Go received — executing items 1–3: La do Sitio manifest PR, Santa Anna manifest build, and the index. Let me start by building the Santa Anna manifest from the media on the box (sha256 + GPS + duration + objects + yt_ids) while prepping the La do Sitio commit.
+
+
+### 🤖 Autopilot
+
+Santa Anna manifest built: **45 entries, 44/45 with GPS, 5 with yt_ids**. Note it differs slightly from the earlier count (45 files — one fewer than 46, likely a non-media file). The La do Sitio manifest is a flat array (72 entries) — let me check whether the Rancho Maranta format (wrapped object with farm_id/plots/counts) is expected for the manifest folder, and whether the La do Sitio manifest needs converting to that schema.
+
+
+### 🤖 Autopilot
+
+The 46th entry is `__MACOSX` (macOS metadata dir) — correctly excluded. The La do Sitio manifest is a **flat list** but the canonical schema is the **wrapped object** (like Rancho Maranta) — so I need to wrap it. Let me check the runbook's farm-ID table for La do Sitio's plot mapping, then build all 3 files.
+
+
+### 🤖 Autopilot
+
+All three files are built. Now let me commit them via PR to agentic_ai_context.
+
+
+### 🤖 Autopilot
+
+All three validated. Now opening the PR with the manifest files + index.
+
+
+### 🤖 Autopilot
+
+PR #862 opened — but I passed empty content strings by mistake. Let me verify the branch state and fix with the real content.
+
+
+### 🤖 Autopilot
+
+The branch has empty files — my writes were empty strings. Let me fix by uploading the real content to the branch via the Contents API.
+
+
+### 🤖 Autopilot
+
+Real content now on the branch. Let me verify all three files are correct, then merge.
+
+
+### 🤖 Autopilot
+
+Raw fetch failing — let me check the HTTP status and the actual branch file state.
+
+
+### 🤖 Autopilot
+
+The API confirms the file is there (13,542 bytes) but raw returns empty bodies — likely a CDN lag. Let me verify via the API content endpoint (base64) instead.
+
+
+### 🤖 Autopilot
+
+All three files are valid on the branch (the raw CDN was just lagging — the API confirms real content). Merging PR #862.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `agentic_ai_context#862` merged — manifest gap closed
+
+**"Farm media manifests: La do Sitio (72 items) + Santa Anna (45 items) + index"** → merged (sha `b3580e4`)
+
+### What was committed to the shared context (`FARM_MEDIA_MANIFESTS/`)
+
+| File | Contents |
+|---|---|
+| **`paulo-la-do-sitio-para.json`** | **72 MOVs** (the pilot dataset that was stuck in /tmp since the pilot!) — 65 with GPS, 70 unique `yt_id`s — wrapped from the flat list into the canonical Rancho-Maran-ta-style schema |
+| **`santa-anna-fazenda-para.json`** | **45 files** (31 HEIC + 13 MOV + 1 PNG), **44/45 with GPS**, 5 `yt_id`s (the 5 YouTube uploads), sha256 + durations for every file |
+| **`index.json`** | The **missing index** from runbook step 10 — farm_id → manifest file (Rancho Maranta, La do Sitio, Santa Anna) |
+
+### Verified before merge
+- All 3 JSONs valid via GitHub API (base64 content check: 45 items / 72 items / index keys)
+- First write pass accidentally pushed empty files (my `writes` had empty content strings) → **caught it**, replaced with real content via Contents API, re-verified, then merged
+
+### The pipeline promise is now honored for 3 of 4 farms
+- ✅ Rancho Maranta (52 items) — was already committed
+- ✅ **La do Sitio (72 items)** — largest dataset, now queryable forever via GitHub code search
+- ✅ **Santa Anna (45 items)** — this thread's farm, fully indexed
+- ⬜ Cleide (14 HEICs) — the only remaining gap (raw photos committed, no manifest yet)
+
+---
+
+**RESUME HERE → next unit:**
+1. **Cleide manifest** (optional, small): compute sha256/GPS for the 14 committed HEICs via GitHub API → `FARM_MEDIA_MANIFESTS/cleide.json` → add to index — say "go" and I'll close the last gap
+2. **Promote the farm page to prod** still pending your eyeball — `sync_beta_to_prod` carries #248 (2 videos) + #249 (5 photos) → gallery 19 items on agroverse.shop
+3. Optional: update `FARM_MEDIA_PIPELINE.md` to note the index now exists (or mark step 10's "+ update index" as done)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → echo "=== build Santa Anna manifest ==="; cd ~/santa_anna_new && /opt/truesight_autopilot/.venv/bin/python3 << 'EOF' import hashlib, subproc; echo "=== rancho manifest structure (wrapped?) ==="; /opt/truesight_autopilot/.venv/bin/python3 -c " import json, urllib.request u='https://; echo "=== runbook farm IDs table ==="; sed -n '/Farm IDs/,/^$/p' /tmp/aac_v/FARM_MEDIA_PIPELINE.md | head -25; echo; echo "=== build wrapped; …(+5 more)
+• `merge pr` → ✅ PR #862 on agentic_ai_context merged successfully (sha: b3580e44bec02a36577c146f976b00abd54641e8). Pull Request successfully merged
 
