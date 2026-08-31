@@ -5077,21 +5077,25 @@ Want me to do the upload now? I'd also add a `media-manifest.json` in the folder
 ### 🤖 Autopilot
 
 Let me check for words that fall outside the page boundaries in the PDF:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Found it** — page 2: the word **"Pesticide"** extends from x=563 to x=600, but the page is only 595pt wide → the word runs off the right edge. This is the long "Hazards assessed:" value on the Facility A page overflowing the fixed `drawString` position. I need to add **text wrapping** to `meta_table` (values longer than the column width currently just run off the page). Let me fix the generator:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **TOTAL: oob=0, overlaps=0 — fully clean across all 7 pages.** The long "Hazards assessed" values now wrap within the column instead of running off the page. Let me verify the text still extracts correctly and send the corrected PDF:
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All content intact, wrapped correctly, no overflow. Sending the corrected PDF:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5136,6 +5140,7 @@ Also still open from before (just a reminder, no rush):
 ### 🤖 Autopilot
 
 Let me check the images in the PDF — their positions, whether any extend past the page edge, and whether they overlap text:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5145,11 +5150,13 @@ Found the remaining issues — **pages 5 and 6 (Video Evidence)**:
 - **Caption words overlap the images** (16 and 17 words inside image bboxes) — the "frame 1 — grove walk" / "IMG_7740 — fermentation box" captions are drawn over the photos
 
 Let me inspect and fix the video-evidence page layout:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full video-evidence page code (lines 185–225) to see the exact layout math:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5287,4 +5294,95 @@ Anything else on the PDF, or shall we finalize it?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && echo "=== signature-related code in generator ==="; grep -n -i "sign\|sincerely\|sig" gen_santa_anna_v5.py | head -30; echo; echo; cd /tmp && sed -n '226,252p' gen_santa_anna_v5.py; echo "=== sig asset info ==="; ls -la /tmp/sig_assets/gary_teh/ 2>/dev/null; /opt/truesig; cd /tmp && /opt/truesight_autopilot/.venv/bin/python3 << 'PYEOF' import fitz doc = fitz.open('/tmp/20260830_CEPOTX_site_visit_to_santa_anna_; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] Nicely done. Perhaps upload to FDA_FSVP repo as well as notarize? You can do so as sentinel.
+
+
+### 🤖 Autopilot
+
+Both — upload the corrected PDF to fda_fsvp and notarize it. Let me first check what "notarize as sentinel" means in our context (notarization process + sentinel role).
+
+
+### 🤖 Autopilot
+
+No direct hit — let me search for notarization/notary concepts more broadly in the context and repos.
+
+
+### 🤖 Autopilot
+
+"Sentinel" is well-defined (Sophia Truesight = sentinel, governor-equivalent ops). Let me find the notarization mechanism — checking event docs and repos.
+
+
+### 🤖 Autopilot
+
+There's a **NOTARIZATION EVENT** in the catalog. Let me get its documentation and check how notarization works in the ledger (notarization = hashing/anchoring the document into the ledger as an immutable record).
+
+
+### 🤖 Autopilot
+
+NOTARIZATION EVENT confirmed (Document Hash, Description, Witnesses). Plan:
+1. Compute sha256 of the corrected PDF
+2. Upload corrected PDF to `fda_fsvp` (replacing the buggy version)
+3. Submit NOTARIZATION EVENT as sentinel with the hash + repo URL
+
+Let me compute the hash and confirm the repo path:
+
+
+### 🤖 Autopilot
+
+Hash computed: `96800393be7980f71435a1335ad9d48d6ed1ee1b9f82eac961efa9b707f5105a`. Let me check the actual repo layout for the PDF file path (the API listing failed — maybe the path is different):
+
+
+### 🤖 Autopilot
+
+The corrected PDF (20,155,412 bytes) differs from the committed buggy version (20,155,410). Let me upload the corrected PDF to fda_fsvp (replacing the buggy version), then notarize:
+
+
+### 🤖 Autopilot
+
+PDF replaced on fda_fsvp (commit `40da650`). Now notarizing as sentinel — submitting the NOTARIZATION EVENT with the document hash:
+
+
+### 🤖 Autopilot
+
+## ✅ Done — uploaded + notarized
+
+### 1. 📄 PDF replaced on `fda_fsvp`
+The layout-corrected v5.4 (0 overlaps, 0 OOB, signature fixed) is now the committed record:
+- **Repo**: `TrueSightDAO/fda_fsvp` → `suppliers/cepotx/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf`
+- **Commit**: `40da650` (replaces the buggy v5.0 from PR #10)
+
+### 2. 🔏 Notarized on the DAO ledger (as Sentinel)
+**NOTARIZATION EVENT submitted successfully:**
+| Field | Value |
+|---|---|
+| **Document Hash** | `96800393be7980f71435a1335ad9d48d6ed1ee1b9f82eac961efa9b707f5105a` (SHA-256 of the exact PDF) |
+| **Description** | FDA FSVP site visit — CEPOTX/COOPOXIN/Santa Anna (B-06-58, Ana Lucia Araujo de Sousa), 30 Aug 2026, GPS, 7 pages, commit `40da650`, v5.4 |
+| **Witnesses** | Jedielcio (CEPOTX liaison) · Gary Teh (site visit) |
+| **Notarized By** | Sophia Truesight (**Sentinel**) |
+| **Date** | 2026-08-31 |
+
+The document is now **immutably anchored** in the ledger — anyone can verify the on-chain hash against the file at `fda_fsvp` (sha256 = `96800393…f5105a`). Audit-proof chain: **PDF on repo → SHA-256 → NOTARIZATION EVENT on the DAO ledger**.
+
+---
+
+**Still open (your call):**
+1. **farm-media-raw archive** — Santa Anna's 45 raw originals (31 HEIC + 13 MOV + 1 PNG, ~390 MB) still not archived to the private blob store. Say "go" and I'll upload them with a media-manifest.
+2. Anything else on the Santa Anna thread?
+
+———
+**✅ Done this turn — actions taken:**
+• `search_context`/`search_code` ×2 → found NOTARIZATION EVENT in the event catalog + Sentinel role definition (Sophia Truesight = sentinel, governor-equivalent ops)
+• `lookup_event_docs` → NOTARIZATION EVENT requires `Document Hash` (+ Description, Witnesses)
+• `ssh run` ×2 → sha256 computed; confirmed the committed PDF (20,155,410 B) ≠ corrected (20,155,412 B); found repo path
+• `upload_file_to_github` → **fda_fsvp commit `40da650`** (corrected PDF replaces buggy)
+• `submit_contribution` → **NOTARIZATION EVENT submitted** (hash + witnesses + sentinel)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== sha256 of corrected PDF ==="; sha256sum 20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf; echo; echo "=== existing fil; cd /tmp && echo "=== fda_fsvp repo tree ==="; curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" | /opt
+• `submit contribution` → Contribution submitted successfully.
 
