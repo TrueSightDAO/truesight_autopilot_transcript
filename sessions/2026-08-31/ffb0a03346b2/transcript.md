@@ -1036,31 +1036,37 @@ HEIC needs conversion (ImageMagick `convert` is available). Let me try convertin
 ### 🤖 Autopilot
 
 **BREAKTHROUGH!** The original HEIC has **GPS!** IMG_7732: S 3°17'32.91" W 52°34'20.1" → **-3.292475, -52.57225** — and the date confirms **2026-08-30** (visit date!). Let me extract GPS from all 9 HEICs + 3 MOVs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Minor bug — the DMS values are `Fraction` objects. Let me fix the formatting.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **ALL 9 HEICs have GPS!** Farm coordinates: **-3.2925, -52.5722** (consistent across all photos, ~±0.0001 spread — same location). Date confirmed: **2026-08-30 15:44–15:51 local**. Now let me check the MOVs for GPS, convert all HEICs to JPG, and analyze content of all 12 to map them to facilities.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 MOVs have **creation_time** (18:44:54Z / 18:50:53Z / 18:51:24Z UTC = 15:44/15:50/15:51 local — matching the photos exactly, all at the farm) but no GPS tags. The HEIC photos carry the GPS. Now let me analyze the content of all 9 photos to map them to facilities, and check the grok client.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me analyze all 9 converted JPGs with Grok vision to classify each photo by facility (farm / fermentation / drying).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Need to load the API key from the env file first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1204,4 +1210,68 @@ Also worth noting: the `entity.json` `source_farms` list ("Paulo - La do Sítio 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd ~/fda_fsvp 2>/dev/null || cd /tmp/fda_fsvp_local 2>/dev/null; pwd; echo "=== search for La Do / Sitio ==="; grep -rni "la do\|sitio" --in; cd /tmp/fda_fsvp_local/suppliers/cepotx && ls -la *.pdf 2>/dev/null | head -20; echo "=== extract text from Paulo farm PDF ==="; python3 -c
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: was there one for Cleide or Marcelo's farm belonging to the CEPOTX network too?
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593]
+
+
+### 🤖 Autopilot
+
+Good question — I already found Cleide's code in the last check. Let me verify Marcelo's farm too.
+
+
+### 🤖 Autopilot
+
+The recursive PDF scan timed out. Let me be targeted — check the CEPOTX PDFs only (fast) and the broader context.
+
+
+### 🤖 Autopilot
+
+Now let me check the other suppliers' PDFs for Marcelo, plus the broader context search.
+
+
+### 🤖 Autopilot
+
+Full picture now. Let me also check the packing/storage PDF from CEPOTX — it may reference Marcelo or additional site codes.
+
+
+### 🤖 Autopilot
+
+Here's the complete picture of site codes in the FDA FSVP records:
+
+## CEPOTX network (Pará, Altamira)
+
+| Farm | Site code | Farmer / Site name | GPS | Doc |
+|---|---|---|---|---|
+| **Paulo — La Do Sítio** | **V-06-29** | Paulo Barbosa do Nascimento | -3.3894832, -51.8509388 | `20240625_..._paulo_farm.pdf` |
+| **Fazenda Cleide** | **B-06-108** | Cleide Maris Suk | -3.3985276, -52.6333394 | `20240702_..._cleide_farm.pdf` + PO `20240704` |
+| Packing/storage facility | *(no site code — it's CEPOTX's own facility)* | — | -3.2124531, -52.23275 | `20240624_..._packing_storage.pdf` |
+
+## Other suppliers with site codes in our records
+
+| Supplier | Site | Code |
+|---|---|---|
+| Black King | Clara farm | *(no code captured — only name)* |
+| Black King | Jesus Da Deus farm | *(no code captured)* |
+| Coopercabruca | Fazenda São Jorge | *(no code captured)* |
+
+## On Marcelo's farm
+**No record of a Marcelo farm in the FDA FSVP documents.** I searched:
+- All CEPOTX PDFs (9 docs) — only Paulo (V-06-29), Cleide (B-06-108), and the packing/storage facility
+- All other suppliers' PDFs (Black King, Coopercabruca, Hau Cacau, Mu Gelato, Koala Peru) — no Marcelo
+- `agentic_ai_context` content search — **zero matches** for "Marcelo"
+
+So as far as the filed FDA FSVP records go: **Paulo (La Do Sítio) = V-06-29, Cleide = B-06-108 — and no Marcelo farm site code exists on file.**
+
+If Marcelo is a third farm in the CEPOTX network that hasn't been documented yet, that could be worth a site visit + FSVP record — want me to add it to the backlog (`OPEN_FOLLOWUPS.md`), or do you have the details to file one now?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/fda_fsvp_local && echo "=== grep Marcelo in fda_fsvp ==="; grep -rni "marcelo" --include="*.json" --include="*.md" --include="*.txt"; cd /tmp/fda_fsvp_local/suppliers && for f in cepotx/*.pdf; do echo "=== $f ==="; python3 -c " import sys; sys.path.insert(0,'/opt/truesight_; cd /tmp/fda_fsvp_local/suppliers && for f in black_king/*.pdf coopercabruca/*.pdf hau_cacau/*.pdf mu_gelato/*.pdf koala_peru/*.pdf; do pytho; …(+1 more)
 
