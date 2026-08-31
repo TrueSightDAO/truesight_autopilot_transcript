@@ -548,46 +548,55 @@ Per the hard rule, I do **not** promote without the governor reviewing the beta 
 ### 🤖 Autopilot
 
 Let me find that Rancho Maranata zip/photos and any video.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No hits for "Maranata" in context or code. Let me look on disk for the zip/photos/video.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found several candidates on disk. Let me inspect the contents — especially for a video.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the archive — `rancho_maranata.zip` has 13 MOV videos (IMG_7683–7699) + 5 HEIC photos, and there are plot 1/plot 2 sets too. The PDF's analyzed clips were IMG_7654/7669/7672/7673. Let me locate those specific videos and see what else exists.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's already an extraction pipeline — `/home/ubuntu/to_analyze/frames/` has frames from exactly the PDF's four clips (IMG_7654, 7669, 7672, 7673). Let me see the full inventory of that directory and find the source videos.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's already an extraction pipeline from when the PDF was built — source MOVs in `/home/ubuntu/to_analyze/to analyze/` and frames in `/home/ubuntu/to_analyze/frames/` (plus `cmp/` comparison frames). I can't eyeball images directly, so I'll pick the "appropriate frames" data-driven: color analysis to find the both-varieties-in-one-frame shot (green + crimson present), the yellow-pod frame, and the year-round-tree frame — exactly the images the PDF describes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me examine the farm metadata and the source videos' properties to plan frame extraction.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found everything. The four source clips are on disk at full res (1920×1080 MOVs — the exact clips the PDF was built from), plus the farm's media.json shows the plot photos. Now I'll extract frames from each clip and score them for the features the PDF describes (yellow pod, crimson furrowed pod, lush foliage) to pick the *appropriate* frames.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Frame analysis complete. I have the data to pick the right frames — and I found something worth checking: the PDF says IMG_7654 contains the money shot (farmer holding the crimson pod against smooth green pods), but my coarse samples never caught green+crimson together. Let me do a dense scan of that clip to find the true contrast frame, extract the best candidates full-res, and build a labeled preview montage.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -702,4 +711,85 @@ The real-photo version is live on beta for your review; prod waits for your word
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #338 on truesight_me_beta merged successfully (sha: dc0123fd3e9bc319e878f4ca8ecb4bb4a42bfe49). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: the images still look messed up.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381]
+
+
+### 🤖 Autopilot
+
+Gary's saying the images still look messed up on the page — let me diagnose what's wrong before touching anything. The zip had 5 HEIC **photos** (not just videos) that I never looked at — those may be the actual good-quality images. Let me inspect both the video frames I used and those HEIC photos.
+
+
+### 🤖 Autopilot
+
+Tool call error — forgot the host param. Retrying:
+
+
+### 🤖 Autopilot
+
+The heredoc likely broke the tool's parsing. Let me try simpler commands.
+
+
+### 🤖 Autopilot
+
+The zip has 13 MOVs + **5 HEIC photos** (IMG_7693–7698) — those are the actual photos Gary mentioned, and I never used them (I only pulled video frames). The feedback "images still look messed up" fits: video frames are often dark/blurry/compressed. Let me diagnose quality and convert the HEIC originals.
+
+
+### 🤖 Autopilot
+
+Parallel calls seem to drop params. Let me run sequentially — one call at a time.
+
+
+### 🤖 Autopilot
+
+`pillow_heif` is available. Now let me analyze the 5 HEIC photos (quality/dimensions) and my video frames — to compare which are actually better before swapping.
+
+
+### 🤖 Autopilot
+
+The HEIC photos are the real prize here — **3024×4032 / 4032×3024** (full camera resolution, including two landscape shots) vs my video frames at **1080×1920 portrait**. That's almost certainly why the page "looks messed up" — the portrait 9:16 video frames render as giant tall phone screenshots, and I never even looked at the actual photos in the zip. Let me convert the HEICs and build a montage so you can pick the right ones.
+
+
+### 🤖 Autopilot
+
+HEIC originals converted. Let me send the montage so you can pick which photos to use — these are the real camera photos from the zip (two landscape shots available, which will look far better as a hero than portrait video frames).
+
+
+### 🤖 Autopilot
+
+## 🔍 What's wrong — diagnosed
+
+The "messed up" look is almost certainly **portrait phone-video frames being used as blog images**. Here's what I found:
+
+| What I used earlier (PR #338) | What's actually in the zip |
+|---|---|
+| Video frames from IMG_7654/7669/7672 | **5 real HEIC photos**: IMG_7693, 7694, 7696, 7697, 7698 |
+| 1080×1920 (9:16 portrait phone frames) | 3024×4032 / 4032×3024 full camera res |
+| Dark-ish, video-compressed, tall | Proper photos, incl. **2 landscape** shots (7697, 7698) |
+
+The 9:16 video frames render as huge tall columns on the blog page — that's the "messed up" look. The zip's actual photos (which I overlooked — my miss, I only extracted video frames) are the right source.
+
+## ✅ Done this turn
+- Located + extracted the 5 HEIC photos from `rancho_maranata.zip`
+- Converted to web JPGs (1200–1600px, ~700–870 KB each)
+- Sent you the **montage** (message 17530) of all 5 — 3 portrait, 2 landscape
+
+## ⏳ Waiting on your pick
+Please tell me which photos to use — e.g. **"7698 hero, 7693 + 7694 inline"** — and I'll:
+1. Replace the 5 video-frame JPGs in the post with the real photos (hero + captioned inline figures)
+2. Fix the index card + og/twitter meta
+3. Open the fix PR → beta review → then prod on your "promote"
+
+My hunch: use **IMG_7698 or 7697 (landscape) as the hero** — it'll fill the page width properly. (I can't visually inspect the photos myself — no vision tool on my side — so your eyes on the montage are the deciding factor.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /home/ubuntu/rm_media && echo '=== zip contents ===' && unzip -l /home/ubuntu/rancho_maranata.zip 2>/dev/null && echo && echo '=== HEIC c; unzip -l /home/ubuntu/rancho_maranata.zip; python3 -c " from PIL import Image, ImageStat import os for f in sorted(os.listdir('/home/ubuntu/rm_media/fs8_frames')): if f.startswith('PR; …(+3 more)
 
