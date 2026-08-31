@@ -1951,16 +1951,19 @@ All 3 videos have audio tracks (AAC) — good, transcription will work. The runb
 The pipeline is fully documented (runbook at `sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md` — that's why my first read failed) and all tooling is present: **faster-whisper 1.2.1** in the venv, Grok polish script, upload scripts, credentials on the box. All 3 videos have AAC audio tracks.
 
 Plan: transcribe (faster-whisper, PT-aware) → Grok-polish into coherent+interesting descriptions → upload public → embed on the farm page. Starting with transcription.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Audio extracted. Now transcribing with faster-whisper (small model, PT first — videos are in Pará, likely Portuguese; will detect):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Transcripts came back empty — the VAD filter likely dropped everything (possibly quiet/ambient audio with distant speech). Let me check the actual audio levels and retry without VAD / with PT forced.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2115,4 +2118,90 @@ Descriptions are the Grok-polished transcriptions you requested (Portuguese + En
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #227 on agroverse_shop_beta merged successfully (sha: bed47cf20cc06cec3c0e678fdc7acca533af0698). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Done this turn — `agroverse_shop_beta#227` merged
+
+**"Add Santa Anna Fazenda site-visit videos (YouTube embeds)"** → merged to `main` (sha `bed47cf`).
+
+### What's now live on the beta branch:
+- *
+
+
+### 🤖 Autopilot
+
+👍 Go signal received. Next unit: verify the farm page on beta now renders the 3 YouTube embeds.
+
+
+### 🤖 Autopilot
+
+Page is live (HTTP 200, correct title/SEO). Let me verify the YouTube embeds are actually in the rendered HTML — checking for the video IDs in the page body.
+
+
+### 🤖 Autopilot
+
+The embeds are rendered client-side by `media-gallery.js` (which fetches media.json) — the video IDs won't appear in the raw HTML. Let me verify media.json on beta has the 3 youtube entries.
+
+
+### 🤖 Autopilot
+
+The beta is serving the OLD media.json (3 images, no videos) — the merge landed on main but the deployed copy is stale, OR the edit didn't reach main. Let me check the source of truth on GitHub main.
+
+
+### 🤖 Autopilot
+
+GitHub main has all 6 items — but beta serves the stale 3-item version. This is a **deploy/caching lag**, not a merge issue. Let me check the hosting and cache headers.
+
+
+### 🤖 Autopilot
+
+Deploy lag — GitHub Pages took a moment. The last-modified timestamp (02:51:34) is fresh and the cache MISS means it pulled from origin. Let me re-fetch the content to confirm the videos are live now.
+
+
+### 🤖 Autopilot
+
+Confirmed — beta now serves the 6-item media.json (3 images + 3 YouTube embeds). The embed iframes are injected client-side by `media-gallery.js` (0 in raw HTML is expected — that's how the gallery works). Everything is live on beta.
+
+## ✅ Verified live on beta
+
+**`https://beta.agroverse.shop/farms/santa-anna-fazenda-para/`**
+
+| Check | Result |
+|---|---|
+| Farm page | HTTP 200, correct title/SEO/OG tags, hero photo, Leaflet map at real GPS |
+| `media.json` (served) | **6 items** — 3 images + **3 YouTube embeds** (Rr0QOztkFSw / 9LeB2PtZ4UE / U7tQ5-4eOEg) ✅ |
+| GitHub main | `bed47cf` — merge confirmed, same 6 items |
+| Embed rendering | client-side via `media-gallery.js` (same pattern as Paulo/São Jorge) — iframes injected on load |
+| Deploy lag | was GitHub Pages cache lag (x-cache MISS) — now resolved, serving fresh content |
+
+The videos from your site visit are now embedded on the farm page, playing from the admin@truesight.me YouTube channel.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Your visual review** — open the beta page and confirm the 3 video players render in the gallery. If good → say **"promote to prod"** and I'll `sync_beta_to_prod` (farm page + journey stop + CEPOTX card + videos go live on agroverse.shop)
+2. **Still parked:** Santa Anna site-visit PDF finalization (needs site code from Jedielcio), DApp FARM REGISTRATION (you said hold off)
+
+—
+**✅ Done this turn — actions taken:**
+• `http_fetch` ×1 → beta farm page 200, SEO/OG verified
+• `ssh run` ×4 → checked embed markers + media-gallery.js; compared beta-served media.json (initially stale 3 items) vs GitHub main (6 items); diagnosed GitHub Pages cache lag (last-modified 02:51:34, x-cache MISS); re-fetched → **6 items live** (3 images + 3 youtube)
+
+———
+**✅ Done this turn — actions taken:**
+• `http fetch` → page live, SEO correct
+• `ssh run` ×4 → embed marker check, media-gallery.js confirm, beta vs main diff, cache diagnosis, re-fetch confirm
+
+———
+**✅ Done this turn — actions taken:**
+• `http fetch` → https://beta.agroverse.shop/farms/santa-anna-fazenda-para/ → 200, title/OG/SEO correct
+• `ssh run` ×4 → grep embed IDs (0 in raw HTML — expected, client-side render); curl media.json on beta → 3 items (stale); curl raw.githubusercontent main → 6 items; diagnosed GitHub Pages deploy/cache lag; re-curl beta media.json → **6 items live** (3 img + 3 youtube)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → curl -s "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/" | grep -oE "Rr0QOztkFSw|9LeB2PtZ4UE|U7tQ5-4eOEg|youtube[^\"']*" | sort ; echo "=== media.json on beta ==="; curl -s "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/media.json" | /opt/truesight_autopilot; echo "=== media.json on GitHub main ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/santa-anna-; …(+2 more)
 
