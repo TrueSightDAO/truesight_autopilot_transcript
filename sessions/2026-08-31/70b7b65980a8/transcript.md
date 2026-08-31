@@ -79,21 +79,30 @@ Audio extracted (4 WAVs, ~100s total). The grok_client is vision-only — for Po
 ### 🤖 Autopilot
 
 `google.generativeai` is available in the venv. Let me see how the existing code loads the Gemini key, then write a transcription script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gemini key is loaded from env. Now I'll write and run a transcription script that sends each WAV to Gemini (which handles Portuguese audio natively) for verbatim Portuguese transcript + English translation + what the Brazilians are saying.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The env didn't load via `source` (probably quoting). Let me pass the key explicitly from the .env file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key exists (53 chars). The `source` failed silently — I'll parse the .env directly in the script instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -223,4 +232,55 @@ All done, Gary. ✅
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → export GROK_API_KEY=$(grep '^GROK_API_KEY=' /opt/truesight_autopilot/.env | cut -d= -f2 | tr -d '"'); cd /opt/truesight_autopilot && PYTHONP; cat > ~/to_analyze/BRAZIL_FARMERS_ANALYSIS.md << 'EOF' # Brazil Cacao Farm Visit — What the Farmers Said Source: `to analyze.zip` → IMG_7654
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-31/5b17ca972f14/transcript.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16817] I observe two distinct varieties of cacao in the video
+
+can you help verify
+
+
+### 🤖 Autopilot
+
+Good eye — the farmers themselves contrast "esse aqui" (the grafted CCN-51 Ponta Verde) with "essas outras cabaças" and "cacau comum". Let me pull more detailed frames of the two tree types and run a focused variety-comparison pass.
+
+
+### 🤖 Autopilot
+
+51 higher-res frames extracted. Let me send a focused subset to Grok with a specific prompt: identify and compare the two cacao varieties visible (pod color/shape, leaf traits, tree form), and where each appears in the clips.
+
+
+### 🤖 Autopilot
+
+Syntax error — a bracket typo in the heredoc. Quick fix:
+
+
+### 🤖 Autopilot
+
+Confirmed — your observation is spot on, and it aligns perfectly with what the farmers were saying. Grok's frame-by-frame phenotype pass over all 4 clips found **two clearly distinct pod phenotypes**, matching variety A (grafted CCN-51) vs variety B ("essas outras cabaças" / common cacao):
+
+## Variety comparison — verified from the video
+
+| Trait | **A — CCN-51 Ponta Verde** (grafted) | **B — common/other cacao** |
+|---|---|---|
+| Pod surface | **Smooth**, very shallow ribbing | **Deeply furrowed**, 8–10 pronounced ridges |
+| Pod tip | Blunt / rounded | Distinctly **pointed** |
+| Ripe color | **Bright yellow** (occasional black basal patch) | **Orange-red → crimson-purple** |
+| Size | Large (~15–18 cm) | Slightly smaller, more elongate |
+| Fruiting | **Year-round** — small green pods at every stage, any time of visit | **Seasonal** — pods appear in synchronous waves |
+
+**Where each appears in the clips:**
+- 🟡 **Variety A** (CCN-51): IMG_7669 throughout, IMG_7654 (young trees, green smooth pods), and IMG_7672 frame 14/15 — the hand holding the **large smooth yellow pod with the black basal patch**. The farmer's pest/disease talk (7672) was on this pod.
+- 🟣 **Variety B**: IMG_7654 frames 10–11 — the man **holding a deeply furrowed, red-purple striped pod** with a pointed tip, held against a branch of smooth green pods — literally the two phenotypes side by side on the same farm.
+
+This is consistent with CCN-51's real-world profile (smooth pods, high yield, disease resistance — the "Ponta Verde" being a local/biotype name), and it matches the farmer's own words: the grafted one "always has fruit" vs common cacao "which has a period with no fruit at all."
+
+**Want me to:**
+1. Update `BRAZIL_FARMERS_ANALYSIS.md` with this verified two-variety section, and/or
+2. Extract the two best side-by-side frames (the held red-purple pod vs the smooth yellow pod) as a comparison image for your records?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd ~/to_analyze && ls frames/ && mkdir -p cmp && for f in "to analyze"/*.MOV; do b=$(basename "$f" .MOV | tr ' ' '_'); ffmpeg -y -v error -i; cat > /tmp/grok_varieties.py << 'EOF' import base64, os, sys, glob import httpx KEY = os.environ["GROK_API_KEY"] ENDPOINT = "https://api.x.a; cd /tmp && python3 - << 'PYEOF' s = open('/tmp/grok_varieties.py').read() s = s.replace('"Be concrete and factual about what is visible; if
 
