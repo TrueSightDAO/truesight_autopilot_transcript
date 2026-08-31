@@ -2889,61 +2889,73 @@ No page change needed — the embed on the farm page (media.json `videoId: AriHj
 ### 🤖 Autopilot
 
 Go received — next unit: **Plot 2 boundary-walk video** (cut a ~20s representative clip from the 23 MOVs, upload public, add as second gallery video). Let me extract Plot 2's clips and probe them:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The zip was at `~/` (home dir), not /tmp. Let me check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Zips are in `~/` (home). Extracting Plot 2's MOVs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pattern didn't match — let me list the actual zip entries to get the exact paths:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Flat paths (no folder prefix). Extracting all MOVs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 22 real MOV clips (plus 22 AppleDouble `._` junk). Total walk ≈ 7 min. The smart cut: one representative mid-walk clip (~26s) — IMG_7671 (16:42, middle of the boundary walk). Encoding in the background (the 60s tool cap killed inline encodes before), then polling:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The background job should still be running (nohup detaches). Let me poll for completion:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still encoding (frame 670/790, ~21.9s of 26.3s, speed 0.35× — HEVC decode is slow). Let me wait and poll again:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Encode complete — VALID 26.26s MP4. Uploading to YouTube as public:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pkill triggered the safety guard (pattern matched broadly) — but I don't need it anyway: the encode is complete and valid. Uploading directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Plot 2 walk video uploaded (public): **https://www.youtube.com/watch?v=o3_nWticYQc**. Now adding it to the farm page gallery via PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #235 opened. Merging per the standing go:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3011,51 +3023,61 @@ I think the header image is too devoided of human face. Perhaps replace it with 
 ### 🤖 Autopilot
 
 More media for Plot 1 — let me explore what's in `~/rancho_maranata.zip`, extract GPS for boundary extension, and look for human-warmth candidates for the header.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 New media: 13 MOVs + 5 HEICs (17:03–17:17, Aug 30) — a later walk around Plot 1, likely with people. Let me extract and pull GPS from everything to extend the plot boundary:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GPS spans a walk around Plot 1: lat -3.29570…-3.29630, lng -52.58270…-52.58320. Let me convert precisely and get HEIC GPS + look at what the photos show (faces/warmth):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GPS extends Plot 1's known bounds (new span lat -3.2957…-3.2963, lng -52.5827…-52.5832 — wider than the current RM-P1 polygon). Now let me convert the HEICs and look for human-warmth candidates (face detection to find where people are):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 HEIC needs pillow_heif registered (it worked earlier in the sunmint build — the import must be done explicitly). Let me redo with the plugin:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 5 photos converted. No opencv for face detection — let me try the venv python (it may have more packages) or use a lightweight approach to assess the photos:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 IMG_7693 (37% skin) and IMG_7694 (30%) are the strongest human-warmth candidates. Let me check the current RM-P1 polygon so I can extend the boundary with the new GPS walk, then wire everything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 New walk extends Plot 1 north to -3.2957 (was -3.2960). Let me check the current sheet row for RM-P1 (to keep sheet + registry in sync) and prep the farm-page assets in parallel:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Images copied. The sheet ID I used was truncated — let me get the real one from the builder script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Right sheet ID: `1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ`. Let me read the RM-P1 row from the SunMint Plots tab:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3164,4 +3186,116 @@ Stopping here per the turn limit — work is mid-flight with the family-video en
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×22 → ls -la ~/rancho_maranata.zip 2>/dev/null || ls -la ~/*.zip; echo "=== contents ===" && unzip -l ~/rancho_maranata.zip 2>/dev/null | head -60; cd /tmp && rm -rf rmn && mkdir -p rmn && unzip -o -q ~/rancho_maranata.zip -d rmn "*.MOV" "*.HEIC" && echo "=== extracted ===" && find rmn -; cd /tmp/rmn && echo "=== HEIC GPS ===" && for f in $(find . -name "*.HEIC" | sort); do gps=$(exiftool -s3 -GPSLatitude -GPSLongitude "$f" 2>; …(+19 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Stopping here per the turn limit — work is mid-flight with the family-video encode still running. Here's exactly where things stand.
+
+## Done this turn (media exploration + Plot 1 boundary extension)
+
+
+### 🤖 Autopilot
+
+Go received — resuming the mid-flight work. First: check if the family-video encode finished, then upload it and continue the header/gallery work.
+
+
+### 🤖 Autopilot
+
+The encode has been frozen at the same size (18025540 bytes) across multiple polls — likely hung, not progressing. Let me check the process state and log:
+
+
+### 🤖 Autopilot
+
+The x264 summary in the log means the encode **completed** — the `pgrep` matches were stale. But duration reads 20.9s, not ~31s — let me check the source duration and validate the output file properly:
+
+
+### 🤖 Autopilot
+
+The encode is actually **complete and valid**: source IMG_7684 is 20.9s (I misread earlier — it's a 21s clip, not 31s), output is a clean H.264+AAC MP4 (1280×2276 — portrait, faststart, 23.6MB). The `pgrep` matches were stale sleeping shells. Uploading to YouTube public now:
+
+
+### 🤖 Autopilot
+
+Family video uploaded public: **https://www.youtube.com/watch?v=H9ZSF1-ahIo**. Now the header swap + gallery additions on the farm page. Let me apply all changes to the page in one pass:
+
+
+### 🤖 Autopilot
+
+Header swapped (all 4 refs: og:image, twitter:image, CSS hero, inline hero) + 5 new photos staged. Now update media.json: new hero reference + family video + new photos:
+
+
+### 🤖 Autopilot
+
+Gallery updated (15 items: 3 videos + 12 images), JSON valid. Also the journey-listing card uses `IMG_7625` via the hardcoded switch — let me update that to the new warm header too, then commit + PR:
+
+
+### 🤖 Autopilot
+
+Push failed — likely on a detached HEAD (the clone was fresh). Let me check and create the branch properly:
+
+
+### 🤖 Autopilot
+
+The commit landed on main first (before the branch was created), and the branch now points at the same commit. Let me check the git state carefully — I must not accidentally push main directly; the changes should go via PR:
+
+
+### 🤖 Autopilot
+
+Good — the commit `79fa748` is only on the feature branch `feat/rancho-media-update` (main is at 9af9fe1). The earlier "nothing to commit" was because the commit had already been made. The branch is pushed. Now open the PR via the sophia credential helper:
+
+
+### 🤖 Autopilot
+
+Got the PAT via git credential fill. Opening the PR:
+
+
+### 🤖 Autopilot
+
+The heredoc-in-subshell mangled the quoting. Let me write it as a small script file instead:
+
+
+### 🤖 Autopilot
+
+PR #236 opened. Merging per the standing go-signal:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Rancho Maranta media update — PR #236 merged: warm human header + family video + new photos.**
+
+**PR #236 → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/236** (merged, sha `f2f2cda`), 9 files:
+
+1. **Warm human header** — replaced the people-less `IMG_7625` hero with `rancho-maranta-header-warm.jpg` (1600×900 crop from IMG_7684's warmest frame — 47% skin-tone = Jedielcio & family). All 4 refs updated (og:image, twitter:image, CSS `.farm-hero`, inline hero style). Also updated the hero alt/copy.
+2. **Family video uploaded public** — IMG_7684 (20.9s, portrait 1280×2276, HEVC→H.264 faststart) → **https://www.youtube.com/watch?v=H9ZSF1-ahIo** ("Plot 1 family moments, Altamira, Pará"). Added as **first** gallery item.
+3. **5 new Plot-1 photos** (IMG_7693/94/96/97/98 — people present) added to gallery.
+4. **Journey card image synced** — `cacao-journeys/brazilian-path/index.html` line 1002 now points at the warm header (was IMG_7625).
+5. **Gallery now 15 items**: 3 videos (family H9ZSF1-ahIo, Plot-1 walk AriHjXTsLio, Plot-2 boundary o3_nWticYQc) + 12 images. JSON valid.
+
+**Process notes:** the encode finished (the earlier "STILL RUNNING" was stale pgrep matches — log showed x264 summary, source was 20.9s not 31s); upload used the box's OAuth creds; PR opened via a small python script using the sophia PAT from `git credential fill` (the inline heredoc mangled quoting — script file worked).
+
+**Also from earlier this turn (boundary extension, already live):** RM-P1 GPS walk extended the polygon — sheet + `sunmint/plots/index.geojson` now show **0.4 ha, 6-pt polygon, `walk-approx`** (commit `e710b7c` on sunmint@main).
+
+## RESUME HERE →
+
+1. **Governor reviews** → https://beta.agroverse.shop/farms/rancho-maranta-para/ (hard refresh): new warm header with family, 3-video gallery, 5 new photos. Also check the journey card on https://beta.agroverse.shop/cacao-journeys/brazilian-path/.
+2. **Impact map shows extended Plot 1** → https://beta.truesight.me/sunmint.html — RM-P1 polygon should now be the wider 6-pt walk-approx shape (0.4 ha).
+3. **Prod promotion** (gated on your explicit approval): `sync_beta_to_prod(agroverse_shop_prod)` — now includes farm page #229 + card fix #233 + video embeds #234 #235 + media update #236; `sync_beta_to_prod(truesight_me_prod)` — impact map #325–#329.
+4. **Optional:** archive the masters (MOVs + MP4s live only in /tmp; YouTube is the canonical public host), and file the `set_video_privacy.py` tooling follow-up if you want repeatable privacy flips.
+
+**FYI — stale detail:** the turn-directive report is due; nothing else pending except your review + prod approval.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → cd /tmp/rmn && pgrep -f "IMG_7684" >/dev/null && echo "STILL RUNNING" || echo "DONE"; ls -la rancho-maranta-family.mp4 2>/dev/null; ffprobe ; cd /tmp/rmn && ps aux | grep -i "IMG_7684" | grep -v grep | awk '{print $3, $4, $10}' ; echo "=== log tail ===" && tail -5 encode3.log; echo; cd /tmp/rmn && echo "=== source duration ===" && ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 IMG_7; …(+10 more)
+• `merge pr` → ✅ PR #236 on agroverse_shop_beta merged successfully (sha: f2f2cda9c44c7b9b6279117dafd5069b6f682c77). Pull Request successfully merged
 
