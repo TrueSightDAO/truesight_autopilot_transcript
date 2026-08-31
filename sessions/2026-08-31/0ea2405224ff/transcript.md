@@ -3958,21 +3958,25 @@ The transcript is this session (3891 lines, Gary Teh, thread 16631). No usage.js
 ### 🤖 Autopilot
 
 Let me reconstruct the actual time spent from commit/merge timestamps (the most reliable clock) across the repos touched:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the authoritative PR merge timestamps via the GitHub API (the clock for the whole effort) and check what I logged as contributions:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check my contribution records (what time I actually logged) and the PR numbers I'm missing (there may be sunmint data commits too):
+[2 tool result(s) compacted: search_transcript, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have enough to reconstruct the full picture. Let me verify the two contribution submissions I made earlier in this session:
+[1 tool result(s) compacted: recall_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4027,6 +4031,7 @@ Here's the reconstruction from the transcript + authoritative PR merge timestamp
 ### 🤖 Autopilot
 
 Doing both — (a) filing the usage-logging gap in OPEN_FOLLOWUPS.md, and (b) logging the make-up contribution. Let me read the current backlog format first, and submit the contribution in parallel:
+[2 tool result(s) compacted: read_context_file, create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4167,4 +4172,68 @@ Both promotions are done and verified — the `content-length: 11847` on the htt
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && rm -rf tmpd2 && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_me_prod.git tmpd2 2>/dev/null; cd tmpd2 && echo ; cd /tmp/tmpd2 && echo "=== prod deploy mechanism ===" && ls .github/workflows/ 2>/dev/null && cat CNAME 2>/dev/null && echo "--- branches --
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: reference FARM_MEDIA_PIPELINE.md and process the media files you were working on just now for rancho maranata
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631]
+
+
+### 🤖 Autopilot
+
+Let me find and read FARM_MEDIA_PIPELINE.md — the runbook for processing farm media:
+
+
+### 🤖 Autopilot
+
+Not in agentic_ai_context. Let me search org-wide — it may live in another repo (agroverse_shop_beta, sunmint, or elsewhere):
+
+
+### 🤖 Autopilot
+
+The runbook isn't in agentic_ai_context or indexed code — but I see a **`farm-media-raw`** repo (private DAO blob store for farm media). The pipeline doc likely lives there or in the shop repo. Let me check:
+
+
+### 🤖 Autopilot
+
+farm-media-raw is the blob store, no pipeline doc there. Let me search the shop repos and the autopilot repo for the pipeline doc:
+
+
+### 🤖 Autopilot
+
+Let me check the local box for the doc (it may be a working doc) and search org-wide once more with different terms:
+
+
+### 🤖 Autopilot
+
+Let me try a more targeted find on the box (the broad find timed out) and check the farm-media-raw repo structure:
+
+
+### 🤖 Autopilot
+
+I've searched exhaustively and **FARM_MEDIA_PIPELINE.md does not exist anywhere I can find**:
+
+- ❌ `agentic_ai_context` — no file, no content match
+- ❌ Org-wide GitHub code search — 0 hits (including agroverse_shop_beta, sunmint, truesight_autopilot)
+- ❌ Local box (`/opt/truesight_autopilot`, `/home/ubuntu`) — no FARM_MEDIA / media_pipeline files
+- ❌ `farm-media-raw` repo — README only (blob store, no pipeline doc)
+
+I see related infra: `farm-media-raw` (private DAO blob store for raw farm media keyed by farm id), `aora_raw_footage` (raw footage as GitHub Release assets), and the `DOWNLOADS_MEDIA_TO_AGROVERSE`/`youtube_batch_incoming` pattern I found earlier. But the exact doc you're referencing isn't anywhere I have access to.
+
+**Before I guess at the process** (rule: don't guess — ask): could you point me to where FARM_MEDIA_PIPELINE.md lives? A repo name or a folder would do — if it's in a repo I can't see (private/not in the org list), I'll read it once you give me the path. Alternatively, if you want me to **process the Rancho Maranta media now without the doc**, I can follow the established pattern I've already used this session:
+
+1. **Raw archive → `farm-media-raw`** (HEIC originals keyed by farm id, via Contents API)
+2. **Web-optimized assets → `agroverse_shop_beta/assets/images/farms/`** (1600px JPEGs — already done for the 10–12 in the gallery)
+3. **Videos → YouTube public** (3 already uploaded: AriHjXTsLio, o3_nWticYQc, H9ZSF1-ahIo) + embeds in media.json
+4. **GPS/EXIF → registry/sheet** (already extracted into the SunMint Plots tab + plots index)
+
+Which would you like — the path to the doc, or shall I proceed with the established pattern?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== find FARM_MEDIA_PIPELINE on box ===" && find /home/ubuntu /opt/truesight_autopilot /tmp -iname "*FARM_MEDIA*" -o -iname "*media_pi; timeout 25 find /opt/truesight_autopilot -iname "*FARM_MEDIA*" 2>/dev/null | head; echo "---"; timeout 25 grep -rl "FARM_MEDIA_PIPELINE" /op
 
