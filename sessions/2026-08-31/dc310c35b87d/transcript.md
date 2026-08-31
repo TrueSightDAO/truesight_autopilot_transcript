@@ -4405,26 +4405,31 @@ The catalog has 37 events including FARM REGISTRATION EVENT. Let me see the full
 ### 🤖 Autopilot
 
 The catalog is a dict served by Edgar (version 1, 37 events). Let me find where this catalog is defined in source so I can add the new event:
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it: **`dao_protocol/truesight_dao_client/server/data/events_catalog.json`** — the catalog source. Let me read it (the FARM REGISTRATION entry) to see the exact schema to mirror for the new event:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Catalog source found. Now let me see the version field and how events get received (the receiver that writes to the Farms sheet) — checking `events_catalog.py` route + where FARM REGISTRATION is processed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Catalog is served from `events_catalog.json`. Now let me find the receiver side — how events are dispatched/processed (mirroring TREE GROWTH MONITORING, which is the closest analog: farmer photo → GAS → sunmint images → GH Action):
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The receiver for TREE GROWTH MONITORING is a GAS script (`process_tree_growth_monitoring.gs`). For PR4, the cleanest first step is the **catalog entry** (dao_protocol) — the receiver/GAS can follow. Let me read the dispatch + how FARM REGISTRATION is currently handled to know if the receiver is GAS or server-side:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4574,4 +4579,80 @@ Say go and I'll run the UAT gate.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== PR #152 state ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/pulls/152" | python3 -c " import ; cd /tmp && echo "=== dispatch diff: new row present? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/pulls/152/files
 • `merge pr` → ✅ PR #152 on dao_protocol merged successfully (sha: 7f2950f1c31fc1dfecf03bc6abc627775206005d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merged ✅ — PR4 shipped (after fixing my empty-file bug). Stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**1. Fixed the PR #152 empty-file bug** (flagged last turn): the initial
+
+
+### 🤖 Autopilot
+
+Executing **PR5 = `gate: UAT`** — the always-stop verification gate. Reading the plan for the exact UAT checklist, then running the verification steps:
+
+
+### 🤖 Autopilot
+
+UAT step 1 **failed**: the live Edgar catalog still shows **version 1, 37 events — no `FARM BOUNDARY EVIDENCE EVENT`**. The code is merged (dao_protocol PR #152) but the **server hasn't picked it up** — likely needs a redeploy/restart (the catalog is loaded at startup or cached). Let me check the dao_protocol host state:
+
+
+### 🤖 Autopilot
+
+SSH to dao_protocol is blocked (key mismatch) — but I don't need the box for this check. Let me verify how the catalog is served (deploy mechanism) and whether it's a deploy-lag issue:
+
+
+### 🤖 Autopilot
+
+The catalog is served from `truesight_dao_client/server/` — let me check how the server loads it (runtime read vs startup cache) to know if a redeploy/restart is needed:
+
+
+### 🤖 Autopilot
+
+`routes/events_catalog.py` is the serving route — let me check if it reads the JSON at request time (then a deploy/restart is the only thing needed, or it reads from disk live) and how it's deployed:
+
+
+### 🤖 Autopilot
+
+The route reads the catalog **from disk with mtime caching** — so the live server serving v1/37 means the **deployed file on the dao_protocol box hasn't been updated** (merge ≠ deploy). That's a production deployment — which I **cannot do without your explicit command**. Let me complete the remaining UAT checks that don't require the deploy, then stop at the gate:
+
+
+### 🤖 Autopilot
+
+UAT mostly green — with **one hard blocker** that requires your decision. Stopping at the always-stop gate as required.
+
+## PR5 = `gate: UAT` — results
+
+| # | UAT check | Result |
+|---|---|---|
+| 1 | Edgar catalog serves `FARM BOUNDARY EVIDENCE EVENT` | ❌ **BLOCKED — server still serves v1/37** (merge ≠ deploy; catalog route reads from disk on the dao_protocol box, which hasn't been updated) |
+| 2 | Beta boundary page loads | ✅ 200 — `beta.sunmint.truesight.me/limites-da-fazenda/` |
+| 3 | Page has farm picker + queue + free-text + is_new_farm | ✅ All present (Nova fazenda ×2, farms/index.json, sunmint-boundary-queue, is_new_farm) |
+| 4 | `farms/index.json` live (seed) | ✅ 200 — 4 farms |
+| 5 | `plots/index.geojson` live | ✅ 5 features |
+| 6 | `extract_plot_gps.py` live | ✅ 200 |
+
+**4 of 5 check-able items pass.** The one failure is **deployment of dao_protocol PR #152 to the production server** — the code is merged on `main`, but `edgar.truesight.me` (the production FastAPI box) hasn't pulled/redeployed. The route reads from disk with mtime caching, so a pull + restart on the box is all that's needed.
+
+**This is exactly the always-stop gate:** deploying to production requires your explicit command. I also can't SSH to `dao_protocol` directly (Permission denied — key mismatch for `ubuntu@98.93.94.86`), so the deploy needs either a key fix or the governor/another operator to run it.
+
+## RESUME HERE → final step (your decision)
+
+**Deploy dao_protocol PR #152 to the production box** — options:
+1. **You (or an operator) run it**: `cd /opt/dao_protocol && git pull && sudo systemctl restart dao_protocol` (or however the service is managed on 98.93.94.86)
+2. **I attempt it** if you authorize: fix the SSH key path for host `dao_protocol`, then `git pull && restart` — but the key mismatch means I'd need credentials/instructions
+3. **If deploying now isn't wanted**: the UAT gate remains **partially blocked** (item 1 only) — everything else in the pipeline is verified live on beta; I can mark the gate "deferred on deploy" in the manifest and resume the moment the server is updated
+
+Once the catalog serves v2/38, the UAT passes end-to-end (page + seed + plots + script all already green) and the plan is complete pending your prod-promote call.
+
+**What do you want?** (a) I attempt the deploy with a key fix, (b) you/operator deploys and I re-run the UAT check, or (c) park the gate and move on?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && echo "=== 1. Edgar events-catalog (live) ===" && curl -s -m 20 "https://edgar.truesight.me/events-catalog" | python3 -c " import ; echo "=== dao_protocol service status ===" && systemctl list-units --type=service 2>/dev/null | grep -iE "dao|edgar" | head -10; echo "=== i; cd /tmp && echo "=== dao_protocol deploy docs ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/contents/" | python3 -; …(+3 more)
 
