@@ -2884,3 +2884,77 @@ Want me to keep it simple like this — status ping each time you check in, no a
 **✅ Done this turn — actions taken:**
 • `ssh run` → date -u; echo '=== retry loop ==='; ps -p 73872 -o pid,etime,%cpu 2>/dev/null || echo "LOOP ENDED"; echo '=== retry log tail ==='; tail -6 /
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] [Handoff context — this Telegram topic (thread 17184) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Status check done — still monitoring mode, but with one small positive:
+
+## Current state (20:06 UTC)
+
+| Item | Value |
+|---|---|
+| Retry loop | ✅ alive (pid 73872, 33 min elapsed), on `[retry 2]` |
+|
+
+
+### 🤖 Autopilot
+
+Resuming — drafting the farm-page video wiring while the quota clock ticks. First, the current media.json and the video-entry format from the rancho precedent:
+
+
+### 🤖 Autopilot
+
+Precedent confirmed — rancho's format is exactly right (videoId + title + caption). Let me pull the yt_ids for my verified-live shortlist from the manifest so I can wire the gallery:
+
+
+### 🤖 Autopilot
+
+All 4 gallery-worthy picks have yt_ids and were live-verified earlier (IMG_3881, IMG_3908, IMG_3897, IMG_3876 — the `status=None` is just the raw manifest not having the tag; the filed doc has the honest statuses). I'll wire the 4 strongest (cacao_pods + long walk + orchard) into the gallery, keeping the existing hero embed + 8 photos:
+
+
+### 🤖 Autopilot
+
+PR #254 open with the video wiring. Per the one-PR-per-turn rule I'll stop here and report.
+
+## ✅ Turn — farm page video gallery PR ready
+
+### What shipped this turn
+
+**Opened: [agroverse_shop_beta#254](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/254)** — "Add La do Sitio field videos to farm media gallery"
+
+Wires 4 curated YouTube embeds into `paulo-la-do-sitio-para/media.json`, matching the rancho-maranta precedent exactly (`type: youtube` + `videoId` + `title` + `caption`):
+
+| Video | yt_id | Content | GPS |
+|---|---|---|---|
+| **Cacao pods + family walk** | `K54lQEC8uG4` | IMG_3881, 22s, cacao_pods+backpack+person | -3.3863, -51.8513 |
+| **Full farm walk (4 min)** | `StfWJS_AnTg` | IMG_3908, 4:14, cacao_pods+person | -3.3860, -51.8517 |
+| **Cacao grove** | `RbER_LlTghg` | IMG_3897, 8.5s, cacao_pods+bicycle+person | -3.3860, -51.8517 |
+| **Arriving at the farm** | `5qdSU7pV6zc` | IMG_3876, 22s, car+person | -3.3863, -51.8514 |
+
+- All 4 were **live-verified** against the YouTube API this session (not just manifest-trusted).
+- Gallery now: 1 hero embed + 4 field videos + 8 field photos = **13 items**, ordered hero → videos → photos (mirrors rancho's interleaved style).
+- Beta-first: merges to `agroverse_shop_beta`; prod promotion only on your explicit go.
+
+### Still in flight
+- **YouTube quota**: 54/71 live, 17 pending reset (~07:00 UTC), retry loop pid 73872 handling it.
+- **Index PR #866** (agentic_ai_context) — open for your merge.
+- **Manifest v1**: filed; will bump to v1.1 (71/71) after re-uploads.
+
+## RESUME HERE → next unit
+1. Merge #254 (beta gallery) — say "go" or 👍 and I'll merge it, then verify on beta.agroverse.shop.
+2. After quota reset (~07:00 UTC): retry loop completes → live-sweep 71/71 → push manifest v1.1 → merge #866 → **then** prod promotion of the farm page (both the gallery + earlier plot work) on your explicit go.
+
+Nothing prod touched. The gallery PR is ready for your merge whenever.
+
+———
+**✅ Done this turn — actions taken:**
+• `read_repo_file` ×2 → current Paulo media.json + rancho precedent (videoId/title/caption format)
+• `ssh run` ×1 → pulled yt_ids + metadata for the 12 shortlist candidates
+• `git_push_changes` ×1 → agroverse_shop_beta#254 (4 video embeds into media.json)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json d = json.load(open('/tmp/la_do_manifest_full.json')) want = ['IMG_3881','IM
+
