@@ -4090,51 +4090,61 @@ I have everything I need. The module is a new page `limites-da-fazenda/index.htm
 ### 🤖 Autopilot
 
 I have all the patterns. Now building the `limites-da-fazenda/index.html` page — self-contained, mirroring the app's nav/i18n/IndexedDB-queue/camera patterns:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Input mismatch is expected (void elements — `<input>` has no closing tag). Now updating the nav dropdowns on the other pages + SW cache list, then pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the nav blocks. Let me check the other pages' `onNavChange` functions so the routing edits match exactly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have all the anchors. Now let me apply the nav updates to all 3 existing pages + SW cache list, and prepare the full set of files for the PR. Building all edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The monitor/instrucoes edits used wrong quote style. Let me fix with the correct anchors:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Monitor is done; instrucoes failed at the route step (its onNavChange must differ). Let me check instrucoes' exact onNavChange and fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The instrucoes nav option edit already applied (route step was the only failure — its `onNavChange` has `monitor` before `instrucoes`, so my `instrucoes … else {` anchor was wrong). Let me fix the route with the correct anchor:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Instrucoes needs the nav-option + i18n edits (the earlier assert aborted before writing them). Let me apply those now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All verified. Pushing PR2 — new page + nav on all 3 existing pages + SW cache entry:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #51 opened. Let me verify the PR branch matches my validated local build (byte-compare), then merge same-turn (drift window is minutes):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4303,4 +4313,170 @@ Plan status: **PR0 ✅ · PR1 ✅ · PR2 ✅ · PR3 ✅ · PR4 next · PR5 = `ga
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/build_plots_geojson.py" -o build_plots.py && echo "=; cd /tmp && echo "=== build_plots tail (output write) ===" && sed -n '120,244p' build_plots.py && echo "=== rebuild workflow ===" && curl -s ; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geojson" -o plots.geojson && python3 - <<'PYEOF'; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: All three PR3 files landed on `sunmint/main` ✅ — **PR3 complete** (via the sanctioned Contents-API path for the api_only data repo, as with PR1).
+
+## What I did this turn
+
+**PR3 — farms seed (`farms/i
+
+
+### 🤖 Autopilot
+
+Executing **PR4: backend farm upsert + `FARM BOUNDARY EVIDENCE EVENT` catalog entry**. First, checking the event catalog and how events get proposed/added:
+
+
+### 🤖 Autopilot
+
+`FARM BOUNDARY EVIDENCE EVENT` confirmed **not in the catalog** (only `FARM REGISTRATION EVENT` exists). PR4 = add the new event + receiver logic. Let me find where the events catalog lives in code:
+
+
+### 🤖 Autopilot
+
+The dao_protocol search hit venv noise. Let me find the actual events catalog + FARM REGISTRATION handler directly:
+
+
+### 🤖 Autopilot
+
+EVENTS.md is the cacao event playbook, not the DAO event catalog. Let me find the actual catalog definition and the FARM REGISTRATION receiver in dao_protocol:
+
+
+### 🤖 Autopilot
+
+dao_protocol is the API/signature layer, not the event catalog. The catalog with `FARM REGISTRATION EVENT` (canonical labels, dapp_page) is served by **Edgar** (`edgar.truesight.me/events-catalog`), which lives in the GAS layer. Let me find where the catalog source of truth is — checking tokenomics for the events catalog / GAS app:
+
+
+### 🤖 Autopilot
+
+The event catalog lives in one of the GAS projects in tokenomics. Let me find where `FARM REGISTRATION EVENT` is defined:
+
+
+### 🤖 Autopilot
+
+Found it — `qr_code_web_service.js` (GAS) defines/handles FARM REGISTRATION. Let me see how it handles farm events and where the receiver logic lives:
+
+
+### 🤖 Autopilot
+
+The GAS file has `farm_name` fields but not the event catalog. The catalog is served by Edgar at `/events-catalog`. Let me find the actual catalog source — checking the live endpoint structure and searching dao_protocol for the catalog definition:
+
+
+### 🤖 Autopilot
+
+The catalog has `events` — let me find the FARM entries and the catalog's source repo:
+
+
+### 🤖 Autopilot
+
+The catalog events are strings, not dicts. Let me list them to see the exact event names:
+
+
+### 🤖 Autopilot
+
+The catalog has 37 events including FARM REGISTRATION EVENT. Let me see the full structure of the catalog to understand how events are defined (they have canonical labels etc. that lookup_event_docs pulls):
+
+
+### 🤖 Autopilot
+
+The catalog is a dict served by Edgar (version 1, 37 events). Let me find where this catalog is defined in source so I can add the new event:
+
+
+### 🤖 Autopilot
+
+Found it: **`dao_protocol/truesight_dao_client/server/data/events_catalog.json`** — the catalog source. Let me read it (the FARM REGISTRATION entry) to see the exact schema to mirror for the new event:
+
+
+### 🤖 Autopilot
+
+Catalog source found. Now let me see the version field and how events get received (the receiver that writes to the Farms sheet) — checking `events_catalog.py` route + where FARM REGISTRATION is processed:
+
+
+### 🤖 Autopilot
+
+Catalog is served from `events_catalog.json`. Now let me find the receiver side — how events are dispatched/processed (mirroring TREE GROWTH MONITORING, which is the closest analog: farmer photo → GAS → sunmint images → GH Action):
+
+
+### 🤖 Autopilot
+
+The receiver for TREE GROWTH MONITORING is a GAS script (`process_tree_growth_monitoring.gs`). For PR4, the cleanest first step is the **catalog entry** (dao_protocol) — the receiver/GAS can follow. Let me read the dispatch + how FARM REGISTRATION is currently handled to know if the receiver is GAS or server-side:
+
+
+### 🤖 Autopilot
+
+Let me read the dispatch.py structure (event → handler mapping) to know exactly where the new event's receiver hook goes:
+
+
+### 🤖 Autopilot
+
+I now have the full dispatch pattern. PR4 = **two coordinated changes**:
+1. **`events_catalog.json`** — add `FARM BOUNDARY EVIDENCE EVENT` (catalog entry with canonical labels)
+2. **`dispatch.py`** — add a ROUTING row (event tag → `FARM_BOUNDARY_EVIDENCE` webhook action)
+
+Let me look at the exact JSON placement (sorted alphabetically — after FARM REGISTRATION EVENT) and read the tail of dispatch to place the ROUTING row correctly:
+
+
+### 🤖 Autopilot
+
+I have everything. Now let me build both edits — add the catalog entry (after FARM REGISTRATION EVENT) and the dispatch ROUTING row (after TREE GROWTH MONITORING, which is the closest analog). Building the files and validating:
+
+
+### 🤖 Autopilot
+
+Both edits built cleanly (catalog 38 events v2, dispatch +8 lines). Now running the hard-rule checks — compile + ruff on the Python, JSON validate — then pushing to `dao_protocol`:
+
+
+### 🤖 Autopilot
+
+Ruff format wants one pass (my inserted comment block may exceed line width). The exec test failed on a module-level logging call (not my change — `logging.getLogger("dao_protocol.dispatch")` needs module context) — I'll fix the verification approach. Let me format and verify correctly:
+
+
+### 🤖 Autopilot
+
+The AST walk didn't find it because the ROUTING literal's first element is a tuple with a string constant — but my check ran against the *original* dispatch.py (the format run rewrote /tmp/dispatch_new.py and my check read it — let me look directly). Let me grep the formatted file to confirm the row survived:
+
+
+### 🤖 Autopilot
+
+The row is present (ruff format just restructured the tuple layout). All hard-rule checks pass. Now pushing PR4 to `dao_protocol`:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+⚠️ **CRITICAL: I need to flag an error before converging** — the PR #152 I just opened may contain **EMPTY files**.
+
+## The mistake
+In the `git_push_changes` call I passed `writes` with **empty `content` strings** for both files (I intended to reference the local files but the call takes inline content, and I left them blank). The tool reported "applied: write events_catalog.json, write dispatch.py" — which likely means it created the branch with **empty files**. That would be a broken PR.
+
+**The correct content is safe on disk** (validated earlier this turn):
+- `/tmp/ec_new.json` — catalog v2, 38 events, JSON-validated
+- `/tmp/dispatch_new.py` — ROUTING row added, ruff-clean, format-clean, compiles
+
+## RESUME HERE → next turn (FIRST action — urgent fix)
+1. **Overwrite the PR #152 branch files with the real content** via `upload_local_file_to_github` (the Contents API path that worked repeatedly this session):
+   - `/tmp/ec_new.json` → `truesight_dao_client/server/data/events_catalog.json` (branch `farm-boundary-evidence-event`)
+   - `/tmp/dispatch_new.py` → `truesight_dao_client/server/dispatch.py` (same branch)
+2. **Verify** the PR diff is now the intended +catalog entry / +ROUTING row (not a wipe)
+3. Then merge per the plan rhythm and report PR4 complete
+
+## What was done correctly this turn (PR4 progress)
+- **Confirmed** `FARM BOUNDARY EVIDENCE EVENT` absent from catalog; catalog source = `dao_protocol/truesight_dao_client/server/data/events_catalog.json` (37 events, v1); dispatch = `server/dispatch.py` ROUTING (first-match-wins → GAS webhook)
+- **Built + validated** the catalog entry (canonical labels: Farm Name, Plot ID, Boundary Type, Media URLs, Extracted GPS, Area Hectares, Submission Source; required: Farm Name, Media URLs; dapp_page `limites-da-fazenda/index.html`) and the dispatch row (`[FARM BOUNDARY EVIDENCE EVENT]` → `FARM_BOUNDARY_EVIDENCE` / `processFarmBoundaryEvidenceFromTelegramChatLogs`)
+- Hard-rule checks: JSON valid ✓ · compile ✓ · ruff ✓ · format ✓
+- **PR #152 opened** (https://github.com/TrueSightDAO/dao_protocol/pull/152) — but with the empty-content bug above
+
+Do NOT merge PR #152 until the files are corrected. Say go and I'll fix it first thing next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×19 → cd /tmp && echo "=== events catalog in dao_protocol? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/git/trees/main?; cd /tmp && echo "=== dao_protocol tree (top-level, filtered) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/git/tre; cd /tmp && echo "=== tokenomics: events catalog? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/git/trees/main?recurs; …(+16 more)
 
