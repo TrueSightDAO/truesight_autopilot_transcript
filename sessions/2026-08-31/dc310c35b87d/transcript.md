@@ -3260,51 +3260,61 @@ I'll check `main` first (given you're editing live) and adapt anchors before bui
 ### 🤖 Autopilot
 
 Go-signal received — executing **PR3: Farms Registry section**. Per protocol, reading the plan + fetching freshest main (given the live-editor situation):
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Plan confirmed (PR3 spec + checklist). Main is at 47,359 bytes with my PR2 merged as the latest commit — no drift since. Let me examine the page structure to place the Farms Registry section and see how loadPlots exposes data for aggregation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Farms Registry section should go right after the impact-map section (which ends before the scripts). Let me find where the impact-map section closes and see the loadPlots `plotIds` structure (which I'll aggregate from):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the full render function (631–700) to know exactly what plot data I can aggregate from:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The render function exposes plot data via `plotIds[id] = {id, name, color, latlngs}` — but not full props (hectares, status, region). For the Farms Registry I need the props. Let me see the impact-map section close to find the insertion point, and check `plotIds` completeness:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Farms Registry section goes after the impact-map `</section>` (line 257), before the footer. I'll aggregate from the plots `feats` in `render()` (extending the data flow). Building the file locally with precise edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hunk 2 anchor failed — likely the `\u00b7` escape vs the literal `·` character in the file. Let me check the actual note-block bytes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file has the literal `·` (M-BM-7 = UTF-8 middle dot). My Python source had `' \\u00b7 '` which is the escape *string*, not the char. Let me fix using the literal char:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both edits applied (50,193 bytes). Verifying tags + JS syntax before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All verified: tags balanced 12/12, all 4 inline scripts pass `node --check`, section + renderFarms present. Pushing as PR3 via edits (anchors verified against current main):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3480,4 +3490,62 @@ Plan status: **PR0 ✅ · PR1 ✅ · PR2 ✅ · PR3 ✅ · PR4 ✅ · PR5 (UAT g
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint.html" -o p4_base.html && wc -c p4_base.htm; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/contents/sunmint.html?ref=main" | python3 -c " import json,s; cd /tmp && python3 - <<'PYEOF' html = open('p4_main.html').read() def rep(old, new, label): global html c = html.count(old) assert c == 1, f; …(+3 more)
 • `merge pr` → ✅ PR #341 on truesight_me_beta merged successfully (sha: e9fd277ced68d8eebc52a51604a7f80f9e3aa73d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+What about the submission of images via to plot the boundaries of the farm plots? What is the progress on that?
+
+https://sunmint.truesight.me/
+
+
+### 🤖 Autopilot
+
+Good question — let me check the actual state of the boundary-submission work (it was scoped out of the impact map plan, so I need to verify what exists):
+
+
+### 🤖 Autopilot
+
+Let me verify the farmer app (sunmint.truesight.me) and dapp for any boundary-capture UI, plus the plots geojson current state:
+
+
+### 🤖 Autopilot
+
+Straight answer: **the boundary-submission pipeline is designed and the data side works, but the farmer-facing capture + GPS automation is NOT built yet.** Here's the honest status:
+
+## What EXISTS today (verified)
+
+| Piece | Status |
+|---|---|
+| **Plots registry** (`sunmint/plots/index.geojson`) | ✅ **5 plots now** (grew from 2): RM-P1 planted (walk-approx, 0.4ha), RM-P2 proposed (5ha), **SA-P1** Santa Anna proposed (3ha — Jedielcio's farm!), CL-P1 Fazenda Cleide (114ha), **LD-P1** Paulo Lá do Sítio (5.56ha, **8 media items**) |
+| **Generator** `scripts/build_plots_geojson.py` + rebuild workflow | ✅ Live — sheet → geojson → impact map |
+| **Farm registration** `register_farm.html` (dapp) | ✅ Exists |
+| **Impact map** (sunmint.truesight.me + beta) | ✅ Live — plots render, popups enriched, farms selector + registry added this week (PR1–PR4) |
+| **GPS extraction runbook** (`SUNMINT_PLOTS_REGISTRY.md` §3) | ✅ Documented (exiftool → DMS → decimal) |
+
+## What's MISSING (the actual gap)
+
+1. **Farmer-facing boundary-capture UI** — no "upload boundary photos/video" module exists. `sunmint.truesight.me` has only `index.html` + `monitor-tree-growth/index.html`. The dapp has only `register_farm.html`. Nothing to capture the pillar-and-log walk Jedielcio did.
+2. **`extract_plot_gps.py`** — the script that reads image/video EXIF lat/lng → builds the boundary polygon → auto-creates/updates the plot row. **Never built.**
+3. **Backend farm upsert** — new farm name typed at boundary submission → auto-create farm record. **Not built** (no `FARM BOUNDARY EVIDENCE EVENT` in Edgar's catalog).
+4. **Media → plot attachment is manual** — LD-P1 has 8 media items because they were added by hand (sheet entry), not by a capture flow.
+
+## Why
+
+The impact map plan (running now) **explicitly scoped this out** (§1): *"Farmer-app boundary capture UI — separate plan/thread; `extract_plot_gps.py` — separate PR."* So it's a known, parked gap — not lost.
+
+## Recommendation
+
+This is the **next plan** after the impact map UAT. The clean sequence (from my earlier design):
+- **PR-A** — `extract_plot_gps.py` (exiftool → convex hull → polygon → upsert sheet row) in `sunmint`
+- **PR-B** — "Limites da Fazenda" capture module in the farmer app (`sunmint_beta`): farm picker (device-local union + "New farm…"), boundary-photo capture, offline queue → upload to `images/<plot_id>/`
+- **PR-C** — backend farm upsert + `FARM BOUNDARY EVIDENCE EVENT` catalog entry
+
+Want me to **start PR-A now** (the extraction script — it's self-contained, proves the loop with the LD-P1 media already on hand), or finish the impact map UAT first (PR5 = current gate)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== sunmint repo: scripts tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recursive=; cd /tmp && echo "=== sunmint_beta tree (any boundary/farm pages?) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/gi
 
