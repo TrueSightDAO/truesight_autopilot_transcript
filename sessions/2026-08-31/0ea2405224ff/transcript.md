@@ -2461,16 +2461,19 @@ Both rows appended. Let me verify they landed correctly in the sheet:
 ### 🤖 Autopilot
 
 Go received — filing the OPEN_FOLLOWUPS.md entry for the stale SEO tooling (the known-working append path should be documented for future ships). Let me read the current backlog structure first to file it correctly:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The backlog structure is clear — entries go under `## Pending` as scoped, self-contained tasks. Let me file the SEO-tooling entry there via a PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #850 opened. Merging per the standing go:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2544,41 +2547,49 @@ beta.agroverse.shop Day 61 Rancho Maranta ? Altamira, Para, Amazon Rainforest, B
 ### 🤖 Autopilot
 
 Let me look at the Rancho Maranta listing card I added — likely an image path mismatch (thumbnail referenced but never created). Checking the card HTML and how Santa Anna's card image is referenced:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Rancho Maranta entry has no `img` field — let me check whether other cards (Santa Anna, Paulo's) carry one, and how the card renderer uses it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the card renderer (lines ~974–1010) has a hardcoded image-path switch per slug. Santa Anna maps to `../../assets/images/farms/santa_anna_farmers_hero.jpg`; **Rancho Maranta has no case** → falls through to an empty path → missing image. Let me read the full switch to see the fallback and the exact santa_anna line to mirror:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Root cause confirmed — the journey card renderer has a hardcoded image-path switch per farm slug, and `rancho-maranta-para` isn't in it. The fallback builds `../../assets/images/farms/rancho-maranta-para.jpg`, but our files are named `rancho-maranta-IMG_*.jpg`, so the img 404s and the `onerror` hides it → blank card. The farm page hero is `IMG_7625`; I'll add the case mapping to that. Applying the fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fix applied and JS validates. Pushing the fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed, but my token extraction path was wrong. Let me find the actual credential helper used earlier for PR #229:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The credential helper is `/opt/truesight_autopilot/scripts/git-credential-sophia.sh` (it holds the PAT with PR rights — how PR #229 was opened). Let me use it to extract the token and open the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #233 opened. Merging per the standing go:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2639,41 +2650,54 @@ PR #233 opened. Merging per the standing go:
 ### 🤖 Autopilot
 
 Go received. Next unit: the **YouTube upload** — earlier credential search showed `/opt/truesight_autopilot/config/youtube/youtube_credentials.json` exists on the box, so the creds may actually be there (I need to recheck — I earlier said they weren't). Let me also verify the beta listing fix is live:
+[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The YouTube credentials **are** on the box (`youtube_credentials.json` + `youtube_token.json`, token refreshed 2026-08-31 02:46) — I was wrong earlier. And the beta journey page is live (200). Let me read the upload README + script to learn the exact invocation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The YouTube pipeline is fully available (creds + token, refreshed today). The smart approach — not 26 raw uploads: **Plot 1's 3 clips (~27s) concat into one hero video; Plot 2's 23 boundary-walk clips → a couple of representative clips**. Let me check what's already extracted and tooling:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ffmpeg is available and the MOVs are in the zips (the /tmp extracts were cleaned). Plan: extract Plot 1's 3 clips (house) + a few Plot 2 clips, check durations, then concat into 1–2 curated videos rather than 26 raw uploads. Extracting and probing durations:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Plot 1: IMG_7621 is the 27s hero clip. Let me concat the Plot 1 clips into one hero MP4, and extract a representative Plot 2 walk clip:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ffmpeg re-encode timed out (the 27s clip at full res). Let me split the steps with shorter timeouts — first just probe, then process clips individually with lower res:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The first clip (IMG_7621, 27s, 1080p HEVC) encoded to a 15MB mp4 in ~55s. The loop timed out after that. Let me process the two short clips (7622, 7623) individually with tight timeouts — at 1280px they should be quick:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 7623 encode likely completed but the concat is still running. Let me check state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2774,4 +2798,54 @@ PR #234 opened. Merging per the standing go:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×21 → echo "=== youtube config dir ===" && ls -la /opt/truesight_autopilot/config/youtube/ 2>/dev/null; echo "=== upload script ===" && find /opt/; cat /opt/truesight_autopilot/config/youtube/README.md && echo "=== script head ===" && head -80 /opt/truesight_autopilot/config/youtube/uplo; echo "=== /tmp/plot dirs still there? ===" && ls -la /tmp/plot1/ /tmp/plot2/ 2>/dev/null | head -40; echo "=== MOVs in zips ===" && unzip -l; …(+17 more)
 • `merge pr` → ✅ PR #234 on agroverse_shop_beta merged successfully (sha: d5936a107573782fe7cbb221b5850794c58ae753). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] can we make the youtube videos public?
+
+
+### 🤖 Autopilot
+
+Sure — let me flip the video to public using the same stored OAuth credentials. First, let me see what tooling exists for updating a video's privacy:
+
+
+### 🤖 Autopilot
+
+No dedicated privacy-update script — the uploader only sets privacy at upload. I'll write a small update script reusing the same credentials/token auth pattern. Let me check the uploader's auth setup so I mirror it exactly:
+
+
+### 🤖 Autopilot
+
+The auth pattern is clear (youtube.upload + youtube.force-ssl scopes, token refresh). I'll write a small `set_video_privacy.py` that reuses the same auth and flips the video to public via the Data API `videos().update`:
+
+
+### 🤖 Autopilot
+
+Done — the video is now **public**:
+
+## ✅ Rancho Maranta video is public
+
+- **URL:** https://www.youtube.com/watch?v=AriHjXTsLio
+- **Title:** "Rancho Maranta — Cacao tree planting site, Altamira, Pará (Plot 1)"
+- **Privacy:** unlisted → **public** (flipped via the Data API `videos().update`, preserving snippet + status fields; token refreshed cleanly)
+- **Channel:** admin@truesight.me
+
+No page change needed — the embed on the farm page (media.json `videoId: AriHjXTsLio`) now plays the public version; it was already working unlisted, and public just means it's also searchable/discoverable on YouTube itself.
+
+**Quick verification you can do:** open the URL in an incognito window — it should play without sign-in and appear in search.
+
+## RESUME HERE →
+
+1. **Governor checks the public video** → https://www.youtube.com/watch?v=AriHjXTsLio and the embed at https://beta.agroverse.shop/farms/rancho-maranta-para/ (gallery first item).
+2. **Plot 2 boundary-walk video** (next unit if you want it) — cut a ~20s representative clip from the 23 MOVs, upload public, add as second gallery video.
+3. **Prod promotion** (gated on your explicit approval): `sync_beta_to_prod(agroverse_shop_prod)` — farm page #229 + card fix #233 + video embed #234; `sync_beta_to_prod(truesight_me_prod)` — impact map #325–#329.
+4. **RM-P2 boundary authority** — CAR/INCRA polygon or perimeter walk; update SunMint Plots sheet row.
+5. **Ledger anchor** — register Rancho Maranta farm + plot event on-chain.
+
+**Small tooling note:** the privacy flip needed a tiny script (no set-privacy tool existed). I wrote it ad hoc at `/tmp/set_privacy.py` — if you want, I can file a proper `set_video_privacy.py` into the youtube config dir via PR so future privacy changes don't need a fresh script each time.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → ls -la /opt/truesight_autopilot/config/youtube/ && echo "=== scripts in config ===" && find /opt/truesight_autopilot/config/youtube/ -name "; sed -n '1,60p' /opt/truesight_autopilot/config/youtube/upload_video_to_youtube.py; cat > /tmp/set_privacy.py <<'PYEOF' #!/usr/bin/env python3 """Set a YouTube video's privacy status using stored OAuth creds (same auth as up
 
