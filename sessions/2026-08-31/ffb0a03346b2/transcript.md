@@ -1519,41 +1519,54 @@ The script hit a Unicode surrogate issue with emoji. Let me redo the transformat
 ### 🤖 Autopilot
 
 The `\ud83e` escapes create surrogates that can't encode. Let me use literal emoji directly in the heredoc instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 HTML page built successfully. Now let me stage the images and prepare the data-file edits, then push the comprehensive PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All assets staged on disk. Now let me open the PR with the text edits, then upload the binary assets to the branch.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One edit failed — the CEPOTX card markup has different indentation than I guessed. Let me check the exact text.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The actual markup uses `</div>` without leading spaces. Let me redo the PR with the corrected edit.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #225 opened with the text edits. Now let me upload the local files (the transformed index.html + 4 images) to the branch.
+[5 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 6 files are on the branch. Let me verify the branch is complete.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The hero image (`santa_anna_profile_photo.jpg`) may just not match my grep pattern (underscore vs hyphen). Let me verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1608,6 +1621,7 @@ Slug is `santa-anna-fazenda-para`, page labeled "CEPOTX Cooperative Member Farm"
 ### 🤖 Autopilot
 
 👍 Go signal received — merging the farm page PR to make it live on beta.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1662,46 +1676,55 @@ Slug `santa-anna-fazenda-para`, labeled "CEPOTX Cooperative Member Farm" — dis
 ### 🤖 Autopilot
 
 👍 Go signal received. Next unit: verify the farm page renders on beta (prod promotion still needs your explicit review first). Let me find the beta deploy config and check the live page.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo's CNAME is `beta.agroverse.shop` — main branch auto-deploys. Let me verify the new page is live.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Page is live on beta (HTTP 200, correct title/description/OG tags). Let me verify the key content sections and image assets resolve.
+[2 tool result(s) compacted: http_fetch, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The page is live on beta with the farm story, highlights, map at the real GPS — but I spotted a **corrupted Google Maps link** in the output (my earlier regex mangle left remnants of Paulo's old URL inside the Santa Anna link). Let me check and fix it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Google Maps link is corrupted — my earlier regex mangled it (left remnants of Paulo's old URL appended to the new coordinates). Let me fix it locally with a robust replacement and verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The regex was a no-op (the apostrophe right after `15z` stopped the match, so nothing was actually trimmed). Let me fix it properly — strip everything after `15z` up to the closing quote/backslash in both contexts.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The junk after `15z` contains apostrophes so my character class failed. Let me match lazily until the closing quote instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both Google Maps URLs are now clean: `https://www.google.com/maps/place/3%C2%B017'32.9%22S+52%C2%B034'20.1%22W/@-3.292475,-52.57225,15z` — pointing exactly at the farm's coordinates. Now let me open a quick fix PR for this (it's a small correction to the merged page).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The search string didn't match — the corrupted URL on the GitHub main branch must differ slightly from what I fetched. Let me read the exact bytes from the repo.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1817,4 +1840,73 @@ Both URLs now point cleanly to:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → cd /tmp/agroverse_shop_look && echo "=== CNAME / deploy config ===" && ls -la CNAME netlify.toml vercel.json .github/workflows/ 2>/dev/null;; cd /tmp/agroverse_shop_look && grep -n 'google.com/maps' farms/santa-anna-fazenda-para/index.html | head -6; cd /tmp/agroverse_shop_look && python3 << 'PYEOF' import re p = 'farms/santa-anna-fazenda-para/index.html' s = open(p, encoding='utf-8').rea; …(+7 more)
 • `merge pr` → ✅ PR #226 on agroverse_shop_beta merged successfully (sha: e7101ebe4224f295f0e8743a64118e6c72050c83). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] I wonder if there are videos of us visiting that farm which I uploaded if so, perhaps upload to admin@truesight.me account on Youtube and then embed on that page
+
+
+### 🤖 Autopilot
+
+Good idea — let me check what videos are on the box and whether there's any YouTube upload tooling/credentials for admin@truesight.me already set up.
+
+
+### 🤖 Autopilot
+
+There's an established YouTube pipeline (used for capoeira videos on admin@truesight.me). Let me read the runbook and check the tooling/credentials on the box.
+
+
+### 🤖 Autopilot
+
+Credentials exist. Let me find the runbook (name differs) and inspect the upload script + verify the "walk in the forest.MOV" is a duplicate of IMG_7734.
+
+
+### 🤖 Autopilot
+
+`walk in the forest.MOV` is byte-identical to `IMG_7734.MOV` (same md5) — so there are **3 unique farm videos**: IMG_7734 (7.7s farm walk), IMG_7740 (6.3s fermentation), IMG_7741 (20.6s drying). The full YouTube pipeline exists with credentials on the box. Let me check the runbook location, how Paulo's page embeds video, and the upload script's options.
+
+
+### 🤖 Autopilot
+
+The pipeline is established. Let me check the media.json video-embed format and the simpler single-upload script.
+
+
+### 🤖 Autopilot
+
+Great news — the videos are there, and the full YouTube pipeline is already set up. Here's the situation:
+
+## ✅ The videos (all on the box, from your scp'd zip)
+
+| Video | Duration | Content (from our frame analysis) |
+|---|---|---|
+| `IMG_7734.MOV` | 7.7s | **Farm walk** — cacao pods on trunks (Facility A) — note: this is byte-identical to `walk in the forest.MOV` you scp'd earlier (same md5), so it's one video, not two |
+| `IMG_7740.MOV` | 6.3s | **Fermentation** — wooden boxes (Facility B) |
+| `IMG_7741.MOV` | 20.6s | **Drying** — shed with beans (Facility C) |
+
+All three map perfectly onto the three facilities in the site-visit doc — great evidence content.
+
+## ✅ The pipeline already exists
+
+- **Upload tooling**: `upload_video_to_youtube.py` (single upload, title/description/privacy) + `youtube_batch_incoming.py` (batch w/ captions) + `youtube_videos.json` mapping — and `youtube_credentials.json` / `youtube_token.json` are on the box
+- **Embed format**: the farm page's `media-gallery.js` already supports `{"type": "youtube", "videoId": "..."}` — renders a YouTube iframe. Paulo's page and São Jorge's page use this pattern
+- So this is a well-trodden path (capoeira videos, Oscar's farm, etc. all use it)
+
+## Proposed plan
+
+1. Upload the 3 clips to the **admin@truesight.me** YouTube channel — suggested titles like *"Santa Anna Fazenda — Cacao Farm Walk (Pará)"*, *"…Fermentation Process"*, *"…Drying Shed"*
+2. Record the returned video IDs in `youtube_videos.json` (source of truth, per the runbook)
+3. Add the 3 as `youtube`-type gallery items in `farms/santa-anna-fazenda-para/media.json`
+4. PR to `agroverse_shop_beta` → beta review → promote to prod
+
+## Two things before I hit upload
+
+1. **Privacy**: `public` or `unlisted`? (Public = embeddable & discoverable on your channel; unlisted = embeddable but only via link. For a farm page, public is typical — but it's your channel.)
+2. **Captions**: the videos are short (7–20s), so transcript captions are marginal — I'd skip SRT captions and just set good titles/descriptions. OK?
+
+Say the word (and your privacy choice) and I'll run the upload + embed in one go.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → echo "=== farm visit videos on box ===" && ls -la ~/santa_anna_fazenda/ 2>/dev/null | grep -iE "\.mov|\.mp4"; echo "=== all MOV/MP4 on box (; echo "=== agroverse_shop checkout with youtube scripts? ==="; ls -la ~/agroverse_shop*/scripts/ 2>/dev/null | grep -iE "youtube|analyze" ; f; echo "=== walk in the forest vs IMG_7734 (size/duration) ==="; ls -la "/home/ubuntu/walk in the forest.MOV" 2>/dev/null; ffprobe -v quiet -s; …(+2 more)
 
