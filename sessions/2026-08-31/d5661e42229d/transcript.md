@@ -3912,6 +3912,7 @@ Good call — let me first check what's already documented about GAS projects/Sc
 ### 🤖 Autopilot
 
 There's already scattered precedent (ETSY, EasyPost, Wix, ANTHROPIC/GROK keys, AGROVERSE_INVENTORY PAT) but no single registry — exactly the gap you're pointing at. Let me check whether any existing doc already tries to be that registry before I create one (avoid duplication).
+[2 tool result(s) compacted: search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4029,4 +4030,54 @@ Plan-file edit committed to the branch (`42d4065`). Let me verify PR #846 now co
 
 👍 Go received. Checking mergeable state of PR #846:
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] merge it
+
+
+### 🤖 Autopilot
+
+Merging PR #846 (the GAS Script Properties registry):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**"merge it" received → merged the GAS Script Properties registry.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `agentic_ai_context` | **[#846](https://github.com/TrueSightDAO/agentic_ai_context/pull/846)** | ✅ **MERGED** (sha `55d58fa`) |
+
+**What's now live on `agentic_ai_context` main:**
+- **`GAS_SCRIPT_PROPERTIES.md`** (new, +74) — the canonical registry + convention: secrets in GAS Script Properties (never committed), deployments pinned to numbered versions, Status column so nobody re-checks. **`TGM_GITHUB_TOKEN` = SET (2026-08-31, repo-scoped, verified by Gary)** — explicitly marked "Do NOT re-check" — plus the full registry of other GAS properties (ETSY, EasyPost, ANTHROPIC/GROK, AGROVERSE_INVENTORY PAT, TrueChain) and the deployment/webhook URL table (@7, @37, @HEAD) + dao_protocol env keys.
+- **`plans/SUNMINT_TREE_GROWTH_MONITORING_PLAN.md`** — both "still to set" lines flipped to **SET**, pointing at the registry.
+- **`CONTEXT_UPDATES.md`** — append-only log line added.
+
+**Why it matters:** future sessions will read `GAS_SCRIPT_PROPERTIES.md` instead of re-checking whether `TGM_GITHUB_TOKEN` is set — the exact waste-of-time you asked to eliminate. And the convention applies to **all** GAS scripts going forward.
+
+### Gates NOT crossed
+- No deploy, no Edgar submission, no ledger writes, no money movement this turn.
+
+---
+**RESUME HERE → next turn:**
+1. **(Optional)** Add a one-line pointer to `GAS_SCRIPT_PROPERTIES.md` in `OPERATING_INSTRUCTIONS.md`'s runbook index (canonical file — needs your explicit approval).
+2. **Close out the SunMint plans** in `HANDOFF_MANIFEST.md`: mark `SUNMINT_TREE_QR_LINKING` (and the tree-growth companion) UAT-complete, noting the full chain proven (plant → live → invalidate → gone; auto-dispatch; `#treeIdManual` removed on prod; registry live).
+3. That closes the entire SunMint invalidation effort — nothing else pending except optional test-tree/photo cleanup.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #846 on agentic_ai_context merged (sha: 55d58fa67a58a76cdab1a2d6efb75c9be59b0c93)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #846 on agentic_ai_context merged successfully (sha: 55d58fa67a58a76cdab1a2d6efb75c9be59b0c93). Pull Request successfully merged
 
