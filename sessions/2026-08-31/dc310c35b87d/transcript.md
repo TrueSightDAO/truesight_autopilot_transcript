@@ -4524,21 +4524,25 @@ Yeah, go for it. [System note: the user sent this as a VOICE message via the Tel
 ### 🤖 Autopilot
 
 Go-signal received — fixing the PR #152 empty-file bug first thing. Pushing the real validated content to the branch:
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files corrected on the branch. Verifying the PR diff is now the intended change before merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Files are real now (catalog 21,267 B, dispatch 10,612 B), `mergeable: True`. The diff shows +542/−75 and +186/−46 because the empty-file commit forced a full-rewrite view — let me confirm the *content* is correct (not whitespace noise hiding a wipe) before merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files verified correct on the branch: catalog has the new event + `limites-da-fazenda/index.html` + version 2; dispatch has the routing row. (The larger diff is cosmetic — my `json.dump` reformatted the catalog's whitespace/unicode — functionally identical, validated JSON.) Merging PR #152:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4739,4 +4743,97 @@ Want me to (a) promote farmer app to prod, (b) start the GAS handler PR, (c) bot
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → echo "=== ssh config on autopilot ===" && cat ~/.ssh/config 2>/dev/null | head -40; echo "=== keys available ===" && ls -la ~/.ssh/ 2>/dev/n; echo "=== try sophia_infra key ===" && timeout 15 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=; ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 ' echo "=== find dao_protocol checkout ===" ls -d; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Yeah, promoted the product. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Go-signal received — promoting the farmer app to prod. Executing the fork-sync of `sunmint_prod` from `sunmint_beta`:
+
+
+### 🤖 Autopilot
+
+The sync reports "not behind upstream" — meaning prod is already at the same commit as beta. Let me verify the new boundary page is actually live on prod (this is the critical check):
+
+
+### 🤖 Autopilot
+
+Prod is live with the new module — but prod HEAD (1c2479d) differs from beta (98d9dc7), yet the live page already serves the new content. Let me verify the prod repo tree actually contains the page + nav, to close the loop cleanly:
+
+
+### 🤖 Autopilot
+
+Prod is fully verified live. Let me update the manifest to mark the plan complete (housekeeping), then report:
+
+
+### 🤖 Autopilot
+
+The manifest row text differs (likely the em-dash or wording). Let me check the actual row text and update it precisely:
+
+
+### 🤖 Autopilot
+
+I see the exact row format now — the status column is `**in progress \u2014 PR0 (roadmap) committed**`. Let me update the row with the correct text:
+
+
+### 🤖 Autopilot
+
+Manifest update PR opened. Merging it to complete the housekeeping:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — plan marked complete. Stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Promoted the boundary-submission pipeline to production + marked the plan complete.**
+
+1. **Prod promote** — `sync_beta_to_prod(sunmint_prod)` reported "not behind upstream" (prod already at/near beta), and **verified prod is fully live**:
+   - `sunmint.truesight.me/limites-da-fazenda/` → **200** with the full module (Nova fazenda ×2, farms/index.json, is_new_farm, sunmint-boundary-queue)
+   - `sunmint.truesight.me/` → 200 with **"Limites da Fazenda" in the nav**
+   - `service-worker.js` → 200
+   - Prod repo tree contains `limites-da-fazenda/index.html` ✓
+
+2. **Housekeeping** — **PR #867 — https://github.com/TrueSightDAO/agentic_ai_context/pull/867** (merged, sha `3cdf33f6`): manifest row for `SUNMINT_BOUNDARY_SUBMISSION_PLAN` flipped to **complete — UAT passed 2026-09-01 (7/7); prod promoted; GAS receiver follow-on flagged**.
+
+## 🎉 The plan is COMPLETE
+
+**SUNMINT_BOUNDARY_SUBMISSION_PLAN — all units done:**
+
+| Unit | Deliverable | Status |
+|---|---|---|
+| PR0 | Plan + manifest | ✅ |
+| PR1 | `extract_plot_gps.py` (EXIF GPS → hull → plot upsert) | ✅ `sunmint` |
+| PR2 | "Limites da Fazenda" capture module (farm picker, offline queue) | ✅ merged → **prod live** |
+| PR3 | `farms/index.json` seed + generator + workflow | ✅ `sunmint` |
+| PR4 | `FARM BOUNDARY EVIDENCE EVENT` catalog + dispatch routing | ✅ merged + **deployed to prod server** (v2/38) |
+| PR5 | UAT gate — 7/7 pass | ✅ |
+| Promote | Farmer app → prod | ✅ verified live |
+
+## RESUME HERE → next unit (governor's pick)
+
+The pipeline is code-complete, deployed, and live. Remaining options:
+
+1. **GAS receiver follow-on** (the flagged gap): `processFarmBoundaryEvidenceFromTelegramChatLogs` in tokenomics — dispatch routing exists but no GAS handler yet, so submitted boundary evidence won't auto-fire the farm-row upsert + plot regeneration. This is the **natural next plan unit** (or an OPEN_FOLLOWUPS entry).
+2. **Resume the parked impact-map plan** (PR0–PR4 already merged; UAT + promote pending) — now that the upstream data pipeline is live.
+3. **End-to-end live test** with real photos (Jedielcio's next farm visit): capture boundary walk on the prod app → verify polygon appears on the impact map.
+
+Which would you like?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && echo "=== prod main HEAD vs beta main HEAD ===" && echo "prod:" && git ls-remote https://github.com/TrueSightDAO/sunmint_prod.git; cd /tmp && echo "=== prod repo tree: has limites-da-fazenda? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_prod/git/tre; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/handoffs/HANDOFF_MANIFEST.md" | grep -n "BOUNDARY
+• `merge pr` → ✅ PR #867 on agentic_ai_context merged successfully (sha: 3cdf33f6ee93e78a194a86d21e81db12e0504501). Pull Request successfully merged
 
