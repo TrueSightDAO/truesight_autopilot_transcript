@@ -1333,6 +1333,7 @@ Fix: add the short-slug → canonical redirect to the map, beta-first. Opening t
 ### 🤖 Autopilot
 
 PR #247 opened on beta. The governor explicitly wants the live link fixed — merging and promoting to prod now:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1381,26 +1382,31 @@ Both variants now resolve to the live page via the existing 404-handler mechanis
 ### 🤖 Autopilot
 
 Promoting the redirect fix to production now.
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod sync succeeded. Let me verify the broken link now resolves.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sync reported success but the redirect isn't on prod — likely a `.syncignore` exclusion (I saw that file in the prod repo listing earlier). Let me check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sync merged (prod HEAD = merge commit `398a1ccf`) but prod's `legacy-redirects.js` still lacks the entry. Let me check the file's commit history on prod to see what actually landed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The redirect commit IS in prod's git history (`338ece9f` on the prod file path), yet raw fetches don't show the entry — that smells like CDN staleness. Let me verify via the authoritative GitHub API and the actual commit diff.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1408,26 +1414,31 @@ The redirect commit IS in prod's git history (`338ece9f` on the prod file path),
 Authoritative answer: the redirect **is on prod** — GitHub API confirms both entries in prod main's `js/legacy-redirects.js` (commit `338ece9f` +2 lines). The 404 you'd still see is **GitHub Pages CDN cache** (raw fetch was stale; Pages caches files, sometimes 10+ min).
 
 Let me check the GitHub Pages deployment status to confirm the live deploy is building.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check what the **live site** actually serves for legacy-redirects.js (that's what the browser loads, distinct from raw.githubusercontent).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There it is — the Pages deployment is still **queued** (`pages build and deployment queued 16:42:14`, triggered by the prod sync merge). The live site still serves the OLD redirect file (0 entries) because the new build hasn't deployed yet. GitHub Pages typically takes 1–3 minutes to build+deploy. Let me wait and re-check.
+[1 tool result(s) compacted: watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The watcher needs a topic context — I'll poll directly on the box with a bounded loop instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The JS with the redirect entries is now live (2 entries confirmed at 16:43:46) — but the short slug still reports HTTP 404. That's likely **expected behavior** of this mechanism: GitHub Pages serves the `404.html` page with HTTP status 404, and the redirect happens **client-side in the browser** (JS `window.location.replace`). curl doesn't run JS, so it reports 404. Let me confirm against an existing redirect that works this way.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1439,6 +1450,7 @@ Confirmed — this is working as designed:
 - **In a browser**, typing `agroverse.shop/farms/fazenda-cleide/` now instantly bounces to `/farms/fazenda-cleide-para/` (200).
 
 So the broken link is fixed for real users. Let me do a final proof — simulate what the browser does (fetch the JS map and resolve the path):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1475,51 +1487,61 @@ Done. Anything else you want on the page — or should I log this deploy + site-
 ### 🤖 Autopilot
 
 Two asks: (1) finalize the deploy logging, (2) compute exact time spent from the transcript. Let me pull the transcript repo to find this session's file and timestamps.
+[2 tool result(s) compacted: ssh_run, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Transcript search only covers attachments — the session log lives in `sessions/`. Let me find this conversation's session file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Daily folders — let me look inside today's (2026-08-31).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sizes show 0 — let me check if these are real files or empty placeholders, and find the one with our conversation.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Empty placeholders (0-byte dirs from a previous repo structure) — not our session. Our session transcript isn't in that repo. Let me check the local autopilot box for the session transcript files (the box keeps them locally).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — session journals live in `/opt/truesight_autopilot/sessions/*_sessions.json`. Let me find the one for this thread (17181) and extract the timestamps.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 These session files don't contain our conversation (they're small test/journal files). Let me check the Telegram watchdog/journal side — the actual chat history with timestamps may live in the telethon session.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The journal is binary (Telethon session format). The conversation logs with timestamps must be elsewhere — the `append_to_transcript` pipeline writes to `sessions/<date>/<session_id>`. Let me look at how the transcript repo is structured and where Telegram message logs actually land. Let me check the `pending/` dir and the transcript tools on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the pending sessions (may hold our Telegram session) and look at what those small files contain.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pending files are action-queues, not our session. The actual Telegram conversation store must be local on the box. Let me find where the adapter persists chat history (the `recall_context` store).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1625,4 +1647,41 @@ Ping me with "log the contribution" or "clean up media" and I'll run it.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×23 → echo "=== transcript repo top-level ===" curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot_transcript/contents/" | pyth; echo "=== sessions dir (recent) ===" curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot_transcript/contents/sessions?per; echo "=== 2026-08-31 session files ===" curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot_transcript/contents/sessions/; …(+20 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] Report contribution for me and you
+
+
+### 🤖 Autopilot
+
+Reporting both contributions to the DAO ledger. Let me verify the CONTRIBUTION EVENT format first, then submit for me and for you.
+
+
+### 🤖 Autopilot
+
+Format confirmed — `Type`, `Amount`, `Contributor(s)`, `Description`, `TDG Issued`. Submitting both contributions now (TDG Issued left at 0 — TDG allocation stays a governor decision per policy):
+
+
+### 🤖 Autopilot
+
+Both contributions are on the ledger ✅
+
+| Contribution | Type | Amount | What it covers |
+|---|---|---|---|
+| **Sophia Truesight (Autopilot)** | Time | **165 min** | Zip processing (GPS extraction from 77 geotagged media), CL-P1 hull + SunMint Plots registry + geojson regen, farm page PR #240, Grok-vision media selection PR #246, URL redirect PR #247, prod sync + verification |
+| **Gary Teh** | Time | **15 min** | Brief + farm context, hero photo, Grok/Gemini guidance, go-signals, promote approvals, broken-URL report, deploy request (22 msgs / 7 go-signals) |
+
+Both submitted with `TDG Issued: 0` — TDG allocation for these stays a governor decision (you can award retroactively in the DApp if you want).
+
+**Notes:**
+- Time figures: mine = measured 165.4 min of active compute from session round-markers; yours = 15 min estimate based on 22 messages — adjust if you think it's different and I'll re-submit.
+- Everything is live: `agroverse.shop/farms/fazenda-cleide-para/` (prod, with your hero photo) + CL-P1 on truesight.me/sunmint.html.
+
+Want me to also clean up the 3.88 GB zip + media from the box, or log a deploy record?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Contribution submitted successfully.
 
