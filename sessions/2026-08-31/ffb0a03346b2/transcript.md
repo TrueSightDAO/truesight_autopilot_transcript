@@ -1778,26 +1778,31 @@ I have the exact corrupted strings now. Let me push the fix PR with precise sear
 ### 🤖 Autopilot
 
 The exact-match edit keeps failing — let me extract the precise byte content of the corrupted segments from the repo file so my search strings match exactly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The exact-match edits keep failing because the corrupted URL has embedded apostrophes that break the matcher. Simplest robust path: create the fix branch with a safe anchor edit, then overwrite the file with the fully-clean local version, then merge. Let me create the branch first.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch created (PR #226). Now let me overwrite the file on the branch with the fully-clean local version.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 File replaced with the clean version. Let me verify the branch content and merge the fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch verified clean — both URLs point to the correct farm coordinates, zero remnants. Merging the fix.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1858,26 +1863,31 @@ Both URLs now point cleanly to:
 ### 🤖 Autopilot
 
 Good idea — let me check what videos are on the box and whether there's any YouTube upload tooling/credentials for admin@truesight.me already set up.
+[3 tool result(s) compacted: search_context, search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's an established YouTube pipeline (used for capoeira videos on admin@truesight.me). Let me read the runbook and check the tooling/credentials on the box.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Credentials exist. Let me find the runbook (name differs) and inspect the upload script + verify the "walk in the forest.MOV" is a duplicate of IMG_7734.
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `walk in the forest.MOV` is byte-identical to `IMG_7734.MOV` (same md5) — so there are **3 unique farm videos**: IMG_7734 (7.7s farm walk), IMG_7740 (6.3s fermentation), IMG_7741 (20.6s drying). The full YouTube pipeline exists with credentials on the box. Let me check the runbook location, how Paulo's page embeds video, and the upload script's options.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pipeline is established. Let me check the media.json video-embed format and the simpler single-upload script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1927,11 +1937,13 @@ Say the word (and your privacy choice) and I'll run the upload + embed in one go
 ### 🤖 Autopilot
 
 Public + cleaned-up transcription descriptions — got it. The pipeline for that exists (Whisper transcription → Grok polish → upload). Let me find the runbook and transcription tooling.
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 3 videos have audio tracks (AAC) — good, transcription will work. The runbook is at `sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md`. Let me read it and check for faster-whisper availability.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2046,4 +2058,61 @@ Note: raw transcripts were sparse fragments (short phone clips, mostly ambient f
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → echo "=== whisper available? ==="; which whisper whisper-cli 2>/dev/null; python3 -c "import whisper; print('openai-whisper OK')" 2>&1 | hea; echo "=== faster-whisper in autopilot venv? ==="; /opt/truesight_autopilot/.venv/bin/python3 -c "import faster_whisper; print('faster-whispe; cd /tmp && mkdir -p santa_anna_audio && for v in IMG_7734 IMG_7740 IMG_7741; do ffmpeg -y -v error -i /home/ubuntu/santa_anna_fazenda/$v.MOV; …(+11 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Done this turn — videos live on YouTube + embeds PR opened
+
+### 🎬 All 3 Santa Anna site-visit videos uploaded to **admin@truesight.me** (public)
+
+| Video | What it shows | YouTube ID | Title |
+|-
+
+
+### 🤖 Autopilot
+
+👍 Go signal received — merging the video-embeds PR.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `agroverse_shop_beta#227` merged
+
+**"Add Santa Anna Fazenda site-visit videos (YouTube embeds)"** → merged to `main` (sha `bed47cf`).
+
+### What's now live on the beta branch:
+- **Farm page gallery** (`farms/santa-anna-fazenda-para/media.json`): now 6 items — 3 photos + **3 YouTube embeds** (Rr0QOztkFSw / 9LeB2PtZ4UE / U7tQ5-4eOEg), rendered as iframes by `media-gallery.js` (same pattern as Paulo/São Jorge pages)
+- **`scripts/youtube_videos.json`**: 3 records added (source-of-truth mapping per the runbook)
+
+### The 3 embedded videos (all public on admin@truesight.me):
+| Video | Content | YouTube ID |
+|---|---|---|
+| IMG_7734 | Cacao forest walk — pods on trunks (Facility A) | `Rr0QOztkFSw` |
+| IMG_7740 | Wooden fermentation boxes (Facility B) | `9LeB2PtZ4UE` |
+| IMG_7741 | Drying shed with beans (Facility C) | `U7tQ5-4eOEg` |
+
+Descriptions are the Grok-polished transcriptions you requested (Portuguese + English).
+
+---
+
+**RESUME HERE → next unit:**
+1. **Verify on beta** — `/farms/santa-anna-fazenda-para/` should now render 3 embedded YouTube players (auto-deploys from main; I can confirm with an HTTP fetch)
+2. **Prod promotion** — farm page + journey stop + CEPOTX card + videos are all on beta; when you've reviewed and approve, I'll `sync_beta_to_prod`
+3. **Still parked:** Santa Anna site-visit PDF finalization (needs site code from Jedielcio), DApp FARM REGISTRATION (you said hold off)
+
+—
+**✅ Done this turn — actions taken:**
+• `merge_pr` → ✅ PR #227 on agroverse_shop_beta merged successfully (sha: bed47cf20cc06cec3c0e678fdc7acca533af0698)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #227 on agroverse_shop_beta merged successfully (sha: bed47cf20cc06cec3c0e678fdc7acca533af0698). Pull Request successfully merged
 
