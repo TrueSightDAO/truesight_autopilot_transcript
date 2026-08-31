@@ -3487,11 +3487,13 @@ No Edgar submissions, no ledger writes, no money movement this turn.
 ### 🤖 Autopilot
 
 👍 Go received. Next unit: **merge PR #353** (the reusable submit script, fully verified). Checking mergeable state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #353 is mergeable (2 commits, 1 file, +205/−0, head = the fixed `74bbad4`; "unstable" = merely behind main — fine). Merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3561,21 +3563,25 @@ PR #353 is mergeable (2 commits, 1 file, +205/−0, head = the fixed `74bbad4`; 
 ### 🤖 Autopilot
 
 👍 Go received. Next unit: **live auto-dispatch re-test** using the new script — non-destructive (target an already-INVALID tree so the handler processes it and refuses, which still proves the full Edgar→dispatch→webhook→tracking chain). First, baseline state: tracking tab tail + confirm the script landed on main:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Script is on main ✅, keys present ✅, tracking baseline confirmed. Now the live auto-dispatch test — submitting a reject for **487** (already INVALID → handler will refuse it, which is the **non-destructive** proof of the full chain: Edgar → dispatch → webhook → tracking, with **no manual webhook**). Dry-run first to confirm the exact payload:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dry-run is byte-exact. Executing the real submission — this is the auto-dispatch proof: if the merged `dispatch.py` routing + env var work, the GAS webhook fires **automatically** and the tracking tab advances **without any manual call from me**:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ✅ **`signature_verification: "success"`** — the reusable script works end-to-end. Now the decisive moment: **do NOT fire the webhook manually** — wait and check whether the box's auto-dispatch advances the tracking tab on its own. Giving it ~60s, then checking:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3761,4 +3767,80 @@ No new PRs opened/merged this turn; no money movement. The only writes: the test
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /home/ubuntu/dao_protocol && git pull --ff-only 2>&1 | tail -5; echo "---RESTART---"; sudo systemctl restart truesight-dao-protocol.servi; ls -la ~/.ssh/ 2>/dev/null; echo "---"; grep -A3 -iE "dao.protocol|98.93.94.86|nelanco" ~/.ssh/config 2>/dev/null; echo "---"; ls -la /home/; ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no dao_protocol_nelanco 'cd /home/ubuntu/dao_protocol && git pull --ff-only 2>&1 | tail -3; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: # 🎉 **AUTO-DISPATCH PROVEN — THE FULL LOOP IS NOW EVENT-DRIVEN**
+
+## The decisive evidence
+
+| Row | Telegram Update ID | Outcome | Processed Timestamp |
+|---|---|---|---|
+| **11963** | `Edgar_20260830
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **merge `tokenomics #451`** (dispatch-failure visibility — the belt-and-braces safety net so any future dispatch failure is visible in the tracking tab instead of silent). Verifying mergeable state first:
+
+
+### 🤖 Autopilot
+
+PR #451 is mergeable (clean), +9/−1, one file — exactly the dispatch-failure visibility improvement (records a visible outcome note on any non-2xx dispatch response). Merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**Go received 👍 → merged the dispatch-failure visibility fix.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `tokenomics` | **[#451](https://github.com/TrueSightDAO/tokenomics/pull/451)** | ✅ **MERGED** (sha `fc54502`) |
+
+**What changed** (`process_tree_planting_link.js`, +9/−1): the `tree-index-rebuild` dispatch now **checks the HTTP response code** — on any non-2xx (e.g. 403/401 from a token lacking `repo`/Actions:write scope), it records a visible outcome note (`"Tree marked INVALID but index rebuild dispatch failed (HTTP <code>) - check TGM_GITHUB_TOKEN scope"`) in the Tree Planting Link tracking tab instead of silently swallowing it. The daily cron remains the safety net; 2xx behavior unchanged.
+
+**Pre-merge verification:** `mergeable: True` / `mergeable_state: clean` / 1 commit / +9 −1 / single file; patch reviewed — correct placement inside the dispatch block.
+
+### Chain status — the SunMint invalidation loop is COMPLETE
+| Item | State |
+|---|---|
+| 061 + 487 trees invalidated & removed from index | ✅ proven |
+| Reusable submit script (`#353`) | ✅ merged + proven live |
+| Reject routing (`dao_protocol #150`) | ✅ merged + **running on box** |
+| **Auto-dispatch E2E** | ✅ **proven** (rows 11963/11964 auto-processed, no manual webhook) |
+| Dispatch-failure visibility (`tokenomics #451`) | ✅ **merged now** |
+| Signature format | ✅ fixed (script encodes correctly) |
+| GAS deploy of #451 | ⏸ next unit (gated — needs explicit go) |
+
+### Gates NOT crossed
+- **#451 not yet deployed** to GAS `1UrBg…` (clasp deploy is a gated step — I'll dry-run and ask)
+- `sunmint_beta #46` still **beta-only** — prod promotion awaits Gary's review
+- No ledger writes / no money movement this turn
+
+---
+**RESUME HERE → next units (each a fresh turn):**
+1. **Clasp-deploy `tokenomics #451`** to GAS `1UrBg…` (dry-run first, then `push=true` with your explicit go).
+2. **Verify the live monitor page** — reload `https://sunmint.truesight.me/monitor-tree-growth/?tree=Edgar_20260819134722_487` → tree should be **gone** (the original complaint, now resolved).
+3. **Promote `sunmint_beta #46` to prod** (`sync_beta_to_prod(sunmint_prod)`) — your explicit approval required (fixes the QR-code fabrication on the live site).
+4. **Runbook §4.5 follow-up** — reference `sunmint_submit.py` in `SUNMINT_E2E_RUNBOOK.md`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 → verified PR #451 mergeable/clean, patch reviewed (+9/−1, dispatch HTTP-code check)
+• `merge pr` → ✅ PR #451 on tokenomics merged (sha: fc545024a4b12d02083666c8bfd4caed3e54d125)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/451" | python3 -c "import json,sys; d=json.load(sys.stdin); p
+• `merge pr` → ✅ PR #451 on tokenomics merged successfully (sha: fc545024a4b12d02083666c8bfd4caed3e54d125). Pull Request successfully merged
 
