@@ -2210,11 +2210,13 @@ Let me pull the impact-map JS detail (the existing plotSelector/viewSelector log
 ### 🤖 Autopilot
 
 Let me get the exact manifest table structure for the new plan row, then draft and commit the plan.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything I need: the page structure (40,784 bytes, sections + Leaflet impact map with trees/plots overlays, plot chips, satellite toggle), the data sources (trees/plots geojson, satellite manifest, SunMint Plots sheet schema), and the manifest conventions. Now I'll draft the implementation plan + roadmap + checklist as **PR0** (the roadmap commit), per the manifest's one-PR-per-turn convention.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2407,4 +2409,128 @@ Then PR2 (farms selector/filter) → PR3 (farms registry section) → PR4 (statu
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #853 on agentic_ai_context merged successfully (sha: 923bf9a9e7015d0b44b8328b186bac6e2f48f8aa). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**PR0 complete — merged the implementation plan for the SunMint Impact Map Extension.**
+
+**PR #853 — https://github.com
+
+
+### 🤖 Autopilot
+
+Go-signal received + auto-start confirmed — executing **PR1: Enriched plot popups**. First, let me read the current popup builder in `loadPlots()`:
+
+
+### 🤖 Autopilot
+
+Let me read the full `loadPlots` function and the tree popup for reference — lines ~600–700:
+
+
+### 🤖 Autopilot
+
+PR1 executing — I have the current popup builder. Let me see the map section HTML (lines 225–260) to place a legend correctly:
+
+
+### 🤖 Autopilot
+
+I have the full picture. Now let me check the existing CSS for `.plot-chip` / `.view-chip` (to match legend styling) and find a good CSS insertion point:
+
+
+### 🤖 Autopilot
+
+No `<style>` block — styling is inline. I'll build the enriched popup with inline styles (consistent with the page's approach) plus a compact legend below the map controls. Let me create the edits — the popup builder in `loadPlots()` and a legend row after the map controls:
+
+
+### 🤖 Autopilot
+
+Wait — I need to verify what actually landed. Both my edits had replace identical to search (a paste error — no real change). Let me check the PR content:
+
+
+### 🤖 Autopilot
+
+My edits were botched — the second edit accidentally **removed the `<div id="satelliteHistory">` opening tag** and the first was a no-op. The PR currently breaks the satellite-history section. Let me fix this properly by building the correct file locally and pushing the whole corrected file:
+
+
+### 🤖 Autopilot
+
+Right — I fetched fresh `main` (which is intact), so the "restore" step was wrong there. Let me redo with only the enrichment + legend edits (steps 2 & 3):
+
+
+### 🤖 Autopilot
+
+File is correct now (42,877 bytes, all tags balanced, satelliteHistory intact, legend + enriched popup present). JS syntax check needs a real node run — the extraction succeeded (4 inline scripts). Let me verify JS syntax and then push the corrected whole file to the PR branch:
+
+
+### 🤖 Autopilot
+
+JS syntax OK. Now let me fix the broken PR #331 — the current PR branch has the bad edit (removed satelliteHistory div). I'll push the corrected whole file to the same branch via the Contents API (which worked for the whitepaper PR), replacing the botched content:
+
+
+### 🤖 Autopilot
+
+I accidentally wrote a placeholder string instead of the real content — let me immediately replace it with the actual corrected file via `upload_local_file_to_github` (reads the local file):
+
+
+### 🤖 Autopilot
+
+Now the PR branch has the real corrected file. Let me verify the PR #331 diff is now clean (only enrichment + legend, satelliteHistory intact):
+
+
+### 🤖 Autopilot
+
+PR #331 is now clean: **+22 / −3**, exactly the enrichment + legend, satelliteHistory intact, all tags balanced, JS syntax OK. This is the PR1 deliverable. Let me do a final verification that the PR branch file is well-formed end-to-end, then report (I'll stop here — merge is part of the flow but per the one-PR-per-turn rule I report first and merge on the next go):
+
+Actually — the plan says PRs get merged as part of executing the plan (go-signal authorizes merge). The turn directive says stop after opening/merging a PR. I've opened/updated PR #331 this turn. Let me verify final state and report with the merge pending the next unit, consistent with the established rhythm.
+
+
+### 🤖 Autopilot
+
+PR1 complete and verified ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**PR1 — Enriched plot popups + boundary-authority legend** (from the SUNMINT_IMPACT_MAP_EXTENSION_PLAN roadmap).
+
+**PR #331 — https://github.com/TrueSightDAO/truesight_me_beta/pull/331** (branch `impact-map-enriched-popups`, **+22/−3**, verified clean)
+
+### Changes to `truesight_me_beta/sunmint.html`:
+
+1. **Enriched plot popups** (`loadPlots()` → `bindPopup`): now show, when present in the geojson properties —
+   - **Name** (HTML-escaped)
+   - **Status** — colored + friendly (Proposed 🟠 / Planted 🟢 / Verified 🔵)
+   - **Boundary authority** — friendly label (Approx (photo hull) / GPS walk / CAR polygon / INCRA polygon)
+   - **Hectares**, **Owner**, **Region**, **Verified at**
+   - Graceful fallback for old plots missing fields (no blank lines)
+
+2. **Boundary-authority legend** — new row under the map controls with color-dot swatches for the four authority tiers (approx / gps_walk / car / incra), so the honesty tier is explained on-page (matters for carbon-credit auditors per the plots runbook)
+
+3. **XSS-safe** — all user-derived fields run through an `esc()` HTML-escape helper
+
+### Verification (hard rule)
+- ✅ All tags balanced (div/section/p/span/strong/h2/h3/table/button)
+- ✅ JS syntax OK (`node --check` on extracted inline scripts)
+- ✅ `satelliteHistory` div intact (my first edit attempt accidentally dropped it — caught and corrected before merge)
+- ✅ No placeholder content; diff is exactly the intended enrichment
+- Note: the intermediate botched edit (removed `<div id="satelliteHistory">`) was fully corrected — PR diff shows only +22/−3 clean additions
+
+## RESUME HERE → PR2 (next unit, fresh turn)
+
+**Merge PR #331** (I'll do it at the top of the next turn per the plan's merge-on-execution flow, or you can go now), then:
+
+**PR2 — Farms selector/filter dropdown**: derive unique farms from plots `farm_id`, add `#farmSelector` (All farms + each farm), filter polygons + tree markers on selection, keep plot-chip/view-chip interplay working.
+
+Say go and I'll merge PR1 + start PR2.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint.html" -o sunmint_beta_page.html && wc -c s; cd /tmp && sed -n '600,700p' sunmint_beta_page.html; cd /tmp && sed -n '225,260p' sunmint_beta_page.html; …(+5 more)
+• `upload file to github` → https://github.com/TrueSightDAO/truesight_me_beta/blob/impact-map-enriched-popups/sunmint.html
 
