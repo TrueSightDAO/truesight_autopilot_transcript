@@ -1816,6 +1816,7 @@ Very useful — there ARE farm pages (Santa Anna Fazenda, FounderHaus, Rancho Ma
 ### 🤖 Autopilot
 
 Solid picture now. One last check — whether a plot/boundary event already exists in the catalog, and where farm registrations land:
+[2 tool result(s) compacted: lookup_event_docs, lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1889,6 +1890,7 @@ I believe there is already architecture in place where plots live.
 ### 🤖 Autopilot
 
 Good pointer — let me check the impact map on the beta site and find where the plot data actually lives.
+[2 tool result(s) compacted: http_fetch, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2091,4 +2093,72 @@ Shall I build **Phase 1** (`extract_plot_gps.py` + tests) as the first PR?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && echo "=== existing sunmint scripts ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recursive=1"; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/build_plots_geojson.py" -o build_plots.py && wc -l b; cd /tmp && sed -n '80,244p' build_plots.py
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Partner in China is asking for more information for
+
+We currently don’t have a business partnership, but I believe the information and technology we’ve provided are already starting to bring you benefits and potential areas for improvement. I suggest we first establish a small-scale business collaboration, which will help pave the way for more cooperation and allow us to make the cocoa profits/VCS carbon metrics/forest planting yields among the top in the industry together.
+
+Before we get to the cocoa forest site, there’s no way for us to know any exact data or assessments...
+
+What is the URL to the caches and information you think might be useful. Perhaps generate as PDF to share
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074]
+
+
+### 🤖 Autopilot
+
+Good — let me verify the live URLs that would be most useful to a prospective partner (registries, impact map, whitepaper, satellite), then compile them into a shareable PDF.
+
+
+### 🤖 Autopilot
+
+The main site URL needs checking — let me find the correct sunmint page on truesight.me, and also grab the latest cache stats (trees count, plots count, satellite scenes) so the PDF has real numbers.
+
+
+### 🤖 Autopilot
+
+All URLs verified and current data pulled. Now generating the partner information pack PDF with the verified links + real snapshot:
+
+
+### 🤖 Autopilot
+
+PDF generated. Sending it to you:
+
+
+### 🤖 Autopilot
+
+PDF sent ✅
+
+## **`SunMint_Partner_Info_Pack.pdf`** — the URL pack for the China partner
+
+**Section 1 — Live public surfaces (all verified 200 today):**
+- SunMint program page: `https://truesight.me/sunmint.html`
+- Whitepaper: `https://truesight.me/sunmint/whitepaper/`
+- Farmer app: `https://sunmint.truesight.me/`
+- Impact map (beta): `https://beta.truesight.me/sunmint.html`
+- Farm registration: `https://dapp.truesight.me/register_farm.html`
+- DApp hub: `https://dapp.truesight.me/`
+
+**Section 2 — Machine-readable caches (raw URLs, all 200):**
+- Trees registry: `…/sunmint/main/trees/index.geojson`
+- Plots registry: `…/sunmint/main/plots/index.geojson`
+- Satellite cache manifest: `…/sunmint/main/satellite/manifest.json`
+- QR code registry, tokenomics ledger repo, plots runbook (github links)
+
+**Section 3 — Honest pilot data snapshot (matches what the partner said):**
+- 2 plots (RM-P1 planted/approx, RM-P2 proposed/approx), 1 tree registered, Sentinel-2 scenes cached
+- **Explicitly states:** exact cocoa yields / VCS carbon metrics / planting yields are *not yet measurable* at pilot scale — they need mature trees + site verification. The infrastructure to record them is live.
+
+**Section 4–6 —** pipeline explanation (farmer→exiftool→polygon→geojson→impact map), the fluid carbon registry roadmap (Plan Vivo→Verra→SBCE, VM0047), and a suggested small-scale first-collaboration step.
+
+The one URL that was dead (`truesight.me/sunmint/`) is corrected in the pack to the working `sunmint.html` page. Want me to also push this PDF to a repo (e.g. `sunmint` or `agentic_ai_context`) so you have a versioned link to send the partner, or email it directly?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && for u in "https://truesight.me/sunmint/" "https://truesight.me/sunmint/whitepaper/" "https://sunmint.truesight.me/" "https://beta; cd /tmp && echo "=== truesight.me sunmint paths ==="; for u in "https://truesight.me/sunmint.html" "https://truesight.me/sunmint/index.html"
 
