@@ -778,6 +778,7 @@ Page is live with the new media gallery structure. Now verifying the map polygon
 ### 🤖 Autopilot
 
 Confirmed live: the served beta page shows the **SunMint Tree Planting section** with the impact-map link, and the media-gallery JSON is loading. Now the last check — the Farm Location map section (polygon + updated marker) and the sunmint.html plot loader (does it fetch plots geojson dynamically?).
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1021,4 +1022,69 @@ This gives you **individual files on GitHub for what fits**, S3 only for what ca
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo '=== largest 12 files across all farm media ==='; find /home/ubuntu/la_do_sitio_work /home/ubuntu/cleide_media /home/ubuntu/santa_anna_
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] I agree with you on the photos, perhaps for the videos we can just have them already uploaded and have a JSOn file referencing the youtube videos where the JSOn file contains all the details of the video such as latitideu and long and conversation as well as unique objects in it??
+
+
+### 🤖 Autopilot
+
+Great direction — YouTube is genuinely the right home for the videos (free, unlimited, handles HEIC/MOV, embeds natively into our existing `media-gallery.js` which already supports `youtube` entries). Let me check what upload capability + YouTube conventions exist before I commit to a plan.
+
+
+### 🤖 Autopilot
+
+There's already a **YouTube upload stack on the box** (`config/youtube/upload_video_to_youtube.py` + OAuth creds, project `agroverse-youtube-uploaded`) and references to `youtube_batch_incoming.py` — meaning a batch/manifest convention may already exist. Let me look at what's there before proposing anything new.
+
+
+### 🤖 Autopilot
+
+The YouTube upload stack is confirmed present: `upload_video_to_youtube.py` + OAuth creds + a **fresh token** (`youtube_token.json` modified Aug 31 13:07 — today). Let me read the upload script + README to confirm exact usage, privacy default, and whether metadata (title/description/tags) is supported — that's what your JSON manifest would feed.
+
+
+### 🤖 Autopilot
+
+The YouTube stack is fully confirmed: `upload_video_to_youtube.py` supports `--title/--description/--tags/--privacy`, wired to the **admin@truesight.me** channel, token refreshed today. One technical caveat: the script hardcodes `mimetype='video/mp4'`, so iPhone MOVs likely need **conversion to MP4 first**. Let me verify ffmpeg and the MOV codecs, then I'll lay out the exact design.
+
+
+### 🤖 Autopilot
+
+Your instinct is right and it plugs directly into what already exists on this box. Here's the honest design, grounded in what I verified:
+
+## Why YouTube + JSON manifest is the right call
+
+- **Free + unlimited** — no S3 bill, no 100 MB/file limit, no repo bloat. MOV/HEVC handled natively (I'll convert to MP4 for the uploader, which ffmpeg 4.4.2 handles).
+- **Stack already exists**: `upload_video_to_youtube.py` (supports `--title --description --tags --privacy`) wired to the **admin@truesight.me** channel, token refreshed today. ✅
+- **The JSON is the reference layer** — exactly your idea: point to the YouTube IDs, carry all the metadata (lat/long, timestamps, content notes), and future sessions read the JSON instead of re-analyzing raw files.
+
+## Proposed JSON schema (one manifest per farm)
+
+
+
+**What I can auto-fill from the files:** `source_file`, `recorded_at`, `latitude/longitude` (EXIF GPS — I already extracted this for all farms), `duration`, `file_size`. **What needs you (or a human eyeball):** `conversation_summary` (spoken content) and `unique_objects` (what's visible) — no vision/transcription stack on this box. I can draft them from filenames/context, you correct; or you dictate notes and I encode them.
+
+## Where the JSON lives (both, I'd argue)
+
+| Layer | Location | Purpose |
+|---|---|---|
+| **Master manifest** | `agentic_ai_context/` (PR) | Internal reference — every farm's videos, one lookup table |
+| **Public gallery** | Each farm's `media.json` (site) | Add the curated videos as `youtube` entries — `media-gallery.js` **already supports youtube embeds** (that's how the La do Sitio video got in originally) |
+
+## Decisions before I execute
+
+1. **Privacy**: `unlisted` (viewable via embed/link, hidden from search — my rec) vs `public` (visible on the channel)?
+2. **Scope**: start with **La do Sitio** as pilot (72 videos, 2.3 GB) and refine the flow, then batch the other 3 farms? Or all at once?
+3. **"Conversation + unique objects"**: you provide notes per video, or I draft from context + you correct in the JSON PR?
+4. **Convert MOV→MP4** for upload (required by the script's `video/mp4` — keeps quality, usually similar size)?
+5. **Delete local originals after successful upload + manifest**, or keep as cache?
+
+One anomaly I flagged: a re-scan just now reported **0 MOVs in the La do Sitio work dir** (earlier count was 72) — likely a path-quoting quirk in my loop; I'll re-verify the exact inventory at execution start before touching anything.
+
+Give me the 5 answers (or just say "your call on all") and I'll run the pilot end-to-end: convert → upload → build JSON → wire into media.json → PR.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo '=== youtube tooling ==='; which youtube-upload yt-dlp 2>/dev/null; pip3 list 2>/dev/null | grep -iE 'youtube|google-api' | head; echo ; ls -la /opt/truesight_autopilot/config/youtube/; echo '=== batch script? ==='; ls /opt/truesight_autopilot/scripts/ 2>/dev/null | grep -iE '; which ffmpeg && ffmpeg -version 2>/dev/null | head -1; echo '=== sample MOV codec ==='; F=$(find "/home/ubuntu/la_do_sitio_work/la do sitio"
 
