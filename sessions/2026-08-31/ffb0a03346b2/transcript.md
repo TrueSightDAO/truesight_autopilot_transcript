@@ -2363,11 +2363,13 @@ Explicit approval received — promoting the beta to production.
 ### 🤖 Autopilot
 
 Sync succeeded with no conflict. Let me verify the production site is serving the Santa Anna page.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 404 on prod — could be deploy lag or the prod repo structure differs. Let me check whether the prod repo actually has the file on main.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2510,4 +2512,107 @@ Anything else on this thread, or shall we call Santa Anna done?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== 1. Brazilian Path journey page on prod ==="; curl -s https://agroverse.shop/cacao-journeys/brazilian-path/ | grep -oE "santa-anna[
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] This armed profile is missing its image on the Brazilian pop journey. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check how the journey page renders stop images and what Santa Anna's entry has (likely missing the image field in `brazilian-path-data.js`).
+
+
+### 🤖 Autopilot
+
+`brazilian-path-data.js` has Paulo + CEPOTX but **no santa-anna entry** — my stop data went into the inline journey page instead. Let me check where the journey stop with the image field lives and what the renderer expects.
+
+
+### 🤖 Autopilot
+
+The journey renderer derives image paths by stop type (line 952-967). Let me read that full section to see what `farm` type expects — that's where the missing image comes from.
+
+
+### 🤖 Autopilot
+
+The farm-image logic has per-slug entries + a fallback that builds `../../assets/images/farms/${slug}.jpg` — for Santa Anna that's `santa-anna-fazenda-para.jpg`, which **doesn't exist** (our file is `santa_anna_profile_photo.jpg`), so the `<img onerror="hide">` renders nothing. Let me find where the santa-anna stop data lives and confirm the path.
+
+
+### 🤖 Autopilot
+
+The santa-anna entry isn't in the journey `index.html` either — so where did the prod journey page get it from? Let me check the actual stops data source (external JS or embedded) and how prod/beta render the Santa Anna stop.
+
+
+### 🤖 Autopilot
+
+The stops data must be defined in a script block around line 575-768. Let me find the actual stops array definition in the inline script.
+
+
+### 🤖 Autopilot
+
+`BRAZILIAN_PATH_DATA` is the stops object — let me read its definition and find the santa-anna entry within it.
+
+
+### 🤖 Autopilot
+
+The local checkout is stale — the live page has the Santa Anna stop (verified earlier) but my local clone predates #225. Let me confirm from the live prod page and locate the exact fix needed.
+
+
+### 🤖 Autopilot
+
+Found the bug. The Santa Anna stop data + journeyOrder are correct on prod, but the **farm image-path logic** has explicit entries for every other farm and a generic fallback that builds `../../assets/images/farms/santa-anna-fazenda-para.jpg` — which **doesn't exist** (our actual file is `santa_anna_profile_photo.jpg`). So `<img onerror="this.style.display='none'">` silently hides it → "missing image."
+
+Fix: add an explicit image entry for Santa Anna in the beta journey page, then sync to prod (beta-first flow). Opening the PR:
+
+
+### 🤖 Autopilot
+
+PR #230 opened with the image fix. Merging it (beta-first), then I'll verify on beta.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `agroverse_shop_beta#230` merged — journey image fixed
+
+**"Fix missing Santa Anna image on Brazilian Path journey"** → merged to beta (sha `73b6329`)
+
+### Root cause
+The Brazilian Path journey page's image-path logic has explicit image entries for every farm stop, plus a fallback that builds `../../assets/images/farms/${slug}.jpg`. Santa Anna's stop fell through to the fallback → `santa-anna-fazenda-para.jpg` — which **doesn't exist** (the real asset is `santa_anna_profile_photo.jpg`) → the `<img onerror="hide">` silently disappeared → the "missing image" you saw.
+
+### The fix
+Added an explicit mapping in `cacao-journeys/brazilian-path/index.html`:
+```
+else if (stop.slug === 'santa-anna-fazenda-para') {
+    imagePath = `../../assets/images/farms/santa_anna_profile_photo.jpg`;
+}
+```
+Placed right before the `fazenda-santa-ana-bahia` entry. All other stops unchanged.
+
+### Verified along the way
+- Live prod journey page has the Santa Anna stop data + journeyOrder correct (lat -3.292475 / lon -52.57225, type farm, URL, description) ✅
+- The only gap was the image-path mapping ✅ (now fixed)
+
+---
+
+**RESUME HERE → next unit:**
+1. **Verify on beta** — after the Pages deploy settles, `beta.agroverse.shop/cacao-journeys/brazilian-path/` should show Santa Anna's photo (the farm hero image) on its stop card
+2. **Promote to prod** — once you confirm it looks right on beta, say "promote" and I'll `sync_beta_to_prod` to push the fix to agroverse.shop
+3. **Still parked:** Santa Anna site-visit PDF finalization (needs site code from Jedielcio), DApp FARM REGISTRATION (you said hold off)
+
+—
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → located BRAZILIAN_PATH_DATA + image-path logic on live prod; confirmed Santa Anna stop data/order correct; diagnosed fallback path mismatch (`santa-anna-fazenda-para.jpg` vs actual `santa_anna_profile_photo.jpg`)
+• `git_push_changes` → **PR #230** opened
+• `merge_pr` → ✅ **PR #230 merged** (sha `73b6329`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp/agroverse_shop_look && echo "=== santa-anna entry in brazilian-path-data.js ==="; grep -n -A 12 "santa-anna" js/brazilian-path-data.; cd /tmp/agroverse_shop_look && echo "=== where does santa-anna journey stop data live? ==="; grep -rn "santa-anna-fazenda-para" --include="*; cd /tmp/agroverse_shop_look && echo "=== image path logic (940-1010) ==="; sed -n '940,1010p' cacao-journeys/brazilian-path/index.html; …(+5 more)
+• `merge pr` → ✅ PR #230 on agroverse_shop_beta merged successfully (sha: 73b63291eeddc24ca2edbf30b429ca79b85ffe37). Pull Request successfully merged
 
