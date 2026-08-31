@@ -2380,36 +2380,43 @@ The SEO sheet exists with the exact schema (Change_log: changed_date, author, si
 ### 🤖 Autopilot
 
 No market_research checkout on the box, and the script isn't in the indexed repos. Let me check the market_research repo directly and look for any SEO append tooling:
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The market_research repo moved (301). Let me find the canonical SEO workflow reference and check what SA can write the SEO sheet:
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No SEO append script exists on the box or in the indexed repos (the market_research repo moved/renamed — the README's script reference is stale). The `google_credentials.json` SA on the box is `agroverse-market-research@get-data-io...`. Rather than guess a write path, let me check which service accounts can see the SEO sheet, and whether the Cypher-Defense default SA (used by read_google_sheet) has write access:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both tabs readable with the agroverse_market_research SA (same account as the box's `google_credentials.json`). The README's referenced script (`market_research/scripts/seo_workbook_append.py`) is stale — repo moved and no copy on the box. The governor's go authorizes the SEO row, so I'll append directly via gspread with the box SA (write scope), one Change_log row + one keyword target:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 oauth2client isn't installed in system python — but the builders ran fine earlier, so gspread must be in a venv. Let me find where gspread lives and how the tree builder invokes auth (probably `google.oauth2` instead):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The builders use `google.oauth2` (not oauth2client) — available in `/usr/bin/python3`. Let me run the append script with the correct auth:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both rows appended. Let me verify they landed correctly in the sheet:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2616,4 +2623,155 @@ PR #233 opened. Merging per the standing go:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp && rm -rf agb2 && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git agb2 2>&1 | tail -1; cd agb2 && ech; cd /tmp/agb2 && echo "=== all img/image keys in journey data ===" && grep -n "img\|image\|photo" cacao-journeys/brazilian-path/index.html | ; cd /tmp/agb2 && echo "=== lines 970-1030 (image switch) ===" && sed -n '970,1035p' cacao-journeys/brazilian-path/index.html && echo "" && ec; …(+4 more)
 • `merge pr` → ✅ PR #233 on agroverse_shop_beta merged successfully (sha: db0a9714cd55d146815eeda49f67e828f77485f3). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn
+
+**Fixed the missing listing-card image for Rancho Maranta — PR #233 merged.**
+
+**Root cause (verified, not guessed):** The Brazilian Path journey page (`cacao-journeys/brazili
+
+
+### 🤖 Autopilot
+
+Go received. Next unit: the **YouTube upload** — earlier credential search showed `/opt/truesight_autopilot/config/youtube/youtube_credentials.json` exists on the box, so the creds may actually be there (I need to recheck — I earlier said they weren't). Let me also verify the beta listing fix is live:
+
+
+### 🤖 Autopilot
+
+The YouTube credentials **are** on the box (`youtube_credentials.json` + `youtube_token.json`, token refreshed 2026-08-31 02:46) — I was wrong earlier. And the beta journey page is live (200). Let me read the upload README + script to learn the exact invocation:
+
+
+### 🤖 Autopilot
+
+The YouTube pipeline is fully available (creds + token, refreshed today). The smart approach — not 26 raw uploads: **Plot 1's 3 clips (~27s) concat into one hero video; Plot 2's 23 boundary-walk clips → a couple of representative clips**. Let me check what's already extracted and tooling:
+
+
+### 🤖 Autopilot
+
+ffmpeg is available and the MOVs are in the zips (the /tmp extracts were cleaned). Plan: extract Plot 1's 3 clips (house) + a few Plot 2 clips, check durations, then concat into 1–2 curated videos rather than 26 raw uploads. Extracting and probing durations:
+
+
+### 🤖 Autopilot
+
+Plot 1: IMG_7621 is the 27s hero clip. Let me concat the Plot 1 clips into one hero MP4, and extract a representative Plot 2 walk clip:
+
+
+### 🤖 Autopilot
+
+ffmpeg re-encode timed out (the 27s clip at full res). Let me split the steps with shorter timeouts — first just probe, then process clips individually with lower res:
+
+
+### 🤖 Autopilot
+
+The first clip (IMG_7621, 27s, 1080p HEVC) encoded to a 15MB mp4 in ~55s. The loop timed out after that. Let me process the two short clips (7622, 7623) individually with tight timeouts — at 1280px they should be quick:
+
+
+### 🤖 Autopilot
+
+The 7623 encode likely completed but the concat is still running. Let me check state:
+
+
+### 🤖 Autopilot
+
+All three clips encoded. The concat timed out — let me run just the concat (fast, no re-encode):
+
+
+### 🤖 Autopilot
+
+The concat left a corrupt partial (moov atom issue from the earlier timeout kill). Simpler and cleaner: the 27s IMG_7621 IS the hero — one self-contained encode, verify, then upload. Let me do a single clean encode:
+
+
+### 🤖 Autopilot
+
+The encode keeps getting killed by the 60s timeout mid-write. Let me run it in the background and poll:
+
+
+### 🤖 Autopilot
+
+Multiple stale ffmpeg processes from the timed-out runs are still going. Let me kill them all and verify the first clean encode (`IMG_7621_p1.mp4`, 15s hero) is a valid complete file:
+
+
+### 🤖 Autopilot
+
+The valid hero clip is `IMG_7621_p1.mp4` (15s, 1280px, 29MB). Uploading it to the admin@truesight.me channel (unlisted, per the safe default) using the box's credential + script:
+
+
+### 🤖 Autopilot
+
+The script resolves the video path relative to its own dir — I need to pass the absolute path:
+
+
+### 🤖 Autopilot
+
+**Hero video uploaded successfully** — https://www.youtube.com/watch?v=AriHjXTsLio (unlisted). Now let me slot it into the farm page's media.json (the schema supports video entries). Let me check the current media.json structure and the media-gallery renderer's video format:
+
+
+### 🤖 Autopilot
+
+The gallery renderer supports `type: 'youtube'` + `videoId` → iframe embed. Let me check how it consumes the JSON (does it iterate `gallery`, or a separate `videos` key?) so I slot the video correctly:
+
+
+### 🤖 Autopilot
+
+The renderer iterates `data.gallery` — a `type: 'youtube'` + `videoId` item renders as an embedded iframe. Adding the hero video entry to the farm page's media.json:
+
+
+### 🤖 Autopilot
+
+media.json updated with the video. Pushing + PR:
+
+
+### 🤖 Autopilot
+
+PR #234 opened. Merging per the standing go:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**YouTube upload done + video embedded on the Rancho Maranta farm page — PR #234 merged.**
+
+**Correction to my earlier claim:** the YouTube credentials **were** on the box all along — `/opt/truesight_autopilot/config/youtube/` has `youtube_credentials.json` + `youtube_token.json` (token refreshed today 02:46Z, admin@truesight.me channel) + the CLI uploader. No blocker existed; I had missed the directory. Good thing the governor pushed on this.
+
+**1. Video production (smart, not 26 raw uploads):**
+- Extracted Plot 1's 3 MOVs (IMG_7621 = 27s hero + 7622/7623 short clips) from the zip
+- Encoded to web-ready 1280px H.264 MP4s (ffmpeg, `+faststart`, crf 26–27)
+- ffmpeg kept hitting the 60s tool timeout mid-encode — resolved by running encodes individually with tight `-t` windows and cleaning up stale processes; the clean valid hero is `IMG_7621_p1.mp4` (15s, 29MB)
+
+**2. YouTube upload (unlisted):** → **https://www.youtube.com/watch?v=AriHjXTsLio** — "Rancho Maranta — Cacao tree planting site, Altamira, Pará (Plot 1)" on the admin@truesight.me channel. Authenticated with the stored OAuth token, `youtube.upload` scope.
+
+**3. PR #234 → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/234** (merged, sha `d5936a1`): inserted the video as the first gallery item in `farms/rancho-maranta-para/media.json` — `type: "youtube"`, `videoId: "AriHjXTsLio"`, title + caption. The `media-gallery.js` renderer embeds `youtube` items as iframes (verified — it already handles that type, so no JS change needed). JSON validated before push.
+
+**4. Also verified:** the beta journey listing page is live (200) — the card-image fix from last turn is deployed.
+
+## RESUME HERE →
+
+1. **Governor hard-refreshes** → https://beta.agroverse.shop/farms/rancho-maranta-para/ — the gallery should now lead with the embedded Plot 1 video (unlisted, so it plays embedded but won't surface on YouTube search). If you want it public, I can flip privacy with the same script's force-ssl scope.
+2. **Plot 2 boundary-walk video** — 23 MOVs (16:31–16:49) trace the family plot perimeter; I'd cut a ~20s representative walk clip the same way and add as a second gallery video. Say the word.
+3. **Prod promotion** (both gated on your explicit approval): `sync_beta_to_prod(agroverse_shop_prod)` — now includes farm page #229 + card fix #233 + video embed #234; `sync_beta_to_prod(truesight_me_prod)` — impact map #325–#329.
+4. **RM-P2 boundary authority** — CAR/INCRA polygon or perimeter walk; update SunMint Plots sheet row.
+5. **Ledger anchor** — register Rancho Maranta farm + plot event on-chain.
+
+**Note:** the upload used the `/tmp/rmv/` working files — the extracted MOVs and MP4s live only there (tmp). If you want the master MP4 archived, I can push it to the sunmint or agroverse_shop_beta assets (or keep it out of git entirely since YouTube hosts it).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → found creds, read upload README/script, extracted MOVs, encoded hero (killed stale ffmpeg), verified valid MP4, uploaded to YouTube (AriHjXTsLio), added videoId to media.json, pushed + opened PR #234, merged; verified beta journey 200
+• `merge pr` → ✅ PR #234 on agroverse_shop_beta merged (sha: d5936a107573782fe7cbb221b5850794c58ae753)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×21 → echo "=== youtube config dir ===" && ls -la /opt/truesight_autopilot/config/youtube/ 2>/dev/null; echo "=== upload script ===" && find /opt/; cat /opt/truesight_autopilot/config/youtube/README.md && echo "=== script head ===" && head -80 /opt/truesight_autopilot/config/youtube/uplo; echo "=== /tmp/plot dirs still there? ===" && ls -la /tmp/plot1/ /tmp/plot2/ 2>/dev/null | head -40; echo "=== MOVs in zips ===" && unzip -l; …(+17 more)
+• `merge pr` → ✅ PR #234 on agroverse_shop_beta merged successfully (sha: d5936a107573782fe7cbb221b5850794c58ae753). Pull Request successfully merged
 
