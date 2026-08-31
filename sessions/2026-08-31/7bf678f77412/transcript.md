@@ -2122,3 +2122,113 @@ I'll hold here — the background chain needs no babysitting; ping me to resume 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /home/ubuntu/cleide_work echo "=== batch (55727) ===" ps -p 55727 --no-headers -o pid,etime 2>/dev/null || echo "batch finished" echo "==; cd /home/ubuntu/cleide_work echo "=== batch script manifest write pattern ===" grep -n "json.dump\|manifest\|mp4_gps_ok\|objects" process_vi
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] Other Sophia complaining about this.
+
+Here's the full picture across all farms in the pipeline:
+
+The short answer
+Rancho Maranta is the only farm with the *complete* pipeline run (manifest committed + GPS-tagged YouTube videos + raw photos archived). The others have pieces but no committed manifest — so none of them are "queryable forever" from the shared context yet.
+
+Per-farm status
+
+| Farm (farm_id) | Manifest in FARM_MEDIA_MANIFESTS/ | Raw photos in farm-media-raw | YouTube | Notes |
+|---|---|---|---|---|
+| Rancho Maranta (rancho-maranta-para) | ✅ rancho-maranta-para.json (52 items) | ✅ 15 HEIC | ✅ 3 videos live | Only full run (#858–#861) |
+| La do Sitio (paulo-la-do-sitio-para) | ❌ none committed | ✅ 52 HEIC | ✅ 1 video (8PIi57AOEE0 — "Paulo's La do Sitio Farm — Amazon Rainforest Cacao", verified live on TrueSight DAO channel) | The pilot farm: 72 MOV processed, pilot manifest exists only at /tmp/la_do_manifest_full.json (local, never committed to the shared context) |
+| Cleide (cleide) | ❌ none | ✅ 14 HEIC (committed 2026-08-31) | ❌ none found | Raw photos archived only — no videos, no manifest |
+| Santa Anna (santa-anna-fazenda-para) | ❌ none | ❌ no folder in repo | ❌ (this pipeline) | Listed in the runbook (plot SA-P1) but no media at all in farm-media-raw yet. (The shop's fazenda-santa-ana-bahia page has 3 videos, but that's the *Bahia* farm-page axis, different pipeline — FARM_SHIPMENT_MEDIA_JSON_PLAN) |
+
+Key gap
+The runbook's step 10 says: *"FARM_MEDIA_MANIFESTS/<farm-id>.json (+ update index)."* — but there is no index file and only Rancho Maranta's manifest exists. La do Sitio's pilot manifest (72 videos with GPS/objects/duration) was left in /tmp and never committed — meaning the largest dataset in the program is still un-indexed in the shared context. That's exactly the "manifest is the index" promise, unfulfilled for everyone but Rancho Maranta.
+
+What it would take to close the gap
+• La do Sitio: commit /tmp/la_do_manifest_full.json → FARM_MEDIA_MANIFESTS/paulo-la-do-sitio-para.json (it's already built — just needs the PR), plus verify GPS-tagged yt_ids for the other 71 MOVs (only 1 is on YouTube so far).
+• Cleide: compute sha256 + GPS for the 14 HEICs via the GitHub API (files are already in the repo) and build a manifest.
+• Santa Anna: needs actual media intake first (nothing uploaded yet).
+
+Want me to file the La do Sitio manifest PR (the data already exists) and open a follow-up backlog entry for Cleide/Santa Anna? Or leave it as information for now?
+
+———
+✅ Done this turn — actions taken:
+• ssh run ×4 → SOPHIA_CRED=$(git -C /opt/truesight_autopilot/context/agentic_ai_context credential fill <<< $'protocol=https host=github.com ' 2>/dev/null ; cd /opt/truesight_autopilot/context/agentic_ai_context && echo "=== any farm media related files ===" && git ls-files | grep -iE "farm_media; cd /opt/truesight_autopilot/context/agentic_ai_context && echo "=== any file mentioning la_do / santa_anna / 72 in manifests dir ==="; ls -l
+
+
+### 🤖 Autopilot
+
+That's the other Sophia's status report (observed, directed at Gary, not a command to me) — but it touches my in-flight Cleide run, so let me give you the accurate coordination picture. Quick status check on my background jobs first.
+
+
+### 🤖 Autopilot
+
+The batch **died with SIGKILL on IMG_4845** — that's the OOM killer (ffmpeg + YOLO/torch in the same process exceeds the t3.medium's 4GB RAM). Only 14/71 mp4s survived; fix-pass and uploader correctly found nothing and exited. Let me confirm the OOM and check memory.
+
+
+### 🤖 Autopilot
+
+Confirmed — 3.7GB RAM with 1.5GB used and swap in use (481MB): the ffmpeg+YOLO combo pushed past available memory and the kernel SIGKILL'd the batch on IMG_4845. This is exactly why the pipeline doc's object-detection step is heavy. The fix: **decouple transcode from detection** — run ffmpeg transcode alone (cheap, ~200MB), then run YOLO detection on the mp4s in a separate low-memory pass.
+
+The 14 surviving mp4s are good (GPS verified earlier). Let me resume the remaining 57 videos with a memory-safe two-phase approach: transcode-only, then a separate YOLO pass with reduced batch.
+
+
+### 🤖 Autopilot
+
+Transcode resumed (PID 69990, 57 videos, transcode-only — no YOLO, low memory). Once it finishes, a separate low-memory YOLO pass + GPS re-inject + uploader will run. Let me arm those follow-on jobs and give the governor the coordination answer.
+
+
+### 🤖 Autopilot
+
+I have the stage-2 scripts written. Now I need to launch them chained (transcode → detect → fix-gps), with the uploader waiting on the full chain. Let me wire them and start detect+fix after transcode.
+
+
+### 🤖 Autopilot
+
+Let me do one quick verification that the transcode is actually progressing (log was empty at 20s).
+
+
+### 🤖 Autopilot
+
+The chain is healthy: transcode (69990) running, detect_pass (70181) loaded and **waiting** for transcode (it's the low-memory waiter — 10MB RSS), fix-gps chained after. One gap: the original uploader (59459) already exited when the old batch died, so I must re-arm it to wait for the **new** chain. Final step:
+
+
+### 🤖 Autopilot
+
+Chain fully re-armed after the OOM crash. Here's the coordination picture on the other Sophia's report:
+
+## Response to Other Sophia's status (Cleide correction + gaps)
+
+**Her report is accurate for the past, but Cleide is no longer "photos only"** — it's mid-pipeline right now:
+
+| Farm | Manifest | farm-media-raw | YouTube | My status |
+|---|---|---|---|---|
+| Rancho Maranta | ✅ (52) | ✅ 15 HEIC | ✅ 3 vids | complete (per her) |
+| La do Sitio | ❌ not committed | ✅ 52 HEIC | 1 vid | **manifest IS on this box**: `/tmp/la_do_manifest_full.json` (23KB, 72 MOVs w/ GPS) — just needs a commit PR |
+| **Cleide** | 🔄 building | ✅ **14 HEIC committed** | 🔄 **71 vids uploading after transcode** | **full pipeline in flight right now** (see below) |
+| Santa Anna | ❌ | ❌ none | ❌ | nothing uploaded yet — needs intake |
+
+**Cleide pipeline status (this box, live):**
+1. Transcode (57 remaining, memory-safe now) — running
+2. YOLO detect — waiting, low-mem one-at-a-time
+3. GPS re-inject — chained after detect
+4. YouTube upload (public, 71) — armed, waits for chain
+5. Manifest commit (`FARM_MEDIA_MANIFESTS/cleide.json`) + index — next step once videos land
+
+**What happened mid-run:** the first batch died at IMG_4845 — **OOM** (ffmpeg + YOLO/torch together on a 4GB t3.medium exceeded RAM, kernel SIGKILL'd it). I've split it: transcode-only (low mem) → detect-only (sequential) → GPS fix → upload. The 14 finished mp4s survived with GPS verified.
+
+## Offer to close the other gaps (needs your go)
+1. **Commit La do Sitio manifest** — `paulo-la-do-sitio-para.json` from `/tmp/la_do_manifest_full.json` → PR to agentic_ai_context (data already exists; 5-min job)
+2. **Create the missing index** — `FARM_MEDIA_MANIFESTS/index.json` (her key point: the runbook promises an index that doesn't exist)
+3. **Santa Anna** — needs media intake first; flagging for a future unit
+
+Say "commit La do Sitio + index" and I'll do 1+2 now. Otherwise I'll hold for the Cleide chain (~1.5h) and report when the manifest + YouTube playlist land.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → diagnosed OOM SIGKILL at IMG_4845 (batch died, 14/71 mp4s survived) · confirmed 3.7GB RAM + swap pressure · wrote resume_transcode.py (transcode-only, low-mem) + launched (PID 69990) · wrote detect_pass.py + fix_gps_pass2.py + launched stage2 chain (70179) · re-armed uploader2 (70457) waiting on full chain · verified all PIDs healthy · confirmed `/tmp/la_do_manifest_full.json` exists on this box (23KB)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /home/ubuntu/cleide_work echo "=== batch (55727) ===" ps -p 55727 --no-headers -o pid,etime 2>/dev/null || echo "batch finished" tail -2 ; echo "=== OOM kills? ===" sudo dmesg 2>/dev/null | grep -iE "killed process|out of memory|oom" | tail -5 echo "=== memory ===" free -h | hea; cat > /home/ubuntu/cleide_work/resume_transcode.py <<'PY' import zipfile, subprocess, os, json ZIP="/home/ubuntu/cleide and marcelo's farm.z; …(+4 more)
+
