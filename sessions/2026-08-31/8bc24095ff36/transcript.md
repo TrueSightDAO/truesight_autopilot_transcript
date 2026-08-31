@@ -35,27 +35,42 @@ And the runbook, FARM_MEDIA_PIPELINE.md, documents the exact schema, so any futu
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: search_context, search_context, list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Both files exist — let me read them to verify the claims in that message.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest is large — let me read the full content to verify the counts and YouTube IDs.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest and runbook both exist and I've verified the structure. Let me now verify the remaining claims: the full item counts, the YouTube IDs actually resolving, the index file, and the raw storage repo.
+[2 tool result(s) compacted: http_fetch, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the tail of the manifest (full item count + all yt_ids), the raw photo repo, and whether the YouTube IDs actually resolve.
+[3 tool result(s) compacted: read_tool_result, http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The YouTube ID resolves — and the video title confirms it's Rancho Maranta Plot 1. The farm-media-raw path 404'd though; let me check the actual repo layout, verify the other YouTube IDs, and read the manifest tail to confirm final counts.
+[4 tool result(s) compacted: http_fetch, http_fetch, http_fetch, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -129,4 +144,60 @@ That was an observed message from Nobody Will in the topic, so I've answered it 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → cd /tmp && curl -s https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/FARM_MEDIA_MANIFESTS/rancho-maranta-para.json -o r; cd /tmp && TOKEN=$(cat /opt/truesight_autopilot/config/github_token 2>/dev/null || cat /opt/truesight_autopilot/config/github_tokens/* 2>/de; ls /opt/truesight_autopilot/config/ 2>/dev/null; echo "---"; ls /opt/truesight_autopilot/config/github* 2>/dev/null; echo "---env---"; grep ; …(+9 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17655] what about the other farms?
+
+
+### 🤖 Autopilot
+
+Good question — the `farm-media-raw` repo root showed three farm folders (`rancho-maranta`, `cleide`, `la-do-sitio`). Let me check what's in the other two and whether they have manifests.
+
+
+### 🤖 Autopilot
+
+The other two farms (Cleide, La do Sitio) have raw photos in the repo but no manifests yet. Let me get the full picture — what's in their photo folders, and what the pipeline runbook and plan say.
+
+
+### 🤖 Autopilot
+
+Now let me check the plan doc (it tracks per-farm media/yt_ids), verify the La do Sitio YouTube ID, and check whether a manifests index file exists (step 10 of the pipeline mentions one).
+
+
+### 🤖 Autopilot
+
+Let me do a final completeness check — any manifests hiding under different names, and whether Santa Anna (the 4th farm in the pipeline table) has any media.
+
+
+### 🤖 Autopilot
+
+Here's the full picture across all farms in the pipeline:
+
+## The short answer
+**Rancho Maranta is the only farm with the *complete* pipeline run** (manifest committed + GPS-tagged YouTube videos + raw photos archived). The others have pieces but no committed manifest — so none of them are "queryable forever" from the shared context yet.
+
+## Per-farm status
+
+| Farm (farm_id) | Manifest in `FARM_MEDIA_MANIFESTS/` | Raw photos in `farm-media-raw` | YouTube | Notes |
+|---|---|---|---|---|
+| **Rancho Maranta** (`rancho-maranta-para`) | ✅ `rancho-maranta-para.json` (52 items) | ✅ 15 HEIC | ✅ 3 videos live | **Only full run** (#858–#861) |
+| **La do Sitio** (`paulo-la-do-sitio-para`) | ❌ none committed | ✅ 52 HEIC | ✅ 1 video (`8PIi57AOEE0` — "Paulo's La do Sitio Farm — Amazon Rainforest Cacao", verified live on TrueSight DAO channel) | **The pilot farm**: 72 MOV processed, pilot manifest exists **only at `/tmp/la_do_manifest_full.json`** (local, never committed to the shared context) |
+| **Cleide** (`cleide`) | ❌ none | ✅ 14 HEIC (committed 2026-08-31) | ❌ none found | Raw photos archived only — no videos, no manifest |
+| **Santa Anna** (`santa-anna-fazenda-para`) | ❌ none | ❌ no folder in repo | ❌ (this pipeline) | Listed in the runbook (plot SA-P1) but **no media at all** in `farm-media-raw` yet. (The shop's `fazenda-santa-ana-bahia` page has 3 videos, but that's the *Bahia* farm-page axis, different pipeline — `FARM_SHIPMENT_MEDIA_JSON_PLAN`) |
+
+## Key gap
+The runbook's step 10 says: *"`FARM_MEDIA_MANIFESTS/<farm-id>.json` (+ update index)."* — but there **is no index file** and only Rancho Maranta's manifest exists. La do Sitio's pilot manifest (72 videos with GPS/objects/duration) was left in `/tmp` and never committed — meaning **the largest dataset in the program is still un-indexed** in the shared context. That's exactly the "manifest is the index" promise, unfulfilled for everyone but Rancho Maranta.
+
+## What it would take to close the gap
+- **La do Sitio**: commit `/tmp/la_do_manifest_full.json` → `FARM_MEDIA_MANIFESTS/paulo-la-do-sitio-para.json` (it's already built — just needs the PR), plus verify GPS-tagged yt_ids for the other 71 MOVs (only 1 is on YouTube so far).
+- **Cleide**: compute sha256 + GPS for the 14 HEICs via the GitHub API (files are already in the repo) and build a manifest.
+- **Santa Anna**: needs actual media intake first (nothing uploaded yet).
+
+Want me to file the La do Sitio manifest PR (the data already exists) and open a follow-up backlog entry for Cleide/Santa Anna? Or leave it as information for now?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → SOPHIA_CRED=$(git -C /opt/truesight_autopilot/context/agentic_ai_context credential fill <<< $'protocol=https host=github.com ' 2>/dev/null ; cd /opt/truesight_autopilot/context/agentic_ai_context && echo "=== any farm media related files ===" && git ls-files | grep -iE "farm_media; cd /opt/truesight_autopilot/context/agentic_ai_context && echo "=== any file mentioning la_do / santa_anna / 72 in manifests dir ==="; ls -l
 
