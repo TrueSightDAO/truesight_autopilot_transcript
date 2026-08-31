@@ -5095,16 +5095,19 @@ The debug log has per-round UTC timestamps — authoritative. Let me parse the f
 ### 🤖 Autopilot
 
 Now let me refine: separate overnight/passive gaps from active governor time, and get the per-day breakdown.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me cross-check the turn count against the actual user messages in the session JSON for accuracy.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me separate the real governor-authored messages from the system-injected ones (TURN DIRECTIVE, emoji-go, observed notes) for an accurate attribution.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5421,4 +5424,113 @@ If you want the 120 adjusted (up or down), say the figure and I'll log a superse
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: reference FARM_MEDIA_PIPELINE.md and process the media files you were working on just now for santa anna fazenda para
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593]
+
+
+### 🤖 Autopilot
+
+Let me find and read the FARM_MEDIA_PIPELINE.md reference first.
+
+
+### 🤖 Autopilot
+
+No exact match — let me check for similarly-named pipeline docs in the agroverse folder and repo.
+
+
+### 🤖 Autopilot
+
+No file literally named `FARM_MEDIA_PIPELINE.md`, but two docs match the intent. Let me read both to find the right process.
+
+
+### 🤖 Autopilot
+
+The closest reference is `sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md` (the canonical media pipeline — no file is literally named `FARM_MEDIA_PIPELINE.md`, but this is the process doc you mean). Let me inventory what's still unprocessed from the Santa Anna collection.
+
+
+### 🤖 Autopilot
+
+Now I have the full inventory. **45 files total** (32 HEIC + 1 PNG + 13 MOV). Already processed: 3 YouTube uploads (IMG_7734/7740/7741) + 9 gallery photos + hero/profile. Let me run the pipeline's step 1 — analyze the remaining 10 videos (duration/resolution/transcript) and dedupe against what's on YouTube.
+
+
+### 🤖 Autopilot
+
+Pipeline mapped. Current state: **3 videos + 9 photos already processed**; **10 videos + ~12 photos still unprocessed**. Per the runbook's story-grade rule (≥45s & ≥80 words), only **IMG_7722 (87s)** qualifies as story-grade; the rest are short non-story clips (2–24s) — but you had the first 3 short ones uploaded anyway, so I'll follow that precedent with `--include-non-story` behavior.
+
+Step 1 of the pipeline: analyze + transcribe the 10 remaining videos.
+
+
+### 🤖 Autopilot
+
+Whisper on CPU is slow for 10 files. Let me run it in smaller batches with a check on the first one to gauge timing.
+
+
+### 🤖 Autopilot
+
+Transcription works (~1 min/video). IMG_7705 has a real conversation (about the "Viva" cacao cultivar on the wire — interesting content!). Continuing the remaining 8 in batches.
+
+
+### 🤖 Autopilot
+
+The `small` model is too slow for this box (~2-3 min/video). Switching to `tiny` for the remaining 8 (faster, adequate for short clips) and persisting results.
+
+
+### 🤖 Autopilot
+
+Transcribed 6 more. Now the last 2 (IMG_7722 the 87s story-grade one, and IMG_7726) with `tiny`.
+
+
+### 🤖 Autopilot
+
+Pipeline analysis complete — here's where the Santa Anna media stands and the grounded recommendation.
+
+## 📊 Media pipeline status (per `sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md`)
+
+**45 files total** (32 HEIC + 1 PNG + 13 MOV). Already processed: **3 YouTube uploads** (IMG_7734/7740/7741) + **9 gallery photos** (7733, 7735, 7742, 7723, 7731, 7744, 7747, 7750, 7751) + hero/profile images.
+
+### Step 1 — analysis of the 10 remaining videos (done)
+
+| Video | Dur | Transcript (PT) | Words | Verdict |
+|---|---|---|---|---|
+| **IMG_7722** | **87s** | *"…da região, pela cooperativa, e ele primeira imesita as propriedades. Se a gente vai comprar a caixa hoje daqui…"* | **240** | ✅ **STORY-GRADE** — cooperative buying cacao in the region; clear candidate |
+| IMG_7705 | 6.6s | "Ainda é depois que tu fala… Tem de Viva no fio lá, né? Viva!" | 22 | short — has content (Viva cultivar on the wire) |
+| IMG_7707 | 2.5s | "Isso é fantasião…" | 7 | fragment |
+| IMG_7713 | 10.2s | "Ah, de biza…" | 9 | fragment |
+| IMG_7714 | 3.9s | "É, é… O que você está?" | 14 | fragment |
+| IMG_7716 | 12s | "Quanto é a liga?" | 7 | fragment |
+| IMG_7721 | 16.4s | "Oh, tá bom, tá bom…" | 7 | fragment |
+| IMG_7704 | 11.2s | — (ambient) | 0 | 🚫 no speech |
+| IMG_7706 | 17.7s | — (ambient) | 0 | 🚫 no speech |
+| IMG_7726 | 23.6s | — (ambient) | 0 | 🚫 no speech |
+
+### Step 2 — my recommendation (runbook-conformant)
+
+1. **IMG_7722 → YouTube upload (public) + embed** — the only story-grade clip (87s, 240 words, real content about CEPOTX cooperative purchasing). This is the pipeline's clear winner.
+2. **IMG_7705 → upload + embed** — short but has a real spoken moment (Viva cultivar discussion); follows the precedent of the 3 short clips you had uploaded.
+3. **IMG_7707/7713/7714/7716/7721** — fragments (7–14 words); runbook says **skip** non-story unless you explicitly want them. My call: skip — they'd dilute the gallery.
+4. **IMG_7704/7706/7726** — **no speech at all** (ambient only); skip per runbook.
+5. **Remaining photos (~12 HEICs: 7702, 7703, 7708–7718, 7724, 7725, 7732, 7736–7739, 7743, 7745, 7746, 7748, 7749, 7752)** — the 6 best were already added; I'd vision-pass the rest to pick any final keepers rather than dumping all 23.
+
+### Also spotted
+- **IMG_7728.PNG** (271 KB, 1125×2436) — a phone screenshot (translation app), per earlier vision; **skip**.
+
+---
+
+**Confirm scope before I upload** (10 YouTube uploads is a big, semi-irreversible action — want your go on the exact set):
+- **Option A (recommended):** upload **IMG_7722 + IMG_7705** → polish titles/descriptions via Grok → embed both → vision-pass remaining photos and add any keepers. 
+- **Option B:** upload all 8 with speech (incl. fragments).
+- **Option C:** only IMG_7722.
+
+Which option, Gary?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp 2>/dev/null && rm -rf aac_mp && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aac_mp 2>&1 | tail -1;; echo "=== ALL media in santa_anna_new ==="; ls -la ~/santa_anna_new/ | grep -vE "^total|^d" | awk '{print $9, $5}' | sort; echo; echo "=== v; cd ~/santa_anna_new && echo "=== video durations/resolutions (all 13 MOVs) ==="; for v in *.MOV; do d=$(ffprobe -v quiet -show_entries forma; …(+3 more)
 
