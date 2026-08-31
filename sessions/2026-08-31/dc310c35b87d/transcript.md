@@ -1972,16 +1972,19 @@ Thoughts?
 ### 🤖 Autopilot
 
 Let me check the handoff manifest as directed, and ground the design in what actually exists today (register_farm flow, farm registry index, offline queues).
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see how register_farm actually lands the record (the WhatsApp message tail) and whether any machine-readable farms list exists for dropdown population:
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the tail of the submit function — whether it POSTs to Edgar or only opens WhatsApp (this determines the backend work):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2041,16 +2044,19 @@ Want me to start with **PR1 (the local farm store + dropdown)** — it's the fou
 ### 🤖 Autopilot
 
 Agreed — that's the right simplification, and it matches what we already proved with RM-P1 (the plot was built from the HEIC/MOV GPS cluster). Let me confirm what extraction tooling already exists so the plan is precise:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `exiftool` is on the box and the scripts exist. Let me see how `build_plots_geojson.py` currently works — whether it already consumes image GPS or takes sheet coordinates:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand the current pipeline fully. Let me look at how it parses the coordinates column (whether it supports an image-GPS-derived polygon) and the rest of the script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2239,4 +2245,107 @@ One note: since the plan file PR0 is on a branch of `agentic_ai_context` and PR 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp && echo "=== beta sunmint.html: size + key sections ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_bet; cd /tmp && echo "=== MANIFEST tail (table end) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/hando; cd /tmp && echo "=== sunmint.html impact-map JS (plotSelector / plots load / farm) ===" && grep -n "plotSelector\|plots/index\|index.geojson; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] I think the impact map is already in prod.
+
+
+### 🤖 Autopilot
+
+Good catch — let me verify whether the impact map is already live on prod (`truesight.me/sunmint.html`) and diff prod vs beta.
+
+
+### 🤖 Autopilot
+
+Confirmed — you're right. Let me fold that fact into the plan (PR #853) so the roadmap reflects reality.
+
+
+### 🤖 Autopilot
+
+Confirmed — **you're right, and it's verified:** prod `truesight.me/sunmint.html` is **byte-identical** to beta (both 40,784 bytes, md5 identical) and live (200). The impact map with plots/trees is **already in production**. Let me correct the plan to reflect that fact so the roadmap isn't framed as if we're shipping something new to prod:
+
+
+### 🤖 Autopilot
+
+The edit target wasn't found — likely because the plan file content I pushed has the exact heading text but maybe different whitespace. Let me check the actual content of the plan file on the branch:
+
+
+### 🤖 Autopilot
+
+The search string didn't match because line 32 continues past `(40,784 bytes)`. Let me use the exact text:
+
+
+### 🤖 Autopilot
+
+The em-dash encoding is likely the mismatch. Let me use a shorter, safer anchor:
+
+
+### 🤖 Autopilot
+
+The edits keep failing on matching — let me read the file exactly as it exists on the branch to see the true bytes:
+
+
+### 🤖 Autopilot
+
+The edit tool bases each push on `main` (where the file doesn't exist yet — PR0 isn't merged), so edits fail. I'll write the full corrected file to the branch instead:
+
+
+### 🤖 Autopilot
+
+The tool treats `sunmint-impact-map-extension-plan` as the default branch when I set `base_branch` to it. Let me use a fresh feature branch based on `main` and rewrite the full corrected file there (the PR is still open, so I'll push to a new branch and reopen/point the PR — simplest is to just update the same PR by pushing to a new branch and updating the PR head). Actually the cleanest: use a distinct feature branch with `open_pr: false` and then set the existing PR's head... but I can't set PR head via tools. Let me instead just open a *second* PR (supersede #853), or better — the original PR #853 is the roadmap; I'll close it and open a fresh PR with the corrected file.
+
+Let me check the tool's branch rules first:
+
+
+### 🤖 Autopilot
+
+The tool refused only because I set `base_branch` equal to the branch name. The first push used the default base (main) and worked fine. Let me re-push the corrected whole file to the existing branch with default base:
+
+
+### 🤖 Autopilot
+
+The git-clone push conflicts because the branch already has my earlier commits. I'll update the file via the Contents API (single-file write to the existing branch — same approach that worked for the whitepaper PR):
+
+
+### 🤖 Autopilot
+
+Plan file corrected on the PR branch (commit `c507a85`). The plan now records your correction: the impact map is **already live in prod** (byte-identical beta/prod), and the roadmap's prod step is reframed as "the live page updates via promote" rather than shipping something new.
+
+## Summary
+
+**You were right — verified:** `truesight.me/sunmint.html` (prod) is **byte-identical** to `beta.truesight.me/sunmint.html` (md5 match, 40,784 bytes, HTTP 200). The impact map with trees + plots + satellite overlay is **already in production**, not just beta. I corrected the plan accordingly.
+
+**PR #853** (`agentic_ai_context`, branch `sunmint-impact-map-extension-plan`) now includes both:
+1. The full implementation plan/roadmap/checklist (PR0)
+2. Your correction recorded in §2 — "NOTE (governor correction): impact map already live in prod… This plan EXTENDS the existing page — changes built on truesight_me_beta, then promoted so the live page updates"
+
+**Roadmap unchanged** (the work is still the same — enrich popups, farms selector, farms registry, legends — just framed correctly):
+
+| # | Deliverable | Repo |
+|---|---|---|
+| PR0 | ✅ Plan + manifest row (corrected: impact map already in prod) | agentic_ai_context |
+| **PR1** | Enriched plot popups (boundary authority, status, ha, owner, region, verified_at) + legend chips | truesight_me_beta |
+| PR2 | Farms selector/filter dropdown | truesight_me_beta |
+| PR3 | Farms Registry section | truesight_me_beta |
+| PR4 | Status styling + boundary-authority legend + media thumbnails | truesight_me_beta |
+| PR5 | UAT gate (7 steps on beta) | truesight_me_beta |
+| post | Promote to prod **with your approval** (`sync_beta_to_prod`) | — |
+
+## RESUME HERE → PR1 (next unit, fresh turn)
+
+**Enriched plot popups** on `truesight_me_beta/sunmint.html` — upgrade `bindPopup` in `loadPlots()` to show boundary authority, status, hectares, owner, region, verified_at + legend chips. Then PR2 (farms selector), PR3 (farms registry section), PR4 (styling + media), PR5 (UAT gate), promote with your approval.
+
+Also pending from earlier: **merge PR #853** (the plan) so it lands on `main` — want me to do that at the start of the next turn, or ride it along?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → prod vs beta byte-identity check (md5 match, 40,784 bytes, HTTP 200); PR #853 state/head; plan file branch content; manifest table structure
+• `upload file to github` → corrected plan on branch `sunmint-impact-map-extension-plan` (commit `c507a85`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && echo "=== PROD sunmint.html ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_prod/main/sunmint.html" ; cd /tmp && echo "=== confirm PR #853 branch head ===" && curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/pulls/853" | ; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/sunmint-impact-map-extension-plan/plans/SUNMINT_IMPACT; …(+1 more)
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/sunmint-impact-map-extension-plan/plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md
 
