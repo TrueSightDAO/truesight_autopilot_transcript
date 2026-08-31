@@ -673,11 +673,13 @@ All anchors confirmed. media-gallery.js handles both `youtube` and `image` types
 3. upload the 8 photos to `assets/images/farms/`
 
 Let me first push the photos to the farm assets dir, then open the PR with the file edits.
+[8 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Uploaded to the wrong path — the site serves from repo root, so `../../assets/images/farms/` resolves to **root** `assets/images/farms/` (confirmed by the og:image URL + rancho precedent), not under the farm folder. Let me re-upload to the correct path (I'll clean up the misplaced ones in the PR).
+[8 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -825,4 +827,64 @@ One note: the impact-map popup links to **agroverse.shop (prod)** — the farm p
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → grep -nE 'plots/index|index.geojson|fetch\(|plots' /home/ubuntu/sunmint_work/sunmint.html 2>/dev/null | head -30; echo '---'; ls /home/ubunt; curl -sL "https://beta.agroverse.shop/farms/paulo-la-do-sitio-para/" | grep -nE 'ldP1|map-paulo|sunmint|LD-P1|View on SunMint' | head -20; e; curl -sL "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geojson?cb=1" | python3 -c " import json,sys d=json.load(s
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] [Handoff context — this Telegram topic (thread 17184) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Verification complete — all green
+
+Everything shipped is confirmed live and rendering. Full verification matrix:
+
+| Check | Result |
+|---|---|
+| **Beta farm page** (`beta.agroverse.shop/farms/pau
+
+
+### 🤖 Autopilot
+
+The 👍 go covers my listed open items — the explicit "say go and I'll sync prod" for promotion, plus the contribution log I offered. Executing: prod sync + event doc lookup in parallel.
+
+
+### 🤖 Autopilot
+
+Prod promotion complete and recorded in the deploy ledger. Now logging the contribution with PR evidence.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn complete — prod promoted + contribution logged
+
+### 1. Production promotion — done
+- **`agroverse_shop_prod`** synced from beta → **success**, no conflicts (merge-type `merge`).
+- Deploy recorded: `deploy_20260831T161028Z_agroverse-shop-prod`
+  → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260831T161028Z_agroverse-shop-prod.md
+- The farm page is now live at **agroverse.shop/farms/paulo-la-do-sitio-para/** with the field-photo gallery, GPS-accurate map + LD-P1 polygon, SunMint links, and the SunMint Tree Planting section. The impact-map popup's "View farm profile on Agroverse ↗" link now lands on the *new* page.
+
+### 2. Contribution logged — done
+- CONTRIBUTION EVENT submitted via Edgar (Sophia Truesight, 150 min, TDG 0) with PR #244 as evidence.
+
+### Full delivery recap (all verified)
+| Item | Status |
+|---|---|
+| LD-P1 plot in SunMint Plots sheet + `plots/index.geojson` (5 features) | ✅ live |
+| 8 field photos → `sunmint/images/LD-P1/` | ✅ live |
+| Farm page gallery (YouTube + 8 photos) | ✅ beta + **prod** |
+| Farm map → GPS centroid + LD-P1 polygon overlay | ✅ beta + **prod** |
+| Farm page ↔ impact map links (both directions) | ✅ beta + **prod** |
+| Deploy ledger entry | ✅ |
+| Contribution event | ✅ |
+
+**Nothing pending except your eyeball** on the 8 curated photos (metadata-driven picks — no vision on this box) and the optional status flip `proposed → planted` if planting events are already recorded on that parcel. Both are one-line changes whenever you want them.
+
+———
+**✅ Done this turn — actions taken:**
+• `sync_beta_to_prod(agroverse_shop_prod)` → success, deploy ledger `deploy_20260831T161028Z_agroverse-shop-prod`
+• `lookup_event_docs(CONTRIBUTION EVENT)` → canonical labels confirmed
+• `create_dao_submission` → "Contribution submitted"
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
 
