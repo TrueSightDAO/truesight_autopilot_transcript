@@ -2875,6 +2875,7 @@ Now the full picture is crystal clear:
 3. **Reduce scope** — upload only the best N videos (e.g. the farm-worthy ones Grok identified) rather than all 71.
 
 Let me check whether there's a second project/channel credential on the box, and see what daily quota actually is.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2882,6 +2883,7 @@ Let me check whether there's a second project/channel credential on the box, and
 Key facts: single YouTube project (one credential set), token refreshable (expires 23:39 today, auto-refreshes), and the upload script has **no quota-retry handling**. The upload quota ("Video Uploads per day" for a new/unverified project is typically **6 uploads/day**, sometimes 100 for verified) — La do Sitio's 71 today must have come through over multiple days, or the channel is verified with a higher cap and something else (another project) consumed today's.
 
 The honest path: **re-arm a throttled uploader that starts tomorrow** and uploads Cleide's 71 videos across several days (e.g. 10/day → 8 days), retrying on 429. But first — let me check the upload script's actual quota behavior and whether there's a channel check, plus the README for known caps.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2926,16 +2928,19 @@ Say 1, 2, or 3 and I'll proceed.
 ### 🤖 Autopilot
 
 Go received — proceeding with option 1 (throttled auto-uploader, my recommendation). Building the resume-safe 6/day uploader that starts after the quota reset, plus fixing the manifest state (IMG_4832 FAILED → retry-ready, objects backfill).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Detect never persisted (YOLO RAM warning = it crashed before writing any per-video results; objects=0). I'll fix that separately. Writing the throttled, resume-safe uploader now and arming it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Uploader launched (PID 105025). The initial log is empty — it may be sleeping to the quota-reset window. Let me verify it's alive and behaving (waiting for tomorrow 07:05 UTC, or attempting an upload if today's cap isn't hit).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3247,4 +3252,54 @@ Ping me with "go" and I'll start PR1.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #868 on agentic_ai_context merged successfully (sha: 00007f3121513a0f97a6b34637274241a408c92e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] I think it should not be private, it should be public so that everyone knows what the design is. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good call — the design is deliberately credential-free (creds stay local/gitignored), so public visibility is safe and makes the contract transparent. Let me update the plan doc to reflect public, then merge.
+
+
+### 🤖 Autopilot
+
+You explicitly directed this change — merging PR #869.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Repo visibility corrected to public ✅
+
+**PR merged:** [#869 — Farm Media Daemon: repo is public, not private](https://github.com/TrueSightDAO/agentic_ai_context/pull/869) — sha `da380c26`.
+
+**What changed:** `plans/FARM_MEDIA_DAEMON_PLAN.md` PR1 checklist now reads **public** (not private) with your note — *"Gary 2026-09-01: design is transparent, creds stay local/gitignored."* This is safe because the daemon is deliberately credential-free: YouTube OAuth tokens live only in `config/youtube/*.json` on the box (gitignored), and the repo just documents where they live.
+
+**Why public is right:**
+- The whole point of this infra is that every Sophia (and you) reads the same contract — public makes that universal
+- Transparent design = anyone in the DAO (or public) can hold it accountable, same as `farm-media-raw`
+- Zero secrets in the repo by construction
+
+---
+
+**RESUME HERE → next unit (PR1):**
+**Scaffold `TrueSightDAO/farm-media-daemon` (PUBLIC)** — `DESIGN.md` (queue contract, sidecar schema, daemon loop, fairness, quota, commit model, query patterns) + `config.yaml` template + README + add `farm-media-daemon` to `truesight_autopilot` `allowed_repos` (settings PR). Then report for your review.
+
+Ping me with "go" and I'll start PR1.
+
+———
+**✅ Done this turn — actions taken:**
+• `git push changes` → PR #869 (edit PR1 checklist: private → public)
+• `merge pr` → ✅ #869 merged (sha da380c26)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #869 on agentic_ai_context merged successfully (sha: da380c266c33e874f466bd86aed30c47a1280098). Pull Request successfully merged
 
