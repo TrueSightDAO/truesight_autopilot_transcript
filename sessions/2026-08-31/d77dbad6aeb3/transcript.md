@@ -1943,11 +1943,13 @@ Uploads run but my yt_id parser isn't matching the script's output format (rc=0 
 ### 🤖 Autopilot
 
 The pkill tripped the guard (it matches the pattern even though I meant the upload batch, not the autopilot). The upload batch is still running fine (rc=0 = uploads succeeding) — the only problem is my yt_id parser. Let me read the upload script to see its actual success output format, and check what's happened so far:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Batch ran through all 72 — converted ones uploaded (rc=0), missing MP4s skipped (conversion still running). But my parser captured 0 yt_ids. Let me see the script's success output format (what comes after "Upload complete!"):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1955,6 +1957,7 @@ Batch ran through all 72 — converted ones uploaded (rc=0), missing MP4s skippe
 Found the parser bug: the script prints **`   Video ID: <id>`** (with "Video ID:" prefix), but my parser only looked for bare `https://youtu.be/` or `ID:` tokens — "Video ID:" has a space, so it never matched. **The uploads themselves succeeded** (rc=0, "✅ Upload complete!" → "Video ID:" printed), but the manifest never got the yt_ids, and the progress file was never written — so re-running would re-upload everything.
 
 Let me fix the parser (grab `Video ID:`), and **check YouTube for the 15+ uploaded videos to recover their IDs** instead of re-uploading. The channel API can list recent uploads:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1962,16 +1965,19 @@ Let me fix the parser (grab `Video ID:`), and **check YouTube for the 15+ upload
 The uploads ARE live — 7+ visible (IMG_3898, 3900, 3902, 3901, 3899, 3897, 3888…). The IndexError is just my listing script hitting a video with no snippet (processing), not a problem with the uploads. So the batch uploaded everything that was converted at the time.
 
 Now the clean recovery path: instead of re-uploading (which would create duplicates), I'll **map the YouTube uploads back to manifest entries by title** ("La do Sitio — IMG_XXXX") and write the yt_ids in. Let me build that recovery + fix the parser for the remainder:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Recovery map built — 49 videos mapped by title, including 8 La do Sitio uploads (plus earlier farm videos like the Santa Anna one). Now let me write the yt_ids back into the manifest and fix the parser for the remaining conversions:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 16 yt_ids recovered into the manifest (all currently-converted videos that uploaded). Conversion at 16/72 — still running. Now fix the parser in the upload wrapper (grab `Video ID:` correctly) so the remaining ~56 videos capture yt_ids as they upload:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2178,4 +2184,73 @@ Nothing prod touched, nothing deleted. The pipeline is self-running again with c
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → echo '=== conversion ==='; wc -l /tmp/mp4_progress.txt; ls /tmp/mp4/*.mp4 2>/dev/null | wc -l; echo '=== yt_ids ==='; /opt/truesight_autopil; echo '=== all ffmpeg/convert procs ==='; ps aux | grep -E "ffmpeg|convert|mp4" | grep -v grep | head; echo '=== convert job 42362 alive? ===; echo '=== find the convert script/log ==='; ls -la /tmp/*.sh /tmp/*.log 2>/dev/null | grep -iE "convert|mp4|nohup" | head; echo '=== nohup o; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] [Handoff context — this Telegram topic (thread 17184) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Resume job is **re-converting IMG_3911 right now** (ffmpeg pid 64864 writing to IMG_3911.mp4). It deleted the corrupt file and is regenerating it — will continue through IMG_4041, verifying each outpu
+
+
+### 🤖 Autopilot
+
+Resuming — checking the repaired pipeline's progress:
+
+
+### 🤖 Autopilot
+
+⚠️ **Stuck again — same file, same ffmpeg pid (64864)** — IMG_3911 has been "converting" for ~15+ min and the progress count hasn't moved (19). The ffmpeg process is alive but not finishing. This suggests IMG_3911.MOV is a **problematic source** (not just a crash — it hangs). Let me check the ffmpeg CPU/elapsed and the source file:
+
+
+### 🤖 Autopilot
+
+False alarm — **it's actively converting, just slow**: ffmpeg elapsed 2:45, 120% CPU, output growing (52.7 MB and counting). The 65.96s source at 8.8 Mbps is a heavy encode on this t3.medium CPU; the earlier "stuck" read was because the previous turn's check caught it mid-encode (the resume job only started 3 min ago — it's on its first file). Elapsed 2:45 for a 66s video = ~2.5× realtime encode rate, so the remaining ~53 videos at this rate ≈ **~45–60 min** (some are 300 MB monsters like IMG_3908 which took 15 min alone).
+
+The pipeline is healthy — my "stuck" alarm was premature (same pid because it's the SAME conversion still running, and I misread the elapsed). Let me confirm the watch loop will pick up IMG_3911's upload once done, and converge:
+
+
+### 🤖 Autopilot
+
+IMG_3911 finished (progress 19→20, 59.8 MB valid output), and the watch loop will upload it next cycle (it polls every 2 min). The pipeline is genuinely healthy — my earlier "stuck" was a misread (caught it mid-encode on the first file of the resume).
+
+Converging with status — this is a natural pause point while the batch grinds through ~52 more videos (~45–60 min on this CPU).
+
+## ✅ Turn — pipeline confirmed healthy (false alarm resolved)
+
+### What happened
+1. **Investigated an apparent stall** — IMG_3911 had been "converting" across two checks with the same pid. Diagnosed properly:
+   - ffmpeg pid 64864: elapsed 2:45, **120% CPU, output growing 52.7→59.8 MB** → actively encoding, not hung.
+   - Source: 65.96s / 73 MB / 8.8 Mbps → heavy encode, ~2.5× realtime on this t3.medium CPU. The resume job simply started 3 min before my check.
+2. **IMG_3911 completed** ✅ — progress 19→20, valid MP4 (59.8 MB), GPS injected. Watch loop (cycle 29) will upload it within 2 min.
+3. **No failures** (`mp4_failures.txt` empty), corrupt file re-created cleanly.
+
+### Pipeline state
+| Job | Status |
+|---|---|
+| Conversion (verified resume) | 20/72, actively encoding (realtime-ish, big files slow) |
+| Upload watch loop | alive, cycle 29, picks up each new MP4 |
+| Manifest | 20/72 yt_ids (+1 pending upload) |
+
+Remaining ~52 videos ≈ **45–60 min** (some are 300 MB 4K sources).
+
+## RESUME HERE → next unit (~1 hr)
+1. **Conversion + uploads complete** → verify **72/72 yt_ids**, dupe check, confirm no failures.
+2. **Manifest PR** → `agentic_ai_context/FARM_MEDIA_MANIFESTS/la-do-sitio.json` (doc built at `/tmp/la_do_manifest_doc.json`) + index update.
+3. **Farm page wiring** — curated YouTube embeds into La do Sitio `media.json` (beta-first, prod on your go).
+4. **Cleanup** (on your confirm) — delete local raw after upload + manifest.
+
+The long batch is self-running and verified — no action needed until it completes. Next turn finalizes the manifest + wiring.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → status check (19/72, same ffmpeg pid — flagged stall); ps detail (elapsed 2:45, 120% CPU, output growing = healthy encode); ffprobe source (65.96s, 8.8 Mbps); waited 45s → IMG_3911 done (progress 20, 59.8 MB valid); confirmed watch loop cycle 29 alive, failures empty
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo '=== conversion ==='; wc -l /tmp/mp4_progress.txt; ls /tmp/mp4/*.mp4 2>/dev/null | wc -l; echo '=== yt_ids ==='; /opt/truesight_autopilot/.venv/bin/python3 -c "import json;d=json.load(open('/tmp/la_do_manifest_full.json'));print('with yt_id:', sum(1 for e in d if e.get('yt_id')), '/', len(d))"; echo '=== watch; echo '=== ffmpeg 64864 detail ==='; ps -p 64864 -o pid,etime,%cpu,%mem,stat,cmd 2>/dev/null; echo '=== is it progressing? sample cpu over 3s ==='; top -b -n 1 -p 64864 2>/dev/null | tail -2; echo '=== source IMG_3911 ==='; ls -la "/home/ubuntu/la_do_sitio_work/la do sitio/IMG_3911.MOV"; ffprobe -v error -show_entries format=duration,size,bit_rate -of default=noprint_wrappers=1 "/home/ubuntu/la_do_sitio_work/la do sitio/IMG_3911.MOV" 2>&1 | head -5; echo '=== output size now ==='; ls -la /tmp/mp4/IMG_3911.mp4 2>/dev/null; sleep 45; echo '=== IMG_3911 done? ==='; wc -l /tmp/mp4_progress.txt; ls -la /tmp/mp4/IMG_3911.mp4 2>/dev/null; echo '=== yt watch next cycle ==='; tail -2 /tmp/yt_upload_log2.txt; echo '=== uploads ==='; /opt/truesight_autopilot/.venv/bin/python3 -c "import json;d=json.load(open('/tmp/la_do_manifest_full.json'));print('yt_ids:', sum(1 for e in d if e.get('yt_id')))"
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo '=== conversion ==='; wc -l /tmp/mp4_progress.txt; ls /tmp/mp4/*.mp4 2>/dev/null | wc -l; echo '=== yt_ids ==='; /opt/truesight_autopil; echo '=== ffmpeg 64864 detail ==='; ps -p 64864 -o pid,etime,%cpu,%mem,stat,cmd 2>/dev/null; echo '=== is it progressing? sample cpu over 3s; sleep 45; echo '=== IMG_3911 done? ==='; wc -l /tmp/mp4_progress.txt; ls -la /tmp/mp4/IMG_3911.mp4 2>/dev/null; echo '=== yt watch next cycl
 
