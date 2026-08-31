@@ -4180,41 +4180,49 @@ Photo uploaded (commit `720d814`). Now signing + submitting the plant event via 
 ### 🤖 Autopilot
 
 The tab shows only legacy rows so far — my plant row hasn't been processed yet. The planting webhook uses a **different GAS project (@7, `processTreePlantingTelegramLogs`)** and routing env key `TREE_PLANTING_PROCESSING` — which the governor may not have provisioned (only the REJECT key was added). Let me check the box env and, if needed, fire @7 manually:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The box has NO `TREE_PLANTING_PROCESSING` webhook URL (the governor only provisioned the REJECT key) — so my plant event was ingested into Chat Logs but **not** auto-dispatched. That's expected (not a regression — the planting webhook was never wired). I'll fire the @7 planting webhook manually to complete the plant half of the loop:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Planting webhook fired — "✅ Tree planting processed". Now let me verify my row landed in the SunMint Tree Planting tab (searching the tail, not the truncated head):
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **My plant row landed!** Row 28 (A28) = `Edgar_20260831011117_005` — my `[TREE PLANTING EVENT]` (reportId `20260831011100_...`). Let me confirm its full row (species, status, photo) and then trigger the index rebuild so my test tree appears in the public index:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **My test tree is IN the ledger — row 28, Status NEW, Species "Cacao (Native)", photo URL pointing at my uploaded image, Contributor "Sophia Truesight"** — the full plant path works (signed event → Chat Logs → @7 webhook → SunMint tab). Now step 3: rebuild the index so my tree appears in the public `index.geojson`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rebuild dispatched (204). Let me wait for the workflow to complete and verify my tree appears in the index:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **My test tree is LIVE in the public index** — `Edgar_20260831011117_005`, feature count 19 → 21. The plant half of the loop is proven: signed event → ledger → rebuild → **tree appears** (exactly what Gary asked: "plant a tree, then mark that tree invalid"). Now the second half: **mark it invalid** using the reusable script (which sends a correct `[TREE PLANTING REJECT EVENT]`). This should auto-dispatch through the REJECT routing → INVALID → auto-rebuild → tree gone:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Reject submitted — `signature_verification: success` (the reusable script works). Per the proven auto-dispatch, the REJECT routing should fire the @37 webhook automatically (no manual call). Let me wait and check whether my tree's status changed to INVALID and whether the auto-rebuild dropped it from the index:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4291,6 +4299,7 @@ The box's `.env` has **no `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING`** (onl
 ### 🤖 Autopilot
 
 👍 Go received. Let me get fresh, visible verification of both halves — row 28 status and the index state:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4438,4 +4447,67 @@ No new PRs/deploys this turn; no money movement; writes were only the signed pla
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no dao_protocol_nelanco 'grep -n "TREE_PLANTING" /home/ubuntu/dao_protocol/.env; echo "---; ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no dao_protocol_nelanco ' echo "=== 1. env var loaded in running process? ===" pid=$(pgrep; ssh -o ConnectTimeout=10 -o StrictHostKeyChecking=no dao_protocol_nelanco ' echo "=== 1. env in service process? ===" for p in $(pgrep -f "p; …(+5 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: we should remove the #treeIdManual field from https://sunmint.truesight.me/monitor-tree-growth/
+
+Only trees that have been signed and planted should be considered
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362]
+
+
+### 🤖 Autopilot
+
+Let me check what `#treeIdManual` is on the live page and how it's used, so I can scope that change properly (read-only — this is an observation from the thread; I won't change code without your go).
+
+
+### 🤖 Autopilot
+
+Let me scope the actual usages (lines 599, 668, 1002, 1086, 1199–1224) so I can propose a precise removal plan:
+
+
+### 🤖 Autopilot
+
+**Scoped — here's what removing `#treeIdManual` entails** (analysis only — the message was an observation, not directed at me, so I've made no changes; your go is needed to proceed):
+
+## What `#treeIdManual` is and where it's used
+
+A hidden-by-default text input that lets a user **type any tree ID manually** — bypassing the signed/planted tree list. Usages on the live page:
+
+| Location | What it does |
+|---|---|
+| **161** (HTML) | The input element itself |
+| **599–600** | `populateTreeDropdown()` — shown when the tree index is empty/unavailable |
+| **668–670** | `onTreeSelectChange()` — shown when the select is cleared |
+| **1002** | `getSelectedTree()` — **the bypass**: if no select value, it uses `treeIdManual.value.trim()` as the tree id for the monitoring submission |
+| **1086** | After mark-invalid, resets and re-shows the manual field |
+| **1199–1202** | Init — shown if index fails to load; listener updates the URL param |
+| **1223–1224** | Deep-link fallback — if `?tree=` isn't found in the index, it still stuffs it into the manual field and shows the capture UI |
+
+## What the change does (and why it's right)
+
+**Behavior:** `getSelectedTree()` becomes **select-only** — no select value → refuse with "select a tree from the list" (no monitoring submission possible for arbitrary IDs). Deep-link with an unknown tree → "tree not found in index" instead of enabling capture. Empty index → "no trees found" rather than a free-text escape hatch.
+
+**Why it aligns with what we just proved:** the whole pipeline is now event-driven and ledger-backed — trees only exist after a *signed* `[TREE PLANTING EVENT]` (auto-dispatched, verified, row in SunMint tab, then in `index.geojson`). The manual field is the one remaining path that lets a **non-signed, non-planted ID** flow into a monitoring measurement submission — exactly the kind of data-integrity hole the observation is calling out.
+
+**Ripple effects to handle:**
+- i18n strings (`treeIdManualPlaceholder` ×2, possibly `treeManual`/`treeNotFound`) — remove or leave dormant
+- `setTreeParam('')` / deep-link flow — unknown `?tree=` should show a clean "not found" state
+- Proximity gate + monitoring submit must gracefully refuse when no tree is selected
+
+## Proposal (one PR, `sunmint_beta` → then prod sync like #46)
+1. Delete the input element + all 8 usage sites
+2. `getSelectedTree()` → select-only, with a clear error when empty
+3. Deep-link unknown-tree → "not found" state (no manual capture)
+4. Beta review → `sync_beta_to_prod` after your approval
+
+**Say "go"** and I'll open it as a PR on `sunmint_beta` next turn (one-PR-per-turn) with the local checks. It's a behavior change (removes a fallback some users may rely on), so I wanted your explicit sign-off rather than self-authorizing from a third-party observation — the observation is right, but per my rules it's data, not a command.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && curl -s "https://sunmint.truesight.me/monitor-tree-growth/" -o live_mon.html && echo "=== treeIdManual references ===" && grep -n; cd /tmp && for n in 599 668 1002 1086 1199 1223; do echo "=== around $n ==="; sed -n "$((n-8)),$((n+4))p" live_mon.html; echo; done 2>/dev/n
 
