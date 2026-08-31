@@ -4037,31 +4037,37 @@ Doing both — (a) filing the usage-logging gap in OPEN_FOLLOWUPS.md, and (b) lo
 ### 🤖 Autopilot
 
 Contribution logged (150 min). Now the OPEN_FOLLOWUPS entry for the usage-logging gap — let me add it under `## Pending` via PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ I need to check that — I passed an empty `writes` content which may have clobbered OPEN_FOLLOWUPS.md instead of appending. Let me verify the PR content immediately:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ **I clobbered OPEN_FOLLOWUPS.md** — my `writes` had empty content, wiping the file on the branch. Restoring immediately: pulling the full original from main and re-writing the branch with original + my new entry appended.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: the branch has a **0-byte** OPEN_FOLLOWUPS.md (138,734 bytes on main). Restoring the full original and appending my entry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Restored and pushed — the branch now has the full 138,734-byte original **plus** my new entry (139,930 bytes total). Let me verify the diff is exactly original + one appended entry, then merge PR #857:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff is exactly original + 13-line entry (there's a stray blank line I'll leave — harmless). Merging PR #857:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4113,6 +4119,7 @@ Diff is exactly original + 13-line entry (there's a stray blank line I'll leave 
 ### 🤖 Autopilot
 
 Explicit approval received — promoting both prod repos. Running the two syncs:
+[2 tool result(s) compacted: sync_beta_to_prod, sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4236,4 +4243,104 @@ Which would you like — the path to the doc, or shall I proceed with the establ
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== find FARM_MEDIA_PIPELINE on box ===" && find /home/ubuntu /opt/truesight_autopilot /tmp -iname "*FARM_MEDIA*" -o -iname "*media_pi; timeout 25 find /opt/truesight_autopilot -iname "*FARM_MEDIA*" 2>/dev/null | head; echo "---"; timeout 25 grep -rl "FARM_MEDIA_PIPELINE" /op
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] it is in the agentic_ai_context
+
+
+### 🤖 Autopilot
+
+Let me look again — maybe the filename differs slightly. I'll list the repo's files via the GitHub API to find anything with MEDIA or PIPELINE:
+
+
+### 🤖 Autopilot
+
+⚠️ **Critical issue spotted before I continue:** this fresh clone shows `OPEN_FOLLOWUPS.md` at **0 bytes** — the single cross-session backlog I filed #850 and #857 into. That should be ~139KB. Either my #857 restore silently failed or something wiped it. Let me investigate immediately — this is the file the rules call THE backlog (never clobber, never duplicate):
+
+
+### 🤖 Autopilot
+
+⚠️ **Incident: `OPEN_FOLLOWUPS.md` is 0 bytes on main** — the cross-session backlog is gone. This is the file the rules call THE single backlog. My #857 merge appears to have landed the empty-content version despite my "restore". I need to recover immediately — first, get the pre-merge content from the parent commit:
+
+
+### 🤖 Autopilot
+
+⚠️ **Confirmed: my merge commit `ec25176` DELETED all 1,937 lines of OPEN_FOLLOWUPS.md** (138,734 bytes → 0). The parent `545d901` still has the full content. My earlier "restore" verification was flawed — the branch showed 139,930 bytes, but the merge that landed (via the PR squash) used the empty `writes` content. This is a serious incident. I will fix it now: **restore the file from the parent commit** (which has the full 138,734-byte original) — I'll keep the #857 entry too since it's the only addition I intended. Let me do a proper restore:
+
+
+### 🤖 Autopilot
+
+The parent `545d901` has the full 138,734-byte original (without my #857 entry — that was the only thing I intended to add). The merge `ec25176` deleted the entire file. I need to restore the original AND add my entry back, then push a fix. Let me do this properly:
+
+
+### 🤖 Autopilot
+
+I have the full picture. **The incident:** my PR #857 squash-merge (`ec25176`) landed with an **empty** `OPEN_FOLLOWUPS.md` — my local "restore" verification was on the wrong branch and never made it into the merged PR content. The parent `545d901` has the full 138,734-byte original. Recovery plan: restore from parent + re-append my #857 entry, push as a fix branch, PR, merge. Executing now:
+
+
+### 🤖 Autopilot
+
+The file is restored: 139,513 bytes (138,734 original + 779-byte entry), the #857 entry present, and the old entries (podream-tech-followup, ## Pending) intact. Let me commit and push the fix branch, then open a PR and merge:
+
+
+### 🤖 Autopilot
+
+Branch pushed. Opening the PR via the autopilot PAT (the same path used for earlier PRs):
+
+
+### 🤖 Autopilot
+
+PR #859 opened. Let me verify the diff is exactly original + entry, then merge:
+
+
+### 🤖 Autopilot
+
+The diff is **exactly** original + the #857 entry (7 added lines: 1 blank + the 6-line entry) — the 1,937 lines of backlog are fully restored. Merging PR #859:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ⚠️ CRITICAL INCIDENT RESPONSE — what happened this turn
+
+**I discovered that my own PR #857 had silently DELETED `OPEN_FOLLOWUPS.md` — the single cross-session backlog — and I restored it.**
+
+### Timeline of the incident
+1. Governor asked to reference `FARM_MEDIA_PIPELINE.md` (not found — needs a pointer, still open)
+2. While searching, I found `OPEN_FOLLOWUPS.md` at **0 bytes** in a fresh clone
+3. Investigation: commit `ec25176` (#857 squash-merge) showed **1,937 deletions, 0 additions** — the entire file wiped. Root cause: my #857 PR's `writes` carried empty content (the exact mistake I thought I'd avoided — my "restore verification" earlier had checked the wrong branch and the empty-content version was what actually merged)
+4. Parent commit `545d901` still had the full **138,734-byte** original
+
+### The fix — PR #859 merged (sha `1a830427`)
+- Restored the full original from `545d901` + re-appended my intended #857 entry
+- **Verified diff: exactly +7 lines vs parent** (1 blank + 6-line `## [857]` usage-logging entry) — all 1,937 lines of backlog intact
+- PR #859 → https://github.com/TrueSightDAO/agentic_ai_context/pull/859 (title: "fix: restore OPEN_FOLLOWUPS.md (1,937 lines) deleted by #857 — re-append usage-logging entry")
+- Final file: 139,513 bytes, sanity-checked (podream entry + `## Pending` + `## [857]` all present)
+
+### What else was verified this turn
+- The **FARM_MEDIA_PIPELINE.md** doc still not found (searched agentic_ai_context, org-wide code search, box, farm-media-raw, sunmint, agroverse_shop_beta) — closest matches: `plans/FARM_SHIPMENT_MEDIA_JSON_PLAN.md` and `sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md`. **Still need a pointer from you.**
+
+## RESUME HERE →
+
+1. **Governor:** point me to `FARM_MEDIA_PIPELINE.md` (repo + path) OR say "proceed with established pattern" — I'll process the Rancho Maranta media per the doc (raw archive → farm-media-raw, web assets → shop, videos → YouTube, GPS → sheet).
+2. **Verify the restored backlog** — quick sanity: `OPEN_FOLLOWUPS.md` on main should be 139,513 bytes with all entries.
+3. **Lesson to file (self-improvement):** the empty-`writes` clobber pattern needs a guard in the autopilot tooling (reject `writes` with empty content on non-new files). I'll propose that as a small PR to truesight_autopilot next turn.
+
+**Note:** this incident directly contradicts my earlier "file intact" claim after #857 — I owe you a correction: the file was NOT intact; it is now, properly, via #859. The backlog survived only because the parent commit retained the content.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → fresh clone exposed 0-byte OPEN_FOLLOWUPS.md → git investigation (ec25176 = 1,937 deletions), restored from parent 545d901 + appended entry (139,513 B), committed `2579bdc`, pushed branch, opened PR #859 via PAT, verified +7-line diff, merged
+• `merge pr` → ✅ PR #859 on agentic_ai_context merged (sha: 1a830427a32c1793057da5b50238049aaf9fc771)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /tmp && rm -rf aac3 && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aac3 2>&1 | tail -1; cd aac3 && echo; cd /tmp/aac3 && echo "=== git log for OPEN_FOLLOWUPS.md (last 5) ===" && git log --oneline -5 -- OPEN_FOLLOWUPS.md; echo "=== size at HEAD =; cd /tmp/aac3 && echo "=== unshallow to see history ===" && timeout 90 git fetch -q --unshallow origin 2>&1 | tail -2; echo "=== parent of ec; …(+6 more)
+• `merge pr` → ✅ PR #859 on agentic_ai_context merged successfully (sha: 1a830427a32c1793057da5b50238049aaf9fc771). Pull Request successfully merged
 
