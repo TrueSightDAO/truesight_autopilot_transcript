@@ -1140,71 +1140,85 @@ No local object-detection lib installed yet (no torch/yolo) — so per your "loc
 ### 🤖 Autopilot
 
 Progress: **base manifest built (72 videos, sha256 + GPS EXIF + duration)**, frame extraction worked (IMG_3908 + IMG_4040 test frames OK; IMG_3891 doesn't exist — harmless, will pick another). YOLO install running in background. Now let me verify the manifest has good GPS coverage, and check the install progress:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GPS present but my parser key-check missed (`GPS Latitude` with space, not `GPSLatitude`) — data is there, parsing bug only. Install finished already (0 pip procs). Let me verify YOLO imports and run the accuracy test on the extracted frames:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 YOLO proven accurate on farm frames — detects people + objects (banana = likely cacao pods, COCO's closest class). Now the full pipeline: run detection across all 72 videos (3 frames each), fix the GPS parser, and build the complete manifest. Also converting one video to MP4 to validate the upload path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 YOLO over 72 videos × 3 frames exceeds the 60s ssh cap. I need to split into a background job (nohup) that writes progress, and poll it. Let me relaunch as a detached job with a status file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Blocked because the command pattern looked like a process kill (pkill) — a guard misfire; I wasn't restarting anything, just clearing my own timed-out job. Let me relaunch the YOLO job cleanly **without** any pkill (the old one died with the timeout anyway):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 YOLO job running in background (pid 35269). Let me poll progress and check when it completes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 12/72 done (~6s/video, ~6 min total). While it runs, let me kick off the MP4 conversion pilot on the first video to validate the YouTube upload path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 MP4 conversion of a 300 MB MOV is slow on this t3.medium CPU. Let me run it detached too, and check both background jobs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 30/72. Both jobs running. Let me wait for YOLO to finish and check conversion status:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 42/72 YOLO; MP4 pilot done (18.9 MB from ~13s clip → good ratio). Let me wait for YOLO completion and verify the converted MP4:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 58/72 — nearly done. MP4 verified: h264 1080×1920 (portrait), 12.98s, 20.2 MB. Let me wait for YOLO to finish:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 YOLO complete: **72/72 videos, 65 with GPS**, objects detected (person 60, banana 18 — likely cacao, car 5, apple 5, bird 4, etc.). Now let me run the real YouTube upload pilot on the converted MP4 (public, per your call) and verify the full manifest structure:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The full pipeline works end-to-end. Let me verify the video is actually live on YouTube and check whether a "banana" frame is really cacao (the accuracy question). Let me inspect the test video frame and confirm the upload:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Title didn't resolve (YouTube serving generic page — the video was just uploaded, needs a moment to propagate; the API confirmed success with ID jM4Y6Wq5fMc). My confidence-print had a bug (wrong attr). Let me verify the video is live + get object confidences correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1269,6 +1283,7 @@ When doing MOV - MP4, we must make sure not to loose the lat and long embedding
 ### 🤖 Autopilot
 
 Two sharp directives — both right. Let me lock them in and prove the critical one (GPS survival through MOV→MP4) empirically before scaling the batch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1374,4 +1389,69 @@ I'll continue autonomously on the batch completion + config PR unless you redire
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /home/ubuntu/la_do_sitio_work/la\ do\ sitio; echo '=== 1. ORIGINAL MOV GPS keys ==='; exiftool -s -G -GPSLatitude -GPSLongitude -Location; cd /home/ubuntu/la_do_sitio_work/la\ do\ sitio; echo '=== 1. ORIGINAL MOV GPS ==='; exiftool -s -G -GPSLatitude -GPSLongitude -Location IMG_; nohup bash -c 'cd "/home/ubuntu/la_do_sitio_work/la do sitio" && ffmpeg -y -v error -i IMG_3874.MOV -map_metadata 0 -c:v libx264 -preset ver; …(+12 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] B
+
+
+### 🤖 Autopilot
+
+"B" — remap to `cacao_pods` with a header note. Locked. Let me apply the remap to the manifest, check the batch conversion progress, and get the exact `api_only_repos` structure so I can add `farm-media-raw` to the config.
+
+
+### 🤖 Autopilot
+
+Manifest is a list, not a dict — let me check its actual structure and fix the remap:
+
+
+### 🤖 Autopilot
+
+It's a flat list of 72 video objects, and `objects` is a **list of labels** (not dict) — sample shows `['banana']`. Let me fix the remap accordingly (list of strings → swap banana for cacao_pods):
+
+
+### 🤖 Autopilot
+
+Remap applied — **18 videos** now carry `cacao_pods` (was `banana`), with the mapping note in the manifest. Let me check the `api_only_repos` structure (so I know exactly what the config PR looks like) and the batch progress, then converge:
+
+
+### 🤖 Autopilot
+
+Everything's clear now. The config has a clean `api_only_repos` list where `farm-media-raw` belongs (blob/asset store, Contents-API only — exactly matching your "only accessed via Content API" directive). The batch is at 5/72 and steady.
+
+Converging — here's the state:
+
+## ✅ This turn
+
+**1. Object remap (your "B") — applied**
+- Manifest `objects` now uses **`cacao_pods`** (18 videos), raw COCO label preserved via the header note: *"COCO-80 class 'banana' remapped to 'cacao_pods' (not in COCO-80; YOLOv8n ~77% conf)"*.
+- Full object summary across 72 videos: person 60, cacao_pods 18, car 5, apple 5, bird 4, hot dog 4, bench 2, backpack 2, cell phone 2, … (dog, cat, cow, horse, sheep, truck, bicycle, umbrella, etc. — the farmstead + a few indoor/home shots).
+- Manifest saved with self-sha `4be78ae4e6db`.
+
+**2. Config structure confirmed** — `farm-media-raw` slots perfectly into `api_only_repos` under "blob / asset stores (Contents-API uploads)" next to `sunmint` and `qr_codes`. Adding it = 1-line PR to `truesight_autopilot/app/config.py` (self-improvement PR, my own repo — allowed), then `create_repo(farm-media-raw, private)`.
+
+**3. Batch conversion** — 5/72 done, no errors, steady ~35s/video → full 72 ≈ **40–50 min** total. Pipeline verified: convert → inject `GPSCoordinates` → MP4 with GPS intact.
+
+## RESUME HERE → next units (autonomous)
+
+1. **Config PR** — add `farm-media-raw` to `api_only_repos` in `truesight_autopilot/app/config.py` → local tests (compileall/ruff/pytest per hard rule) → PR → merge → `deploy_autopilot` so the new repo is usable. *(This must land before repo creation.)*
+2. **Create repo** `farm-media-raw` (private, DAO) via `create_repo`.
+3. **Batch completes** → verify 72/72 MP4s have GPS (exiftool sweep) → **YouTube upload batch** (public, sha-deduped, titles/descriptions from manifest: GPS + objects + cacao_pods labels) → write `yt_id` back into manifest.
+4. **Photos → repo** — 52 La do Sitio HEICs under `la-do-sitio/photos/` (Content API, individual files), then the other farms' photos.
+5. **Manifest PR** to `agentic_ai_context` — the searchable index (sha256, GPS, duration, objects, yt_id) per farm; videos live on YouTube, photos in repo, everything keyed by farm id. GitHub code search makes objects/GPS keyword-searchable — answering your earlier question: **yes**.
+
+## ⚠️ Only question for you (non-blocking)
+- Repo name **`farm-media-raw`** confirmed, or prefer **`farm-media`**? (Private, DAO-owned.) Defaulting to `farm-media-raw` unless you say otherwise.
+
+I'll continue with the config PR + repo creation + batch completion autonomously. Nothing prod, no deletions, all additive.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → batch progress check (5/72); manifest remap banana→cacao_pods (18 videos) + note + resave (sha 4be78ae4e6db); read api_only_repos config block (lines 220–260); verified structure for the 1-line addition
+• `pin_note` — farm media plan pinned (videos→YouTube public + manifest JSON w/ GPS/objects/yt_id; photos→GitHub repo; SHA-256 dedupe; delete local after upload; pilot La do Sitio)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → echo '=== batch progress ==='; wc -l /tmp/mp4_progress.txt 2>/dev/null; tail -3 /tmp/mp4_progress.txt 2>/dev/null; cat /tmp/mp4_all_done.txt; /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json p='/tmp/la_do_manifest_full.json' d=json.load(open(p)) print('type:', type(; /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json from collections import Counter p='/tmp/la_do_manifest_full.json' d=json.lo; …(+1 more)
 
