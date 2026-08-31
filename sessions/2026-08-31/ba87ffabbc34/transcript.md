@@ -4116,16 +4116,24 @@ The generator currently **always writes an empty plots layer** — it doesn't re
 ### 🤖 Autopilot
 
 No "Plots" tab exists (range parse error = tab doesn't exist). Let me check what tabs exist and whether the plot data you entered is somewhere else:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet has planting events but I don't see plot data yet in the first columns. Let me check the generator's column mapping and whether any plots data exists further right in the sheet:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The generator already reads a **plot column** (`c_plot = idx(header, "plot id", "plot", "parcel", "site name", "site")`) and carries it into each tree's `plot_id`. But the last index build shows `plot_id: None` on all 21 trees — so either (a) the sheet has no plot column yet, or (b) the sheet has it but the index hasn't been rebuilt since. Let me check the full header row of the tree sheet:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4163,21 +4171,25 @@ Which is it — where did you record the plot assignments? Or shall I add the sh
 ### 🤖 Autopilot
 
 Let me check what actually exists for Rancho Maranata — searching the context, the tree data, and the sheets:
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No "Maranata" in the context files or the tree index. Let me search the repos and the sheets to see where Rancho Maranata lives:
+[2 tool result(s) compacted: search_code, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No "Maranata" anywhere in context, code, or the tree sheet so far. Let me check the rest of the sheet rows and the other spreadsheet for a Plots tab or Maranata references:
+[2 tool result(s) compacted: read_tool_result, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One more check — the session transcripts and handoffs (in case Maranata came through as an attachment or the Onaya handoff):
+[2 tool result(s) compacted: search_transcript, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4222,11 +4234,13 @@ https://beta.truesight.me/sunmint.html
 ### 🤖 Autopilot
 
 Let me look at what the live page actually shows and what data it's loading — I may have checked the wrong file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — **I was checking the wrong path.** The page fetches **`sunmint/plots/index.geojson`**, but I was checking **`sunmint/trees/plots.geojson`** — a different file! Let me check the actual file the page loads:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4273,26 +4287,31 @@ Want me to (a) formalize the plots pipeline (Plots tab → generator → `plots/
 ### 🤖 Autopilot
 
 Two workstreams: (1) formalize the plots pipeline + fix selector logic, (2) kill the file-path confusion permanently so no other Sophia/LLM instance trips over it. Let me gather the current state of all the relevant pieces first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 A plots pipeline **already exists** — `scripts/build_plots_geojson.py` + `rebuild-plots-index.yml` — which I didn't know about. That's the core of the confusion: **two plot files, two generators, no documented ownership**. Let me read the actual plots generator and workflow:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 A full plots pipeline already exists (`build_plots_geojson.py` + `rebuild-plots-index.yml` reading a **"SunMint Plots" tab**) — the confusion is the **duplicate plot file**: `plots/index.geojson` (real, curated) vs `trees/plots.geojson` (empty contract-only, written by the tree generator). Let me check which file the satellite cache reads and the exact selector render logic, then de-conflict:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full picture confirmed — and it exposes a **real bug from this exact confusion**: the **satellite cache script reads `trees/plots.geojson` (the empty file)**, not `plots/index.geojson` (the real registry) — so plot-level satellite caching has been silently doing nothing for RM-P1/RM-P2. This is exactly the class of error the "no future confusion" ask is about. Let me get the exact tree-generator block to patch cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed the full picture — and there's a **real bug caused by exactly this confusion**: the satellite cache script reads `trees/plots.geojson` (the empty duplicate) while the actual plot registry is `plots/index.geojson` — so plot-level satellite caching has been silently skipping RM-P1/RM-P2. Let me check the tree-index workflow before patching, then fix everything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4401,4 +4420,74 @@ The plots pipeline is now: **"SunMint Plots" tab → `plots/index.geojson` (sing
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /tmp && TS=$(date +%s) && echo "=== 1. does a plots generator exist? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/g; cd /tmp && TS=$(date +%s) && echo "=== 1. build_plots_geojson.py (full, head 120) ===" && curl -s "https://raw.githubusercontent.com/TrueSig; cd /tmp && TS=$(date +%s) && echo "=== 1. cache script: which plots path does it read? ===" && curl -s "https://raw.githubusercontent.com/Tr; …(+9 more)
 • `merge pr` → ✅ PR #845 on agentic_ai_context merged successfully (sha: 3701f380b54b8b88ffede522a1b8e0d3d364d77c). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Here's the turn report.
+
+## ✅ What I did this turn — plots pipeline formalized + confusion permanently killed
+
+**Two-part deliverable from your ask ("formalize the plots pipeline" + "no future confusi
+
+
+### 🤖 Autopilot
+
+Executing the resume units: (1) confirm the fixed cache now produces plot-level scenes (RM-P1/RM-P2), (2) verify the plot chips render on beta. First, try triggering the workflows and check the beta page state in parallel:
+
+
+### 🤖 Autopilot
+
+No GitHub token on the box for Actions, so I'll verify the pipeline locally instead — run the fixed cache script against the real plots file to confirm plot-level scenes are produced, and browser-check the plot chips on beta:
+
+
+### 🤖 Autopilot
+
+**The plot-level caching fix is proven live**: the fixed script now produces **`plot RM-P1: 4 scenes` + `plot RM-P2: 4 scenes`** (previously silently skipped). But I notice RM-P1/RM-P2 show `area: None` — the plots file has no `area_ha` despite the map showing "0.3 ha / 5.0 ha". Let me check the plot properties and the map's area rendering, then browser-verify the chips:
+
+
+### 🤖 Autopilot
+
+Map render code is correct (`hectares` field handled, `plot_id` used). Now the decisive browser check — do the chips actually render on beta with the real plots?
+
+
+### 🤖 Autopilot
+
+**Decisive verification complete — everything works on beta, zero errors.** Here's the report.
+
+## ✅ What I did this turn — plot pipeline verified live
+
+**1. Plot-level satellite caching — PROVEN FIXED** (the bug from the duplicate-path confusion):
+- Ran the fixed cache script against the **real plots registry** + live tree index
+- Output: **`plot RM-P1: 4 scenes` + `plot RM-P2: 4 scenes`** — previously this silently did nothing (it was reading the empty `trees/plots.geojson`)
+- Confirmed: script reads `plots/index.geojson` (default), guard refuses the dead path, 10 cells + 2 plots cached (40 scenes)
+
+**2. Plot chips render on beta — browser-verified (real Chromium):**
+- **2 chips**: "Rancho Maranta Plot 1 (house)" + "Rancho Maranta Plot 2 (family ~5 ha)"
+- **2 polygon overlays** on the map (RM-P1 + RM-P2)
+- **`plotSelector` visible** (flex)
+- **0 console errors · 0 page errors** — clean render
+
+**3. Data confirmation:** RM-P1 (0.3 ha, planted, approx boundary from photo GPS cluster) + RM-P2 (5 ha claimed / ~2.9 ha hull, proposed, walk-track boundary from 23 MOV clips) — both with honest `boundary_authority: "approx"` + `verified_at: null` flags.
+
+## 📌 RESUME HERE → next units
+1. **Trigger the workflows** (needs a GitHub token I don't have on-box — or you run Actions → workflow_dispatch): `rebuild-plots-index.yml` + `cache-satellite-scenes.yml` → commits the plot-level `satellite/plot_RM-P1/` + `plot_RM-P2/` scene sets to the repo (proven locally; the cron will do this automatically daily at 06:30 UTC too)
+2. **In Altamira**: upgrade RM-P1/RM-P2 boundaries from `approx` → verified (CAR/INCRA polygon or GPS walk) — fills `verified_at`; add any new plots to the "SunMint Plots" tab
+3. **Standing:** promote truesight_me_beta → prod (#318–#324) after beta review; `sunmint_prod` config line; test-row cleanup
+
+The plots system is now fully live and correct: **"SunMint Plots" tab → `plots/index.geojson` → map polygons + chips + plot-level satellite cache**, with the duplicate-path confusion fixed at code, README, and context-doc layers.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → checked workflows present (cache/plots/tree), no GH token on box for dispatch; fetched real plots registry (2 features RM-P1/RM-P2, hectares field, approx boundaries); ran fixed cache script against real plots → plot RM-P1/RM-P2 4 scenes each (bug fixed); read map chip render code (hectares + plot_id correct); browser-verified chips (2), polygons (2), selector flex, 0 errors
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/es_cache && TS=$(date +%s) && echo "=== 1. try workflow_dispatch ===" && grep -oE 'GH_[A-Za-z0-9_]+' /opt/truesight_autopilot/.env; echo "=== 2. workflows ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/.github/workflows"; curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geojson" -o plots_real.json && python3 -c "import json; d=json.load(open('plots_real.json')); [print(f['properties'].get('plot_id'), f['properties'].get('name'), f['properties'].get('hectares')) for f in d['features']]"; python3 cache_fixed.py --plots plots_real.json --out-dir /tmp/es_cache/sat_plotrun | tail -5; cat > verify_plots_chips.js << 'EOF' …; node verify_plots_chips.js → 2 chips, 2 polys, flex, 0 errors
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && TS=$(date +%s) echo "=== 1. try workflow_dispatch on sunmint (cache) via API ===" TOKEN=$(grep -oE 'GH_[A-Za-z0-9_]+' /opt/truesi; cd /tmp/es_cache && TS=$(date +%s) echo "=== 1. fetch the real plots registry + fixed cache script ===" curl -s "https://raw.githubuserconte; cd /tmp/es_cache && TS=$(date +%s) echo "=== 1. full RM-P1/RM-P2 properties ===" python3 -c " import json d = json.load(open('plots_real.jso; …(+1 more)
 
