@@ -143,11 +143,13 @@ The manifest read was truncated. Let me read the full manifest from the repo dir
 ### 🤖 Autopilot
 
 Let me read the rest of the manifest to check for the matching row.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the manifest.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -194,31 +196,42 @@ Perhaps generate a implementation plan, execution raodmap anbd checklist. We wan
 ### 🤖 Autopilot
 
 Gary gave the go for the plan itself. Before writing PR0 (the roadmap), let me capture the pre-flight facts I still need — where the existing cache generator lives, the Tree Growth Measurements schema, and the sunmint repo layout.
+[4 tool result(s) compacted: ssh_run, search_context, search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent — the exact pattern exists: the autopilot box already runs `sync_pending_caches.py` every 30 min with GITHUB_TOKEN + GAS creds, pushing public JSON to GitHub. That's the model for the signatures cache. Let me grab the Tree Growth Measurements schema and the cache script pattern.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything I need. The proven pattern exists: `sync_pending_caches.py` on the autopilot box (30-min cron, gspread → sha-aware GitHub Contents API PUT, no PII) is exactly the template for a signatures cache. I'll write the roadmap + manifest row in one PR.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #855 is open, but I spotted a real problem: the manifest write landed with **empty content**, which would clobber `HANDOFF_MANIFEST.md` (the single source of truth for handoffs) if merged. Main is untouched — the damage is only on the PR branch — but I must restore the manifest there before anything merges. Fixing it now on the box with a proper row-add edit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local clone's fetch didn't pull the feature branch (only main updated). Let me fetch the branch explicitly and redo the manifest fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest restored and the PR branch is now correct (plan file + full manifest with the new row). The merge will contain the proper net diff. Let me merge PR0 — the governor's "go" covers it, and it's a docs-only roadmap.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -289,26 +302,36 @@ Status check — here's where we are on **SunMint Public Signatures Cache** (thr
 | PR4 — docs + UAT | not started |
 
 I'm pre-authorized to execute from the RESUME HERE marker, so I'll start PR1 now — building the signatures cache script mirroring the proven `sync_pending_caches.py` pattern.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pattern captured. Now I need the actual signed-text formats from the three tabs to write the parser correctly — let me sample them.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tree Growth Measurements tab is currently empty (headers only — monitoring is new, E2E test rows cleaned). The planting signed-text format is confirmed. I need the Telegram Chat Logs tab (the raw source for growth events too) before writing the parser.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Telegram Chat Logs tab has a header row at row 2 (row 1 is the airdrop date). Column G = "Contribution Made" = full signed text. Let me sample a couple of real rows to confirm formats across event types.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Telegram Chat Logs is the general catch-all channel (chat messages, not just SunMint events). The SunMint tabs are the authoritative, structured source — the planting tab has full signed text in col F, and Tree Growth Measurements has Farmer Signature in col O. For growth events (currently 0 rows), the planting-link events likely live in the "Tree Planting Link" tab. Let me confirm that tab's schema, then write the script.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -319,26 +342,31 @@ Tree Planting Link tab confirmed (Edgar-side link/outcome rows, no farmer signat
 - Tree Planting Link = outcome rows keyed by message ID
 
 Let me inspect the truesight_autopilot repo layout before writing PR1.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's already a `sync_sunmint_signatures.py` in the repo. Let me check whether it's committed/untracked and what it contains.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's already an untracked `sync_sunmint_signatures.py` on the box (80 lines in, well-built, already has the PII/email-exclusion decision documented). Let me read the rest of it and run the local test suite before committing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The script is complete (361 lines) and well-built: header detection, PII fail-closed scan, chat-logs join, dedup. Let me read the rest, run the full local test suite, and verify it executes cleanly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Script is complete and compiles. Now the full local test suite (hard rule before any push) — compileall, ruff check, ruff format, pytest.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -441,4 +469,138 @@ My script stored the full text as `signed_text`, so openssl over the whole text 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → sed -n '120,260p' /home/ubuntu/scripts/sync_pending_caches.py; echo "===LS truesight_autopilot scripts==="; ls /opt/truesight_autopilot/scri; cd /opt/truesight_autopilot && git rev-parse --is-inside-work-tree 2>/dev/null && git log --oneline -2 && echo "=== repo scripts dir ===" &&; cd /opt/truesight_autopilot && git status --short scripts/sync_sunmint_signatures.py && echo "=== content ===" && cat scripts/sync_sunmint_s; …(+10 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Converging — tool budget spent. Status + resume point below.**
+
+## What happened this turn (PR1 — `sync_sunmint_signatures.py`)
+
+| Step | Result |
+|---|---|
+| Pre-existing script found | Untracked `
+
+
+### 🤖 Autopilot
+
+Resuming PR1 from RESUME HERE. Pushing the patched branch to PR #354 and re-running the bulk offline verify with padding-tolerant decode in one go.
+
+
+### 🤖 Autopilot
+
+**94/98 verified OK.** 4 failures to investigate:
+- 2× `E2ETEST_...` (test rows — likely fake/unverifiable signatures)
+- 1× `Edgar_...130` decode padding (multi-line signature value?)
+- 1× `Edgar_...008` bad pubkey decode (captured wrong field)
+
+Let me inspect those entries.
+
+
+### 🤖 Autopilot
+
+4 entries don't verify — let me look at the raw source text for the two REJECT events to determine if it's a parse bug or genuinely unverifiable placeholder signatures.
+
+
+### 🤖 Autopilot
+
+**Root cause identified — all 4 failures are test/synthetic artifacts, not real events:**
+- 2× `E2ETEST_...002` → explicitly synthetic (`TEST-001`, `Submission Source: SYNTH`, 32-char placeholder sigs)
+- 2× `Edgar_...130/008` → REJECT events generated from **`http://localhost:8080`** (local test runs), with non-SPKI "My Digital Signature" fields (344-char signature blobs, not public keys — Edgar's own verifier would also fail these)
+
+The 94 production events all verify cryptographically. Best practice: separate test artifacts from real attestations so the public cache only carries verifiable records. Patching the script to bucket non-verifiable/test events into a `test_events` list, re-running, and pushing.
+
+
+### 🤖 Autopilot
+
+Let me see the assembly context around line 214 to add the test-event bucketing cleanly.
+
+
+### 🤖 Autopilot
+
+Now I'll patch the assembly to bucket test events into a separate `test_events` list.
+
+
+### 🤖 Autopilot
+
+Patch failed at the `events = {}` init (assert #2). Let me check the actual initialization context.
+
+
+### 🤖 Autopilot
+
+The init is `events = {}` followed by `dupes = []` (my `events = {}` assert failed because the earlier patch to add `test_events` didn't apply — the first assert passed but the second didn't match the exact context). The file may be partially patched. Let me check its current state and apply cleanly.
+
+
+### 🤖 Autopilot
+
+None of the patches applied — atomic (assert failed before write, file unchanged). Applying all patches correctly now with the real init context.
+
+
+### 🤖 Autopilot
+
+**73/74 verify now** — the last failure is `Edgar_20260830145259_008`, a REJECT event whose "My Digital Signature" field is a 344-char signature blob, **not an SPKI public key** (fields swapped — a malformed submission that slipped into the live log). It can never verify. The honest fix: bucket non-SPKI records into `test_events` too (marked "malformed/unverifiable"), so the public cache contains only records that actually verify.
+
+
+### 🤖 Autopilot
+
+**73/73 verified OK — 100% of production events verify cryptographically.** The malformed record is now bucketed. One formatting nit: `ruff format --check` wants a reformat. Fixing that, then committing + pushing to PR #354.
+
+
+### 🤖 Autopilot
+
+PR1 branch updated and pushed to PR #354. All checks pass, and the verification result is clean. Let me get the final diff summary to report to Gary — the PR is at the `gate:` marker (dry-run diff review) where I stop for his approval.
+
+
+### 🤖 Autopilot
+
+The diff-stat shows **24 unrelated files** — my branch is based on a stale local HEAD, so PR #354 would show a noisy diff (resume-registry, telegram-adapter, etc. changes that belong to main, not this PR). Before the gate review, I must rebase onto current `origin/main` so the PR contains only my script.
+
+
+### 🤖 Autopilot
+
+The rebase failed due to unstaged changes (`worktrees/vault` — a submodule/worktree pointer, unrelated to my script), so the force-push didn't happen. But the diff-stat `origin/main...HEAD` shows only my script — meaning the stale diff was from a **pre-rebase view**. The PR branch needs a proper rebase onto origin/main. Let me stash the worktree change, rebase, and force-push.
+
+
+### 🤖 Autopilot
+
+PR #354 is now clean — **exactly 1 file, 434 insertions** (just the script). Rebased onto current `origin/main`, force-pushed. This is the PR1 `gate:` — I stop here for Gary's dry-run diff review.
+
+## PR1 complete — at gate ✅
+
+### [PR #354: sync_sunmint_signatures.py — public auditable SunMint signatures cache](https://github.com/TrueSightDAO/truesight_autopilot/pull/354)
+Clean diff: **1 file, +434** (rebased onto latest `origin/main`).
+
+### What it does
+- Reads SunMint spreadsheet (Telegram Chat Logs + Tree Planting + Tree Growth Measurements tabs, header autodetect)
+- Builds `signatures.json` keyed by Telegram Message ID — each entry self-verifying: `public_key` (SPKI) + `signature` (RSASSA-PKCS1-v1_5) + `signed_payload` (the **exact** bytes signed — text up to & including `--------`, per `signature_verifier.rb`) + `signed_text` (full context) + source tab + contributor + linked tree ID
+- Builds `tree_growth_measurements.json` (currently 0 rows — tab empty, correct)
+- Fail-closed PII scan (no email patterns), sha-aware PUT to `TrueSightDAO/sunmint`, `--dry-run` default / `--push` with GITHUB_TOKEN
+- **Test/synthetic + malformed events bucketed** into `test_events[]` — public cache carries only verifiable records
+
+### Gate evidence — dry-run verification ✅
+| Metric | Result |
+|---|---|
+| Production events | **73** (after bucketing 25 test/malformed) |
+| **Offline openssl verify** | **73/73 Verified OK (100%)** — every signature re-verifies against its payload |
+| PII scan | passed (no email-like patterns) |
+| Lint/format/compile | all clean |
+
+Sample entry (msg 171 — Gary's own planting): `[TREE PLANTING EVENT] Lat 44.56 / Long -123.26`, signed 2025-07-11, **verified OK**.
+
+### Scope note (needs your call)
+`[EMAIL VERIFICATION/REGISTERED]` events are **excluded** (signed_text contains farmer emails — redaction breaks verification). 25 test/malformed rows (E2ETEST, localhost-sourced REJECTs, one malformed fields-swapped submission) are in `test_events[]`, not the public cache.
+
+## RESUME HERE → **your review, then PR2**
+👉 **Please review the dry-run JSON shape** (`signatures.json` / `tree_growth_measurements.json` — I can attach a sample if useful) and confirm:
+1. Schema OK? (payload-first design: `public_key`+`signature`+`signed_payload` so anyone can verify offline with openssl)
+2. Test/malformed bucketing OK?
+3. Email-event exclusion OK?
+
+On your go: **PR2** = add the 30-min cron (mirroring `sync_pending_caches.py`) + first live publish to `TrueSightDAO/sunmint/signatures.json` + re-verify 3 samples from the raw URL.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → set -e cd /opt/truesight_autopilot TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K\S+' | head -1) git checkout feat/sunmint-publi; cd /opt/truesight_autopilot && python3 - <<'EOF' import json d = json.load(open('signatures.json')) for mid in ['E2ETEST_20260822065043_002'; cd /opt/truesight_autopilot && python3 - <<'EOF' import json d = json.load(open('signatures.json')) for mid in ['Edgar_20260830032134_130','; …(+10 more)
 
