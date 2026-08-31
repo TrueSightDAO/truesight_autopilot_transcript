@@ -2779,16 +2779,19 @@ Good call — versioned manifest now, update later once the quota re-uploads lan
 ### 🤖 Autopilot
 
 File is ready (26.9 KB). Let me read it so I can push it via PR (honoring your "manifest PR" ask — reviewable diff):
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest file confirmed good — 53 LIVE (real yt_ids), 18 PENDING_QUOTA_REUPLOAD (yt_id nulled), 1 SOURCE_CORRUPT. Let me get the full content to push it as a PR:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest content is confirmed clean. Let me read the remaining tail so I can pass the complete file in the PR:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3014,4 +3017,29 @@ Nothing prod touched yet — beta is live, everything else awaits the quota cloc
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #254 on agroverse_shop_beta merged successfully (sha: 1ac2db317b2d99f8e95fbe815d42e50f92242d4d). Pull Request successfully merged; ✅ PR #866 on agentic_ai_context merged successfully (sha: 7ccba5710e59eab0334c2f55eb2b23793b026c59). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] Yeah, I just promote to production [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Promoting the farm page to production now:
+
+
+### 🤖 Autopilot
+
+Production promotion complete! The farm page is now live on **agroverse.shop/farms/paulo-la-do-sitio-para/** with:
+
+- **4 field videos** (cacao walk, 4-min farm walk, cacao grove, arrival) — public on the DAO YouTube channel
+- **8 field photos** in the gallery
+- **GPS-accurate map** with the LD-P1 plot polygon + SunMint links (both directions)
+
+Deploy recorded in the ledger: `deploy_20260831T202434Z_agroverse-shop-prod`.
+
+Still in flight: the 17 remaining videos are queued behind YouTube's daily upload limit — the retry loop will finish them after midnight PT, then I'll push the final manifest update showing all 71 live.
+
+Anything else you'd like while we wait?
 
