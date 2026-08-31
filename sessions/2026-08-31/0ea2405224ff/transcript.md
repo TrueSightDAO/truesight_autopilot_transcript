@@ -2079,6 +2079,7 @@ Two remaining: line 586 has a leftover `mapPaulo` in a `.addTo(mapPaulo)` (the t
 ### 🤖 Autopilot
 
 Page HTML is fully transformed. Now let me create the media.json (hero photo + gallery with our 10 images; YouTube slots to be filled after upload) and copy the images into assets:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2136,36 +2137,43 @@ The page is fully built and verified locally — the next turn just needs to pus
 ### 🤖 Autopilot
 
 Go received — pushing the Rancho Maranta farm page PR now. The page, media.json, and 10 images are built in `/tmp/agb`; let me verify the working tree is still there and push via git_push_changes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 12 files ready in the working tree (10 images + page + media.json). Before pushing, let me check how Santa Anna is wired into the farm listings so Rancho Maranta joins the same navigation/cards:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the exact Santa Anna entries in all three files so I can mirror them for Rancho Maranta:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the exact patterns. Let me wire Rancho Maranta into all three listing files (farms-data.js, brazilian-path/index.html, brazilian-path-data.js), mirroring Santa Anna:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three listings wired (farms-data.js: 2 refs, brazilian-path-data.js: 3, brazilian-path/index.html: 4 — data entry + journeyOrder + card). Let me syntax-check the JS files and validate the HTML, then push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 14 changes staged in the working tree, JS validated. Now pushing — since the page includes **10 binary JPEGs** that `git_push_changes` can't carry as content strings, I'll commit + push the feature branch directly from the clone (beta repo, reviewable PR, not a main push):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed with all 15 files (15 = 10 images + page + media.json + 3 wired listing files). Now let me open the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2321,4 +2329,98 @@ The page is now **live** — Pages built at 03:11:44Z from commit `8f0a62b` (exa
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp/agb 2>/dev/null && echo "=== README SEO section ===" && grep -n -i "seo\|change_log\|keyword" README.md | head -20 || echo "no READM; cd /tmp/agb && git fetch origin main -q 2>&1 | tail -1 && git log --oneline -3 origin/main && echo "=== deploy workflow ===" && ls .github/w; cd /tmp/agb && echo "=== branches ===" && git ls-remote --heads origin | head -20 && echo "=== README deploy section ===" && grep -n -i "dep; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn
+
+**Verified the Rancho Maranta page is LIVE on beta — the earlier 404 was just Pages deploy lag.**
+
+**Diagnosis:** merge `8f0a62b` landed on main → GitHub Pages rebuilt at **03
+
+
+### 🤖 Autopilot
+
+Go received — next unit: **SEO sheet row for the Rancho Maranta page** (one row per shipped URL in `Change_log` + keyword targets, per the shop README rule). Let me read the SEO workflow doc and check the market_research script:
+
+
+### 🤖 Autopilot
+
+The context doc doesn't exist in agentic_ai_context (README points to it but it's missing), and the script search came up empty. Let me search more broadly for the SEO scripts and workflow:
+
+
+### 🤖 Autopilot
+
+The SEO scripts aren't in the searched repos. Let me check the market_research repo directly and look at the SEO sheet structure:
+
+
+### 🤖 Autopilot
+
+The SEO sheet exists with the exact schema (Change_log: changed_date, author, site_area, change_type, url_or_path, summary, link_pr_or_commit, expected_impact). The README referenced `market_research/scripts/seo_workbook_append.py` — let me check that repo for the append script and whether a write path exists:
+
+
+### 🤖 Autopilot
+
+No market_research checkout on the box, and the script isn't in the indexed repos. Let me check the market_research repo directly and look for any SEO append tooling:
+
+
+### 🤖 Autopilot
+
+The market_research repo moved (301). Let me find the canonical SEO workflow reference and check what SA can write the SEO sheet:
+
+
+### 🤖 Autopilot
+
+No SEO append script exists on the box or in the indexed repos (the market_research repo moved/renamed — the README's script reference is stale). The `google_credentials.json` SA on the box is `agroverse-market-research@get-data-io...`. Rather than guess a write path, let me check which service accounts can see the SEO sheet, and whether the Cypher-Defense default SA (used by read_google_sheet) has write access:
+
+
+### 🤖 Autopilot
+
+Both tabs readable with the agroverse_market_research SA (same account as the box's `google_credentials.json`). The README's referenced script (`market_research/scripts/seo_workbook_append.py`) is stale — repo moved and no copy on the box. The governor's go authorizes the SEO row, so I'll append directly via gspread with the box SA (write scope), one Change_log row + one keyword target:
+
+
+### 🤖 Autopilot
+
+oauth2client isn't installed in system python — but the builders ran fine earlier, so gspread must be in a venv. Let me find where gspread lives and how the tree builder invokes auth (probably `google.oauth2` instead):
+
+
+### 🤖 Autopilot
+
+The builders use `google.oauth2` (not oauth2client) — available in `/usr/bin/python3`. Let me run the append script with the correct auth:
+
+
+### 🤖 Autopilot
+
+Both rows appended. Let me verify they landed correctly in the sheet:
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**SEO registration for the Rancho Maranta page is done — both sheet rows verified live.**
+
+**1. Reconciled the SEO workflow** — the shop README's `SEO_MONITORING_SHEET_WORKFLOW.md` (agentic_ai_context) and `market_research/scripts/seo_workbook_append.py` are both **stale/missing** (repo moved, no copy on box). The sheet itself is the source of truth — schema confirmed: `Change_log` (changed_date, author, site_area, change_type, url_or_path, summary, link_pr_or_commit, expected_impact) + `Keywords_targets` (keyword, intent_cluster, priority, target_url, notes, dfs_search_volume). The `agroverse_market_research` SA (same as box's `google_credentials.json`) can read+write it.
+
+**2. Appended both rows** (via gspread + `google.oauth2`, write scope, the same auth pattern the builders use):
+- **`Change_log!A14:H14`** — one row per shipped URL (per README rule): `new_page` / `https://www.agroverse.shop/farms/rancho-maranta-para/` / summary / PR #229 / expected impact. Verified present with correct values.
+- **`Keywords_targets!A66:F66`** — "amazon cacao farm" → Rancho Maranta URL, priority medium, notes. Verified.
+
+**3. No PR this turn** — sheet writes only, so nothing to merge.
+
+## RESUME HERE →
+
+1. **Governor reviews beta page** → https://beta.agroverse.shop/farms/rancho-maranta-para/ → if good, **explicit approval** → `sync_beta_to_prod(agroverse_shop_prod)`.
+2. **YouTube upload (blocked on creds)** — 26 MOV clips need OAuth creds (`youtube_credentials.json`/`youtube_token.json`); then slot videoIds into `media.json` → small PR.
+3. **Prod promotion stack** (both need explicit approval): `agroverse_shop_prod` (Rancho Maranta page) + `truesight_me_prod` (sunmint impact map #325–#329).
+4. **Follow-up to file** (gaps I couldn't fix myself): the stale `SEO_MONITORING_SHEET_WORKFLOW.md` + missing `seo_workbook_append.py` — worth an OPEN_FOLLOWUPS.md entry so the next agent doesn't re-derive the write path (the README rule already worked, just the tooling references are dead).
+
+**Want me to file that OPEN_FOLLOWUPS entry (one PR, small)?** It's the kind of gap the self-improvement loop wants captured — the SEO append path is now known-working (gspread + google.oauth2 + agroverse_market_research SA) and should be documented for future ships.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → ls /home/ubuntu/creds/ 2>/dev/null && echo "=== find any seo scripts on box ===" && find /opt /home/ubuntu -name "*seo*" -o -name "*workbook; cd /tmp && cat > append_seo_rancho.py <<'PYEOF' import json, sys import gspread from oauth2client.service_account import ServiceAccountCrede; echo "=== find gspread in venvs ===" && for py in /opt/truesight_autopilot/.venv/bin/python3 /home/ubuntu/.local/bin/python3 $(which python3; …(+1 more)
 
