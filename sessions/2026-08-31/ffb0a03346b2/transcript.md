@@ -8,117 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-Let me check a few more things: whether the movie landed anywhere, whether ffmpeg is available for frame extraction, and whether there's any runbook/template for these site-visit PDFs.
-[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check the uploads directory and look for any vision tooling, plus check git history for how site visits were filed previously.
-[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The movie did not land on the box (only the 3 JPGs arrived — I'll flag that). Let me get the full git history of fda_fsvp to see how prior site visits were filed, and run OCR on the remaining two images.
-[2 tool result(s) compacted: ssh_run, ocr_image — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check if there's a script that generates these site-visit PDFs, and whether the grok vision client is available on the box for image analysis.
-[3 tool result(s) compacted: search_code, search_code, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-There's a `grok_client.py`. Let me look at how it's used for vision analysis and see if there's an existing PDF-generation template for these FSVP documents.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have a `grok_analyze_images` function available. Let me run it against the 3 site-visit images to get vision descriptions, since OCR found no text (these are likely photos of the farm).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The vision analysis worked. Now let me search for the farm's location data (for the geo fields) and do one more sweep for the movie file.
-[2 tool result(s) compacted: web_search, ssh_run — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
-
-
-### 🤖 Autopilot
-
-Converging now — here's the full picture.
-
-## How previous farm site visits were filed
-
-**Location:** `fda_fsvp/suppliers/<supplier>/` — committed as PDFs directly to the repo (git history shows commits like *"CEPOTX Paulo farm inspection document"*, *"cleide farm inspection document update"*, *"FDA site inspection for exporter Black King for farm Jesus Do Deus"*).
-
-**Naming convention:** `YYYYMMDD_<Supplier>_site_visit_to_<farm>.pdf` (e.g. `20240702_CEPOTX_site_visit_to_cleide_farm.pdf`, `20250908_Black_King_sitevisit_to_jesus_do_deus_Farm.pdf`).
-
-**PDF structure** (7 pages in the CEPOTX ones, 4–5 in the Black King 2025 ones):
-- Header: "CEPOTX site visit <date> / This document established record for FSVP compliance requirements of our site visit to CEPOTX facility"
-- **Supplier and visit dates**: Supplier name visited, Site name (farmer), Date
-- **Facilities visited**: 1 cacao farm / 1 fermentation facility / 1 drying facility
-- **Facility A/B/C** — each with **Geo location** (Latitude / Longitude / Google Map link)
-- **Observations table** (Visual Observation | Remarks) covering the standard FSVP hazard set: microbial contamination (salmonella), insect infestation, foreign objects, undesirable fermentation, non-cacao materials in fermentation, pesticide/chemical contamination, mold from improper drying, foreign objects during drying/sorting, cleaning-agent residues
-- Signed: *"Sincerely, Zhiwen Teh, President, TrueTech Inc (EIN: 88-3411514), admin@truesight.me, +1 415 300 0019"*
-
-**DAO event:** there is **no "site visit" event** in Edgar's catalog — filing = the PDF in `fda_fsvp` (plus updating `suppliers/cepotx/entity.json` `source_farms` if we add Santa Anna as a sourced farm).
-
-## The 3 images (analyzed via Grok vision — OCR/QR found nothing)
-
-| Photo | Content |
-|---|---|
-| `36d96f…fb.jpg` | Man in teal polo in a large open-sided **wooden drying shed** with cacao beans spread on the floor; corrugated roof; banana + cacao trees outside |
-| `3731b1…df.jpg` | Close-up of a **cacao tree trunk with three ripening yellow-orange pods** |
-| `64f9bb…ed.jpg` | Same man leaning over an open **wooden fermentation box**, pointing at a small wooden device on the lid |
-
-These map cleanly onto the three facilities in the template (drying shed / farm / fermentation) — good evidence photos for the PDF. No EXIF GPS in any, so geo-location can't be auto-filled.
-
-## ⚠️ The movie did NOT land
-
-Only the 3 JPGs arrived on the box — I searched the whole filesystem for new video files (mov/mp4/avi/mkv/3gp since Aug 29) and found none (the `founder_haus*.mov` files are from Aug 28 and unrelated). **Frame extraction can't happen until the movie is re-sent.** ffmpeg IS installed, so once it arrives I can extract frames and pick the best ones.
-
-## What I need from you to build the PDF
-
-1. **Re-send the movie** (it didn't come through)
-2. **Visit date** (for filename + header)
-3. **Farm geo-coordinates** (or confirm I should pull Santa Anna Fazenda from Google Maps — web search confirms CEPOTX operates in Altamira/Pará, ~150 member families, but no exact Santa Anna coordinates found)
-4. **Farmer/site owner name** (Jedielcio introduced it — is he the owner, or a different person?)
-
-## Proposal for agentic_ai_context instructions
-
-Yes — I recommend adding `SITE_VISIT_FSV_PROCESS.md` to agentic_ai_context documenting: the repo location, filename convention, PDF template structure (the 9 observation rows + signature block), geo-location requirement, entity.json update, and the movie-frame-extraction workflow. Small, focused PR to `agentic_ai_context` — I can open it once you green-light (it's a "go" on the plan).
-
----
-
-**RESUME HERE** — Next turn: (1) confirm whether the movie re-send arrived and run ffmpeg frame extraction on it; (2) get visit date + coordinates + farm owner name from Gary; (3) generate the `YYYYMMDD_CEPOTX_site_visit_to_santa_anna_farm.pdf` in the established template (draft PDF via generate_pdf with the 3 photo descriptions as observation evidence); (4) PR it into `fda_fsvp/suppliers/cepotx/` and update `entity.json` `source_farms`; (5) optionally open the `SITE_VISIT_FSV_PROCESS.md` runbook PR to agentic_ai_context.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×15 → ls -la ~ 2>/dev/null | head -50; echo "---"; ls ~/fda_fsvp 2>/dev/null; ls ~/TrueSightDAO 2>/dev/null; ls ~/workspace 2>/dev/null; find / -m; ls -lat /tmp/tg_attachments/ | head -25; echo "=== recent files by mtime ==="; find /tmp/tg_attachments -maxdepth 1 -type f -newermt "2026-0; find /tmp/tg_attachments -maxdepth 1 -type f \( -iname "*.mov" -o -iname "*.mp4" -o -iname "*.avi" -o -iname "*.mkv" -o -iname "*.m4v" \) -n; …(+12 more)
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
@@ -5464,51 +5353,66 @@ Both uploaded. Now I need to add them to `youtube_videos.json` and the farm page
 ### 🤖 Autopilot
 
 Formats confirmed. Adding the 2 new entries to both registries (youtube_videos.json full entries, media.json gallery youtube items). Also including the 3 ambient videos as entries with `upload_recommended: false` per the runbook's dedupe/registry practice — no, keeping it scoped: just the 2 uploaded ones.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The JSON structure differs from my guess (likely the file has the entries in a different format/order, or the entries are nested differently). Let me read the actual tail of the file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is a flat dict with 71 keys; the Santa Anna entries are present but not at the tail (sorted/mixed). The edit failed because my search assumed adjacency. Let me use the python path — modify the JSON in place and push via git_push_changes with a targeted edit on the last entry, or better: read the file, add entries via python, write back, then commit. Simplest robust route: use the Contents API for youtube_videos.json (single-file data write) and a separate edit for media.json. Actually, let me just do the proper PR via git_push_changes with a python-generated full-file write.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed. Now opening the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 gh is confused about the current branch. Let me check the branch state and use --head.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local `gh` CLI lacks PR-creation permission — but the git_push_changes tool has org credentials. Let me use the sanctioned tool path: create the PR via git_push_changes (it knows the repo is pre-authorized), pointing at my already-pushed branch.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 git_push_changes needs content to push (it can't open a PR for an already-pushed branch alone). The files are already committed on the branch — I'll push the media.json edit via the tool with a tiny no-op edit to trigger PR creation, or simpler: use the upload path. Actually, cleanest: make the tool push both files (it'll create its own branch — but the branch already exists with identical content, so let me just open the PR through the tool with the edits, letting it commit onto the existing branch).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool searches against main's state (my branch is already pushed but no PR exists). Let me get the exact bytes of main's `youtube_videos.json` entries so I can craft precise edits from main's state.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have main's exact bytes. Let me craft the git_push_changes PR with precise edits against main's state — inserting after the IMG_7741 block in youtube_videos.json and after the last youtube item in media.json.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool's clone is out of sync with my earlier manual push (same branch name, divergent commits). Let me reconcile: reset my local `asb_check` branch to what the tool will build from, or simpler — delete the remote branch and let the tool create it fresh. Let me delete the remote branch first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5683,4 +5587,55 @@ All 5 images on the branch. Merging PR #249 to complete Option A's photo leg.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → echo "=== beta media.json gallery video IDs ==="; curl -s "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/media.json" | /opt/true; cd ~/santa_anna_new && mkdir -p /tmp/sa_rem && rm -f /tmp/sa_rem/*.jpg; for f in IMG_7702 IMG_7703 IMG_7708 IMG_7709 IMG_7710 IMG_7712 IMG_7; export GROK_API_KEY=$(grep -oE 'GROK_API_KEY=.*' /opt/truesight_autopilot/.env | head -1 | cut -d= -f2-); cat > /tmp/grok_batch.py << 'PYEOF; …(+1 more)
 • `merge pr` → ✅ PR #249 on agroverse_shop_beta merged successfully (sha: 7ac8ae6b7a46fa6ff3078daed7af0cdf98f23a49). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Done this turn — Option A fully executed
+
+### 🎬 Videos (verified live on beta)
+| Check | Result |
+|---|---|
+| Gallery on beta | **14 items** — 9 images + **5 YouTube** ✅ |
+| Video IDs | Rr0QOztkF
+
+
+### 🤖 Autopilot
+
+👍 Go received — verifying the expanded gallery (19 items) on beta after the Pages deploy.
+
+
+### 🤖 Autopilot
+
+Live immediately — deploy already completed. Let me confirm the 5 new image assets serve, then report.
+
+
+### 🤖 Autopilot
+
+## ✅ Verified live on beta — expanded gallery confirmed
+
+| Check | Result |
+|---|---|
+| Gallery | **19 items — 14 images + 5 YouTube** ✅ (last-modified 18:17:05, deploy already done) |
+| New assets | IMG_7708/7710/7712/7739/7746 — all **HTTP 200**, correct sizes (498–647 KB) ✅ |
+| Farm page | HTTP 200 ✅ |
+
+The Santa Anna farm page gallery now tells the full story: **14 photos** (facility shots + people/family + orchard/fermentation/drying/landscape) + **5 videos** (pods, fermentation, drying, buyers visit, Viva cheers).
+
+---
+
+**RESUME HERE → next unit:**
+1. **Your eyeball** — beta.agroverse.shop/farms/santa-anna-fazenda-para/ → 19-item gallery. When it looks good, say **"promote"** and I'll `sync_beta_to_prod` (#248 videos + #249 photos ride together into prod)
+2. **Also pending:** the ~12 low-value/duplicate photos (7702, 7703, 7709, 7715, 7717, 7718, 7724, 7725, 7736–7738, 7743, 7745, 7748, 7749, 7752, 7728.PNG) are intentionally **not** on the page per the vision pass — no action unless you want them anyway
+3. **Santa Anna arc:** after prod promotion, this thread's work is complete (FSVP record, farm page, journey, SunMint plot, cross-links, media pipeline, ledger entries)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → polled beta media.json (19 items at check 1, deploy already live, last-modified 18:17:05); verified 5 new image assets HTTP 200 + farm page 200
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → for i in $(seq 1 10); do N=$(curl -s "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/media.json" | /opt/truesight_autopilot/.venv; for f in santa-anna-IMG_7708 santa-anna-IMG_7710 santa-anna-IMG_7712 santa-anna-IMG_7739 santa-anna-IMG_7746; do echo -n "$f: "; curl -s -o
 
