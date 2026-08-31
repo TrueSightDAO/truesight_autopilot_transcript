@@ -1056,6 +1056,7 @@ Frames copy of IMG_4872 is only 400px — too low for a gallery tile. Let me re-
 ### 🤖 Autopilot
 
 Let me see the actual gallery img tags in the page body to plan the swap.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1067,11 +1068,13 @@ I have everything: Grok's vision analysis identified the farm-worthy shots, and 
 - Keep the same filenames so the page structure stays intact — just swap content + fix alt texts
 
 Let me create the branch with the HTML alt-text updates:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 HTML updated on branch `fix/fazenda-cleide-media` (PR #246). Now upload the 4 new image files to that branch:
+[4 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1118,6 +1121,7 @@ Same filenames → page structure untouched; alt texts updated to match content.
 ### 🤖 Autopilot
 
 Go received — merging PR #246 (media re-selection).
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1168,11 +1172,13 @@ Ping me with "verify" or "promote to prod" and I'll run that unit. Otherwise I h
 ### 🤖 Autopilot
 
 Go received — executing verify unit: confirm the beta page now serves the new hero + gallery.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Assets confirmed — all 4 serve **200** with byte-exact sizes matching the new files (hero 356,118B; gallery 422,960 / 121,477 / 565,388B = my new hero, 4859, 4872, 4867). Page returns 301 (http→https redirect) — let me follow it to confirm the rendered page and check it's serving the new hero in HTML.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1355,4 +1361,98 @@ Both variants now resolve to the live page via the existing 404-handler mechanis
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → date -u +"%Y-%m-%dT%H:%M:%SZ" echo "=== prod farm page URLs ===" for u in "https://agroverse.shop/farms/fazenda-cleide/" "https://agroverse.; echo "=== prod asset sizes (new hero should be 356118) ===" for a in fazenda_cleide_hero fazenda_cleide_1 fazenda_cleide_2 fazenda_cleide_3;; echo "=== http-functions.js (Cloudflare Pages functions?) ===" curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_prod/m; …(+4 more)
 • `merge pr` → ✅ PR #247 on agroverse_shop_beta merged successfully (sha: 338ece9f4b42d6fafb6c895ec44bb052641db75e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] promote
+
+
+### 🤖 Autopilot
+
+Promoting the redirect fix to production now.
+
+
+### 🤖 Autopilot
+
+Prod sync succeeded. Let me verify the broken link now resolves.
+
+
+### 🤖 Autopilot
+
+The sync reported success but the redirect isn't on prod — likely a `.syncignore` exclusion (I saw that file in the prod repo listing earlier). Let me check.
+
+
+### 🤖 Autopilot
+
+Sync merged (prod HEAD = merge commit `398a1ccf`) but prod's `legacy-redirects.js` still lacks the entry. Let me check the file's commit history on prod to see what actually landed.
+
+
+### 🤖 Autopilot
+
+The redirect commit IS in prod's git history (`338ece9f` on the prod file path), yet raw fetches don't show the entry — that smells like CDN staleness. Let me verify via the authoritative GitHub API and the actual commit diff.
+
+
+### 🤖 Autopilot
+
+Authoritative answer: the redirect **is on prod** — GitHub API confirms both entries in prod main's `js/legacy-redirects.js` (commit `338ece9f` +2 lines). The 404 you'd still see is **GitHub Pages CDN cache** (raw fetch was stale; Pages caches files, sometimes 10+ min).
+
+Let me check the GitHub Pages deployment status to confirm the live deploy is building.
+
+
+### 🤖 Autopilot
+
+Let me check what the **live site** actually serves for legacy-redirects.js (that's what the browser loads, distinct from raw.githubusercontent).
+
+
+### 🤖 Autopilot
+
+There it is — the Pages deployment is still **queued** (`pages build and deployment queued 16:42:14`, triggered by the prod sync merge). The live site still serves the OLD redirect file (0 entries) because the new build hasn't deployed yet. GitHub Pages typically takes 1–3 minutes to build+deploy. Let me wait and re-check.
+
+
+### 🤖 Autopilot
+
+The watcher needs a topic context — I'll poll directly on the box with a bounded loop instead.
+
+
+### 🤖 Autopilot
+
+The JS with the redirect entries is now live (2 entries confirmed at 16:43:46) — but the short slug still reports HTTP 404. That's likely **expected behavior** of this mechanism: GitHub Pages serves the `404.html` page with HTTP status 404, and the redirect happens **client-side in the browser** (JS `window.location.replace`). curl doesn't run JS, so it reports 404. Let me confirm against an existing redirect that works this way.
+
+
+### 🤖 Autopilot
+
+Confirmed — this is working as designed:
+
+- **`/recipes` (an existing, working legacy redirect) also returns HTTP 404 to curl** — that's just how GitHub Pages works: it serves `404.html` with status 404, and the redirect happens client-side in the browser (`window.location.replace`). curl doesn't execute JS, so it sees the 404 status even though the redirect works fine for humans.
+- The short-slug page **is** serving the 404 handler (`LEGACY_REDIRECTS` ×2, `window.location.replace`, `Redirecting`) which loads `/js/legacy-redirects.js` — and that JS now has the 2 Fazenda Cleide entries (live since 16:43:46).
+- **In a browser**, typing `agroverse.shop/farms/fazenda-cleide/` now instantly bounces to `/farms/fazenda-cleide-para/` (200).
+
+So the broken link is fixed for real users. Let me do a final proof — simulate what the browser does (fetch the JS map and resolve the path):
+
+
+### 🤖 Autopilot
+
+## ✅ Your link is fixed, Gary
+
+**`https://agroverse.shop/farms/fazenda-cleide/` now works** — browser-equivalent resolution confirmed:
+
+1. Prod sync succeeded (deploy recorded: `deploy_20260831T164213Z_agroverse-shop-prod`)
+2. Redirect map deployed to prod — both entries live on the site:
+   - `/farms/fazenda-cleide` → `/farms/fazenda-cleide-para`
+   - `/farms/fazenda-cleide/` → `/farms/fazenda-cleide-para/`
+3. Browser test resolves: short slug → **`/farms/fazenda-cleide-para/` → 200** ✅
+
+**Why curl showed 404:** GitHub Pages serves the redirect via a JS handler on `404.html` (client-side redirect, standard for static hosting). curl doesn't run JavaScript, so it sees the 404 status page — but any real browser bounces instantly to the live farm page. (Proof it's the same for existing redirects: `/recipes` also "404s" to curl but redirects fine in browsers.)
+
+**Full Fazenda Cleide state — everything live on production:**
+- Farm page: `agroverse.shop/farms/fazenda-cleide-para/` → **200**, your hero photo + curated gallery
+- Broken short link: now redirects to the live page ✅
+- SunMint impact map: CL-P1 polygon live on truesight.me/sunmint.html
+
+Done. Anything else you want on the page — or should I log this deploy + site-visit work as a contribution for the record?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → sleep 5 echo "=== short slug (the broken link) ===" curl -s -o /dev/null -w "%{http_code} -> %{redirect_url} " "https://agroverse.shop/farms; echo "=== .syncignore (does it exclude legacy-redirects.js?) ===" curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_pro; echo "=== commits touching prod legacy-redirects.js ===" curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_prod/commits?path; …(+6 more)
 
