@@ -8,146 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=16631] Where is the URL to review the map?
-
-
-### 🤖 Autopilot
-
-The map is live on the beta site. Let me quickly verify the URL responds before pointing you at it:
-[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both check out — here's where to review:
-
-## Review URL
-
-**→ https://beta.truesight.me/sunmint.html**
-
-Scroll to the **impact map** section. What you should see (after PR #325 merged):
-
-- **Two plot polygons** around **Altamira, PA (-3.29, -52.58)**:
-  - **RM-P1 (house)** — purple/blue polygon, status *planted*
-  - **RM-P2 (family ~5 ha)** — larger polygon, status *proposed*
-- Map **centered on Altamira** now (was wrongly centered on Florianópolis before the fix)
-- Auto-fits to the plot bounds on load
-- Popups with plot name, hectares, status when you click a polygon
-
-Data source verified live just now:
-- Page: `https://beta.truesight.me/sunmint.html` → **HTTP 200** ✓
-- Registry: `https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geojson` → **HTTP 200**, serves RM-P1 + RM-P2 ✓
-
-**Note:** if the map still shows the old Florianópolis view, hard-refresh (Ctrl/Cmd+Shift+R) — the HTML may be cached.
-
-Once you've reviewed it and are happy, say the word and I'll promote to production (`sync_beta_to_prod`), and we can take the next steps (SunMint Plots sheet tab, RM-P2 boundary walk/CAR, ledger anchor).
-
-
-### 🧑 Governor
-
-[observed, not directed at you — Nobody Will not DM you]: I like what I am seeing with the map for Altamira but
-
-what about the tree planted in Florianopolis??
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=16631]
-
-
-### 🤖 Autopilot
-
-Good catch — let me look at the trees registry to see what's actually registered in Florianópolis and how the map now handles those markers.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Interesting — the Florianópolis "PILOT_CENTER" wasn't random: there are **real trees registered in Florianópolis** (-27.438, -48.499): `Edgar_20260819134740_489` (Cacao – Criolla) and `Edgar_20260821175134_005` (Bougainvillea, LINKED). The old center was showing those. My Altamira fix now hides them — that's a real regression. Let me check how the map renders tree markers and bounds today:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the full map script to understand the tree-marker logic vs the plots fitBounds:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me get the full properties of the Florianópolis tree records (and the other odd-location ones) so I can tell you exactly what's there:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The Florianópolis trees are still in the registry — they're just **off-screen now** because the map opens on Altamira. Here's the full picture:
-
-## What's actually in the trees registry (19 records)
-
-**2 real trees in Florianópolis (-27.438, -48.499):**
-| Tree ID | Species | Status | Date | Notes |
-|---|---|---|---|---|
-| `Edgar_20260819134740_489` | Cacao – Criolla | NEW | 2026-08-19 | photo `20260819104739_...` |
-| `Edgar_20260821175134_005` | **Bougainvillea** | **LINKED** | 2026-08-21 | QR `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`, photo `20260822_130000_FOUNDERHAUS_GROUP.jpg` |
-
-That Bougainvillea is a **Founderhaus** (Florianópolis coworking) demo tree — QR-linked, "LINKED" status. That's why the map's PILOT_CENTER was originally Florianópolis: the impact map was clearly built around these demo trees first, then we re-centered it on Altamira.
-
-**How the map handles them now:** `loadTrees()` adds a marker for *every* tree with coordinates, regardless of view. So the 2 Florianópolis markers **are still on the map** — you just can't see them because the view opens at Altamira and `fitBounds(plots)` snaps there. Pan/zoom over to Florianópolis and they're there.
-
-## The data-quality elephant (worth a look while we're here)
-
-13 of 19 trees are **not in the Amazon at all**:
-- **8 in Oregon / California** (44.5,-123.2; 41.4,-122.2) — cacao *cannot* grow outdoors there; these look like early import/test entries with default or bogus GPS (numeric IDs `469027268`… and recent `Edgar_20260829_*` repeats of the same Corvallis coords)
-- **1 in Shenzhen, China** (22.94,113.88)
-- **4 with no coordinates at all**
-
-## My suggestion
-
-1. **Add a view switcher to the impact map** — small PR mirroring the existing `plotSelector` pattern: **Altamira (pilot)** / **Florianópolis (demo)** / **All trees** buttons that fly the map to each cluster. That way the Founderhaus trees stay visible and reachable without breaking the Altamira focus.
-2. **Flag the junk coords** — mark the 13 non-Amazon/coordinate-less trees as `status: "test"` or move them out of the live registry so the "n registered trees" counter and map stay honest. Want me to check how they got registered (likely the QR registration flow defaulting GPS) before touching anything?
-
-Say the word and I'll open the view-switcher PR (and separately investigate the junk-coordinate source).
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → cd /tmp/sunmint2 && echo "=== trees/index.geojson ===" && python3 - <<'PYEOF' import json d = json.load(open('trees/index.geojson')) print("; cd /tmp && rm -rf tmb2 && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git tmb2 2>&1 | tail -1; cd tmb2 && echo ; cd /tmp/tmb2 && sed -n '420,600p' sunmint.html; …(+1 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-go for it.
-
-
-### 🤖 Autopilot
-
-Governor's go — executing the view-switcher PR (plus quick investigation of the junk-coordinate source so the switcher handles reality correctly). Let me first understand the full map script — I noticed there are **two** map inits (line 441 and 662), so I need to see the whole structure before editing:
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have the full structure — one `initMap` (line ~438) + a fallback, `PILOT_CENTER` Altamira, tree markers added for every valid-coord tree, plots auto-fit at line 592. The Florianópolis demo trees are still on the map, just off-screen. I'll add a **view switcher** (Altamira / Florianópolis / All trees) mirroring the plot-chip pattern, and make the plot auto-fit run only on first load so it doesn't fight the user's view choice. Let me grab exact anchors:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Anchors located. Let me see the exact code between the marker loop and the `loadSatelliteHistory` call so I can place the view-switcher wiring precisely:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the complete structure. The Florianópolis trees (2) are still on the map — just off-screen; and interestingly **there are zero Altamira trees in `trees/index.geojson`** — the pilot-area trees aren't registered as tree rows yet (only the plots polygons are). So the view switcher is exactly the right fix: Altamira (plots) / Florianópolis (demo trees) / All.
-
-Let me apply the edits locally, syntax-check, then push:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 All 6 edits applied, JS syntax OK — but let me verify the checked script was actually the map script (there were 4 inline scripts), then push via git_push_changes:
@@ -4612,26 +4472,31 @@ All 4 files live on main, compile, and the functional smoke test works end-to-en
 ### 🤖 Autopilot
 
 ⚠️ I moved the wrong entry — the section header above the usage entry was a different entry ("Tree growth measurement reject path"). Let me check what actually happened and fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The edit mangled the file — the "Recently shipped" section got inserted mid-file (splitting the workflow instructions), and the header got corrupted. Cleanest fix: restore from origin/main and redo the move properly, appending to the **real** "## Recently shipped" section at the bottom. Let me first check where that section actually is:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The usage entry sits at the file's very end (inside/after the Closed section — where my earlier PR #857 appended it). The clean move: cut the entry, mark it shipped, and insert at the top of the real `## Recently shipped` section (line 1561). Doing it carefully:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean now — entry moved to the top of "## Recently shipped" with [DONE] status, file structure intact (Pending at 40, Recently shipped at 1561, Closed at end). Let me verify the diff vs origin/main, then commit + PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The OPEN_FOLLOWUPS diff is exactly right (+6 moved entry / -7 old). The other file diffs (manifests deleted, plans changed) are just **my stale local clone** — parallel agents added those to origin/main since I cloned. I must NOT commit those deletions. Let me reset those files to origin/main, then commit only OPEN_FOLLOWUPS.md:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4694,26 +4559,31 @@ Stopping at the turn limit — work is 95% done. Here's the state.
 ### 🤖 Autopilot
 
 Go received — resuming: commit the OPEN_FOLLOWUPS.md change, push, PR, merge. Let me verify the working tree state first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My `git checkout origin/main -- OPEN_FOLLOWUPS.md` **reset my local edit** — the file is back to pristine main (diff empty, entry gone). I need to re-apply the move. Redoing it cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff is exactly right (+6/−7, only OPEN_FOLLOWUPS.md). Committing, pushing, opening PR, merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed. Opening the PR via the PAT path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #865 open. Merging per the standing go:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4774,6 +4644,7 @@ PR #865 open. Merging per the standing go:
 ### 🤖 Autopilot
 
 Go received — next unit: record the contribution for the usage-logging build. Submitting with the PRs as evidence:
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4819,36 +4690,43 @@ But dont redeploy
 ### 🤖 Autopilot
 
 Go received — wiring `append_usage.py` into the autopilot transcript-append path, **without redeploying**. First, let me find where the transcript append actually happens on this box:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `/opt/truesight_autopilot/scripts/append_to_transcript.py` is the runtime append path. Let me read it and the caller to see where usage logging hooks in:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The wiring point is clear: `app/tools/attachment_tools.py` → `_run_script` → `scripts/append_to_transcript.py` (subprocess). Let me read my `append_usage.py` CLI args (exact invocation) and the `attachment_tools.py` append path to hook in cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The hook point is `append_to_transcript.py` (runs as a standalone subprocess per call — so editing the script takes effect on the next call without any service restart, which respects "don't redeploy"). Let me check the git state of the live checkout and get my `append_usage.py` args:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live checkout is a git repo (HEAD `b1953c3`, dirty with unrelated changes — data/active_tracks, tokenomics, worktrees). The wiring: add a call to `append_usage.py` from `append_to_transcript.py` (subprocess-per-call → effective next call, no restart). Let me read the rest of `append_usage.py`'s main to get exact argv, and the tail of `append_to_transcript.py` where I'll add the call:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check how `_run_script` resolves the script path (does it shell out to disk per call?), and fetch `append_usage.py`'s main signature:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the top of `_run_script` (how the script path resolves — disk per call vs import) and `append_usage.py`'s main signature via the raw fetch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4858,16 +4736,19 @@ I have the full picture. The wiring design (respecting "don't redeploy" — subp
 **Hook:** `scripts/append_to_transcript.py` is the runtime append path (called as a fresh subprocess per attachment). I'll add a **best-effort usage-log call** at the end: after the transcript write succeeds, invoke the installed `append_usage.py` with a usage record (provider/model/caller = the attachment append itself, est_usd 0 — it's infra, not LLM tokens). This keeps the dependency soft: if `append_usage.py` is missing or the record lacks token data, the transcript append still succeeds.
 
 Let me check the script's main block + the `_run_script`-style JSON output to match conventions, then apply the edit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The hook point is clear. Before wiring, I need to see the full `append_usage.py` — critically whether it pushes to GitHub or only writes a local file (it resolves `usage/` relative to CWD):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key finding: `append_usage.py` writes **locally only** (CWD-relative `sessions/<date>/<sid>/usage.jsonl`, no GitHub push). So the wiring needs a persistence step. Let me check whether the runtime has a persistent transcript-repo checkout to write into:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4986,4 +4867,21 @@ Everything else this session remains closed: contributions logged (570 min total
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×23 → echo "=== find transcript write logic in autopilot ===" && grep -rln "append_to_transcript\|transcript.md\|append_transcript" /opt/truesight; cd /opt/truesight_autopilot && echo "=== append_to_transcript.py ===" && sed -n '1,80p' scripts/append_to_transcript.py && echo "" && echo "; cd /opt/truesight_autopilot && echo "=== append_usage.py (local copy if any) ===" && ls scripts/append_usage.py 2>/dev/null; find /opt/trues; …(+19 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Stopping at the turn limit — the runtime wiring is **applied and mostly verified**, with one debug item still open.
+
+## What I did this turn (runtime wiring, no redeploy)
+
+**1. Installed the tool loca
+
+
+### 🤖 Autopilot
+
+Go received — resuming the 409 debug. Let me reproduce the script's `_github_append` failure with full error visibility to find the divergence from the direct call:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
