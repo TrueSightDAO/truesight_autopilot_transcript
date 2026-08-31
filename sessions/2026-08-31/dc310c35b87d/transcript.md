@@ -2265,41 +2265,49 @@ One note: since the plan file PR0 is on a branch of `agentic_ai_context` and PR 
 ### 🤖 Autopilot
 
 Good catch — let me verify whether the impact map is already live on prod (`truesight.me/sunmint.html`) and diff prod vs beta.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — you're right. Let me fold that fact into the plan (PR #853) so the roadmap reflects reality.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — **you're right, and it's verified:** prod `truesight.me/sunmint.html` is **byte-identical** to beta (both 40,784 bytes, md5 identical) and live (200). The impact map with plots/trees is **already in production**. Let me correct the plan to reflect that fact so the roadmap isn't framed as if we're shipping something new to prod:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The edit target wasn't found — likely because the plan file content I pushed has the exact heading text but maybe different whitespace. Let me check the actual content of the plan file on the branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The search string didn't match because line 32 continues past `(40,784 bytes)`. Let me use the exact text:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The em-dash encoding is likely the mismatch. Let me use a shorter, safer anchor:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The edits keep failing on matching — let me read the file exactly as it exists on the branch to see the true bytes:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The edit tool bases each push on `main` (where the file doesn't exist yet — PR0 isn't merged), so edits fail. I'll write the full corrected file to the branch instead:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2307,16 +2315,19 @@ The edit tool bases each push on `main` (where the file doesn't exist yet — PR
 The tool treats `sunmint-impact-map-extension-plan` as the default branch when I set `base_branch` to it. Let me use a fresh feature branch based on `main` and rewrite the full corrected file there (the PR is still open, so I'll push to a new branch and reopen/point the PR — simplest is to just update the same PR by pushing to a new branch and updating the PR head). Actually the cleanest: use a distinct feature branch with `open_pr: false` and then set the existing PR's head... but I can't set PR head via tools. Let me instead just open a *second* PR (supersede #853), or better — the original PR #853 is the roadmap; I'll close it and open a fresh PR with the corrected file.
 
 Let me check the tool's branch rules first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool refused only because I set `base_branch` equal to the branch name. The first push used the default base (main) and worked fine. Let me re-push the corrected whole file to the existing branch with default base:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The git-clone push conflicts because the branch already has my earlier commits. I'll update the file via the Contents API (single-file write to the existing branch — same approach that worked for the whitepaper PR):
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2370,6 +2381,7 @@ Go for it
 ### 🤖 Autopilot
 
 Go-signal received — executing. Per protocol, checking the manifest row, and merging the plan PR (#853) to complete PR0:
+[2 tool result(s) compacted: read_context_file, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2533,4 +2545,61 @@ Say go and I'll merge PR1 + start PR2.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint.html" -o sunmint_beta_page.html && wc -c s; cd /tmp && sed -n '600,700p' sunmint_beta_page.html; cd /tmp && sed -n '225,260p' sunmint_beta_page.html; …(+5 more)
 • `upload file to github` → https://github.com/TrueSightDAO/truesight_me_beta/blob/impact-map-enriched-popups/sunmint.html
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: PR1 complete and verified ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**PR1 — Enriched plot popups + boundary-authority legend** (from the SUNMINT_IMPACT_MAP_EXTENSION_PL
+
+
+### 🤖 Autopilot
+
+Go-signal received — executing. Per the plan, first merge PR #331 (PR1 complete), then start PR2 (farms selector). Let me merge and check the plan file to confirm PR2's exact spec:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**PR1 shipped — merged the enriched plot popups + boundary-authority legend.**
+
+**PR #331 — https://github.com/TrueSightDAO/truesight_me_beta/pull/331** (merged, sha `81ee428`)
+
+What landed on `truesight_me_beta/main` (impact map on `beta.truesight.me/sunmint.html`):
+- **Enriched plot popups** — name (HTML-escaped), colored status (Proposed 🟠 / Planted 🟢 / Verified 🔵), boundary authority with friendly label (Approx (photo hull) / GPS walk / CAR polygon / INCRA polygon), hectares, owner, region, verified_at — with graceful fallback for older plots missing fields
+- **Boundary-authority legend** — color-dot swatches under the map controls (approx / gps_walk / car / incra), explaining the honesty tier on-page (per `SUNMINT_PLOTS_REGISTRY.md`)
+- **XSS-safe** — `esc()` helper on all user-derived fields
+- Verified: tags balanced, JS syntax OK (`node --check`), satelliteHistory intact, diff clean (+22/−3)
+
+Plan status updated: **PR0 ✅ · PR1 ✅ · PR2 next.**
+
+## RESUME HERE → PR2 (next unit, fresh turn)
+
+**Farms selector/filter dropdown** (plan §5 PR2 checklist):
+1. Derive unique farms from plots `farm_id` (+ fallback to owner)
+2. Add `#farmSelector` dropdown (All farms + each farm)
+3. Filter polygons + tree markers on selection; clear on All
+4. Keep plot-chip/view-chip interplay working
+5. Verify tags balanced + JS syntax; open PR, report URL
+
+Then PR3 (Farms Registry section) → PR4 (status styling + legend + media thumbnails) → PR5 (`gate: UAT`, 7-step check on beta) → promote to prod only with your explicit approval.
+
+I'll auto-start PR2 on the next go per the plan's auto-start manifest row — or just say go.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #331 on truesight_me_beta merged successfully (sha: 81ee428b9af53873142c852635744273178b3410). Pull Request successfully merged
 
