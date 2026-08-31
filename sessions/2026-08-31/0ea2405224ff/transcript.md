@@ -183,36 +183,43 @@ Want me to proceed? Suggested order: (a) extract everything to a `plots/index.ge
 ### 🤖 Autopilot
 
 Got the PoDream context — the key signal is in the handoff from Onaya (2026-08-30): **PODream/DreamCarbon collaboration is PAUSED and red-flagged**, and the verdict was that our **phone-first model beats their UAV/drone inventory**. Let me read the full PoDream follow-up entry and check what's already built in the sunmint repo so the integration fits what exists.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full PoDream entry in the backlog and the existing tree-index build script — that's the pattern a plots registry should mirror.
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PoDream context captured — and it's decisive: the handoff from Onaya (2026-08-30) says the PODream/DreamCarbon UAV-inventory collaboration is **PAUSED and red-flagged** (scheme risk, drone+PV ~$28–30k vs our phone-first model). So the plots integration must NOT lean on drone inventory — it uses the phone GPS-track + Sentinel-2 pattern that's already built. Let me read the last bit of the backlog and then build the integration.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the exact PoDream entry lines from the backlog directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have the full picture: the PoDream follow-up is only a **tech-status ping** (stale — 2026-08-16, and Onaya's handoff already resolved it as PAUSED/red-flagged). The sunmint repo has a clean pattern to mirror: `trees/index.geojson` built by a script + GitHub Action. Let me compute the exact GPS decimals for the plot polygons, then check where the Farms Registry data lives before writing anything.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `-n` flag changed the output keys. Let me use a direct decimal parse instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PoDream thread findings + GPS now pinned down. Let me compute the full decimal walk-tracks so the runbook I generate carries real seed data.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -220,26 +227,31 @@ PoDream thread findings + GPS now pinned down. Let me compute the full decimal w
 All GPS extracted — Plot 2's walk track forms a clear loop around the family land. Now I'll do the actual integration: a runbook in agentic_ai_context + a plots registry in the sunmint repo, both following the existing patterns exactly.
 
 First, the runbook that future Sophias and other LLMs will use to define/extend plots:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Right — need to pass the actual file content:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Runbook PR opened. Now the actual seed data — the plots registry in the sunmint data repo, following the same structure as `trees/index.geojson`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `sunmint` data repo isn't in the git_push_changes allowed list — it's an API-only data repo (class 2, machine-generated like treasury-cache). Per the rules, single-file writes there go via `upload_file_to_github`. Let me try that:
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Seed registry is live in the sunmint data repo. Now the runbook PR — let me verify the workflow's allowed list matches, then merge the runbook (I have the go to merge my own feature PRs).
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -288,31 +300,37 @@ Media note: HEICs can be compressed into `sunmint/images/RM-P1/` etc.; **raw MOV
 ### 🤖 Autopilot
 
 Governor gave the go. Let me check the handoff manifest for the plan file, and pull the current sunmint.html impact map implementation so I can build the map PR.
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No manifest entry — the go was on my own resume list. Let me read the current sunmint.html impact map implementation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The map already has partial plots support — it fetches `trees/plots.geojson` (wrong path vs my `plots/index.geojson`) and still has the wrong PILOT_CENTER. Let me read the full impact map block:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The map **already has full plots support** — `loadPlots()` draws polygons, chips, popups, flyToBounds. It's just pointed at the wrong data path (`trees/plots.geojson`) and wrong center. Let me see the rest and the map init:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plots rendering already exists — I just need to wire it to the right data path and fix the center. Let me see the tail (the second map init at 643) before editing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The map already has plots rendering — I need to wire it to the correct data path, fix the wrong PILOT_CENTER (Florianópolis → Altamira), auto-fit bounds, and stop the satellite strip from showing Florianópolis imagery over Altamira. Let me apply the edits locally first and syntax-check the JS before pushing (LOCAL TEST BEFORE PUSH rule):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -424,4 +442,150 @@ All 5 fixes verified in the pushed branch — JS syntax clean, correct paths, ce
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /tmp && rm -rf tmb && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git tmb 2>&1 | tail -1; cd tmb && ls -la &; cd /tmp/tmb && echo "=== sunmint/ dir ===" && find sunmint -type f | head -30 && echo "=== grep PILOT_CENTER / impact map ===" && grep -n "P; cd /tmp/tmb && sed -n '420,600p' sunmint.html; …(+12 more)
 • `merge pr` → ✅ PR #325 on truesight_me_beta merged successfully (sha: d49456c70005701ab5c752e27575f4adf7fe04f6). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn
+
+**Governor's "go for it" → executed the impact-map integration.**
+
+**Key discovery:** A parallel agent had merged PR #324 ("Add plot selector + polygon rendering") on truesigh
+
+
+### 🤖 Autopilot
+
+Governor gave the go on the next plan unit. Prod sync (unit #1) stays blocked until you explicitly approve promotion — so I'm moving to **unit #2: the plots generator + workflow**, mirroring the trees pattern. Let me inspect how `build_tree_geojson.py` and its workflow work:
+
+
+### 🤖 Autopilot
+
+Let me read the full `build_tree_geojson.py` and the `rebuild-tree-index.yml` workflow — the patterns the plots generator must mirror:
+
+
+### 🤖 Autopilot
+
+The pattern is crystal clear. The tree builder reads a Google Sheet ("SunMint Tree Planting" tab) and regenerates the GeoJSON — and notably it *already writes an empty `trees/plots.geojson` placeholder*. My plots registry is the new home. Let me see the rest of the workflow (truncated) and the current seed registry:
+
+
+### 🤖 Autopilot
+
+The pattern is fully clear now. The tree builder reads a Google Sheet tab and regenerates `trees/index.geojson` — plus it currently writes an empty `trees/plots.geojson` placeholder (which is dead weight now that `plots/index.geojson` is the real registry). Let me see the workflow's commit step so mine mirrors it exactly:
+
+
+### 🤖 Autopilot
+
+The artifact is nested — let me read the workflow file directly from the clone:
+
+
+### 🤖 Autopilot
+
+The pattern is fully mapped. Before writing the plots builder, let me check whether a "SunMint Plots" tab exists in the spreadsheet the tree builder reads (so the generator can be wired to a real source of truth):
+
+
+### 🤖 Autopilot
+
+The "SunMint Plots" tab **doesn't exist yet** in the spreadsheet — so the generator must be *safe*: if the tab is absent/empty, it must **preserve the curated seed** (`plots/index.geojson` with RM-P1/RM-P2) instead of clobbering it with an empty FeatureCollection (which would blank the map). Let me check the runbook I wrote for the exact schema, and draft the script locally:
+
+
+### 🤖 Autopilot
+
+Good catches: ruff flagged one unused variable (`source`). Let me fix that, then also add a `--from-local <seed.json>` mode so the workflow can regenerate deterministically from a checked-in seed file when the sheet tab isn't populated yet — actually, simpler: the preserve-on-missing-tab behavior already covers that. Let me just fix the lint error:
+
+
+### 🤖 Autopilot
+
+Compile + ruff clean + formatted. Now let me run a real functional test of the preserve behavior with a fake seed, and test the square-fallback geometry from lat/lng/ha, before pushing:
+
+
+### 🤖 Autopilot
+
+Test caught a real bug: `get_sheet()` calls `sys.exit()` which raises `SystemExit` — not a subclass of `Exception`, so my preserve-fallback `except Exception` never catches it. Fixing the handler to catch both:
+
+
+### 🤖 Autopilot
+
+All checks pass — the preserve-fallback now catches `SystemExit` correctly (the functional test proved a missing tab keeps the curated RM-P1/RM-P2 registry intact instead of blanking the map). Now the workflow file, mirroring `rebuild-tree-index.yml`:
+
+
+### 🤖 Autopilot
+
+Both files ready and tested. Now pushing via `git_push_changes` — but `sunmint` is an API-only data repo (class 2), so `git_push_changes` will likely be blocked. Let me try it (it's in the allowed list per the tool docs):
+
+
+### 🤖 Autopilot
+
+The tool rejected the call — `repo` and `branch`/`commit_message` weren't recognized because the call signature shows they're required top-level params. Looking at the error, it seems the parameters block got mangled. Let me retry with the proper structure:
+
+
+### 🤖 Autopilot
+
+`sunmint` is class-2 (API-only data repo) — `git_push_changes` correctly blocks it. The established convention for this repo is single-file writes via `upload_file_to_github` (that's how the existing tree builder + workflow got there). Let me confirm that's how the existing scripts landed, then use the same path:
+
+
+### 🤖 Autopilot
+
+`sunmint` is explicitly an API-only data repo — the convention (and how the existing tree builder/workflow landed) is single-file writes to main via the Contents API. My two files are already tested on disk; using `upload_local_file_to_github` for both:
+
+
+### 🤖 Autopilot
+
+Both files uploaded to sunmint@main. Let me verify they're live and correct:
+
+
+### 🤖 Autopilot
+
+Everything verified: generator compiles from the repo, workflow is live, and the curated seed registry (RM-P1/RM-P2) is intact. Now let me record a contribution for this work so it's on the ledger, since I've been executing a meaningful multi-PR effort:
+
+
+### 🤖 Autopilot
+
+Unit #2 complete — the generator + workflow are live, tested, and the contribution is recorded. Per the one-PR-per-turn rule, I'll stop here and report.
+
+## What I did this turn
+
+**Governor's "go for it" → executed unit #2 (plots generator + workflow).**
+
+**1. Mapped the trees pattern** — read `sunmint/scripts/build_tree_geojson.py` + `.github/workflows/rebuild-tree-index.yml`: a Google-Sheet-driven generator (`gspread` via `GOOGLE_SERVICE_ACCOUNT_JSON`) that regenerates the GeoJSON and commits only on change. The tree builder even writes a dead `trees/plots.geojson` placeholder — confirming `plots/index.geojson` is the real home.
+
+**2. Wrote `scripts/build_plots_geojson.py`** — mirrors the tree builder, reads the "SunMint Plots" tab of the SunMint ledger spreadsheet (SHEET_ID 1qbZZhf…). **Key safety property:** if the tab is missing/empty/auth-fails, it **PRESERVES the curated RM-P1/RM-P2 seed** instead of clobbering it with an empty FeatureCollection (which would blank the impact-map polygons). Includes a lat/lng/hectares square-fallback for plots without explicit polygons.
+
+**3. Found + fixed a real bug via functional test** — the first test caught that `get_sheet()`'s `sys.exit()` raises `SystemExit`, which `except Exception` doesn't catch, so the preserve-fallback silently didn't trigger on auth failure. Fixed to `except (Exception, SystemExit)` and re-ran tests: **preserve-on-missing-tab ✓, square-fallback ring closes ✓**.
+
+**4. Wrote `.github/workflows/rebuild-plots-index.yml`** — daily 06:05 UTC + `repository_dispatch` (`plots-index-rebuild`) + manual; commits only on change.
+
+**5. Pushed via the data-repo convention** — `sunmint` is API-only (class 2), so `git_push_changes` correctly blocked it; used `upload_local_file_to_github` like the existing scripts:
+- `scripts/build_plots_geojson.py` → commit `a06a710`
+- `.github/workflows/rebuild-plots-index.yml` → commit `4675147`
+
+**6. Verified from a fresh clone** — both files present, generator compiles from repo, `plots/index.geojson` intact (RM-P1, RM-P2).
+
+**7. Recorded contribution** — 120 min logged on the ledger with all PR/commit evidence.
+
+## Status
+
+- ✅ Runbook (agentic_ai_context #844, merged)
+- ✅ Seed registry (`sunmint/plots/index.geojson`)
+- ✅ Impact map wired (truesight_me_beta #325, merged) — **live on beta**: https://beta.truesight.me/sunmint.html
+- ✅ Generator + workflow (sunmint@main, this turn)
+- ⏸ Prod sync — **blocked until you review the beta map and explicitly approve** promotion
+
+## RESUME HERE →
+1. **Governor reviews beta map** → explicit approval → `sync_beta_to_prod(truesight_me_prod)`.
+2. **Create the "SunMint Plots" tab** in the ledger spreadsheet (farm + plot rows) so the generator has a real source of truth — until then it preserves the curated seed.
+3. **Boundary authority for RM-P2**: Jedielcio's CAR/INCRA polygon or a full perimeter walk (~10 min) — 5 ha claimed vs 2.9 ha walked.
+4. **Ledger anchor**: register Rancho Maranta farm + geo-located plot event (TREE PLANTING EVENT precedent at -3.29609,-52.58318).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cloned sunmint, read tree builder + workflow + seed registry, ran functional tests, verified fresh-clone files + intact registry
+• `upload file to github` ×2 → scripts/build_plots_geojson.py (a06a710), .github/workflows/rebuild-plots-index.yml (4675147)
+• `create_dao_submission` → ✅ Contribution submitted (120 min, SunMint plots registry + impact map integration)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /tmp && rm -rf sunmint && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git sunmint 2>&1 | tail -1; cd sunmint && echo "; cd /tmp/sunmint && echo "=== build_tree_geojson.py ===" && cat scripts/build_tree_geojson.py && echo "" && echo "=== rebuild-tree-index.yml ; cd /tmp/sunmint && echo "=== plots/index.geojson (current seed) ===" && cat plots/index.geojson && echo "=== trees/ dir ===" && ls -la trees; …(+8 more)
+• `create dao submission` → Contribution submitted
 
