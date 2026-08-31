@@ -4846,11 +4846,13 @@ Manifest updated. Let me verify the diff (careful — no empty writes, the #857 
 ### 🤖 Autopilot
 
 The `indent=2` rewrite reformatted the whole file (the original used `indent=1`) — a noisy 1,128-line diff for a 3-id change. Let me redo it minimally: restore the original from main and apply only the 3 yt_id string replacements, preserving all formatting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean 6-line diff (3 swaps, exactly). Committing, pushing, PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5080,4 +5082,169 @@ Everything from this session is **logged, shipped to prod, and documented** — 
 ———
 **✅ Done this turn — actions taken:**
 • `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I think we should hold off on 1. Old GPS-less YouTube videos
+
+Since there are videos which we want on our site which might get impacted.
+
+2. Let the other processes handle them
+
+3. I think we can just confirm based on what we have
+
+4. go for it
+
+
+### 🤖 Autopilot
+
+Governor's decisions noted: (1) hold off on old YouTube videos — understood, no changes there; (2) la-do-sitio/cleide handled by other processes — hands off; (3) RM-P2 confirmed from what we have — closing that item; (4) **go for it** on the usage-logging infra.
+
+Per the handoff directive, let me check the manifest registry first, and read the OPEN_FOLLOWUPS entry I filed plus the transcript repo's planned design:
+
+
+### 🤖 Autopilot
+
+Governor's decisions locked in: (1) hold old videos, (2) hands off la-do-sitio/cleide, (3) RM-P2 confirmed as-is, (4) **go on usage-logging infra**.
+
+Picking up OPEN_FOLLOWUPS #857 (usage-logging). Let me read the entry I filed and the transcript repo's planned design:
+
+
+### 🤖 Autopilot
+
+The plan is well-documented. The OPEN_FOLLOWUPS #857 entry targets the transcript-repo side: `append_usage.py` + `meta.json` writer + summarize CLI. Let me read SCHEMA.md for the exact JSON shapes, then build PR1:
+
+
+### 🤖 Autopilot
+
+The schema and roadmap are fully specified. I'll implement the usage-logging unit now: `append_usage.py` + `meta.json` writer + `summarize` CLI in the transcript repo (class-2, so Contents-API direct uploads per convention), with tests. Writing everything locally first, then running the local test suite before pushing:
+
+
+### 🤖 Autopilot
+
+Now the summarize CLI + tests, then the full local test suite before pushing:
+
+
+### 🤖 Autopilot
+
+Now the LOCAL TEST SUITE (hard rule before any push): compile, ruff, format, pytest:
+
+
+### 🤖 Autopilot
+
+Test failures — the `_collect` for a session scans `sessions/*/` but the test puts files under `sessions/2026-08-31/abc...`; also the session-id collect only checks `usage.jsonl` files directly — that's right, but the failures show the files aren't found. Likely the `--session` collect path has a bug (it iterates `sessions` dir children but never descends into date dirs properly). Let me fix the `_collect` session branch and the unused variable, format, and re-run:
+
+
+### 🤖 Autopilot
+
+Still 3 failing — let me see the actual errors verbosely:
+
+
+### 🤖 Autopilot
+
+Clear — `ts` is in REQUIRED but the validator runs before `setdefault("ts")`. The fix: drop `ts` from REQUIRED (it's auto-set). Let me fix and re-run the suite:
+
+
+### 🤖 Autopilot
+
+All 4 checks pass (compile, ruff, format, 5 tests). The transcript repo is class-2 (API-only data repo), so per convention I push the 4 new script files via Contents-API uploads. Let me push them:
+
+
+### 🤖 Autopilot
+
+First file live. Uploading the remaining three (write_meta.py, summarize_usage.py, tests):
+
+
+### 🤖 Autopilot
+
+All 4 files pushed. Now let me wire the usage-logging into the autopilot's transcript append path (the real integration point) — check how the autopilot appends transcripts:
+
+
+### 🤖 Autopilot
+
+The transcript-writer isn't in the autopilot repo (likely in a separate worker/harness). Let me search org-wide for where transcript.md is written:
+
+
+### 🤖 Autopilot
+
+The transcript-writer is likely in a separate harness not in a DAO repo (the tool `append_to_transcript` runs server-side). The wiring step belongs to the autopilot runtime — for this PR I've delivered the tooling (append/write/summarize) plus tests, which is the OPEN_FOLLOWUPS fix's core. Let me verify all 4 files are live and clean on main, then close the loop with a summary + update the follow-up entry:
+
+
+### 🤖 Autopilot
+
+All 4 files live on main, compile, and the functional smoke test works end-to-end (append → summarize). The usage-logging tooling is delivered. Now the final piece: mark the OPEN_FOLLOWUPS entry shipped and record the contribution. Let me update the entry:
+
+
+### 🤖 Autopilot
+
+⚠️ I moved the wrong entry — the section header above the usage entry was a different entry ("Tree growth measurement reject path"). Let me check what actually happened and fix:
+
+
+### 🤖 Autopilot
+
+The edit mangled the file — the "Recently shipped" section got inserted mid-file (splitting the workflow instructions), and the header got corrupted. Cleanest fix: restore from origin/main and redo the move properly, appending to the **real** "## Recently shipped" section at the bottom. Let me first check where that section actually is:
+
+
+### 🤖 Autopilot
+
+The usage entry sits at the file's very end (inside/after the Closed section — where my earlier PR #857 appended it). The clean move: cut the entry, mark it shipped, and insert at the top of the real `## Recently shipped` section (line 1561). Doing it carefully:
+
+
+### 🤖 Autopilot
+
+Clean now — entry moved to the top of "## Recently shipped" with [DONE] status, file structure intact (Pending at 40, Recently shipped at 1561, Closed at end). Let me verify the diff vs origin/main, then commit + PR:
+
+
+### 🤖 Autopilot
+
+The OPEN_FOLLOWUPS diff is exactly right (+6 moved entry / -7 old). The other file diffs (manifests deleted, plans changed) are just **my stale local clone** — parallel agents added those to origin/main since I cloned. I must NOT commit those deletions. Let me reset those files to origin/main, then commit only OPEN_FOLLOWUPS.md:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Stopping at the turn limit — work is 95% done. Here's the state.
+
+## What I did this turn (usage-logging infra — OPEN_FOLLOWUPS #857, governor's "go for it")
+
+**1. Usage-logging tooling — SHIPPED to `truesight_autopilot_transcript@main`** (4 files, all live):
+- `scripts/append_usage.py` — appends one LLM usage row (SCHEMA.md §3/§4: session → `sessions/<date>/<sid>/usage.jsonl`, worker → `usage/<date>/workers.jsonl`), validates required fields, auto-sets ts/schema_version
+- `scripts/write_meta.py` — upserts session `meta.json` (SCHEMA.md §1), idempotent merge
+- `scripts/summarize_usage.py` — the cost CLI: `--session` / `--date` / `--since` / `--by provider_model|provider|caller`
+- `scripts/tests/test_usage_tools.py` — 5 pytest tests
+- Commits: `bcb39c0`, `3a6fef8`, `fe2ac2d`, `216264b`
+- **Local suite green:** compileall ✓ ruff ✓ format ✓ **5/5 pytest** ✓ (fixed a real bug: `ts` in REQUIRED blocked auto-set; also fixed session-collect path + unused var)
+- **Smoke-verified end-to-end:** append → summarize round-trip works
+
+**2. OPEN_FOLLOWUPS.md entry moved to "## Recently shipped" with [DONE] status** — done in `/tmp/aac5` working tree. Caught and fixed a mid-edit mangling (my first move grabbed the wrong section header — restored from origin/main, redid cleanly; also reset 5 stale files a parallel agent had changed so the diff is **exactly 1 file / +6 −7 lines**).
+
+## Blocking / last step
+
+**⏳ The PR is NOT yet pushed** — the branch is staged in `/tmp/aac5` (diff = only OPEN_FOLLOWUPS.md, +6/−7). Needs: commit → push → PR → merge.
+
+## RESUME HERE →
+
+1. **In `/tmp/aac5`:** `git add OPEN_FOLLOWUPS.md && git commit -m "docs: mark OPEN_FOLLOWUPS #857 usage-logging as shipped"` → push branch → open PR (via the PAT path used before) → merge per standing go.
+2. **Record contribution** for the usage-logging build (~45–60 min: 3 scripts + tests + wiring into backlog) — I'll submit after the PR merges.
+3. **Remaining (noted in the shipped entry):** wiring the autopilot *runtime*'s transcript-append path to call `append_usage.py` is a separate follow-up (the harness isn't in a DAO repo) — flagged as such in the shipped entry.
+4. **Verify** `OPEN_FOLLOWUPS.md` on main is intact (139KB, structure Pending → Recently shipped → Closed) after the merge.
+
+**Everything else from the earlier decisions is closed:** old YouTube videos held (per your call), la-do-sitio/cleide handed to other processes, RM-P2 confirmed from existing data.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → read OPEN_FOLLOWUPS #857 entry + transcript repo SCHEMA/ROADMAP, wrote 3 scripts + tests, ran local suite (fixed ts-REQUIRED bug, session-collect, unused var; 5/5 green), smoke-verified append→summarize, uploaded 4 files to truesight_autopilot_transcript@main, verified live+compiling, moved OPEN_FOLLOWUPS entry to Recently shipped (fixed mid-edit mangling, reset stale parallel files), diff verified = only OPEN_FOLLOWUPS +6/−7
+• `upload file to github` ×4 → scripts/append_usage.py (bcb39c0), scripts/write_meta.py (3a6fef8), scripts/summarize_usage.py (fe2ac2d), scripts/tests/test_usage_tools.py (216264b)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → cd /tmp/aac5 && echo "=== usage-logging entry in OPEN_FOLLOWUPS ===" && grep -n -A 12 "usage" OPEN_FOLLOWUPS.md | head -40; echo ""; echo "=; cd /tmp/tcheck3 && echo "=== SCHEMA.md ===" && cat SCHEMA.md; cd /tmp/tcheck3 && mkdir -p scripts/tests && cat > scripts/append_usage.py <<'PYEOF' #!/usr/bin/env python3 """append_usage.py — append one ; …(+12 more)
+• `upload file to github` ×4 → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/scripts/append_usage.py; https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/scripts/write_meta.py; https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/scripts/summarize_usage.py; …(+1 more)
 
