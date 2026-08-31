@@ -1177,21 +1177,25 @@ Good question — let me search the fda_fsvp repo for that farm.
 ### 🤖 Autopilot
 
 The cacao sourcing network overview in agentic_ai_context has the farm data — let me read it.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The overview confirms **La Do Sitio** is the brand of the **CEPOTX / Jedielcio lane** (Pará, Altamira) — 200 g bars, award-winning. But it doesn't carry the site code. The code lives in the FDA FSVP documents. Let me check the local fda_fsvp clone for the La Do Sitio records.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `suppliers/cepotx/entity.json` line 41: **"Paulo - La do Sítio (Pará)"**. Let me read the entity.json to see the exact site-code structure.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The site code isn't in entity.json (only the farm name string). It lives inside the PDFs. Let me search the site-visit PDFs — the Paulo farm PDF likely has the site code in the header.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1232,21 +1236,25 @@ Also worth noting: the `entity.json` `source_farms` list ("Paulo - La do Sítio 
 ### 🤖 Autopilot
 
 Good question — I already found Cleide's code in the last check. Let me verify Marcelo's farm too.
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The recursive PDF scan timed out. Let me be targeted — check the CEPOTX PDFs only (fast) and the broader context.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the other suppliers' PDFs for Marcelo, plus the broader context search.
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full picture now. Let me also check the packing/storage PDF from CEPOTX — it may reference Marcelo or additional site codes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1383,4 +1391,170 @@ Want me to start building the farm page in beta? I have all the media + GPS + ob
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp 2>/dev/null; rm -rf agroverse_shop_look && git clone --depth 1 -q https://github.com/TrueSightDAO/agroverse_shop_beta.git agroverse_; cd /tmp/agroverse_shop_look && echo "=== farms dir ===" && ls -la farms/ && echo "=== paulo farm page files ===" && ls -la farms/paulo-la-do; cd /tmp/agroverse_shop_look && echo "=== map + itinerary sections in paulo page ===" && grep -n -i "map\|itinerary\|latitude\|longitude\|lea; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: I have the complete picture now. Here's my analysis:
+
+## Key finding — two different "Santa Ana" farms
+
+The site already has **Fazenda Santa Ana (Bahia)** — Coopercabruca, 2023 harvest, linked from th
+
+
+### 🤖 Autopilot
+
+👍 Go signal received. Let me check the handoff manifest (per protocol) and inspect the exact structures I need to modify.
+
+
+### 🤖 Autopilot
+
+Go signal received. No existing handoff plan for this exact task in the manifest — proceeding as the approved ad-hoc unit. Let me gather the remaining structures I need to mirror (full journey stops array + Paulo page map/media sections + any farm index).
+
+
+### 🤖 Autopilot
+
+Full picture confirmed. Paulo's farm + CEPOTX are the last two stops in the journey. Santa Anna fits right before CEPOTX (member farm, same leg). Let me grab the remaining structures I need to mirror faithfully: the rest of Paulo's page HTML, the CEPOTX cooperative page (member farm list), and the media.json pattern.
+
+
+### 🤖 Autopilot
+
+Let me check the centralized JS data files that power the farm/journey navigation — these likely need updating too.
+
+
+### 🤖 Autopilot
+
+I now have the complete architecture. This is a multi-file change (farm page + media.json + journey data + farms-data.js + CEPOTX coop page). Per the one-PR-per-turn rule, I'll stage the full set of edits and open ONE comprehensive PR. Let me gather the last pieces: the farm hero/story section of Paulo's page (to mirror content structure) and the CEPOTX member-farms markup.
+
+
+### 🤖 Autopilot
+
+I have the complete architecture. Now let me check what media files I have on the box to use as assets for the new farm page.
+
+
+### 🤖 Autopilot
+
+All 21 media assets are on the box. Now let me prepare web-optimized images and capture the full Paulo page head (to mirror hero/nav structure exactly).
+
+
+### 🤖 Autopilot
+
+I have the full architecture. Let me do one final recon round — the media.json image schema (from the Bahia Santa Ana page which has one), the media-gallery loader, and the CEPOTX member-farms card markup — so the new page integrates perfectly.
+
+
+### 🤖 Autopilot
+
+I have the full architecture. Let me do one consolidated recon (exact edit anchors in all 4 files) and generate the new page content on the box in parallel.
+
+
+### 🤖 Autopilot
+
+I have the complete architecture mapped. Now let me grab Paulo's body markup (hero + story) precisely so the new page is structurally faithful, and prepare the media assets list.
+
+
+### 🤖 Autopilot
+
+I have the complete architecture. Now I'll build the new farm page and open ONE comprehensive PR with all files. Let me construct the new farm page HTML by adapting Paulo's page structure (same CSS/nav/footer, hero, story, highlights, media gallery, shipments placeholder, location map with real Santa Anna coords, farm-navigation, footer scripts) and stage the data-file edits.
+
+The plan for the PR (single, comprehensive):
+1. **New:** `farms/santa-anna-fazenda-para/index.html` — full farm page (CEPOTX/Paulo template + real GPS -3.2925, -52.5722)
+2. **New:** `farms/santa-anna-fazenda-para/media.json` — hero + gallery with the visit photos/video frames
+3. **New:** `assets/images/farms/santa_anna_profile_photo.jpg` — hero image (IMG_7732)
+4. **Edit:** `js/farms-data.js` — add `santa-anna-fazenda-para` entry
+5. **Edit:** `js/brazilian-path-data.js` — add journey stop
+6. **Edit:** `cacao-journeys/brazilian-path/index.html` — add stop to journeyOrder + stops map
+7. **Edit:** `cooperatives/cepotx/index.html` — add Santa Anna member-farm card
+8. **Edit:** `index.html` — add to any farm listing
+
+Let me build the HTML page on the box first.
+
+
+### 🤖 Autopilot
+
+I have everything needed. Let me build the new farm page on the box (copy Paulo's faithful template, transform content for Santa Anna), then open the PR with the data-file edits.
+
+
+### 🤖 Autopilot
+
+The script hit a Unicode surrogate issue with emoji. Let me redo the transformation with explicit UTF-8 handling.
+
+
+### 🤖 Autopilot
+
+The `\ud83e` escapes create surrogates that can't encode. Let me use literal emoji directly in the heredoc instead.
+
+
+### 🤖 Autopilot
+
+HTML page built successfully. Now let me stage the images and prepare the data-file edits, then push the comprehensive PR.
+
+
+### 🤖 Autopilot
+
+All assets staged on disk. Now let me open the PR with the text edits, then upload the binary assets to the branch.
+
+
+### 🤖 Autopilot
+
+One edit failed — the CEPOTX card markup has different indentation than I guessed. Let me check the exact text.
+
+
+### 🤖 Autopilot
+
+The actual markup uses `</div>` without leading spaces. Let me redo the PR with the corrected edit.
+
+
+### 🤖 Autopilot
+
+PR #225 opened with the text edits. Now let me upload the local files (the transformed index.html + 4 images) to the branch.
+
+
+### 🤖 Autopilot
+
+All 6 files are on the branch. Let me verify the branch is complete.
+
+
+### 🤖 Autopilot
+
+The hero image (`santa_anna_profile_photo.jpg`) may just not match my grep pattern (underscore vs hyphen). Let me verify.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — PR opened: `agroverse_shop_beta#225`
+
+**"Add Santa Anna Fazenda farm page + Brazilian Journey stop"** → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/225
+
+### What's in the branch (all 6 files verified on `feat/santa-anna-farm-page`, 6 commits)
+
+| File | Change |
+|---|---|
+| `farms/santa-anna-fazenda-para/index.html` | **New farm page** — cloned from Paulo La do Sitio (CEPOTX) template: hero, farm story (Jedielcio + 30 Aug 2026 site visit), highlights, media gallery, "no shipments yet" placeholder, **Leaflet map at real GPS -3.292475, -52.57225** |
+| `farms/santa-anna-fazenda-para/media.json` | Hero + 3-gallery images (grove / fermentation / drying) |
+| `assets/images/farms/santa_anna_profile_photo.jpg` + 3 gallery JPGs | Web-optimized from original site-visit media |
+| `js/farms-data.js` | Santa Anna coordinates added for drift navigation |
+| `js/brazilian-path-data.js` | Journey stop added (type: farm) |
+| `cacao-journeys/brazilian-path/index.html` | Stop added to stops map + `journeyOrder` (right before CEPOTX, after Paulo) |
+| `cooperatives/cepotx/index.html` | Santa Anna member-farm card under "Member Farms" |
+
+### Naming disambiguation handled
+Slug is `santa-anna-fazenda-para`, page labeled "CEPOTX Cooperative Member Farm" — clearly distinct from the existing **Fazenda Santa Ana (Bahia, Coopercabruca)** page. Both now coexist without confusion.
+
+### Where this sits in the flow
+- **Beta-first**: PR is on `agroverse_shop_beta`. Once merged → live on **beta.agroverse.shop** for your review
+- **Prod**: only after you review the beta page and explicitly approve → then `sync_beta_to_prod`
+
+---
+
+**RESUME HERE → next unit:**
+1. **Your call:** merge #225 now so it's live on beta for review? (I have your standing "go" for merging my own PRs — but since this is a visible site change, say the word and I'll merge + confirm the beta URL)
+2. After beta review: promote to prod via `sync_beta_to_prod`
+3. **Still parked (not this unit):** the Santa Anna site-visit PDF finalization — need site code (Jedielcio), and whether you want the FARM REGISTRATION EVENT on the DApp (you said hold off)
+4. Optional: `fda_fsvp` entity.json already has Santa Anna in `source_farms` (from the earlier PR) — no further action needed there
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×20 → cd /tmp/agroverse_shop_look && echo "=== brazilian-path journey stops JS ===" && sed -n '560,760p' cacao-journeys/brazilian-path/index.html; cd /tmp/agroverse_shop_look && echo "=== full stops array order ===" && grep -n "slug:\|name: '.*Farm\|type: 'farm'\|type: 'cooperative'" ca; cd /tmp/agroverse_shop_look && echo "=== rest of paulo page (sections + footer) ===" && sed -n '590,900p' farms/paulo-la-do-sitio-para/index; …(+17 more)
 
