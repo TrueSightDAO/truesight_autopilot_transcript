@@ -602,16 +602,19 @@ Frame analysis complete. I have the data to pick the right frames — and I foun
 ### 🤖 Autopilot
 
 The money shot found: **IMG_7654 @ t=5.00s** has crimson+green together (both varieties in one frame), and t=11.00s is the crimson-pod close-up. Now extracting the best frames full-res and building a labeled preview montage:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Frames extracted and montage built. Let me send the montage so you can confirm these are the right frames before I wire them into the post.
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rate-limited — retrying the send:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -651,21 +654,25 @@ I did **not** touch the merged beta post yet — the photos are an upgrade on to
 ### 🤖 Autopilot
 
 👍 "Great idea" = go on the photo version. Let me first read the current merged post HTML to make precise edits, and check how the hero is wired.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the post to see where to insert the photos.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the final chunk of the post (the close + ledger section) to know exactly where the figure captions and image insertions go.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 "Great idea" — going. I have the full post structure. Now I'll build the photo-version PR: swap the SVG hero for the contrast photo (both varieties in one frame), add the other four frames as captioned inline figures at the right spots, update the index card + social meta to the real photo, and upload the JPGs. Opening the PR with the text edits first:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -792,4 +799,88 @@ My hunch: use **IMG_7698 or 7697 (landscape) as the hero** — it'll fill the pa
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /home/ubuntu/rm_media && echo '=== zip contents ===' && unzip -l /home/ubuntu/rancho_maranata.zip 2>/dev/null && echo && echo '=== HEIC c; unzip -l /home/ubuntu/rancho_maranata.zip; python3 -c " from PIL import Image, ImageStat import os for f in sorted(os.listdir('/home/ubuntu/rm_media/fs8_frames')): if f.startswith('PR; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] Opps... Those are actually bananas
+
+
+### 🤖 Autopilot
+
+Ah — the HEIC photos are bananas, not cacao. Good catch; scrap those. That leaves the video frames as the only real imagery — so the "messed up" look must be something about those frames or how the page renders them. Let me diagnose properly: check whether the images actually load on the beta page, their rendered dimensions, and the sharpness of my extracted frames.
+
+
+### 🤖 Autopilot
+
+The images **load fine** (all HTTP 200, proper JPEGs) and the img tags have `max-width: 100%; height: auto`. But the Laplacian check crashed (cv2/numpy mismatch) — so I can't measure sharpness that way. The key insight: the images are 1080×1920 **portrait** — and on a wide blog container with `max-width:100%`, they render as very tall columns, and `height:auto` with a 9:16 ratio makes them huge. Let me quantify the actual rendered size and check the sharpness via PIL instead, plus look at the live page's image dimensions.
+
+
+### 🤖 Autopilot
+
+Diagnosis is now clear. Two concrete problems with the live images:
+
+1. **4 of 5 frames are blurry** — sharpness (edge variance): hero contrast = **1461** (sharp), but crimson pod = **76**, yellow pods tree = **134**, yellow pod = **187**, foliage = **478** — those are motion-blur frames from the videos.
+2. **Layout**: the blog column is only **600px wide**, and the frames are 9:16 portrait (1080×1920) → each renders ~1067px tall. Five of those stacked = a mess.
+
+Fix: dense-scan each source clip for the **sharpest** frame containing the target content, re-extract those, and fix the layout (hero + 2-up comparison instead of 5 stacked portraits). Let me scan now.
+
+
+### 🤖 Autopilot
+
+The source files are named with " 2" suffix — `IMG_7654 2.MOV` etc. Let me fix the filenames and re-run the sharpness scan.
+
+
+### 🤖 Autopilot
+
+Sampling every 0.6s via ffmpeg per frame is too slow (spawns ffmpeg each call). Better: extract all frames at a coarse rate with a single ffmpeg run per clip, then score locally. Let me do that.
+
+
+### 🤖 Autopilot
+
+IMG_7654's sharpest frames are at the start (t≈4.0s = 4634; my earlier picks at t=5.0s/3670 are fine, but t=11.0s at 510 was the blurry crimson close-up). Let me scan the other three clips the same way, then pick sharpest-with-content frames and fix the layout.
+
+
+### 🤖 Autopilot
+
+Sharpness data is in — and it confirms the problem: my earlier picks include genuinely blurry frames (crimson close-up at IMG_7654 t=11s scored **510** edge-variance, the lowest of everything; the good shots score 3500+). Combined with the 9:16 portrait frames rendering ~1067px tall in a **600px-wide** column, that's the "messed up" look.
+
+Fix plan: re-score each clip on **sharpness + target content** (yellow pod, crimson pod, green foliage, both-in-frame) and extract the best sharp-with-content frames, then fix the layout (contained heights instead of full-height portraits). One combined scan:
+
+
+### 🤖 Autopilot
+
+Diagnosis confirmed — two real problems with the live images:
+
+1. **Blurry frames** — the crimson close-up I used scored a Laplacian edge-variance of **510** (worst of all frames); the good shots run 3,500–4,600. Motion blur from video frames.
+2. **Layout** — five 9:16 portrait frames stacked in a 600px column render as huge tall columns; that's the "messed up" look even when sharp.
+
+Fix: re-extract the **sharpest frames with the right content** (per the scan above) at full res, crop to landscape/4:3 so they fit the column properly, and slim down to hero + 3 inline figures. Executing now:
+
+
+### 🤖 Autopilot
+
+New frames extracted, cropped to web-friendly ratios (hero 16:9, rest 4:3), and quality-checked. But given the last round of "messed up" images, I'm **not pushing blindly** — sending the new montage for your eyes first:
+
+
+### 🤖 Autopilot
+
+## 📸 v2 frames sent — please confirm (message 17591)
+
+**What was wrong with the live images (diagnosed):**
+1. **Blurry frames** — the crimson close-up scored edge-variance **510** (worst in the whole scan); the sharp frames run 3,500–4,600. Motion blur from the video clips.
+2. **Layout** — five 9:16 portrait frames (1080×1920) in a 600px-wide blog column = five giant tall phone-screenshot columns. That's the "messed up" look even when sharp.
+
+**What I extracted (v2):**
+- Scanned all 4 source clips at 0.5s intervals, scoring every frame on sharpness **and** content (yellow-pod %, crimson %, green %)
+- Chose sharp + content-correct moments: hero IMG_7654 @4.0s (sharpness 4634 — the sharpest frame of all), tree @14.5s (yellow 0.194), crimson @8.0s (0.067), pod @10.5s (yellow 0.202)
+- **Cropped to web-friendly ratios** — hero 16:9 (1080×608), the rest 4:3 (1000×750) — so they fit the column instead of towering
+
+Montage sent to this topic (message 17591). Once you confirm (or tell me "use 2,4 but swap 3"), I'll push the fix PR to the beta blog → then prod on your "promote".
+
+**Also flagged for later:** the HEIC photos in the zip were bananas (per your message) — so video frames are the only real imagery; v2 makes them as good as they can be.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → echo '=== 1. img tags on live beta post ==='; curl -s https://beta.truesight.me/blog/posts/the-tree-the-industry-despises-feeds-the-family-e; echo '=== 1. sharpness via PIL (no cv2) ==='; python3 - <<'PYEOF' from PIL import Image, ImageFilter import os d = '/home/ubuntu/rm_media/fs; SRC='/home/ubuntu/to_analyze/to analyze'; ls -la "$SRC" | grep -E 'IMG_7654|IMG_7669|IMG_7672|IMG_7673' ; echo '---'; python3 - <<'PYEOF' im; …(+5 more)
 
