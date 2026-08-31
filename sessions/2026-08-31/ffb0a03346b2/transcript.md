@@ -4624,16 +4624,19 @@ Branch verified complete: **12 gallery items** (9 images + 3 YouTube) and all 9 
 ### 🤖 Autopilot
 
 Performing unit 1 — verifying the expanded gallery is live on beta.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Beta still serving the old content — GitHub Pages deploy lag again (same as before). Let me confirm the merge is on main, then wait for the deploy to catch up.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GitHub main has 12 items but beta still serves 6 after 45s. Let me check the deploy mechanics and cache headers.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4837,4 +4840,69 @@ Both live on `beta.agroverse.shop/farms/santa-anna-fazenda-para/` in the Farm Lo
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== beta farm page: SunMint link present? ==="; curl -s "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/" | grep -c "View p; echo "=== pages build status ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/actions/runs?per_page=3" | /opt/tr
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] I think under the Farm Highlights section there should be a metnion of part of the sunmint program and then link to https://truesight.me/sunmint.html
+
+
+### 🤖 Autopilot
+
+Good idea — the SunMint plot belongs in the highlights, not just the location section. Let me read the Farm Highlights section to place it properly.
+
+
+### 🤖 Autopilot
+
+The highlights grid is the right spot. Adding a SunMint highlight item that links to the plot map:
+
+
+### 🤖 Autopilot
+
+PR #243 opened. Verifying the edit on the branch:
+
+
+### 🤖 Autopilot
+
+Edit verified on the branch (lines 550–552, SunMint Program highlight with link).
+
+## ✅ Done this turn — `agroverse_shop_beta#243` opened
+
+**"Santa Anna farm page: SunMint program highlight"** → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/243
+
+### What changed
+Added a new **Farm Highlights** entry (6th item, after Region):
+
+> 🌱 **SunMint Program** — [Plot on SunMint map](https://truesight.me/sunmint.html)
+
+matching the existing highlight-item style (inherits color, underlined link) and linking to the plot map where SA-P1 renders.
+
+### Now the farm page links to the SunMint plot in **two places**
+| Section | Link |
+|---|---|
+| **Farm Highlights** (new) | "🌱 SunMint Program → Plot on SunMint map" |
+| **Farm Location** (#241) | "View plot on SunMint map" (next to Google Maps) |
+
+Verified on the branch: `🌱 SunMint Program` at line 550, link at 551, clean markup.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Merge #243** (say "go" — part of the approved cross-link unit) → then verify on beta (Pages deploy ~1–3 min)
+2. **Promote to prod** on your eyeball-approval — `sync_beta_to_prod` carries #239 (6 photos), #241 (location link), #243 (highlight link) together
+3. **Still parked:** merge `agentic_ai_context#851` (farm-page conventions doc — still open); plot-impact-embed idea on the farm profile
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → read Farm Highlights section (lines 516–556) to place the item; verified edit on branch (lines 550–552)
+• `git_push_changes` → **PR #243** (feat/santa-anna-sunmint-highlight, 1 edit)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/asb_check && git fetch -q origin && git pull -q origin main; sed -n '516,556p' (Farm Highlights grid read); git show branch file (grep SunMint Program → lines 550-552)
+• `git push changes` → **PR #243** (commit 4f75daf)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/asb_check && git fetch -q origin && git pull -q origin main 2>&1 | tail -1; echo "=== Farm Highlights section ==="; sed -n '516,556p; cd /tmp/asb_check && git fetch -q origin feat/santa-anna-sunmint-highlight:refs/remotes/origin/feat/santa-anna-sunmint-highlight && echo "==
 
