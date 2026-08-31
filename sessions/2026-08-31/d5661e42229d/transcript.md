@@ -3587,21 +3587,25 @@ Dry-run is byte-exact. Executing the real submission — this is the auto-dispat
 ### 🤖 Autopilot
 
 The sleep command hit the 60s tool cap. Let me check the tracking tab directly — enough time may have passed:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tracking tab caps at 1000 rows (its own row numbers, not Chat Logs rows — column A references the Chat Logs row). Reading the tracking tab's actual tail:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tracking tab is 57 rows; my new submission's processing would be at the tail. Reading the artifact to see the last rows:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Reading the tail of the tracking artifact to see if my just-submitted reject (via the reusable script) got auto-processed:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3843,4 +3847,23 @@ PR #451 is mergeable (clean), +9/−1, one file — exactly the dispatch-failure
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/pulls/451" | python3 -c "import json,sys; d=json.load(sys.stdin); p
 • `merge pr` → ✅ PR #451 on tokenomics merged successfully (sha: fc545024a4b12d02083666c8bfd4caed3e54d125). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**Go received 👍 → merged the dispatch-failure visibility fix.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `tokenomics` | **[#451](htt
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **clasp-deploy `tokenomics #451`** to GAS `1UrBg…`. Dry-run first to confirm what would push:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
