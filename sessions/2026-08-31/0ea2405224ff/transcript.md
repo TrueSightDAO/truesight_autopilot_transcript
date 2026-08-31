@@ -501,11 +501,13 @@ The artifact is nested — let me read the workflow file directly from the clone
 ### 🤖 Autopilot
 
 The pattern is fully mapped. Before writing the plots builder, let me check whether a "SunMint Plots" tab exists in the spreadsheet the tree builder reads (so the generator can be wired to a real source of truth):
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The "SunMint Plots" tab **doesn't exist yet** in the spreadsheet — so the generator must be *safe*: if the tab is absent/empty, it must **preserve the curated seed** (`plots/index.geojson` with RM-P1/RM-P2) instead of clobbering it with an empty FeatureCollection (which would blank the map). Let me check the runbook I wrote for the exact schema, and draft the script locally:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -642,4 +644,70 @@ Data source verified live just now:
 **Note:** if the map still shows the old Florianópolis view, hard-refresh (Ctrl/Cmd+Shift+R) — the HTML may be cached.
 
 Once you've reviewed it and are happy, say the word and I'll promote to production (`sync_beta_to_prod`), and we can take the next steps (SunMint Plots sheet tab, RM-P2 boundary walk/CAR, ledger anchor).
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: I like what I am seeing with the map for Altamira but
+
+what about the tree planted in Florianopolis??
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631]
+
+
+### 🤖 Autopilot
+
+Good catch — let me look at the trees registry to see what's actually registered in Florianópolis and how the map now handles those markers.
+
+
+### 🤖 Autopilot
+
+Interesting — the Florianópolis "PILOT_CENTER" wasn't random: there are **real trees registered in Florianópolis** (-27.438, -48.499): `Edgar_20260819134740_489` (Cacao – Criolla) and `Edgar_20260821175134_005` (Bougainvillea, LINKED). The old center was showing those. My Altamira fix now hides them — that's a real regression. Let me check how the map renders tree markers and bounds today:
+
+
+### 🤖 Autopilot
+
+Let me read the full map script to understand the tree-marker logic vs the plots fitBounds:
+
+
+### 🤖 Autopilot
+
+Let me get the full properties of the Florianópolis tree records (and the other odd-location ones) so I can tell you exactly what's there:
+
+
+### 🤖 Autopilot
+
+The Florianópolis trees are still in the registry — they're just **off-screen now** because the map opens on Altamira. Here's the full picture:
+
+## What's actually in the trees registry (19 records)
+
+**2 real trees in Florianópolis (-27.438, -48.499):**
+| Tree ID | Species | Status | Date | Notes |
+|---|---|---|---|---|
+| `Edgar_20260819134740_489` | Cacao – Criolla | NEW | 2026-08-19 | photo `20260819104739_...` |
+| `Edgar_20260821175134_005` | **Bougainvillea** | **LINKED** | 2026-08-21 | QR `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`, photo `20260822_130000_FOUNDERHAUS_GROUP.jpg` |
+
+That Bougainvillea is a **Founderhaus** (Florianópolis coworking) demo tree — QR-linked, "LINKED" status. That's why the map's PILOT_CENTER was originally Florianópolis: the impact map was clearly built around these demo trees first, then we re-centered it on Altamira.
+
+**How the map handles them now:** `loadTrees()` adds a marker for *every* tree with coordinates, regardless of view. So the 2 Florianópolis markers **are still on the map** — you just can't see them because the view opens at Altamira and `fitBounds(plots)` snaps there. Pan/zoom over to Florianópolis and they're there.
+
+## The data-quality elephant (worth a look while we're here)
+
+13 of 19 trees are **not in the Amazon at all**:
+- **8 in Oregon / California** (44.5,-123.2; 41.4,-122.2) — cacao *cannot* grow outdoors there; these look like early import/test entries with default or bogus GPS (numeric IDs `469027268`… and recent `Edgar_20260829_*` repeats of the same Corvallis coords)
+- **1 in Shenzhen, China** (22.94,113.88)
+- **4 with no coordinates at all**
+
+## My suggestion
+
+1. **Add a view switcher to the impact map** — small PR mirroring the existing `plotSelector` pattern: **Altamira (pilot)** / **Florianópolis (demo)** / **All trees** buttons that fly the map to each cluster. That way the Founderhaus trees stay visible and reachable without breaking the Altamira focus.
+2. **Flag the junk coords** — mark the 13 non-Amazon/coordinate-less trees as `status: "test"` or move them out of the live registry so the "n registered trees" counter and map stay honest. Want me to check how they got registered (likely the QR registration flow defaulting GPS) before touching anything?
+
+Say the word and I'll open the view-switcher PR (and separately investigate the junk-coordinate source).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/sunmint2 && echo "=== trees/index.geojson ===" && python3 - <<'PYEOF' import json d = json.load(open('trees/index.geojson')) print("; cd /tmp && rm -rf tmb2 && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git tmb2 2>&1 | tail -1; cd tmb2 && echo ; cd /tmp/tmb2 && sed -n '420,600p' sunmint.html; …(+1 more)
 
