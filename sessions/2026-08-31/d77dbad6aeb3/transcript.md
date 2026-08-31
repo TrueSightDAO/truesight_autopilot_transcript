@@ -1870,6 +1870,7 @@ Wrapper ready; runbook manifest path confirmed (`agentic_ai_context/FARM_MEDIA_M
 Dry-run clean — wrapper maps MOV→MP4 correctly (5 smallest already converted; 3MB IMG_3875, 1MB IMG_3878 confirm early videos are tiny). The uploader works. Batch still converting (13/72), so uploads start once conversion catches up — the wrapper skips missing MP4s, so I can start uploading the converted ones now in the background.
 
 But per the one-PR-per-turn rule — I merged #858 this turn, so I should stop here. Let me do a final status check and converge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1924,16 +1925,19 @@ Everything is staged and validated — next turn kicks off the upload batch.
 ### 🤖 Autopilot
 
 Resuming — kicking off the YouTube upload batch in the background (it'll run alongside conversion, skipping any MP4s not yet done), then checking both jobs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Upload batch launched (pid 55365), conversion at 15/72. Let me give it a few seconds and check the upload log actually started processing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Uploads run but my yt_id parser isn't matching the script's output format (rc=0 = script succeeded, but no ID captured). The pilot upload worked earlier with the same script, so the output format must differ from what I parse. Let me run one manually and see the full output:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2091,4 +2095,87 @@ All additive, nothing prod touched. The heavy batch is self-running; next turn f
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → echo '=== conversion ==='; wc -l /tmp/mp4_progress.txt; ls /tmp/mp4/*.mp4 2>/dev/null | wc -l; echo '=== yt_ids ==='; /opt/truesight_autopil; cd /opt/truesight_autopilot/config/youtube && /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' 2>&1 | grep -v "FutureWarning\|warnings.w; /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json, datetime d = json.load(open('/tmp/la_do_manifest_full.json')) # Build the
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] [Handoff context — this Telegram topic (thread 17184) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Manifest doc skeleton built. Everything is progressing. Let me converge with the current status — the pipeline is still running (conversion ~19/72, ~30 min left), so the manifest PR will be filed once
+
+
+### 🤖 Autopilot
+
+Resuming — checking if the pipeline finished (conversion + uploads):
+
+
+### 🤖 Autopilot
+
+⚠️ **Stalled** — conversion stuck at 19/72 (was 19 last turn, ~35 min ago), only 1 process left (the watch loop). The conversion job died or stalled. Let me investigate:
+
+
+### 🤖 Autopilot
+
+Found it: the conversion job (pid 42362) **died after IMG_3911** — 19 MP4s done, no more ffmpeg procs, and the watch loop keeps finding "mp4 missing". The last MP4 (IMG_3911) is only **50 MB for a large source** — suspicious, may be truncated (died mid-write). Also, the progress file has 19 entries but the last mtime shows IMG_3911 done at 18:11 — likely the converter crashed on IMG_3912 (or hit a big file and OOM'd/errored).
+
+Let me check the conversion job's log (was it nohup'd?) and see what it was working on when it died:
+
+
+### 🤖 Autopilot
+
+Root cause found: **IMG_3911.mp4 is corrupt** ("moov atom not found") — the converter died mid-write on IMG_3911 (73 MB source → 50 MB truncated output), likely a crash/OOM during a large-file encode, and the batch job never resumed. The progress file listed it "done" but the file is garbage. 
+
+Fix plan:
+1. Delete corrupt IMG_3911.mp4 (it's in the progress list but invalid).
+2. **Resume conversion from IMG_3911 onward** — with a re-verify step (ffprobe each output; re-convert if invalid) so truncation can't silently pass.
+3. The watch loop will pick up the rest.
+
+Let me restart the conversion job with resume + verify, detached:
+
+
+### 🤖 Autopilot
+
+Resume conversion running (pid 64803) with verification + GPS injection. It'll re-convert IMG_3911 (corrupt) and continue through 4041. Let me verify it's actually processing (give it a few seconds for the first ffmpeg to start):
+
+
+### 🤖 Autopilot
+
+Resume job is **re-converting IMG_3911 right now** (ffmpeg pid 64864 writing to IMG_3911.mp4). It deleted the corrupt file and is regenerating it — will continue through IMG_4041, verifying each output, injecting GPS, then the watch loop uploads them.
+
+Let me converge with a clean status.
+
+## ✅ Turn — pipeline repaired and re-running
+
+### What happened
+1. **Detected stall**: conversion was stuck at 19/72 — no ffmpeg procs, only the watch loop alive. The converter **died mid-write on IMG_3911** (73 MB source → 50 MB truncated output, "moov atom not found" = corrupt).
+2. **Root cause**: the batch job (pid 42362) crashed/OOM'd during a large-file encode and never resumed; the progress file falsely listed IMG_3911 as done.
+3. **Fixed**: 
+   - Deleted the corrupt IMG_3911.mp4
+   - New **resume script with verification** (`/tmp/convert_resume.sh`, pid 64803): skips valid MP4s (ffprobe check), **re-converts corrupt ones**, injects `GPSCoordinates` after each encode, appends to progress, writes failures separately
+   - Confirmed it's actively re-converting IMG_3911 now (ffmpeg pid 64864)
+
+### Pipeline state
+| Job | Status |
+|---|---|
+| Conversion (resume, verified) | re-converting from IMG_3911 → through 4041 (~53 remaining, ~35–40 min) |
+| Upload watch loop | alive (cycle 27+), picks up each valid MP4 within 2 min |
+| Manifest | 20/72 yt_ids; filling as uploads land |
+
+The verify-on-resume fix means **no silent corruption can pass** — every MP4 gets ffprobe-checked before it counts as done.
+
+## RESUME HERE → next unit (~40 min)
+1. **Conversion + uploads complete** → verify **72/72 yt_ids**, dupe check (all unique on channel).
+2. **Manifest PR** → `agentic_ai_context/FARM_MEDIA_MANIFESTS/la-do-sitio.json` (doc built at `/tmp/la_do_manifest_doc.json`, ready to push) + index update.
+3. **Farm page wiring** — curated YouTube embeds into La do Sitio `media.json` (beta-first, prod on your go).
+4. **Cleanup** (on your confirm) — delete local raw after upload + manifest.
+
+Nothing prod touched, nothing deleted. The pipeline is self-running again with corruption-proofing in place.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → status check (stall detected: 19/72, 1 proc); ps -p 42362 → DEAD; progress file + mtimes (IMG_3911 truncated 18:11); ffprobe IMG_3911 → moov atom not found (corrupt); source sizes; wrote /tmp/convert_resume.sh (verify + re-convert + GPS inject); relaunched (pid 64803); confirmed ffmpeg 64864 re-converting IMG_3911
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → echo '=== conversion ==='; wc -l /tmp/mp4_progress.txt; ls /tmp/mp4/*.mp4 2>/dev/null | wc -l; echo '=== yt_ids ==='; /opt/truesight_autopil; echo '=== all ffmpeg/convert procs ==='; ps aux | grep -E "ffmpeg|convert|mp4" | grep -v grep | head; echo '=== convert job 42362 alive? ===; echo '=== find the convert script/log ==='; ls -la /tmp/*.sh /tmp/*.log 2>/dev/null | grep -iE "convert|mp4|nohup" | head; echo '=== nohup o; …(+2 more)
 
