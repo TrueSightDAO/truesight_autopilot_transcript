@@ -1121,6 +1121,7 @@ PDF generated — 10 pages with real GPS, signature, correct facility mapping. O
 ### 🤖 Autopilot
 
 PDF regenerated — 10 pages, 15.3 MB, caption fixed. Sending for review:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1170,6 +1171,7 @@ Once you confirm those two, I'll finalize and push the PDF **+ original media** 
 ### 🤖 Autopilot
 
 Good question — let me search the fda_fsvp repo for that farm.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1302,4 +1304,83 @@ Here are my thoughts on this, Gary.
 So my suggestion: **once Jedielcio gives us the Santa Anna site code, I finalize the PDF with the code + GPS, PR it into `fda_fsvp` (the record), and submit a FARM REGISTRATION EVENT for Santa Anna Fazenda with its location (the ledger binding).** That gives you the audit trail AND the location-bound registry entry.
 
 Want me to prepare the FARM REGISTRATION EVENT submission now (it only needs Farm Name + Location, and I have both), or wait until the site code lands and we do the full push together?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] I think let's hold off on this submission for now. What are your thoughts about updating agroverse.shop with this new farm? I mean it's not really there yet but we should master, I just added as part of the itinerary and then update the maps on the listing page too, thoughts? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me look at how agroverse.shop currently handles farms, itineraries, and maps before giving thoughts.
+
+
+### 🤖 Autopilot
+
+Let me look at the agroverse_shop repo to understand the current farm/listing/map structure.
+
+
+### 🤖 Autopilot
+
+Good — there's already a `farms/` directory with farm listing pages, including `paulo-la-do-sitio-para` (same CEPOTX network!). Let me examine the structure and how Paulo's farm page handles maps/itinerary.
+
+
+### 🤖 Autopilot
+
+Now let me read Paulo's farm page (the CEPOTX one) to see the structure — maps, itinerary, and how it's built.
+
+
+### 🤖 Autopilot
+
+Let me see the map/itinerary section of Paulo's page and the media.json format.
+
+
+### 🤖 Autopilot
+
+Now I understand the pattern. Let me check if there's a "cacao-journeys" / itinerary concept and how the existing farm pages connect to the store products.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture of the site architecture. Let me check one more thing — the product page for the Santa Ana cacao (there's already a `ceremonial-cacao-fazenda-santa-ana-2023-200g` product — but that's the *Bahia* Santa Ana, a different farm!). Let me verify.
+
+
+### 🤖 Autopilot
+
+I have the complete picture now. Here's my analysis:
+
+## Key finding — two different "Santa Ana" farms
+
+The site already has **Fazenda Santa Ana (Bahia)** — Coopercabruca, 2023 harvest, linked from the `ceremonial-cacao-fazenda-santa-ana-2023-200g` product and the `fazenda-santa-ana-bahia` farm page. **That's a DIFFERENT farm** from the one you just visited (Santa Anna Fazenda, Pará, via Jedielcio/CEPOTX — same network as Paulo's La Do Sítio).
+
+This creates a real **naming-collision risk** on the site: two farm pages, both "Santa Ana/Anna", one in Bahia, one in Pará, different cooperatives. We'll need to disambiguate carefully (e.g. "Santa Anna Fazenda — Pará, Amazon" vs the existing "Fazenda Santa Ana — Bahia").
+
+## My thoughts on your plan
+
+**Yes, I think it's a great idea — and it slots into the existing architecture cleanly.** Here's how:
+
+1. **New farm page** `farms/santa-anna-fazenda-para/` — mirroring `paulo-la-do-sitio-para` (the CEPOTX template): hero photo, story, Leaflet map with the real GPS we extracted (-3.2925, -52.5722), and the CEPOTX cooperative badge.
+
+2. **The itinerary** — the `cacao-journeys/brazilian-path` already lists 7 stops including `paulo-la-do-sitio-para` (the other CEPOTX farm). Adding Santa Anna as a stop right alongside Paulo's makes complete sense — it's literally on the same network, same region, same itinerary leg ("travel north through farms of Bahia to Pará"). I'd add it as a stop immediately before/after Paulo's.
+
+3. **Maps on the listing page** — the brazilian-path journey already uses Leaflet markers per stop. Adding Santa Anna's marker at the real coordinates keeps the map accurate. Also worth checking if there's a central farms/map listing page.
+
+4. **Product linkage** — this farm's cacao could later tie to the existing `la-do-sitio` product family (ceremonial-cacao-paulo-s-la-do-sitio-farm-2024-200g) since both are CEPOTX Pará. But no product exists for Santa Anna yet — that's a separate build.
+
+## The "master" part — worth doing deliberately
+
+The site has no real content for Santa Anna yet, so we're building the *master* page from our visit data (photos, video frames, GPS, observations). That's actually a great position: we have **real primary-source material** — the farm visit photos/video we just processed — which is better provenance than most existing pages have.
+
+**My recommendation:** build it in **agroverse_shop_beta** first (beta-first flow per our rules), get your review, then promote to prod after approval. I'd structure the work as:
+- `farms/santa-anna-fazenda-para/index.html` + `media.json` (with our visit media)
+- Add journey stop to `cacao-journeys/brazilian-path/index.html` (name must disambiguate: "Santa Anna Fazenda — Pará")
+- Add to any farm listing/map index pages
+- Reuse the Leaflet map pattern with real coords
+
+Want me to start building the farm page in beta? I have all the media + GPS + observations ready. I'd also recommend adding a note in the page that it's the Pará farm (not the Bahia one) to avoid customer confusion.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp 2>/dev/null; rm -rf agroverse_shop_look && git clone --depth 1 -q https://github.com/TrueSightDAO/agroverse_shop_beta.git agroverse_; cd /tmp/agroverse_shop_look && echo "=== farms dir ===" && ls -la farms/ && echo "=== paulo farm page files ===" && ls -la farms/paulo-la-do; cd /tmp/agroverse_shop_look && echo "=== map + itinerary sections in paulo page ===" && grep -n -i "map\|itinerary\|latitude\|longitude\|lea; …(+3 more)
 
