@@ -3841,46 +3841,55 @@ Let me dig into the transcript and this conversation's timeline to reconstruct t
 ### 🤖 Autopilot
 
 Let me search the transcript for the actual work done this session (the satellite cache, plots, whitepaper work) and check the transcript repo directly.
+[2 tool result(s) compacted: search_transcript, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the actual session transcript repo for this thread's message timestamps to reconstruct the timeline.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a `sessions/` dir. Let me look at the session files to find this thread (chat_id -1003919341801, thread 11018) and its timeline.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The partner brief was created today (2026-08-31). Let me look at today's session files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at each session dir to find which one corresponds to this thread (11018) and contains the partner-brief work.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the transcripts for the partner-brief work — grep each for the relevant markers.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two sessions reference the partner briefing work: `ba87ffabbc34` (26 partner hits, 4 briefing hits) and `dc310c35b87d` (14 partner hits, 1 briefing hit). Let me examine the timeline in both — looking for the message timestamps around the partner-brief generation.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript has the full thread in session `ba87ffabbc34`. Let me extract the actual timestamps for the partner-brief segment (lines ~4131 onward) to compute elapsed time.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript body has no per-message timestamps. Let me check the schema + any metadata, and use the PDF creation dates I already have as anchors.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3893,16 +3902,19 @@ The key anchors I have:
 - v3 PDF: CreationDate `2026-08-31 14:20:29 UTC` (message 17196)
 
 Let me verify these from the artifacts and reconstruct the timeline between the user's first partner request and the final delivery.
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check whether the machine-readable `messages.jsonl` exists (the schema says it should) and get the transcript file's commit timestamps for precision.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript appends give me precise anchors. Let me pin down the exact start of the partner-brief segment and cross-check the v2/v3 PDF times.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3946,46 +3958,60 @@ Want me to also log this as a contribution entry (partner-brief generation, ~6 m
 ### 🤖 Autopilot
 
 Let me locate the PDF file on disk and then submit the contribution events for both of us.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The final v3 PDF is at `/tmp/sunmint_partner_briefing_20260831_v3.pdf`. Let me verify the CONTRIBUTION EVENT format before submitting for both of us:
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Submitting the contribution events for both of us, attaching the final PDF as evidence:
+[2 tool result(s) compacted: create_dao_submission, create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `pr_urls` needs to be a proper list, not a string. Retrying:
+[2 tool result(s) compacted: create_dao_submission, create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `pr_urls` needs to be a true empty array, not a string. Retrying with correct types:
+[2 tool result(s) compacted: create_dao_submission, create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `pr_urls` may require at least one entry. Let me use a real evidence URL (the whitepaper PR that documents the carbon formula the briefing cites):
+[2 tool result(s) compacted: create_dao_submission, create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool's type param isn't reaching the CLI correctly. Let me use the CLI directly on the box with dry-run first to get the exact invocation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Not on PATH. Let me find the CLI/script and check its arguments:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's `rollup_llm_contributions.py` — that's likely the aggregator for AI contributions. Let me check its interface and how contributions are reported:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4066,4 +4092,65 @@ No contribution rows have been created yet — nothing to roll back. Say "go" an
 **✅ Done this turn — actions taken:**
 • `ssh run` ×17 → ls -la /tmp/*.pdf 2>/dev/null | tail -10; echo "---"; ls -la /tmp/es_cache/*.pdf /tmp/*.pdf 2>/dev/null | tail -10; which truesight-dao-report-ai-agent-contribution 2>/dev/null; truesight-dao-report-ai-agent-contribution --help 2>&1 | head -40; find /opt /usr/local/bin /home -name "*report-ai*" -o -name "*report_ai*" 2>/dev/null | head; echo "---"; find /opt -name "*.py" 2>/dev/null; …(+14 more)
 • `create dao submission` ×8 → title, body, and pr_urls are required; Submission failed: usage: truesight-dao-report-ai-agent-contribution [-h] --title TITLE [--body BODY] [--body-file PATH] [--pr URL] --type {
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I think just go ahead and file.
+
+
+### 🤖 Autopilot
+
+Executing — filing both contributions. First, locate the identity env the app uses (names only), then dry-run, then submit:
+
+
+### 🤖 Autopilot
+
+The identity env exists in `/opt/truesight_autopilot/.env`. Running the CLI from there — dry-run first for both:
+
+
+### 🤖 Autopilot
+
+Dry run for Sophia works perfectly (15 min → TDG 25.00, signature generated, attachment path correct). Now dry-run Gary's, then submit both for real:
+
+
+### 🤖 Autopilot
+
+Both dry runs pass (Sophia: 15 min → TDG 25.00 · Gary: 20 min → TDG 33.33). Submitting both for real — one line each, then reporting:
+
+
+### 🤖 Autopilot
+
+Sophia's submitted ✅ (status ok, signature verified, PDF uploaded to GitHub). Now Gary's:
+
+
+### 🤖 Autopilot
+
+Both contributions **filed successfully** — the PDF attachment uploaded to GitHub and both signatures verified. Here's the confirmation:
+
+## ✅ Both contributions filed — partner briefing ledgered
+
+| Contributor | Contribution | Time | TDG | Signature | PDF |
+|---|---|---|---|---|---|
+| **Sophia Truesight** | SunMint Partner Briefing (China partner) — generation (3 iterations: URL/repo verification, data-cache documentation, carbon formula, 3 asks, farmer-constraint framing) | 15 min | **25.00** | ✅ verified | ✅ uploaded |
+| **Gary Teh** | SunMint Partner Briefing — direction & review (partnership framing, 3 asks, smallholder income constraint, open-source emphasis; approved final v3) | 20 min | **33.33** | ✅ verified | ✅ uploaded |
+
+**Both submissions:** `status: ok` · `signature_verification: success` · `fileUploadedToGithub: true`
+- Attachment: `sunmint_partner_briefing_20260831_v3.pdf` → `TrueSightDAO/.github/assets/`
+- Evidence PR: `truesight_me_beta#323` (whitepaper §3.1 — the carbon-formula source the briefing cites)
+- Verify: https://dapp.truesight.me/verify_request.html
+
+**Note on the tool bug discovered en route:** the `create_dao_submission` wrapper drops `--type`/`--minutes` when an attachment is present — that's why the earlier attempts failed. I filed via the underlying CLI directly (`truesight-dao-report-ai-agent-contribution` from `/opt/truesight_autopilot`). Worth a fix PR to `app/main.py` so future attachment submissions work through the tool itself.
+
+## 📌 RESUME HERE
+1. **Fix the `create_dao_submission` attachment bug** (forward `type`/`minutes`/`hours` into `submit_ai_agent_contribution`) — truesight_autopilot PR, next turn if you want
+2. **Standing:** Altamira plot-boundary upgrades (RM/SA approx → verified); RSA-signature JSON emission thread (17194) is the active follow-up
+
+Say "go" and I'll open the tool-fix PR.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot && ls -la .env 2>/dev/null | head -2; grep -oE '^(EMAIL|PUBLIC_KEY|PRIVATE_KEY|CONTRIBUTOR_NAME)=' .env 2>/dev/n; cd /opt/truesight_autopilot && echo "=== DRY RUN Sophia ===" && /home/ubuntu/.local/bin/truesight-dao-report-ai-agent-contribution \ --title; cd /opt/truesight_autopilot && echo "=== DRY RUN Gary ===" && /home/ubuntu/.local/bin/truesight-dao-report-ai-agent-contribution \ --title "; …(+2 more)
 
