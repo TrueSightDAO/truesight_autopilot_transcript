@@ -122,3 +122,74 @@ Want me to also fold this "send as file, not photo" guidance into a runbook note
 • `append to transcript` ×2 → session_id, content, and filename are required; https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-08-31/07f61e4cf476/transcript.md
 • `submit contribution` ×2 → Failed to submit contribution.; Contribution submitted successfully.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17700] I wonder if we should have the instructions documented somewhere for the farmers to follow while we have the module built out on sunmint.truesight.me?
+
+
+### 🤖 Autopilot
+
+Good instinct — that guidance shouldn't live only in a WhatsApp message. Let me check what already exists (farmer-facing docs, sunmint content, related runbooks) before proposing where to put it.
+
+
+### 🤖 Autopilot
+
+No existing farmer-instruction docs in context. Let me check the sunmint repos and search org-wide for anything farmer-facing.
+
+
+### 🤖 Autopilot
+
+Let me look at what exists in the sunmint app and the farm media pipeline docs to find the natural home for farmer-facing instructions.
+
+
+### 🤖 Autopilot
+
+Let me look at the sunmint_beta app structure to see where farmer-facing instructions could live, and check the farm page conventions doc.
+
+
+### 🤖 Autopilot
+
+This connects perfectly to what we just learned — and `AGROVERSE_FARM_PAGE_CONVENTIONS.md` just codified the same lesson: *"Telegram strips EXIF on upload — attachments received via Telegram have zero GPS."* Let me check what pages sunmint_beta already has, so I can propose where the instructions would live.
+
+
+### 🤖 Autopilot
+
+Short answer: **yes — and sunmint_beta is the right home for it.** Here's my read and a concrete proposal.
+
+## Why this is worth doing now
+
+1. **We just hit the exact failure mode** — the photo you shared came through as a *file* with GPS intact; had it been sent as a compressed WhatsApp *photo*, we'd have gotten zero coordinates (the `AGROVERSE_FARM_PAGE_CONVENTIONS.md` runbook notes the same: *"Telegram strips EXIF on upload — attachments received via Telegram have zero GPS"*).
+2. **The knowledge currently lives in one WhatsApp message** to Jedielcio — unsearchable, non-reusable, and it evaporates when the thread scrolls away.
+3. **sunmint.truesight.me is already the farmer touchpoint** (bilingual PT/EN, offline-first, mobile-friendly). A one-page "Como enviar fotos/vídeos" guide fits the existing pattern — no new infra.
+
+## Proposed artifact
+
+A small **`instrucoes/` (instructions) page** in `sunmint_beta` — plain HTML, no build step, same bilingual toggle + styling as `index.html`:
+
+| Section (PT) | Content |
+|---|---|
+| **1. Envie como ARQUIVO, não como foto** | WhatsApp/Telegram comprimem fotos e apagam a localização (GPS). Como arquivo = a localização é preservada. |
+| **2. Ative a localização** | Permita que a câmera/WhatsApp use sua localização (Configurações → Privacidade → Localização). |
+| **3. Tire a foto/vídeo perto da árvore** | Dentro de poucos metros do tronco; 1–2 fotos + 1 vídeo curto é suficiente. |
+| **4. Como enviar como arquivo** | Passo a passo: WhatsApp → 📎 clip → *Documento* → Galeria/Arquivos → escolher a foto → enviar (não "Câmera/foto"). |
+| **5. O que escrever junto** | Data, espécie, e o nome da fazenda/roça — ajuda a identificar. |
+
+Fully bilingual (PT default / EN toggle), links from the main app, and (optionally) a QR/WhatsApp-forwardable summary card.
+
+## Where it lives & how it ships
+
+- **Code:** `sunmint_beta/instrucoes/index.html` (+ nav link in `index.html` + `monitor-tree-growth/index.html`)
+- **Deploy path (beta-first):** PR → merge → live on `beta.sunmint.truesight.me` → you review → `sync_beta_to_prod` to `sunmint.truesight.me` on your explicit go
+- **Internal reference:** one note appended to `FARM_MEDIA_PIPELINE.md` (or the farm-page conventions doc) pointing at the page, so future Sophia instances know it exists
+
+Mission tie-back: every photo/video that arrives with real GPS is one more verifiable data point for the 10,000-hectare Amazon rainforest registry — this guide is what makes the data usable.
+
+---
+
+Want me to **open the PR** for the instructions page in `sunmint_beta` now? If yes, I'll build it, run local tests, push the branch, and report the beta URL for your review. (I won't touch `sunmint_prod` until you approve the beta deploy.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && rm -rf sunmint_beta_probe && git clone --depth 1 https://github.com/TrueSightDAO/sunmint_beta.git sunmint_beta_probe 2>&1 | tail
+
