@@ -2439,11 +2439,13 @@ Then PR2 (farms selector/filter) → PR3 (farms registry section) → PR4 (statu
 ### 🤖 Autopilot
 
 Go-signal received + auto-start confirmed — executing **PR1: Enriched plot popups**. First, let me read the current popup builder in `loadPlots()`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full `loadPlots` function and the tree popup for reference — lines ~600–700:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2602,4 +2604,143 @@ I'll auto-start PR2 on the next go per the plan's auto-start manifest row — or
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #331 on truesight_me_beta merged successfully (sha: 81ee428b9af53873142c852635744273178b3410). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**PR1 shipped — merged the enriched plot popups + boundary-authority legend.**
+
+**PR #331 — https://github.com/TrueSigh
+
+
+### 🤖 Autopilot
+
+Executing **PR2: Farms selector/filter dropdown** — auto-start confirmed. Let me read the current page state (post-PR1) focusing on the selector/load logic:
+
+
+### 🤖 Autopilot
+
+Let me read the loadPlots / viewSelector / plotSelector logic in full (lines 500–700) to plan the farms selector integration precisely:
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the loadPlots function (the plot filter + view interplay):
+
+
+### 🤖 Autopilot
+
+Let me read the final part of loadPlots (the view-chip interplay and end of function):
+
+
+### 🤖 Autopilot
+
+The artifact is nesting — let me read the tail of loadPlots directly with sed:
+
+
+### 🤖 Autopilot
+
+I need to see the middle chunk (the view-chip interplay, lines 660–700) to know exactly where the farm filter should hook in:
+
+
+### 🤖 Autopilot
+
+I now understand the structure fully. The cleanest way to add a farm filter without disturbing the existing plot-chip/view-chip machinery: build a **separate `#farmSelector` dropdown** in the controls row that toggles a **`farmFilter`** — on change, it shows/hides polygon layers via `setStyle`/`addTo`/`remove` and the tree markers (which are separate `L.marker`s). Since the polygons are added directly with `.addTo(map)` in the forEach, I'll refactor to keep references: `plotLayerRefs[id]` and `treeMarkerRefs[id]` keyed by farm.
+
+Let me see how trees are loaded (markers with farm info?) to filter them too:
+
+
+### 🤖 Autopilot
+
+Let me see the tree marker creation (line 460–490) — how trees are added and whether they carry farm info:
+
+
+### 🤖 Autopilot
+
+Now I understand the structure. Let me check the trees geojson (does the tree carry farm info?) and where `loadPlots` is called:
+
+
+### 🤖 Autopilot
+
+Trees don't carry `farm_id` (only `qr_code` with a prefix like FOUNDERHAUS). Let me check the plots geojson for farm_id values to design the farm list:
+
+
+### 🤖 Autopilot
+
+I have the full picture now. Trees don't carry `farm_id` (only QR prefix), so I'll filter tree markers by **point-in-polygon containment** against the selected farm's plot rings — clean and geometry-based. Building the new file locally with careful edits, then verifying:
+
+
+### 🤖 Autopilot
+
+All edits applied cleanly: 42,877 → 46,798 bytes, tags balanced, JS syntax OK, all new markers present. Now pushing as PR2:
+
+
+### 🤖 Autopilot
+
+Right — I need to pass the file as a full write (it's the whole modified file). Let me push with the content from the local file via the `writes` param. But the file is 46KB — passing full content in the call is heavy. Better: use `upload_local_file_to_github` to push the local file to the feature branch (like I did for the whitepaper):
+
+
+### 🤖 Autopilot
+
+The branch doesn't exist yet (the git_push_changes call failed before creating it). I'll create the branch via a tiny commit through git_push_changes with a minimal write, then push the real file. Actually cleaner — create the branch by pushing the full file via git_push_changes with `writes` (it creates the branch + commit). Let me read the file content and pass it:
+
+
+### 🤖 Autopilot
+
+The branch needs to be created with the actual edits. Let me pass the same validated search/replace hunks (they matched current `main` exactly — my local assertions confirmed count==1 for each):
+
+
+### 🤖 Autopilot
+
+PR #332 opened. Let me verify the PR branch file matches my locally-validated version (byte-compare against p2_new.html to be sure all 8 edits applied identically):
+
+
+### 🤖 Autopilot
+
+PR #332 is verified: **+80/−2**, byte-identical to my locally-validated version (tags balanced, JS syntax OK). PR2 is complete. Stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**PR2 — Farms selector/filter dropdown** (from the SUNMINT_IMPACT_MAP_EXTENSION_PLAN roadmap).
+
+**PR #332 — https://github.com/TrueSightDAO/truesight_me_beta/pull/332** (branch `impact-map-farms-selector`, **+80/−2**, byte-identical to locally-validated build)
+
+### Changes to `truesight_me_beta/sunmint.html`:
+
+1. **New `#farmSelector` row** above the plot chips — a **Farm:** dropdown with "All farms" + one option per unique `farm_id` from `plots/index.geojson` (fallback: owner), humanized (`rancho-maranta` → `Rancho Maranta`, `santa-anna-fazenda` → `Santa Anna Fazenda`)
+2. **Filter logic** (`applyFarmFilter`) on dropdown change:
+   - **Plot polygons**: show/hide by `farm_id` (layer refs kept in `plotLayers`/`plotFarms`)
+   - **Tree markers**: filtered by **point-in-polygon containment** against the selected farm's plot rings (trees don't carry `farm_id`, so geometry decides — the 1 existing tree is at FounderHaus, Florianópolis, so it correctly hides under Altamira farms and shows on "All farms")
+   - "All farms" restores everything
+   - **Plot chips** hide for non-matching farms; view-chip interplay preserved
+   - Auto-`fitBounds` to the selected farm's plots
+3. **Refactors**: `treeMarkers[]` refs (initMap), `plotLayers`/`plotFarms` refs (render) — no behavior change for existing chips/satellite
+
+### Verification (hard rule)
+- ✅ Tags balanced (div/section/p/span/select/option/button/table)
+- ✅ JS syntax OK (`node --check` on extracted inline scripts)
+- ✅ PR branch byte-identical to locally-validated file (46,819 bytes)
+- ✅ Diff clean: +80/−2
+
+## RESUME HERE → PR3 (next unit, fresh turn)
+
+**Farms Registry section** (plan §5 PR3 checklist):
+1. Add `#farms` section (cards/table) fed from the same plots data
+2. Aggregate: farm name, plots count, total ha, status mix, region
+3. Link/scroll from farms dropdown or nav
+4. Open PR, report URL
+
+Then PR4 (status styling + legend + media thumbnails) → PR5 (`gate: UAT`, 7-step check on beta) → promote to prod only with your approval.
+
+I'll auto-start PR3 on the next go per the plan's auto-start manifest row — or just say go.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint.html" -o sunmint_p2.html && wc -c sunmint_; cd /tmp && sed -n '480,700p' sunmint_p2.html; cd /tmp && sed -n '700,780p' sunmint_p2.html; …(+8 more)
 
