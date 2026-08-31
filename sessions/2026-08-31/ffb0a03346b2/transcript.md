@@ -5502,16 +5502,19 @@ All key fields verified on page 1. Now let me push the finalized PDF + entity.js
 ### 🤖 Autopilot
 
 Now updating entity.json (source_farms with the registered name + site code, add COOPOXIN note) and pushing the PDF. Opening the PR with the entity edit, then uploading the PDF.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #10 opened with the entity.json update. Now uploading the finalized v5 PDF to the branch (replacing the v4 draft record).
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both commits on the branch. This is the finalized FSVP record — merging (part of the approved correction scope).
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5708,4 +5711,114 @@ My recommendation is **option 2** — it preserves the marketing identity (and t
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && rm -rf asb_name && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git asb_name 2>&1 | tail -1; cd asb
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] https://agroverse.shop/farms/santa-anna-fazenda-para/index.html
+
+Farm name should be: ANA LUCIA ARAUJO DE SOUSA 
+
+Site code B-06-58
+
+Cooperative CEPTOX
+
+
+### 🤖 Autopilot
+
+Full rename confirmed — farm display name becomes **ANA LUCIA ARAUJO DE SOUSA** (with site code B-06-58, cooperative CEPOTX). Let me look at the exact page structure (h1/subtitle/highlights) so the rename reads well, then apply it across all surfaces in one pass.
+
+
+### 🤖 Autopilot
+
+Full rename confirmed. Let me grab the exact name fields in the journey data, farms-data.js, and CEPOTX card so I can craft precise edits.
+
+
+### 🤖 Autopilot
+
+Full rename confirmed. Applying across all surfaces: farm page (title/og/twitter/h1/subtitle/story), journey stop, farms-data.js, CEPOTX card, plus the SunMint plot name. Opening the rename PR:
+
+
+### 🤖 Autopilot
+
+PR #252 opened with all 8 edits applied. Let me verify the rename is complete on the branch (no stray "Santa Anna Fazenda" display-name refs) before merging.
+
+
+### 🤖 Autopilot
+
+Almost complete — one display-name ref remains: the **Leaflet map popup** (line 591) still says "Santa Anna Fazenda". Let me update that too (it should show the registered name, keeping the map popup consistent).
+
+
+### 🤖 Autopilot
+
+The push was rejected because my local clone is out of sync with the remote branch (I fetched it into a separate ref earlier, and the tool's clone is stale). Let me apply the popup fix directly via the Contents API to the existing branch, then re-verify.
+
+
+### 🤖 Autopilot
+
+Popup renamed locally. Now uploading the updated file to the branch via the Contents API (same file path, branch = the rename branch).
+
+
+### 🤖 Autopilot
+
+Popup fix committed to the branch. Now let me do the final verification — no display-name "Santa Anna Fazenda" refs should remain except the intentional alias mention in the story — then merge.
+
+
+### 🤖 Autopilot
+
+Rename complete and verified — all remaining "Santa Anna Fazenda" refs are **intentional alias mentions** (story: "known as Santa Anna Fazenda"; Rancho Maranta cross-link; media alt-texts describing the place, not the display name). Display name is now **Ana Lucia Araujo de Sousa** in all 4 files (6+2+1+1 refs). Merging PR #252:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `agroverse_shop_beta#252` merged — farm renamed
+
+**"Rename farm to registered name Ana Lucia Araujo de Sousa (B-06-58, CEPOTX)"** → merged (sha `7486338`)
+
+### Display name now **ANA LUCIA ARAUJO DE SOUSA** everywhere
+| Surface | Change |
+|---|---|
+| **Farm page** (`santa-anna-fazenda-para/index.html`) | `<title>`/og:title/twitter:title, `<h1>`, hero subtitle (+ Site Code B-06-58), story opening ("known as Santa Anna Fazenda" alias), Leaflet map popup |
+| **Brazilian Path journey** | stop `name:` → Ana Lucia Araujo de Sousa |
+| **`js/farms-data.js`** | label → Ana Lucia Araujo de Sousa |
+| **CEPOTX coop page** | farm card `<h3>` + description ("Ana Lucia Araujo de Sousa (Santa Anna Fazenda)") |
+
+### Kept stable / intentional
+- **Slug/URLs unchanged** (`santa-anna-fazenda-para`) — no link rot
+- "Santa Anna Fazenda" retained only as **alias mention** (story + Rancho Maranta cross-link + media alt-texts describing the place)
+- Site code **B-06-58** + cooperative **CEPOTX** in hero subtitle
+
+### Verified before merge
+All remaining "Santa Anna Fazenda" refs are intentional alias/alt-text mentions — display name fully renamed across all 4 files.
+
+---
+
+**RESUME HERE → next unit:**
+1. **SunMint plot name** — also rename "Santa Anna Fazenda Plot 1 (compound)" → "Ana Lucia Araujo de Sousa Plot 1 (compound)" in the sheet + `sunmint/plots/index.geojson` (same rename on the map side — say "go")
+2. **Send you the updated v5 PDF** (still pending — you asked for it once done; it's on disk at `/tmp/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf`, 20 MB)
+3. **Promote to prod** — `sync_beta_to_prod` carries #251 (registered-owner line) + #252 (rename) + #248/#249 (media) once you've eyeballed beta
+4. **Runbook note** (optional): the registered-owner/rename pattern into the conventions doc
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → read page head/hero/story; read journey stop + farms-data.js + CEPOTX card exact strings
+• `git_push_changes` → **PR #252** (8 edits: title/og/twitter/h1/subtitle/story ×4 files)
+• `ssh run` → found remaining map popup ref; local fix; push rejected (branch drift) → `upload_file_to_github` popup fix (commit 3a180ad)
+• `ssh run` → full verification (only alias/alt-text refs remain; 6+2+1+1 registered-name refs)
+• `merge_pr` → ✅ **PR #252 merged** (sha 7486338b8cc378b7e105991dfd435f994d307726)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → sed head/hero/story; sed journey+js+cepotx; git fetch branch + grep verification (1 popup ref left); local popup fix + Contents-API upload
+• `merge pr` → ✅ PR #252 on agroverse_shop_beta merged successfully (sha: 7486338b8cc378b7e105991dfd435f994d307726). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp/asb_name 2>/dev/null || (cd /tmp && rm -rf asb_name && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.gi; cd /tmp/asb_name && echo "=== journey stop entry (736-750) ==="; sed -n '736,750p' cacao-journeys/brazilian-path/index.html; echo "=== farms; cd /tmp/asb_name && git fetch -q origin rename/santa-anna-to-ana-lucia-araujo-de-sousa:refs/remotes/origin/rename/santa-anna-to-ana-lucia-ar; …(+2 more)
+• `merge pr` → ✅ PR #252 on agroverse_shop_beta merged successfully (sha: 7486338b8cc378b7e105991dfd435f994d307726). Pull Request successfully merged
 
