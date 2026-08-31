@@ -3966,11 +3966,13 @@ The branch has my first push (from the successful call) but this fresh clone doe
 ### 🤖 Autopilot
 
 The branch still has both stale lines. Since `git_push_changes` can't push onto a branch with unpulled remote work, let me fetch the branch's current file, edit it locally, and push via the Contents API (which writes onto the existing branch):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Plan-file edit committed to the branch (`42d4065`). Let me verify PR #846 now contains all three files, then report:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4282,4 +4284,60 @@ placed right after the `sophia/SOPHIA_HANDOFFS.md` row (unique anchor, exact sin
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && sed -n '1,45p' oi.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] merge
+
+
+### 🤖 Autopilot
+
+Merging PR #848:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn (merged a PR — stopped per one-PR-per-turn)
+
+**"merge" received → merged the reading-order pointer.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `agentic_ai_context` | **[#848](https://github.com/TrueSightDAO/agentic_ai_context/pull/848)** | ✅ **MERGED** (sha `6a00f66`) |
+
+**What's live now:** `OPERATING_INSTRUCTIONS.md` "What to read (in order)" includes the `GAS_SCRIPT_PROPERTIES.md` row — so every future session discovers the registry (and the "`TGM_GITHUB_TOKEN` SET — do NOT re-check" note) from the master index.
+
+### SunMint effort — all loose ends closed
+| Item | State |
+|---|---|
+| E2E invalidations (061, 487, my test tree) proven | ✅ |
+| Auto-dispatch (plant + reject) proven | ✅ |
+| `#treeIdManual` removed on prod | ✅ |
+| `TGM_GITHUB_TOKEN` recorded as SET | ✅ |
+| Registry + convention (`#846`) | ✅ merged |
+| Manifest close-out (`#847`) | ✅ merged |
+| Reading-order pointer (`#848`) | ✅ **merged now** |
+
+### Gates NOT crossed
+- No deploy, no Edgar submission, no ledger writes, no money movement this turn.
+- The **only remaining SunMint action is yours**: explicit go for the **first real LINK** (cacao QR → tree) — books the ledger + emails the owner (irreversible, governance-gated; I won't self-authorize it).
+
+---
+**RESUME HERE → next turn:**
+1. **Nothing pending on my side** for SunMint. When you're ready, say the word for the **first real LINK** UAT (I'll pull `SUNMINT_TREE_QR_LINKING_PLAN.md` and run its LINK flow with your explicit go).
+2. If other work arrives, the manifest (`handoffs/HANDOFF_MANIFEST.md`) is the single source of truth for what's active.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #848 on agentic_ai_context merged (sha: 6a00f66354d6d376b12a3872e66ec1331a8b82cf)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #848 on agentic_ai_context merged successfully (sha: 6a00f66354d6d376b12a3872e66ec1331a8b82cf). Pull Request successfully merged
 
