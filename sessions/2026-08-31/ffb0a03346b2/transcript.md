@@ -5188,16 +5188,19 @@ About CEPOTX → **Sub-Cooperatives (COOPOXIN)** → Member Farms (Paulo's La do
 ### 🤖 Autopilot
 
 Sending you the finalized PDF now — let me verify it's on disk with the site code, then attach it here.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF is on disk (20 MB, generated 19:42 — post-finalization). Quick content check for the site code, then sending:
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF verified — all key fields present (site code **B-06-58**, owner **Ana Lucia Araujo de Sousa**, **COOPOXIN** sub-coop, 3 facilities + video evidence, signature). Sending it to you:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5374,4 +5377,63 @@ Want me to do the upload now? I'd also add a `media-manifest.json` in the folder
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp 2>/dev/null && rm -rf fmr_check && git clone -q --depth 1 https://github.com/TrueSightDAO/farm-media-raw.git fmr_check 2>&1 | tail -; cat /tmp/fmr_check/README.md; echo "=== folder structures ==="; echo "--- rancho-maranta ---"; find /tmp/fmr_check/rancho-maranta -maxdepth
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] The words are overlapping outside of the page.
+
+
+### 🤖 Autopilot
+
+Let me check for words that fall outside the page boundaries in the PDF:
+
+
+### 🤖 Autopilot
+
+**Found it** — page 2: the word **"Pesticide"** extends from x=563 to x=600, but the page is only 595pt wide → the word runs off the right edge. This is the long "Hazards assessed:" value on the Facility A page overflowing the fixed `drawString` position. I need to add **text wrapping** to `meta_table` (values longer than the column width currently just run off the page). Let me fix the generator:
+
+
+### 🤖 Autopilot
+
+**TOTAL: oob=0, overlaps=0 — fully clean across all 7 pages.** The long "Hazards assessed" values now wrap within the column instead of running off the page. Let me verify the text still extracts correctly and send the corrected PDF:
+
+
+### 🤖 Autopilot
+
+All content intact, wrapped correctly, no overflow. Sending the corrected PDF:
+
+
+### 🤖 Autopilot
+
+## ✅ Corrected PDF sent — both issues fixed
+
+**`20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf`** (message 17884)
+
+### What was wrong (your report was right)
+- **Page 2** had the word **"Pesticide"** running off the right edge (x=600 > page width 595) — the long "Hazards assessed:" value in Facility A's table was drawn as a single unbroken line past the page boundary
+- Pages 3–4 had the same latent issue (hazard/observation values that were near the limit)
+
+### The fix
+- Added proper **text wrapping** to `meta_table()`: values longer than the column width now wrap to the next line instead of running off the page (using reportlab's `stringWidth` to measure, wrapping at the value column edge)
+- Verified programmatically: **0 out-of-bounds words + 0 overlaps across all 7 pages** (was: 1 OOB on p2; earlier 99 overlaps on p1)
+- All content intact — page 2 now reads: *"…Mold: none observed · Pesticide residues: organic practices per CEPOTX/IBD NOP"* (wrapped, fully on-page)
+
+### ⚠️ Still local-only
+This corrected file is on disk but **not yet pushed to `fda_fsvp`** (the committed version from PR #10 still has the overlap/OOB issues). When you're happy with the layout, say "go" and I'll push this exact file as the record update.
+
+---
+
+Also still open from before (just a reminder, no rush):
+- **farm-media-raw archive** — Santa Anna's 45 raw originals (31 HEIC + 13 MOV + 1 PNG) are not yet in the private blob store (only rancho/la-do-sitio/cleide are). ~390 MB, ~45 uploads via Contents API — say the word and I'll archive them with a media-manifest.
+- **Spelling** — you said "never mind" on Santa Ana, so keeping **Santa Anna** ✅
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → found Pesticide OOB (x=600>595) on p2; patched meta_table with stringWidth wrapping; regenerated; verified oob=0 overlaps=0 all pages; text extraction clean
+• `send telegram attachment` → PDF v5.2 sent (msg 17884)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && /opt/truesight_autopilot/.venv/bin/python3 -c " import fitz doc = fitz.open('/tmp/20260830_CEPOTX_site_visit_to_santa_anna_farm.p; cd /tmp && /opt/truesight_autopilot/.venv/bin/python3 << 'PYEOF' # -*- coding: utf-8 -*- src = open('/tmp/gen_santa_anna_v5.py', encoding='u
 
