@@ -2056,16 +2056,19 @@ Nothing prod touched, nothing deleted. The pipeline will have all 72 videos uplo
 ### 🤖 Autopilot
 
 Resuming — checking pipeline status first (conversion + uploads), then verifying completion:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Progressing well: conversion 19/72, yt_ids 20/72, watch loop healthy (watch 17). Everything is chugging along. Since the batch will take another ~30 min, let me handle the pilot duplicate now (delete the test video per my recommendation) and prepare the manifest PR skeleton so the next turn just fills it. First, delete the pilot duplicate:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — the pilot test video is the duplicate ("La do Sitio farm walk — IMG_3874 (test)"). Your 👍 on my recommendation = approval to delete it. Removing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2073,6 +2076,7 @@ Confirmed — the pilot test video is the duplicate ("La do Sitio farm walk — 
 Pilot duplicate deleted ✅ — the channel now has exactly one IMG_3874 video (the batch version `3kJJc6FkTok` with proper metadata; the title-map still lists the deleted one but the manifest points to the right one). 
 
 Now let me prepare the manifest PR skeleton — build the final manifest file structure that will go to `agentic_ai_context/FARM_MEDIA_MANIFESTS/la-do-sitio.json` once uploads complete:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2116,11 +2120,13 @@ All additive, nothing prod touched. The heavy batch is self-running; next turn f
 ### 🤖 Autopilot
 
 Resuming — checking if the pipeline finished (conversion + uploads):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ **Stalled** — conversion stuck at 19/72 (was 19 last turn, ~35 min ago), only 1 process left (the watch loop). The conversion job died or stalled. Let me investigate:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2128,6 +2134,7 @@ Resuming — checking if the pipeline finished (conversion + uploads):
 Found it: the conversion job (pid 42362) **died after IMG_3911** — 19 MP4s done, no more ffmpeg procs, and the watch loop keeps finding "mp4 missing". The last MP4 (IMG_3911) is only **50 MB for a large source** — suspicious, may be truncated (died mid-write). Also, the progress file has 19 entries but the last mtime shows IMG_3911 done at 18:11 — likely the converter crashed on IMG_3912 (or hit a big file and OOM'd/errored).
 
 Let me check the conversion job's log (was it nohup'd?) and see what it was working on when it died:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2140,11 +2147,13 @@ Fix plan:
 3. The watch loop will pick up the rest.
 
 Let me restart the conversion job with resume + verify, detached:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Resume conversion running (pid 64803) with verification + GPS injection. It'll re-convert IMG_3911 (corrupt) and continue through 4041. Let me verify it's actually processing (give it a few seconds for the first ffmpeg to start):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2388,4 +2397,67 @@ The corruption-proofing lesson is going into the runbook (verify yt_id live afte
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → echo '=== conversion ==='; wc -l /tmp/mp4_progress.txt; ls /tmp/mp4/*.mp4 2>/dev/null | wc -l; echo '=== yt_ids ==='; /opt/truesight_autopil; echo '=== IMG_4011 source ==='; ls -la "/home/ubuntu/la_do_sitio_work/la do sitio/IMG_4011.MOV"; ffprobe -v error -show_entries format=durat; /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json p='/tmp/la_do_manifest_full.json' d=json.load(open(p)) # mark IMG_4011 as c; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] [Handoff context — this Telegram topic (thread 17184) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Re-upload running — **47/71 were live, 24 dead → now re-uploading** (IMG_3908, the 213 MB 4K one, is uploading first — progress visible). This will take a while for the big files. It writes each fresh
+
+
+### 🤖 Autopilot
+
+Resuming — checking the re-upload fix progress:
+
+
+### 🤖 Autopilot
+
+**Hard YouTube API quota hit** — "Video Uploads per day" exceeded (project limit). 6 of 24 re-uploads completed (47+6 = **53 live**), then the 429 error killed the script. This is a **daily quota** (resets at midnight PT ≈ 11.5h from now) — not a config error. The fix is resumable by design (it skips any entry whose yt_id is live). Let me make it resilient (retry loop that waits out the quota) and relaunch detached:
+
+
+### 🤖 Autopilot
+
+Retry loop is running (pid 73872) — it will wait out the daily quota (30-min intervals, up to 30h) and re-upload the remaining **18 dead** videos as quota frees. Current state: **53/71 live, 18 dead pending quota, 1 source-corrupt (IMG_4011)**.
+
+Let me converge — this is a natural pause (quota resets ~midnight PT, ~11h).
+
+## ✅ Turn — quota hit, resumable retry loop deployed
+
+### Situation
+1. **Re-upload ran into YouTube's hard daily limit**: "Quota exceeded for quota metric 'Video Uploads' and limit 'Video Uploads per day'" — the project hit its upload cap. **6 of 24 re-uploads completed** before the 429 (each wrote a fresh yt_id + `reuploaded: true` into the manifest as it went).
+2. **Current live state: 53/71** videos verified live on YouTube. 18 remain dead (pending re-upload), 1 source-corrupt (IMG_4011, moov atom missing in the original zip — unrecoverable, flagged in manifest).
+3. **Root cause of the dead IDs** (recap): the recovery title→ID map captured IDs from the shared 259-video channel that were later deleted by other activity; the local MP4s are all fine.
+
+### The fix running now
+- **`/tmp/reupload_retry.sh`** (pid 73872): every 30 min it re-runs the fixer — skips already-live IDs, re-uploads dead ones, writes fresh yt_ids. Up to 60 retries (30h), so it **survives the quota reset** (~midnight PT, ~11h from now) and completes on its own. Logs at `/tmp/reupload_retry.log`.
+
+### State
+| Item | Status |
+|---|---|
+| YouTube live | 53/71 ✓ (18 pending quota retry, 1 corrupt) |
+| Manifest | corrected live as re-uploads land; resumable |
+| Photos | 52/52 in `farm-media-raw/la-do-sitio/photos/` ✓ |
+| Other farms | Cleide pipeline (another Sophia) running, untouched ✓ |
+
+## RESUME HERE → next unit (after quota reset, ~11h)
+1. **Retry loop completes** → verify **71/71 yt_ids live** (live-API sweep, zero dead) + dupe check.
+2. **Manifest PR** → `agentic_ai_context/FARM_MEDIA_MANIFESTS/la-do-sitio.json` (regenerate from corrected manifest) + index update.
+3. **Farm page wiring** — curated YouTube embeds into La do Sitio `media.json` (beta-first, prod on your go).
+4. **Cleanup** (on your confirm) — delete local raw after upload + manifest.
+5. **Runbook update** — add "verify yt_id live after upload" + quota-resilience to FARM_MEDIA_PIPELINE.md (small PR).
+
+The retry loop runs unattended; nothing more needed until the quota resets.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → reupload log tail (6 re-uploads done: hc8yfQv7iZg, S-w8d-WNPqk…; then **429 quota exceeded** killed script); proc 73211 gone; wrote reupload_retry.sh (30-min retry loop, live-verify, 60 iterations); launched pid 73872; confirmed current live 53/71, dead 18 (file list), 1 corrupt
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo '=== reupload log tail ==='; tail -12 /tmp/reupload_fix.log 2>/dev/null | grep -v FutureWarning | grep -v warnings.warn; echo '=== proc alive? ==='; ps -p 73211 -o pid,etime,%cpu 2>/dev/null || echo "DONE"; echo '=== manifest yt_ids ==='; /opt/truesight_autopilot/.venv/bin/python3 -c "import json;d=json.load(open('/tmp/la_do_manifest_full.json'));print('with yt_id:', sum(1 for e in d if e.get('yt_id')), '/', len(d)); print('reuploaded flag:', sum(1 for e in d if e.get('reuploaded')))"; …(+2 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo '=== reupload log tail ==='; tail -12 /tmp/reupload_fix.log 2>/dev/null | grep -v FutureWarning | grep -v warnings.warn; echo '=== proc; cat > /tmp/reupload_retry.sh <<'EOF' #!/bin/bash # Retry loop: re-upload entries with dead yt_ids; on quota 429, wait and retry. for i in $(
 
