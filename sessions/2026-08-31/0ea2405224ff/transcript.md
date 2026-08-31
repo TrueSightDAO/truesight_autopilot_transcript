@@ -4774,51 +4774,61 @@ Wiring applied and compiles. Now the end-to-end smoke test: run the patched `app
 ### 🤖 Autopilot
 
 Transcript append succeeded (201 Created) — but no local usage file found. The `_log_usage` helper likely ran in CWD `/opt/truesight_autopilot/scripts/` writing `sessions/...` there, or silently failed. Let me check both the local write path and whether the GitHub push happened:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `note` isn't in `KNOWN` fields, so validation rejected the record (and `_log_usage` swallowed it silently by design). Removing the unknown field and re-testing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Transcript append succeeded but the usage row still 404s on GitHub. Let me check whether the `--github` push failed (token env in subprocess) or the row went somewhere else — debug the direct call with the correct session id:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local write works (row appended to `sessions/2026-08-31/1b5816442fb3/usage.jsonl`), but the GitHub push failed: **no token in the subprocess env**. The token lives in `.env` (read by `get_github_token()` via file scan, not exported). The `_github_append` only reads `os.environ`. Two options — I'll make `_github_append` also read the `.env` file like `get_github_token()` does:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Token now resolves, but the push hit **HTTP 409 Conflict** — the file already exists from the earlier partial attempt (or a parallel race). The `_github_append` does GET→merge→PUT, so a 409 means the PUT had a stale `sha`. The local run `rm -rf sessions` cleared the local, but GitHub already has the file. Let me verify the GitHub state and fix the retry logic (re-GET + re-PUT on 409):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still 409 even with the retry — and the file 404s on GitHub, which is odd. The 409 with a 404 state suggests the **file exists but in a different session dir**, OR the branch name / repo mismatch. Let me get the real error detail from the 409 body:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The subprocess hides the error body. Let me test the API path directly to see the actual 409 message:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The direct test **succeeded** — PUT created the file (commit `0c0e5c004eac`). The earlier 409s came from my `_github_append` retry logic: on the first 404 GET, `_not_found` is set but the merge path still tried `existing_content.endswith` on `None` → the retry block re-GET'd and mis-handled. Now that the file exists, let me verify it's on GitHub and run the patched script once more to confirm the retry path works when the file DOES exist:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The raw.githubusercontent URL 404s even though the direct PUT returned a commit sha — likely the file landed on a **different branch** than `main` (maybe the token's default branch, or the Contents API path differs). Let me check the actual commit and where it went:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The commit IS on main (`0c0e5c004eac` = main head, file added). So the raw URL should work — the earlier 404 was likely a **CDN cache lag** on raw.githubusercontent. Let me verify via the API (authoritative) and confirm the patched script works now against the existing file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5033,4 +5043,73 @@ Let me merge PR #358 (per your instruction) and verify the repo state:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp && rm -rf autopilot_pr && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_autopilot.git autopilot_pr 2>&1 | tail -1; cd /tmp/autopilot_pr && echo "=== does transcript repo have --github? ===" && curl -s https://raw.githubusercontent.com/TrueSightDAO/truesig; cd /tmp/autopilot_pr && python3 - <<'PYEOF' p = "scripts/append_to_transcript.py" s = open(p).read() # 1) add _log_usage helper before main(; …(+5 more)
 • `merge pr` → ✅ PR #358 on truesight_autopilot merged successfully (sha: 2fc8c11caa526f6f854877572570d1e3c1d42fa0). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] are the media files already uploaded completely for this farm 
+
+If some let me know. I think we can close this out
+
+
+### 🤖 Autopilot
+
+Let me verify the exact upload state before answering — checking farm-media-raw, the manifest's coverage, and what remains un-uploaded:
+
+
+### 🤖 Autopilot
+
+Two unexpected results — let me inspect both more carefully (the manifest structure and the actual farm-media-raw tree):
+
+
+### 🤖 Autopilot
+
+The manifest items use `file`/`basename` (not `filename`/`kind`) — my earlier filter was wrong. And the farm-media-raw root listing came back **empty** — suspicious. Let me check the actual repo contents properly and re-verify the photo uploads I made earlier this session:
+
+
+### 🤖 Autopilot
+
+The farm-media-raw API returned **404 Not Found** for the repo root — and my earlier "15 HEICs uploaded" claim now looks wrong. Let me verify directly: does the farm-media-raw repo even exist / what does the tree actually look like:
+
+
+### 🤖 Autopilot
+
+The repo API calls return nothing — likely a **rate-limit or auth issue** on unauthenticated API calls from this box. Let me test with the autopilot token to get a definitive answer:
+
+
+### 🤖 Autopilot
+
+Now I have the **authoritative** picture (the earlier 404s were just unauthenticated API calls — the repo is private, needs the token):
+
+**✅ Rancho Maranta IS fully uploaded.** The repo tree shows **17 rancho entries**. Let me list exactly which to confirm all 15 HEICs + the structure:
+
+
+### 🤖 Autopilot
+
+All verified. Here's the definitive closeout state:
+
+## ✅ Media for Rancho Maranta is FULLY uploaded — nothing missing
+
+**1. Raw originals — `farm-media-raw/rancho-maranta/photos/` (15/15 HEICs):**
+All 15 HEIC originals confirmed on the private repo (IMG_7624–7627, 7657–7661, 7678, 7693–7698) — matches the manifest exactly.
+
+**2. Manifest — `agentic_ai_context/FARM_MEDIA_MANIFESTS/rancho-maranta-para.json` (52 items):**
+- 37 MOVs indexed with sha256 + GPS (all carry QuickTime GPS)
+- 15 HEICs indexed with sha256 (no GPS — iPhone strips stills)
+- **3 of 37 MOVs published to YouTube** (yt_id in manifest) — the 3 curated public videos (Plot 1 house, Plot 2 boundary walk, Plot 1 family), all GPS-tagged
+
+**3. Published media — YouTube (3 public, GPS-tagged):**
+- NZThWnbWZE8 (Plot 1 house) · BZRo4yPl8us (Plot 2 boundary) · CQMPvCXaHfs (Plot 1 family) — all embedded on the farm page
+
+**4. Farm page — live on prod:** 3 videos + 11 images + warm header.
+
+## The honest "some" caveat
+
+The **37 raw MOVs** are *indexed* (sha256 + GPS in the manifest) but **not uploaded anywhere** — only the 3 curated ones went to YouTube. The raw videos live on the source zips only. That's by design (raw footage is huge; YouTube hosts the public-facing set), but if you want the raw MOVs archived for completeness, that'd be ~835 MB of uploads.
+
+**Conclusion:** for the purpose of "media available for this farm" — **complete**. Raw HEIC originals archived, manifest queryable by any future agent, 3 public videos live. **Safe to close this out.** Want me to file the closeout (or just leave it — everything's already on the ledger + backlog)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → echo "=== 1. farm-media-raw/rancho-maranta contents ===" && curl -s "https://api.github.com/repos/TrueSightDAO/farm-media-raw/contents/ranch; echo "=== manifest actual structure ===" && python3 - <<'PYEOF' import json d = json.load(open("/tmp/aac6/FARM_MEDIA_MANIFESTS/rancho-marant; echo "=== farm-media-raw root via API (verbose) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/farm-media-raw/contents/" | head ; …(+3 more)
 
