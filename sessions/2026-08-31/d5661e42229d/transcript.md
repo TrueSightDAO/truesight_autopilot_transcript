@@ -4334,6 +4334,7 @@ A hidden-by-default text input that lets a user **type any tree ID manually** �
 ### 🤖 Autopilot
 
 The beta source matches the live page (12 references, lines 161–1224). Let me pull the exact context for each usage site in the beta file so my edits anchor precisely, then make the edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4575,4 +4576,105 @@ https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9
 ```
 
 After you set it, the loop becomes fully automatic: reject → INVALID → dispatch → rebuild → tree gone, with zero manual steps. (And to confirm — this was the last open item in the chain; everything else is live.)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] It is already set. Can you make a note that it is already set somewhere so that in the future we dont have to waste time checking again. I think whatever convention we adopt for this we should do the same for other GAS scripts. Perhaps you should also update agentic_ai_context with the convention as well once you ahve decided
+
+
+### 🤖 Autopilot
+
+Good call — let me first check what's already documented about GAS projects/Script Properties in agentic_ai_context, so the convention I add follows existing structure and doesn't duplicate.
+
+
+### 🤖 Autopilot
+
+There's already scattered precedent (ETSY, EasyPost, Wix, ANTHROPIC/GROK keys, AGROVERSE_INVENTORY PAT) but no single registry — exactly the gap you're pointing at. Let me check whether any existing doc already tries to be that registry before I create one (avoid duplication).
+
+
+### 🤖 Autopilot
+
+No single GAS registry exists — the closest is scattered notes (plans, OPEN_FOLLOWUPS). Let me check for any existing GAS-project registry/convention doc before creating one:
+
+
+### 🤖 Autopilot
+
+No existing registry — so I'll create one. Let me check the OPEN_FOLLOWUPS.md format and the CONTEXT_UPDATES.md convention (which is where decisions get recorded) so my new doc slots in cleanly:
+
+
+### 🤖 Autopilot
+
+No existing registry — I'll create the convention + registry doc. First, getting the exact text at the two plan lines that still say "to set", so my edits anchor precisely:
+
+
+### 🤖 Autopilot
+
+I have everything I need. Plan: (1) create `GAS_SCRIPT_PROPERTIES.md` — the convention + registry of every GAS Script Property, including the confirmed `TGM_GITHUB_TOKEN` (set 2026-08-31, repo-scoped, GAS project `1UrBg…`), plus the deployment/webhook URL registry; (2) update the two stale plan lines; (3) append a CONTEXT_UPDATES line. One PR to agentic_ai_context:
+
+
+### 🤖 Autopilot
+
+The CONTEXT_UPDATES edit anchor fails because that line doesn't exist yet (I was anchoring on the line I'm adding). Fix: use a real existing anchor — the first line of the log (after the header). Let me retry with a correct anchor:
+
+
+### 🤖 Autopilot
+
+PR opened, but the **SUNMINT_TREE_GROWTH_MONITORING_PLAN.md edits did NOT apply** (only 2 of 3 applied — the plan-file edits were in the first call's `edits` array, which I dropped in the retry). Let me verify and add them to the same branch:
+
+
+### 🤖 Autopilot
+
+Confirmed — the plan-file edits are missing from the PR. Adding them to the same branch (the SUNMINT_TREE_GROWTH_MONITORING_PLAN.md updates):
+
+
+### 🤖 Autopilot
+
+The branch has my first push (from the successful call) but this fresh clone doesn't have it — the tool's clone is from main, not the existing branch. The branch needs the plan-file edit added on top. Let me use the Contents API to update the plan file directly on the branch (single-file write, no clone):
+
+
+### 🤖 Autopilot
+
+The branch still has both stale lines. Since `git_push_changes` can't push onto a branch with unpulled remote work, let me fetch the branch's current file, edit it locally, and push via the Contents API (which writes onto the existing branch):
+
+
+### 🤖 Autopilot
+
+Plan-file edit committed to the branch (`42d4065`). Let me verify PR #846 now contains all three files, then report:
+
+
+### 🤖 Autopilot
+
+## What I did this turn (one PR opened — stopped per one-PR-per-turn)
+
+**Done as requested — `TGM_GITHUB_TOKEN` is now recorded as SET, with the convention documented for all GAS scripts.**
+
+| Repo | PR | Status |
+|---|---|---|
+| `agentic_ai_context` | **[#846](https://github.com/TrueSightDAO/agentic_ai_context/pull/846)** | 🟡 **OPENED** (3 files: `+74` new registry, `+2/−2` plan updates, `+2` context log) |
+
+### What's in it
+1. **NEW `GAS_SCRIPT_PROPERTIES.md`** — the convention + registry you asked for:
+   - **Convention**: secrets live in GAS Script Properties (never committed); read at execution time; web-app deployments pinned to numbered versions (not @HEAD — the v32-vs-HEAD trap from the reject saga is documented); a **Status column so nobody re-checks**.
+   - **`TGM_GITHUB_TOKEN` → SET (2026-08-31, repo-scoped, verified by you)** on GAS project `1UrBg…` — marked explicitly "Do NOT re-check", and noted as closing the last manual step in the SunMint loop.
+   - **Registry table** of all known Script Properties (ETSY, EasyPost/SF origin, ANTHROPIC/GROK, AGROVERSE_INVENTORY PAT, TrueChain RPC, etc.) + the **deployment/webhook URL registry** (@7 planting, @37 tree-links, growth @HEAD) + dao_protocol box env keys.
+2. **`plans/SUNMINT_TREE_GROWTH_MONITORING_PLAN.md`** — the two "still to set" lines flipped to **SET**, pointing at the registry (committed via `42d4065`).
+3. **`CONTEXT_UPDATES.md`** — one append-only log line.
+
+### Verification
+- PR #846 shows all 3 files (registry added, plan +2/−2, context +2) — confirmed via the PR files API
+- The plan-file edits landed on the branch via Contents API (`42d4065`); a raw.githubusercontent poll showed stale-cached content (the same cache lag we've hit repeatedly) — the PR diff is the authoritative state
+
+### Not done (by design)
+- **PR #846 not merged** — stopping per one-PR-per-turn; it's ready whenever you say "merge it"
+
+---
+**RESUME HERE → next turn:**
+1. **Merge `agentic_ai_context #846`** (say "merge it") — the registry goes live as the canonical reference.
+2. Optional: point `OPERATING_INSTRUCTIONS.md` runbook index at `GAS_SCRIPT_PROPERTIES.md` (canonical file — needs your approval for the edit).
+3. Then the SunMint plan close-out: mark `SUNMINT_TREE_QR_LINKING` / `SUNMINT_TREE_GROWTH_MONITORING` UAT-complete in the handoff manifest.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && echo "=== PR #846 files ===" && curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/pulls/846/files" | python3 ; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/add/gas-script-properties-registry/plans/SUNMINT_TREE_; cd /tmp && python3 - <<'EOF' import urllib.request, json, base64, os # 1. fetch branch file url = "https://api.github.com/repos/TrueSightDAO; …(+1 more)
 
