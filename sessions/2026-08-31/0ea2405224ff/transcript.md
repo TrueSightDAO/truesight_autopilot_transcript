@@ -4567,16 +4567,34 @@ All 4 checks pass (compile, ruff, format, 5 tests). The transcript repo is class
 ### 🤖 Autopilot
 
 First file live. Uploading the remaining three (write_meta.py, summarize_usage.py, tests):
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 4 files pushed. Now let me wire the usage-logging into the autopilot's transcript append path (the real integration point) — check how the autopilot appends transcripts:
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript-writer isn't in the autopilot repo (likely in a separate worker/harness). Let me search org-wide for where transcript.md is written:
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4736,4 +4754,50 @@ PR #865 open. Merging per the standing go:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp/aac5 && git fetch -q origin main && git checkout -q origin/main -- OPEN_FOLLOWUPS.md 2>/dev/null; echo "=== verify diff still only O; cd /tmp/aac5 && python3 - <<'PYEOF' p = "OPEN_FOLLOWUPS.md" s = open(p).read() # Locate the entry block (from "## [857] Usage/meta logging" ; cd /tmp/aac5 && git add OPEN_FOLLOWUPS.md && git -c user.name="Sophia Truesight" -c user.email="admin+sophia@truesight.me" commit -q -m "doc; …(+1 more)
 • `merge pr` → ✅ PR #865 on agentic_ai_context merged successfully (sha: 6f0097cdfc22d35ecf0e33fc6407ea9e9b3b0230). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn
+
+**OPEN_FOLLOWUPS #857 entry marked shipped — PR #865 merged. The usage-logging unit is complete.**
+
+**PR #865 → https://github.com/TrueSightDAO/agentic_ai_context/pull/865** (
+
+
+### 🤖 Autopilot
+
+Go received — next unit: record the contribution for the usage-logging build. Submitting with the PRs as evidence:
+
+
+### 🤖 Autopilot
+
+**Contribution submitted ✓** — 60 min logged for the usage-logging unit (append_usage/write_meta/summarize_usage + tests + backlog closeout), with PR #865 and the 4 transcript-repo commits as evidence.
+
+## Session ledger rollup (this thread)
+
+| # | When | Min | Unit |
+|---|---|---|---|
+| 1 | early | 120 | Plots registry + impact map integration (#844, #325–#329) |
+| 2 | mid | 90 | SunMint Plots sheet tab + round-trip verification |
+| 3 | mid | 150 | Farm page + media + SEO (9 agroverse PRs) |
+| 4 | later | 150 | FARM_MEDIA_PIPELINE processing (GPS re-injection, farm-media-raw, manifest) |
+| 5 | now | 60 | Usage-logging tooling (#865 + 4 commits) |
+| | | **570 min ≈ 9.5 hrs** | full session, all evidence-linked |
+
+## RESUME HERE →
+
+1. **Runtime wiring (the one open follow-up):** hook `append_usage.py` into the autopilot harness's transcript-append path — harness isn't in a DAO repo, so it needs either the governor or the runtime owner; worth a fresh OPEN_FOLLOWUPS entry or a handoff to the runtime maintainer if you want it tracked.
+2. **Optional pending items (all previously closed per your calls):** old GPS-less YouTube videos held · la-do-sitio/cleide handled by other processes · RM-P2 confirmed from existing data.
+3. **Nothing else gated** — the usage-logging unit is fully closed: tooling shipped, tests green, backlog marked done, contribution logged.
+
+Everything from this thread is now **shipped, documented, and on the ledger**. Ask away if you want me to kick off the runtime-wiring follow-up or pick up anything else.
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
 
