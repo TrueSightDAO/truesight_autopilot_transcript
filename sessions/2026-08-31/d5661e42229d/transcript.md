@@ -8,21 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=16362] The reason I am asking is because when I reload the page again
-
-https://sunmint.truesight.me/monitor-tree-growth/?tree=Edgar_20260819134722_487
-
-the same tree which I have marked as invalid showed up again. I wonder if the backend update the list to remove it?
-
-
-### 🤖 Autopilot
-
-Let me verify how the tree index is generated and whether any backend path rebuilds/removes it after a reject.
-[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 The tree list comes from a **static GitHub file**, and the reject flow never touches it. Let me do one quick check on how `index.geojson` gets (re)generated, then answer.
@@ -4201,16 +4186,19 @@ Key finding: the `.env` line was added **2026-08-30 03:23** — that predates th
 ### 🤖 Autopilot
 
 Key loading — DER, not PEM (same as before). Let me check how the reusable script handles it and reuse that exact loading:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The reusable script uses `load_der_private_key` — my inline script used `load_pem_private_key`. That's the bug. Let me use the script's exact loading (DER) and re-submit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Plant event #2 submitted — HTTP 200, `signature_verification: success`, tree id `Edgar_20260831015149_192`.** Now the decisive test: **do NOT touch the webhook** — if the auto-dispatch (routing #149 + env var in process) works, the row lands in the SunMint tab on its own. Waiting ~60s, then checking the tab:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4465,4 +4453,83 @@ We just demonstrated the full pipeline is now **event-driven and ledger-backed**
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/pulls/48" | python3 -c " import json,sys d=json.load(sys.stdin) p
 • `merge pr` → ✅ PR #48 on sunmint_beta merged successfully (sha: 46d04588dd02a1ddadc9f9beb0f0d661ccdd646e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] working great in Beta. Promote to prod
+
+
+### 🤖 Autopilot
+
+👍 Promoting `sunmint_beta #48` (the `#treeIdManual` removal) to production — syncing `sunmint_prod` from its beta base:
+
+
+### 🤖 Autopilot
+
+Sync succeeded (real merge this time — prod was behind). Now verifying the **live** prod page actually carries the removal:
+
+
+### 🤖 Autopilot
+
+The live page still shows the old code — let me check whether the prod **repo** actually carries the merge (authoritative), versus a CDN/cache lag on the live fetch:
+
+
+### 🤖 Autopilot
+
+**The prod REPO carries the fix** (commit `46d04588` merged via `ae4e25bf`, `treeIdManual` count = 0, `getSelectedTree()` is select-only) — the live page I fetched is serving **stale cached content**. This is almost certainly the **network-first service worker** (commit `d690161c`, "Add network-first service worker for offline page loading") serving a cached copy. Let me confirm the service worker and check the cache-busting behavior:
+
+
+### 🤖 Autopilot
+
+**Root cause identified.** The live page I fetched was **stale GitHub Pages cache** — the served HTML has `last-modified: Sun, 30 Aug 2026 14:52:36 GMT` (yesterday's deploy, before #48) and `cache-control: max-age=600` (10-min CDN cache). The page also registers `/service-worker.js` (scope `/`) which caches aggressively on the browser side. The prod **repo** is authoritative and already correct (`treeIdManual` count = 0). This is a **cache propagation lag, not a failed deploy** — GitHub Pages + CDN can take up to ~10 min (`max-age=600`) to serve the new content.
+
+Let me register a watcher to confirm when the live page flips to the new content, then report:
+
+
+### 🤖 Autopilot
+
+The watcher needs a Telegram topic context. Let me verify with a cache-busting fetch instead (GitHub Pages serves fresh content to a unique URL):
+
+
+### 🤖 Autopilot
+
+# ✅ **PROD PROMOTION COMPLETE — `#treeIdManual` removal is LIVE**
+
+## Verification (authoritative + cache-busted)
+
+| Check | Result |
+|---|---|
+| `sync_beta_to_prod(sunmint_prod)` | ✅ real merge (commit `46d04588` → merge `ae4e25bf`), ledger `deploy_20260831T023001Z_sunmint-prod` ([evidence](https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260831T023001Z_sunmint-prod.md)) |
+| Prod repo authoritative | ✅ `treeIdManual` count **0**; `getSelectedTree()` → select-only (returns `''`) |
+| **Live page, cache-busted** | ✅ `treeIdManual` count **0**; `getSelectedTree()` select-only |
+| First plain fetch | ⚠️ briefly served stale GitHub Pages cache (`max-age=600`) — normal propagation, resolved on re-fetch |
+
+## What's now live in production
+`https://sunmint.truesight.me/monitor-tree-growth/` — monitoring is **select-only**: only trees that have been **signed & planted** (ledger-backed, in the index) can be measured. No free-text tree-ID input; unknown deep-link `?tree=` shows a clean "not found" state instead of enabling capture with a fabricated id. The observation ("only trees that have been signed and planted should be considered") is fully implemented on the live site.
+
+### Chain status
+| Item | State |
+|---|---|
+| `#treeIdManual` removal (`sunmint_beta #48`) | ✅ merged + **LIVE ON PROD** |
+| 061 + 487 invalidated & gone from index | ✅ |
+| Full E2E loop proven (plant → live → invalidate → gone) | ✅ |
+| Auto-dispatch (plant + reject) | ✅ proven |
+| Reusable submit script (`#353`) | ✅ merged + live |
+| `TGM_GITHUB_TOKEN` Script Properties scope | ⏸ operator action (2 min) — last manual step in the loop |
+| SUNMINT plan manifest close-out | 📋 pending |
+
+No new PRs this turn; no ledger writes; no money movement.
+
+---
+**RESUME HERE → remaining loose ends (each a fresh turn):**
+1. **Operator (2 min)**: set `TGM_GITHUB_TOKEN` (repo-scoped, e.g. the `.env` `TRUESIGHT_DAO_AUTOPILOT` one) in GAS Project Settings → Script Properties → then INVALID auto-fires the rebuild too (fully automatic loop).
+2. **Cleanup (optional)**: my two test trees (row 28 INVALID, row 29 NEW) + the placeholder photo in `sunmint/images/` — keep as signed test records or remove per runbook §6.
+3. **Close out**: mark SUNMINT_TREE_QR_LINKING plan UAT-complete in the handoff manifest (and note the `#treeIdManual` work) — say the word and I'll update the manifest row.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && curl -s "https://sunmint.truesight.me/monitor-tree-growth/" -o prod_check.html && echo "=== treeIdManual references on LIVE PROD ; cd /tmp && echo "=== authoritative: sunmint_prod repo, monitor-tree-growth/index.html ===" && curl -s "https://api.github.com/repos/TrueSigh; cd /tmp && echo "=== service worker on live site? ===" && curl -s "https://sunmint.truesight.me/monitor-tree-growth/sw.js" | head -20; echo ; …(+1 more)
 
