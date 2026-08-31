@@ -4752,11 +4752,13 @@ Now updating the farm page media.json to point at the GPS-corrected videos, plus
 ### 🤖 Autopilot
 
 All 3 videoIds swapped in media.json. Now commit + push + PR for the update:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #250 opened. Merging per the standing go, then updating the manifest with the new yt_ids:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4820,21 +4822,25 @@ PR #250 opened. Merging per the standing go, then updating the manifest with the
 ### 🤖 Autopilot
 
 Go received — next unit: update the manifest's yt_ids to the GPS-tagged videos (and optionally handle the old GPS-less uploads). Let me read the current manifest:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest still has the 3 old yt_ids. Let me see the structure around them and update to the new GPS-tagged ids:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clear mapping. Updating the three yt_ids to the GPS-tagged versions, then PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest updated. Let me verify the diff (careful — no empty writes, the #857 lesson), then commit + push + PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5029,4 +5035,49 @@ Say the word and I'll submit it.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && rm -rf tcheck2 && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_autopilot_transcript.git tcheck2 2>&1 | tail -; cd /tmp/tcheck2/sessions/2026-08-31/0ea2405224ff && echo "=== head ===" && head -40 transcript.md && echo "" && echo "=== line count ===" &&; cd /tmp/tcheck2/sessions/2026-08-31/0ea2405224ff && echo "=== turn structure: ### headers ===" && grep -c "^### " transcript.md; echo "=== s; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] Yes.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] status?
+
+
+### 🤖 Autopilot
+
+Submitting the make-up contribution now, then status:
+
+
+### 🤖 Autopilot
+
+**Make-up contribution submitted ✓** — 150 min for the FARM_MEDIA_PIPELINE processing (PRs #250, #860, #861 + farm-media-raw archive + 3 YouTube GPS-tagged uploads + encode/injection work). That brings the ledger total to **~510 min (8.5 hrs)** for this session, matching the transcript's active-work estimate.
+
+## Status — full session rollup
+
+| Area | State |
+|---|---|
+| **Ledger contributions** | ✅ 120 + 90 + 150 + **150** = **510 min** logged, evidence-linked |
+| **Impact map (truesight_me)** | ✅ Prod live (#325–#329): Altamira plots, view switcher, popup→farm link, z17 cap |
+| **Farm page (agroverse_shop)** | ✅ Prod live (#229–#250): warm header, 3 GPS-tagged videos, 11 images, SunMint highlight |
+| **Plots registry** | ✅ Sheet-backed (SunMint Plots tab), RM-P1 0.4 ha walk-approx, RM-P2 5 ha |
+| **Satellite cache** | ✅ Altamira cell + both plots, daily workflow with `--plots` |
+| **FARM_MEDIA_PIPELINE** | ✅ Complete: 15 HEICs → farm-media-raw, manifest filed (#860), yt_ids synced (#861) |
+| **Backlog** | ✅ OPEN_FOLLOWUPS intact (139,513 B, restored #859), usage-logging gap filed |
+| **Runbook for future agents** | ✅ SUNMINT_PLOTS_REGISTRY.md (#844) + FARM_MEDIA_PIPELINE.md (parallel agent #858) |
+
+## Open / next
+
+1. **Old GPS-less YouTube videos** (AriHjXTsLio, o3_nWticYQc, H9ZSF1-ahIo) — still public; recommend flipping to unlisted to avoid channel duplicates. Say the word.
+2. **la-do-sitio + cleide manifests** — raw photos archived but not pipeline-processed/indexed (not queryable like Rancho Maranta yet). Want me to run the pipeline for them?
+3. **RM-P2 boundary authority** — CAR/INCRA polygon or perimeter walk (5 ha claimed vs 2.9 ha walked) — still open, needs Jedielcio's input.
+4. **Usage-logging infra** (OPEN_FOLLOWUPS entry) — unclaimed; the exact-time question keeps needing reconstruction from merge timestamps.
+
+Everything from this session is **logged, shipped to prod, and documented** — nothing outstanding on the ledger.
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
 
