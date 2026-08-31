@@ -3869,11 +3869,13 @@ Let me first answer your question definitively — checking whether a SCHEMA.md 
 ### 🤖 Autopilot
 
 Good news — the org convention is clear: `tokenomics/SCHEMA.md` and `lineage-assets/SCHEMA.md` are the established patterns, but **sunmint has no SCHEMA.md** (the `find` came back empty). The plot schema is only implicit in `build_plots_geojson.py`'s FIELD_COLUMNS + the sheet headers. Let me gather the trees registry schema and build scripts so the SCHEMA.md documents both registries completely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything: plots schema (14 cols from the sheet) + trees schema (6 property keys from the geojson). Now let me write a `SCHEMA.md` documenting both registries, following the org convention (like `tokenomics/SCHEMA.md`). Let me first check the build script FIELD_COLUMNS to be exact.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4070,4 +4072,101 @@ All existing plots get the link automatically (they carry farm_id); any **future
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #333 on truesight_me_beta merged successfully (sha: c5234cb23b74a427e1dfe0f5a7f967160f88d784). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] still not seeing the link in the dialogue box with
+
+Santa Anna Fazenda Plot 1 (compound)
+Proposed
+Boundary: Approx (photo hull)
+3 ha
+Owner: Jedielcio (CEPOTX)
+Region: Altamira, Para
+Verified: 2026-08-31
+
+Pointing to https://beta.agroverse.shop/farms/santa-anna-fazenda-para/
+
+
+### 🤖 Autopilot
+
+Let me diagnose why the link isn't showing — checking which repo actually serves beta.truesight.me/sunmint.html and what the live page contains.
+
+
+### 🤖 Autopilot
+
+The live page **does** contain the link code (grep=1) and serves fresh content (last-modified 14:25:14, after the merge). So the deploy went through but Gary isn't seeing the link — let me check for a JS-level issue (encoding of the ↗ arrow, or the `farm_id` read).
+
+
+### 🤖 Autopilot
+
+The live page has the new code (grep=1) and reads `farm_id`. So the link logic is deployed — the missing link must mean the **geojson the map actually fetches doesn't carry `farm_id`** (stale cache) or the browser cached the old page. Let me check what the map fetches right now.
+
+
+### 🤖 Autopilot
+
+The code is deployed and the data is correct — so the link **should** render. Let me check the cache headers — Gary's browser may be serving the old page.
+
+
+### 🤖 Autopilot
+
+The live page **has** the new code and the geojson **has** `farm_id` — yet you see the old popup ending at "Verified: 2026-08-31". Let me check whether there's a **second** popup/dialog builder (e.g. the plotSelector side panel) that renders the details you quoted — the Leaflet popup may not be the "dialogue box" you're looking at.
+
+
+### 🤖 Autopilot
+
+The live code is correct and the data has `farm_id` — yet you still see the old popup. Let me check the plot-selector buttons (lines 675–690) — you may be seeing a **different dialog** (the selector panel) than the Leaflet popup I modified.
+
+
+### 🤖 Autopilot
+
+The live page I fetch **has** the link code and the data has `farm_id` — yet you're seeing the old popup. Let me check two things: the page's charset (the `↗` arrow could break under a wrong charset) and whether you might be hitting a cached/different copy.
+
+
+### 🤖 Autopilot
+
+Let me do two more decisive checks — a service worker (which would cache the old page regardless of headers) and whether a second repo claims the beta CNAME.
+
+
+### 🤖 Autopilot
+
+Diagnosis complete. **The link IS live in the deployed page — this is a browser cache issue.** Here's the evidence:
+
+## What I verified
+
+| Check | Result |
+|---|---|
+| Live beta page (fetched just now) | **Contains the link code** — line 656, `grep` found it ✅ |
+| Page deploy time | last-modified **14:25:14 UTC** — 54s *after* the #333 merge (14:24:20 UTC) ✅ |
+| Geojson served to the map | SA-P1 **has** `farm_id: santa-anna-fazenda` ✅ |
+| Simulated popup render | Link **renders** after "Verified: 2026-08-31" ✅ |
+| Service worker | None (no stale cache layer) ✅ |
+| truesight_me_beta main | Has the code ✅ |
+
+## Why you're not seeing it
+
+The page serves `cache-control: max-age=600` (10 min browser cache). If your browser loaded the page **before ~14:25 UTC**, it's still serving the cached pre-merge copy — the popup ends at "Verified: 2026-08-31" with no link.
+
+**Fix: hard refresh** — `Ctrl+Shift+R` (Windows) / `Cmd+Shift+R` (Mac) on beta.truesight.me/sunmint.html. You'll then see:
+
+> Santa Anna Fazenda Plot 1 (compound) — Proposed — Boundary: Approx — 3 ha — Owner: Jedielcio (CEPOTX) — Region: Altamira, Para — Verified: 2026-08-31
+> **View farm profile on Agroverse ↗**
+
+One note on the link target: I linked to **`https://agroverse.shop/farms/santa-anna-fazenda-para/`** (production) — which is live, since we promoted the farm page earlier. You mentioned `beta.agroverse.shop` — if you'd rather the popup point at the beta URL (e.g. while the page is still being refined), I can switch it in a one-line change. Otherwise it's pointing at the correct live prod profile.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Hard-refresh** beta.truesight.me/sunmint.html → confirm the link appears (say the word if it still doesn't and I'll dig further)
+2. **Optional:** switch link target to beta.agroverse.shop if you prefer (one-line PR)
+3. **Still parked:** media additions to the farm page (shortlist: 7723, 7744, 7751, 7731, 7747, 7750); plot-impact embed idea; promote #333 to prod (truesight_me_prod sync) after you see it working
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → confirmed live page has link code (grep=1, line 656) + fresh last-modified (14:25:14 > merge 14:24:20); geojson has farm_id on all 3 plots; simulated popup render shows link; no service worker; truesight_me_beta main has code; cache-control max-age=600 = browser-cache explanation
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → echo "=== what serves beta.truesight.me/sunmint.html ==="; curl -s https://beta.truesight.me/sunmint.html -o /tmp/live_sunmint.html -w "HTTP; echo "=== context around the link code in LIVE page ==="; grep -n -B 3 -A 2 "farm profile on Agroverse" /tmp/live_sunmint.html; echo; echo "; echo "=== PLOTS_URLS in live page ==="; grep -n -A 4 "PLOTS_URLS = \[" /tmp/live_sunmint.html; echo; echo "=== what raw serves RIGHT NOW (fa; …(+5 more)
 
