@@ -558,11 +558,18 @@ CL-P1 is in the sheet. Now regenerate `plots/index.geojson` from the sheet and v
 ### 🤖 Autopilot
 
 No local sunmint checkout. I'll fetch the generator script from the repo, run it (needs GOOGLE_SERVICE_ACCOUNT_JSON env), and commit the regenerated geojson via a PR on the sunmint repo.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Regenerated geojson includes CL-P1. Now push it to the sunmint repo via a PR (data-repo single-file update). Let me check if `sunmint` is in my push-able repos and push the regenerated file.
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -707,4 +714,63 @@ Ping me with "verify", "add homepage card", or "promote to prod" and I'll run th
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #240 on agroverse_shop_beta merged successfully (sha: 078e9924a371e516520a452222fd02b843521448). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Turn report — Fazenda Cleide farm page merged ✅
+
+**PR merged:** [#240 — Add Fazenda Cleide farm profile page (Pará, CEPOTX)](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/240) — squash m
+
+
+### 🤖 Autopilot
+
+Go received — executing unit 1: verify the beta page renders and the sunmint impact map reflects CL-P1.
+
+
+### 🤖 Autopilot
+
+## Verify unit complete — everything checks out ✅
+
+**Beta farm page — LIVE:**
+- `beta.agroverse.shop/farms/fazenda-cleide-para/` → **200** — full page serving (title, meta, hero, story, highlights, gallery, map container all present in HTML; the `301` from curl is just the http→https/trailing-slash redirect, http_fetch followed it to 200)
+- Hero image `fazenda_cleide_hero.jpg` → **200**
+- Gallery `fazenda_cleide_1/2/3.jpg` → **200, 200, 200**
+
+**SunMint impact map data — confirmed:**
+- `sunmint/plots/index.geojson` now has **4 features**: RM-P1, RM-P2, SA-P1, and **CL-P1 | Fazenda Cleide Plot 1 (working areas)** ✅
+
+The full pipeline for Fazenda Cleide is now live end-to-end:
+
+| Layer | URL / Location | State |
+|---|---|---|
+| Farm profile | beta.agroverse.shop/farms/fazenda-cleide-para | ✅ 200 |
+| Media | 4 JPGs on beta assets | ✅ 200 |
+| Plot data | sunmint/plots/index.geojson → CL-P1 | ✅ on main |
+| Plot registry | SunMint Plots sheet row CL-P1 (114 ha approx hull) | ✅ |
+| Sitemap | entry for /farms/fazenda-cleide-para | ✅ in PR #240 |
+
+**One caveat (honest note):** the geojson has CL-P1, but `truesight.me/sunmint.html` is a static page — if it reads `plots/index.geojson` from a deployed/bundled copy rather than live from the repo, the map won't show CL-P1 until that static host refreshes. Worth a 5-second eyeball check on your side, or I can verify how sunmint.html loads the geojson next turn.
+
+---
+
+## RESUME HERE → next units (your pick)
+
+1. **Confirm sunmint.html render** — check how truesight.me/sunmint.html loads the geojson (live fetch vs bundled copy); if bundled, run the sunmint build/deploy step so CL-P1 shows on the impact map.
+2. **Homepage farm grid card** (optional) — add Fazenda Cleide to `index.html` farms section.
+3. **CL-P1 Media column** — fill Plots sheet row with beta asset URLs now that they're live (200).
+4. **Prod promotion** — `sync_beta_to_prod(agroverse_shop_prod)` only on your explicit go after you've eyeballed the beta page.
+
+Ping me with the unit number and I'll run it.
+
+———
+**✅ Done this turn — actions taken:**
+• `http fetch` → https://beta.agroverse.shop/farms/fazenda-cleide-para → 200 (full page HTML)
+• `ssh run` ×1 → beta page 301 (redirect) · hero 200 · gallery 1/2/3 = 200 · sunmint geojson = 4 features incl. CL-P1 ✅
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== beta farm page status ==="; curl -s -o /dev/null -w "%{http_code}" "https://beta.agroverse.shop/farms/fazenda-cleide-para"; echo;
 
