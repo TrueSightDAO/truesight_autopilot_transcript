@@ -2236,36 +2236,43 @@ The videos from your site visit are now embedded on the farm page, playing from 
 ### 🤖 Autopilot
 
 Let me inspect the farm location section of the live beta page to see what's broken.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The HTML section looks fine. The map is rendered by Leaflet JS — let me check the map init script at the bottom of the page.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The map init looks correct. Let me see the full initMap function to check for a bug (e.g. `mapPaulo` variable naming, tile layer URL, or a JS error).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I found the likely bug. Let me confirm by checking Paulo's page (which presumably works) and the `.map-container` CSS.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `.map-container` CSS came back **empty** — that's the bug. Leaflet maps require an explicit container height; without it, the map div renders at 0px tall and nothing shows. Let me verify against Paulo's page.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CSS exists inline in both pages at line 240. Let me compare the exact CSS blocks — Paulo's (working) vs ours (broken).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The map div CSS is identical and fine (400px height). The difference must be in the JS string. Let me look at our bindPopup line exactly — I suspect unescaped apostrophes in the coordinates are breaking the JS.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2273,26 +2280,31 @@ The map div CSS is identical and fine (400px height). The difference must be in 
 **Found the bug!** Line 587 — the `bindPopup` JS string is single-quoted but the Google Maps URL contains **unescaped apostrophes** (`3%C2%B017'32.9%22S` and `52%C2%B034'20.1%22W`). In JS, the first `'` **terminates the string early** → SyntaxError → `initMap()` never runs → the map never renders.
 
 Paulo's working page escapes them as `\\'` (`3%C2%B023\\'32.0%22S`). When I generated the Santa Anna page from Paulo's template, the URL transform dropped the backslash escapes. Let me fix both apostrophes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fixed the JS string — both apostrophes now escaped as `\'` on the bindPopup line (the HTML href at line 561 keeps its plain apostrophes, which is correct for HTML). Let me verify the fix renders correctly by checking the JS syntax.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 JS syntax verified — the map script is now valid. Let me open the fix PR and merge it.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #228 opened. Let me verify the edit landed correctly on the branch, then merge.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch verified — escaped URL in place, JS syntax valid. Merging the fix.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2345,6 +2357,7 @@ Paulo's working page escapes them as `\'` — the template transform that genera
 ### 🤖 Autopilot
 
 Explicit approval received — promoting the beta to production.
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2450,4 +2463,51 @@ Site visit (Aug 30) → FSVP record (fda_fsvp) → farm page (beta #225) → map
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp && rm -rf agroverse_prod_check && git clone --depth 1 -q https://github.com/TrueSightDAO/agroverse_shop_prod.git agroverse_prod_chec; cd /tmp/agroverse_prod_check && git ls-remote --heads origin | head -20; echo "=== check prod live site serving media.json (freshest check) ; echo "=== DNS agroverse.shop ==="; dig +short agroverse.shop CNAME; dig +short agroverse.shop A | head -5; echo; echo "=== DNS beta.agrovers; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Everything is confirmed live on production. Let me summarize the promotion.
+
+## ✅ Production promotion complete — Santa Anna Fazenda is LIVE on agroverse.shop
+
+### What I did this turn
+1. **`sync_beta
+
+
+### 🤖 Autopilot
+
+👍 Go signal received. The prod promotion is complete — let me verify the full end-to-end chain on production (journey page, CEPOTX coop page, home page farm listing) to make sure the sync carried everything.
+
+
+### 🤖 Autopilot
+
+Everything checks out on production — the full chain is live. Here's the verification summary:
+
+## ✅ Full end-to-end verification — all live on agroverse.shop
+
+| Surface | Status |
+|---|---|
+| **Farm page** | ✅ `https://agroverse.shop/farms/santa-anna-fazenda-para/` — 200, title/SEO, Leaflet map (escaped URL fix), 6-item gallery (3 images + 3 YouTube) |
+| **Brazilian Path journey** | ✅ Santa Anna stop present (`santa-anna-fazenda-para` in the stops array) |
+| **CEPOTX coop page** | ✅ Member-farm card live with full description ("introduced to Agroverse by Jedielcio… site visit in August 2026 confirmed regenerative agroforestry, on-farm fermentation in wooden boxes, and clean drying practices") |
+| **Home page listing** | Not on home directly — consistent with other farms (home lists products, farms live under their own pages) |
+
+**The complete chain is now live in production:**
+Site visit (Aug 30) → FSVP record (`fda_fsvp#9`) → process runbooks (`agentic_ai_context#842/#843`) → farm page (beta #225) → map fixes (#226/#228) → YouTube videos (#227) → **prod sync** → verified on all surfaces.
+
+---
+
+**RESUME HERE → next unit (all parked items, no rush):**
+1. **Santa Anna site-visit PDF finalization** — v3 PDF has real GPS + photos + signature; still needs the **site code from Jedielcio** (CEPOTX pattern like `V-06-29`/`B-06-108`) before finalizing and pushing to `fda_fsvp`
+2. **DApp FARM REGISTRATION** for Santa Anna — you said hold off; ready whenever you want it
+3. **Optional:** if you later add other farms from this itinerary, the `fsvp/` runbooks + farm-page pattern now cover the whole flow end-to-end
+
+Anything else on this thread, or shall we call Santa Anna done?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== 1. Brazilian Path journey page on prod ==="; curl -s https://agroverse.shop/cacao-journeys/brazilian-path/ | grep -oE "santa-anna[
 
