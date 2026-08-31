@@ -5448,46 +5448,55 @@ Want me to execute all 5 updates now (I'll hold items needing the COOPOXIN confi
 ### 🤖 Autopilot
 
 The generator script was cleaned up earlier (when I freed disk). I'll regenerate the PDF from the existing v4 PDF + patch approach, or rebuild the generator. Let me check what PDF is on disk and locate the media assets.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The v4 PDF and sig assets were cleaned up with the disk-free purge. I have the media, but I need to rebuild the generator + signature. Let me re-clone the signature and rebuild the generator script with the confirmed data (B-06-58, Ana Lucia Araujo de Sousa, date, GPS, real photos).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Signature re-cloned. Now let me rebuild the generator with the confirmed data. First, converting the facility photos for embedding.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Facility photos ready. Now let me rebuild the v5 PDF generator with all confirmed data (site code B-06-58, registered owner Ana Lucia Araujo de Sousa, COOPOXIN, visit date, GPS, facility photos, signature).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF v5 generated (20 MB, 7 pages). Let me verify the content — especially the site code B-06-58, owner name, and signature placement.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Images all present (7 pages, 8 images), but page 1 text extraction fails for the key fields — likely a text-rendering/encoding issue with the accented characters (ó, ã) in reportlab's default encoding. Let me check what page 1 actually contains.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the bug: `meta_table` double-multiplies by `mm` — I pass `y` already in points (`H-30*mm`) but the loop does `y_cursor*mm` again, pushing the table ~21,000pt off-page (invisible). Fixing the function and regenerating.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Regenerated. Let me re-verify page 1 now contains all the key fields.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All key fields verified on page 1. Now let me push the finalized PDF + entity.json update to fda_fsvp. First the entity.json update.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5665,4 +5674,38 @@ The SA-P1 sheet notes append didn't flow into the geojson's `notes` (the builder
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot && /opt/truesight_autopilot/.venv/bin/python3 << 'EOF' import gspread, json from google.oauth2 import service_ac; cd /tmp && rm -rf sunmint_regen && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git sunmint_regen 2>&1 | tail -1; cd sunmi; cd /tmp/sunmint_regen && grep -n "notes\|Notes\|COLUMNS\|FIELD" scripts/build_plots_geojson.py | head -20; echo "=== SA-P1 full props ==="; ; …(+1 more)
 • `merge pr` → ✅ PR #251 on agroverse_shop_beta merged successfully (sha: b8f2e9332f8792405100625707c810aed414740e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] I think we should also change the name of the farm on sunmint page and agroverse site
+
+
+### 🤖 Autopilot
+
+Let me check the current names on both surfaces and search the context for any registered farm-name reference before renaming.
+
+
+### 🤖 Autopilot
+
+The farm currently shows "Santa Anna Fazenda" on both surfaces. Before I rename anything publicly visible, I need the exact target name — the registration string Jedielcio sent is a structured code: **CEPOTX → COOPOXIN → B-06-58 → ANA LUCIA ARAUJO DE SOUSA** (co-op → sub-co-op → site code → registered owner name). The name slot in that string is the *owner's* name, so I want to be sure how you want the farm branded.
+
+**Where the name currently appears** (all would change together):
+- **Agroverse farm page**: `<title>`/og:title + `<h1>` "Santa Anna Fazenda"
+- **Agroverse journey stop** (Brazilian Path): "Santa Anna Fazenda"
+- **Agroverse CEPOTX coop page**: farm card "Santa Anna Fazenda"
+- **SunMint plot registry**: plot name "Santa Anna Fazenda Plot 1 (compound)"
+- Also: slug `santa-anna-fazenda-para` (would stay, to keep URLs stable), farms-data.js label, FSVP PDF header, SunMint popup name
+
+**Which name do you want?**
+
+1. **"Santa Anna Fazenda"** stays as brand, and I add "registered under Ana Lucia Araujo de Sousa (COOPOXIN, B-06-58)" in the description (already done on the page — minimal change)
+2. **Display name becomes the registered one** — e.g. "Santa Anna Fazenda — Ana Lucia Araujo de Sousa" (keeps recognition + adds the registered identity)
+3. **Full rename to "Ana Lucia Araujo de Sousa"** as the primary name (drops "Santa Anna")
+
+My recommendation is **option 2** — it preserves the marketing identity (and the Bahia disambiguation) while surfacing the CEPOTX-registered name exactly as you received it. Say the number (or type the exact string you want) and I'll rename across all surfaces in one pass, keeping the slug/URLs stable.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && rm -rf asb_name && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git asb_name 2>&1 | tail -1; cd asb
 
