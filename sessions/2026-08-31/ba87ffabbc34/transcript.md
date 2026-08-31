@@ -8,17 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-LIVE BUG on sunmint.truesight.me/monitor-tree-growth/ (production, already promoted) -- Gary confirmed: prepare as a normal reviewed PR, no deploy until he merges (not a fast-track like the TDG incident).
-
-ROOT CAUSE (confirmed via source comparison, not guessed): the page's hand-rolled submitEmailEvent() function builds the signed [EMAIL REGISTERED EVENT] WITHOUT a "This submission was generated using <URL>" line. Compared against the official @truesight_dao/dao-client library (v1.1.0-rc.4, which oracle.truesight.me actually uses per its script tag) and its src/edgar.ts buildShareText() method: that line is mandatory in the canonical format, positioned after "Request Transaction ID" and before "Verify submission here". src/index.ts shows generationSource defaults to window.location.origin + window.location.pathname (the pages own URL) specifically so Edgars GAS mailer can build a verification link back to the same page. Sunmints hand-rolled version omits this entirely, so Edgar falls back to some other/legacy URL -- exactly matching the reported bug.
-
-FIX: in submitEmailEvent() and checkVerificationLink(), add "This submission was generated using " + window.location.origin + window.location.pathname (and "Verify submission here: https://dapp.truesight.me/verify_request.html"), matching the EXACT format/order from dao_protocol/packages/dao-client/src/edgar.ts buildShareText(). Read that file precisely first to confirm whether these trailer lines belong inside the signed payload or are appended only after signing -- do not guess, getting this wrong produces a signature Edgar rejects.
-
-Open a normal feature-branch PR against sunmint_beta (promote to sunmint_prod only after Gary reviews + merges on beta first, per the established beta-first convention -- this app has that fork relationship same as the others). Do NOT deploy and do NOT merge yourself. Test the fix on beta.sunmint.truesight.me first with a real test email submission showing the resulting emailed link correctly points back to the page, and report that test evidence in the PR description itself. Reply with the PR link once open.
-
-
 ### 🤖 Autopilot
 
 On it — this is a reviewed-PR fix (no deploy, no self-merge). First, the canonical source: I'll read `buildShareText()` from dao_client precisely to confirm whether the trailer lines are inside or outside the signed payload, and fetch the current email-event code from both sunmint_beta pages.
@@ -4666,6 +4655,7 @@ Executing the resume units: (1) close the superseded PR #330, (2) verify the his
 ### 🤖 Autopilot
 
 The live beta page (40,784 B) **has the patch served**. The gh close failed — let me close PR #330 via the API directly, then browser-verify the history strip:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4676,16 +4666,19 @@ The **history strip now works** — the fix is verified live on beta:
 - **0 console errors, 0 page errors**
 
 Let me close PR #330 with the proper gh command:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #330 is still open — the flag syntax was wrong. Closing it properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `--comment` flag isn't supported in this gh version, and my JSON field list was wrong. Let me close it with the correct flags and verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4907,4 +4900,45 @@ Say "merged" once you've landed it and I'll run the production verification.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && rm -rf recon_prod && git clone --quiet --single-branch --branch main --depth=50 https://github.com/TrueSightDAO/truesight_me_prod; cd /tmp/recon_prod && git checkout --quiet -b reconcile/beta-sunmint-stack origin/main echo "=== apply beta tree over prod (all files) ===" ; cd /tmp/recon_prod && TOKEN=$(grep -E '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2- | tr -d '"' | tr -d "'") git
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ✅ **Reconciliation PR opened — [truesight_me_prod#21](https://github.com/TrueSightDAO/truesight_me_prod/pull/21)** (open, 3 files, branch pushed).
+
+## What I did this turn
+
+**Built the safe reconcilia
+
+
+### 🤖 Autopilot
+
+Checking whether the reconciliation PR has been merged (if it has, I run the production verification; if it's still open, I'll confirm before touching a prod repo):
+
+
+### 🤖 Autopilot
+
+**PR #21 is still open — the merge is the human prod-gate, and I'm holding it per the rules.**
+
+## Current state (verified just now)
+
+| Check | Result |
+|---|---|
+| **PR [truesight_me_prod#21](https://github.com/TrueSightDAO/truesight_me_prod/pull/21)** | `state: open` · `merged: False` · **`mergeable: True`** |
+| Prod main head | `17836585` (stats commit) — **unchanged**, content not yet live on prod |
+
+**The PR is ready to merge** (GitHub confirms mergeable, 3-file diff, no conflicts). But it sits on **`truesight_me_prod` — a PRODUCTION repo**, and the standing rule is explicit: *never push, branch-edit, or merge PRs in production repos*; prod changes always go through a human. That's exactly why I built the reconciliation as a PR instead of force-syncing — the merge itself is your gate, and the 👍 resume signal on a message that said "I will not self-merge a prod repo" isn't a clear override of that standing rule. So I'm **stopping and asking** rather than guessing.
+
+## 📌 Two options — your call
+
+1. **You/Envoy merge [truesight_me_prod#21](https://github.com/TrueSightDAO/truesight_me_prod/pull/21)** (one click — it's clean) → then say "merged" and I'll run the **production verification** (`truesight.me/sunmint.html` map + history strip, `truesight.me/sunmint/whitepaper/` §3.1/§13/§13.1, zero console errors, browser check)
+2. **Explicitly instruct me to merge it** ("Sophia, merge prod #21") — that's an explicit governor command on a prod repo, which overrides the default — and I'll merge + verify
+
+Everything is staged and green either way. Which do you prefer?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && TOKEN=$(grep -E '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2- | tr -d '"' | tr -d "'") echo "=== PR #2
 
