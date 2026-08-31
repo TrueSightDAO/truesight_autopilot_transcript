@@ -3573,11 +3573,13 @@ Can we prioritize this instead. The impact map is more a visual display which is
 ### 🤖 Autopilot
 
 The governor wants to reprioritize — boundary submission pipeline ahead of the impact map UAT. Per protocol, checking the manifest + plots runbook to ground the new plan:
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Understood — reprioritizing: **boundary submission pipeline first, impact map UAT parked**. Per protocol, let me get the manifest table tail (exact row format) to append the new plan row and mark the impact map row as parked:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3753,4 +3755,177 @@ Auto-start is active for the boundary-submission plan — I'll start PR1 on the 
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #863 on agentic_ai_context merged successfully (sha: f73d60fa31649669a2bc9cb25f8e471f9e0035fa). Pull Request successfully merged
 • `ssh run` → cd /tmp && echo "=== sunmint repo tree (top-level) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recursi
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**1. Merged PR #863** — the boundary-submission plan + manifest reprioritization is now on `agentic_ai_context/main` (s
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+Go-signal received — auto-start confirmed for the boundary-submission plan. Executing **PR1: `scripts/extract_plot_gps.py`**. Per protocol, reading the plan + the runbook + existing scripts to ground the build:
+
+
+### 🤖 Autopilot
+
+I have the plan + runbook. Now let me read the existing generator to mirror its sheet-handling pattern exactly (how it reads the Farms sheet via gspread, and the coordinate format):
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the generator (the sheet-write pattern + coordinate parsing) to mirror it:
+
+
+### 🤖 Autopilot
+
+I now have the full generator pattern. Now let me look at the sheet-write pattern — checking how the Farms sheet is written (write access via `agroverse_qr_code_manager` SA, and whether there's an existing sheet-write precedent I can mirror), plus exiftool's actual output format:
+
+
+### 🤖 Autopilot
+
+I found real EXIF test media at `/tmp/sa_frames/a1.jpg` etc. Let me check the sheet-write precedent (append_to_processing_cost_sheet.py) and run exiftool on the actual images to nail the output format:
+
+
+### 🤖 Autopilot
+
+exiftool on `/tmp/sa_frames/a1.jpg` returned nothing (no GPS tags — those frames were probably stripped or synthetic). The write precedent exists (`append_to_processing_cost_sheet.py` — gspread/googleapiclient with write scope, reads creds from a JSON file path). The `build_plots_geojson.py` uses `GOOGLE_SERVICE_ACCOUNT_JSON` env var with **readonly** scope — my extract script needs **write** scope to update the sheet.
+
+Let me check the autopilot box env (is `GOOGLE_SERVICE_ACCOUNT_JSON` present? which SA?) and the exact exiftool DMS output format using a crafted GPS tag to be certain:
+
+
+### 🤖 Autopilot
+
+Let me look at how the autopilot's own google_sheets tool authenticates (it can use `agroverse_qr_code_manager` — the SA with write access to the Farms sheet). This is the key: my extract script should reuse the same credential path so the sheet-write works:
+
+
+### 🤖 Autopilot
+
+Let me check the credentials loader to understand how `agroverse_qr_code_manager` (the SA with write access to the Farms sheet) is loaded — this is what my extract script needs for the sheet write:
+
+
+### 🤖 Autopilot
+
+I have the credential pattern: `agroverse_qr_code_manager_gdrive_key.json` in `/opt/truesight_autopilot/config/google/` (the SA with write access to the Farms sheet). Let me verify that cred file exists and test exiftool's exact DMS output on a synthetic GPS-tagged image so the parser is correct:
+
+
+### 🤖 Autopilot
+
+The cred file exists (`agroverse_qr_code_manager_gdrive_key.json`). exiftool returned nothing on a text file (it doesn't write GPS to non-image files silently). Let me create a real GPS-tagged JPEG test to nail the output format — use a tiny existing image:
+
+
+### 🤖 Autopilot
+
+The exiftool output format is confirmed exactly:
+```
+GPS Latitude                    : 3 deg 17' 45.96" S
+GPS Longitude                   : 52 deg 34' 59.39" W
+```
+DMS with `deg ' "` and N/S/E/W ref. My parser will handle this. Now I have everything — the credential path, the sheet-write precedent, the generator pattern, and exiftool's real output. Building `extract_plot_gps.py`:
+
+
+### 🤖 Autopilot
+
+The script compiles. Let me fix a small bug (duplicate plot_id write in the new-plot path), improve media path handling (repo-relative vs absolute), and write the unit test with GPS-tagged fixtures:
+
+
+### 🤖 Autopilot
+
+Now let me write the unit test with GPS-tagged fixture images (create 4 small JPEGs with distinct GPS tags around a rectangle), covering DMS parsing, hull, ring closure, and the dry-run flow:
+
+
+### 🤖 Autopilot
+
+The fixtures didn't get GPS written — the 1x1 JPEG is too minimal for exiftool to embed GPS. Let me check and use a real image as the base for fixtures:
+
+
+### 🤖 Autopilot
+
+The fixtures were written with signed decimals, which exiftool stores *without* a ref letter — so read-back is `3 deg 17' 45.96"` (no S). Real phones write explicit refs. Fixing the fixture generation to use explicit DMS+ref (matching real device output):
+
+
+### 🤖 Autopilot
+
+GPS extraction works now. Let me see the final test result:
+
+
+### 🤖 Autopilot
+
+One test failure remaining — let me see which one:
+
+
+### 🤖 Autopilot
+
+The single-point case: `build_ring` correctly returns a 1-element ring (first == last so no append needed) — but a 1-point "polygon" is degenerate and shouldn't be written as a plot boundary at all. Let me add a proper guard (≥3 distinct points required, matching "don't invent a polygon from a photo cluster") and fix the test expectation:
+
+
+### 🤖 Autopilot
+
+Let me see the final pass/fail count:
+
+
+### 🤖 Autopilot
+
+The dry-run works end-to-end (GPS → hull → ring → sheet payload). Let me get the final test count and verify the ring closes correctly:
+
+
+### 🤖 Autopilot
+
+All 11 tests pass, ring closes correctly. Now let me run the local test suite (hard rule) and then push to `sunmint`:
+
+
+### 🤖 Autopilot
+
+Ruff found 5 lint errors and format issues. Let me fix them:
+
+
+### 🤖 Autopilot
+
+Unused imports — let me fix them all with ruff --fix and format:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging per the turn limit — here's where PR1 stands.
+
+## PR1 status: `extract_plot_gps.py` — built, tested, ~1 fix from pushable
+
+### What's done (all in `/tmp/extract/`)
+- **`extract_plot_gps.py`** (358 lines) — exiftool GPS extraction → DMS→decimal → convex hull (monotonic chain, stdlib) → closed `[lng, lat]` ring → **upsert plot row in SunMint Farms sheet** (create if missing / update if exists, `--append-media` option, `--dry-run` preview). Guards: refuses <3 distinct GPS points (can't form a polygon), media path normalization (repo-relative kept, temp paths → basenames), `boundary_authority=approx` default per runbook.
+- **`test_extract_plot_gps.py`** — 11 unit tests: DMS parsing (SW/NE/plain/bad), convex hull (rectangle/collinear/single), ring closure + lng/lat order, and GPS extraction from **exiftool-tagged fixture images** (real device format: `3 deg 17' 45.96" S` + ref tags).
+- **Verified live:** exiftool read-back of fixture GPS → `-3.296100, -52.583164` etc. (real SA frames worked as base images); dry-run smoke test produced a correct closed 3-vertex hull ring, all SW-negative (Brazil).
+- **Hard-rule suite:** compile ✓ · ruff format ✓ · pytest (my 11 tests) **OK** · **ruff check ✗ — 2 remaining E741 errors** (ambiguous variable `l` in the test's `all(l < 0 for l in lats)` — trivial 1-char rename).
+
+### The credential path (the enabler)
+- `agroverse_qr_code_manager_gdrive_key.json` exists in `/opt/truesight_autopilot/config/google/` (write access to the Farms sheet — verified the file is present; the script's `get_creds()` uses exactly this SA + write scope).
+- Sheet-write precedent confirmed (`append_to_processing_cost_sheet.py` in tokenomics); generator pattern mirrored from `build_plots_geojson.py` (same SHEET_ID `1qbZZhf…`).
+
+## RESUME HERE → next turn (should take ≤3 tool calls)
+
+1. **Fix the 2 E741 lint errors** in `test_extract_plot_gps.py` (rename `l` → `lat` in the two `all(...)` comprehensions), re-run `ruff check` + `ruff format --check` + the 11 tests → **all four hard-rule checks green**
+2. **Push PR1** — `git_push_changes(repo="sunmint", branch="extract-plot-gps", writes=[extract_plot_gps.py, test_extract_plot_gps.py])` → opens PR; report URL
+3. (Later, per plan) run the script for real on LD-P1's media once the operator drops the originals in a directory — the script was built to prove that loop
+
+The plan row stays **in progress — PR1 built, ready to push**; nothing is blocked — just the lint fix + push remain. Say go and I'll finish it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×22 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/build_plots_geojson.py" -o build_plots.py && echo "=; cd /tmp && sed -n '100,244p' build_plots.py; cd /tmp && echo "=== exiftool GPS output format on a real image ===" && find /tmp -name "*.jpg" 2>/dev/null | head -3; exiftool -GPSLatitude; …(+19 more)
 
