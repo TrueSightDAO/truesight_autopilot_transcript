@@ -345,6 +345,7 @@ Field Signals runs up to #5 in what I've seen. Let me check the context repo for
 ### 🤖 Autopilot
 
 Field Signals numbering observed so far: #2, #4, #5, #7. Let me check the remaining plausible entries to find the true latest number.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -484,4 +485,45 @@ The post is reviewed-and-live on beta; prod awaits your word.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #337 on truesight_me_beta merged successfully (sha: ad5e5228886ca586b977277d6fdaa9910e92c800). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] [Handoff context — this Telegram topic (thread 17381) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Merged — Field Signals · #8 is live on the beta blog
+
+**PR #337 merged** (sha `ad5e522`) → https://github.com/TrueSightDAO/truesight_me_beta/pull/337
+
+**What's now on beta.truesight.me/blog:**
+-
+
+
+### 🤖 Autopilot
+
+👍 Go received. First I'll verify the beta render (post + index card + hero asset) before anything else, then handle the remaining loose ends.
+
+
+### 🤖 Autopilot
+
+👍 Beta verification done — the post is live and renders correctly. Here's the report.
+
+## ✅ Verified live on beta.truesight.me
+
+- **Post:** https://beta.truesight.me/blog/posts/the-tree-the-industry-despises-feeds-the-family-every-month.html — serves full content: **Field Signals · #8** pill, hero image, the two-phenotypes comparison table, all sections (walk → scandal of bulk cacao → farmer's words → chemistry → market → ledger close)
+- **Hero asset:** https://beta.truesight.me/assets/blog/the-tree-the-industry-despises-feeds-the-family-every-month.svg — HTTP 200, `image/svg+xml`, full two-panel SVG (Ponta Verde vs Traditional Pará) confirmed
+- **Index card** shipped in the same merged commit (PR #337, sha `ad5e522`)
+
+## 🟡 Next: prod promotion — needs YOUR explicit review first
+
+Per the hard rule, I do **not** promote without the governor reviewing the beta deploy and explicitly approving. So:
+
+1. **Please look at the beta post** (URL above) — confirm the hero, table, and voice read right.
+2. On your **"promote"**, I'll call `sync_beta_to_prod(truesight_me_prod)` and it goes to truesight.me/blog.
+
+## Loose ends still open (non-blocking)
+- **PR #336** (SVG-only, superseded) still open — please **close without merging** on GitHub (no close tool on my side)
+- **Transcript append** for the original PDF — I still need the session_id to persist it; I'll do it at the start of the next turn if you can confirm the session, or it can ride along with the promote turn.
+
+**RESUME HERE →** after you review the beta post: reply **"promote"** and I'll run `sync_beta_to_prod(truesight_me_prod)` + log the contribution. Until then, the post is live on beta and ready for your eyes.
 
