@@ -2375,56 +2375,67 @@ Sync succeeded with no conflict. Let me verify the production site is serving th
 ### 🤖 Autopilot
 
 The file **is** on prod main — the 404 was just GitHub Pages deploy lag (the sync happened seconds ago). Let me confirm by re-fetching.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is on prod main but the site still 404s — the deploy may take longer or use a different mechanism. Let me check the prod repo's deployment setup.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod repo has the merge (`f8d4071`), CNAME = agroverse.shop, but no Pages deploy workflow — so Pages deploys from a branch directly. Let me check which branch Pages serves from (gh-pages?).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod repo has the merge on main but the site still 404s — Pages deploy is likely still building (sync was seconds ago). Let me check the Pages build status via the API.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pages API 404 — the prod repo does **not** have GitHub Pages enabled. Something else serves agroverse.shop. Let me check DNS/headers to find the real host.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod repo has **no GitHub Pages** (API 404) — yet agroverse.shop resolves to GitHub Pages IPs with `last-modified: Aug 28` (stale!). The site must be served from a different Pages site. Let me check `www.agroverse.shop` and the org site.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `www.agroverse.shop` → `truesightdao.github.io` but apex serves stale content (last-modified Aug 28 — before today's merge). The prod repo has **no Pages enabled** — so something else serves the live site. Let me check the deploy ledger and how prod is actually hosted.
+[2 tool result(s) compacted: read_tool_result, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The prod file is on main but the live site serves stale content. The Pages API says `agroverse_shop_prod` has no Pages — so the live site must be served from elsewhere. Let me check the deploy ledger and how prior prod deploys actually go live.
+[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The page now returns **200** — the deploy propagated (earlier 404 was Pages build lag, ~90s). Let me confirm it's the new page with the videos and map fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod page is live (200, correct title, `map-santa-anna` present). But **prod's `media.json` is stale** — 3 items (images only), while beta/GitHub main has 6 (3 images + 3 YouTube). The sync merged code, but the **media.json on the prod repo may not have been updated** — or the map fix check needs verifying. Let me check prod main's media.json directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My python check was wrong — `media.json` is a dict (schemaVersion/hero/gallery), so `len()` = 3 top-level keys and iterating gave keys, not items. The git show proves **prod main's gallery includes the YouTube entries** (3 images + youtube videoId present). Let me confirm the served version has all 6 gallery items.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2615,4 +2626,18 @@ Placed right before the `fazenda-santa-ana-bahia` entry. All other stops unchang
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp/agroverse_shop_look && echo "=== santa-anna entry in brazilian-path-data.js ==="; grep -n -A 12 "santa-anna" js/brazilian-path-data.; cd /tmp/agroverse_shop_look && echo "=== where does santa-anna journey stop data live? ==="; grep -rn "santa-anna-fazenda-para" --include="*; cd /tmp/agroverse_shop_look && echo "=== image path logic (940-1010) ==="; sed -n '940,1010p' cacao-journeys/brazilian-path/index.html; …(+5 more)
 • `merge pr` → ✅ PR #230 on agroverse_shop_beta merged successfully (sha: 73b63291eeddc24ca2edbf30b429ca79b85ffe37). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] Looking good
+
+
+### 🤖 Autopilot
+
+Great to hear! 🎉 The Santa Anna stop on the Brazilian Path journey now shows its farm photo on beta.
+
+One quick confirm before I touch production: shall I **promote this fix to prod** (`sync_beta_to_prod` → agroverse.shop)? Per the guardrails I only sync after you explicitly approve the promotion — and your earlier "Promote" was for the farm page itself, not this journey-image fix.
+
+Say **"promote"** and I'll sync it, then verify the journey page on agroverse.shop shows the Santa Anna image.
 
