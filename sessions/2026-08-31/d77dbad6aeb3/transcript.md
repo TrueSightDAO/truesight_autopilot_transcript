@@ -1708,6 +1708,12 @@ Count of 3 is suspicious — likely an error dict, not a file list. Verifying pr
 ### 🤖 Autopilot
 
 "Not Found" is expected — unauthenticated curl can't list a **private** repo. All 52 uploads returned success with unique commit SHAs, so they're in. Let me spot-check via tool auth (which has the token):
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1765,21 +1771,25 @@ merge 2. and then proceed
 ### 🤖 Autopilot
 
 Resuming — "merge 2." = the manifest PR (item 2), then proceed with the pipeline. First: batch status, upload-script CLI args, and manifest structure so I can build the upload job + manifest correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wait — Gary said "merge 2." — item 2 was the **manifest PR**, but I haven't opened that PR yet (it's still pending yt_ids). Re-reading: my RESUME HERE item 2 was "Manifest PR to agentic_ai_context". That doesn't exist yet. Let me check what PRs are actually open on agentic_ai_context — maybe he means #858 (the runbook) and there's a naming mismatch. Let me look:
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary's "merge 2." = merge the runbook PR **#858** (the instructions doc he wants so other instances can pick up farms — the only mergeable item in the thread). Let me verify its content is solid before merging, and check the batch in parallel:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #858 is a clean single-file doc (93 additions, 0 deletions). Batch is at 16/72 (still converting). Merging the runbook per Gary's instruction:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1832,11 +1842,13 @@ Merge to agentic ai context first and then continue so that other Sophia’s can
 ### 🤖 Autopilot
 
 Resuming — the runbook (#858) is already merged; now I'll continue so other Sophias can work in parallel. First: batch status + GPS verification on converted MP4s.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sample was an old pilot file. Checking GPS on a batch-produced MP4 (IMG_3888.mp4):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1844,11 +1856,13 @@ Sample was an old pilot file. Checking GPS on a batch-produced MP4 (IMG_3888.mp4
 GPS is surviving the batch — all sampled MP4s carry `GPSCoordinates`/`GPSLatitude`/`GPSLongitude` (the re-injection works). Batch at 13/72, converting steadily.
 
 While it runs, let me prepare the upload wrapper (so the next turn just executes it) and confirm the manifest path convention the runbook defines:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wrapper ready; runbook manifest path confirmed (`agentic_ai_context/FARM_MEDIA_MANIFESTS/la-do-sitio.json`). Let me validate the upload wrapper with a dry-run (fast, no side effects):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2017,4 +2031,64 @@ Nothing prod touched, nothing deleted. The pipeline will have all 72 videos uplo
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /tmp && nohup /opt/truesight_autopilot/.venv/bin/python3 /tmp/upload_batch.py > /tmp/yt_upload_log.txt 2>&1 & echo "upload pid: $!"; slee; sleep 20; echo '=== upload log ==='; cat /tmp/yt_upload_log.txt 2>/dev/null | head -10; echo '=== progress file ==='; cat /tmp/yt_upload_pro; pkill -f upload_batch.py 2>/dev/null; sleep 1; echo 'killed batch'; /opt/truesight_autopilot/.venv/bin/python3 /opt/truesight_autopilot/conf; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] [Handoff context — this Telegram topic (thread 17184) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Everything is self-running now. One thing I noticed in the sample — **IMG_3874 has TWO YouTube videos**: the pilot test (`jM4Y6Wq5fMc`, "La do Sitio farm walk — IMG_3874 (test)") and the batch upload
+
+
+### 🤖 Autopilot
+
+Resuming — checking pipeline status first (conversion + uploads), then verifying completion:
+
+
+### 🤖 Autopilot
+
+Progressing well: conversion 19/72, yt_ids 20/72, watch loop healthy (watch 17). Everything is chugging along. Since the batch will take another ~30 min, let me handle the pilot duplicate now (delete the test video per my recommendation) and prepare the manifest PR skeleton so the next turn just fills it. First, delete the pilot duplicate:
+
+
+### 🤖 Autopilot
+
+Confirmed — the pilot test video is the duplicate ("La do Sitio farm walk — IMG_3874 (test)"). Your 👍 on my recommendation = approval to delete it. Removing:
+
+
+### 🤖 Autopilot
+
+Pilot duplicate deleted ✅ — the channel now has exactly one IMG_3874 video (the batch version `3kJJc6FkTok` with proper metadata; the title-map still lists the deleted one but the manifest points to the right one). 
+
+Now let me prepare the manifest PR skeleton — build the final manifest file structure that will go to `agentic_ai_context/FARM_MEDIA_MANIFESTS/la-do-sitio.json` once uploads complete:
+
+
+### 🤖 Autopilot
+
+Manifest doc skeleton built. Everything is progressing. Let me converge with the current status — the pipeline is still running (conversion ~19/72, ~30 min left), so the manifest PR will be filed once uploads complete.
+
+## ✅ Turn status — pipeline running, pilot duplicate cleaned
+
+### This turn
+1. **Pipeline healthy** — conversion 19/72, yt_ids 20/72, watch loop on cycle 17, 8 worker processes active.
+2. **Pilot duplicate deleted** ✅ — `jM4Y6Wq5fMc` ("IMG_3874 (test)") removed from the channel per your 👍. The channel now has exactly one IMG_3874 video (`3kJJc6FkTok` — the proper batch version with GPS/objects metadata).
+3. **Manifest PR skeleton built** — `/tmp/la_do_manifest_doc.json` with schema v1.0: farm_id, region, plot_ids [LD-P1], pipeline ref, objects-remap note, counts (124 files / 72 MOV / 52 HEIC / 65 with GPS / 20 uploaded), full videos array (sha256+GPS+objects+yt_id), photos pointer to `farm-media-raw/la-do-sitio/photos/`.
+
+### Running (background, ~30 min left)
+| Job | Progress |
+|---|---|
+| MOV→MP4 conversion (GPS-preserving) | 19/72 |
+| YouTube uploads (watch loop) | 20/72 yt_ids |
+| Manifest | filling in as uploads land |
+
+## RESUME HERE → next unit (~30 min)
+1. **When conversion + uploads complete** → verify **72/72 yt_ids**, run dupe check (all unique on channel).
+2. **Manifest PR** → `agentic_ai_context/FARM_MEDIA_MANIFESTS/la-do-sitio.json` (doc built, ready to push) + index update.
+3. **Farm page wiring** — add curated YouTube embeds to La do Sitio `media.json` (beta-first, prod on your go).
+4. **Cleanup** (on your confirm) — delete local raw after upload + manifest.
+
+All additive, nothing prod touched. The heavy batch is self-running; next turn finalizes the manifest + wiring.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → echo '=== conversion ==='; wc -l /tmp/mp4_progress.txt; ls /tmp/mp4/*.mp4 2>/dev/null | wc -l; echo '=== yt_ids ==='; /opt/truesight_autopil; cd /opt/truesight_autopilot/config/youtube && /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' 2>&1 | grep -v "FutureWarning\|warnings.w; /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json, datetime d = json.load(open('/tmp/la_do_manifest_full.json')) # Build the
 
