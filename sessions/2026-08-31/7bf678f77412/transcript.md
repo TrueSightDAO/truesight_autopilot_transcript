@@ -575,11 +575,13 @@ Regenerated geojson includes CL-P1. Now push it to the sunmint repo via a PR (da
 ### 🤖 Autopilot
 
 Plot registered on the impact map data layer. Now for the agroverse.shop farm page (beta-first). Let me pull the existing farm page structure to model Cleide's page on.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Farm pages exist including CEPOTX farms (`paulo-la-do-sitio-para`, `santa-anna-fazenda-para`). Let me read the closest CEPOTX analog to model the page on.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -773,4 +775,76 @@ Ping me with the unit number and I'll run it.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== beta farm page status ==="; curl -s -o /dev/null -w "%{http_code}" "https://beta.agroverse.shop/farms/fazenda-cleide-para"; echo;
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Verify unit complete — everything checks out ✅
+
+**Beta farm page — LIVE:**
+- `beta.agroverse.shop/farms/fazenda-cleide-para/` → **200** — full page serving (title, meta, hero, story, highlights, ga
+
+
+### 🤖 Autopilot
+
+Go received — executing unit 1: verifying how `truesight.me/sunmint.html` loads the geojson (live fetch vs bundled), so I can confirm CL-P1 will render on the impact map.
+
+
+### 🤖 Autopilot
+
+Let me read the impact map extension plan (it documents how sunmint.html consumes the geojson) and check the sunmint repo structure for the HTML/build.
+
+
+### 🤖 Autopilot
+
+The impact map page fetches the geojson **live** from `raw.githubusercontent.com/.../sunmint/main/plots/index.geojson?cb=` — so my pushed CL-P1 feature is picked up directly. Let me confirm the `?cb=` is dynamic (cache-busted per load) so there's no stale-cache risk.
+
+
+### 🤖 Autopilot
+
+## Unit complete — CL-P1 confirmed live on the SunMint impact map ✅
+
+**Verified end-to-end — no stale-cache risk:**
+
+| Check | Result |
+|---|---|
+| How sunmint.html loads plots | Live fetch: `raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geojson?cb=` |
+| Cache-buster | `Date.now()` — fresh `?cb=` on **every page load** (4 occurrences) → always pulls latest geojson |
+| Simulated page fetch | ✅ **4 features returned**: RM-P1, RM-P2, SA-P1, **CL-P1 (Fazenda Cleide Plot 1, working areas, 114 ha, approx)** |
+| Map render | Next load of `truesight.me/sunmint.html` **will show CL-P1 polygon** — no deploy needed |
+
+So the full Fazenda Cleide pipeline is **live and self-consistent**:
+
+| Layer | Status |
+|---|---|
+| Plot registry (SunMint Plots sheet, CL-P1) | ✅ canonical |
+| Data (sunmint/plots/index.geojson) | ✅ 4 features on main |
+| Impact map (truesight.me/sunmint.html) | ✅ picks CL-P1 live on next load |
+| Farm profile (beta.agroverse.shop/farms/fazenda-cleide-para) | ✅ 200, images 200 |
+
+Nothing blocking on my side. The remaining items are **optional / governor-gated**:
+
+---
+
+## RESUME HERE → next units (your pick, fresh turn)
+
+1. **Eyeball CL-P1 on the map** — open `truesight.me/sunmint.html`, click the CL-P1 plot chip, confirm the polygon + popup (name/ha/status/authority).
+2. **Homepage farm-grid card** (optional) — add Fazenda Cleide to agroverse.shop `index.html` farms section.
+3. **CL-P1 Media column** — fill the Plots sheet row with the live beta asset URLs (200s) if you want thumbnails wired into the popup later.
+4. **Prod promotion of the farm page** — `sync_beta_to_prod(agroverse_shop_prod)` only on your explicit approval after you've reviewed the beta page.
+5. *(Related but separate plan)* — the SunMint Impact Map Extension plan (PR1–PR5: enriched popups, farms selector, registry section) lives in `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`; CL-P1 already benefits from any popup enrichment done there.
+
+Ping me with the unit number and I'll run it. Otherwise — **Fazenda Cleide is fully live on beta + impact map data**, and I'll hold here for your prod-go.
+
+———
+**✅ Done this turn — actions taken:**
+• `search_code` ×2 → located SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md + sunmint repo docs
+• `read_context_file` → impact map extension plan (page, data sources, plot schema, roadmap)
+• `ssh run` ×2 → sunmint repo tree · sunmint.html 200 · geojson loaded live w/ `Date.now()` cache-buster · simulated fetch → 4 features incl. CL-P1
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== sunmint repo tree ==="; curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/" | python3 -c "import json,sys; d=jso; echo "=== how cb cache-buster is generated in sunmint.html ==="; curl -s "https://truesight.me/sunmint.html" | grep -o "cb=[^\"']*" | head -
 
