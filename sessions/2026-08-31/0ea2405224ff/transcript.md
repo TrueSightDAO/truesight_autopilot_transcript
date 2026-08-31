@@ -1767,6 +1767,7 @@ Tab created and seeded. Now the critical test: run the builder from the **sheet*
 The diff is only `media: []` vs `None` — semantically equivalent (the builder strips empty `[]` media to `None`, while the curated seed had explicit `[]`). The polygons, hectares, status, ownership — **all identical**. The sheet is a faithful source of truth. 
 
 Let me make the seed consistent (drop the empty `media: []` from the curated file so the map/popup behaves the same whether data comes from sheet or seed), then verify the full pipeline round-trip:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1918,4 +1919,174 @@ go for it then. For the images and videos perhaps for videos upload onto Youtube
 
 Go received — building the Rancho Maranta farm page for Agroverse.shop, with videos handled as YouTube embeds. First, let me check whether a YouTube credential exists in the ecosystem, read the Santa Anna farm page structure to mirror, and see what images we have to work with:
 [3 tool result(s) compacted: search_context, ssh_run, ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Go received — building the Rancho Maranta farm page for Agroverse.shop, with videos handled as YouTube embeds. First, let me check whether a YouTube credential exists in the ecosystem, read the Santa
+
+
+### 🤖 Autopilot
+
+Continuing — let me check the YouTube credential situation, the Santa Anna page structure to mirror, and what media we have for the farm page:
+
+
+### 🤖 Autopilot
+
+Good — the video pipeline exists (`DOWNLOADS_MEDIA_TO_AGROVERSE.md`, `youtube_batch_incoming.py`, `youtube_credentials.json`). Let me read the runbook for the upload flow and check whether the credentials exist on this box, plus see the Santa Anna page body fully:
+
+
+### 🤖 Autopilot
+
+The page pattern is clear. The runbook wasn't in agentic_ai_context (it lives elsewhere) and no YouTube creds are on this box yet — so I'll build the page with the media-gallery embed pattern and leave YouTube upload as a clearly-marked follow-up needing credentials. Let me find the video JSON pattern and prepare the images:
+
+
+### 🤖 Autopilot
+
+Found the pattern — each farm has a `media.json` fed by `js/media-gallery.js`. Let me read the Santa Anna media.json (the sibling farm) and the media-gallery.js to see the exact format (YouTube embeds, images, captions):
+
+
+### 🤖 Autopilot
+
+The full pattern is clear — each farm = `index.html` + `media.json` (images + YouTube embeds). Now let me check the YouTube upload capability (creds on box, existing video registry) and the images available for the page:
+
+
+### 🤖 Autopilot
+
+The full pipeline exists (`upload_video_to_youtube.py`, `youtube_videos.json` registry, `update_html_with_youtube_embeds.py`). The HEIC photos from the zips were only extracted to /tmp earlier for GPS and were cleaned — let me check the media assets that already exist for Santa Anna and whether Rancho Maranta images exist anywhere, plus the youtube_videos.json format:
+
+
+### 🤖 Autopilot
+
+The pipeline is fully mapped. Now let me check the two blockers: are the zips still on the box (for images), and do YouTube upload creds exist here:
+
+
+### 🤖 Autopilot
+
+Both zips are on the box ✓, but **YouTube credentials are NOT** — the upload script needs `youtube_credentials.json` + `youtube_token.json` (OAuth, needs interactive consent from the account owner). So the plan splits cleanly:
+
+- **I can do now:** build the farm page + media.json with the 10 photos (compressed from the zips), and wire the gallery.
+- **Needs Gary/credentials:** YouTube upload of the ~26 clips (26 short clips; the 3 Plot-1 clips are ~27s total — perfect for one 30s hero clip). The embed IDs slot into media.json afterward.
+
+Let me extract + compress the photos from the zips for the page:
+
+
+### 🤖 Autopilot
+
+Plot 1: 4 HEICs + 3 MOVs. Plot 2 is mostly MOVs with some HEICs. Let me extract the photos (HEICs) from both zips and check what conversion tools are available for HEIC→JPEG web optimization:
+
+
+### 🤖 Autopilot
+
+All 16 HEICs extracted and `pillow_heif` is available. Let me convert them to web-optimized JPEGs, check which ones are usable (GPS + visually), and see the plot 2 photo timestamps:
+
+
+### 🤖 Autopilot
+
+Only plot 2's 6 HEICs converted — plot 1's 4 HEICs are missing (the zip path prefix "rancho maranta plot 1/" needs exact matching). Let me re-extract plot 1 properly and convert:
+
+
+### 🤖 Autopilot
+
+The extractor printed 0 and the `cd` after failed — the plot 1 HEIC pattern didn't match (the zip uses "rancho maranta plot 1/" but maybe case differs). Let me list the exact zip entries and extract with the precise path:
+
+
+### 🤖 Autopilot
+
+The wildcard extract worked — the files landed in a nested `rancho maranta plot 1/` subdir. Let me convert them:
+
+
+### 🤖 Autopilot
+
+All 10 photos converted (4 from Plot 1, 6 from Plot 2). Now let me get the full Santa Anna page as the template — head, nav, footer includes — so the new page matches exactly:
+
+
+### 🤖 Autopilot
+
+I have the full template structure. Rather than reading every line, let me get the complete source of the Santa Anna page as my base, then adapt it for Rancho Maranta (I'll read it in full into the build script):
+
+
+### 🤖 Autopilot
+
+I have the complete template (677 lines). Let me build the Rancho Maranta page by transforming the Santa Anna page deterministically — copy it, then script the changes (title/meta/hero/story/highlights/map/nav), and create the media.json:
+
+
+### 🤖 Autopilot
+
+The "Pará" encoding differs (HTML entity vs literal). Let me check the exact bytes:
+
+
+### 🤖 Autopilot
+
+The file uses literal UTF-8 `á` (c3 a1), not an entity. My script's string had it right but the earlier assert failed because the file was freshly copied — let me check whether the file was even created and just use exact bytes. The issue: my heredoc Python ran with the literal `á` fine, but the first `sub` on line 16 already failed on the *title* — meaning the copied file's title wasn't matching. Let me verify the copy exists and retry with the exact source:
+
+
+### 🤖 Autopilot
+
+The copy is fine and the title matches — the earlier failure was my script's first `sub` had a typo (I wrote `Pará` in the Python but the assert triggered because the very first sub line 16 was the title with an invisible mismatch). Let me use a byte-exact, robust approach — read the file, apply replacements with `re` on the exact UTF-8 strings, and add fallbacks:
+
+
+### 🤖 Autopilot
+
+Two anchors had fewer occurrences than expected (canonical URL appears 3× not 4, hero image 2× not 3) — those were partially applied. Let me fix the two skipped ones precisely:
+
+
+### 🤖 Autopilot
+
+Remaining Santa Anna refs: og:image/twitter:image (absolute URLs), story paragraphs, shipments text, and map block. Let me fix all of them in one comprehensive pass:
+
+
+### 🤖 Autopilot
+
+Two remaining: line 586 has a leftover `mapPaulo` in a `.addTo(mapPaulo)` (the tile layer add), and the story's cross-link to Santa Anna is intentional (keep). Let me fix the tile-layer reference:
+
+
+### 🤖 Autopilot
+
+Page HTML is fully transformed. Now let me create the media.json (hero photo + gallery with our 10 images; YouTube slots to be filled after upload) and copy the images into assets:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Stopping here per the turn limit — the work is built and tested locally, but **not yet pushed**. Here's exactly where things stand.
+
+## Done this turn (Rancho Maranta farm page, built & verified locally)
+
+**1. `farms/rancho-maranta-para/index.html`** — adapted from the Santa Anna farm template (677 lines), fully transformed:
+- Title/meta/OG/Twitter/canonical → Rancho Maranta, Altamira, Pará
+- Hero: family land of Jedielcio, CEPOTX member
+- Farm Story: two plots (Plot 1 house / Plot 2 ~5 ha), GPS walk, CAR land-title note, SunMint tree-planting framing; cross-links to Santa Anna (intentional)
+- Highlights: CEPOTX member, site visit 30 Aug 2026, regenerative agroforestry & tree planting, 2 plots, Altamira
+- Map: `#map-rancho-maranta`, center -3.2940,-52.5780 zoom 14, marker at Plot 1 (-3.29610,-52.58316)
+- Shipments: "tree-planting partnership plot, not yet a sourcing farm"
+- Zero leftover Santa Anna refs (verified)
+
+**2. `farms/rancho-maranta-para/media.json`** — schemaVersion 1, hero (IMG_7625) + 7-image gallery from Plot 1 + Plot 2, valid JSON.
+
+**3. `assets/images/farms/rancho-maranta-IMG_*.jpg` (10 files)** — all HEICs extracted from both zips and converted to web JPEGs (1600px, q82, ~0.5–0.7 MB each).
+
+## Blocking / open items
+
+- **⛔ YouTube upload** — the 26 MOV clips can't be uploaded yet: `youtube_credentials.json` + `youtube_token.json` (OAuth) are **not on this box**. Once you provide them (or upload via the Google account yourself), I'll run `scripts/batch_upload_videos.py` and slot the videoIds into `media.json` (the gallery currently has image slots only).
+- **Not yet pushed** — the page + media + images exist only in `/tmp/agb` (working clone).
+
+## RESUME HERE →
+
+1. **Push the PR** (next turn, fresh limit): `git_push_changes(agroverse_shop_beta)` — 1 new page + 1 media.json + 10 images, branch e.g. `feat/rancho-maranta-farm-page` → PR for review on the beta site (`beta.agroverse.shop`).
+2. **Wire into farm listings**: check `js/farms-data.js` + `js/brazilian-path-data.js` + `cacao-journeys/brazilian-path/index.html` for the farm card/nav, and add Rancho Maranta (Santa Anna was added there when it shipped).
+3. **SEO workflow**: per `agroverse_shop_beta/README.md`, any new landing page needs a row in the SEO monitoring sheet `Change_log` + keyword targets — worth doing with the PR.
+4. **YouTube**: Gary provides OAuth creds → `batch_upload_videos.py` (26 clips; Plot 1's 3 clips ≈ 27s → one short hero clip) → fill `media.json` videoIds → re-PR if needed.
+
+The page is fully built and verified locally — the next turn just needs to push and wire the listings.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×23 → cd /tmp/agb 2>/dev/null || { rm -rf /tmp/agb && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git /tmp/agb; }; ; cd /tmp/agb && echo "=== youtube creds on box? ===" && ls -la scripts/youtube_credentials.json scripts/youtube_token.json 2>/dev/null || ech; cd /tmp/agb && echo "=== media-gallery.js ===" && find . -name "media-gallery.js" -not -path "./node_modules/*" && echo "=== farms video jso; …(+18 more)
 
