@@ -3652,16 +3652,19 @@ Let me first check for any China-partner context and verify the live URLs before
 ### 🤖 Autopilot
 
 No existing China-partner context — assembling from what's live. Let me verify all the URLs are actually serving before baking them into a PDF:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All six URLs are live (200). The data layer shows real substance: **3 plots** (RM-P1, RM-P2, and a new **SA-P1 Santa Anna Fazenda** 3.0 ha), **satellite cache for 2 cells + 2 plots**, and the live tree registry. Building the shareable PDF now:
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF generated (7,647 B, 3 pages). Sending it into the thread:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3725,16 +3728,19 @@ Also suggest them to include what their needs are to be part of the partnership.
 ### 🤖 Autopilot
 
 Let me verify what's actually open source (repo visibility) before I answer — honesty matters here since the partner will check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All verified — **yes, it's all open source** (every repo `private=False`, monitor app + whitepaper sources publicly fetchable). That's a credibility asset, not a problem. Let me regenerate the PDF to reflect that honestly and add the three asks + farmer constraint framing.
+[1 tool result(s) compacted: generate_pdf — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF v2 generated. Sending it into the thread:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3771,26 +3777,31 @@ Tree Growth Measurements' tab, SunMint spreadsheet (internal) this is not intern
 ### 🤖 Autopilot
 
 Three things to do: (1) correct the "internal" label — verify the tab's actual public access, (2) update the PDF to note the RSA-signature JSON emission as in-progress, (3) create the new thread. Starting with verification:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The spreadsheet metadata query returned nothing (HTTP 000 / empty) — that's the no-auth path failing, which doesn't settle whether it's public via the web UI. Let me check the actual published-to-web status (the way a browser would see it) and where signatures actually live:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The gviz 404 means "not published-to-web" (embed), but the `htmlview` returned a **real spreadsheet shell page** — that signals anyone-with-link access (a private sheet redirects to Google login). Let me confirm the final URL doesn't redirect to accounts.google.com, then act:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My no-auth probes are conclusive: **the spreadsheet is NOT currently publicly accessible from outside** — `gviz`, `pubhtml`, `htmlview`, `view` all return 404 (a truly link-shared sheet renders; a login-walled one redirects). So the "(internal)" label was closer to reality than "public" — but you're right that it *should* be public, and that's part of the fix. Let me (1) update the PDF to state this honestly + flag the RSA-signature JSON emission as the in-progress path, and (2) create the dedicated thread:
+[2 tool result(s) compacted: generate_pdf, create_telegram_topic — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF v3 generated and the new thread created. Sending the PDF into this thread:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3824,6 +3835,7 @@ The RSA-signature JSON emission now has a home thread to execute in. Want me to 
 ### 🤖 Autopilot
 
 Let me dig into the transcript and this conversation's timeline to reconstruct the time spent.
+[2 tool result(s) compacted: search_transcript, recall_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3924,4 +3936,134 @@ Want me to also log this as a contribution entry (partner-brief generation, ~6 m
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /tmp echo "=== look for transcript repo structure ===" TOKEN=$(grep -E '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d; cd /tmp TOKEN=$(grep -E '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2- | tr -d '"' | tr -d "'") echo "=== sessions; cd /tmp TOKEN=$(grep -E '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2- | tr -d '"' | tr -d "'") echo "=== today's ; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] report contribution for both you and me using this pdf document
+
+
+### 🤖 Autopilot
+
+Let me locate the PDF file on disk and then submit the contribution events for both of us.
+
+
+### 🤖 Autopilot
+
+The final v3 PDF is at `/tmp/sunmint_partner_briefing_20260831_v3.pdf`. Let me verify the CONTRIBUTION EVENT format before submitting for both of us:
+
+
+### 🤖 Autopilot
+
+Submitting the contribution events for both of us, attaching the final PDF as evidence:
+
+
+### 🤖 Autopilot
+
+The `pr_urls` needs to be a proper list, not a string. Retrying:
+
+
+### 🤖 Autopilot
+
+The `pr_urls` needs to be a true empty array, not a string. Retrying with correct types:
+
+
+### 🤖 Autopilot
+
+`pr_urls` may require at least one entry. Let me use a real evidence URL (the whitepaper PR that documents the carbon formula the briefing cites):
+
+
+### 🤖 Autopilot
+
+The tool's type param isn't reaching the CLI correctly. Let me use the CLI directly on the box with dry-run first to get the exact invocation:
+
+
+### 🤖 Autopilot
+
+Not on PATH. Let me find the CLI/script and check its arguments:
+
+
+### 🤖 Autopilot
+
+There's `rollup_llm_contributions.py` — that's likely the aggregator for AI contributions. Let me check its interface and how contributions are reported:
+
+
+### 🤖 Autopilot
+
+That's the automatic LLM-usage rollup. For the explicit partner-brief contribution, let me find the actual submission mechanism (the error mentioned `truesight-dao-report-ai-agent-contribution` — it's part of the dao_client package). Let me search for it:
+
+
+### 🤖 Autopilot
+
+The `truesight-dao-client` package is installed. Let me locate the CLI entry point and run it with dry-run first:
+
+
+### 🤖 Autopilot
+
+Found it. Let me run the CLI with `--dry-run` first to verify both submissions (the tool wrapper was mangling the `--type` flag):
+
+
+### 🤖 Autopilot
+
+The binaries are in `/home/ubuntu/.local/bin/` but not on PATH for non-login shells. Let me use the full path:
+
+
+### 🤖 Autopilot
+
+The CLI needs identity env vars. Let me check how the app's `create_dao_submission` tool is implemented (it clearly has the right env/params internally) to see the correct invocation:
+
+
+### 🤖 Autopilot
+
+Let me read the `dao_submission.py` tool implementation to see how it invokes the CLI correctly (env vars, params):
+
+
+### 🤖 Autopilot
+
+The tool's inline handler didn't forward `--type` to the CLI. Let me check how main.py invokes it:
+
+
+### 🤖 Autopilot
+
+The tool wrapper is buggy for attachments — it passes `--amount` (not a CLI arg) and omits `--type`. Let me read the CLI module to build the correct invocation:
+
+
+### 🤖 Autopilot
+
+Now I understand the CLI fully. The `create_dao_submission` tool is buggy (drops `--type`, passes invalid `--amount`), but the CLI accepts `--type` + `--minutes` + `--contributors`. The env needs EMAIL/PUBLIC_KEY/PRIVATE_KEY in cwd. Let me find the working .env the tool uses (EdgarDirectClient config) and run the CLI from there with dry-run:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging now — I'm at the tool-round limit for this turn. Here's the clean state.
+
+## Where the contribution submission stands
+
+**Not yet submitted — both attempts failed, but the root cause is now fully diagnosed.**
+
+**What I found:**
+1. **The `create_dao_submission` tool wrapper is buggy for attachments** — I read the source (`app/main.py:2248-2270`): when an attachment is present, it calls `submit_ai_agent_contribution(...)` but **never forwards the `--type` param** and passes `--amount` (which the CLI doesn't accept). That's why every attempt died with *"error: the following arguments are required: --type"*. This is a real code bug worth a fix PR.
+2. **The underlying CLI is correct** — `truesight-dao-report-ai-agent-contribution` (in `/home/ubuntu/.local/bin/`) accepts: `--title`, `--body-file`, `--pr` (repeatable), `--type "Time (Minutes)"`, `--minutes`, `--contributors`, `--attachment`, `--attached-filename`, `--tdg-issued`.
+3. **It needs identity env** — `EdgarClient.from_env()` requires `EMAIL`/`PUBLIC_KEY`/`PRIVATE_KEY` in the cwd `.env` (the CLI looks in cwd; running from `/tmp` failed). The app's own `EdgarDirectClient` has these configured somewhere under `/opt/truesight_autopilot` (config/ or `.env`).
+
+**The PDF is ready on disk** — `/tmp/sunmint_partner_briefing_20260831_v3.pdf` (the v3 final, 10,318 B).
+
+## 📌 RESUME HERE → next turn
+1. **Find the identity .env** the app uses (`grep -n "EMAIL\|PUBLIC_KEY\|PRIVATE_KEY" /opt/truesight_autopilot/app/config.py /opt/truesight_autopilot/.env` — names only) → cd to that dir → run the CLI **with `--dry-run`** using the exact args above, then submit **twice**:
+   - **Sophia Truesight**: 15 min, "SunMint Partner Briefing (China partner) — generation", attach the v3 PDF
+   - **Gary Teh**: 20 min, "… — direction & review", attach the v3 PDF
+2. **Optionally fix the tool bug** — PR to `truesight_autopilot/app/main.py` (forward `type`/`minutes` into `submit_ai_agent_contribution`) so future attachment submissions work via the tool directly.
+3. If the CLI still can't find creds, use `truesight-dao-auth login` to initialise an .env in a working dir.
+
+No contribution rows have been created yet — nothing to roll back. Say "go" and I'll land both submissions next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×17 → ls -la /tmp/*.pdf 2>/dev/null | tail -10; echo "---"; ls -la /tmp/es_cache/*.pdf /tmp/*.pdf 2>/dev/null | tail -10; which truesight-dao-report-ai-agent-contribution 2>/dev/null; truesight-dao-report-ai-agent-contribution --help 2>&1 | head -40; find /opt /usr/local/bin /home -name "*report-ai*" -o -name "*report_ai*" 2>/dev/null | head; echo "---"; find /opt -name "*.py" 2>/dev/null; …(+14 more)
+• `create dao submission` ×8 → title, body, and pr_urls are required; Submission failed: usage: truesight-dao-report-ai-agent-contribution [-h] --title TITLE [--body BODY] [--body-file PATH] [--pr URL] --type {
 
