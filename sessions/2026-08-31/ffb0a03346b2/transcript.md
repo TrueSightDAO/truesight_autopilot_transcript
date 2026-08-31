@@ -2584,11 +2584,13 @@ The local checkout is stale — the live page has the Santa Anna stop (verified 
 Found the bug. The Santa Anna stop data + journeyOrder are correct on prod, but the **farm image-path logic** has explicit entries for every other farm and a generic fallback that builds `../../assets/images/farms/santa-anna-fazenda-para.jpg` — which **doesn't exist** (our actual file is `santa_anna_profile_photo.jpg`). So `<img onerror="this.style.display='none'">` silently hides it → "missing image."
 
 Fix: add an explicit image entry for Santa Anna in the beta journey page, then sync to prod (beta-first flow). Opening the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #230 opened with the image fix. Merging it (beta-first), then I'll verify on beta.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2659,26 +2661,31 @@ Say **"promote"** and I'll sync it, then verify the journey page on agroverse.sh
 ### 🤖 Autopilot
 
 Let me examine how the signature is currently placed in the PDF versus where it should go. I'll check the generation script, the rendered signature page, and compare with the original CEPOTX documents.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The originals have no signature image (just the typed block) — the v3 added yours. Let me see exactly how v3 places it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me examine the actual rendered v3 PDF signature page geometry — where the signature image sits relative to "Sincerely," and the typed name block.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The v3 PDF isn't matching my glob — let me find the actual file and check its signature-page geometry.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The v3 PDF exists. Let me examine its signature page geometry precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2692,21 +2699,25 @@ Now I can see the problem clearly. Page 10 (A4) current geometry:
 In the original CEPOTX documents (Paulo/Cleide), the entire signature block is **left-aligned at x=56** — "Sincerely," and the typed name share the same left margin. My v3 centered the signature image, which breaks the letter convention. The fix: left-align the signature image at x=56, directly above the typed "Zhiwen Teh" line (its "signature head").
 
 Let me regenerate with the corrected placement:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 v4 generated. Let me verify the signature image is now left-aligned directly above the typed name block.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Signature placement now correct — **left-aligned** (x=56, same margin as "Sincerely," and the typed block), sitting directly **above the "Zhiwen Teh" line** (image y128–218 → name y223). Sending the corrected PDF for review:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF verified — 10 pages, 15.3 MB. Sending to you:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2754,11 +2765,13 @@ https://agroverse.shop/farms/santa-anna-fazenda-para/ photo of the farmers with 
 ### 🤖 Autopilot
 
 Let me analyze the photo and check the current hero setup on the page.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vision call failed on model name — let me check the working grok client on the box and retry.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2876,4 +2889,85 @@ Branch is complete and clean:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → ls -la /tmp/tg_attachments/193f5c0fe5074276b4addda8f2234df4.jpg 2>/dev/null && echo "---" && cd /tmp && /opt/truesight_autopilot/.venv/bin/p; cd /tmp/agroverse_shop_look 2>/dev/null && echo "=== current hero in media.json ===" && /opt/truesight_autopilot/.venv/bin/python3 -c " impo; cd /opt/truesight_autopilot && echo "=== grok vision model used in grok_client ==="; grep -rn "model\|vision" app/grok_client.py 2>/dev/null; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] Can we make sure that in future documents this particular convention is followed? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good idea — let me find where farm-page conventions live so we can codify this properly.
+
+
+### 🤖 Autopilot
+
+No matches in context — let me check the shop repo itself for any farm-page template/conventions doc, and search the context repo more broadly.
+
+
+### 🤖 Autopilot
+
+Let me check for existing farm-page template docs in the shop repo and how conventions are recorded.
+
+
+### 🤖 Autopilot
+
+No existing convention doc for farm pages. Let me check the context repo structure to find the right home for this convention.
+
+
+### 🤖 Autopilot
+
+There's an `agroverse/` folder in the context repo. Let me see what's in it — that's likely the right home.
+
+
+### 🤖 Autopilot
+
+An `agroverse/` folder exists in agentic_ai_context — the right home. Let me check the style of existing docs there, then codify the farm-page convention.
+
+
+### 🤖 Autopilot
+
+I see the style. The `agroverse/` folder in agentic_ai_context is the right home for this convention. Let me codify it — a new `AGROVERSE_FARM_PAGE_CONVENTIONS.md` capturing the farm-page conventions (including the hero-with-humans rule from this feedback).
+
+
+### 🤖 Autopilot
+
+The empty edit array entry caused the error. Let me remove it and retry.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — convention codified: `agentic_ai_context#851`
+
+**"Add Agroverse farm page conventions doc"** → https://github.com/TrueSightDAO/agentic_ai_context/pull/851
+
+### New file: `agroverse/AGROVERSE_FARM_PAGE_CONVENTIONS.md`
+
+Sits in the `agroverse/` folder of agentic_ai_context (alongside QR batch generation, price list, partner addresses) — the natural home, separate from the `fsvp/` compliance runbooks. It captures **everything** we learned on this build:
+
+| § | Convention |
+|---|---|
+| **1. Hero = humans** | Farm page hero should show **people/farmers**, not grove-only scenery — the exact rule from your feedback. Check site-visit media for a people photo first; ask you if none exists. |
+| **2. Real GPS from EXIF** | Extract from original HEIC (Telegram strips EXIF); never guess/fabricate coords; Santa Anna reference: -3.292475, -52.572250 |
+| **3. Page anatomy** | File map: `farms/<slug>/index.html`, `media.json` (literal UTF-8), journey stops, coop member cards, `js/farms-data.js` |
+| **4. Video evidence** | .MOV → ffmpeg frames → YouTube (admin@truesight.me) → media.json embeds → `youtube_videos.json` |
+| **5. Gotchas** | Unescaped apostrophes in JS bindPopup break the map; ~90s Pages deploy lag; journey image-path fallback needs explicit slug mapping; og:image dims; UUID renames; same-name farm disambiguation |
+| **6. Related runbooks** | Cross-links to `fsvp/SITE_VISIT_PROCESS.md` + `VIDEO_EVIDENCE_PROCESS.md` |
+
+---
+
+**RESUME HERE → next unit:**
+1. **Merge #851** (say "go" — it's the standing pattern) → convention becomes permanent
+2. **Also awaiting your call:** merge **#231** (farmers hero on Santa Anna page) → verify on beta → promote to prod; promote journey-image fix **#230** to prod
+3. **Still parked:** site-visit PDF v4 → `fda_fsvp` (pending site code from Jedielcio)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → searched context for existing conventions (none); found `agroverse/` folder + read style sample; confirmed `fsvp/` runbooks present
+• `git_push_changes` → **PR #851** (`agroverse/AGROVERSE_FARM_PAGE_CONVENTIONS.md`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ls /tmp/agentic_ai_context 2>/dev/null || (cd /tmp && rm -rf aac && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_contex; ls -la /tmp/aac/agroverse/ 2>/dev/null; echo "=== fsvp folder (from earlier work) ==="; ls -la /tmp/aac/fsvp/ 2>/dev/null
 
