@@ -227,37 +227,54 @@ Yes — let me build it now. First I'll inspect the nav/JS structure of the exis
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Now let me look at the i18n mechanism (translations dict + setLang) so the new page follows the exact same pattern:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture of the i18n + nav pattern. Let me confirm the monitor page's I18N keys so my edits match exactly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full pattern. Before writing edits, let me verify the exact byte representation (literal UTF-8 vs `\u` escapes) in these files so my search/replace strings match exactly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the complete pattern (literal UTF-8, I18N dict with pt/en, `onNavChange` routing). Before pushing, let me verify my exact search strings occur exactly once each, and run a self-consistency check on the plan:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All search strings verified unique. Now I'll build the new `instrucoes/` page and the nav edits. Let me create the full instructions page content first (bilingual, same pattern as the existing app):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me validate locally — apply the edits to local copies, syntax-check the JS (node --check), then push the same hunks via git_push_changes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All inline JS passes `node --check`. Now the hard-rule local test suite (compileall / ruff / ruff format / pytest) before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -265,6 +282,7 @@ All inline JS passes `node --check`. Now the hard-rule local test suite (compile
 Compileall ✅ and ruff check ✅. Two flags to resolve before push:
 1. `ruff format --check` lists 34 files "would reformat" — but my change touches no Python; I need to confirm those are pre-existing.
 2. 3 pytest failures in `test_chat_observe.py` — unrelated to a sunmint HTML/JS change, but the hard rule says all must pass. Let me confirm they're pre-existing on main (I changed zero Python this session) and see the failure cause:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -396,4 +414,58 @@ One suggestion for next: when you share the link with Jedielcio and other farmer
 • `read repo file` → sunmint_prod/instrucoes/index.html (present) + deploys/entries/deploy_20260831T195052Z_sunmint-prod.md
 • `list prs` → sunmint_beta#50 merged
 • `sync beta to prod` → success — deploy_20260831T195052Z_sunmint-prod
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17700] I wonder if we should embed the screen shot I shared just now
+
+
+### 🤖 Autopilot
+
+Good idea — a real screenshot makes the "send as file" tip concrete for farmers. But there's one thing to handle before embedding: **privacy**. Let me check the screenshot's metadata and content first.
+
+
+### 🤖 Autopilot
+
+The screenshot has **no GPS or identity EXIF tags** (clean for location), but it *does* show a real WhatsApp conversation with **Jedielcio's name** (and likely his number/avatar) — that's PII we shouldn't publish on a public farmer-facing page. The right move: **crop to just the message bubbles** and redact the header. Let me locate the text precisely so I can crop accurately (OCR bounding boxes):
+
+
+### 🤖 Autopilot
+
+The screenshot has **no GPS/identity metadata** (clean — nothing to leak from EXIF), but the full image shows a real WhatsApp header with **Jedielcio's name** — that's PII we shouldn't publish on a public page. The right approach: crop it down to just the guidance message bubble. Let me crop and verify the result contains only the instructional text:
+
+
+### 🤖 Autopilot
+
+Crop includes some neighboring text ("Can you send me some…" + timestamp). Tightening to just the tip bubble:
+
+
+### 🤖 Autopilot
+
+Good news on the prep I just did:
+
+## What I checked
+- **EXIF/PII:** The screenshot has **no GPS or identity metadata** — nothing leaks from the file itself.
+- **Visible PII:** The uncropped image shows the WhatsApp header with **"Jedielcio Oliveira — CEPOTX Os de Carbono"** + his avatar. That should NOT go on a public page.
+- **Clean crop ready:** I cropped to just the guidance bubble (930×113) — OCR confirms it contains only your message text + "4:23PM", **no name, no avatar, no header**. (I verified the name sits at y≈0–350; the crop starts at y≈1072.)
+
+## My honest recommendation
+**Yes, embed it — with a caveat.** The crop adds authenticity: farmers see the *actual* WhatsApp message from a real partner conversation, which builds trust more than a styled tip box. But be aware the **text is identical** to the tip already in Section 1 (`"Envie como arquivo em vez de foto; assim, as informações são preservadas"`), so the image adds **credibility, not information**.
+
+Two ways to go:
+1. **Embed the cropped screenshot** (what you suggested) — small, under Section 1's tip, with a caption like *"Exemplo de orientação a um parceiro (WhatsApp)"*.
+2. **Better visual:** a simple side-by-side "📷 Foto → GPS apagado" vs "📎 Arquivo → GPS preservado" graphic — teaches the mechanism rather than just the message.
+
+My pick: **do 1 now, and 2 later if we want more** — the real screenshot is the strongest trust signal and costs nothing.
+
+Want me to open the PR embedding the cropped screenshot into `sunmint_beta` (→ beta → then prod on your go)? Just say **go** and I'll build, merge, and verify on beta — prod promotion stays behind your explicit approval.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → exiftool PII check (clean) + OCR bounding-box locate + tight crop to guidance bubble (no name/avatar/header) → `/tmp/instrucoes_send_as_file_tip.png`
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/tg_attachments && ls -la 39a8b6f8d7834a6391ba2eb23101412d.jpg && echo "---EXIF---" && exiftool -a -G1 -s 39a8b6f8d7834a6391ba2eb2310; cd /tmp/tg_attachments && python3 -c " from PIL import Image im = Image.open('39a8b6f8d7834a6391ba2eb23101412d.jpg') print('size:', im.size,; cd /tmp/tg_attachments && python3 -c " from PIL import Image im = Image.open('39a8b6f8d7834a6391ba2eb23101412d.jpg') # Crop to the guidance ; …(+1 more)
 
