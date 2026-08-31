@@ -3707,21 +3707,25 @@ There's a `dao_protocol_nelanco` alias with the Nelanco PEM. Let me try it direc
 ### 🤖 Autopilot
 
 Box is now fully wired: service restarted + active, env var loaded in the process, routing entry present. Now the decisive test — submitting a fresh reject (non-destructive, 487 already INVALID) and checking whether the tracking tab advances **without** any manual webhook:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Submitted with signature success, waited 50s. Now checking whether the tracking tab advanced **without** any manual webhook (this is the auto-dispatch proof):
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tracking tab is now 59 rows (was 57) — two new rows were added! Let me read the tail to confirm it processed my submission **without** any manual webhook:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Reading the final tail to confirm the two new rows processed my submission automatically:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4069,4 +4073,156 @@ No PRs opened/merged this turn; no Edgar submissions; no ledger writes; no money
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== beta page: does it carry the (unlinked) fix? ==="; curl -s "https://beta.sunmint.truesight.me/monitor-tree-growth/" 2>/dev/null | ; echo "=== live prod page: does it carry the (unlinked) fix? ==="; curl -s "https://sunmint.truesight.me/monitor-tree-growth/" 2>/dev/null |
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] Do you think you can do an end-to-end run, inject your own tree and then, yeah, kind of like via the plant tree and then mark that tree as invalid. Use that, you know, as your testing. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes — that's the right full-loop test. Let me check the plant-event format and whether the plant path auto-triggers the rebuild, then run the cycle: plant my own tree → verify it appears → mark invalid → verify it disappears.
+
+
+### 🤖 Autopilot
+
+Let me check the plant-event format and handler so I run the real path:
+
+
+### 🤖 Autopilot
+
+Let me read the runbook's plant-event format (§5) to replicate it exactly:
+
+
+### 🤖 Autopilot
+
+The runbook gives me the full picture — the real E2E is: plant via a signed `[TREE PLANTING EVENT]` → auto-dispatch → row lands → rebuild → tree appears → then mark invalid → INVALID → dispatch → rebuild → gone. Let me get the exact plant-event format the GAS planting handler parses so my test submission matches:
+
+
+### 🤖 Autopilot
+
+I have the plant-event format. Let me check the reusable script's functions so I can reuse its signing logic for a plant event (not just reject):
+
+
+### 🤖 Autopilot
+
+Let me get the exact `[TREE PLANTING EVENT]` text format from the farmer page so I can sign and submit a real plant event:
+
+
+### 🤖 Autopilot
+
+I have the exact plant format. Let me find the `locationLine` format and the actual submission source URL, then build and submit a real plant event with my sentinel identity:
+
+
+### 🤖 Autopilot
+
+Excellent — I have the exact plant format. Let me check how the handler uses the photo URL (fetch vs filename-only) and the `safePublicKey` derivation, so my test submission is realistic:
+
+
+### 🤖 Autopilot
+
+Yes — I can absolutely run that full loop, and it's the right test. Here's the plan, then I'll execute it: **(1)** plant my own tree via a real signed `[TREE PLANTING EVENT]` (my sentinel key, placeholder photo uploaded to `sunmint/images/`), **(2)** fire the planting webhook → row lands as NEW, **(3)** rebuild → tree appears in the index, **(4)** mark it invalid with the reject script → auto-dispatch → INVALID → rebuild → tree gone. Clean, reversible, proves every path we fixed.
+
+Starting: compute my reportId and create the placeholder photo.
+
+
+### 🤖 Autopilot
+
+ReportId computed. Now creating the placeholder photo and uploading it to `sunmint/images/` (the handler fetches the image from the photo URL — a real upload avoids a fetch failure):
+
+
+### 🤖 Autopilot
+
+Photo uploaded (commit `720d814`). Now signing + submitting the plant event via a small script (extending the reusable pattern — same signText + shareText + POST):
+
+
+### 🤖 Autopilot
+
+**Plant event submitted — `signature_verification: success`!** Now the auto-dispatch should fire the planting webhook (@7, `processTreePlantingTelegramLogs`) via the routing table. Let me wait briefly, then check the SunMint Tree Planting tab for my row:
+
+
+### 🤖 Autopilot
+
+The tab shows only legacy rows so far — my plant row hasn't been processed yet. The planting webhook uses a **different GAS project (@7, `processTreePlantingTelegramLogs`)** and routing env key `TREE_PLANTING_PROCESSING` — which the governor may not have provisioned (only the REJECT key was added). Let me check the box env and, if needed, fire @7 manually:
+
+
+### 🤖 Autopilot
+
+The box has NO `TREE_PLANTING_PROCESSING` webhook URL (the governor only provisioned the REJECT key) — so my plant event was ingested into Chat Logs but **not** auto-dispatched. That's expected (not a regression — the planting webhook was never wired). I'll fire the @7 planting webhook manually to complete the plant half of the loop:
+
+
+### 🤖 Autopilot
+
+Planting webhook fired — "✅ Tree planting processed". Now let me verify my row landed in the SunMint Tree Planting tab (searching the tail, not the truncated head):
+
+
+### 🤖 Autopilot
+
+**My plant row landed!** Row 28 (A28) = `Edgar_20260831011117_005` — my `[TREE PLANTING EVENT]` (reportId `20260831011100_...`). Let me confirm its full row (species, status, photo) and then trigger the index rebuild so my test tree appears in the public index:
+
+
+### 🤖 Autopilot
+
+**My test tree is IN the ledger — row 28, Status NEW, Species "Cacao (Native)", photo URL pointing at my uploaded image, Contributor "Sophia Truesight"** — the full plant path works (signed event → Chat Logs → @7 webhook → SunMint tab). Now step 3: rebuild the index so my tree appears in the public `index.geojson`:
+
+
+### 🤖 Autopilot
+
+Rebuild dispatched (204). Let me wait for the workflow to complete and verify my tree appears in the index:
+
+
+### 🤖 Autopilot
+
+**My test tree is LIVE in the public index** — `Edgar_20260831011117_005`, feature count 19 → 21. The plant half of the loop is proven: signed event → ledger → rebuild → **tree appears** (exactly what Gary asked: "plant a tree, then mark that tree invalid"). Now the second half: **mark it invalid** using the reusable script (which sends a correct `[TREE PLANTING REJECT EVENT]`). This should auto-dispatch through the REJECT routing → INVALID → auto-rebuild → tree gone:
+
+
+### 🤖 Autopilot
+
+Reject submitted — `signature_verification: success` (the reusable script works). Per the proven auto-dispatch, the REJECT routing should fire the @37 webhook automatically (no manual call). Let me wait and check whether my tree's status changed to INVALID and whether the auto-rebuild dropped it from the index:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+## Converging — full E2E loop: plant ✅, mark-invalid in flight
+
+### What's PROVEN this turn (the plant half — "inject your own tree")
+| Step | Evidence |
+|---|---|
+| 1. Placeholder photo uploaded to `sunmint/images/20260831011100_MIIBIjANBgkqhkiG9w0B.jpg` | ✅ commit `720d814` |
+| 2. Signed `[TREE PLANTING EVENT]` submitted (my sentinel key, real lat/lon, "Cacao (Native)") | ✅ HTTP 200, `signature_verification: success` |
+| 3. Auto-ingested → Chat Logs → **@7 planting webhook fired** (I fired it manually since the box lacks `TREE_PLANTING_PROCESSING` env — a wiring gap, not a code bug) | ✅ "✅ Tree planting processed" |
+| 4. **Row landed in SunMint Tree Planting tab** — row 28, `Edgar_20260831011117_005`, Status **NEW**, Contributor **Sophia Truesight**, photo URL correct | ✅ |
+| 5. **Index rebuild** (workflow_dispatch, 204) | ✅ feature count 19 → **21** |
+| 6. **My tree is LIVE in the public index** — `Edgar_20260831011117_005` | ✅ |
+
+### In flight (the invalid half)
+- Submitted `[TREE PLANTING REJECT EVENT]` for `Edgar_20260831011117_005` via the reusable script → **HTTP 200, `signature_verification: success`** (submitted ~50s before turn-end)
+- **Pending verification**: (a) row 28 Status → INVALID (via auto-dispatch through the proven REJECT routing), (b) auto-rebuild → tree gone from index (21 → 20)
+
+### One finding worth noting
+The box's `.env` has **no `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING`** (only the REJECT key I got provisioned) — so **plant events are NOT auto-dispatched** (I fired @7 manually). The REJECT path auto-dispatches (proven earlier); the PLANT path needs the same env wiring for full event-driven symmetry. Worth a follow-up.
+
+---
+**RESUME HERE → next turn (verify + close):**
+1. **Read SunMint Tree Planting row 28 (M28)** → expect Status **INVALID** (auto-dispatch through REJECT routing should have done it — no manual webhook).
+2. **Check index.geojson** (authoritative) → expect `Edgar_20260831011117_005` **gone** (21 → 20 features). If still present, fire the @37 webhook once + rebuild, then re-check.
+3. **Report the full loop as UAT-complete**: plant → ledger → index → reject → INVALID → index-drop, all with MY OWN tree, end-to-end on the real pipeline.
+4. Optional follow-ups: wire `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING` on the box for plant auto-dispatch; clean up the test photo + ledger row per runbook §6 (keep as legitimate signed test records unless Gary says otherwise).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → reportId computed, photo uploaded (via tool), plant event signed+submitted (HTTP 200 sig success), box env checked (no PLANT_PROCESSING webhook), rebuild dispatched (204), index verified (my tree LIVE, count 21), reject submitted via `sunmint_submit.py` (HTTP 200 sig success)
+• `upload local file to github` ×1 → sunmint/images/…jpg (commit 720d814)
+• `http fetch` ×1 → @7 planting webhook "✅ Tree planting processed"
+• `read google sheet` ×3 → tab tail (row 28 = my tree NEW), full row 28 content
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×17 → cd /tmp && echo "=== builder: test/E2E row skip convention ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scri; cd /tmp && echo "=== which file handles [TREE PLANTING EVENT]? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/ma; cd /tmp && echo "=== 1Jp8q planting handler: parse format ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/git/trees/ma; …(+14 more)
 
