@@ -4729,6 +4729,7 @@ The script's flag differs — earlier uploads used a different flag. Let me chec
 ### 🤖 Autopilot
 
 The flag is `--privacy public` (not `--privacyStatus`), and public is the default anyway. Uploading all 3 with GPS-tagged titles:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4925,4 +4926,33 @@ So a future query like "fetch the Rancho Maranta boundary-walk videos" works lik
 One caveat — the manifest is the index, not the storage. The agent still needs network access to actually pull the video from YouTube or the raw repo. But the find-and-return part works from any instance, because the index lives in the shared context.
 
 And the runbook, FARM_MEDIA_PIPELINE.md, documents the exact schema, so any future agent processes new media the same way and the manifest stays machine-readable. That's the part that makes it queryable forever, not just by you.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] And where are the other files for the other forms should think it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check what's actually there for the other farms:
+
+
+### 🤖 Autopilot
+
+Short answer: right now, only Rancho Maranta has the full queryable index. Here's the actual state:
+
+In the manifest folder — which is the queryable index — there's only one file so far: rancho-maranta. The other farms' media is not indexed yet.
+
+In the raw archive repo, there are three farms with photos: la-do-sitio, cleide, and rancho-maranta. But la-do-sitio and cleide only have raw photo folders — no manifest, no video index, no YouTube links. So those two are not yet queryable the way Rancho Maranta now is.
+
+So the honest picture: the infrastructure is built, but only Rancho Maranta has been run through the full pipeline. The other two farms are sitting at the raw stage.
+
+If you want the same queryability for them, I can run the same pipeline: build their manifests, extract GPS, process the videos, archive the originals, and file their index files. That way any future instance can fetch la-do-sitio and cleide media the same way.
+
+Want me to start on those? And if there are other farms beyond those three that have media, point me to where the files are and I'll index them too.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/aac5 2>/dev/null && echo "=== FARM_MEDIA_MANIFESTS/ ===" && ls -la FARM_MEDIA_MANIFESTS/ && echo "=== all manifests in repo ===" &&
 
