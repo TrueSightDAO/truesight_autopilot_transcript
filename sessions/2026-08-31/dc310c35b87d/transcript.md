@@ -2941,6 +2941,7 @@ rep('<div id="plotSelector" style="display:none; margin-bottom:10px; align-items
 ### 🤖 Autopilot
 
 Go-signal received — executing the fresh-PR path. First, re-verify `main` hasn't moved past the file I built on (43,132 bytes), then create the clean branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3086,4 +3087,135 @@ Say go and I'll run the diagnose → rebuild → merge-in-one-turn sequence.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merge failed again (405) — stopping here per the one-PR-per-turn rule and reporting the pattern, which now looks significant.
+
+## What happened this turn
+
+**Attempted to merge PR #334 (PR2 v2, clean b
+
+
+### 🤖 Autopilot
+
+Go-signal received — running the diagnose → rebuild → merge sequence. First, diagnosing the concurrent writer:
+
+
+### 🤖 Autopilot
+
+Found it — **the concurrent writer is you, Gary.** The recent commits show:
+- `c5234cb2` (14:24) — "Link sunmint plot popups to agroverse farm profiles **(#333)**" — merged after my branch was cut
+- `eb732bc6` (14:34) — "Fix sunmint plot popup farm link 404" — a **direct main commit** that landed after my merge attempt
+
+You're actively editing the same file in real-time. No other agent — it's the governor working live. That explains all three conflicts. Let me check current main and rebuild once more on the freshest state, then merge in this same turn:
+
+
+### 🤖 Autopilot
+
+Main moved again (43,330 bytes now vs 43,155 when I built v2 — Gary's still working). Let me see the exact popup region and re-apply my 8 hunks on this freshest main, then push + merge in the same turn:
+
+
+### 🤖 Autopilot
+
+Main has Gary's enriched popup + Agroverse link (PR1 + #333 + 404-fix all merged). The farms selector (my PR2) is still absent — that's the piece to re-apply on this freshest main. Let me check the exact anchor strings for my hunks on this version:
+
+
+### 🤖 Autopilot
+
+No `treeMarkers` on current main (my PR2 refactor was never merged — it was in the conflicted PRs). So the base is clean: current main has the enriched popup but **no farms selector** — exactly the delta PR2 adds. Let me re-apply my 8 hunks onto this freshest main, verify, and push+merge in one turn:
+
+
+### 🤖 Autopilot
+
+Hunk 2's anchor (`var treeMarkers = [];`) doesn't exist on this main — Gary's refactors renamed it. Let me find the actual treeMarkers/initMap structure on current main:
+
+
+### 🤖 Autopilot
+
+Gary refactored initMap — the tree markers are now created inline (line 476, no `treeMarkers[]` ref). Let me see that exact region to adapt my hunks to the current structure:
+
+
+### 🤖 Autopilot
+
+Gary's refactors changed the tree-marker structure (inline `addTreeMarkers`, `treePoints[]` array, no `treeMarkers[]` global). Let me check how `loadPlots` is invoked (the fallback map init at 746) so my farm-filter refs are in the right scope:
+
+
+### 🤖 Autopilot
+
+Current main structure understood: `treeMarkers` aren't global (inline in `addTreeMarkers`), `loadPlots` is a sibling IIFE function. I'll use `window.__treeMarkers` for cross-function access, keep plot refs in `loadPlots` scope. Building the adapted hunks on this freshest main now, then push + merge in this same turn:
+
+
+### 🤖 Autopilot
+
+All 6 hunks applied on freshest main (47,336 bytes). Now verifying tags + JS syntax, then pushing to a fresh branch and merging in the same turn:
+
+
+### 🤖 Autopilot
+
+All verified: tags balanced (12/12), all 4 inline scripts pass `node --check`, all markers present, Agroverse link preserved. Pushing to a fresh branch and opening the PR:
+
+
+### 🤖 Autopilot
+
+The tool requires the file content in the call. Let me pass the full file via `writes` — I'll load it from disk into the call payload:
+
+
+### 🤖 Autopilot
+
+The `writes` payload is too large to inline. I'll create the branch via `edits` (search/replace hunks that I already verified apply exactly once to current `main`):
+
+
+### 🤖 Autopilot
+
+PR #339 opened with all 6 edits applied. Verifying the PR branch matches my locally-validated file, then merging in the same turn:
+
+
+### 🤖 Autopilot
+
+Verified: PR branch byte-identical to validated build, `mergeable: True`. Merging immediately before main moves again:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — PR2 is finally shipped. Stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Diagnosed the concurrent writer, rebuilt on the freshest main, and merged PR2 in one turn.**
+
+### Diagnosis (the 3-conflict mystery solved)
+`git log` on `sunmint.html` showed **you (Gary) are the concurrent writer** — you merged #333 (Agroverse popup link, 14:24) and made a direct main commit (404 fix, 14:34) while my PRs were in flight. Plus your refactors renamed my anchors (`treeMarkers[]` → inline `addTreeMarkers` with `treePoints[]`). Not another agent — live governor edits. That explained all three 405s.
+
+### The fix — adapt to current main, merge in one turn
+1. **Fetched freshest main** (43,330 bytes — has your enriched popup + Agroverse link + view switcher)
+2. **Rebuilt the 6 hunks adapted to the new structure**: `window.__treeMarkers`/`__plotLayers`/`__plotFarms` refs instead of the removed globals; point-in-polygon tree filtering; farm dropdown population; auto-fitBounds
+3. **Verified**: 47,336 bytes, tags balanced 12/12, all 4 inline scripts pass `node --check`, Agroverse link intact
+4. **Pushed + merged in the same turn** (drift window = minutes, not hours)
+
+**PR #339 — https://github.com/TrueSightDAO/truesight_me_beta/pull/339** (merged, sha `06f140a8`) — branch `impact-map-farms-selector-v3`, supersedes the conflicted #332/#334.
+
+**Live on beta now** (`beta.truesight.me/sunmint.html`): **Farm:** dropdown ("All farms" + Rancho Maranta / Santa Anna Fazenda), plot polygons + tree markers filter by farm, auto-fitBounds, chips/view-switcher interplay preserved.
+
+## RESUME HERE → PR3 (next unit, fresh turn)
+
+**Farms Registry section** (plan §5 PR3 checklist):
+1. Add `#farms` section (cards/table) fed from the same plots geojson — aggregate per farm: name, plots count, total ha, status mix, region
+2. Link/scroll from the farms dropdown (or nav)
+3. Verify tags + JS, open PR, merge, report
+
+I'll check `main` first (given you're editing live) and adapt anchors before building, so we don't repeat the conflict dance. Also noting: plan status is now **PR0 ✅ · PR1 ✅ · PR2 ✅ · PR3 next** — and the superseded PRs #332/#334 are still open; I'll close them as housekeeping when convenient.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cd /tmp && echo "=== recent commits touching sunmint.html on main ===" && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_be; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint.html" -o main_latest.html && wc -c main_la; cd /tmp && sed -n '640,690p' main_latest.html; …(+8 more)
+• `merge pr` → ✅ PR #339 on truesight_me_beta merged successfully (sha: 06f140a84de9e280f3183655e3697d75a102face). Pull Request successfully merged
 
