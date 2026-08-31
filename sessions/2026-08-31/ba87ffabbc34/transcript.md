@@ -10,162 +10,6 @@
 
 ### 🧑 Governor
 
-[Telegram context: chat_id=-1003919341801, thread_id=11018] As soon as user selects a tree the two tabs should become visible and the camera viewport active
-
-
-### 🤖 Autopilot
-
-Right — the camera tabs should only appear once a tree is selected (measurement is tree-specific), and the active tab's camera should auto-start then. Let me look at the current tab/panel visibility logic to wire this.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now let me check where the photo-tabs/panels sit relative to the tree selection — and whether they're inside the detail panel or always visible. Let me see the surrounding HTML (what wraps the tabs) and the `onTreeSelectChange` function.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The tabs/panels are currently **always visible** — I'll wrap them in a hidden `#photoSection` that reveals + auto-starts the camera only when a tree is selected. Let me check what follows panel-context (to close the wrapper correctly) and the manual-input listener.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The plan is clear: wrap tabs+panels in a hidden `#photoSection`, reveal + auto-start the closeup camera only on tree selection (dropdown or manual ID), hide + stop on clear, and remove the onload auto-start (camera should wait for tree selection). Applying the edits:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All wired (photoSection:3, show/hide:3, onload auto-start removed). But `switchTab('closeup')` inside `showPhotoSection` has a problem: `switchTab` calls `stopCamera()` then checks the blob — if the tab already has a captured photo it shows the preview instead of the camera, which is correct behavior. But there's one issue: `switchTab('closeup')` when the closeup is already captured would show preview — but on a *new* tree selection the blobs should reset. Let me check whether blobs reset on tree change, and validate JS.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-There's a real edge case: if the user captures a photo, switches to another tree, the **blobs persist** (only reset in retake). The photo section would show the *previous tree's* photo preview instead of the camera. I should reset blobs on tree change. Let me add a `resetCaptures()` call in `onTreeSelectChange` (both branches when a different tree is picked), and validate:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All validated (JS OK, 23/23 divs, resetCaptures wired). Pushing:
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Shipped (`fbe3bab0`). Here's the report.
-
-## ✅ Tabs now appear only after tree selection, camera auto-activates
-
-**Committed to `sunmint_beta/main` (`fbe3bab0`):**
-
-1. **`#photoSection` wrapper** — the tab bar + both photo panels are now **hidden by default** (`display:none`); they only become visible once a tree is selected
-2. **On tree selection** (dropdown or manual Tree ID): `showPhotoSection()` reveals the tabs and **`switchTab('closeup')` auto-starts the close-up camera** — the live viewport is immediately active
-3. **On clearing selection**: `hidePhotoSection()` stops the camera + hides the section
-4. **`resetCaptures()` on tree change** — switching trees clears any previously captured photos so you never see the *previous tree's* preview; the fresh camera starts instead
-5. **Removed the onload auto-start** — camera waits for tree selection (per your flow), saving battery/permission prompts until actually needed
-
-**Validated:** JS syntax OK, 23/23 divs, all wiring present.
-
-## 📌 RESUME HERE
-1. **Verify live** after Pages rebuild: load page → no camera/tabs visible → select a tree → tabs appear + close-up camera viewport active immediately
-2. Remaining backlog: **full UAT** → `sync_beta_to_prod(sunmint_prod)`
-
-Say "go" for the post-rebuild verification.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×5 → fetched committed file (51,367 B), mapped tab/panel HTML + onTreeSelectChange + listeners, wrapped tabs+panels in hidden #photoSection, wired show/hide + resetCaptures on tree change, removed onload auto-start, validated JS (node --check OK, 23/23 divs)
-• `upload file to github` ×1 → commit fbe3bab0afd8616fa6f9202ce205abdac2c4977d
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/monitor-tree-growth/index.html?x=$TS" ; cd /tmp && echo "=== HTML 150-200 (selection → tabs) ===" && sed -n '150,200p' cur.html && echo "=== onTreeSelectChange ===" && sed -n "$(gr; cd /tmp && echo "=== after panel-context (200-215) ===" && sed -n '200,216p' cur.html && echo "=== manual input listener ===" && grep -n -A4; …(+3 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11018] Once the two tabs have their photos populated the send measurment button should become active
-
-
-### 🤖 Autopilot
-
-Right — "Send measurement" should stay disabled until both photos are captured (close-up + context). Let me check the current submit-button state and capture flow, then wire enable/disable on both captures.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now let me see the submit function (line 920 area) to understand the current validation and the disabled logic, plus the retake functions:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I'll wire the button state: disabled until **both** photos are captured. Adding `updateSubmitState()` + calling it on every capture/retake/reset/tree-change, starting the button disabled, and making context required in submit validation (aligning with the button).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Most edits applied (updateSubmitState:5, button starts disabled, validation requires context) — but the i18n `contextRequired` key only appears once (the pt/en anchors didn't match). The key is referenced in the validation but has no translation. Let me find the actual i18n structure for the context keys and add both translations.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have the exact i18n anchors. Adding `contextRequired` to both dicts (after contextRecommended in each):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All validated (JS OK, 23/23 divs, contextRequired in both dicts). Pushing:
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Shipped (`cb57defb`). Here's the report.
-
-## ✅ Send measurement now activates only after both photos
-
-**Committed to `sunmint_beta/main` (`cb57defb`):**
-
-- **Button starts disabled** (`disabled` attribute on the submit button)
-- **`updateSubmitState()`** — enables the button **only when both `closeupBlob` AND `contextBlob` are present**; called after every capture, retake, and tree-change reset
-- **Server-side-equivalent validation**: submit now also requires the context photo (`contextRequired` message — previously it was only "recommended")
-- **i18n**: `contextRequired` added in **both** pt and en
-- Flow: select tree → tabs appear → capture close-up → (button still disabled) → capture context → **Send measurement enables** ✓
-
-**Validated:** JS syntax OK, 23/23 divs, updateSubmitState wired in 5 places, both dicts have the key.
-
-## 📌 RESUME HERE
-1. **Verify live** after Pages rebuild: select tree → both tabs → capture both photos → Send measurement becomes active
-2. Remaining backlog: **full UAT** → `sync_beta_to_prod(sunmint_prod)`
-
-Say "go" for verification, or flag anything else on the page.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → fetched committed file, mapped capturePhoto/submit/retake/reset flows, wired updateSubmitState (button starts disabled, enables on both blobs), added context-required validation + i18n keys (pt+en), validated JS (node --check OK, 23/23 divs)
-• `upload file to github` ×1 → commit cb57defbea5ac63eea9962c187e40d06541b618d
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×5 → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/monitor-tree-growth/index.html?x=$TS" ; cd /tmp && echo "=== submit btn + capturePhoto + markTabDone ===" && grep -n "monitorSubmitBtn" cur2.html | head && echo "---" && sed -n "$(grep -n 'function capturePhoto' cur2.html | cut -d: -f1),+30p" cur2.html; …(+2 more)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×5 → cd /tmp && TS=$(date +%s) && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/monitor-tree-growth/index.html?x=$TS" ; cd /tmp && echo "=== submit fn (915-960) ===" && sed -n '915,960p' cur2.html && echo "=== retakeCloseup + retakeContext ===" && sed -n "$(gr; cd /tmp && cp cur2.html submitstate.html && python3 << 'PYEOF' p = '/tmp/submitstate.html' d = open(p, encoding='utf-8').read() # 1) Button ; …(+2 more)
-
-
-### 🧑 Governor
-
 LIVE BUG on sunmint.truesight.me/monitor-tree-growth/ (production, already promoted) -- Gary confirmed: prepare as a normal reviewed PR, no deploy until he merges (not a fast-track like the TDG incident).
 
 ROOT CAUSE (confirmed via source comparison, not guessed): the page's hand-rolled submitEmailEvent() function builds the signed [EMAIL REGISTERED EVENT] WITHOUT a "This submission was generated using <URL>" line. Compared against the official @truesight_dao/dao-client library (v1.1.0-rc.4, which oracle.truesight.me actually uses per its script tag) and its src/edgar.ts buildShareText() method: that line is mandatory in the canonical format, positioned after "Request Transaction ID" and before "Verify submission here". src/index.ts shows generationSource defaults to window.location.origin + window.location.pathname (the pages own URL) specifically so Edgars GAS mailer can build a verification link back to the same page. Sunmints hand-rolled version omits this entirely, so Edgar falls back to some other/legacy URL -- exactly matching the reported bug.
@@ -4254,16 +4098,19 @@ Say "go" to verify on beta, or to promote the whole truesight_me_beta stack afte
 ### 🤖 Autopilot
 
 Let me verify — checking whether plot data has actually flowed into the sheet/index:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Plot data hasn't reached the repo yet — `plots.geojson` is empty (0 features) and all 21 trees still have no `plot_id`. But if you've entered the plot boundaries/assignments in the **sheet**, the pipeline just hasn't run yet (the generator runs on schedule). Let me check the source spreadsheet for the new data:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The generator currently **always writes an empty plots layer** — it doesn't read a Plots tab yet (the scaffold I built was contract-only). If you've already entered plot boundaries in the sheet, the generator won't pick them up until I wire the Plots-tab reader. Let me check the spreadsheet for the data you added:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4416,4 +4263,142 @@ Want me to (a) formalize the plots pipeline (Plots tab → generator → `plots/
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && TS=$(date +%s) && echo "=== 1. live sunmint.html: plot-related refs ===" && curl -s "https://beta.truesight.me/sunmint.html?cb=$T; cd /tmp && TS=$(date +%s) && echo "=== 1. THE file the page loads: sunmint/plots/index.geojson ===" && curl -s "https://raw.githubuserconten
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] Yes. Please do so. Also can we ensure no such future confusion happens with other instances of Sophia and LLMs
+
+
+### 🤖 Autopilot
+
+Two workstreams: (1) formalize the plots pipeline + fix selector logic, (2) kill the file-path confusion permanently so no other Sophia/LLM instance trips over it. Let me gather the current state of all the relevant pieces first:
+
+
+### 🤖 Autopilot
+
+A plots pipeline **already exists** — `scripts/build_plots_geojson.py` + `rebuild-plots-index.yml` — which I didn't know about. That's the core of the confusion: **two plot files, two generators, no documented ownership**. Let me read the actual plots generator and workflow:
+
+
+### 🤖 Autopilot
+
+A full plots pipeline already exists (`build_plots_geojson.py` + `rebuild-plots-index.yml` reading a **"SunMint Plots" tab**) — the confusion is the **duplicate plot file**: `plots/index.geojson` (real, curated) vs `trees/plots.geojson` (empty contract-only, written by the tree generator). Let me check which file the satellite cache reads and the exact selector render logic, then de-conflict:
+
+
+### 🤖 Autopilot
+
+Full picture confirmed — and it exposes a **real bug from this exact confusion**: the **satellite cache script reads `trees/plots.geojson` (the empty file)**, not `plots/index.geojson` (the real registry) — so plot-level satellite caching has been silently doing nothing for RM-P1/RM-P2. This is exactly the class of error the "no future confusion" ask is about. Let me get the exact tree-generator block to patch cleanly:
+
+
+### 🤖 Autopilot
+
+Confirmed the full picture — and there's a **real bug caused by exactly this confusion**: the satellite cache script reads `trees/plots.geojson` (the empty duplicate) while the actual plot registry is `plots/index.geojson` — so plot-level satellite caching has been silently skipping RM-P1/RM-P2. Let me check the tree-index workflow before patching, then fix everything:
+
+
+### 🤖 Autopilot
+
+Confirmed: the tree workflow only writes `trees/index.geojson` — the `trees/plots.geojson` duplicate is written by the generator's hardcoded side-output (line 183-190), never committed, and the cache script reads it. Complete picture. Now fixing everything:
+
+**The fix plan:**
+1. **Cache script** → read `plots/index.geojson` (the real registry) — fixes the silent plot-cache skip
+2. **Tree generator** → stop writing the empty `trees/plots.geojson` duplicate (it's the source of the confusion — remove the dead output)
+3. **Map selector** → use `plot_id`/`farm_id` correctly (RM-P1/RM-P2 already have `plot_id`, so chips already work — but I'll make the id resolution explicit)
+4. **Doc + search improvements** → kill future confusion: README note naming the single source of truth
+
+Let me apply all fixes:
+
+
+### 🤖 Autopilot
+
+Both fixes are clean (the exit 1 is just `grep -c` returning 0 on the "trees/plots.geojson" check — exactly what we want). Now checking for any other consumers of the duplicate path before pushing:
+
+
+### 🤖 Autopilot
+
+All clear — no other consumers of the dead path, and no README exists yet (I'll create one with the single-source-of-truth note). Now pushing: the two script fixes + a README with the "no future confusion" documentation. The scripts + README go to the sunmint repo (data repo, established direct-commit pattern):
+
+
+### 🤖 Autopilot
+
+Now uploading all three files to the sunmint repo:
+
+
+### 🤖 Autopilot
+
+All three pushed to the sunmint repo. Now the second part of the anti-confusion ask: **make sure no other Sophia/LLM instance trips over this**. The README helps humans and code-search, but let me also add an explicit guard in the code itself (a hard failure if anyone ever reads the dead path) and update the context docs. First the code guard:
+
+
+### 🤖 Autopilot
+
+The guard landed before `args = parser.parse_args()` — moving it after:
+
+
+### 🤖 Autopilot
+
+Guard works — refuses the dead path, defaults to the real registry. Now pushing the guarded cache.py and adding the same single-source-of-truth note to the context docs (so Sophia instances see it before touching the repo):
+
+
+### 🤖 Autopilot
+
+The context docs have no plots.geojson reference yet — let me add the single-source-of-truth note to the workspace context so future instances find it before touching the repo:
+
+
+### 🤖 Autopilot
+
+The code + README are the strongest guards. Let me also add a context note so future Sophia instances see it before touching the repo — checking the tail of WORKSPACE_CONTEXT.md to append cleanly:
+
+
+### 🤖 Autopilot
+
+WORKSPACE_CONTEXT.md has a repo table and notes. Let me add a SunMint data-file note via PR (the context repo is a code repo — proper PR flow). First the exact edit:
+
+
+### 🤖 Autopilot
+
+PR #845 opened cleanly. Let me verify the diff is correct, then merge it (context-doc backlog entry — the same case as before where I self-merge additive docs):
+
+
+### 🤖 Autopilot
+
+Clean (+2/−0, mergeable). Merging the context doc update:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Here's the turn report.
+
+## ✅ What I did this turn — plots pipeline formalized + confusion permanently killed
+
+**Two-part deliverable from your ask ("formalize the plots pipeline" + "no future confusion"):**
+
+**1. Found the real pipeline (and the root cause of my earlier wrong answer):**
+- A plots pipeline **already existed** — `scripts/build_plots_geojson.py` + `rebuild-plots-index.yml` reading the **"SunMint Plots" tab** → `plots/index.geojson` (RM-P1/RM-P2 already live there). My "not recorded" answer was wrong because I checked **`trees/plots.geojson`** (a dead duplicate) instead of `plots/index.geojson` (the real registry).
+- The duplicate was **causing a real bug**: the satellite cache read `trees/plots.geojson` (empty) → **plot-level caching silently skipped RM-P1/RM-P2**.
+
+**2. Fixes (sunmint repo, 4 commits on main):**
+- `cache_satellite_scenes.py` → reads **`plots/index.geojson`** (the real registry) + **hard guard**: refuses `trees/plots.geojson` with a clear error (tested — "REFUSING trees/plots.geojson…")
+- `build_tree_geojson.py` → **removed the dead `trees/plots.geojson` side-output**, replaced with a comment pointing at the single source of truth
+- `README.md` (new) → data-file map table + explicit ⚠️ "Do NOT create or read `trees/plots.geojson`"
+
+**3. Anti-confusion for all future instances:**
+- **Code guard** (any future script passing the dead path fails loudly)
+- **README** (humans + code search)
+- **Merged [agentic_ai_context#845](https://github.com/TrueSightDAO/agentic_ai_context/pull/845)** (`3701f380`) — WORKSPACE_CONTEXT.md repo table now lists `sunmint/` with the explicit warning: **"plot registry is `plots/index.geojson` ONLY (never `trees/plots.geojson`)"** — every Sophia/LLM instance sees this before touching the repo
+
+## 📌 RESUME HERE → next units
+1. **Trigger `rebuild-plots-index.yml` + `cache-satellite-scenes.yml`** (workflow_dispatch) to confirm the fixed cache now produces `satellite/plot_RM-P1/` + `plot_RM-P2/` scene sets (the previously-silent plot caching now active) — or I trigger via API
+2. **Verify on beta** the plot chips render correctly (selector uses `plot_id` — RM-P1/RM-P2 already have it) + satellite history strip unaffected
+3. **Standing:** promote truesight_me_beta → prod (#318–#324) after beta review; `sunmint_prod` config line; test-row cleanup
+
+The plots pipeline is now: **"SunMint Plots" tab → `plots/index.geojson` (single source) → map + satellite cache**, with the dead duplicate eliminated and guarded at three layers.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cd /tmp && TS=$(date +%s) && echo "=== 1. does a plots generator exist? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/g; cd /tmp && TS=$(date +%s) && echo "=== 1. build_plots_geojson.py (full, head 120) ===" && curl -s "https://raw.githubusercontent.com/TrueSig; cd /tmp && TS=$(date +%s) && echo "=== 1. cache script: which plots path does it read? ===" && curl -s "https://raw.githubusercontent.com/Tr; …(+9 more)
+• `merge pr` → ✅ PR #845 on agentic_ai_context merged successfully (sha: 3701f380b54b8b88ffede522a1b8e0d3d364d77c). Pull Request successfully merged
 
