@@ -4878,16 +4878,19 @@ Both — upload the corrected PDF to fda_fsvp and notarize it. Let me first chec
 ### 🤖 Autopilot
 
 No direct hit — let me search for notarization/notary concepts more broadly in the context and repos.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 "Sentinel" is well-defined (Sophia Truesight = sentinel, governor-equivalent ops). Let me find the notarization mechanism — checking event docs and repos.
+[2 tool result(s) compacted: search_code, lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a **NOTARIZATION EVENT** in the catalog. Let me get its documentation and check how notarization works in the ledger (notarization = hashing/anchoring the document into the ledger as an immutable record).
+[2 tool result(s) compacted: lookup_event_docs, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4898,21 +4901,25 @@ NOTARIZATION EVENT confirmed (Document Hash, Description, Witnesses). Plan:
 3. Submit NOTARIZATION EVENT as sentinel with the hash + repo URL
 
 Let me compute the hash and confirm the repo path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hash computed: `96800393be7980f71435a1335ad9d48d6ed1ee1b9f82eac961efa9b707f5105a`. Let me check the actual repo layout for the PDF file path (the API listing failed — maybe the path is different):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The corrected PDF (20,155,412 bytes) differs from the committed buggy version (20,155,410). Let me upload the corrected PDF to fda_fsvp (replacing the buggy version), then notarize:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF replaced on fda_fsvp (commit `40da650`). Now notarizing as sentinel — submitting the NOTARIZATION EVENT with the document hash:
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4964,21 +4971,25 @@ The document is now **immutably anchored** in the ledger — anyone can verify t
 ### 🤖 Autopilot
 
 Good catch — let me verify the actual visibility of the media repo and what the pipeline runbook says it should be.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify properly — the API 404 suggests the repo is private (unauthenticated access returns 404 for private repos). Let me check with credentials and find the runbook's intent:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The clone succeeded (rc=0) — so the repo exists and I can access it (likely via a credential helper, or it may be public but the API call needs a token). Let me determine its actual visibility and find the runbook's stated intent:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clone worked (cached credentials on the box), but unauthenticated raw = 404 → the repo **is private**. Let me read the README + runbook to see the intended visibility:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5022,46 +5033,55 @@ Your call, Gary.
 ### 🤖 Autopilot
 
 Executing — flipping `farm-media-raw` public, archiving Santa Anna's originals, and updating the docs. Let me start with the visibility flip (need the GitHub token) and check the archive size.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No token in .env — the box uses cached git credentials. Let me find them and check whether they have admin rights for the visibility flip:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `gh` is authenticated as **garyjob** — Gary's account. Let me flip the repo to public via `gh repo edit` (needs admin rights — garyjob is presumably a TrueSightDAO admin):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The garyjob token can't see the org (404 — it's not a TrueSightDAO member for API purposes). The real upload credential is the sophia git-credential helper. Let me check what it can do — it may or may not have admin rights for the visibility flip:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Admin access confirmed** — the sophia PAT (acting as garyjob) has `admin: True` on `farm-media-raw`. Flipping it to public now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ✅ **`farm-media-raw` is now PUBLIC** (anonymous API 200, raw README 200). Now archiving Santa Anna's 45 originals + updating the README/runbook. Let me upload the media (31 HEIC + 13 MOV + 1 PNG = 45 files, ~375 MB) via the Contents API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The MOVs are 19–96 MB — they exceed the Contents API cap (25 MB). But per the runbook, **videos are archived via YouTube** (public), not farm-media-raw — the repo is for **photos** (HEIC/JPG originals). The MOVs are already fingerprinted (sha256) in the manifest + 5 are on YouTube. So the correct archive = the 32 photos (31 HEIC + 1 PNG, all under cap). Uploading them:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The curl call isn't writing the response file — likely the JSON body with base64 (4 MB) hit a shell/curl limit, or the response parsing failed. The `-o /tmp/up_resp.json` produced no file at all, which means curl itself failed silently. Let me use the sanctioned tool (`upload_local_file_to_github`) which handles the Contents API properly — one call per file:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool works. Let me upload the remaining 31 HEICs via the tool (one call each, but I can batch the independent calls):
+[10 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5115,4 +5135,53 @@ The full index (45 files, sha256, GPS, durations, yt_ids) is in `agentic_ai_cont
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp && echo "=== find github token ==="; ls /opt/truesight_autopilot/config/ 2>/dev/null | head -20; grep -l "GITHUB_TOKEN\|GH_TOKEN" /o; cd /tmp && echo "=== git credential storage ==="; git config --global --list 2>/dev/null | grep -i cred; cat ~/.git-credentials 2>/dev/null ; cd /tmp && echo "=== current visibility ==="; gh repo view TrueSightDAO/farm-media-raw --json visibility,name -q '.name + " -> " + .visibili; …(+5 more)
 • `upload file to github` → https://github.com/TrueSightDAO/farm-media-raw/blob/main/README.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] Yeah, promote the front page to PROC. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Explicit approval received — promoting to production.
+
+
+### 🤖 Autopilot
+
+Sync reported "not behind upstream" — which is suspicious since #248/#249/#251/#252/#253 came after the last sync. Let me verify what prod actually serves before declaring done.
+
+
+### 🤖 Autopilot
+
+Prod main already carries the rename (6 refs), COOPOXIN card (2), and 19-item gallery — the earlier syncs/UI merges covered them. But beta HEAD is newer (`1ac2db3`, #254 — La do Sitio field videos). Let me verify whether prod has that latest change too:
+
+
+### 🤖 Autopilot
+
+## ✅ Production promotion verified — everything is live on agroverse.shop
+
+### Sync result
+`sync_beta_to_prod` reported "branch not behind upstream" — and that's **correct**: prod main (`b1375d2`) already contains all the Santa Anna work via your earlier UI merges + previous syncs. Ledger recorded (`deploy_20260831T203515Z_agroverse-shop-prod`).
+
+### Verified LIVE on agroverse.shop (production)
+| Check | Result |
+|---|---|
+| **Farm renamed** | "Ana Lucia Araujo de Sousa" live (6 refs: title/hero/story/popup) ✅ |
+| **COOPOXIN sub-co-op card** | Live on CEPOTX page ✅ |
+| **SunMint cross-link** | "View plot on SunMint" live ✅ |
+| **Gallery** | **19 items** (14 photos + 5 videos) live ✅ |
+
+The only delta vs beta is **#254** (La do Sitio field videos) — a *different farm* (the other Sophia's work on Paulo's page, merged to beta after the last sync). **I did not promote that** since it's outside the Santa Anna scope and wasn't part of your approval — it can ride the next sync whenever you want it.
+
+---
+
+**Santa Anna is now fully live in production end-to-end:**
+Farm profile (renamed, registered owner) → CEPOTX page (COOPOXIN card) → Brazilian Path journey → SunMint plot (SA-P1 + popup link) → 19-item media gallery → 5 YouTube videos → notarized FSVP PDF (ledger hash `96800393…`) → public raw archive (32 HEIC) → manifest in shared context.
+
+**The Santa Anna thread is complete** — anything else, or shall we call it done? 🎉
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== prod main HEAD vs beta main ==="; rm -rf prod_check && git clone -q --depth 20 https://github.com/TrueSightDAO/agrovers; cd /tmp && echo "=== prod has La do Sitio field videos (#254)? ==="; grep -oE "field_videos|IMG_77[0-9]+\.MOV|la-do-sitio.*video" /tmp/prod_
 
