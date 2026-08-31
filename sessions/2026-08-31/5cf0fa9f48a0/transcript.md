@@ -363,16 +363,19 @@ Let me check the remaining recent posts for series pills to pin down the latest 
 ### 🤖 Autopilot
 
 The June posts dropped the pill, so the series max is likely #7 (May 22). Let me verify a couple of remaining May posts quickly to be sure there's no #8.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent — the 👍 is the go. I have everything I need on voice and series conventions. Series numbering confirmed: **Field Signals runs #1–#7** (Mycelial Economy #1 → The chain holds #7), so this post becomes **Field Signals · #8**. Let me grab today's date, confirm the PDF path, and check whether Jedielcio's farm already has a page I should link.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Jedielcio appears in the sourcing network overview. Let me read that to get accurate details about his farm and correct spellings for links.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -380,26 +383,31 @@ Jedielcio appears in the sourcing network overview. Let me read that to get accu
 👍 received — **go**. I have everything: the voice spec, the series conventions (Field Signals runs #1–#7, so this is **#8**), the beta blog structure, and Jedielcio's network context (CEPOTX, Pará/Altamira, La Do Sitio line). Drafting the post now, then opening a PR on **truesight_me_beta** so it goes live on beta.truesight.me for your review — prod stays untouched until you approve.
 
 First, the hero image in house style (two-panel SVG metaphor):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hero image is in (PR #336 opened). Now the post itself — adding it plus the blog index card to the same branch so the PR updates:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The push was rejected because the remote branch has my earlier commit but the local clone doesn't have it (the tool doesn't auto-sync across two calls). I'll push the post + index as a fresh second commit onto the same branch via a new git_push_changes call — the tool should base on the current branch state.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Same-branch re-push isn't supported by the tool (each call clones fresh and can't fast-forward an existing remote branch). I'll open a clean second PR on a new branch carrying all three files (SVG + post + index), and note that it supersedes #336.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me retry with proper top-level parameters:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -454,6 +462,7 @@ The first push (PR **#336**) only carried the hero SVG — the tool rejects re-p
 ### 🤖 Autopilot
 
 👍 Go received — executing the resume: merging PR #337 (beta blog), then verifying it renders. #336 stays unmerged (no close tool available — it's the redundant SVG-only PR; I'll flag it for manual close).
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -504,6 +513,7 @@ The post is reviewed-and-live on beta; prod awaits your word.
 ### 🤖 Autopilot
 
 👍 Go received. First I'll verify the beta render (post + index card + hero asset) before anything else, then handle the remaining loose ends.
+[2 tool result(s) compacted: web_extract, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -622,4 +632,74 @@ I did **not** touch the merged beta post yet — the photos are an upgrade on to
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → ls -la /tmp/tg_attachments/ 2>/dev/null; echo '---'; find /tmp /home/ubuntu /var/tmp -maxdepth 4 -iname '*maranata*' -o -iname '*.zip' 2>/de; echo '=== rancho_maranata.zip ==='; unzip -l /home/ubuntu/rancho_maranata.zip 2>/dev/null | head -60; echo; echo '=== plot_1.zip ==='; unzip; echo '=== find the PDF clips ==='; find / -maxdepth 6 \( -iname 'IMG_7654*' -o -iname 'IMG_7669*' -o -iname 'IMG_7672*' -o -iname 'IMG_7673*; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] Great idea.
+
+
+### 🤖 Autopilot
+
+👍 "Great idea" = go on the photo version. Let me first read the current merged post HTML to make precise edits, and check how the hero is wired.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the post to see where to insert the photos.
+
+
+### 🤖 Autopilot
+
+Let me read the final chunk of the post (the close + ledger section) to know exactly where the figure captions and image insertions go.
+
+
+### 🤖 Autopilot
+
+"Great idea" — going. I have the full post structure. Now I'll build the photo-version PR: swap the SVG hero for the contrast photo (both varieties in one frame), add the other four frames as captioned inline figures at the right spots, update the index card + social meta to the real photo, and upload the JPGs. Opening the PR with the text edits first:
+
+
+### 🤖 Autopilot
+
+PR #338 opened with the text edits. Now uploading the 5 JPG frames to `assets/blog/` on the same branch — all in one batch:
+
+
+### 🤖 Autopilot
+
+All 5 photos uploaded to the PR branch. PR #338 now has the complete change (8 text edits + 5 JPGs). Merging it so the real-photo version goes live on beta:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Merged — Field Signals #8 now uses real field photos
+
+**PR #338 merged** (sha `dc0123fd`) → https://github.com/TrueSightDAO/truesight_me_beta/pull/338
+
+**What changed on the beta blog:**
+- **Hero replaced:** the SVG metaphor is now a real frame — `fs8-hero-contrast.jpg` (Jedielcio holding the crimson furrowed pod against smooth green pods, IMG_7654) with a proper caption crediting the clip
+- **4 inline captioned figures** added at the right narrative spots:
+  - *The walk* → Ponta Verde tree with yellow pods (IMG_7669)
+  - *The walk* → common cacao crimson pod close-up (IMG_7654)
+  - *Two phenotypes* → large smooth yellow pod (IMG_7672)
+  - *What the farm is telling the market* → lush foliage of the year-round tree (IMG_7669)
+- **og:image / twitter:image** + **blog index card** updated to the real hero photo
+- All 5 JPGs uploaded to `assets/blog/` (each from your confirmed montage)
+
+## RESUME HERE → next steps
+1. **Verify the beta render** — open `https://beta.truesight.me/blog/posts/the-tree-the-industry-despises-feeds-the-family-every-month.html` and confirm the photos load and captions read well. (The old `.svg` is now unused but harmless — can delete in a later cleanup PR if you want.)
+2. **Prod promotion** — on your explicit **"promote"** I'll run `sync_beta_to_prod(truesight_me_prod)`. Not before.
+3. **Still open loose ends** (non-blocking):
+   - **PR #336** (SVG-only, superseded) — needs a manual **close without merging** on GitHub
+   - **Transcript append** for the original PDF — still owed; will do first tool call next turn
+
+The real-photo version is live on beta for your review; prod waits for your word.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #338 on truesight_me_beta merged successfully (sha: dc0123fd3e9bc319e878f4ca8ecb4bb4a42bfe49). Pull Request successfully merged
 
