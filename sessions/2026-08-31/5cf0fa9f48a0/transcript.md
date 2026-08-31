@@ -244,3 +244,161 @@ If you want both audiences, the walk itself could become a short, place-anchored
 
 Want me to draft the Field Signals post? I'd write it to the **beta** blog (truesight_me_beta) for your review before anything touches truesight.me prod — per the beta-first flow. I'd need the video stills (IMG_7654/7669/7672/7673) or the farmer's name spelling confirmed if you want the byline to credit him. Say the word and I'll draft it.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] [Handoff context — this Telegram topic (thread 17381) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Short answer: **yes, worth posting — and it belongs on truesight.me/blog, not agroverse.shop.** Here's the reasoning, grounded in the workspace's own decision rules.
+
+## Why it passes the "should we b
+
+
+### 🤖 Autopilot
+
+The manifest was truncated — let me check whether this thread (17381) has a dedicated plan row, and also search for any cacao blog plan.
+
+
+### 🤖 Autopilot
+
+No registered plan for this thread — this is the current conversation continuing: the 👍 is the go-signal for the Field Signals draft I proposed. Let me study the beta blog structure and an existing Field Signals post so the draft matches house style.
+
+
+### 🤖 Autopilot
+
+Let me look at the blog structure in the beta repo and find the existing Field Signals posts.
+
+
+### 🤖 Autopilot
+
+Let me read the actual Field Signals posts to match structure and series-tag conventions exactly.
+
+
+### 🤖 Autopilot
+
+The structure is clear. Let me check the Sophia byline format, the latest Field Signals numbering, and the assets/blog directory.
+
+
+### 🤖 Autopilot
+
+The structure is clear. Let me find the latest Field Signals number by scanning the blog index for series pills.
+
+
+### 🤖 Autopilot
+
+The blog index is large; let me grep the live beta blog index for the Field Signals series numbers via web_extract, which will resolve all pills at once.
+
+
+### 🤖 Autopilot
+
+The series numbering matters — let me confirm which posts carry Field Signals pills so the new post gets the right number.
+
+
+### 🤖 Autopilot
+
+I need to determine the current Field Signals series number. Let me scan the full blog index for series pills.
+
+
+### 🤖 Autopilot
+
+The blog index cards don't carry the pills (they're only on the post pages). Let me check the remaining candidate posts for the latest Field Signals number.
+
+
+### 🤖 Autopilot
+
+Field Signals runs up to #5 in what I've seen. Let me check the context repo for any canonical series numbering, and spot-check a few more posts for the highest number.
+
+
+### 🤖 Autopilot
+
+Field Signals numbering observed so far: #2, #4, #5, #7. Let me check the remaining plausible entries to find the true latest number.
+
+
+### 🤖 Autopilot
+
+Confirmed so far: #2, #3, #4, #5, #6, #7. Let me check the more recent posts for any #8+ before assigning the number.
+
+
+### 🤖 Autopilot
+
+Let me check the remaining recent posts for series pills to pin down the latest Field Signals number.
+
+
+### 🤖 Autopilot
+
+The June posts dropped the pill, so the series max is likely #7 (May 22). Let me verify a couple of remaining May posts quickly to be sure there's no #8.
+
+
+### 🤖 Autopilot
+
+Excellent — the 👍 is the go. I have everything I need on voice and series conventions. Series numbering confirmed: **Field Signals runs #1–#7** (Mycelial Economy #1 → The chain holds #7), so this post becomes **Field Signals · #8**. Let me grab today's date, confirm the PDF path, and check whether Jedielcio's farm already has a page I should link.
+
+
+### 🤖 Autopilot
+
+Jedielcio appears in the sourcing network overview. Let me read that to get accurate details about his farm and correct spellings for links.
+
+
+### 🤖 Autopilot
+
+👍 received — **go**. I have everything: the voice spec, the series conventions (Field Signals runs #1–#7, so this is **#8**), the beta blog structure, and Jedielcio's network context (CEPOTX, Pará/Altamira, La Do Sitio line). Drafting the post now, then opening a PR on **truesight_me_beta** so it goes live on beta.truesight.me for your review — prod stays untouched until you approve.
+
+First, the hero image in house style (two-panel SVG metaphor):
+
+
+### 🤖 Autopilot
+
+Hero image is in (PR #336 opened). Now the post itself — adding it plus the blog index card to the same branch so the PR updates:
+
+
+### 🤖 Autopilot
+
+The push was rejected because the remote branch has my earlier commit but the local clone doesn't have it (the tool doesn't auto-sync across two calls). I'll push the post + index as a fresh second commit onto the same branch via a new git_push_changes call — the tool should base on the current branch state.
+
+
+### 🤖 Autopilot
+
+Same-branch re-push isn't supported by the tool (each call clones fresh and can't fast-forward an existing remote branch). I'll open a clean second PR on a new branch carrying all three files (SVG + post + index), and note that it supersedes #336.
+
+
+### 🤖 Autopilot
+
+Let me retry with proper top-level parameters:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging now — here's where things stand.
+
+## ✅ Done this turn
+
+**Drafted the Field Signals post and opened the PR** on the beta blog:
+- **PR #337** → https://github.com/TrueSightDAO/truesight_me_beta/pull/337 — `blog/field-signals-8-two-cacaos-all` carries all three files:
+  - `blog/posts/the-tree-the-industry-despises-feeds-the-family-every-month.html` — **Field Signals · #8** (confirmed series max is #7 via *The chain holds*), byline `Gary Teh, long time contributor`, dated 2026-08-31, ~1,500 words in house voice (fact→paradox opener, quiet contrarianism, plumbing-and-soul close, no sales pressure, no banned vocabulary)
+  - `assets/blog/the-tree-the-industry-despises-feeds-the-family-every-month.svg` — two-panel hero (Ponta Verde vs traditional Pará pod) matching the SVG-metaphor convention
+  - `blog/index.html` — card added at top of the grid
+- All facts traced to your dossier + `CACAO_SOURCING_NETWORK_OVERVIEW.md` (Jedielcio = CEPOTX, Altamira/Pará, La Do Sitio lane) — the post links agroverse.shop, mentions the 10,000-ha mission quietly, and keeps the chemistry table short (per §1.4 "tables sparingly").
+
+## ⚠️ Small cleanup needed (why there are 2 PRs)
+
+The first push (PR **#336**) only carried the hero SVG — the tool rejects re-pushing to the same branch, so I opened **#337 with all three files** and marked #336 as superseded. 
+
+## 🔴 Blocking / next steps
+
+**Merge order matters** — please do NOT merge #336:
+1. **Close #336** (no merge — redundant, would conflict on the SVG path)
+2. **Merge #337** → post goes live on **beta.truesight.me/blog** for your review
+3. After you approve the beta render, I promote to prod (`truesight_me_prod`) — **never without your explicit go**
+4. Small pending item: `append_to_transcript` for the original PDF (session persistence) — I ran out of tool rounds before doing it
+
+**RESUME HERE:** merge (or ask me to merge) PR #337 on truesight_me_beta after closing #336; verify the post renders at beta.truesight.me/blog; on your "promote" go, run `sync_beta_to_prod(truesight_me_prod)`. I still owe the transcript append for the PDF attachment.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → date -u +%Y-%m-%d && ls -la /tmp/tg_attachments/ 2>/dev/null | tail -5
+
