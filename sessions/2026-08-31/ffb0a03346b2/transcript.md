@@ -3785,16 +3785,19 @@ The page fetches `plots/index.geojson` from raw.githubusercontent + jsDelivr —
 ### 🤖 Autopilot
 
 Interesting split: **jsDelivr already serves 3 (incl. SA-P1)** but raw.githubusercontent still shows 2 — raw endpoints cache briefly. Let me confirm the commit is actually on main (the Contents API reported success) and re-check raw after a moment.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Commit `34ebcef9` confirmed on main. Raw's edge cache is lagging; the page itself uses cache-busting (`?cb=`) so let me verify both endpoints with a busting param — that's what the map actually requests.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The page tries jsDelivr first (line 618) then falls back to raw (line 617) — jsDelivr already serves 3 features. The raw fallback's edge cache will propagate shortly (it's a known raw.githubusercontent lag, usually seconds-to-a-minute). Let me wait briefly and re-check raw, then confirm the whole flow is done.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3860,6 +3863,7 @@ Centroid **-3.292243, -52.572044** — the same farm the agroverse.shop profile 
 ### 🤖 Autopilot
 
 Let me first answer your question definitively — checking whether a SCHEMA.md exists anywhere and how the plot/tree schemas are currently documented.
+[3 tool result(s) compacted: search_context, search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4007,4 +4011,63 @@ Verified on the branch: the edit is exactly one line added to the popup builder 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && rm -rf tmb_check && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git tmb_check 2>&1 | tail -1; cd tmb; echo "=== RM plot farm_ids in geojson ==="; /opt/truesight_autopilot/.venv/bin/python3 -c " import json d = json.load(open('/tmp/sunmint_che; cd /tmp/tmb_check && sed -n '620,665p' sunmint.html; echo "=== esc() def + plot fetch block ==="; grep -n "function esc\|fetch(.*plots\|plot; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Edit verified on the branch. The popup now appends the farm-profile link when `farm_id` is present.
+
+## ✅ PR opened: `truesight_me_beta#333`
+
+**"Sunmint plot popup: link to agroverse farm profile"** →
+
+
+### 🤖 Autopilot
+
+👍 Go signal received — merging the popup link PR.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `truesight_me_beta#333` merged
+
+**"Sunmint plot popup: link to agroverse farm profile"** → merged to `main` (sha `c5234cb`)
+
+### What changed
+- `sunmint.html` popup builder: when a plot carries `farm_id`, the popup now shows **"View farm profile on Agroverse ↗"** linking to `https://agroverse.shop/farms/<farm_id>/` (target=_blank, rel=noopener, escaped)
+
+### Impact
+| Plot | farm_id | Popup link → |
+|---|---|---|
+| RM-P1 | rancho-maranta | agroverse.shop/farms/rancho-maranta-para/ |
+| RM-P2 | rancho-maranta | agroverse.shop/farms/rancho-maranta-para/ |
+| SA-P1 | santa-anna-fazenda | agroverse.shop/farms/santa-anna-fazenda-para/ |
+
+All existing plots get the link automatically (they carry farm_id); any **future plot** with farm_id in its registry row gets it too — no schema change needed.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Verify on beta** — beta.truesight.me/sunmint.html → click the SA-P1 (or RM-P1/RM-P2) polygon → popup should show the Agroverse link (after the ~deploy settles)
+2. **Promote to prod** — truesight_me_prod sync after your beta eyeball (say "promote")
+3. **Still parked:** media additions to the agroverse farm page (shortlist: 7723, 7744, 7751, 7731, 7747, 7750); the plot-impact-image embed idea on the farm profile
+
+———
+**✅ Done this turn — actions taken:**
+• `merge_pr` → ✅ PR #333 on truesight_me_beta merged (sha: c5234cb23b74a427e1dfe0f5a7f967160f88d784)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #333 on truesight_me_beta merged successfully (sha: c5234cb23b74a427e1dfe0f5a7f967160f88d784). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #333 on truesight_me_beta merged successfully (sha: c5234cb23b74a427e1dfe0f5a7f967160f88d784). Pull Request successfully merged
 
