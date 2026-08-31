@@ -108,16 +108,24 @@ Key exists (53 chars). The `source` failed silently — I'll parse the .env dire
 ### 🤖 Autopilot
 
 The model name changed — Gemini now suggests `gemini-3.6-flash`. Let me update and rerun.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Transcripts came through cleanly. Let me also pull representative frames and run a Grok vision pass for visual context (what the Brazilians are showing/pointing at), so the analysis is complete.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 21 frames extracted. Now let me run Grok vision on a representative subset to capture what's being shown/pointed at in each clip.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -283,4 +291,86 @@ This is consistent with CCN-51's real-world profile (smooth pods, high yield, di
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd ~/to_analyze && ls frames/ && mkdir -p cmp && for f in "to analyze"/*.MOV; do b=$(basename "$f" .MOV | tr ' ' '_'); ffmpeg -y -v error -i; cat > /tmp/grok_varieties.py << 'EOF' import base64, os, sys, glob import httpx KEY = os.environ["GROK_API_KEY"] ENDPOINT = "https://api.x.a; cd /tmp && python3 - << 'PYEOF' s = open('/tmp/grok_varieties.py').read() s = s.replace('"Be concrete and factual about what is visible; if
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16817] Generate a PDF with the images of the two types. 
+
+And then do a deep dive of the internet to research details of these two types found in Para state 
+
+Perhaps include chemical differences and taste profile as well as history
+
+
+### 🤖 Autopilot
+
+Excellent — a research report + visual PDF. Plan: (1) extract the best comparison frames, (2) deep-dive web research on both varieties in Pará (chemistry, taste, history), (3) compose a PDF with images and findings. Starting the frame prep and research in parallel.
+
+
+### 🤖 Autopilot
+
+Strong material coming in — CCN-51 history, genetics (1.1% Nacional, 45.4% IMC, 22.2% Criollo…), chemistry (polyphenols, theobromine), and a Brazilian study on elite clones including CCN-51. reportlab is available for the image-rich PDF. Now the Pará-specific angle and the "common cacao" of the region.
+
+
+### 🤖 Autopilot
+
+Good research base. Two quick targeted searches to firm up the **common/traditional Pará cacao** side (Parazinho, local varieties, flavor/chemistry), then I'll build the image-rich PDF with reportlab.
+
+
+### 🤖 Autopilot
+
+Excellent research base — I have everything I need. Building the PDF now with reportlab (available, v4.5.1), embedding the 5 comparison frames + the full research dossier.
+
+
+### 🤖 Autopilot
+
+PDF built — 1.5 MB with all 5 embedded photos and the full dossier. Let me verify it renders correctly (page count, no corruption), then send it to you.
+
+
+### 🤖 Autopilot
+
+pypdf isn't installed — let me verify with a different method (PDF header + qpdf check).
+
+
+### 🤖 Autopilot
+
+Valid PDF — 6 pages, 5 images, proper header. Sending it to you now.
+
+
+### 🤖 Autopilot
+
+📄 **PDF delivered** — `Cacau_Para_Two_Varieties_Report.pdf` (6 pages, 1.5 MB) is attached above. Here's what's inside:
+
+## PDF contents
+
+**1 · The two phenotypes (photos)**
+- The farmer holding the **furrowed crimson-purple pod** against a branch of smooth green pods — the two varieties literally side by side
+- Close-ups of both pod types from all 4 clips
+
+**2 · Verified field comparison table** — 8 traits (pod surface, tip, ripe color, size, fruiting rhythm, propagation, farmer's own words)
+
+**3 · Variety A — CCN-51 "Ponta Verde"**
+- History: bred by **Homero Castro** (Ecuador, 1960s–70s) as a witches'-broom crisis response; released 1984; unpatented after his death → spread everywhere
+- Genetics: 1.1% Nacional / 45.4% IMC / 22.2% Criollo / 21.5% Amelonado — a forastero-dominant hybrid
+- Agronomy: 700–1,100 kg/ha (vs 300–400 for Nacional), up to 3 t/ha ideal; the yield engine behind "year-round fruit"
+- "Ponta Verde" = local farm name for the clone (not a registry denomination)
+
+**4 · Variety B — common/traditional Pará cacao**
+- Amazonian native; DNA-confirmed ~3,000+ yr history; Pará = world's largest cacao germplasm diversity
+- The landraces: **Pará, Parazinho** (small fruit, regional adaptation, artisanal chocolate)
+- Pará is now Brazil's #1 cacao state (~121k ha mapped by Embrapa), much in agroforestry SAFs
+
+**5 · Chemistry** — the striking finding: **no significant difference in fat/caffeine/theobromine between varieties alone — but genotype × terroir drives polyphenols (p=0.003) and theobromine (p=0.009)**. Nacional peaked 130.5 mg GAE/g; CCN-51 scores high bitterness (12.4%) + low sweetness.
+
+**6 · Taste** — CCN-51: bitter, bulk, but *redeemable with good fermentation* (red-berry, tropical fruit, caramel). Traditional Pará: fruity/floral/nutty — the fine-cacao boom material.
+
+**7 · Sources** — 12 cited (To'ak genetics, MDPI 2025 Brazilian study, Revista Alfa chemistry, Embrapa, Mongabay DNA, UFPA sensory, etc.)
+
+**Also saved on disk:** `~/to_analyze/pdf/Cacau_Para_Two_Varieties_Report.pdf` + the 5 source frames in `~/to_analyze/pdf/img/`.
+
+Want me to upload this PDF to a repo (e.g. `agentic_ai_context` or a farm-research folder) so it's archived alongside the transcripts?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → mkdir -p ~/to_analyze/pdf/img && cp ~/to_analyze/cmp/IMG_7654_2_03.jpg ~/to_analyze/pdf/img/A_furrowed_redpurple_pod.jpg && cp ~/to_analyze/; cat > /tmp/make_pdf.py << 'PYEOF' # -*- coding: utf-8 -*- from reportlab.lib.pagesizes import letter from reportlab.lib.units import inch fr; cd /opt/truesight_autopilot && ./.venv/bin/python -c " from pypdf import PdfReader r = PdfReader('/home/ubuntu/to_analyze/pdf/Cacau_Para_Two; …(+1 more)
 
