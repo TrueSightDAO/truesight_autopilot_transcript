@@ -130,7 +130,23 @@ Transcripts came through cleanly. Let me also pull representative frames and run
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The issue is `sys.path` — the script lives in /tmp so cwd isn't on the path. Let me set PYTHONPATH.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -197,21 +213,25 @@ I extracted the audio (16kHz WAVs) and transcribed with **Gemini 3.6-flash** (ig
 ### 🤖 Autopilot
 
 👍 Go it is. Executing the remaining steps: visual pass via Grok, persisting transcripts, and saving bilingual notes. First let me check the handoff registry (per protocol) and fix the Grok key loading in parallel.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Grok vision worked — and the manifest has no row for thread 16817 (this is a general task thread, not an execution handoff — no plan file to resume). Visual pass done. Now filing the bilingual notes and persisting the transcripts.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Notes file written. Now persisting the transcripts to the session transcript (so they're recallable cross-session) and delivering the summary.
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Transcript persisted. Now delivering the bilingual notes file into this thread:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -252,6 +272,7 @@ can you help verify
 ### 🤖 Autopilot
 
 Good eye — the farmers themselves contrast "esse aqui" (the grafted CCN-51 Ponta Verde) with "essas outras cabaças" and "cacau comum". Let me pull more detailed frames of the two tree types and run a focused variety-comparison pass.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -373,4 +394,53 @@ Want me to upload this PDF to a repo (e.g. `agentic_ai_context` or a farm-resear
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → mkdir -p ~/to_analyze/pdf/img && cp ~/to_analyze/cmp/IMG_7654_2_03.jpg ~/to_analyze/pdf/img/A_furrowed_redpurple_pod.jpg && cp ~/to_analyze/; cat > /tmp/make_pdf.py << 'PYEOF' # -*- coding: utf-8 -*- from reportlab.lib.pagesizes import letter from reportlab.lib.units import inch fr; cd /opt/truesight_autopilot && ./.venv/bin/python -c " from pypdf import PdfReader r = PdfReader('/home/ubuntu/to_analyze/pdf/Cacau_Para_Two; …(+1 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: can we make the linking between the images and the type more explicit in the PDF?
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16817]
+
+
+### 🤖 Autopilot
+
+Good idea — I'll make the variety link unmistakable: each photo gets an **in-image colored label band** ("A · CCN-51 Ponta Verde" in green, "B · Common cacao" in red), a color-keyed frame + badge, and a legend. Rebuilding the PDF now.
+
+
+### 🤖 Autopilot
+
+v2 built — 7 pages, 5 annotated images, each photo now carries its variety band in the image itself plus a colored badge above. Sending it:
+
+
+### 🤖 Autopilot
+
+📄 **v2 delivered** — `Cacau_Para_Two_Varieties_Report_v2.pdf` (7 pages, 2.5 MB) attached above.
+
+## What changed — explicit image↔variety linking
+
+**1. In-image colored bands** — every photo now has a bold label band burned into the top of the image itself:
+- 🟢 **`A — CCN-51 'PONTA VERDE' (grafted)`** on all three A-type photos (smooth green pods / smooth yellow pod / yellow-green on tree)
+- 🔴 **`B — COMMON CACAO`** on the furrowed red-purple pod photo
+- 🟤 **`A vs B`** on the side-by-side frame
+
+**2. Colored frame + badge above each photo** — a green/red/brown bordered frame matches the band, with a badge caption ("VARIETY A — CCN-51 'PONTA VERDE' (GRAFTED)") sitting directly above.
+
+**3. Page 1 colour-key legend** — before any photos, a table explains: green = A (smooth, yellow-ripe, year-round), red = B (furrowed, red-purple, seasonal).
+
+**4. Reorganized photo sections** — photos are now grouped by variety:
+- §2: **Variety A** photos (3)
+- §3: **Variety B** photo (1)
+- §4: **A vs B side by side** (1)
+- §5+: comparison table, history, chemistry, taste, sources (same research content)
+
+Now you can flip to any photo and instantly know which variety it shows, even without reading the caption.
+
+**Also on disk:** the 5 annotated images are in `~/to_analyze/pdf/img/annotated/` if you want them standalone. Want me to archive this v2 (and/or v1) into a repo?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cat > /tmp/make_pdf2.py << 'PYEOF' # -*- coding: utf-8 -*- import os from PIL import Image as PILImage, ImageDraw, ImageFont from reportlab.
 
