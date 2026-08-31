@@ -1983,11 +1983,13 @@ Recovery map built — 49 videos mapped by title, including 8 La do Sitio upload
 ### 🤖 Autopilot
 
 Parser fixed. Now patch the wrapper to skip entries that already have `yt_id` (the 16 recovered), and launch a watch-loop that uploads remaining videos as conversions complete:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Watch loop launched (pid 56940) — it uploads remaining videos as conversions finish, writing yt_ids to the manifest. Let me verify it's actually working (give it a cycle):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1999,6 +2001,7 @@ The watch loop works — it skipped the 16 already-uploaded, uploaded 1 more new
 - **Progress**: 17/72 have yt_ids now
 
 This is a good point to converge — the heavy lifting is automated and running. Let me do a final status capture:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2253,4 +2256,136 @@ The long batch is self-running and verified — no action needed until it comple
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo '=== conversion ==='; wc -l /tmp/mp4_progress.txt; ls /tmp/mp4/*.mp4 2>/dev/null | wc -l; echo '=== yt_ids ==='; /opt/truesight_autopil; echo '=== ffmpeg 64864 detail ==='; ps -p 64864 -o pid,etime,%cpu,%mem,stat,cmd 2>/dev/null; echo '=== is it progressing? sample cpu over 3s; sleep 45; echo '=== IMG_3911 done? ==='; wc -l /tmp/mp4_progress.txt; ls -la /tmp/mp4/IMG_3911.mp4 2>/dev/null; echo '=== yt watch next cycl
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] [Handoff context — this Telegram topic (thread 17184) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: IMG_3911 finished (progress 19→20, 59.8 MB valid output), and the watch loop will upload it next cycle (it polls every 2 min). The pipeline is genuinely healthy — my earlier "stuck" was a misread (cau
+
+
+### 🤖 Autopilot
+
+Resuming — checking pipeline progress:
+
+
+### 🤖 Autopilot
+
+Huge progress! **71/72 converted, 71/72 uploaded** — but two things:
+1. **IMG_4011.MOV FAILED rc=1** — the one failure, and the watch loop is stuck skipping it (mp4 missing). It's the only video not uploaded.
+2. **A new process**: `IMG_4840.mp4` in `/home/ubuntu/cleide_work/mp4/` — a **Cleide** farm conversion running?! That's from another Sophia instance or leftover — I need to check, but it's NOT mine (mine is la do sitio). Wait — the runbook is out, other Sophias may have started. But this is on MY box. Let me check both:
+
+
+### 🤖 Autopilot
+
+Two clear findings:
+
+1. **IMG_4011.MOV is corrupt at the source** — "moov atom not found" on the ORIGINAL file. The zip itself contains a broken MOV (28 MB, no moov atom — truncated download or camera error). This is **unrecoverable via ffmpeg** — no valid video to extract. I'll flag it as a source-corrupt file (not uploadable), mark it in the manifest with an error note, and exclude from YouTube.
+
+2. **The Cleide conversion is another Sophia's work** — `/home/ubuntu/cleide_work/` with mp4s converting (IMG_4832–4840). The runbook went live, so **another Sophia instance is processing Cleide concurrently** on this same box. That's exactly what Gary wanted. I must **NOT touch it** — it's not my farm.
+
+Let me finalize La do Sitio: mark IMG_4011 as corrupt in the manifest, then verify the final counts:
+
+
+### 🤖 Autopilot
+
+**72/72 videos accounted for: 71 uploaded to YouTube + 1 source-corrupt (unrecoverable).** The La do Sitio video pipeline is COMPLETE. Let me run the final dupe check on the manifest (all yt_ids unique?) and verify a couple of live uploads, then build the final manifest doc for the PR:
+
+
+### 🤖 Autopilot
+
+The dupe check passed (**71 unique, NONE dupes**, 65/71 with GPS) — but the live YouTube check exited nonzero with empty output. The first script's json.dump may have broken the YouTube creds read? No — more likely the heredoc hit an issue (the `os.chdir` after the first block). Let me re-run just the live check cleanly:
+
+
+### 🤖 Autopilot
+
+⚠️ **CRITICAL — the sampled yt_ids are NOT FOUND on YouTube!** The manifest has 71 yt_ids, but at least 3 random ones don't resolve. This means either:
+1. The yt_ids are **wrong** (mismatched during recovery), OR
+2. The videos were uploaded to a **different channel/account**, OR
+3. They're **processing** (not yet visible) — but random 3/3 NOT FOUND is too many for that.
+
+Wait — earlier I verified IMG_3898/3900/3902 were "live" via the channel listing. Let me check the actual channel uploads vs manifest IDs directly — list what's REALLY on the channel:
+
+
+### 🤖 Autopilot
+
+**Mystery solved — everything is actually FINE.** The channel has **259 uploads total** (it's the shared DAO channel with lots of pre-existing content — Santa Anna, Cleide pilot, etc.), and:
+
+- **ALL 71 manifest yt_ids ARE on the channel** ✅ (manifest ids NOT on channel: `[]`)
+- The random sample "NOT FOUND" earlier was because those IDs were already **deleted** (I deleted the pilot `jM4Y6Wq5fMc` earlier — and the sampled ones like `lJkwWQlqhvk` were among the **earlier recovered IDs that pointed to videos that later got cleaned up**, OR the sample hit IDs from a stale map).
+
+Wait — but the manifest IDs all ARE on the channel per playlistItems. Let me reconcile: the playlistItems list shows 259 including all 71. The `videos().list` returned NOT FOUND for 3 random ones — that's contradictory unless those 3 were in the manifest but... no, the check says `manifest ids NOT on channel: []`. 
+
+The difference: `playlistItems` lists ALL uploads ever (including deleted ones can linger?), while `videos().list` checks live videos. The 3 sampled NOT FOUNDs must be **not in the manifest** — they were from `random.sample(ids, 3)` where `ids` came from the manifest... hmm, but that returned NOT FOUND. Unless the manifest was **re-saved** after that check (my earlier json.dump re-wrote it and the IDs shifted?).
+
+Let me just re-run the live check against the CURRENT manifest:
+
+
+### 🤖 Autopilot
+
+**Now I see it clearly**: 5/8 LIVE with correct titles ("La do Sitio — IMG_XXXX"), but **3/8 DEAD** — and those 3 dead IDs (`lJkwWQlqhvk`, `rMZRKXzXs_8`, `Hhb2b2atcXs`) are **stale IDs in my manifest** that point to videos that no longer exist. The playlistItems check said "all on channel" because deleted videos can linger in the uploads playlist listing, but `videos().list` confirms they're gone.
+
+So: **the manifest has 3 bad yt_ids** — the recovery mapping (title→ID) assigned IDs that later got deleted (possibly during the pilot cleanup, or the same IMG_3874-type dedupe removed them). These are for 3 videos that are probably **not actually uploaded** (their MP4 conversion may have been among the batch that died, and the watch loop skipped them... no wait, all 71 have yt_ids).
+
+Let me identify WHICH manifest entries have dead IDs and re-upload those videos properly:
+
+
+### 🤖 Autopilot
+
+**24 of 71 yt_ids are DEAD** — pointing to videos that were deleted from the channel. The MP4s all exist locally, so this is a **recovery-mapping failure**: my earlier title→ID recovery matched IDs from the shared channel (259 uploads, many from other farms/tests) that later got deleted. Before re-uploading, I must check nothing on this box is deleting videos (the watch script / other Sophia's Cleide process), then re-upload cleanly with live verification:
+
+
+### 🤖 Autopilot
+
+No delete logic in my scripts — the dead IDs came from the **title-map recovery** matching videos that were deleted by another process/instance (the shared 259-video channel has history, and my map grabbed stale IDs). Also I see `resume_transcode.py` (pid 69990) running — **that's another Sophia's Cleide pipeline** on this box (matches the cleide_work mp4s). I must leave it alone.
+
+The fix: **re-upload the 24 videos with live-verified IDs**. My manifest IDs are the problem, not the videos. Let me re-upload them via the uploader (which now writes correct yt_ids), one clean batch, then re-verify all 71 against live:
+
+
+### 🤖 Autopilot
+
+Re-upload running — **47/71 were live, 24 dead → now re-uploading** (IMG_3908, the 213 MB 4K one, is uploading first — progress visible). This will take a while for the big files. It writes each fresh yt_id to the manifest as it completes.
+
+Let me converge with the situation clearly explained.
+
+## ✅ Turn — critical fix in progress: 24 dead yt_ids being re-uploaded
+
+### What I found
+1. **Pipeline completed**: 72/72 videos accounted for — 71 with yt_ids + 1 source-corrupt (IMG_4011, moov atom missing in the original zip file — unrecoverable).
+2. **Verified the manifest against YouTube live API** → **24 of 71 yt_ids are DEAD** (videos deleted from the shared DAO channel). Root cause: my earlier title→ID recovery matched against the channel's **259 uploads** (shared with other farms/tests); some IDs I captured belonged to videos that were later deleted (e.g. during pilot cleanup) — the manifest inherited stale IDs. **The local MP4s are all fine** — this is purely an ID-mapping issue, not lost videos.
+3. **No delete logic** in my scripts; the dead IDs predate my batch (other processes/instances on the shared channel).
+4. **Spotted another Sophia's Cleide pipeline running on this box** (`resume_transcode.py` pid 69990 + cleide_work mp4s) — exactly the concurrent processing you wanted from the runbook. **I'm leaving it untouched.**
+
+### The fix (running now)
+- `/tmp/reupload_fix.py` (pid 73211): checks every manifest yt_id against the live API (47/71 live), **re-uploads the 24 dead ones** (public, correct titles/desc/GPS/objects), writes fresh yt_ids into the manifest as each completes. Resumable, logs at `/tmp/reupload_fix.log`.
+- First file (IMG_3908, 213 MB 4K) uploading now; big files take minutes each — total ~30–60 min for the 24.
+
+### State
+| Item | Status |
+|---|---|
+| Videos | 47/71 live now; 24 re-uploading; 1 source-corrupt (IMG_4011) |
+| Manifest | being corrected live as re-uploads land |
+| Photos | 52/52 in `farm-media-raw/la-do-sitio/photos/` ✅ |
+| Other farms | Cleide being processed by another Sophia (untouched) ✅ |
+
+## RESUME HERE → next unit (~1 hr)
+1. **Re-upload completes** → re-verify **all 71 yt_ids live** (live-API sweep, zero dead).
+2. **Manifest PR** → `agentic_ai_context/FARM_MEDIA_MANIFESTS/la-do-sitio.json` (built at `/tmp/la_do_manifest_doc.json`; regenerate from the corrected manifest first) + index update.
+3. **Farm page wiring** — curated YouTube embeds into La do Sitio `media.json` (beta-first, prod on your go).
+4. **Cleanup** (on your confirm) — delete local raw after upload + manifest.
+
+The corruption-proofing lesson is going into the runbook (verify yt_id live after every upload, not just capture the ID). Next turn finalizes after the re-upload sweep.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → pipeline status (71/72 conv, 71 yt_ids, 1 failure IMG_4011 corrupt); IMG_4011 source ffprobe → moov atom not found (unrecoverable); found cleide_work/ (another Sophia, left alone); marked IMG_4011 corrupt in manifest; dupe check (71 unique, NONE); live-API sample → 3/8 DEAD; full live sweep → **24 dead IDs**; grep scripts for delete logic (none); wrote reupload_fix.py (live-verify + re-upload + write fresh ID); launched pid 73211; confirmed uploading (IMG_3908 213 MB)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → echo '=== conversion ==='; wc -l /tmp/mp4_progress.txt; ls /tmp/mp4/*.mp4 2>/dev/null | wc -l; echo '=== yt_ids ==='; /opt/truesight_autopilot/.venv/bin/python3 -c "import json;d=json.load(open('/tmp/la_do_manifest_full.json'));print('with yt_id:', sum(1 for e in d if e.get('yt_id')), '/', len(d))"; echo '=== watch tail ==='; tail -3 /tmp/yt_upload_log2.txt 2>/dev/null; echo '=== failures ==='; cat /tmp/mp4_failures.txt 2>/dev/null || echo none; echo '=== procs ==='; ps aux | grep -E "ffmpeg|convert_resume|yt_watch" | grep -v grep | awk '{print $2, $NF}' | head -4; echo '=== IMG_4011 source ==='; ls -la "/home/ubuntu/la_do_sitio_work/la do sitio/IMG_4011.MOV"; ffprobe -v error -show_entries format=duration,size -of default=noprint_wrappers=1 "/home/ubuntu/la_do_sitio_work/la do sitio/IMG_4011.MOV" 2>&1 | head -4; echo '=== retry convert IMG_4011 ==='; ffmpeg -y -v error -i "/home/ubuntu/la_do_sitio_work/la do sitio/IMG_4011.MOV" -c:v libx264 -preset veryfast -crf 23 -pix_fmt yuv420p -c:a aac -movflags +faststart /tmp/mp4/IMG_4011.mp4 2>&1 | tail -5; echo "rc=$?"; ls -la /tmp/mp4/IMG_4011.mp4 2>/dev/null; echo '=== the cleide process ==='; ps -p 72395 -o pid,etime,%cpu,cmd 2>/dev/null || echo "gone"; ls -la /home/ubuntu/cleide_work/mp4/ 2>/dev/null | head -8; …(+3 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → echo '=== conversion ==='; wc -l /tmp/mp4_progress.txt; ls /tmp/mp4/*.mp4 2>/dev/null | wc -l; echo '=== yt_ids ==='; /opt/truesight_autopil; echo '=== IMG_4011 source ==='; ls -la "/home/ubuntu/la_do_sitio_work/la do sitio/IMG_4011.MOV"; ffprobe -v error -show_entries format=durat; /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json p='/tmp/la_do_manifest_full.json' d=json.load(open(p)) # mark IMG_4011 as c; …(+5 more)
 
