@@ -3502,11 +3502,13 @@ Let me apply the CSS tweak too so heads never get cropped regardless of viewport
 ### 🤖 Autopilot
 
 Both hero background refs (CSS class + inline style) now use `center 30%/cover` — the background focal point sits on the heads (which are ~16% from the top of the image), so even on tall viewports the heads stay in view. And the image itself was re-cropped with headroom above the heads (top edge at 815px, heads at 975px). Let me verify the crop visually via a coarse "edge" check, then commit + PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #238 opened. Merging per the standing go:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3567,21 +3569,30 @@ PR #238 opened. Merging per the standing go:
 ### 🤖 Autopilot
 
 Let me check the plot popup code on both the beta and prod sunmint maps, then add the farm-profile link.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both beta AND prod already have the popup link code (line 658) — but it's gated on `fid`/`fslug`. Let me read the full condition to see why it might not show for the Rancho Maranta plots:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The link code is already on prod — gated on `fid` (`props.farm_id`). So the question is whether the plots registry actually carries `farm_id`. Let me check the live `plots/index.geojson`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The registry already carries `farm_id: rancho-maranta` for both plots, and the map code maps that to the farm slug. So the link logic should already be live — let me verify the **actual deployed pages** (both prod truesight.me and beta) contain the popup link:
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3721,4 +3732,96 @@ Style matches the existing items (border-left accent card, inherit color, underl
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && rm -rf agb6 && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git agb6 2>&1 | tail -1; cd agb6 && ech; cd /tmp/agb6 && sed -n '518,565p' farms/rancho-maranta-para/index.html; cd /tmp/agb6 && python3 - <<'PYEOF' src = open('farms/rancho-maranta-para/index.html').read() anchor = '''<div class="highlight-item"> <stro; …(+3 more)
 • `merge pr` → ✅ PR #242 on agroverse_shop_beta merged successfully (sha: 424fef8faecd8faad7c29695fcedea4b2ca8d019). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: this is a repeat image https://beta.agroverse.shop/assets/images/farms/IMG_7694.jpg
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631]
+
+
+### 🤖 Autopilot
+
+Let me check the gallery for duplicates — likely IMG_7694 appears twice in media.json or duplicates another image:
+
+
+### 🤖 Autopilot
+
+The gallery has 15 items and IMG_7694 appears once — so it's not a JSON duplicate. Let me check if IMG_7694's *content* duplicates another image in the gallery (perceptual comparison):
+
+
+### 🤖 Autopilot
+
+All MD5s are unique — so it's not byte-identical. The governor's "repeat" likely means **perceptually near-identical** (same scene/people, shot moments apart). Let me run perceptual hashing (pHash) across all 12 to find near-dupes:
+
+
+### 🤖 Autopilot
+
+pHash shows no byte-level dupes, but IMG_7693 ↔ IMG_7694 is the closest pair (45/256 — visually similar scenes, same group of people at the house, shot moments apart). That matches "repeat": different pixels, same scene. Let me confirm with a finer similarity measure, then remove IMG_7694 from the gallery:
+
+
+### 🤖 Autopilot
+
+The similarity scores confirm it: **IMG_7694 is a near-identical repeat of IMG_7693** (0.898 similarity — the highest pair in the whole gallery; same burst of people at the house, seconds apart). All other pairs are lower. The governor is right — it's a duplicate moment.
+
+Removing IMG_7694 from the gallery:
+
+
+### 🤖 Autopilot
+
+Removed cleanly (15 → 14 items, JSON valid). The IMG_7694 file stays in the repo (harmless, could be reused later) — only the gallery reference is gone. Committing, pushing, PR:
+
+
+### 🤖 Autopilot
+
+PR #245 opened. Merging per the standing go:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Removed the duplicate image IMG_7694 from the Rancho Maranta gallery — PR #245 merged.**
+
+**You were right — it was a repeat.** Confirmed with perceptual analysis, not just eyeballing:
+
+- **MD5 check:** all 12 gallery images are byte-unique (no identical files)
+- **pHash:** no near-dup at the hash level, but IMG_7693 ↔ IMG_7694 was the **closest pair** in the whole gallery
+- **Pixel similarity:** **IMG_7694 ↔ IMG_7693 = 0.898** — the highest similarity of any pair in the gallery (vs. 0.83–0.85 for other same-burst pairs). Same people at the house, seconds apart → effectively the same moment.
+
+**PR #245 → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/245** (merged, sha `3d7c7e7`):
+- Removed `IMG_7694.jpg` from `farms/rancho-maranta-para/media.json` gallery (15 → 14 items)
+- JSON validated before push
+- **The file stays in `assets/images/farms/`** — only the gallery reference was removed (so the URL no longer 404s if anything cached it, and the image remains available if you ever want it)
+
+**Gallery now (14 items):** 3 videos (family, Plot-1 walk, Plot-2 boundary) + 11 images (IMG_7693, 7696, 7697, 7698, 7624, 7626, 7627, 7657, 7658, 7660, 7678).
+
+## RESUME HERE →
+
+1. **Governor hard-refreshes** → https://beta.agroverse.shop/farms/rancho-maranta-para/ — the duplicate should be gone from the gallery.
+2. **Prod promotion** (gated on your explicit approval) — `sync_beta_to_prod(agroverse_shop_prod)`: now carries farm page #229 + card fix #233 + videos #234 #235 + media #236 + header #237 + heads fix #238 + SunMint highlight #242 + **dupe removal #245**. And `sync_beta_to_prod(truesight_me_prod)` — impact map #325–#329.
+3. **Optional:** if you spot any other repeat images in the gallery, tell me which and I'll run the same similarity check + removal.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cloned agroverse_shop_beta, verified IMG_7694 uniqueness (MD5 + pHash + pixel similarity 0.898 vs IMG_7693 = top pair), removed from media.json (15→14, JSON valid), committed + pushed `fix/rancho-remove-dup-img`, opened PR #245
+• `merge pr` → ✅ PR #245 on agroverse_shop_beta merged (sha: 3d7c7e7942e91b8694b6e08d462039322924189d)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && rm -rf agb7 && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git agb7 2>&1 | tail -1; cd agb7 && python3 -c "import json; d; cd /tmp && rm -rf dupcheck && mkdir dupcheck && cd dupcheck && for n in IMG_7693 IMG_7694 IMG_7696 IMG_7697 IMG_7698 rancho-maranta-IMG_7624 rancho-maranta-IMG_7626 rancho-maranta-IMG_7627 rancho-maranta-IMG_7657 rancho-maranta-IMG_7658 rancho-maranta-IMG_7660 rancho-maranta-IMG_7678; do curl -s -o "$n.jpg" "https://beta.agroverse.shop/assets/images/farms/$n.jpg"; done && md5sum *.jpg | sort; …(+2 more)
+• `merge pr` → ✅ PR #245 on agroverse_shop_beta merged successfully (sha: 3d7c7e7942e91b8694b6e08d462039322924189d). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && rm -rf agb7 && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git agb7 2>&1 | tail -1; cd agb7 && ech; cd /tmp && rm -rf dupcheck && mkdir dupcheck && cd dupcheck && echo "=== download all gallery images ===" && for n in IMG_7693 IMG_7694 IMG_; cd /tmp/dupcheck && python3 - <<'PYEOF' from PIL import Image import os, itertools def phash(path, hash_size=16): im = Image.open(path).conv; …(+3 more)
+• `merge pr` → ✅ PR #245 on agroverse_shop_beta merged successfully (sha: 3d7c7e7942e91b8694b6e08d462039322924189d). Pull Request successfully merged
 
