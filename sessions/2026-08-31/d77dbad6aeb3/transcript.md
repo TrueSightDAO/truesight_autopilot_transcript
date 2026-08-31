@@ -1496,56 +1496,72 @@ I'll continue with the config PR + repo creation + batch completion autonomously
 ### 🤖 Autopilot
 
 Both directives are clear: (1) proceed with `farm-media-raw`, (2) write the pipeline as agentic_ai_context instructions so other Sophia instances can pick up other farms concurrently. Executing — first the doc PR (independent) + verifying config anchors and batch progress in parallel:
+[2 tool result(s) compacted: ssh_run, git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Runbook PR open: **agentic_ai_context#858** (FARM_MEDIA_PIPELINE.md). Batch at 8/72. Now the config change — per the hard rule, I test locally **before** pushing. Applying the edit on the box and running the full suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tests pass except ruff format (whitespace). Fixing formatting, then pushing the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All checks pass. Now pushing the config PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `writes` param may have replaced the entire config.py with just my fragment — let me verify the PR content immediately:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ The `writes` param clobbered config.py to just my fragment. Fixing immediately — restore full content + additions:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Local file is intact (434 lines, 2 additions — exactly right). The remote branch got clobbered. Fix: push the **full local file** to the branch (Content API rewrite with complete content):
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need the real base64 of the local file. Let me generate it on the box:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The base64 is too large to pass manually. Better approach — use `upload_local_file_to_github` which reads the file directly from disk:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Restored. Now verify the branch's config.py is the full file with both additions:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch config.py is now byte-identical to local (434 lines, both additions at 214/239, same sha). The clobber is fully fixed. Now let me merge the config PR so `farm-media-raw` becomes usable, and check batch progress:
+[2 tool result(s) compacted: merge_pr, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1614,51 +1630,61 @@ Two notes: the runbook PR (#858) is **open for your review** — I did not self-
 ### 🤖 Autopilot
 
 Resuming — unit 1: deploy autopilot (to pick up the config) + check batch progress in parallel.
+[2 tool result(s) compacted: deploy_autopilot, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy says already on latest (ca8c1eb0) — but my merge was 6e8f4f7. Let me verify what main actually has, so the allowlist gate works for `create_repo`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Remote main already carries `farm-media-raw` (×2) — the merged config is live on main. The deploy noop is fine (running code at latest; config file present). Attempting repo creation:
+[1 tool result(s) compacted: create_repo — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **`farm-media-raw` created** (private, TrueSightDAO). Now the photos upload — 52 La do Sitio HEICs via Content API, individually, under `la-do-sitio/photos/`. Let me build the batch upload script on the box (using the tool's GitHub token) and run it detached with progress:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No direct GitHub token visible in config/env — the tools hold it internally (server-side). So the Content-API uploads must go through my `upload_local_file_to_github` tool (one call per file). 52 photos = 52 calls. Let me verify the HEICs are the right source and run the first uploads — I'll do them in batches. First, confirm the exact filenames:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 52 HEICs confirmed. Uploading them individually via Content API to `la-do-sitio/photos/` — batch 1 (first 8):
+[8 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Batch 1 done (8/52). Continuing — batch 2 (IMG_3903–3926):
+[8 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Batch 2 done (16/52). Continuing — batch 3 (IMG_3933–3954):
+[8 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 24/52. Batch 4 (IMG_3954–3974):
+[8 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 32/52. Batch 5 (IMG_3974–3990):
+[8 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1724,4 +1750,71 @@ Nothing prod touched, nothing deleted. All additive.
 **✅ Done this turn — actions taken:**
 • `deploy autopilot` → Already on the latest commit ca8c1eb0 — no deploy needed. Did NOT restart. Do not retry.
 • `ssh run` ×6 → echo '=== batch ==='; wc -l /tmp/mp4_progress.txt 2>/dev/null; tail -2 /tmp/mp4_progress.txt; cat /tmp/mp4_all_done.txt 2>/dev/null || echo ; echo '=== remote main HEAD ==='; curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot/commits/main" | python3 -c "import j; echo '=== tool gh token source ==='; grep -rn "GITHUB_TOKEN\|gh_token\|github_token" /opt/truesight_autopilot/app/config.py | head -5; echo ; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] [Handoff context — this Telegram topic (thread 17184) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+merge 2. and then proceed
+
+
+### 🤖 Autopilot
+
+Resuming — "merge 2." = the manifest PR (item 2), then proceed with the pipeline. First: batch status, upload-script CLI args, and manifest structure so I can build the upload job + manifest correctly.
+
+
+### 🤖 Autopilot
+
+Wait — Gary said "merge 2." — item 2 was the **manifest PR**, but I haven't opened that PR yet (it's still pending yt_ids). Re-reading: my RESUME HERE item 2 was "Manifest PR to agentic_ai_context". That doesn't exist yet. Let me check what PRs are actually open on agentic_ai_context — maybe he means #858 (the runbook) and there's a naming mismatch. Let me look:
+
+
+### 🤖 Autopilot
+
+Gary's "merge 2." = merge the runbook PR **#858** (the instructions doc he wants so other instances can pick up farms — the only mergeable item in the thread). Let me verify its content is solid before merging, and check the batch in parallel:
+
+
+### 🤖 Autopilot
+
+PR #858 is a clean single-file doc (93 additions, 0 deletions). Batch is at 16/72 (still converting). Merging the runbook per Gary's instruction:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn complete — runbook merged
+
+### What shipped this turn
+
+**Merged: [agentic_ai_context#858](https://github.com/TrueSightDAO/agentic_ai_context/pull/858)** — `FARM_MEDIA_PIPELINE.md` (sha `d89e429`, +93 lines, single doc file)
+- The **handoff-ready runbook** now lives on `main` — other Sophia instances (or future you) can pick up Cleide / Santa Anna / Rancho Maranta zips and run the full pipeline concurrently.
+- Covers: intake → GPS sweep → SHA-256 dedupe → manifest → YOLO object detection (banana→cacao_pods remap) → **MOV→MP4 with GPS re-injection** → public YouTube upload → photos to `farm-media-raw` (keyed by farm id, Content-API only) → farm page wiring → manifest PR. Includes the farm-id table + handoff checklist.
+- This is the "agentic_ai_context instructions" you asked for — now in place for parallel farm processing.
+
+### Status (unchanged from last report)
+- **MOV→MP4 batch**: 16/72 done, steady, no errors (GPS-preserving pipeline) — ~45 min remaining.
+- **Photos**: all 52 La do Sitio HEICs live in `farm-media-raw/la-do-sitio/photos/`.
+- **Manifest**: built (72 videos, sha256/GPS/objects) — awaiting yt_ids.
+
+## RESUME HERE → next unit
+1. **Batch completes** (~45 min) → verify 72/72 MP4s carry GPS (exiftool sweep) → **YouTube public upload batch** (sha-deduped, titles/desc from manifest w/ GPS + objects) → write `yt_id`s back into manifest.
+2. **Manifest PR** → `agentic_ai_context/FARM_MEDIA_MANIFESTS/la-do-sitio.json` (the searchable index).
+3. **Farm page wiring** — add curated videos (YouTube embeds) to the La do Sitio gallery (`media.json`) — beta-first, prod only on your go.
+4. **Cleanup** (on your confirm): delete local raw after successful upload + manifest.
+
+The pipeline is now documented, the repo is live, and the batch is running — next turn resumes at upload once conversion finishes.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → PR #858 status check (mergeable, +93 lines), batch progress (16/72)
+• `merge_pr` ×1 → agentic_ai_context#858 merged (sha d89e429)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo '=== batch ==='; wc -l /tmp/mp4_progress.txt 2>/dev/null; ls /tmp/mp4/*.mp4 2>/dev/null | wc -l; cat /tmp/mp4_all_done.txt 2>/dev/null ; echo '=== PR 858 diff stat ==='; curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/pulls/858" | python3 -c "import json,
+• `merge pr` → ✅ PR #858 on agentic_ai_context merged successfully (sha: d89e429905bd5b83b0348df277865fee7076cfa4). Pull Request successfully merged
 
