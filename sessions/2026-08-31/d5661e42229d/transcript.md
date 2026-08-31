@@ -3683,6 +3683,7 @@ No new PRs/deploys this turn; no ledger writes beyond the test submission (row 1
 ### 🤖 Autopilot
 
 Good question — let me try it directly rather than defer. Attempting the pull+restart+log check on dao_protocol now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3930,4 +3931,67 @@ No ledger writes, no money movement, no Edgar submissions this turn.
 ———
 **✅ Done this turn — actions taken:**
 • `gas deploy project` → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260831T004114Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn (GAS deploy — no PR action, full report allowed)
+
+**Go received 👍 → deployed `tokenomics #451` (dispatch-failure visibility) to GAS `1UrBg…`.**
+
+| Step | Result |
+|---|---|
+| P
+
+
+### 🤖 Autopilot
+
+👍 Go received. Next unit: **verify the live monitor page** — confirm `Edgar_20260819134722_487` is gone from the authoritative index that the page loads, and that the page itself serves fine. Checking both in parallel:
+
+
+### 🤖 Autopilot
+
+Authoritative index confirmed — both trees gone (19 features, no 487/061), live page serves HTTP 200. One final check: the page actually fetches `raw.githubusercontent.com` — let me verify that URL isn't serving stale cached content (the exact thing that made the tree "reappear" for Gary):
+
+
+### 🤖 Autopilot
+
+# ✅ **LIVE PAGE VERIFIED — THE ORIGINAL COMPLAINT IS FULLY RESOLVED**
+
+## Verification results (both sources the page relies on)
+
+| Source | 487 present? | 061 present? | Feature count |
+|---|---|---|---|
+| **Authoritative** (GitHub Contents API, ref=main) | ❌ **False** | ❌ **False** | 19 |
+| **raw.githubusercontent** (exactly what the monitor page fetches via `TREE_INDEX_URLS[0]`) | ❌ **False** | ❌ **False** | 19 |
+| **Live page** `sunmint.truesight.me/monitor-tree-growth/?tree=Edgar_20260819134722_487` | HTTP **200** ✅ (page serves; tree no longer in its data) | | |
+
+**The exact failure Gary reported — "I reload the page and the tree I marked invalid shows up again" — cannot happen anymore.** The page fetches `trees/index.geojson` fresh on load (`cache:'no-store'` + cache-buster), and that file no longer contains `Edgar_20260819134722_487` (or the 061 test tree). Both are INVALID in the SunMint ledger sheet, dropped from the index by the builder's skip-INVALID filter, and the whole chain (Edgar → dispatch → GAS → rebuild) is now event-driven and proven.
+
+## The complete fix chain, as shipped
+| Fix | Repo/PR | Status |
+|---|---|---|
+| UI: no QR fabrication (`(unlinked)`) | `sunmint_beta #46` | merged — **beta only** (prod promotion still pending your review) |
+| Handler: reject matches col A OR col D | `tokenomics #449` | merged + deployed (webhook @37) |
+| Dispatch: rebuild on INVALID | `tokenomics #450` | merged + deployed |
+| Builder: skip INVALID rows | `sunmint` (Contents API) | delivered |
+| Routing: REJECT → GAS webhook | `dao_protocol #150` | merged + running on box |
+| Reusable submit script | `truesight_autopilot #353` | merged + proven live |
+| Dispatch-failure visibility | `tokenomics #451` | merged + pushed to GAS HEAD |
+| Auto-dispatch E2E | — | **proven** (rows 11963/11964) |
+
+No new PRs/deploys this turn; no ledger writes; no money movement.
+
+---
+**RESUME HERE → next units (each a fresh turn):**
+1. **Promote `sunmint_beta #46` to prod** (`sync_beta_to_prod(sunmint_prod)`) — the last code gap for the live site; requires your **explicit approval**. This makes the live monitor page emit `QR Code: (unlinked)` instead of the fabricated `Edgar_...` value.
+2. **(Optional) propagate #451 into the webhook path** — create GAS v38 from HEAD → new deployment → point `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_REJECT` at it on the box (belt-and-braces visibility on the auto-dispatch path).
+3. **Runbook §4.5 follow-up** — reference `sunmint_submit.py` in `SUNMINT_E2E_RUNBOOK.md` so the reusable script is documented for future invalidation tests.
+4. **Consider a `tree-index-rebuild` audit** — the workflow only fires on cron/dispatch; since #450's dispatch now works via the box, verify one more real INVALID (e.g. tree `489`, still NEW) auto-fires the rebuild end-to-end without manual `workflow_dispatch`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== 1. Authoritative index at ref=main: 487 & 061 present? ==="; curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/t; echo "=== raw.githubusercontent (what the PAGE fetches) ==="; curl -s -H "Cache-Control: no-cache" "https://raw.githubusercontent.com/TrueSi
 
