@@ -997,11 +997,13 @@ Now let me write a custom Grok vision selection script — per-image scoring wit
 ### 🤖 Autopilot
 
 Grok returned placeholder filenames (IMG_0001…) — it can't read names from base64 data URLs. I need to tag each image with its real filename in the text prompt. Let me re-run with names embedded.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Empty result — let me check the full error log to see what happened with the API call.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1146,4 +1148,66 @@ Ping me with "verify" or "promote to prod" and I'll run that unit. Otherwise I h
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #246 on agroverse_shop_beta merged successfully (sha: a013a6cb27e5ec575e4fa9011e45c502deae1442). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Turn report — Fazenda Cleide media re-selection merged ✅
+
+**PR merged:** [#246 — Fazenda Cleide: new hero photo (governor) + curated farm-process gallery](https://github.com/TrueSightDAO/agroverse_
+
+
+### 🤖 Autopilot
+
+Go received — executing verify unit: confirm the beta page now serves the new hero + gallery.
+
+
+### 🤖 Autopilot
+
+Assets confirmed — all 4 serve **200** with byte-exact sizes matching the new files (hero 356,118B; gallery 422,960 / 121,477 / 565,388B = my new hero, 4859, 4872, 4867). Page returns 301 (http→https redirect) — let me follow it to confirm the rendered page and check it's serving the new hero in HTML.
+
+
+### 🤖 Autopilot
+
+## Verify unit complete — new media confirmed live ✅
+
+**Beta page is serving the new media:**
+
+| Check | Result |
+|---|---|
+| Page | `https://beta.agroverse.shop/farms/fazenda-cleide-para/` → **200** (after https redirect) |
+| Hero | `fazenda_cleide_hero.jpg` → 200, **356,118B** = your photo, referenced 4× in page |
+| Gallery 1 | `fazenda_cleide_1.jpg` → 200, 422,960B = IMG_4859 sun-drying beans |
+| Gallery 2 | `fazenda_cleide_2.jpg` → 200, 121,477B = IMG_4872 fermentation barrel |
+| Gallery 3 | `fazenda_cleide_3.jpg` → 200, 565,388B = IMG_4867 sorting beans |
+| Alt texts | ✅ new: "Sun-drying cacao beans…", "Wooden fermentation barrel…", "Sorting and inspecting…" |
+| Title/meta | ✅ intact |
+
+Byte-exact sizes confirm the **new** images (not cached old ones) are live. The farm page now reads as a proper farm profile: your photo as hero + three real cacao-process shots.
+
+**Full Fazenda Cleide pipeline — live end-to-end:**
+
+| Layer | State |
+|---|---|
+| Farm profile | beta.agroverse.shop/farms/fazenda-cleide-para — ✅ 200, new media |
+| Impact map data | sunmint/plots/index.geojson — ✅ CL-P1 (4 features) |
+| Plot registry | SunMint Plots sheet CL-P1 — ✅ 114 ha approx hull |
+| Sitemap | ✅ entry on main |
+
+---
+
+**RESUME HERE → next unit:**
+**Prod promotion (the only remaining step)** — `sync_beta_to_prod(agroverse_shop_prod)` to make the farm page live on the public `www.agroverse.shop`. Per the beta-first rule this needs your **explicit go** — say **"promote to prod"** and I'll run the fork sync, then verify `www.agroverse.shop/farms/fazenda-cleide-para` is live.
+
+(If you'd rather eyeball the beta page first, open the URL above — no rush.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → curl checks: page 301→200 (https), all 4 assets 200 with byte-exact new sizes, alt texts confirmed, title intact
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== beta page status ===" curl -s -o /dev/null -w "page: %{http_code} " "https://beta.agroverse.shop/farms/fazenda-cleide-para" echo "; echo "=== follow redirect to final page ===" curl -sL -o /tmp/cleide_page.html -w "final: %{http_code} url: %{url_effective} " "https://beta
 
