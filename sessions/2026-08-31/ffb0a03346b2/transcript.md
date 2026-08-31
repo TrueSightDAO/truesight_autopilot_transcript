@@ -5077,11 +5077,13 @@ The JSON has `full_history` — let me examine its structure with timestamps.
 ### 🤖 Autopilot
 
 The session JSON has no per-message timestamps, but there's a debug log. Let me check it — it likely has per-turn timestamps.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The debug log has per-round UTC timestamps — authoritative. Let me parse the full timeline: every governor message vs every autopilot work round.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5356,4 +5358,20 @@ The ledger now carries the exact, transcript-measured figure — no rounding amb
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] My name is. Gary Teh
+
+
+### 🤖 Autopilot
+
+Got it — noted: **Gary Teh**. 
+
+I'll make sure any ledger entries tie to you by that name going forward (the autopilot execution contribution is logged under Sophia Truesight; if you'd like your own time on this thread logged too, just say the amount — my transcript bounds put your focused time at roughly 1.5–2.5 h, but you're the authority on what you actually spent).
+
+Want me to:
+1. **Log a CONTRIBUTION EVENT for you** (Gary Teh) for your review/decision time — and if so, what amount (e.g. 120 min)?
+2. Or was the name note just for the record, no ledger change needed?
 
