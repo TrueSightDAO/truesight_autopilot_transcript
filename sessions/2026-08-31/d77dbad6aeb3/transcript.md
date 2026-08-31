@@ -2348,11 +2348,13 @@ Let me just re-run the live check against the CURRENT manifest:
 So: **the manifest has 3 bad yt_ids** — the recovery mapping (title→ID) assigned IDs that later got deleted (possibly during the pilot cleanup, or the same IMG_3874-type dedupe removed them). These are for 3 videos that are probably **not actually uploaded** (their MP4 conversion may have been among the batch that died, and the watch loop skipped them... no wait, all 71 have yt_ids).
 
 Let me identify WHICH manifest entries have dead IDs and re-upload those videos properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **24 of 71 yt_ids are DEAD** — pointing to videos that were deleted from the channel. The MP4s all exist locally, so this is a **recovery-mapping failure**: my earlier title→ID recovery matched IDs from the shared channel (259 uploads, many from other farms/tests) that later got deleted. Before re-uploading, I must check nothing on this box is deleting videos (the watch script / other Sophia's Cleide process), then re-upload cleanly with live verification:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2360,6 +2362,7 @@ Let me identify WHICH manifest entries have dead IDs and re-upload those videos 
 No delete logic in my scripts — the dead IDs came from the **title-map recovery** matching videos that were deleted by another process/instance (the shared 259-video channel has history, and my map grabbed stale IDs). Also I see `resume_transcode.py` (pid 69990) running — **that's another Sophia's Cleide pipeline** on this box (matches the cleide_work mp4s). I must leave it alone.
 
 The fix: **re-upload the 24 videos with live-verified IDs**. My manifest IDs are the problem, not the videos. Let me re-upload them via the uploader (which now writes correct yt_ids), one clean batch, then re-verify all 71 against live:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2419,11 +2422,13 @@ The corruption-proofing lesson is going into the runbook (verify yt_id live afte
 ### 🤖 Autopilot
 
 Resuming — checking the re-upload fix progress:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Hard YouTube API quota hit** — "Video Uploads per day" exceeded (project limit). 6 of 24 re-uploads completed (47+6 = **53 live**), then the 429 error killed the script. This is a **daily quota** (resets at midnight PT ≈ 11.5h from now) — not a config error. The fix is resumable by design (it skips any entry whose yt_id is live). Let me make it resilient (retry loop that waits out the quota) and relaunch detached:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2694,4 +2699,46 @@ All additive, nothing prod touched. The runbook is now hardened for all instance
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json, datetime d = json.load(open('/tmp/la_do_manifest_full.json')) # Final mani; /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json d = json.load(open('/tmp/la_do_manifest_full.json')) # live-only candidates; cd /opt/truesight_autopilot/config/youtube && /opt/truesight_autopilot/.venv/bin/python3 -c " import os, json from google.oauth2.credentials
 • `merge pr` → ✅ PR #864 on agentic_ai_context merged successfully (sha: 4feb665fd9ca4611dae8a398412901dfada931ad). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] So I am guessing just monitoring for now?
+
+
+### 🤖 Autopilot
+
+Mostly yes — but let me do a quick status check so I'm answering from live data, not memory:
+
+
+### 🤖 Autopilot
+
+Yes — **monitoring mode right now**, exactly. Live data:
+
+## Current state (19:55 UTC, verified just now)
+
+| Item | Status |
+|---|---|
+| Retry loop | ✅ alive (pid 73872), in its 30-min wait cycle |
+| Live on YouTube | **53/71** |
+| Dead (pending re-upload) | **18** — all hitting 429 until quota resets |
+| Quota reset | ~07:00 UTC (**~11h from now**) |
+| Source-corrupt | 1 (IMG_4011 — zip corruption, unrecoverable) |
+| Photos | 52/52 safe in `farm-media-raw` ✓ |
+| Runbook | hardened + merged (#864) ✓ |
+| Cleide pipeline | other Sophia's, running, untouched ✓ |
+
+**Nothing actionable until the quota resets.** The loop retries every 30 min, will 429 until ~07:00 UTC, then burns through the 18 re-uploads in ~30–60 min and self-terminates.
+
+## What I'll do once it completes (the remaining plan)
+1. Verify **71/71 yt_ids live** + dupe check (all unique).
+2. Wire the curated YouTube embeds into the farm page `media.json` (8 verified live + newly re-uploaded with strong metadata) — beta-first PR, prod on your go.
+3. File the **manifest PR** → `agentic_ai_context/FARM_MEDIA_MANIFESTS/la-do-sitio.json` (doc already regenerated at `/tmp/la_do_manifest_doc.json`).
+4. On your confirm — clean up local raw files (they're safe in the repo + YouTube now).
+
+So: nothing for you to do tonight either — the loop babysits itself. If you want, I can also keep an eye on the **Cleide pipeline** (the other Sophia's work on this box) so we don't have two pipelines fighting for CPU/quota — say the word and I'll fold that into my monitoring. Otherwise, next meaningful checkpoint is post-reset (~07:30 UTC), and I'll report the final 71/71 + PRs then.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → date -u; echo '=== retry loop ==='; ps -p 73872 -o pid,etime,%cpu 2>/dev/null || echo "LOOP ENDED"; echo '=== retry log tail ==='; tail -8 /
 
