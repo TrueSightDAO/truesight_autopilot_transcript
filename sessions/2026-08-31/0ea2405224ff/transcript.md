@@ -757,31 +757,37 @@ Anchors located. Let me see the exact code between the marker loop and the `load
 I have the complete structure. The Florianópolis trees (2) are still on the map — just off-screen; and interestingly **there are zero Altamira trees in `trees/index.geojson`** — the pilot-area trees aren't registered as tree rows yet (only the plots polygons are). So the view switcher is exactly the right fix: Altamira (plots) / Florianópolis (demo trees) / All.
 
 Let me apply the edits locally, syntax-check, then push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 6 edits applied, JS syntax OK — but let me verify the checked script was actually the map script (there were 4 inline scripts), then push via git_push_changes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The map script (index 3) contains all the new refs, and `node --check` passed on it. Let me get the exact current diff for the PR and push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff is exactly the intended 51-line change, JS syntax verified. Pushing the PR now with the same edits via git_push_changes:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #326 opened. Verifying the pushed branch's JS is clean, then merging per the go-signal:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed branch verified — JS clean, all new refs present. Merging PR #326:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -848,16 +854,19 @@ Pushed branch verified — JS clean, all new refs present. Merging PR #326:
 You're right — my "demo" framing was wrong, and it matters: the Bougainvillea (and Criolla) in Florianópolis are **real trees people actually planted**, not a demo. That also means the original Florianópolis map center was correct all along — it was showing the first real plantings (Founderhaus / Paloma's crew) before the Altamira pilot came along.
 
 Fixing the label now — "Florianópolis (demo)" → "Florianópolis (planted)" in the view switcher:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two "demo" references to fix. Let me check if "demo" appears anywhere else in the repo (or the runbook) so I fix the framing everywhere, not just the map:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Only the two lines in `sunmint.html` carry the "demo" framing for Florianópolis (the `edgar.html` hits are `demoUrl` — unrelated meaning). Let me also check the runbook I wrote for the same framing, then fix the map:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1005,4 +1014,34 @@ Say which and I'll execute. (And yes — this means the "Florianopolis is not a 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && rm -rf sunmint3 && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git sunmint3 2>&1 | tail -1; cd sunmint3 && ech; cd /tmp/sunmint3 && echo "=== build_tree_geojson.py: coord/status logic ===" && sed -n '50,140p' scripts/build_tree_geojson.py; cd /tmp/aac2 && echo "=== header + first lines ===" && head -30 OPEN_FOLLOWUPS.md && echo "..." && echo "=== '## Pending' location ===" && g
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] Just leave the records alone I will go clear them up myself
+
+
+### 🤖 Autopilot
+
+Understood — leaving the records alone. No sheet edits, no status changes, nothing pushed.
+
+For when you do clear them, here's the exact hit-list from the source-of-truth sheet (rows 2–28 of the "SunMint Tree Planting" tab), so you don't have to dig:
+
+**Real program plantings — keep:**
+- `Edgar_20260819134740_489` — Florianópolis Criolla (NEW)
+- `Edgar_20260821175134_005` — Florianópolis Bougainvillea (LINKED, Paloma)
+- `Edgar_20260830154309_009` + `Edgar_20260831011117_005` — Altamira Plot 1 (NEW)
+
+**Artifacts you'll likely want to clear (17):**
+- 5 × Oregon "unknown" + 2 × Oregon Cacao/Cacao-Native — 2025-07/08 dev-test submissions via `file:///Users/garyjob/...report_tree_planting.html`
+- 1 × Shenzhen China (22.94/113.89) — 2026-08-11 beta test
+- 3 × Sophia Truesight 2026-08-29 rows — reuse the same Oregon coords (automated tests)
+- 4 × no-GPS rows (2026-08-21/23 Criolla) — real submissions, location missing (GPS may be recoverable from photo EXIF if you want them geolocated)
+- Plus already-excluded: 4 TEST/E2E rows (skipped by builder) and `Edgar_20260819134722_487` (INVALID duplicate)
+
+**How your cleanup will reach the map:** the sheet is the source of truth — `build_tree_geojson.py` regenerates `trees/index.geojson` from it on the daily workflow (and skips `TEST*`/`E2E`/`INVALID` rows automatically). So once you set rows to `INVALID` (or delete them), the next rebuild refreshes the map — no code change needed.
+
+When you've cleared them, ping me and I'll trigger the rebuild (or wait for the 06:05 UTC run) and verify the map counter drops to the honest 4.
+
+Meanwhile the map, plot registry, generator, and runbook are all live and untouched. Want me to hold here, or is there anything else that doesn't touch the tree records?
 
