@@ -4723,16 +4723,24 @@ Gary wants the reverse cross-link too: farm profile → SunMint plot map. Let me
 ### 🤖 Autopilot
 
 The perfect spot is the **Farm Location** section (line 560–562) — right next to the existing "View on Google Maps" link. Let me add the SunMint plot-map link there, mirroring the same style.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #241 opened. Verifying the edit landed correctly, then merging (part of the cross-link unit you asked for):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edit verified on the branch. Merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4801,11 +4809,13 @@ Added an explicit lin
 ### 🤖 Autopilot
 
 👍 Go signal received — verifying the SunMint link is live on beta (accounting for the Pages deploy).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy lag again — beta still serves the 14:51 build (pre-#241), while main has the link (grep=1). Same pattern as before. Let me wait for the Pages build and re-verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4855,16 +4865,19 @@ Both live on `beta.agroverse.shop/farms/santa-anna-fazenda-para/` in the Farm Lo
 ### 🤖 Autopilot
 
 Good idea — the SunMint plot belongs in the highlights, not just the location section. Let me read the Farm Highlights section to place it properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The highlights grid is the right spot. Adding a SunMint highlight item that links to the plot map:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #243 opened. Verifying the edit on the branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4926,6 +4939,7 @@ Verified on the branch: `🌱 SunMint Program` at line 550, link at 551, clean m
 ### 🤖 Autopilot
 
 👍 Go signal received — merging the SunMint highlight PR.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4985,26 +4999,31 @@ matching the existing highlight-item style (inherits color, underlined link).
 ### 🤖 Autopilot
 
 Let me examine the transcript to reconstruct time spent by both of us. I'll look at the session records and message timestamps.
+[2 tool result(s) compacted: recall_context, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the transcript repo structure directly to reconstruct the session timeline.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the session files to find this conversation and its timestamps. First let me understand the schema and identify this thread's session.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript repo has detailed session metadata. Let me find THIS conversation's session (the Telegram thread) and its timestamps.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The python inline didn't print (probably path escaping). Let me read the meta files directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5117,4 +5136,56 @@ Want me to log this as a [CONTRIBUTION EVENT] on the DAO ledger (e.g. **85 min**
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → echo "=== transcript repo files ==="; cd /tmp 2>/dev/null && rm -rf tr_check && git clone -q --depth 50 https://github.com/TrueSightDAO/true; cd /tmp/tr_check && echo "=== sessions dir (recent) ==="; ls -lat sessions/ | head -15; echo "=== SCHEMA.md (first 60 lines) ==="; head -60 ; cd /tmp/tr_check && echo "=== sessions on 2026-08-30 ==="; ls sessions/2026-08-30/; echo "=== sessions on 2026-08-31 ==="; ls sessions/2026-; …(+13 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Here's the time-attribution analysis from the transcript records (session `ffb0a03346b2`, the Santa Anna thread).
+
+## Time spent — Santa Anna site-visit buildout
+
+**Source:** `/opt/truesight_autopilot
+
+
+### 🤖 Autopilot
+
+👍 Go signal received — logging the Santa Anna execution work as a contribution event. Let me verify the event format first and check the handoff registry.
+
+
+### 🤖 Autopilot
+
+The event docs confirm the format: **CONTRIBUTION EVENT** with `Type`, `Amount`, `Description`, `Contributor(s)`, `TDG Issued`. Submitting the logged execution time now.
+
+
+### 🤖 Autopilot
+
+## ✅ Contribution event logged
+
+**CONTRIBUTION EVENT submitted successfully** to the DAO ledger:
+
+| Field | Value |
+|---|---|
+| Type | Time (Minutes) |
+| Amount | **85** |
+| Contributor(s) | Sophia Truesight (autopilot) |
+| TDG Issued | 0 |
+| Description | Santa Anna Fazenda buildout — FSVP PDF v1→v4, video pipeline (frames/vision/Whisper/3× YouTube), farm page + journey + gallery + cross-links, SunMint SA-P1 plot + SCHEMA.md, popup link + 404 fix, prod promotions, runbook updates |
+
+The full Santa Anna arc is now recorded end-to-end: **site visit → FSVP record → farm profile → SunMint plot → bidirectional cross-links → ledger entry**.
+
+---
+
+**RESUME HERE → next unit (open threads, no rush):**
+1. **`agentic_ai_context#851`** (farm-page conventions doc) — still open, awaiting merge word
+2. **Jedielcio's boundary photos** (email) → full 3-ha SA-P1 boundary when they arrive
+3. **Handoff manifest has new active plans** you may want to kick off: `SUNMINT_PUBLIC_SIGNATURES_PLAN` (awaiting kickoff), `SUNMINT_IMPACT_MAP_EXTENSION_PLAN` (in progress, PR0 done — RESUME HERE=PR1), `SUNMINT_MOBILE_APP_PLAN` (awaiting kickoff)
+4. If you want the 85-min autopilot time to carry TDG, say so and I'll re-submit with a TDG amount per your discretion
+
+Anything else on this thread?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
