@@ -4084,6 +4084,7 @@ The nav navigates to separate pages — so the boundary module should be a new p
 ### 🤖 Autopilot
 
 I have everything I need. The module is a new page `limites-da-fazenda/index.html` + nav option + SW cache entry. Let me build it — a self-contained page mirroring the app's patterns (IndexedDB queue, i18n, camera, geolocation):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4210,4 +4211,96 @@ Plan status: **PR0 ✅ · PR1 ✅ · PR2 ✅ · PR3 next · PR4 (backend upsert 
 
 Executing **PR3: farms seed (`farms/index.json`)**. Per protocol, reading the plan's PR3 spec + the plots generator to mirror it:
 [2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⏸️ Paused before the next unit.
+Gate: turn did not open a PR — halting auto-advance
+Reply 'go' to continue.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⚙️ ssh run …
+
+
+### 🤖 Autopilot
+
+Go-signal received — resuming **PR3: farms seed (`farms/index.json`)**. Gathering the plan spec + generator pattern in parallel:
+
+
+### 🤖 Autopilot
+
+Plan + generator pattern in hand. PR2 already wired the farmer-app side (`REMOTE_FARMS_URL` fetches `farms/index.json` + unions with local) — so PR3 is the **seed side**: generator + `farms/index.json` + workflow. Let me see the generator's output/write pattern and the rebuild workflow to mirror them:
+
+
+### 🤖 Autopilot
+
+PR3 spec confirmed (generator → `farms/index.json`, farmer app already fetches it from PR2). Let me get the exact farm_ids from the live plots registry, then build the generator + seed:
+
+
+### 🤖 Autopilot
+
+4 farms confirmed: rancho-maranta, santa-anna-fazenda, fazenda-cleide, paulo-la-do-sitio-para. Now building `build_farms_index.py` (mirroring the plots generator) + the seed + a new workflow:
+
+
+### 🤖 Autopilot
+
+ruff isn't on PATH in this shell — let me use the venv/python module path used by the hard-rule suite (as in prior turns):
+
+
+### 🤖 Autopilot
+
+Lint passes; format needs one pass. Let me apply it, re-verify, and build the seed from the live plots data (so the seed matches reality — 4 farms):
+
+
+### 🤖 Autopilot
+
+Seed built with all 4 farms. Now creating the rebuild workflow (mirroring the plots one) and pushing all three files to `sunmint` via the sanctioned api_only path:
+
+
+### 🤖 Autopilot
+
+All three PR3 artifacts built and validated. Pushing to `sunmint` (api_only repo → sanctioned Contents-API path):
+
+
+### 🤖 Autopilot
+
+All three PR3 files landed on `sunmint/main` ✅ — **PR3 complete** (via the sanctioned Contents-API path for the api_only data repo, as with PR1).
+
+## What I did this turn
+
+**PR3 — farms seed (`farms/index.json`)** (from SUNMINT_BOUNDARY_SUBMISSION_PLAN §5 PR3). The farmer-app side was already wired in PR2 (`REMOTE_FARMS_URL` fetches `farms/index.json` + unions with device-local IndexedDB); this turn built the **seed side**:
+
+1. **`scripts/build_farms_index.py`** (56 lines, ruff-clean, format-clean, compiles) — mirrors `build_plots_geojson.py` (same SHEET_ID + `SunMint Plots` tab, same SAFETY preserve-on-failure logic) and aggregates per `farm_id`: name (humanized), region, owner, **plot_count, total_hectares, statuses** → emits `farms/index.json`
+2. **`farms/index.json`** — live seed, 4 farms from the plots registry:
+   | farm_id | name | region | plots | ha | status |
+   |---|---|---|---|---|---|
+   | rancho-maranta | Rancho Maranta | Altamira | 2 | 5.4 | planted+proposed |
+   | santa-anna-fazenda | Santa Anna Fazenda | — | 1 | 3 | proposed |
+   | fazenda-cleide | Fazenda Cleide | Altamira, Para | 1 | 114 | proposed |
+   | paulo-la-do-sitio-para | Paulo La Do Sitio Para | Medio Xingu, Para | 1 | 5.56 | proposed |
+3. **`.github/workflows/rebuild-farms-index.yml`** (50 lines, YAML-valid) — daily 06:10 UTC + `repository_dispatch: [farms-index-rebuild]` + manual, same pattern as the plots workflow
+
+**Why api_only path:** `sunmint` is classified machine-owned (data repo) — the PR gate blocks branches; Contents API is the documented path (same as PR1's `extract_plot_gps.py`).
+
+**Governor rules satisfied:** rule 1 now works across *all* devices (remote seed + device-local union) — a farm registered anywhere shows in the dropdown everywhere within one rebuild cycle.
+
+## RESUME HERE → PR4 (next unit, fresh turn)
+
+**Backend farm upsert + `FARM BOUNDARY EVIDENCE EVENT` catalog entry** (plan §5 PR4, rule 4 — new farm name auto-creates record):
+1. `lookup_event_docs("FARM BOUNDARY EVIDENCE EVENT")` to see the catalog + proposal path
+2. Add the event to the catalog (canonical labels: Farm Name, Plot ID, Boundary Type, Media URL(s), Extracted GPS list, Area ha) — likely `dao_protocol` / `tokenomics`
+3. Receiver: boundary event with new farm name → create farm row in Farms sheet, then append plot/media + trigger `farms-index-rebuild` / `plots-index-rebuild`
+4. Open PR, report URL
+
+Plan status: **PR0 ✅ · PR1 ✅ · PR2 ✅ · PR3 ✅ · PR4 next · PR5 = `gate: UAT`**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/build_plots_geojson.py" -o build_plots.py && echo "=; cd /tmp && echo "=== build_plots tail (output write) ===" && sed -n '120,244p' build_plots.py && echo "=== rebuild workflow ===" && curl -s ; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geojson" -o plots.geojson && python3 - <<'PYEOF'; …(+4 more)
 
