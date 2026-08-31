@@ -2208,11 +2208,13 @@ Nothing prod touched, nothing deleted. The pipeline is self-running again with c
 ### 🤖 Autopilot
 
 Resuming — checking the repaired pipeline's progress:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ **Stuck again — same file, same ffmpeg pid (64864)** — IMG_3911 has been "converting" for ~15+ min and the progress count hasn't moved (19). The ffmpeg process is alive but not finishing. This suggests IMG_3911.MOV is a **problematic source** (not just a crash — it hangs). Let me check the ffmpeg CPU/elapsed and the source file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2220,6 +2222,7 @@ Resuming — checking the repaired pipeline's progress:
 False alarm — **it's actively converting, just slow**: ffmpeg elapsed 2:45, 120% CPU, output growing (52.7 MB and counting). The 65.96s source at 8.8 Mbps is a heavy encode on this t3.medium CPU; the earlier "stuck" read was because the previous turn's check caught it mid-encode (the resume job only started 3 min ago — it's on its first file). Elapsed 2:45 for a 66s video = ~2.5× realtime encode rate, so the remaining ~53 videos at this rate ≈ **~45–60 min** (some are 300 MB monsters like IMG_3908 which took 15 min alone).
 
 The pipeline is healthy — my "stuck" alarm was premature (same pid because it's the SAME conversion still running, and I misread the elapsed). Let me confirm the watch loop will pick up IMG_3911's upload once done, and converge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2460,4 +2463,63 @@ The retry loop runs unattended; nothing more needed until the quota resets.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo '=== reupload log tail ==='; tail -12 /tmp/reupload_fix.log 2>/dev/null | grep -v FutureWarning | grep -v warnings.warn; echo '=== proc; cat > /tmp/reupload_retry.sh <<'EOF' #!/bin/bash # Retry loop: re-upload entries with dead yt_ids; on quota 429, wait and retry. for i in $(
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] [Handoff context — this Telegram topic (thread 17184) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Retry loop is running (pid 73872) — it will wait out the daily quota (30-min intervals, up to 30h) and re-upload the remaining **18 dead** videos as quota frees. Current state: **53/71 live, 18 dead p
+
+
+### 🤖 Autopilot
+
+Resuming — checking the retry loop and current live count:
+
+
+### 🤖 Autopilot
+
+Retry loop is alive and durable (30-min cycles, 30h window — will catch the quota reset at ~07:00 UTC, ~11h away). Dead count stable at 18.
+
+While the loop waits, there's **urgent value** in updating the runbook: the Cleide pipeline running on this box shares the **same YouTube project quota** (`project_number:323153649224`) — so the other Sophias will hit the same 429 and the same dead-ID trap. Let me add those lessons to FARM_MEDIA_PIPELINE.md now:
+
+
+### 🤖 Autopilot
+
+The runbook is missing the two hard-won lessons (shared quota + live-ID verification). Let me add them via PR:
+
+
+### 🤖 Autopilot
+
+PR open: **agentic_ai_context#864** (runbook lessons). The retry loop keeps running in the background. Let me converge with status.
+
+## ✅ Turn — runbook hardened, retry loop durable
+
+### This turn
+1. **Confirmed retry loop healthy** (pid 73872, 30-min cycles, 30h window) — will catch the YouTube quota reset (~07:00 UTC, ~11h) and re-upload the 18 dead videos automatically. Current: **53/71 live**.
+2. **Opened [agentic_ai_context#864](https://github.com/TrueSightDAO/agentic_ai_context/pull/864)** — codified the two hard lessons into FARM_MEDIA_PIPELINE.md so the other Sophias (Cleide pipeline is actively running on this same box, sharing the **same YouTube project quota**) don't repeat them:
+   - **Shared quota**: all instances share one Google project (`project_number:323153649224`); daily 'Video Uploads' cap ≈ 50–60; **always run uploads behind a 30-min retry loop** that survives 429s; skip entries with LIVE yt_ids.
+   - **Verify LIVE, not captured**: title→ID recovery against the shared 259-video playlist captures stale IDs (deleted videos linger in the playlist); **live-sweep every manifest ID** before trusting it.
+   - Corrupt-source handling (`moov atom not found` in the original zip MOV = `SOURCE_CORRUPT`, don't loop).
+
+### State
+| Item | Status |
+|---|---|
+| YouTube live | 53/71 ✓ (18 pending quota retry, 1 source-corrupt IMG_4011) |
+| Retry loop | pid 73872, durable (30h window), resumes after quota reset |
+| Photos | 52/52 in `farm-media-raw/la-do-sitio/photos/` ✓ |
+| Runbook | hardened (PR #864 open — merge on your go, or I can merge) |
+| Cleide pipeline | other Sophia's, running, untouched ✓ |
+
+## RESUME HERE → next unit (~11h, after quota reset)
+1. **Retry loop completes** → verify **71/71 yt_ids live** (live sweep, zero dead) + dupe check.
+2. **Manifest PR** → `agentic_ai_context/FARM_MEDIA_MANIFESTS/la-do-sitio.json` (regenerate from corrected manifest) + index update.
+3. **Farm page wiring** — curated YouTube embeds into La do Sitio `media.json` (beta-first, prod on your go).
+4. **Cleanup** (on your confirm) — delete local raw after upload + manifest.
+
+Nothing more needed until the quota resets — the loop handles it unattended. PR #864 ready for your review/merge anytime.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo '=== retry loop alive? ==='; ps -p 73872 -o pid,etime,%cpu,cmd 2>/dev/null || echo "LOOP ENDED"; echo '=== retry log tail ==='; tail -2; cd /tmp && curl -sL "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/FARM_MEDIA_PIPELINE.md" -o farm_pipeline.md && w
 
