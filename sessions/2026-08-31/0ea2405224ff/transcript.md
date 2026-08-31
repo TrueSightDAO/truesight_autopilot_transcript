@@ -8,243 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[observed, not directed at you — Nobody Will not DM you]: Florianopolis is not a demo. Paloma and the rest of the folks really planted a bouganvilla tree
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=16631]
-
-
-### 🤖 Autopilot
-
-You're right — my "demo" framing was wrong, and it matters: the Bougainvillea (and Criolla) in Florianópolis are **real trees people actually planted**, not a demo. That also means the original Florianópolis map center was correct all along — it was showing the first real plantings (Founderhaus / Paloma's crew) before the Altamira pilot came along.
-
-Fixing the label now — "Florianópolis (demo)" → "Florianópolis (planted)" in the view switcher:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Two "demo" references to fix. Let me check if "demo" appears anywhere else in the repo (or the runbook) so I fix the framing everywhere, not just the map:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Only the two lines in `sunmint.html` carry the "demo" framing for Florianópolis (the `edgar.html` hits are `demoUrl` — unrelated meaning). Let me also check the runbook I wrote for the same framing, then fix the map:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The runbook is clean — the "demo" framing only lives in the two `sunmint.html` lines. Fixing both now:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both edits applied, JS clean, no "demo" left in the map script. Pushing the fix:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #327 opened. Merging (go-signal from earlier covers this fix):
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-## What I did this turn
-
-**Corrected the framing: Florianópolis is real planting, not a demo.**
-
-You're right, and I was wrong to call it a demo. The Bougainvillea (`Edgar_20260821175134_005`, QR `FOUNDERHAUS_BOUGAINVILLEA_20260821_1`) and Criolla (`Edgar_20260819134740_489`) are **real trees that Paloma and the team actually planted** at Founderhaus — that's why the original map center was Florianópolis: it was showing the first real plantings before the Altamira pilot existed. It's a real planting site, not a demo site.
-
-**PR #327 — merged** (`fix/floripa-planted-label`, sha 651bd5e):
-- View chip label: `Florianopolis (demo)` → **`Florianopolis (planted)`**
-- Code comment: "demo trees (Florianopolis)" → "Florianopolis plantings"
-
-**Checked everywhere else first** — the runbook (`SUNMINT_PLOTS_REGISTRY.md`) and `OPEN_FOLLOWUPS.md` have no Florianópolis-as-demo framing; `edgar.html` "demo" hits were unrelated `demoUrl` fields. Only the two `sunmint.html` lines needed fixing.
-
-**Testing:** both anchors exact-matched; extracted map script → `node --check` passed; confirmed **zero** "demo" occurrences remain in the map script.
-
-## Live on beta (hard-refresh)
-
-→ **https://beta.truesight.me/sunmint.html** — the chip now reads **"Florianopolis (planted) (2)"**.
-
-## RESUME HERE →
-1. **Governor reviews the label on beta** → if good, **explicit approval** → `sync_beta_to_prod(truesight_me_prod)` (promotes #325 + #326 + #327 together).
-2. **Consider recording the Florianópolis plantings properly** — the Criolla is status NEW, the Bougainvillea LINKED; if there are planting-event records for Paloma's crew, we could tie them to the plot/QR on the ledger (worth checking with Paloma).
-3. **Triage the 13 non-Amazon tree entries** — now that we know Florianópolis is legit, the Oregon/China/no-coords entries need the same scrutiny (real vs import artifacts).
-4. **Create the "SunMint Plots" tab** in the ledger spreadsheet for `build_plots_geojson.py`.
-5. **RM-P2 boundary authority** — CAR/INCRA polygon or perimeter walk (5 ha claimed vs 2.9 ha walked).
-6. **Register Altamira trees on-chain** — plots are mapped, but zero planted-tree rows exist at the pilot yet.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → cloned truesight_me_beta, found both "demo" refs (sunmint.html only), checked runbook + OPEN_FOLLOWUPS clean, applied 2 edits, node --check OK
-• `git push` → truesight_me_beta PR #327
-• `merge pr` → ✅ PR #327 merged (sha: 651bd5e106283e954804e8c60b27bd016e5fa001)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → cd /tmp && rm -rf tmb4 && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_me_beta.git tmb4 2>&1 | tail -1; cd tmb4 && grep ; cd /tmp/tmb4 && echo "=== all 'demo' refs in repo ===" && grep -rn "demo" --include="*.html" --include="*.js" --include="*.md" . | grep -iv ; cd /tmp && rm -rf aac2 && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aac2 2>&1 | tail -1; cd aac2 && echo; …(+1 more)
-• `merge pr` → ✅ PR #327 on truesight_me_beta merged successfully (sha: 651bd5e106283e954804e8c60b27bd016e5fa001). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn
-
-**Corrected the framing: Florianópolis is real planting, not a demo.**
-
-You're right, and I was wrong to call it a demo. The Bougainvillea (`Edgar_20260821175134_005`, QR `FOU
-
-
-### 🤖 Autopilot
-
-Go received — next unit: **triage the tree registry** (now that Florianópolis is confirmed legit, the non-Amazon entries need the same scrutiny). This is pure investigation: read the full registry, trace the source-of-truth sheet rows, and check the QR records. Let me start.
-[2 tool result(s) compacted: ssh_run, lookup_qr_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-21 trees now (was 19 earlier — two **new Altamira entries** appeared: `Edgar_20260830154309_009` and `Edgar_20260831011117_005` at -3.29609, -52.58318, matching the planting-event coords). And the QR lookup **confirms the Bougainvillea is real**: `ASSIGNED_TO_TREE`, email `paloma@founderhaus.club`, manager Gary. Now let me read the source-of-truth sheet to trace where the junk coordinates actually come from:
-[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The sheet is the source of truth and it's rich — let me see the remaining rows (the earlier read truncated at row ~10) to complete the triage:
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the tail of the sheet data to complete the triage — especially the Bougainvillea row (what coords/QR it carries) and the newest Altamira rows:
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The nested artifacts are eating the output — let me pull just the key columns (ID, lat, lng, status, species, QR) for all rows in one compact read:
-[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Full triage complete — I have everything. Let me check the OPEN_FOLLOWUPS.md structure so I can persist this triage as a follow-up entry (so future agents don't redo the work):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Triage is nearly complete. Key finding: the builder already skips `TEST`/`E2E` and `INVALID` rows — the Oregon/China entries show as `NEW` so they leak into the public map. The Bougainvillea's coords in the geojson come from somewhere other than the sheet (sheet lat/lng is empty — they were backfilled at QR-link time). Let me check the no-coords trees' photo EXIF for recoverable GPS, and pull the exact photo/submitted-name columns:
-[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Triage complete — I have the full picture from the source-of-truth sheet (28 rows) vs the public index (21 features). Here's what the data actually says:
-
-## Triage: what's really in `trees/index.geojson` (21 trees on the map)
-
-**4 REAL, geolocated program plantings:**
-
-| Tree | Location | Species | Submitter | Status |
-|---|---|---|---|---|
-| `Edgar_20260819134740_489` | Florianópolis (-27.4386, -48.4997) | Cacao Criolla | Unknown | NEW |
-| `Edgar_20260821175134_005` | Florianópolis (-27.4390, -48.4997) | Bougainvillea | **Paloma Lecheta** | **LINKED** (QR `FOUNDERHAUS_BOUGAINVILLEA_20260821_1` → ASSIGNED_TO_TREE) |
-| `Edgar_20260830154309_009` | **Altamira** (-3.29609, -52.58318) | Cacao Criolla | Gary Teh | NEW — matches planting event |
-| `Edgar_20260831011117_005` | **Altamira** (-3.29609, -52.58318) | Cacao Native | Sophia Truesight | NEW — same plot 1 coords |
-
-**17 non-program artifacts polluting the public map:**
-- **9 Oregon/California** (44.56/-123.26 Corvallis, 45.51/-122.63 Portland, 42.22/-122.74, 41.36/-122.20) — all 2025-07/08, submitted by Gary from **`file:///Users/garyjob/...report_tree_planting.html`** — these are **dapp development test submissions**, species "unknown" for the first 5. Cacao can't grow outdoors in Oregon.
-- **1 Shenzhen, China** (22.94/113.89, 2026-08-11, "Unknown" name, beta site) — suspicious, likely a test from the beta.
-- **3 Sophia Truesight rows (2026-08-29)** — **reuse the same Oregon coords** (44.560058/-123.262181 etc.) — automated test submissions.
-- **4 no-GPS rows** (2026-08-21/23, Cacao Criolla, empty lat/lng) — real submissions but missing location; **GPS recoverable from photo EXIF** if we want them.
-
-Also: `Edgar_20250809202528_061` exists in the sheet but not the index; `Edgar_20260819134722_487` is a rejected **duplicate** of the Floripa Criolla (INVALID — correctly excluded).
-
-## My recommendation
-
-The builder **already excludes** `TEST*`/`E2E` IDs and `INVALID` status rows. So the clean fix requires **zero code changes** — just set `Status = INVALID` on the 17 artifact rows in the sheet. They stay in the sheet as audit history (per the builder's design comment) but vanish from the public index/map. The map counter would honestly read **4 trees** (2 Florianópolis + 2 Altamira).
-
-The 4 no-GPS rows could instead get EXIF-recovered coords before disposition, if they're real.
-
-**Before I touch the sheet (it's the source of truth):** do you want me to
-1. Mark all 17 as `INVALID` (simplest, honest map), **or**
-2. Recover GPS from the 4 no-coord photos first, then decide row-by-row, **or**
-3. Keep the Oregon/Shenzhen rows but move them out of the live index another way (e.g. a `status: "test"` I can add to the builder)?
-
-Say which and I'll execute. (And yes — this means the "Florianopolis is not a demo" point is even more important: it's 1 of only 4 real geolocated trees on the whole map.)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → cd /tmp && rm -rf sunmint3 && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git sunmint3 2>&1 | tail -1; cd sunmint3 && ech; cd /tmp/sunmint3 && echo "=== build_tree_geojson.py: coord/status logic ===" && sed -n '50,140p' scripts/build_tree_geojson.py; cd /tmp/aac2 && echo "=== header + first lines ===" && head -30 OPEN_FOLLOWUPS.md && echo "..." && echo "=== '## Pending' location ===" && g
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=16631] Just leave the records alone I will go clear them up myself
-
-
-### 🤖 Autopilot
-
-Understood — leaving the records alone. No sheet edits, no status changes, nothing pushed.
-
-For when you do clear them, here's the exact hit-list from the source-of-truth sheet (rows 2–28 of the "SunMint Tree Planting" tab), so you don't have to dig:
-
-**Real program plantings — keep:**
-- `Edgar_20260819134740_489` — Florianópolis Criolla (NEW)
-- `Edgar_20260821175134_005` — Florianópolis Bougainvillea (LINKED, Paloma)
-- `Edgar_20260830154309_009` + `Edgar_20260831011117_005` — Altamira Plot 1 (NEW)
-
-**Artifacts you'll likely want to clear (17):**
-- 5 × Oregon "unknown" + 2 × Oregon Cacao/Cacao-Native — 2025-07/08 dev-test submissions via `file:///Users/garyjob/...report_tree_planting.html`
-- 1 × Shenzhen China (22.94/113.89) — 2026-08-11 beta test
-- 3 × Sophia Truesight 2026-08-29 rows — reuse the same Oregon coords (automated tests)
-- 4 × no-GPS rows (2026-08-21/23 Criolla) — real submissions, location missing (GPS may be recoverable from photo EXIF if you want them geolocated)
-- Plus already-excluded: 4 TEST/E2E rows (skipped by builder) and `Edgar_20260819134722_487` (INVALID duplicate)
-
-**How your cleanup will reach the map:** the sheet is the source of truth — `build_tree_geojson.py` regenerates `trees/index.geojson` from it on the daily workflow (and skips `TEST*`/`E2E`/`INVALID` rows automatically). So once you set rows to `INVALID` (or delete them), the next rebuild refreshes the map — no code change needed.
-
-When you've cleared them, ping me and I'll trigger the rebuild (or wait for the 06:05 UTC run) and verify the map counter drops to the honest 4.
-
-Meanwhile the map, plot registry, generator, and runbook are all live and untouched. Want me to hold here, or is there anything else that doesn't touch the tree records?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=16631] I have cleared out the bad records
-
-
-### 🤖 Autopilot
-
-Let me verify the cleanup landed — checking the sheet (source of truth) and the current registry state, then I'll trigger the rebuild.
-[3 tool result(s) compacted: read_google_sheet, read_google_sheet, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Sheet verified — your cleanup landed. Marking the picture straight:
-
-**Your statuses now (29 rows):** all 17 artifacts → `INVALID` ✓ (Oregon ×10, Shenzhen, 3 no-GPS Criolla, 2 Sophia-test rows, 08-30 Altamira test, plus the 487 duplicate). The Bougainvillea stays **LINKED** ✓. The TEST rows are `LINKED` but the builder skips `test`/`e2e` IDs anyway. And there's a **new row 29**: `Edgar_20260831015152_009` at Altamira Plot-1 coords, status NEW.
-
-The public index is **stale** — still shows 20 features including the Oregon `NEW` rows (the daily 06:05 UTC rebuild hasn't run since your edits). Let me check the new row's details and trigger the rebuild so the map reflects your cleanup now:
-[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 Row 29 is a **real new Altamira planting**: `Edgar_20260831015152_009`, Cacao (Native), planted 2026-08-31T01:51:49Z (submitted by Sophia Truesight, Plot-1 coords). And I can see the rebuild workflow supports `workflow_dispatch`, with `gh` authenticated — so I can trigger the rebuild right now instead of waiting for 06:05 UTC. Let me fire it and watch it complete:
@@ -4895,11 +4658,13 @@ My enhanced version survives at `/tmp/append_usage_full.py` (3,590 B, from the e
 ### 🤖 Autopilot
 
 `Path` is already imported (line 30). Wiring applied. Now run the local test suite (hard rule before push) and verify the enhanced `append_usage.py` is valid — then prepare the transcript-repo PR (enhanced version). Let me run the full suite on the clone:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Suite mostly green: **820 passed, 6 failed**. But the 6 failures are in `test_chat_observe.py` and `test_events_catalog.py` — **unrelated to my change** (they test chat observation and the events catalog network-fallback, neither touched by my wiring). Per the hard rule "pre-existing errors in untouched files are acceptable." Let me confirm they fail on a clean checkout too (baseline), then format + commit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4907,16 +4672,19 @@ Suite mostly green: **820 passed, 6 failed**. But the 6 failures are in `test_ch
 Confirmed — the 6 failures are **pre-existing** (they fail identically with my change stashed). My change is isolated to `scripts/append_to_transcript.py`. (The other two modified files — `app/data/events_catalog_snapshot.json` deleted + `followups/state.json` — are runtime state, not mine; I'll exclude them.)
 
 Now commit the wiring and push a branch for the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed (`ebc50cf`). Opening the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #358 open on truesight_autopilot. Now the second PR: the **enhanced `append_usage.py`** (with `--github` push) → `truesight_autopilot_transcript`. Let me verify my enhanced version's diff vs canonical and build that PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4924,6 +4692,7 @@ PR #358 open on truesight_autopilot. Now the second PR: the **enhanced `append_u
 The diff came back **empty** — `/tmp/append_usage_full.py` (my "enhanced" copy) is **identical** to the canonical version on the transcript repo. That means my earlier `--github` enhancements were only ever in the live-box edit (which I reverted) — the saved copy predates them. So there's **nothing to PR to the transcript repo**; the canonical version already has everything it needs, and the wiring PR (#358) calls the tool's **local-write** mode, which is exactly right for a no-deploy wiring.
 
 Let me merge PR #358 (per your instruction) and verify the repo state:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4979,11 +4748,13 @@ If some let me know. I think we can close this out
 ### 🤖 Autopilot
 
 Let me verify the exact upload state before answering — checking farm-media-raw, the manifest's coverage, and what remains un-uploaded:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two unexpected results — let me inspect both more carefully (the manifest structure and the actual farm-media-raw tree):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5094,4 +4865,44 @@ So one of two things is happening: either the channel has a display name I shoul
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → echo "=== mintru on the box ===" && timeout 20 grep -ri "mintru" /opt/truesight_autopilot/config/youtube/ /home/ubuntu/creds/ /opt/truesight; echo "=== which channel does this token belong to? ===" && TOKEN=$(python3 -c "import json; print(json.load(open('/opt/truesight_autopilot/c; echo "=== search whole box for other youtube/mintru creds ===" && find / -iname "*youtube*" -not -path "*/proc/*" -not -path "*/sys/*" -not ; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] Close out this thread
+
+
+### 🤖 Autopilot
+
+Closing out this thread — let me do a final verification pass on the key deliverables and capture any open items so nothing is lost. First, checking the handoff manifest and current backlog state:
+
+
+### 🤖 Autopilot
+
+# ✅ Thread closed — final closeout summary
+
+## What shipped from this thread (all live in prod)
+
+| Deliverable | Where |
+|---|---|
+| **SunMint impact map** — Altamira plots, view switcher, z17 cap, plot→farm popup links | truesight.me/sunmint.html (#325–#329, prod) |
+| **Rancho Maranta farm page** — warm header, 3 GPS-tagged videos, 11 images, SunMint highlight | agroverse.shop/farms/rancho-maranta-para/ (#229–#250, prod) |
+| **Plots registry** — sheet-backed (SunMint Plots tab), RM-P1 0.4 ha walk-approx, RM-P2 5 ha | ledger + sunmint/plots |
+| **Satellite cache** — Altamira cell + both plots, daily workflow with `--plots` | sunmint/satellite |
+| **FARM_MEDIA_PIPELINE** — 15 HEIC originals archived, 52-item manifest filed, 3 public videos | farm-media-raw + agentic_ai_context (#860/#861) |
+| **SEO rows** + usage-logging tooling + backlog entries | sheets + transcript repo + OPEN_FOLLOWUPS |
+| **Ledger contributions** — 570 min (9.5 hrs) fully logged | 5 submissions, evidence-linked |
+
+## One open item for YOU (nothing I can resolve without you)
+
+**The "Mintru" YouTube account** — I searched everywhere accessible and found no Mintru channel; my 3 videos went to the **TrueSight DAO** channel (@truesightdao, admin@truesight.me) — the same account all the other Sophias' tooling uses (Bean to Bliss, Santos, etc.). If Mintru is a separate channel, point me to its credentials when convenient and I'll re-upload + update the farm page + manifest. Until then, the videos live on the DAO channel.
+
+## Continuing in other threads (manifest intact)
+
+- **SUNMINT_BOUNDARY_SUBMISSION_PLAN** — in progress, RESUME HERE = PR1
+- **SUNMINT_PUBLIC_SIGNATURES_PLAN** — awaiting kickoff, RESUME HERE = PR1
+- **SUNMINT_TREE_QR_LINKING** — active, first real LINK pending Gary's go
+- **OPEN_FOLLOWUPS** — intact (139 KB); pending entries: SEO tooling, Mintru-era items all captured
+
+Everything from this thread is **shipped, documented, logged, and prod-live**. No loose ends except the Mintru pointer above. Close it out — and ping me anytime on the pending plans. 🌱
 
