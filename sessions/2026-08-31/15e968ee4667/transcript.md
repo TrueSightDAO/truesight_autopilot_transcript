@@ -584,11 +584,13 @@ PR1 branch updated and pushed to PR #354. All checks pass, and the verification 
 ### 🤖 Autopilot
 
 The diff-stat shows **24 unrelated files** — my branch is based on a stale local HEAD, so PR #354 would show a noisy diff (resume-registry, telegram-adapter, etc. changes that belong to main, not this PR). Before the gate review, I must rebase onto current `origin/main` so the PR contains only my script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The rebase failed due to unstaged changes (`worktrees/vault` — a submodule/worktree pointer, unrelated to my script), so the force-push didn't happen. But the diff-stat `origin/main...HEAD` shows only my script — meaning the stale diff was from a **pre-rebase view**. The PR branch needs a proper rebase onto origin/main. Let me stash the worktree change, rebase, and force-push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -645,6 +647,7 @@ On your go: **PR2** = add the 30-min cron (mirroring `sync_pending_caches.py`) +
 ### 🤖 Autopilot
 
 Gary cleared the PR1 gate with 👍. Before executing PR2, let me re-read the plan's PR2 definition (per handoff protocol) and check how `sync_pending_caches.py` is cron-scheduled on the box so I mirror it exactly.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -787,4 +790,36 @@ PR3 live — README documents both public files, the stable URLs, the per-measur
 **✅ Done this turn — actions taken:**
 • `upload file to github` → https://github.com/TrueSightDAO/sunmint/blob/main/README.md
 • `ssh run` → curl -sL https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/README.md | grep -cE "signatures.json|tree_growth_measurements.json|Ver
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+what is the URL where the JSOn caches are stored?
+
+
+### 🤖 Autopilot
+
+The JSON caches are live on the public **`TrueSightDAO/sunmint`** repo (raw.githubusercontent.com):
+
+| Cache | URL |
+|---|---|
+| **Signature ledger** (73 RSA attestations) | `https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/signatures.json` |
+| **Tree growth measurements** (0 rows — tab empty) | `https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/tree_growth_measurements.json` |
+
+GitHub blob views (for browsing in a browser):
+- https://github.com/TrueSightDAO/sunmint/blob/main/signatures.json
+- https://github.com/TrueSightDAO/sunmint/blob/main/tree_growth_measurements.json
+
+Both refresh every 30 min via cron (`sync_sunmint_signatures.py`), and both are documented in the repo README: https://github.com/TrueSightDAO/sunmint/blob/main/README.md
+
+Anyone can verify any signature offline from the raw URL:
+```bash
+curl -sL https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/signatures.json -o signatures.json
+# extract public_key -> pub.pem, signature -> sig.bin, signed_payload -> payload.txt
+openssl dgst -sha256 -verify pub.pem -signature sig.bin payload.txt   # => Verified OK
+```
+
+Want me to attach a sample of the JSON so you can eyeball the shape directly (e.g. one planting event record), or proceed with **PR4** (docs/UAT — the final roadmap unit)?
 
