@@ -2725,42 +2725,55 @@ The encode keeps getting killed by the 60s timeout mid-write. Let me run it in t
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Multiple stale ffmpeg processes from the timed-out runs are still going. Let me kill them all and verify the first clean encode (`IMG_7621_p1.mp4`, 15s hero) is a valid complete file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The valid hero clip is `IMG_7621_p1.mp4` (15s, 1280px, 29MB). Uploading it to the admin@truesight.me channel (unlisted, per the safe default) using the box's credential + script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The script resolves the video path relative to its own dir — I need to pass the absolute path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Hero video uploaded successfully** — https://www.youtube.com/watch?v=AriHjXTsLio (unlisted). Now let me slot it into the farm page's media.json (the schema supports video entries). Let me check the current media.json structure and the media-gallery renderer's video format:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The gallery renderer supports `type: 'youtube'` + `videoId` → iframe embed. Let me check how it consumes the JSON (does it iterate `gallery`, or a separate `videos` key?) so I slot the video correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The renderer iterates `data.gallery` — a `type: 'youtube'` + `videoId` item renders as an embedded iframe. Adding the hero video entry to the farm page's media.json:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 media.json updated with the video. Pushing + PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #234 opened. Merging per the standing go:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2816,16 +2829,19 @@ PR #234 opened. Merging per the standing go:
 ### 🤖 Autopilot
 
 Sure — let me flip the video to public using the same stored OAuth credentials. First, let me see what tooling exists for updating a video's privacy:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No dedicated privacy-update script — the uploader only sets privacy at upload. I'll write a small update script reusing the same credentials/token auth pattern. Let me check the uploader's auth setup so I mirror it exactly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The auth pattern is clear (youtube.upload + youtube.force-ssl scopes, token refresh). I'll write a small `set_video_privacy.py` that reuses the same auth and flips the video to public via the Data API `videos().update`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2978,4 +2994,174 @@ PR #235 opened. Merging per the standing go:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → cd /tmp && rm -rf rmv2 && mkdir -p rmv2 && unzip -o -q rancho_maranta_plot_2.zip -d rmv2 "rancho maranta plot 2/*.MOV" && find rmv2 -name "*; ls -la ~/rancho_maranta_plot_1.zip ~/rancho_maranta_plot_2.zip 2>/dev/null; ls /tmp/rmv/ 2>/dev/null | head; cd /tmp && rm -rf rmv2 && mkdir -p rmv2 && unzip -o -q ~/rancho_maranta_plot_2.zip -d rmv2 "rancho maranta plot 2/*.MOV" && echo "=== extrac; …(+8 more)
 • `merge pr` → ✅ PR #235 on agroverse_shop_beta merged successfully (sha: 9af9fe1c1328371de2756151906528dc0ab51f6e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] by the way, I have made avilable more media resources ~/rancho_maranata.zip to plot Rancho Maranta Plot 1 (house)
+
+Consider
+
+- get lat and long to extend plot boundary
+- perhaps glance through to see what is interesting and embed images or videos (youtube public) on the https://beta.agroverse.shop/farms/rancho-maranta-para/
+
+I think the header image is too devoided of human face. Perhaps replace it with something with more human warmth
+
+
+### 🤖 Autopilot
+
+More media for Plot 1 — let me explore what's in `~/rancho_maranata.zip`, extract GPS for boundary extension, and look for human-warmth candidates for the header.
+
+
+### 🤖 Autopilot
+
+New media: 13 MOVs + 5 HEICs (17:03–17:17, Aug 30) — a later walk around Plot 1, likely with people. Let me extract and pull GPS from everything to extend the plot boundary:
+
+
+### 🤖 Autopilot
+
+GPS spans a walk around Plot 1: lat -3.29570…-3.29630, lng -52.58270…-52.58320. Let me convert precisely and get HEIC GPS + look at what the photos show (faces/warmth):
+
+
+### 🤖 Autopilot
+
+GPS extends Plot 1's known bounds (new span lat -3.2957…-3.2963, lng -52.5827…-52.5832 — wider than the current RM-P1 polygon). Now let me convert the HEICs and look for human-warmth candidates (face detection to find where people are):
+
+
+### 🤖 Autopilot
+
+HEIC needs pillow_heif registered (it worked earlier in the sunmint build — the import must be done explicitly). Let me redo with the plugin:
+
+
+### 🤖 Autopilot
+
+5 photos converted. No opencv for face detection — let me try the venv python (it may have more packages) or use a lightweight approach to assess the photos:
+
+
+### 🤖 Autopilot
+
+IMG_7693 (37% skin) and IMG_7694 (30%) are the strongest human-warmth candidates. Let me check the current RM-P1 polygon so I can extend the boundary with the new GPS walk, then wire everything:
+
+
+### 🤖 Autopilot
+
+New walk extends Plot 1 north to -3.2957 (was -3.2960). Let me check the current sheet row for RM-P1 (to keep sheet + registry in sync) and prep the farm-page assets in parallel:
+
+
+### 🤖 Autopilot
+
+Images copied. The sheet ID I used was truncated — let me get the real one from the builder script:
+
+
+### 🤖 Autopilot
+
+Right sheet ID: `1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ`. Let me read the RM-P1 row from the SunMint Plots tab:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Three workstreams: (1) extend RM-P1 boundary with the new GPS walk, (2) pick a human-warmth header + interesting media, (3) wire it all. Let me first find the most human moment across the new clips by sampling frames and running the skin-tone heuristic:
+
+
+### 🤖 Autopilot
+
+Strong human moments: **IMG_7688 (40.9%)** and **IMG_7684 (39.7%)** — these clips (17:05–17:16, during the house walk) clearly show people. IMG_7684 at 40% of its duration (mid-frame) is a great header candidate. Let me extract full frames from the top candidates for visual inspection:
+
+
+### 🤖 Autopilot
+
+IMG_7684_0.5 (47% skin) is the warmest frame — that's the header candidate. Let me create a landscape crop from it (portrait source) and prep everything:
+
+
+### 🤖 Autopilot
+
+Header crop ready (1600×900). Now let me check the current media.json gallery + pick a video (IMG_7684 has the humans — it's the natural Plot-1 "people at the house" video). Let me prep the Plot-1 human video and check the current gallery structure:
+
+
+### 🤖 Autopilot
+
+Full picture ready. Plan: (1) extend RM-P1 boundary in the sheet + regenerate the plots index, (2) replace the header with the warm human frame, (3) add the 5 new photos + a family video to the gallery. Starting with the boundary extension (sheet → builder → index):
+
+
+### 🤖 Autopilot
+
+The update call needs a values list, not a raw string. Fixing:
+
+
+### 🤖 Autopilot
+
+Sheet updated (boundary extended, hectares 0.3→0.4, authority walk-approx). Now regenerate the plots index from the sheet and push:
+
+
+### 🤖 Autopilot
+
+Regenerated correctly. Pushing the updated plots index to sunmint:
+
+
+### 🤖 Autopilot
+
+Push succeeded but the raw CDN shows stale data (CDN lag). Let me verify via the git API directly:
+
+
+### 🤖 Autopilot
+
+Confirmed on main (e710b7c): RM-P1 now 0.4 ha, 6-pt polygon, walk-approx authority. The raw CDN was just cache lag. Now the farm page work: new header + gallery additions. Let me prep the Plot-1 family video (IMG_7684 has the humans) and check what the current header looks like:
+
+
+### 🤖 Autopilot
+
+The nohup should still be running (same as before). Let me poll:
+
+
+### 🤖 Autopilot
+
+Still encoding (frame 620, ~20s of ~30s). Let me wait and poll again:
+
+
+### 🤖 Autopilot
+
+Wait — duration shows 20.9s but it says STILL RUNNING. The IMG_7684 clip is 30.9s. The encode may have just finished writing (20.9s is partial or the file duration is still being written). Let me wait for the process to finish cleanly:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Stopping here per the turn limit — work is mid-flight with the family-video encode still running. Here's exactly where things stand.
+
+## Done this turn (media exploration + Plot 1 boundary extension)
+
+**1. Explored `~/rancho_maranata.zip`** — new Plot-1 media: **13 MOVs + 5 HEICs** (IMG_7683–7699, 17:03–17:17 Aug 30) — a second, longer walk around the house with **people in it** (unlike the first batch).
+
+**2. GPS extracted (boundary extension done ✓):**
+- New walk spans **lat -3.2957…-3.2963, lng -52.5827…-52.5832** — wider than the old RM-P1 polygon (which only reached -3.2960 S)
+- **SunMint Plots sheet row updated** (RM-P1): hectares 0.3→**0.4**, Boundary Authority `approx`→**`walk-approx`**, Verified At 2026-08-31, new 6-point polygon, notes updated
+- **`plots/index.geojson` regenerated + pushed** to sunmint@main (`e710b7c`) — verified live via the GitHub API: RM-P1 = 0.4 ha, 6 pts, walk-approx ✓ (raw CDN was just cache lag)
+
+**3. Human-warmth scan (skin-tone heuristic, no opencv on box):**
+- Best frames: **IMG_7684 (47% skin** at 0.5×duration) and **IMG_7688 (40.9%)**
+- **Header crop created:** `header/rancho-maranta-header-warm.jpg` (1600×900, from IMG_7684's warmest frame — the current IMG_7625 hero is indeed devoid of people)
+- 5 HEICs converted to web JPEGs (IMG_7693/94/96/97/98) — copied into `/tmp/agb3/assets/images/farms/`
+
+## Blocking / in-flight
+
+- **⏳ Family video encode** — `IMG_7684.MOV` → `rancho-maranta-family.mp4` still encoding in the background (nohup, ~20.9s of ~30s at 0.33× — HEVC decode is slow; the file is valid once the process exits). **Do not re-encode** — poll with `pgrep -f IMG_7684` then check duration ≈30.9s.
+
+## RESUME HERE →
+
+1. **Finish the family video** — poll `pgrep -f IMG_7684` → when DONE, verify ~30.9s, then upload **public** via the youtube script → get videoId.
+2. **Header swap** — copy `rancho-maranta-header-warm.jpg` → `assets/images/farms/` and update all 3 refs in `farms/rancho-maranta-para/index.html` (og:image line 17, twitter:image line 23, `.farm-hero` url line 114, hero inline style line 509) + `media.json` hero `src`.
+3. **Gallery additions** — add the family video (youtube entry) + 5 new photos (IMG_7693/94/96/97/98) to `media.json` gallery.
+4. **Push PR** on agroverse_shop_beta (page + media.json + ~6 images) → review on beta → then prod promotion stack (`agroverse_shop_prod` + `truesight_me_prod`) still gated on your explicit approval.
+
+**Files staged and ready:** `/tmp/agb3/` (fresh clone), `/tmp/rmn/` (converted JPEGs + header crop + encode), `/tmp/rmn/jpg/*.jpg`.
+
+**Note:** the raw-CDN check for `plots/index.geojson` lagged ~1 min after push — the API check is authoritative; the sunmint impact map will pick up the extended boundary on next fetch (no rebuild needed, it reads the file directly).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×22 → ls -la ~/rancho_maranata.zip 2>/dev/null || ls -la ~/*.zip; echo "=== contents ===" && unzip -l ~/rancho_maranata.zip 2>/dev/null | head -60; cd /tmp && rm -rf rmn && mkdir -p rmn && unzip -o -q ~/rancho_maranata.zip -d rmn "*.MOV" "*.HEIC" && echo "=== extracted ===" && find rmn -; cd /tmp/rmn && echo "=== HEIC GPS ===" && for f in $(find . -name "*.HEIC" | sort); do gps=$(exiftool -s3 -GPSLatitude -GPSLongitude "$f" 2>; …(+19 more)
 
