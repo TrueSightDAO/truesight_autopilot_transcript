@@ -2325,11 +2325,13 @@ The manifest is 24KB (72 items) — passing that inline risks corruption. The fi
 ### 🤖 Autopilot
 
 The push succeeded but `gh pr create` aborted, and — importantly — the reset shows `main` already has `index.json`, `paulo-la-do-sitio-para.json`, and `santa-anna-fazenda-para.json` (other Sophia may have committed them between my earlier API check and now). Let me diff my branch against main before opening anything, to avoid a conflicting/duplicate PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Other Sophia already closed the gap — commit `b3580e4` (#862) on main added La do Sitio (72 items) + Santa Anna (45 items) + the index while I was building mine. My branch duplicates it with slightly different content. The right move: compare, then abandon my redundant branch rather than open a conflicting PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2641,4 +2643,53 @@ I'll pick up automatically when the chain completes. Ping anytime for status.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /home/ubuntu/cleide_work echo "=== date ==="; date -u +"%H:%M:%SZ" echo "=== transcode (69990) ===" ps -p 69990 --no-headers -o pid,etime
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] Hey, can you grant me the site code for the tree farms in Seapox? Cooperative, Paolo, Clydee, and the third one is Santa Ana, para. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Gary, let me pull the site codes from the fda_fsvp supplier docs for all three CEPOTX farms.
+
+
+### 🤖 Autopilot
+
+The files are all there. Let me extract the site codes from each farm's PDF (Paulo, Cleide, Santa Anna) plus the cooperative's packing facility doc.
+
+
+### 🤖 Autopilot
+
+pymupdf isn't available in the default python — the autopilot venv has it. Let me use the venv.
+
+
+### 🤖 Autopilot
+
+Paulo's code found: **V-06-29**. Santa Anna's PDF shows the site-code fields (need the filled values — let me look deeper), and I need to re-confirm Cleide's from the earlier extraction. Let me pull the full site sections.
+
+
+### 🤖 Autopilot
+
+Got them all. Here are the CEPOTX site codes from the FDA FSVP site-visit records:
+
+| Farm | Site code | Visit date | Site name in record |
+|---|---|---|---|
+| **Cooperative (packing/storage)** | not coded as site (facility listed under CEPOTX itself) | 24 Jun 2024 | CEPOTX — packing & storage facility |
+| **Paulo** (Paulo Barbosa do Nascimento) | **V-06-29** | 25 Jun 2024 | Paulo Barbosa do Nascimento |
+| **Cleide** (Cleide Maris Suk) | **B-06-108** | 2 Jul 2024 | Cleide Maris Suk |
+| **Santa Anna** (Ana Lucia Araujo de Sousa) | **B-06-58** | 30 Aug 2026 | Santa Anna Fazenda (sub-coop COOPOXIN) |
+
+A few notes:
+- **Santa Anna** has one code (**B-06-58**) used across all three facilities (cacao grove, fermentation, drying) at GPS **-3.292475, -52.572250** — same as Cleide's pattern (one code per farm, facility A/B/C share it).
+- **Paulo's** is the odd format: **V-06-29** (V prefix instead of B) — that's what the record says, likely just a different batch prefix.
+- The **packing/storage facility** (the cooperative's own) doesn't carry a per-site B/V code in its visit record — it's logged under the CEPOTX supplier itself (DUNS/CNPJ 22.568.369/0001-38).
+- Cleide's record also gives the farm gate GPS (-3.3985276, -52.6333394) and fermentation/drying facility GPS (-3.4016563, -52.6412826) — already used for the CL-P1 plot.
+
+Want me to add a site-code reference into the farm profiles (e.g. a "FSVP site code: B-06-108" line on the agroverse.shop pages)? That would tie each shop page to its FDA record.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot/context/agentic_ai_context 2>/dev/null || cd /home/ubuntu echo "=== fda_fsvp repo listing (suppliers/cepotx) ===; cd /tmp && rm -rf cepotx_codes && mkdir -p cepotx_codes && cd cepotx_codes for f in "20240624_CEPOTX_site_visit_to_packing_storage.pdf" "202; cd /tmp/cepotx_codes echo "=== PACKING STORAGE (cooperative) ===" python3 -c " import fitz d = fitz.open('20240624_CEPOTX_site_visit_to_pack; …(+2 more)
 
