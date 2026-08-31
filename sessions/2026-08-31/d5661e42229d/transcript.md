@@ -3798,11 +3798,13 @@ No new PRs opened/merged this turn; no money movement. The only writes: the test
 ### 🤖 Autopilot
 
 👍 Go received. Next unit: **merge `tokenomics #451`** (dispatch-failure visibility — the belt-and-braces safety net so any future dispatch failure is visible in the tracking tab instead of silent). Verifying mergeable state first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #451 is mergeable (clean), +9/−1, one file — exactly the dispatch-failure visibility improvement (records a visible outcome note on any non-2xx dispatch response). Merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3888,6 +3890,7 @@ PR #451 is mergeable (clean), +9/−1, one file — exactly the dispatch-failure
 ### 🤖 Autopilot
 
 👍 Go confirmed. Completing the deploy — pushing the merged #451 (dispatch-failure visibility) to GAS `1UrBg…`:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3956,11 +3959,13 @@ No ledger writes, no money movement, no Edgar submissions this turn.
 ### 🤖 Autopilot
 
 👍 Go received. Next unit: **verify the live monitor page** — confirm `Edgar_20260819134722_487` is gone from the authoritative index that the page loads, and that the page itself serves fine. Checking both in parallel:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Authoritative index confirmed — both trees gone (19 features, no 487/061), live page serves HTTP 200. One final check: the page actually fetches `raw.githubusercontent.com` — let me verify that URL isn't serving stale cached content (the exact thing that made the tree "reappear" for Gary):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4016,16 +4021,19 @@ My manual @37 webhook fire just now returned **"0 linked, 2 r
 ### 🤖 Autopilot
 
 👍 Go received. The resume's next unit is the **prod promotion of `sunmint_beta #46`** — the go-signal on a resume that explicitly named "promote to prod — your explicit approval required" constitutes that approval. Per the directive, checking the manifest first, plus verifying the beta actually carries the fix before promotion:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Beta confirmed carrying the fix (`qrCode = (key && key.qrCode) || '(unlinked)'`), and the manifest shows the SUNMINT plan active. Your 👍 on the resume naming this step constitutes the explicit approval for promotion. Syncing `sunmint_prod` from its beta base:
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sync reported "not behind upstream" (`merge_type: none`) — prod main is already level with beta main, so no merge was needed. Let me verify the **live prod page** actually serves the fix (that's the real test — the CNAME-terminated site):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4083,41 +4091,54 @@ No PRs opened/merged this turn; no Edgar submissions; no ledger writes; no money
 ### 🤖 Autopilot
 
 Yes — that's the right full-loop test. Let me check the plant-event format and whether the plant path auto-triggers the rebuild, then run the cycle: plant my own tree → verify it appears → mark invalid → verify it disappears.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the plant-event format and handler so I run the real path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the runbook's plant-event format (§5) to replicate it exactly:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The runbook gives me the full picture — the real E2E is: plant via a signed `[TREE PLANTING EVENT]` → auto-dispatch → row lands → rebuild → tree appears → then mark invalid → INVALID → dispatch → rebuild → gone. Let me get the exact plant-event format the GAS planting handler parses so my test submission matches:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the plant-event format. Let me check the reusable script's functions so I can reuse its signing logic for a plant event (not just reject):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the exact `[TREE PLANTING EVENT]` text format from the farmer page so I can sign and submit a real plant event:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the exact plant format. Let me find the `locationLine` format and the actual submission source URL, then build and submit a real plant event with my sentinel identity:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent — I have the exact plant format. Let me check how the handler uses the photo URL (fetch vs filename-only) and the `safePublicKey` derivation, so my test submission is realistic:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4125,6 +4146,7 @@ Excellent — I have the exact plant format. Let me check how the handler uses t
 Yes — I can absolutely run that full loop, and it's the right test. Here's the plan, then I'll execute it: **(1)** plant my own tree via a real signed `[TREE PLANTING EVENT]` (my sentinel key, placeholder photo uploaded to `sunmint/images/`), **(2)** fire the planting webhook → row lands as NEW, **(3)** rebuild → tree appears in the index, **(4)** mark it invalid with the reject script → auto-dispatch → INVALID → rebuild → tree gone. Clean, reversible, proves every path we fixed.
 
 Starting: compute my reportId and create the placeholder photo.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4225,4 +4247,22 @@ The box's `.env` has **no `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING`** (onl
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×17 → cd /tmp && echo "=== builder: test/E2E row skip convention ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scri; cd /tmp && echo "=== which file handles [TREE PLANTING EVENT]? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/ma; cd /tmp && echo "=== 1Jp8q planting handler: parse format ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/git/trees/ma; …(+14 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Converging — full E2E loop: plant ✅, mark-invalid in flight
+
+### What's PROVEN this turn (the plant half — "inject your own tree")
+| Step | Evidence |
+|---|---|
+| 1. Placeholder photo uploaded to `
+
+
+### 🤖 Autopilot
+
+👍 Go received. Verifying the invalid half of the loop: row 28 status + index state, in parallel:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
