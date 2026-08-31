@@ -2337,6 +2337,7 @@ Other Sophia already closed the gap — commit `b3580e4` (#862) on main added La
 ### 🤖 Autopilot
 
 Clean resolution — I deleted my redundant branch since other Sophia already committed essentially the same data in #862 (72 items, 65/72 GPS, 71 yt_ids — matching mine). One small difference: main's index has an **empty farms dict** (`[]`) — mine had actual per-farm entries. Let me check what main's index actually contains and whether a small follow-up PR is worth it, plus check the Cleide chain.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2344,6 +2345,7 @@ Clean resolution — I deleted my redundant branch since other Sophia already co
 Main's index exists (a cleaner `{"index": [...]}` format) — mine was redundant; deleting was right. Cleide chain is healthy: transcode at 7/71, detect/upload2 waiting. The one genuinely useful gap left for Cleide is adding **cleide to the shared index** once its manifest lands. That comes after the chain.
 
 Let me clean up the box (remove my temp index files) and report the coordination outcome to Gary.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2399,6 +2401,7 @@ The chain runs unattended — ping me to resume when you're ready (~1.5h+).
 ### 🤖 Autopilot
 
 Go received — resuming the Cleide chain monitoring. Let me check current progress of all stages.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2451,6 +2454,7 @@ I'll hold here — chain runs unattended.
 ### 🤖 Autopilot
 
 Go received — resuming chain monitoring. Checking all stages.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2692,4 +2696,73 @@ Want me to add a site-code reference into the farm profiles (e.g. a "FSVP site c
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /opt/truesight_autopilot/context/agentic_ai_context 2>/dev/null || cd /home/ubuntu echo "=== fda_fsvp repo listing (suppliers/cepotx) ===; cd /tmp && rm -rf cepotx_codes && mkdir -p cepotx_codes && cd cepotx_codes for f in "20240624_CEPOTX_site_visit_to_packing_storage.pdf" "202; cd /tmp/cepotx_codes echo "=== PACKING STORAGE (cooperative) ===" python3 -c " import fitz d = fitz.open('20240624_CEPOTX_site_visit_to_pack; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] That works
+
+
+### 🤖 Autopilot
+
+Gary's approving the site-code addition to the farm profiles. Let me pull the current farm pages to find the right spot for the FSVP site-code line.
+
+
+### 🤖 Autopilot
+
+Interesting — Cleide (B-06-108) and Santa Anna (B-06-58) already carry their site codes on the pages; **Paulo's page has none**. Let me confirm the exact context on each and fix Paulo's.
+
+
+### 🤖 Autopilot
+
+Cleide and Santa Anna already have their site codes inline in the story text. Paulo's page (line 518 story + facts card) lacks it. Let me look at Paulo's facts section to add "CEPOTX site code: V-06-29" consistently.
+
+
+### 🤖 Autopilot
+
+Paulo's page has a clear facts-card pattern — I'll add the site code as a highlight item (consistent with how Cleide/Santa Anna carry theirs in the story). Opening the PR:
+
+
+### 🤖 Autopilot
+
+PR #255 opened. Merging it (you approved the site-code addition):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Site codes confirmed + Paulo's page updated ✅
+
+**What you asked:** the site codes for the CEPOTX farms.
+
+| Farm | Site code | Source (fda_fsvp) |
+|---|---|---|
+| Cooperative (packing/storage) | — (logged under CEPOTX itself) | 20240624_CEPOTX_site_visit_to_packing_storage.pdf |
+| **Paulo** (Paulo Barbosa do Nascimento) | **V-06-29** | 20240625_CEPOTX_site_visit_to_paulo_farm.pdf |
+| **Cleide** (Cleide Maris Suk) | **B-06-108** | 20240702_CEPOTX_site_visit_to_cleide_farm.pdf |
+| **Santa Anna** (Ana Lucia Araujo de Sousa) | **B-06-58** | 20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf |
+
+**Follow-up ("That works"):** checked all three farm pages on agroverse_shop_beta — **Cleide (B-06-108) and Santa Anna (B-06-58) already carry their codes** in the story text; **Paulo's page was missing it.**
+
+**PR merged:** [#255 — Add FSVP site code V-06-29 to Paulo's La do Sitio farm page](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/255) (sha `31fe9b7b`)
+- Added a **📋 FSVP Site Code: V-06-29** highlight card to Paulo's facts section, matching the pattern used on Cleide/Santa Anna pages
+
+All three farms now carry their FDA FSVP site codes on their shop pages.
+
+---
+
+**RESUME HERE → next unit (fresh turn):**
+1. **Verify** Paulo's page on beta renders the new site-code card (beta.agroverse.shop/farms/paulo-la-do-sitio-para), and optionally sync to prod (`sync_beta_to_prod(agroverse_shop_prod)`) on your go.
+2. **Cleide chain check** — the 71-video transcode/detect/GPS/YouTube-upload chain (PIDs 69990/70181/70457) should be near done; once finished, build `FARM_MEDIA_MANIFESTS/cleide.json` + add cleide to `index.json` → PR, then wire farm-page media.
+
+Ping me with which unit to run.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp echo "=== current farm pages on beta main ===" curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farm; cd /tmp echo "=== CLEIDE: site code context ===" grep -o ".\{80\}B-06-108.\{40\}" cleide_page.html | head -3 echo "=== SANTA ANNA: site code; cd /tmp echo "=== PAULO facts/cooperative section (lines 525-560) ===" sed -n '525,560p' paulo_page.html
+• `merge pr` → ✅ PR #255 on agroverse_shop_beta merged successfully (sha: 31fe9b7b7c5779d893657983913213f101503ced). Pull Request successfully merged
 
