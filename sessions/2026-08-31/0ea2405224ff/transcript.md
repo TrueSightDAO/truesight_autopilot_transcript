@@ -4762,11 +4762,13 @@ Let me install the script and add the `--github` mode:
 ### 🤖 Autopilot
 
 `--github` mode works. Now the actual wiring: hook `append_usage.py` into `append_to_transcript.py` — after a successful transcript append, log a usage row (best-effort, never fail the append). Applying the edit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wiring applied and compiles. Now the end-to-end smoke test: run the patched `append_to_transcript.py` against a test session and verify the usage row lands locally + on GitHub (best-effort):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4926,4 +4928,109 @@ The tools I'd built (enhanced `append_usage.py` with `--github` + the `_log_usag
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot && echo "=== pre-revert: is append_to_transcript.py modified vs HEAD? ===" && git status --short scripts/append_
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] Merge it once you are done but dont deploy.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] [Handoff context — this Telegram topic (thread 16631) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+Understood — merge the wiring PR once done, but no deploy (no live install changes, no deploy_autopilot). Executing: build the PR in a fresh clone, test, push, merge. The live box stays untouched this time.
+
+First: clone the repo, fetch the canonical `append_usage.py`, and inspect `append_to_transcript.py`'s success path:
+
+
+### 🤖 Autopilot
+
+I have the full picture. The canonical `append_usage.py` (113 lines) matches what I enhanced. Let me apply the wiring to the clone (not the live box): add the `_log_usage` hook to `append_to_transcript.py` and drop in the enhanced `append_usage.py`. First, let me check the enhanced version's status on the transcript repo — whether `--github` made it there (I only saw the original 113-line version on main):
+
+
+### 🤖 Autopilot
+
+My enhanced version survives at `/tmp/append_usage_full.py` (3,590 B, from the earlier wiring work). The canonical transcript repo has no `--github` (only the base version). Plan: the **enhanced** `append_usage.py` (with `--github`) belongs in the **transcript repo** (PR #2), and the **wiring** belongs in `truesight_autopilot` (PR #1). Let me build both PRs in the clone — first the wiring edit:
+
+
+### 🤖 Autopilot
+
+`Path` is already imported (line 30). Wiring applied. Now run the local test suite (hard rule before push) and verify the enhanced `append_usage.py` is valid — then prepare the transcript-repo PR (enhanced version). Let me run the full suite on the clone:
+
+
+### 🤖 Autopilot
+
+Suite mostly green: **820 passed, 6 failed**. But the 6 failures are in `test_chat_observe.py` and `test_events_catalog.py` — **unrelated to my change** (they test chat observation and the events catalog network-fallback, neither touched by my wiring). Per the hard rule "pre-existing errors in untouched files are acceptable." Let me confirm they fail on a clean checkout too (baseline), then format + commit:
+
+
+### 🤖 Autopilot
+
+Confirmed — the 6 failures are **pre-existing** (they fail identically with my change stashed). My change is isolated to `scripts/append_to_transcript.py`. (The other two modified files — `app/data/events_catalog_snapshot.json` deleted + `followups/state.json` — are runtime state, not mine; I'll exclude them.)
+
+Now commit the wiring and push a branch for the PR:
+
+
+### 🤖 Autopilot
+
+Branch pushed (`ebc50cf`). Opening the PR:
+
+
+### 🤖 Autopilot
+
+PR #358 open on truesight_autopilot. Now the second PR: the **enhanced `append_usage.py`** (with `--github` push) → `truesight_autopilot_transcript`. Let me verify my enhanced version's diff vs canonical and build that PR:
+
+
+### 🤖 Autopilot
+
+The diff came back **empty** — `/tmp/append_usage_full.py` (my "enhanced" copy) is **identical** to the canonical version on the transcript repo. That means my earlier `--github` enhancements were only ever in the live-box edit (which I reverted) — the saved copy predates them. So there's **nothing to PR to the transcript repo**; the canonical version already has everything it needs, and the wiring PR (#358) calls the tool's **local-write** mode, which is exactly right for a no-deploy wiring.
+
+Let me merge PR #358 (per your instruction) and verify the repo state:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Usage-logging wiring merged into the repo — no deploy, live box untouched.**
+
+**PR #358 → https://github.com/TrueSightDAO/truesight_autopilot/pull/358** (merged, sha `2fc8c11`): `feat: log usage audit row after successful transcript append` — added `_log_usage()` to `scripts/append_to_transcript.py`:
+- After a **successful** append, invokes the installed `append_usage.py` CLI (provider=harness, model=append_to_transcript, session_id, est_usd=0)
+- **Never raises** — missing tool/bad record can't fail the append (wrapped)
+- Local-write mode only; the durable tool copy lives in the transcript repo
+- **No deploy step** — inert until the tool is installed alongside the repo
+
+**Testing (hard rule, on the repo clone — not the live box):**
+- compileall ✓ · ruff check ✓ (All checks passed) · ruff format applied ✓
+- pytest: **820 passed / 6 failed** — the 6 failures (test_chat_observe, test_events_catalog) confirmed **pre-existing** by stashing my change and re-running: identical failures on clean tree
+- Diff isolated to `scripts/append_to_transcript.py` (+47/−1); runtime state files excluded from the commit
+
+**Second PR — not needed:** my "enhanced" `append_usage.py` copy turned out **identical** to the canonical version in the transcript repo (diff empty) — the `--github` work existed only in the live-box edit I reverted. The wiring correctly uses the canonical tool's local-write mode, so no transcript-repo PR is required.
+
+**Process correction honored:** this time the change went **repo-only (PR → merge), never applied to the live `/opt/truesight_autopilot/` install** — per your "merge it once done but don't deploy." The live box remains exactly as it was.
+
+## RESUME HERE →
+
+1. **The wiring is repo-live but runtime-inert** — it activates only when `append_usage.py` is installed alongside the repo and the harness redeploys (which is your call, per "don't deploy"). Nothing to do unless you want it live.
+2. **Optional:** when you eventually deploy, the 6 pre-existing pytest failures (chat_observe + events_catalog fallback tests) predate this PR and are unrelated — worth a separate look whenever convenient.
+3. **Nothing else pending** — ledger, media pipeline, prod, backlog all closed. This closes the runtime-wiring follow-up (OPEN_FOLLOWUPS #857 shipped entry) with the wiring in the repo, deploy left to you.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cloned truesight_autopilot fresh, applied _log_usage wiring to scripts/append_to_transcript.py, ran full local suite (820 pass / 6 pre-existing fails confirmed via stash), ruff format, committed ebc50cf, pushed feat/usage-log-hook, opened PR #358, diffed enhanced append_usage (empty diff → no transcript PR needed)
+• `merge pr` → ✅ PR #358 merged (sha: 2fc8c11caa526f6f854877572570d1e3c1d42fa0)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && rm -rf autopilot_pr && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_autopilot.git autopilot_pr 2>&1 | tail -1; cd /tmp/autopilot_pr && echo "=== does transcript repo have --github? ===" && curl -s https://raw.githubusercontent.com/TrueSightDAO/truesig; cd /tmp/autopilot_pr && python3 - <<'PYEOF' p = "scripts/append_to_transcript.py" s = open(p).read() # 1) add _log_usage helper before main(; …(+5 more)
+• `merge pr` → ✅ PR #358 on truesight_autopilot merged successfully (sha: 2fc8c11caa526f6f854877572570d1e3c1d42fa0). Pull Request successfully merged
 
