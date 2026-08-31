@@ -2937,11 +2937,13 @@ No existing convention doc for farm pages. Let me check the context repo structu
 ### 🤖 Autopilot
 
 There's an `agroverse/` folder in the context repo. Let me see what's in it — that's likely the right home.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 An `agroverse/` folder exists in agentic_ai_context — the right home. Let me check the style of existing docs there, then codify the farm-page convention.
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3161,4 +3163,83 @@ The farmers-with-Jedielcio photo is now the hero on the farm page **and** the Sa
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== beta farm page hero ==="; curl -s https://beta.agroverse.shop/farms/santa-anna-fazenda-para/ | grep -oE "santa_anna_farmers_hero|s
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ✅ **Verified live on beta** — the farmers photo is now everywhere it should be:
+
+| Check | Result |
+|---|---|
+| Farm page hero (`/farms/santa-anna-fazenda-para/`) | **4 refs** to `santa_anna_farmers_h
+
+
+### 🤖 Autopilot
+
+👍 Go signal received — promoting the hero + journey image changes to production.
+
+
+### 🤖 Autopilot
+
+Sync succeeded and deploy ledger recorded. Let me verify production is serving the farmers hero (accounting for Pages deploy lag ~90s).
+
+
+### 🤖 Autopilot
+
+Prod still serving old content — this is the Pages deploy lag. Let me wait longer and retry.
+
+
+### 🤖 Autopilot
+
+Timed out (the 90s sleep exceeded the 60s ssh cap). Let me split the checks — first confirm prod repo has the asset, then check the live site separately.
+
+
+### 🤖 Autopilot
+
+Asset is on prod main. The journey grep pattern was probably too restrictive — let me check the raw file directly.
+
+
+### 🤖 Autopilot
+
+Prod main has both the asset AND the journey mapping (line 1000 → `santa_anna_farmers_hero.jpg`). So the sync is complete on the repo side — the live site is just on the Pages deploy lag. Let me do one final check on the live site with a short timeout.
+
+
+### 🤖 Autopilot
+
+## ✅ Production promotion complete — farmers photo LIVE on agroverse.shop
+
+### What happened this turn
+1. **`sync_beta_to_prod`** — merged beta → prod (deploy ledger `deploy_20260831T132539Z_agroverse-shop-prod` recorded)
+2. **Verified on prod repo main**: asset present (200) + journey mapping at line 1000 → `santa_anna_farmers_hero.jpg` ✅
+3. **Verified live on agroverse.shop** (after Pages deploy lag):
+
+| Check | Result |
+|---|---|
+| Farm page hero refs | **4×** `santa_anna_farmers_hero` ✅ (0 grove refs) |
+| Journey mapping | → `santa_anna_farmers_hero.jpg` ✅ |
+| Hero asset served | **HTTP 200** ✅ |
+
+### End state
+The **farmers-with-Jedielcio photo** is now the hero on:
+- `agroverse.shop/farms/santa-anna-fazenda-para/` (hero + og/twitter meta)
+- `agroverse.shop/cacao-journeys/brazilian-path/` (Santa Anna stop)
+
+Production is fully in sync with everything we've built: farm page → journey stop → CEPOTX coop card → 3 YouTube videos → farmers hero.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Your visual confirmation** — open agroverse.shop/farms/santa-anna-fazenda-para/ and the journey page; everything should show the farmers photo now
+2. **Still parked:** merge conventions doc `agentic_ai_context#851` (farm-page conventions — hero=humans rule now codified); site-visit PDF v4 → `fda_fsvp` (pending site code from Jedielcio)
+
+———
+**✅ Done this turn — actions taken:**
+• `sync_beta_to_prod` → ✅ agroverse_shop_prod synced (deploy_20260831T132539Z_agroverse-shop-prod ledger)
+• `ssh run` ×4 → verified prod main (asset 200, journey line 1000 → farmers_hero), live site deploy lag diagnosed, final loop → asset 200 + farm hero 4 refs = LIVE
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → sleep 20; echo "=== prod farm page hero refs ==="; curl -s https://agroverse.shop/farms/santa-anna-fazenda-para/ | grep -oE "santa_anna_farm; sleep 90; echo "=== retry: prod farm page hero refs ==="; curl -s https://agroverse.shop/farms/santa-anna-fazenda-para/ | grep -oE "santa_an; echo "=== prod main has asset? ==="; curl -s -o /dev/null -w "raw asset: %{http_code} " https://raw.githubusercontent.com/TrueSightDAO/agrov; …(+2 more)
 
