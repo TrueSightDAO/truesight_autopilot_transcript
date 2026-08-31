@@ -4642,21 +4642,25 @@ GitHub main has 12 items but beta still serves 6 after 45s. Let me check the dep
 ### 🤖 Autopilot
 
 The beta deploy is lagging (last-modified 14:37:36, before the #239 merge). GitHub Pages is still building. Let me check the Actions run status.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The **Pages build is in_progress** (started 14:49:59 for commit f689699 — the #239 merge). It's mid-deploy. Let me wait for it to complete, then re-verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The build is taking longer than usual. Let me do one more check on the build status and the beta content.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy completed — beta now serves **12 gallery items** (last-modified 14:51:14, after the merge). Let me confirm the 6 new assets serve.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4905,4 +4909,69 @@ Verified on the branch: `🌱 SunMint Program` at line 550, link at 551, clean m
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/asb_check && git fetch -q origin && git pull -q origin main 2>&1 | tail -1; echo "=== Farm Highlights section ==="; sed -n '516,556p; cd /tmp/asb_check && git fetch -q origin feat/santa-anna-sunmint-highlight:refs/remotes/origin/feat/santa-anna-sunmint-highlight && echo "==
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Edit verified on the branch (lines 550–552, SunMint Program highlight with link).
+
+## ✅ Done this turn — `agroverse_shop_beta#243` opened
+
+**"Santa Anna farm page: SunMint program highlight"** → https
+
+
+### 🤖 Autopilot
+
+👍 Go signal received — merging the SunMint highlight PR.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `agroverse_shop_beta#243` merged
+
+**"Santa Anna farm page: SunMint program highlight"** → merged (sha `abcf359`)
+
+### What changed
+Added a **6th Farm Highlights entry** on the Santa Anna farm page:
+
+> 🌱 **SunMint Program** — [Plot on SunMint map](https://truesight.me/sunmint.html)
+
+matching the existing highlight-item style (inherits color, underlined link).
+
+### The farm profile now links to the SunMint plot in **two places**:
+| Section | Link | PR |
+|---|---|---|
+| **Farm Highlights** | 🌱 SunMint Program → Plot on SunMint map | #243 (this) |
+| **Farm Location** | View plot on SunMint map (next to Google Maps) | #241 |
+
+### Beta main now holds (pending Pages deploy):
+- #239 — 6 new site-visit photos in gallery
+- #241 — SunMint link in Farm Location
+- #243 — SunMint Program highlight (this)
+
+---
+
+**RESUME HERE → next unit:**
+1. **Verify on beta** — after the ~1–3 min Pages deploy: `beta.agroverse.shop/farms/santa-anna-fazenda-para/` → Farm Highlights should show "🌱 SunMint Program" (I can re-fetch to confirm)
+2. **Promote to prod** on your eyeball-approval — `sync_beta_to_prod` carries all three (#239 photos, #241 location link, #243 highlight) together
+3. **Still parked:** merge `agentic_ai_context#851` (farm-page conventions doc — still open); plot-impact-embed idea on the farm profile; optionally codify the bidirectional cross-link convention in the runbook
+
+———
+**✅ Done this turn — actions taken:**
+• `merge_pr` → ✅ PR #243 on agroverse_shop_beta merged (sha abcf359964fd12be1431e2dc14bc5af875332888)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #243 on agroverse_shop_beta merged successfully (sha: abcf359964fd12be1431e2dc14bc5af875332888). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #243 on agroverse_shop_beta merged successfully (sha: abcf359964fd12be1431e2dc14bc5af875332888). Pull Request successfully merged
 
