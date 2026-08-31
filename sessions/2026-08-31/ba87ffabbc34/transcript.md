@@ -4325,21 +4325,25 @@ Confirmed: the tree workflow only writes `trees/index.geojson` — the `trees/pl
 4. **Doc + search improvements** → kill future confusion: README note naming the single source of truth
 
 Let me apply all fixes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both fixes are clean (the exit 1 is just `grep -c` returning 0 on the "trees/plots.geojson" check — exactly what we want). Now checking for any other consumers of the duplicate path before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All clear — no other consumers of the dead path, and no README exists yet (I'll create one with the single-source-of-truth note). Now pushing: the two script fixes + a README with the "no future confusion" documentation. The scripts + README go to the sunmint repo (data repo, established direct-commit pattern):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now uploading all three files to the sunmint repo:
+[3 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4490,4 +4494,127 @@ The plots system is now fully live and correct: **"SunMint Plots" tab → `plots
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && TS=$(date +%s) echo "=== 1. try workflow_dispatch on sunmint (cache) via API ===" TOKEN=$(grep -oE 'GH_[A-Za-z0-9_]+' /opt/truesi; cd /tmp/es_cache && TS=$(date +%s) echo "=== 1. fetch the real plots registry + fixed cache script ===" curl -s "https://raw.githubuserconte; cd /tmp/es_cache && TS=$(date +%s) echo "=== 1. full RM-P1/RM-P2 properties ===" python3 -c " import json d = json.load(open('plots_real.jso; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] you probably do have it
+
+
+### 🤖 Autopilot
+
+Let me dig for the token properly — checking .env names (not values), git credentials, and the autopilot config:
+
+
+### 🤖 Autopilot
+
+You're right — **`gh` is authenticated as `garyjob`** with a working token (and there are PATs: `KRAKEIO_LLM_PLAYGROUND_PAT`, `KRAKE_IO_PAT`, `NPM_TOKEN`). I can trigger the workflows now. Executing both dispatches:
+
+
+### 🤖 Autopilot
+
+The runs list reveals more than the 403s — **there's already been activity** (and a failure). Key findings:
+- **Token can't dispatch** (403 — the `gh` PAT lacks `workflow` scope) — so no API dispatch; the daily schedule will pick it up instead
+- **`Cache Satellite Scenes` schedule run FAILED** at 2026-08-30 10:59 UTC (14h ago, 8s) — needs investigation
+- **`Rebuild Tree Index` ran 57m ago** (01:13 UTC, success) — and there's a run named **"test tree photo for E2E invalidation test (Sophia)"** — this connects to your "2 is already done"!
+
+Let me check the failed cache run + what the latest tree index actually contains:
+
+
+### 🤖 Autopilot
+
+**Big development: the tree index is now just 2 trees** — "Update tree index after governor cleanup (2 live trees)" (commit `1dc11c60`) — that's your cleanup landing (and "2 is already done" clicks into place). Let me get the failed cache run's logs and the 2 live trees' details:
+
+
+### 🤖 Autopilot
+
+The `gh run view --log` returned empty (token lacks that scope too). The picture is now clear:
+
+**Current state:**
+- **2 live trees**: FounderHaus Bougainvillea (LINKED, QR) + a **new Cacao (Native) at Rancho Maranta** (-3.296, -52.583 — the RM-P1 location, `NEW` status, no QR yet) — that's the "2 is already done" tree you registered
+- **2 plots** (RM-P1/RM-P2) intact
+- **Satellite cache**: only the FounderHaus cell + manifest — **RM cell (-3.3_-52.59) scenes were NOT committed** (the 10:59 UTC cache run failed in 8s — but the failure was *before* my plot-cache fix, so it likely hit the `trees/plots.geojson` path or a bad manifest; the 06:30 UTC daily run today will use the fixed script)
+
+Let me check the satellite manifest to confirm what's actually published, and check the cache script's failure mode with the 2-tree index (the daily run may still fail):
+
+
+### 🤖 Autopilot
+
+The fixed script works perfectly with the current 2-tree index (2 cells + 2 plots, 8+ scenes). The published cache is stale (only FounderHaus, from 23:05 UTC yesterday) — the Rancho Maranta cell + plot scenes just aren't committed yet because the daily run needs to execute the fixed script. Since the token can't dispatch, let me push the freshly-generated RM cell + plot scenes to the repo directly (the established direct-commit pattern for the data repo):
+
+
+### 🤖 Autopilot
+
+The dry run produced everything: RM cell scenes, plot dirs, and a manifest with cells + plots. Committing the new scenes to the repo (the established direct-commit pattern for this data repo) — starting with the updated manifest and the new RM cell:
+
+
+### 🤖 Autopilot
+
+RM cell + manifest committed. Now the plot dirs (RM-P1/RM-P2) — the map's history strip reads the manifest's plot entries, so those files must exist too:
+
+
+### 🤖 Autopilot
+
+All 12 commits landed. Final check — does the map's history strip actually consume the new `plots` entries from the manifest? Let me verify the strip logic and browser-check:
+
+
+### 🤖 Autopilot
+
+The history strip shows **0 thumbnails** — and I see why: line 563 has a filter *"Don't show a satellite strip for a cell far from the pilot area."* The RM cell (-3.3) is thousands of km from the pilot (FounderHaus, -27.44), so the strip filters it out — even though the scenes are now in the manifest. Let me read that filter:
+
+
+### 🤖 Autopilot
+
+Root cause found — the history strip is **hard-wired to show only cells within 5° of the pilot center** (FounderHaus, -27.44). The Rancho Maranta cell (-3.3) is 24° away, so it's filtered out by design. That was correct when the cache only had FounderHaus — but now RM has real scenes, and the filter hides them.
+
+**The right fix:** the strip should show the **nearest cached cell**, not the pilot center — so any plot with cached scenes (RM included) displays its own history. Small change: when the nearest-to-pilot cell is out of range, pick the **nearest cell to the current map view / any cached cell** instead of hiding. Simplest robust version: sort cells by distance to the **map's current view center**, drop the hard pilot-only cutoff, and cap at the nearest cell. Let me patch:
+
+
+### 🤖 Autopilot
+
+Patch applied, all 4 scripts validate, divs 46/46. Now pushing via PR (truesight_me_beta — code repo, reviewed flow):
+
+
+### 🤖 Autopilot
+
+PR #330 opened with the real edit applied. Now uploading the full patched file (which includes both the history-strip fix and the pre-existing plot/ESRI fixes from main) to the branch:
+
+
+### 🤖 Autopilot
+
+⚠️ The upload went to **`main`**, not the PR branch — the tool defaulted to main. Let me check what happened and correct it immediately:
+
+
+### 🤖 Autopilot
+
+The upload went to **main** (the tool defaulted) — that's a deviation from the PR flow, and I need to verify the content is correct and handle the now-redundant PR #330. Let me check that main's file is the complete correct version (it should be: I fetched it from live beta = main content, then patched):
+
+
+### 🤖 Autopilot
+
+I need to stop and report — I've hit the turn boundary and there's an important deviation to flag honestly.
+
+## ⚠️ Turn report — patch is LIVE on main, but via a direct push (deviation, flagged)
+
+**What happened:**
+1. **Opened PR [truesight_me_beta#330](https://github.com/TrueSightDAO/truesight_me_beta/pull/330)** — the satellite-history fix (show the nearest cached cell instead of pilot-only) with the real edit on the branch (`6ca19460`)
+2. **Then made a mistake:** my full-file upload defaulted to **`main`** instead of the PR branch (commit `7567fd96`) — **bypassing the PR flow**
+
+**What's on main now (verified authoritative, 40,784 B):**
+- ✅ The nearest-cell patch present (`map.getCenter`: 1, pilot fallback: 1)
+- ✅ **No regressions** — all recent merged work intact: plots registry (2), view switcher (2), Florianopolis fix, maxZoom 17 (3), ESRI basemap (1)
+- ✅ Divs 46/46 balanced, all 4 inline scripts pass `node --check`
+
+**PR #330 is now redundant/superseded** (its branch was based on older main; the fix is already on main) — it should be **closed** (mergeable: None).
+
+## 📌 RESUME HERE
+1. **Close PR #330** (superseded — content landed on main) — one API call with your go, or I do it next turn
+2. **Verify on beta post-rebuild**: `beta.truesight.me/sunmint.html` history strip now shows the **Rancho Maranta scenes** (when the map is on the Altamira view) + FounderHaus scenes (pilot view) — the browser check
+3. **Standing:** promote truesight_me_beta → prod (#318–#330 stack) after your beta review; `sunmint_prod` config line
+
+**Honest note:** the direct-to-main push was an error in my tool usage (not a deliberate flow change). The content is verified correct and complete — no data or code harm — but I've flagged it so you can decide whether to keep it on main as-is or move it behind a proper PR. Everything else this turn (12 satellite scene commits + manifest on the sunmint data repo) was within the established direct-commit pattern for that repo.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → echo "=== 1. .env KEY NAMES only (no values) ===" grep -oE '^[A-Z_]+=' /opt/truesight_autopilot/.env 2>/dev/null | sed 's/=$//' | head -40 e; cd /tmp echo "=== 1. dispatch cache-satellite-scenes.yml on sunmint ===" gh api -X POST repos/TrueSightDAO/sunmint/actions/workflows/cache-s; cd /tmp && TS=$(date +%s) echo "=== 1. failed cache run 33310628194: job logs ===" gh run view 33310628194 --repo TrueSightDAO/sunmint --log; …(+8 more)
 
