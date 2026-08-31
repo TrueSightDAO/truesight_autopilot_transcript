@@ -1696,11 +1696,13 @@ Batch 2 done (16/52). Continuing — batch 3 (IMG_3933–3954):
 ### 🤖 Autopilot
 
 All 52 HEICs uploaded. Let me verify the repo has all 52 and check the conversion batch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Count of 3 is suspicious — likely an error dict, not a file list. Verifying properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1892,4 +1894,127 @@ Everything is staged and validated — next turn kicks off the upload batch.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → echo '=== batch ==='; wc -l /tmp/mp4_progress.txt 2>/dev/null; ls /tmp/mp4/*.mp4 2>/dev/null | wc -l; cat /tmp/mp4_all_done.txt 2>/dev/null ; for f in IMG_3888.mp4 IMG_3875.mp4 IMG_3897.mp4; do echo "=== $f ==="; exiftool -s -GPSCoordinates -GPSLatitude -GPSLongitude -CreateDate "/; cat > /tmp/upload_batch.py <<'EOF' #!/usr/bin/env python3 """Upload all converted La do Sitio MP4s to YouTube (public, sha-deduped). Reads m; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] [Handoff context — this Telegram topic (thread 17184) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Turn complete — runbook merged, upload pipeline staged and validated
+
+### What happened this turn
+
+1. **Runbook confirmed merged** — [agentic_ai_context#858](https://github.com/TrueSightDAO/agent
+
+
+### 🤖 Autopilot
+
+Resuming — kicking off the YouTube upload batch in the background (it'll run alongside conversion, skipping any MP4s not yet done), then checking both jobs.
+
+
+### 🤖 Autopilot
+
+Upload batch launched (pid 55365), conversion at 15/72. Let me give it a few seconds and check the upload log actually started processing:
+
+
+### 🤖 Autopilot
+
+Uploads run but my yt_id parser isn't matching the script's output format (rc=0 = script succeeded, but no ID captured). The pilot upload worked earlier with the same script, so the output format must differ from what I parse. Let me run one manually and see the full output:
+
+
+### 🤖 Autopilot
+
+The pkill tripped the guard (it matches the pattern even though I meant the upload batch, not the autopilot). The upload batch is still running fine (rc=0 = uploads succeeding) — the only problem is my yt_id parser. Let me read the upload script to see its actual success output format, and check what's happened so far:
+
+
+### 🤖 Autopilot
+
+Batch ran through all 72 — converted ones uploaded (rc=0), missing MP4s skipped (conversion still running). But my parser captured 0 yt_ids. Let me see the script's success output format (what comes after "Upload complete!"):
+
+
+### 🤖 Autopilot
+
+Found the parser bug: the script prints **`   Video ID: <id>`** (with "Video ID:" prefix), but my parser only looked for bare `https://youtu.be/` or `ID:` tokens — "Video ID:" has a space, so it never matched. **The uploads themselves succeeded** (rc=0, "✅ Upload complete!" → "Video ID:" printed), but the manifest never got the yt_ids, and the progress file was never written — so re-running would re-upload everything.
+
+Let me fix the parser (grab `Video ID:`), and **check YouTube for the 15+ uploaded videos to recover their IDs** instead of re-uploading. The channel API can list recent uploads:
+
+
+### 🤖 Autopilot
+
+The uploads ARE live — 7+ visible (IMG_3898, 3900, 3902, 3901, 3899, 3897, 3888…). The IndexError is just my listing script hitting a video with no snippet (processing), not a problem with the uploads. So the batch uploaded everything that was converted at the time.
+
+Now the clean recovery path: instead of re-uploading (which would create duplicates), I'll **map the YouTube uploads back to manifest entries by title** ("La do Sitio — IMG_XXXX") and write the yt_ids in. Let me build that recovery + fix the parser for the remainder:
+
+
+### 🤖 Autopilot
+
+Recovery map built — 49 videos mapped by title, including 8 La do Sitio uploads (plus earlier farm videos like the Santa Anna one). Now let me write the yt_ids back into the manifest and fix the parser for the remaining conversions:
+
+
+### 🤖 Autopilot
+
+16 yt_ids recovered into the manifest (all currently-converted videos that uploaded). Conversion at 16/72 — still running. Now fix the parser in the upload wrapper (grab `Video ID:` correctly) so the remaining ~56 videos capture yt_ids as they upload:
+
+
+### 🤖 Autopilot
+
+Parser fixed. Now patch the wrapper to skip entries that already have `yt_id` (the 16 recovered), and launch a watch-loop that uploads remaining videos as conversions complete:
+
+
+### 🤖 Autopilot
+
+Watch loop launched (pid 56940) — it uploads remaining videos as conversions finish, writing yt_ids to the manifest. Let me verify it's actually working (give it a cycle):
+
+
+### 🤖 Autopilot
+
+The watch loop works — it skipped the 16 already-uploaded, uploaded 1 more newly-converted video (yt_ids 16→17), and will keep going as conversion progresses (16/72, converting). The pipeline is now fully self-running:
+
+- **Conversion**: 16/72 MP4s (background, ~35s each, ~35 min left)
+- **Upload**: watch loop (pid 56940) picks up each new MP4 within 2 min, uploads public, writes yt_id to manifest
+- **Progress**: 17/72 have yt_ids now
+
+This is a good point to converge — the heavy lifting is automated and running. Let me do a final status capture:
+
+
+### 🤖 Autopilot
+
+Everything is self-running now. One thing I noticed in the sample — **IMG_3874 has TWO YouTube videos**: the pilot test (`jM4Y6Wq5fMc`, "La do Sitio farm walk — IMG_3874 (test)") and the batch upload (`3kJJc6FkTok`, proper metadata). The pilot is a duplicate — flagging for your call below.
+
+## ✅ Turn status — upload pipeline now fully automated
+
+### What happened this turn
+1. **Launched the YouTube upload batch** — it ran through all currently-converted videos. **Key finding: the uploads were succeeding (rc=0) but my yt_id parser missed the script's `Video ID:` output format**, so IDs weren't captured.
+2. **Recovered IDs instead of re-uploading** — listed the channel's uploads via the API, mapped 49 videos by title → wrote **16 yt_ids** back into the manifest (no duplicates created).
+3. **Fixed the parser** (now grabs `Video ID:`) + **patched the wrapper** to skip entries that already have `yt_id`.
+4. **Launched a watch loop** (pid 56940) — every 2 min it uploads newly-converted MP4s, writes yt_ids, until all 72 are done. Verified working: yt_ids 16→17 within one cycle.
+
+### Running now (background, no supervision needed)
+| Job | Status |
+|---|---|
+| **Conversion** MOV→MP4 (GPS-preserving) | 16/72, ~35s each → **~35 min left** |
+| **Upload watch loop** | active (pid 56940), picks up each new MP4, public, writes yt_id |
+| **Manifest** | 17/72 with yt_id; each entry: file, sha256, GPS lat/lng, duration, objects[], yt_id |
+
+### Sample of live manifest (verified)
+```
+IMG_3874.MOV -> 3kJJc6FkTok  -3.3863  -51.8514  ['cacao_pods']
+IMG_3875.MOV -> qPfG1j3vjME  -3.3864  -51.8513  ['cacao_pods']
+IMG_3876.MOV -> 5qdSU7pV6zc  -3.3863  -51.8514  ['car','person']
+```
+
+## ⚠️ One decision for you
+**IMG_3874 pilot duplicate** — the test video (`jM4Y6Wq5fMc`) I uploaded earlier today is a duplicate of the batch upload (`3kJJc6FkTok`). Recommend **deleting the pilot** (it was just a pipeline test; the batch version has proper GPS/objects metadata). Say "delete pilot" and I'll remove it via the API. Otherwise it stays as a stray duplicate on the channel.
+
+## RESUME HERE → next unit (~35–40 min)
+1. **When conversion + watch loop finish** → verify 72/72 yt_ids + **dupe check** (all 72 unique on YouTube).
+2. **Manifest PR** → `agentic_ai_context/FARM_MEDIA_MANIFESTS/la-do-sitio.json` (+ index update) — the searchable reference layer for future sessions.
+3. **Farm page wiring** — add curated YouTube embeds to La do Sitio `media.json` gallery (beta-first, prod on your go).
+4. **Cleanup** (on your confirm) — delete local raw after successful upload + manifest.
+
+Nothing prod touched, nothing deleted. The pipeline will have all 72 videos uploaded within the hour; next turn verifies + files the manifest.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cd /tmp && nohup /opt/truesight_autopilot/.venv/bin/python3 /tmp/upload_batch.py > /tmp/yt_upload_log.txt 2>&1 & echo "upload pid: $!"; slee; sleep 20; echo '=== upload log ==='; cat /tmp/yt_upload_log.txt 2>/dev/null | head -10; echo '=== progress file ==='; cat /tmp/yt_upload_pro; pkill -f upload_batch.py 2>/dev/null; sleep 1; echo 'killed batch'; /opt/truesight_autopilot/.venv/bin/python3 /opt/truesight_autopilot/conf; …(+8 more)
 
