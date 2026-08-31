@@ -4152,6 +4152,7 @@ Starting: compute my reportId and create the placeholder photo.
 ### 🤖 Autopilot
 
 ReportId computed. Now creating the placeholder photo and uploading it to `sunmint/images/` (the handler fetches the image from the photo URL — a real upload avoids a fetch failure):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4265,4 +4266,75 @@ The box's `.env` has **no `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING`** (onl
 
 👍 Go received. Verifying the invalid half of the loop: row 28 status + index state, in parallel:
 [2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16362] [Handoff context — this Telegram topic (thread 16362) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 👍 Go received. Verifying the invalid half of the loop: row 28 status + index state, in parallel:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+👍 Go received. Let me get fresh, visible verification of both halves — row 28 status and the index state:
+
+
+### 🤖 Autopilot
+
+**Row 28 = INVALID ✅ — the auto-dispatch worked for the reject!** My test tree was marked INVALID automatically (no manual webhook). But the index still shows it (21 features) — the **auto-rebuild still doesn't fire** (the known TGM_GITHUB_TOKEN scope issue; #451 makes it visible but the token itself still needs operator provisioning). Completing the loop with a manual rebuild:
+
+
+### 🤖 Autopilot
+
+Rebuild dispatched (204). Waiting for the workflow to complete, then verifying my tree dropped from the index — the final proof of the full loop:
+
+
+### 🤖 Autopilot
+
+# 🎉 **FULL END-TO-END LOOP PROVEN — PLANT → LIVE → INVALIDATE → GONE (my own tree)**
+
+## The complete cycle, verified end-to-end
+
+| # | Step | Evidence |
+|---|---|---|
+| 1 | **Plant** — signed `[TREE PLANTING EVENT]` (Sophia, sentinel), photo uploaded to `sunmint/images/` | ✅ HTTP 200, `signature_verification: success` |
+| 2 | **Ledger** — row 28 `Edgar_20260831011117_005`, Status **NEW**, "Cacao (Native)", Contributor Sophia Truesight | ✅ |
+| 3 | **Live** — rebuild → tree **appeared** in public `index.geojson` (19 → 21) | ✅ |
+| 4 | **Reject** — `sunmint_submit.py` → `[TREE PLANTING REJECT EVENT]` (signed) | ✅ HTTP 200, `signature_verification: success` |
+| 5 | **Auto-dispatch** — REJECT routing → @37 webhook fired **without manual call** | ✅ row 28 → **INVALID** |
+| 6 | **Gone** — rebuild (workflow_dispatch) → tree **removed** from index (21 → **20**) | ✅ `NO - GONE` |
+
+## The original complaint is now proven fixed at every layer
+Gary's issue — "I mark a tree invalid and it shows up again on reload" — is resolved and **demonstrated live with my own planted tree**: the ledger marks INVALID (step 5), the builder skips INVALID rows, the index drops it (step 6), and the page loads the index fresh, so the tree cannot reappear.
+
+## Remaining known gap (not blocking — flagged for ops)
+**Auto-rebuild still requires manual `workflow_dispatch`.** The GAS `tree-index-rebuild` dispatch call (in `tokenomics #450`) doesn't fire because `TGM_GITHUB_TOKEN` in GAS Script Properties is Contents-API-scoped, not `repo`/Actions-scoped. **Fix (operator action, 2 min):** in the GAS project `1UrBg…`, open **Project Settings → Script Properties**, set `TGM_GITHUB_TOKEN` to a **repo-scoped PAT** (the `.env` `TRUESIGHT_DAO_AUTOPILOT` one works — proven by the 204s). Then INVALID will auto-fire the rebuild too, closing the last manual step.
+
+## Also noted
+- **Plant events aren't auto-dispatched either**: box `.env` lacks `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING` (I fired the @7 webhook manually). Same 2-min env addition if we want the plant path event-driven too.
+- My test tree's row 28 remains in the ledger as a legitimate signed test record (INVALID); the placeholder photo remains in `sunmint/images/` — happy to clean up per runbook §6 if you prefer.
+
+---
+**RESUME HERE → next units:**
+1. **Operator (you)**: set `TGM_GITHUB_TOKEN` (repo-scoped) in GAS Script Properties → then the loop is fully automatic end-to-end (no manual rebuilds ever).
+2. **Optional**: add `DAO_PROTOCOL_WEBHOOK_TREE_PLANTING_PROCESSING` → @7 URL to the box `.env` for plant auto-dispatch symmetry.
+3. **Close out**: mark SUNMINT plan UAT-complete in the handoff manifest; runbook §4.5 pointer to `sunmint_submit.py`; clean up test photo/row if desired.
+
+No new PRs/deploys this turn; no money movement; the only writes were the signed plant/reject test submissions and the rebuild dispatch.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → reject submitted via script (sig success), row 28 verified **INVALID**, rebuild dispatched (204), **tree GONE from index (20 features)**
+• `read google sheet` ×1 → row 28 = INVALID (auto-dispatch proven)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && python3 - <<'EOF' import json, urllib.request, os env = {} for line in open('/opt/truesight_autopilot/.env'): line=line.strip() if '=' in line and not line.startswith('#'): k,v=line.split('=',1) env[k]=v; (dispatch 204); then sleep 45 + authoritative index check → **feature count 20, my tree NO - GONE**
+• `read google sheet` ×1 → row 28 Status = **INVALID**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && echo "=== index.geojson (authoritative, ref=main): my tree present? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/su; cd /tmp && python3 - <<'EOF' import json, urllib.request, os env = {} for line in open('/opt/truesight_autopilot/.env'): line=line.strip() i; sleep 45; cd /tmp && echo "=== index.geojson (authoritative): my tree gone? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmi
 
