@@ -4304,6 +4304,7 @@ Sync reported a **conflict** — I must stop and report (never force). Let me ga
 ### 🤖 Autopilot
 
 /tmp/tmb_check was cleaned up earlier. Let me re-clone both repos and compare properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4350,16 +4351,19 @@ Say the word and I'll execute the option you choose.
 ### 🤖 Autopilot
 
 Let me verify the fix landed correctly on prod — checking prod main now has the popup changes and the CNAME is intact.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Your UI fix merged cleanly — prod main now has everything and CNAME is intact (`truesight.me`). Let me verify the live production site serves the popup link (accounting for Pages deploy lag).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live production page doesn't have the code yet — this is the Pages deploy lag (like we saw with agroverse.shop earlier, ~90s–5min). Prod main has the code (grep=1) — it just needs the deploy to catch up. Let me wait briefly and re-check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4413,11 +4417,13 @@ Your GitHub-UI merge did the job — prod now matches beta for all the popup wor
 ### 🤖 Autopilot
 
 Good instinct — let me check what's already documented vs. what these scenarios taught us, so we only add what's missing.
+[3 tool result(s) compacted: search_context, search_context, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's already a `SUNMINT_PLOTS_REGISTRY.md` — let me read it to see what's covered and what this session's lessons are still missing.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4434,21 +4440,25 @@ The runbook exists and is solid, but this session taught us **5 new lessons not 
 | 6 | **Email preserves EXIF** for boundary photos (WhatsApp/Telegram strip) | §3 capture-media step could note it |
 
 Let me update the runbook with all of these:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The exact whitespace differs. Let me read the exact bytes of the table section to craft matching edits.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Source-of-truth line ends with a trailing `|` I missed. Let me redo the PR with exact strings.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #854 opened — all 4 edits applied. Merging (documentation, standing "go" pattern):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4595,4 +4605,90 @@ Branch verified complete: **12 gallery items** (9 images + 3 YouTube) and all 9 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd ~/santa_anna_new && echo "=== shortlisted photos present? ==="; ls -la IMG_7723* IMG_7744* IMG_7751* IMG_7731* IMG_7747* IMG_7750* 2>/dev; cd ~/santa_anna_new && mkdir -p /tmp/sa_web && for f in IMG_7723 IMG_7731 IMG_7744 IMG_7747 IMG_7750 IMG_7751; do timeout 90 convert "$f.HEI; cd /tmp && rm -rf asb_check && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git asb_check 2>&1 | tail -1; echo; …(+3 more)
 • `merge pr` → ✅ PR #239 on agroverse_shop_beta merged successfully (sha: f689699b5fd81a3e2904c0652b5bff83a8f32974). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] Perform 1
+
+
+### 🤖 Autopilot
+
+Performing unit 1 — verifying the expanded gallery is live on beta.
+
+
+### 🤖 Autopilot
+
+Beta still serving the old content — GitHub Pages deploy lag again (same as before). Let me confirm the merge is on main, then wait for the deploy to catch up.
+
+
+### 🤖 Autopilot
+
+GitHub main has 12 items but beta still serves 6 after 45s. Let me check the deploy mechanics and cache headers.
+
+
+### 🤖 Autopilot
+
+The beta deploy is lagging (last-modified 14:37:36, before the #239 merge). GitHub Pages is still building. Let me check the Actions run status.
+
+
+### 🤖 Autopilot
+
+The **Pages build is in_progress** (started 14:49:59 for commit f689699 — the #239 merge). It's mid-deploy. Let me wait for it to complete, then re-verify.
+
+
+### 🤖 Autopilot
+
+The build is taking longer than usual. Let me do one more check on the build status and the beta content.
+
+
+### 🤖 Autopilot
+
+Deploy completed — beta now serves **12 gallery items** (last-modified 14:51:14, after the merge). Let me confirm the 6 new assets serve.
+
+
+### 🤖 Autopilot
+
+## ✅ Unit 1 complete — expanded gallery verified LIVE on beta
+
+### Verification results
+
+| Check | Result |
+|---|---|
+| **media.json on beta** | **12 gallery items** (9 images + 3 YouTube) ✅ — last-modified 14:51:14, post-merge |
+| **Farm page** | HTTP 200 ✅ |
+| **6 new assets** | All **HTTP 200**, correct sizes (303 KB–600 KB) ✅ |
+
+| New photo | Served |
+|---|---|
+| IMG_7723 (porch gathering) | 200 · 304 KB |
+| IMG_7731 (Agro Amazônia sign) | 200 · 601 KB |
+| IMG_7744 (family + dog) | 200 · 314 KB |
+| IMG_7747 (hammock porch) | 200 · 456 KB |
+| IMG_7750 (ripe pod close-up) | 200 · 312 KB |
+| IMG_7751 (three generations) | 200 · 370 KB |
+
+The initial "still 6 items" was the **GitHub Pages build in_progress** (deploy started 14:49:59, completed 14:51) — same lag pattern as before, now confirmed resolved. The farm page gallery is fully expanded on beta.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Your eyeball** — beta.agroverse.shop/farms/santa-anna-fazenda-para/ → the gallery should now show 9 photos (3 facility + 6 people/life/sign) + 3 videos. When it looks good, say **"promote"** and I'll `sync_beta_to_prod`
+2. **Still parked:** merge `agentic_ai_context#851` (farm-page conventions doc — opened earlier, still open); plot-impact-embed idea on the farm profile
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → beta media.json (6 stale) → GitHub main (12) → Pages deploy API (in_progress at 14:49:59) → waited for build → re-check beta (12, last-modified 14:51:14) → asset status ×6 (all 200)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → curl beta media.json (6 — stale); raw.githubusercontent main (12); pages deployments API; actions runs (pages build in_progress 14:49:59); sleep-loop until complete; re-check beta (12 items); asset HEAD ×6 → all 200
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → checked beta media.json (stale 6) vs GitHub main (12); pages build in_progress → waited → complete; re-checked beta (12 items, last-modified 14:51:14); asset HTTP status ×6 (all 200)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → echo "=== media.json on beta ==="; curl -s "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/media.json" | /opt/truesight_autopilot; echo "=== GitHub main has the merge? ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/santa-anna; echo "=== beta media.json headers ==="; curl -sI "https://beta.agroverse.shop/farms/santa-anna-fazenda-para/media.json" | grep -iE "HTTP|las; …(+4 more)
 
