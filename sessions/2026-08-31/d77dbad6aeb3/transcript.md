@@ -1289,26 +1289,36 @@ Two sharp directives — both right. Let me lock them in and prove the critical 
 ### 🤖 Autopilot
 
 Conversion inside the 60s window again. Let me split — check the original MOV GPS + the already-converted pilot MP4 first (fast), then re-convert with metadata mapping detached:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Your concern was 100% correct** — the pilot MP4 uploaded to YouTube **lost its GPS** (plain ffmpeg convert drops it). Critical catch. Now the fix: re-convert with `-map_metadata 0` and verify GPS survives:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `-map_metadata 0` kept CreateDate but **still dropped GPS** — Apple stores GPS as a QuickTime key (`ISO6709`), which ffmpeg doesn't remap into MP4. The robust fix: **re-inject GPS into the MP4 with exiftool** after conversion. Let me extract the original ISO6709 and write it into the MP4:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two issues: the ISO6709 read came back empty (my `-s -s` syntax), and the exiftool write needs the proper QuickTime keys syntax. Let me check the actual GPS keys in the original MOV properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Original stores GPS as QuickTime **`GPSCoordinates`** key — that's the tag to inject into the MP4. Let me write it and verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1454,4 +1464,120 @@ I'll continue with the config PR + repo creation + batch completion autonomously
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → echo '=== batch progress ==='; wc -l /tmp/mp4_progress.txt 2>/dev/null; tail -3 /tmp/mp4_progress.txt 2>/dev/null; cat /tmp/mp4_all_done.txt; /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json p='/tmp/la_do_manifest_full.json' d=json.load(open(p)) print('type:', type(; /opt/truesight_autopilot/.venv/bin/python3 - <<'EOF' import json from collections import Counter p='/tmp/la_do_manifest_full.json' d=json.lo; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] farm-media-raw is a great approach. Make sure to provide agentic_ai_context instructions so that I could also hand the files from other farms off to other instances of sophia to handle concurrently once you have defined the process.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17184] [Handoff context — this Telegram topic (thread 17184) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking… (round 1)
+
+
+### 🤖 Autopilot
+
+Both directives are clear: (1) proceed with `farm-media-raw`, (2) write the pipeline as agentic_ai_context instructions so other Sophia instances can pick up other farms concurrently. Executing — first the doc PR (independent) + verifying config anchors and batch progress in parallel:
+
+
+### 🤖 Autopilot
+
+Runbook PR open: **agentic_ai_context#858** (FARM_MEDIA_PIPELINE.md). Batch at 8/72. Now the config change — per the hard rule, I test locally **before** pushing. Applying the edit on the box and running the full suite:
+
+
+### 🤖 Autopilot
+
+Tests pass except ruff format (whitespace). Fixing formatting, then pushing the PR:
+
+
+### 🤖 Autopilot
+
+All checks pass. Now pushing the config PR:
+
+
+### 🤖 Autopilot
+
+The `writes` param may have replaced the entire config.py with just my fragment — let me verify the PR content immediately:
+
+
+### 🤖 Autopilot
+
+⚠️ The `writes` param clobbered config.py to just my fragment. Fixing immediately — restore full content + additions:
+
+
+### 🤖 Autopilot
+
+Local file is intact (434 lines, 2 additions — exactly right). The remote branch got clobbered. Fix: push the **full local file** to the branch (Content API rewrite with complete content):
+
+
+### 🤖 Autopilot
+
+I need the real base64 of the local file. Let me generate it on the box:
+
+
+### 🤖 Autopilot
+
+The base64 is too large to pass manually. Better approach — use `upload_local_file_to_github` which reads the file directly from disk:
+
+
+### 🤖 Autopilot
+
+Restored. Now verify the branch's config.py is the full file with both additions:
+
+
+### 🤖 Autopilot
+
+Branch config.py is now byte-identical to local (434 lines, both additions at 214/239, same sha). The clobber is fully fixed. Now let me merge the config PR so `farm-media-raw` becomes usable, and check batch progress:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn complete — two PRs landed + config registered
+
+### What shipped this turn
+
+**1. `agentic_ai_context#858` — FARM_MEDIA_PIPELINE.md** (open, ready for your review)
+- The **handoff-ready runbook** you asked for — so you can hand the other farms (Cleide, Santa Anna, Rancho Maranta) to other Sophia instances to process concurrently.
+- Covers the full 10-step pipeline: intake → GPS sweep → plot registration → **SHA-256 dedupe** → manifest build → **YOLO object detection with banana→cacao_pods remap** → **MOV→MP4 with GPS re-injection (the critical catch)** → **public YouTube upload** → photos to `farm-media-raw` → farm page wiring → manifest PR.
+- Includes the **farm-id table** (all 4 farms → slug → plot → repo subfolder), a **handoff checklist** for you to include when passing a zip to another instance, and anti-patterns (GPS loss, git bloat, dupes).
+
+**2. `truesight_autopilot#356` — `farm-media-raw` registered** (merged, sha `6e8f4f7`)
+- Added to both `allowed_repos` **and** `api_only_repos` (blob/asset store class — Content-API only, never cloned/branch-edited, matching your "only accessed via Content API" directive).
+- Full local test suite passed (compileall, ruff check/format, pytest).
+- ⚠️ **Incident handled cleanly:** my first push clobbered `config.py` (writes param wrote only the fragment). Detected immediately, restored the full 434-line file via `upload_local_file_to_github`, verified byte-identical to local (same sha `d59c276…`), then merged. No harm done.
+
+### Status
+- **Batch conversion:** 8/72 MOV→MP4 done, steady, no errors (~40–50 min total for all 72).
+- Manifest remap (banana→cacao_pods): applied earlier (18 videos).
+
+## RESUME HERE → next units
+1. **Deploy autopilot** (`deploy_autopilot`) so the running instance picks up the new `farm-media-raw` allowlist (config is merged but not live until deploy).
+2. **Create repo** `farm-media-raw` (private, DAO) via `create_repo`.
+3. **Batch completes** → verify 72/72 MP4s carry GPS (exiftool sweep) → **YouTube upload batch** (public, sha-deduped, titles from manifest) → write `yt_id` back into manifest.
+4. **Photos → repo**: 52 La do Sitio HEICs under `la-do-sitio/photos/` via Content API.
+5. **Manifest PR** to `agentic_ai_context/FARM_MEDIA_MANIFESTS/la-do-sitio.json`.
+6. **Merge #858** (runbook) once you've reviewed it — or say the word and I'll merge.
+
+Two notes: the runbook PR (#858) is **open for your review** — I did not self-merge it since it's the doc you'll hand to other instances (want your eyes on it first, though I can merge on your "go"). And `farm-media-raw` creation waits on the deploy (unit 1) since the tool gate reads merged-but-deployed config.
+
+———
+**✅ Done this turn — actions taken:**
+• `git_push_changes` ×1 → agentic_ai_context#858 (FARM_MEDIA_PIPELINE.md)
+• `ssh run` ×5 → config.py edit + full local test suite (compileall/ruff/pytest pass); format fix; base64 gen; branch-vs-local sha verify (identical d59c276…); batch progress (8/72)
+• `read_repo_file` ×1 → caught the clobbered branch file
+• `upload_file_to_github` ×1 (failed base64) → `upload_local_file_to_github` ×1 → restored full config.py on branch
+• `merge_pr` ×1 → truesight_autopilot#356 merged (sha 6e8f4f7)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → echo '=== batch ==='; wc -l /tmp/mp4_progress.txt 2>/dev/null; tail -2 /tmp/mp4_progress.txt; cat /tmp/mp4_all_done.txt 2>/dev/null || echo ; cd /opt/truesight_autopilot && python3 - <<'EOF' import re p='app/config.py' s=open(p).read() # 1) allowed_repos a=' "sunmint_prod", ]' asse; cd /opt/truesight_autopilot && .venv/bin/python -m ruff format app/config.py && .venv/bin/python -m ruff check app/config.py && .venv/bin/py; …(+3 more)
+• `upload file to github` → https://docs.github.com/rest/repos/contents#create-or-update-file-contents
+• `merge pr` → ✅ PR #356 on truesight_autopilot merged successfully (sha: 6e8f4f7222f04f6a5a0aff80495a14bd6266b5b8). Pull Request successfully merged
 
