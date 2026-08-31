@@ -876,21 +876,25 @@ Timed out on the broad search — let me be targeted: check the transcript repo 
 ### 🤖 Autopilot
 
 Now I understand the original structure — **each facility page embeds its own image(s)**, not a separate photo section at the back. Let me find the original photo filenames in the transcript repo (the adapter renamed them to UUIDs) and download Gary's signature to disk.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The recursive greps keep timing out. Let me be surgical — target the transcript repo's directory structure directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The adapter renames attachments to UUIDs at line 714 — but the original filename may be captured in the debug log. Let me check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — I now have the full picture of what needs fixing. Let me (1) find the signature PNG on disk or clone it, (2) check the adapter log for original photo filenames, and (3) read the current PDF generator to fix the stretch + facility mapping + signature.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -902,21 +906,25 @@ I have everything I need. Confirmed:
 - **Facility mapping**: my vision-based mapping is Photo 2→Facility A (farm/pods), Photo 3→Facility B (fermentation), Photo 1→Facility C (drying shed) — but the adapter renamed your files to UUIDs so I **can't read the original filenames** to confirm. I'll show you the mapping below.
 
 Let me regenerate the PDF properly: per-facility images (like the original CEPOTX docs), aspect-correct, signature stamped, video frames in Facility A.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 frame_031 doesn't exist — let me check the actual frames available.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 frame_031 exists (my earlier `ls` brace pattern was wrong). Now let me extract the full original Paulo farm PDF text so I replicate the exact observation wording, then build the corrected PDF.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the exact original template. Now let me inspect the embedded images in the original Paulo PDF (per-facility layout) and render the current Santa Anna PDF to see the stretch issue.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -927,6 +935,7 @@ Now I understand the original layout fully. Key differences to fix:
 3. **GPS**: the original has real coordinates per facility
 
 Let me verify the inline-image pattern and check for Santa Anna coordinates in parallel.
+[2 tool result(s) compacted: ssh_run, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -934,11 +943,13 @@ Let me verify the inline-image pattern and check for Santa Anna coordinates in p
 The web search doesn't give reliable Santa Anna coordinates (the Bahia "Fazenda Santa Ana" result is a *different* farm — that's the Coopercabruca one; the Tavily synthesized coords are unreliable). **I cannot extract GPS from the photos** (verified: zero EXIF in the raw bytes — Telegram strips it on re-encode) — so per your instruction I'm flagging that for your verification rather than guessing.
 
 The 827×827 image is the same logo on every page (header logo). Now let me rebuild the PDF properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PDF regenerated — 8 pages, aspect-ratio preserved (no more stretching), signature stamped from `signature_assets`, photos inline per-facility. Let me quickly render the pages to verify layout visually, then send it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -951,6 +962,7 @@ Layout verified — all images now render at their **native aspect ratios** (no 
 - p8: signature — stamped from `signature_assets` ✓
 
 Sending the corrected PDF for your review:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1006,16 +1018,19 @@ If the filenames you sent (e.g. from your phone) say otherwise, tell me the orig
 ### 🤖 Autopilot
 
 Excellent — the original media files (scp'd directly, so EXIF/GPS should be intact). Let me examine the zip.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The zip has **12 media files**: 9 HEIC photos (IMG_7732–7743, original iPhone files → EXIF GPS should be intact!) + 3 MOV videos (IMG_7734, 7740, 7741). Let me extract and check for HEIC conversion tools.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 HEIC needs conversion (ImageMagick `convert` is available). Let me try converting one and check whether GPS comes through, plus check the MOVs for GPS tags.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1129,4 +1144,64 @@ Once you confirm those two, I'll finalize and push the PDF **+ original media** 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → ls -la ~/santa_anna_fazenda.zip && echo "=== contents ===" && unzip -l ~/santa_anna_fazenda.zip; cd ~ && rm -rf santa_anna_fazenda && unzip -q santa_anna_fazenda.zip && ls -la santa_anna_fazenda/ && echo "=== HEIC tools? ===" && which he; cd ~/santa_anna_fazenda && echo "=== try imagemagick convert ===" && timeout 60 convert IMG_7732.HEIC /tmp/test_7732.jpg 2>&1 | head -5; ls ; …(+10 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: by the way do you know the site code for La Do Sitio indicated in the FDA FSVP document?
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593]
+
+
+### 🤖 Autopilot
+
+Good question — let me search the fda_fsvp repo for that farm.
+
+
+### 🤖 Autopilot
+
+The cacao sourcing network overview in agentic_ai_context has the farm data — let me read it.
+
+
+### 🤖 Autopilot
+
+The overview confirms **La Do Sitio** is the brand of the **CEPOTX / Jedielcio lane** (Pará, Altamira) — 200 g bars, award-winning. But it doesn't carry the site code. The code lives in the FDA FSVP documents. Let me check the local fda_fsvp clone for the La Do Sitio records.
+
+
+### 🤖 Autopilot
+
+Found it — `suppliers/cepotx/entity.json` line 41: **"Paulo - La do Sítio (Pará)"**. Let me read the entity.json to see the exact site-code structure.
+
+
+### 🤖 Autopilot
+
+The site code isn't in entity.json (only the farm name string). It lives inside the PDFs. Let me search the site-visit PDFs — the Paulo farm PDF likely has the site code in the header.
+
+
+### 🤖 Autopilot
+
+Found it. **La Do Sítio's site code is `V-06-29`** — from the Paulo farm site-visit PDF (`20240625_CEPOTX_site_visit_to_paulo_farm.pdf`):
+
+| Field | Value |
+|---|---|
+| **Site code** | **V-06-29** |
+| Site name | Paulo Barbosa do Nascimento (the farmer) |
+| Brand | La Do Sítio (award-winning 200 g bars — the CEPOTX lane brand) |
+| Date | 25th June 2024 |
+| GPS | -3.3894832, -51.8509388 |
+
+For comparison, the other CEPOTX site visit:
+- **Fazenda Cleide** → site code **B-06-108**, GPS -3.3985276, -52.6333394
+
+So the pattern is CEPOTX assigns alphanumeric site codes (V-06-29, B-06-108) — the prefix letters likely denote region/block within the cooperative.
+
+**Note for Santa Anna:** we still don't have its site code — Jedielcio would need to provide it (or it follows the same CEPOTX scheme). Once you have it, I'll fill the `[SITE CODE — to confirm]` placeholder in the v3 PDF and finalize the push to `fda_fsvp`.
+
+Also worth noting: the `entity.json` `source_farms` list ("Paulo - La do Sítio (Pará)", "Fazenda Cleide (Pará)") will get Santa Anna added as a third entry when we file the record — consistent with what we've already staged.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd ~/fda_fsvp 2>/dev/null || cd /tmp/fda_fsvp_local 2>/dev/null; pwd; echo "=== search for La Do / Sitio ==="; grep -rni "la do\|sitio" --in; cd /tmp/fda_fsvp_local/suppliers/cepotx && ls -la *.pdf 2>/dev/null | head -20; echo "=== extract text from Paulo farm PDF ==="; python3 -c
 
