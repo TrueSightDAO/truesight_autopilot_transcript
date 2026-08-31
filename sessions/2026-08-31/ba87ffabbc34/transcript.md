@@ -4470,11 +4470,13 @@ The live site was still serving the old build at check time (deploy lag), but Gi
 ### 🤖 Autopilot
 
 Watcher unavailable outside a topic — doing a bounded poll instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Production is LIVE** — the new build is being served. Running the full production verification (content + browser):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4750,4 +4752,99 @@ Say "go" to start the test-row cleanup, or to run the post-promotion E2E.
 ———
 **✅ Done this turn — actions taken:**
 • `sync beta to prod` → status success, merge_type none (not behind upstream TrueSightDAO:main), deploy ledgered (record_id deploy_20260831T031346Z_sunmint-prod, evidence_url ecosystem_change_logs deploys entries)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11018] [Handoff context — this Telegram topic (thread 11018) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Promotion complete** — the formal fork-sync confirms production is fully current.
+
+## ✅ PROMOTION COMPLETE — sunmint_prod confirmed in sync
+
+**`sync_beta_to_prod(sunmint_prod)`** returned:
+- **`merg
+
+
+### 🤖 Autopilot
+
+Executing the test-row cleanup — the original purpose of the whole E2E. First, investigate exactly where the test data landed (which sheets/ledgers hold the measurements + email identities) so the cleanup targets the real rows:
+
+
+### 🤖 Autopilot
+
+The test closeup photo landed in the sunmint repo (`images/growth/20260829143952_...closeup.jpg`) — that's test data to clean too. Let me find where the measurement rows + email identities landed (checking the sheets directly):
+
+
+### 🤖 Autopilot
+
+The SunMint Tree Planting sheet holds planting events (the old ones already marked INVALID by Gary's cleanup — the "2 live trees" index reflects that). Now let me find where the **growth measurements** actually landed — checking the full sheet + any growth/monitoring tab:
+
+
+### 🤖 Autopilot
+
+Let me find where the growth measurements actually landed — listing the tabs of both spreadsheets (the SunMint sheet + Main Ledger) to locate the growth/monitoring ledger:
+
+
+### 🤖 Autopilot
+
+The metadata endpoint needs auth (no SA on this box). Let me use the read tool to probe the likely tab names — the SunMint sheet's tabs and any growth-monitoring tab:
+
+
+### 🤖 Autopilot
+
+Neither tab exists in the SunMint sheet. The monitor page submits `[TREE GROWTH MONITORING EVENT]` via Edgar → the GAS handler appends somewhere. Let me find the actual destination by searching the code:
+
+
+### 🤖 Autopilot
+
+The GAS handler is `process_tree_growth_monitoring.gs` — let me read it to find the exact destination sheet/tab for growth measurements (and whether a reject mechanism exists):
+
+
+### 🤖 Autopilot
+
+The tracking tab is **"Tree Growth Measurements"** (on the same spreadsheet as SunMint Tree Planting). Let me read it to find the test rows needing cleanup, and check the handler's rest for a reject mechanism:
+
+
+### 🤖 Autopilot
+
+**Found the exact test data.** Here's the cleanup inventory, precisely located.
+
+## 🎯 Test data inventory (all located)
+
+**1. "Tree Growth Measurements" tab (SunMint spreadsheet) — 1 test row:**
+| Field | Value |
+|---|---|
+| Row | 2 (only data row) |
+| Update/Message ID | `Edgar_20260829143953_011` / `_012` |
+| Tree ID | `469027268` (FounderHaus — itself already INVALID in the planting sheet) |
+| DBH | 12.5 (the pre-correction E2E test) |
+| Contributor | **Sophia Truesight** (my test) |
+| Status | `PROCESSED` · 2026-08-29T14:44:55Z |
+
+**2. Sunmint repo `images/growth/`** — 2 mirrored test photos: `20260829143952_..._closeup.jpg` + `_context.jpg`
+
+**3. TEST_TREE_E2E measurements (13.6/13.8/14.2)** — **NOT in the tracking tab** (only 1 data row exists). The daily index rebuild already dropped TEST_TREE_E2E (index is now 2 real trees), and the server-side gates (tree lookup / proximity) evidently rejected those later attempts. **So the TEST_TREE_E2E rows effectively cleaned themselves** — nothing to do there.
+
+**4. tgm-e2e-2026\* email identities** — need one more lookup to locate (email verification rows; not in this tab).
+
+## 🔧 The mechanism question (the crux)
+
+The measurement row's Status is `PROCESSED` with **no reject/invalidate function in the GAS handler** (I re-read `process_tree_growth_monitoring.gs` — input gates only, appends `PROCESSED`; no REJECT path exists for growth measurements — the flagged gap from earlier). And the row's **tree itself is INVALID** (FounderHaus 469027268), so this measurement is doubly test data.
+
+**Options (your call):**
+1. **You/Envoy mark the row manually** — set Status → `REJECTED`/`INVALID` in the "Tree Growth Measurements" tab (row 2). Fastest, zero code.
+2. **I build the small sentinel-gated `rejectTreeGrowthMeasurement_` GAS function** (mirrors the planting REJECT pattern, checks `isSentinelByName_`) → PR + deploy → then the page's MARK INVALID works for growth rows (and the test row can be rejected via the UI by my sentinel identity). More complete, but it's a code change needing your review.
+3. **Remove the mirrored test photos** from `sunmint/images/growth/` (I can do this via Contents API — deletes are reversible-ish in git history).
+
+My recommendation: **option 2** — it closes the flagged gap permanently (future governors/sentinels can invalidate bad measurements via the UI), and I use it to reject this exact row as the proof. But it's a GAS deploy (production-touching) so it needs your explicit go.
+
+## 📌 RESUME HERE
+- Say **"build the reject function"** → I PR the GAS handler (`rejectTreeGrowthMeasurement_`), you approve deploy, then I reject the row + remove the test photos
+- Or say **"mark it manually"** → you/Envoy flip the row's Status, and I just remove the test photos
+- Remaining: locate the tgm-e2e email rows (one lookup) before final cleanup sign-off
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && TS=$(date +%s) echo "=== 1. SunMint generator: which sheet/tab feeds tree index (re-check ids) ===" curl -s "https://raw.githubus; cd /tmp echo "=== SunMint sheet tabs ===" curl -s -m 20 "https://sheets.googleapis.com/v4/spreadsheets/1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8
 
