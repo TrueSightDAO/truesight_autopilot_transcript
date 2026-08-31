@@ -5029,21 +5029,25 @@ The python inline didn't print (probably path escaping). Let me read the meta fi
 ### 🤖 Autopilot
 
 The glob isn't expanding — let me check the actual structure inside a session directory.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo uses `transcript.md` files (not meta.json — the SCHEMA.md describes a different/additional format). Let me examine the transcript.md files to reconstruct the timeline, focusing on the sessions from 2026-08-30 and 08-31 that match this conversation.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me examine the transcript format to understand the timeline structure, then identify which session(s) are this conversation.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Santa Anna conversation is in session `ffb0a03346b2` (both 08-30 and 08-31). Let me examine those transcripts for timestamps to reconstruct the timeline.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5188,4 +5192,51 @@ Anything else on this thread?
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] merge 851. 
+
+ignore 2. We have already gotten the boundaries
+
+
+### 🤖 Autopilot
+
+Merging the conventions doc now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — `agentic_ai_context#851` merged
+
+**"Add Agroverse farm page conventions doc"** → merged (sha `f876619`)
+
+### What's now permanent in the repo
+`agroverse/AGROVERSE_FARM_PAGE_CONVENTIONS.md` — the farm-page playbook codified from the Santa Anna build:
+- **Hero = humans** rule (your "current one doesn't show any humans" feedback)
+- Real GPS from EXIF (HEIC; Telegram strips EXIF)
+- Page anatomy (farms/<slug>/, media.json, journey stops, coop cards)
+- Video evidence pipeline (ffmpeg frames → YouTube → embeds)
+- Gotchas: unescaped apostrophes in bindPopup break the map, Pages deploy lag, journey image-path fallback, UUID renames, same-name farm disambiguation
+- Cross-links to `fsvp/` runbooks
+
+### Also acknowledged
+- **Jedielcio's boundary photos** — you said boundaries are already obtained, so I'll drop that follow-up (no action needed; the SA-P1 entry's `approx` boundary can be upgraded whenever you share the coordinates)
+
+---
+
+**RESUME HERE → next unit:**
+1. **Handoff manifest** has active plans awaiting kickoff: `SUNMINT_PUBLIC_SIGNATURES_PLAN` (RESUME HERE = PR1), `SUNMINT_IMPACT_MAP_EXTENSION_PLAN` (in progress, RESUME HERE = PR1), `SUNMINT_MOBILE_APP_PLAN` (awaiting kickoff)
+2. If the boundary data you have gives exact GPS, I can upgrade SA-P1's `boundary_authority` from `approx` to a precise ring
+3. Anything else on the Santa Anna thread, or shall we close it out?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #851 on agentic_ai_context merged successfully (sha: f8766193619ab43320b473b2752ba3ce48172ee1). Pull Request successfully merged
 
