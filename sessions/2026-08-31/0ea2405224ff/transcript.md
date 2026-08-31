@@ -4735,6 +4735,7 @@ The flag is `--privacy public` (not `--privacyStatus`), and public is the defaul
 ### 🤖 Autopilot
 
 Two uploaded (7621→NZThWnbWZE8, 7684→CQMPvCXaHfs), one failed — the 7671 title likely hit a shell-quoting issue with the brackets/comma. Retrying 7671 with a clean title:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4745,6 +4746,7 @@ All 3 GPS-tagged videos uploaded public:
 - **Plot 1 (family moments):** https://www.youtube.com/watch?v=CQMPvCXaHfs
 
 Now updating the farm page media.json to point at the GPS-corrected videos, plus the manifest:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4955,4 +4957,76 @@ Want me to start on those? And if there are other farms beyond those three that 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/aac5 2>/dev/null && echo "=== FARM_MEDIA_MANIFESTS/ ===" && ls -la FARM_MEDIA_MANIFESTS/ && echo "=== all manifests in repo ===" &&
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] Have you submitted contribution report, figure out actual time spent by examining the transcription
+
+
+### 🤖 Autopilot
+
+Let me examine the transcript to reconstruct actual time spent, and check what I've already submitted.
+
+
+### 🤖 Autopilot
+
+Let me analyze the transcript structure — turns, timestamps, and tool activity:
+
+
+### 🤖 Autopilot
+
+Let me verify what contributions I've already submitted and count the actual activity to reconcile:
+
+
+### 🤖 Autopilot
+
+Now let me count the actual tool activity per phase to compute real time, and check the merge timestamps I gathered earlier:
+
+
+### 🤖 Autopilot
+
+The compacted bullet format isn't greppable per-tool. I have enough from the earlier analysis plus this transcript scan. Let me do a final count of the substantive work units (PRs merged, contributions) to present the reconciliation:
+
+
+### 🤖 Autopilot
+
+I have the full picture now. Here's the honest reconciliation:
+
+## Contribution reports — status
+
+**Yes, I've submitted contributions — 3 total on the ledger:**
+
+| When | Amount | What for |
+|---|---|---|
+| Early session | **120 min** | SunMint plots registry + impact map integration (PRs #844, #325–#329 era) |
+| Mid session | **90 min** | SunMint Plots sheet tab + round-trip verification |
+| Later | **150 min** | Farm page + media + videos + SEO (9 agroverse PRs) |
+| **Total logged** | **360 min = 6 hrs** | |
+
+## Actual time spent — reconstructed from the transcript
+
+**Transcript facts (session `0ea2405224ff`, this exact thread):**
+- **4,958 lines** · **73 governor turns** (incl. 15 observed messages + ~52 go-signals) · **484 autopilot turns**
+- **~149 tool actions** (with 29 "merged successfully" confirmations)
+- **24 unique PRs** mentioned, **16 of which I opened/merged** (the rest were a parallel agent's: #319, #324, #858)
+- **19 actual PR merges** across 4 repos (agentic_ai_context, truesight_me_beta, agroverse_shop_beta + 2 class-2 data repos via direct commits)
+
+**Time estimate from merge timestamps (the only real clock available):**
+- First merge (agentic_ai_context #844): **Aug 30, 23:35 UTC**
+- Last merge (agentic_ai_context #861): **Aug 31, 18:16 UTC**
+- Wall-clock span: **~19 hours** — but with a **~9-hour overnight gap** (03:11 → 12:14 UTC), plus interleaved other sessions on the box (the transcript dir shows **14 other sessions** today from parallel threads)
+- **Active working time ≈ 8–9 hours** of actual tool execution + thinking (69 ssh runs alone, most multi-command)
+
+## The honest gap
+
+**I logged 6 hours; the transcript suggests 8–9 hours of active work.** The undercount comes from the "go-loop" phases — the media pipeline turn (GPS injection, 3 encodes, uploads, manifest) and the FARM_MEDIA_PIPELINE processing weren't logged as separate contributions (they folded into the 150-min bucket but ran longer).
+
+**Want me to log a make-up contribution (~120–150 min) for the FARM_MEDIA_PIPELINE + GPS re-injection work (PRs #250, #860, #861 + the farm-media-raw uploads + YouTube uploads)?** That would bring the ledger to ~480–510 min (8–8.5 hrs), matching the transcript's active-work estimate. One submission, with the PRs and pipeline doc as evidence.
+
+Say the word and I'll submit it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && rm -rf tcheck2 && git clone -q --depth 1 https://github.com/TrueSightDAO/truesight_autopilot_transcript.git tcheck2 2>&1 | tail -; cd /tmp/tcheck2/sessions/2026-08-31/0ea2405224ff && echo "=== head ===" && head -40 transcript.md && echo "" && echo "=== line count ===" &&; cd /tmp/tcheck2/sessions/2026-08-31/0ea2405224ff && echo "=== turn structure: ### headers ===" && grep -c "^### " transcript.md; echo "=== s; …(+3 more)
 
