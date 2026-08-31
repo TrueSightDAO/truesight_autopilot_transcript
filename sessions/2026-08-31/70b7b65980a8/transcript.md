@@ -328,11 +328,13 @@ Perhaps include chemical differences and taste profile as well as history
 ### 🤖 Autopilot
 
 Excellent — a research report + visual PDF. Plan: (1) extract the best comparison frames, (2) deep-dive web research on both varieties in Pará (chemistry, taste, history), (3) compose a PDF with images and findings. Starting the frame prep and research in parallel.
+[4 tool result(s) compacted: ssh_run, web_search, web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Strong material coming in — CCN-51 history, genetics (1.1% Nacional, 45.4% IMC, 22.2% Criollo…), chemistry (polyphenols, theobromine), and a Brazilian study on elite clones including CCN-51. reportlab is available for the image-rich PDF. Now the Pará-specific angle and the "common cacao" of the region.
+[3 tool result(s) compacted: web_search, web_search, web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -505,4 +507,50 @@ Still want me to archive the final version to a repo, or keep iterating on the d
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cat > /tmp/make_pdf3.py << 'PYEOF' # -*- coding: utf-8 -*- import os, re from PIL import Image as PILImage, ImageDraw, ImageFont from report; cd /tmp && sed -i 's|^SRC = "/home/ubuntu/to_analyze/pdf/img"|SRCDIR = "/home/ubuntu/to_analyze/pdf/img"|; s|os.path.join(SRC, src)|os.path.; cd /tmp && python3 - << 'PYEOF' s = open('make_pdf3.py').read() # rename loop variable letter -> tag_letter in the assets loop and style_ima
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: I think the headers are too bold... Perhaps more subdued
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=16817]
+
+
+### 🤖 Autopilot
+
+Subdued headers — coming up. I'll drop the section headers from bold to regular weight with a muted brown, soften the title (regular weight, slightly smaller), and tone the subtitle. Building v4:
+
+
+### 🤖 Autopilot
+
+v4 built. Sending:
+
+
+### 🤖 Autopilot
+
+📄 **v4 delivered** — `Cacau_Para_Two_Varieties_Report_v4.pdf` (7 pages, 4.4 MB) attached above.
+
+## Header changes
+
+| Element | Before (v3) | After (v4) |
+|---|---|---|
+| **Title** | 20pt bold, dark brown | **17pt regular**, muted brown (#6B4F2E) |
+| **Section headers** | 14pt bold, medium brown | **12.5pt regular**, taupe-brown (#8A7250) |
+| **Subtitle** | italic default | **10pt oblique**, softer gray-brown (#8C7B66) |
+
+Everything else (photos, frames, badges, tables, content) is unchanged — this was purely a typography softening so the visuals lead and the text recedes.
+
+On disk: `~/to_analyze/pdf/Cacau_Para_Two_Varieties_Report_v4.pdf`.
+
+Want any further tweaks (size, color, spacing) — or archive this as the final version?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && python3 - << 'PYEOF' s = open('make_pdf3.py').read() # ---- 1. Subdue H1 (title): regular weight, smaller, softer color ---- s = s.replace('H1 = ParagraphStyle(; cd /opt/truesight_autopilot && ./.venv/bin/python /tmp/make_pdf4.py
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && python3 - << 'PYEOF' s = open('make_pdf3.py').read() # ---- 1. Subdue H1 (title): regular weight, smaller, softer color ---- s =
 
