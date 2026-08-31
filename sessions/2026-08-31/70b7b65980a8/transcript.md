@@ -278,11 +278,13 @@ Good eye — the farmers themselves contrast "esse aqui" (the grafted CCN-51 Pon
 ### 🤖 Autopilot
 
 51 higher-res frames extracted. Let me send a focused subset to Grok with a specific prompt: identify and compare the two cacao varieties visible (pod color/shape, leaf traits, tree form), and where each appears in the clips.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Syntax error — a bracket typo in the heredoc. Quick fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -443,4 +445,64 @@ Now you can flip to any photo and instantly know which variety it shows, even wi
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cat > /tmp/make_pdf2.py << 'PYEOF' # -*- coding: utf-8 -*- import os from PIL import Image as PILImage, ImageDraw, ImageFont from reportlab.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16817] can you improve the styling of the red and green borders?
+
+
+### 🤖 Autopilot
+
+Nice — let's make the frames look like proper museum mats: two-tone border with an inner gold accent line, soft drop shadow, and rounded pill-shaped badges (all rendered in PIL for full control), instead of the flat square table borders.
+
+
+### 🤖 Autopilot
+
+Classic name collision — I used `SRC` for both the image directory and the source-list paragraph style; the style overwrote the directory. One-line fix:
+
+
+### 🤖 Autopilot
+
+The loop variable `letter` shadowed the imported `letter` page size from reportlab. Renaming it:
+
+
+### 🤖 Autopilot
+
+v3 built — 8 pages, all assets rendered (5 framed photos + 3 pill badges + legend badges). Sending it:
+
+
+### 🤖 Autopilot
+
+📄 **v3 delivered** — `Cacau_Para_Two_Varieties_Report_v3.pdf` (8 pages, 4.4 MB) attached above.
+
+## Styling upgrades — the red & green borders now look like museum mats
+
+**Frames (per photo):**
+- **Rounded-corner frame** with a thick outer border in the variety color (green/red/brown)
+- **White mat line** inside it (the classic gallery-mat look)
+- **Gold accent hairline** as the innermost ring — ties into the saffron/cacao brand palette
+- **Soft drop shadow** behind the whole frame for depth
+
+**Badges (above each photo):**
+- Replaced flat text with **pill-shaped badges** — rounded capsule in the variety color with a dark outline, inner **gold ring**, and two-line text ("VARIETY A" / "CCN-51 'PONTA VERDE' (GRAFTED)")
+
+**In-image band:**
+- The label band now has a **gold hairline** under it separating it from the photo
+
+**Legend (page 1):** now uses the same pill badges, so the key matches the photos exactly.
+
+All rendering was done in PIL (rounded rects, shadows, gold lines) then embedded — crisper than reportlab table borders.
+
+**On disk:** `~/to_analyze/pdf/Cacau_Para_Two_Varieties_Report_v3.pdf` + the styled assets in `~/to_analyze/pdf/img/annotated_v3/` (5 framed photos + 3 badges) if you want them standalone.
+
+Still want me to archive the final version to a repo, or keep iterating on the design?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cat > /tmp/make_pdf3.py << 'PYEOF' # -*- coding: utf-8 -*- import os, re from PIL import Image as PILImage, ImageDraw, ImageFont from reportlab.lib.pagesizes import letter fr; cd /tmp && sed -i 's|^SRC = "/home/ubuntu/to_analyze/pdf/img"|SRCDIR = "/home/ubuntu/to_analyze/pdf/img"|; s|os.path.join(SRC, src)|os.path.join(SRCDIR, src)|' make_pdf3.py && grep -n 'SRCDIR\|^SRC' make; …(+1 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cat > /tmp/make_pdf3.py << 'PYEOF' # -*- coding: utf-8 -*- import os, re from PIL import Image as PILImage, ImageDraw, ImageFont from report; cd /tmp && sed -i 's|^SRC = "/home/ubuntu/to_analyze/pdf/img"|SRCDIR = "/home/ubuntu/to_analyze/pdf/img"|; s|os.path.join(SRC, src)|os.path.; cd /tmp && python3 - << 'PYEOF' s = open('make_pdf3.py').read() # rename loop variable letter -> tag_letter in the assets loop and style_ima
 
