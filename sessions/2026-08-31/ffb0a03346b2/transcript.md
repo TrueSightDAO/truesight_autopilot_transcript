@@ -2925,11 +2925,13 @@ No matches in context — let me check the shop repo itself for any farm-page te
 ### 🤖 Autopilot
 
 Let me check for existing farm-page template docs in the shop repo and how conventions are recorded.
+[2 tool result(s) compacted: search_code, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No existing convention doc for farm pages. Let me check the context repo structure to find the right home for this convention.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3115,4 +3117,48 @@ PR #232 opened. This references the farmers asset that lands via #231 — so the
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #232 on agroverse_shop_beta merged successfully (sha: d0d4b6da1435f22d9a8315aa3f45fc14594f4868). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Done this turn — `agroverse_shop_beta#232` merged
+
+**"Use farmers-with-Jedielcio photo for Santa Anna journey stop"** → merged to `main` (sha `d0d4b6d`)
+
+### What changed
+- `cacao-journeys/brazil
+
+
+### 🤖 Autopilot
+
+👍 Go signal received — verifying the farmers photo is live on beta (farm page hero + journey stop).
+
+
+### 🤖 Autopilot
+
+✅ **Verified live on beta** — the farmers photo is now everywhere it should be:
+
+| Check | Result |
+|---|---|
+| Farm page hero (`/farms/santa-anna-fazenda-para/`) | **4 refs** to `santa_anna_farmers_hero` (hero CSS bg, inline hero, og:image, twitter:image) — **0** leftover grove refs |
+| Journey stop (`/cacao-journeys/brazilian-path/`) | mapping → `santa_anna_farmers_hero.jpg` ✅ |
+| Asset served | HTTP 200, 184,628 bytes, `image/jpeg` ✅ |
+
+The farmers-with-Jedielcio photo is now the hero on the farm page **and** the Santa Anna stop on the Brazilian Path journey — both on beta.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Your eyeball** — open beta.agroverse.shop/farms/santa-anna-fazenda-para/ (hero) and beta.agroverse.shop/cacao-journeys/brazilian-path/ (journey stop). When it looks right, say **"promote"** and I'll `sync_beta_to_prod` to push the hero + journey image to agroverse.shop
+2. **Still parked:** site-visit PDF v4 → `fda_fsvp` (pending site code from Jedielcio); merge conventions doc `agentic_ai_context#851`
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 → curl farm page (4× farmers_hero, 0 profile_photo), journey mapping (1× farmers_hero.jpg), asset HEAD (200, 184628b, image/jpeg)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== beta farm page hero ==="; curl -s https://beta.agroverse.shop/farms/santa-anna-fazenda-para/ | grep -oE "santa_anna_farmers_hero|s
 
