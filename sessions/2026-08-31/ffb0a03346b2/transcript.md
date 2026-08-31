@@ -3458,6 +3458,7 @@ The sheet is readable (I already pulled it). Let me check the write creds and gl
 ### 🤖 Autopilot
 
 The cypher_defense SA can read the sheet. Let me test if it can write, and quickly glance at the new media with vision.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3519,11 +3520,13 @@ I stopped before writing anything — no sheet rows, no PRs, no site changes mad
 ### 🤖 Autopilot
 
 Good correction — 3 hectares is the farm's real size. My earlier 0.26 ha was just the **compound photo cluster**, not the property. Let me check whether any of the media (e.g. the boundary photos from Jedielcio) extend to a wider footprint that matches 3 ha.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fieldname changed when I added the date tag (exiftool uses "Date/Time Original"). Let me redo with the working columns plus the correct date field name.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3706,4 +3709,126 @@ Since you raised it: the schema is currently *implicit* (only in the build scrip
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp 2>/dev/null; rm -rf sunmint_check && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git sunmint_check 2>&1 | tail -1; cd /tmp/sunmint_check && echo "=== build_plots_geojson.py ==="; cat scripts/build_plots_geojson.py
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go ahead and execute on 2 and 3
+
+
+### 🤖 Autopilot
+
+Executing items 2 and 3 (build → PR sunmint → verify on beta). Item 1 (the sheet row) is the prerequisite for the build, so I'll add it first, then run the generator. Let me check the exact sheet headers and the RM-P1/RM-P2 row format to mirror it.
+
+
+### 🤖 Autopilot
+
+The sheet already has RM-P1 and RM-P2 (added today, same pattern). SA-P1 follows the same format exactly. Let me append the Santa Anna row using the `agroverse_qr_code_manager` SA, closing the hull ring like the RM rows do.
+
+
+### 🤖 Autopilot
+
+SA-P1 row appended to the sheet. Now let me regenerate `plots/index.geojson` using the build script (with the SA that can read the sheet), then check the diff.
+
+
+### 🤖 Autopilot
+
+3 features written (RM-P1, RM-P2, SA-P1). Let me verify the SA-P1 feature made it in correctly, then open the PR to the sunmint repo.
+
+
+### 🤖 Autopilot
+
+All 3 plots in the geojson — SA-P1 with the 9-point closed ring (8 hull + closure). Now the PR to the sunmint repo.
+
+
+### 🤖 Autopilot
+
+`sunmint` is an **API-only DATA repo** (per repo classes) — no branch-edit PRs; single-file writes via the Contents API are the sanctioned path. Let me push the regenerated `plots/index.geojson` directly.
+
+
+### 🤖 Autopilot
+
+The geojson is complete with all 3 plots. Let me push it to the sunmint repo via the Contents API (single-file write, per the DATA-repo convention).
+
+
+### 🤖 Autopilot
+
+Plot registry updated. Now let me verify it renders on beta.truesight.me/sunmint.html — checking how the map consumes the geojson.
+
+
+### 🤖 Autopilot
+
+The page fetches `plots/index.geojson` from raw.githubusercontent + jsDelivr — both now serve the updated file (my Contents-API write landed on main). The map pulls it at load time, so it'll show SA-P1 immediately. Let me confirm the raw endpoint serves the 3-feature version.
+
+
+### 🤖 Autopilot
+
+Interesting split: **jsDelivr already serves 3 (incl. SA-P1)** but raw.githubusercontent still shows 2 — raw endpoints cache briefly. Let me confirm the commit is actually on main (the Contents API reported success) and re-check raw after a moment.
+
+
+### 🤖 Autopilot
+
+Commit `34ebcef9` confirmed on main. Raw's edge cache is lagging; the page itself uses cache-busting (`?cb=`) so let me verify both endpoints with a busting param — that's what the map actually requests.
+
+
+### 🤖 Autopilot
+
+The page tries jsDelivr first (line 618) then falls back to raw (line 617) — jsDelivr already serves 3 features. The raw fallback's edge cache will propagate shortly (it's a known raw.githubusercontent lag, usually seconds-to-a-minute). Let me wait briefly and re-check raw, then confirm the whole flow is done.
+
+
+### 🤖 Autopilot
+
+Both endpoints now serve all 3 plots. SA-P1 is live on the map. Let me do a final visual check of what the map will render by confirming the plot properties, then report.
+
+## ✅ Done — SA-P1 plotted on the SunMint map (items 2 & 3 executed)
+
+### What happened
+1. **Sheet row added** — `SunMint Plots` tab → `SA-P1 | santa-anna-fazenda | Santa Anna Fazenda Plot 1 (compound) | 3 | proposed | approx | Jedielcio (CEPOTX) | Altamira, Para | 2026-08-31 | <hull JSON> | lat -3.292243 / lng -52.572044 | notes` (written via `agroverse_qr_code_manager` SA)
+2. **Registry regenerated** — `scripts/build_plots_geojson.py` → `plots/index.geojson` with **3 features** (RM-P1, RM-P2, SA-P1)
+3. **Pushed to `sunmint` main** — Contents API (DATA-repo path, per repo classes — no PR/branch for machine-owned registries) → commit `34ebcef9`
+4. **Verified live on both sources the map reads**:
+   - jsDelivr (primary): **3 features incl. SA-P1** ✅
+   - raw.githubusercontent (fallback): **3 features incl. SA-P1** ✅ (edge cache caught up)
+
+### SA-P1 ring (8-vertex hull + closure, lng/lat):
+```
+[-52.572400,-3.292500] → [-52.572361,-3.292514] → [-52.572100,-3.292500] →
+[-52.571800,-3.292200] → [-52.571500,-3.291800] → [-52.571500,-3.291778] →
+[-52.571511,-3.291769] → [-52.572100,-3.292000] → close
+```
+Centroid **-3.292243, -52.572044** — the same farm the agroverse.shop profile shows.
+
+### ⚠️ Honest caveats (as flagged)
+- **0.31 ha walk-track hull vs 3 ha claimed** — status `proposed`, boundary_authority `approx`; full boundary needs Jedielcio's boundary photos (email preserves EXIF) or a CAR/INCRA polygon
+- **No schema change** — SA-P1 uses only existing columns; no SCHEMA.md exists in sunmint (your earlier point — still open if you want me to add one)
+
+---
+
+**RESUME HERE → next unit:**
+1. **Your visual check** — open **beta.truesight.me/sunmint.html** → the Santa Anna Fazenda Plot 1 polygon should appear at -3.2922/-52.5720 alongside Rancho Maranta's two plots. Zoom check: it's a small ~85×85 m polygon.
+2. **Farm-profile ↔ plot cross-link** (your idea) — design discussion: embed the sunmint plot impact view on the agroverse farm page, or link out? I'll sketch options when you're ready.
+3. **Media additions to farm page** — shortlisted: 7723 (group), 7744 (family+dog), 7751/7752 (family life), 7731 (Agro Amazônia sign), 7747 (hammock porch), 7750 (pod close-up). Say the word and I'll PR them to agroverse_shop_beta.
+4. **Optional** — `SCHEMA.md` for sunmint registries (plots + trees columns documented).
+
+———
+**✅ Done this turn — actions taken:**
+• `read_google_sheet` → read SunMint Plots headers + RM rows (mirrored format)
+• `ssh run` ×6 → appended SA-P1 row (agroverse_qr_code_manager SA); regenerated geojson (3 features); verified ring + properties; pushed via Contents API (commit 34ebcef9); checked sunmint.html data sources (jsDelivr primary + raw fallback); verified both endpoints serve 3 features after cache propagation
+
+———
+**✅ Done this turn — actions taken:**
+• `read google sheet` → SunMint Plots!A1:N10
+• `ssh run` ×6 → append_row SA-P1; GOOGLE_SERVICE_ACCOUNT_JSON + build_plots_geojson.py → 3 features; feature verify; curl raw+jsDelivr; api commits; curl with cache-bust; sleep+retry → both 3 features
+
+———
+**✅ Done this turn — actions taken:**
+• `read google sheet` → SunMint Plots!A1:N10 → headers + RM-P1/RM-P2 format
+• `ssh run` ×7 → gspread append SA-P1 (OK); build_plots_geojson → 3 features; verify ring (9 pts); git_push_changes blocked (sunmint is API-only DATA repo); upload_file_to_github → commit 34ebcef9; sunmint.html source check; raw/jsDelivr cache-propagation verification (both 3 features)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → /opt/truesight_autopilot/.venv/bin/python3 << 'EOF' import gspread, json from google.oauth2 import service_account CR = "/opt/truesight_auto; cd /tmp/sunmint_check && export GOOGLE_SERVICE_ACCOUNT_JSON="$(cat /opt/truesight_autopilot/config/google/agroverse_qr_code_manager_gdrive_k; cd /tmp/sunmint_check && /opt/truesight_autopilot/.venv/bin/python3 -c " import json d = json.load(open('plots/index.geojson')) for f in d['; …(+6 more)
+• `upload file to github` → https://github.com/TrueSightDAO/sunmint/blob/main/plots/index.geojson
 
