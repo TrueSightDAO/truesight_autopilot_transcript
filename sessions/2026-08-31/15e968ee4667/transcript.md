@@ -1222,21 +1222,25 @@ Dry-run looks exactly right: **74 event files + 5 index files** across the 4 fol
 ### 🤖 Autopilot
 
 Dry-run is 95% right, but I caught a real inconsistency: the root index shows `tree_growth_monitoring: count 0` while a growth event file **does** exist (`Edgar_20260829143953_012` — it's in chat logs but the measurements tab is still empty, so the events-loop record is what got written, and the measurements block then clobbered the folder index to 0). Also the measurement record lacks `event_type` for schema uniformity. Let me fix `_ledger_files` to compute per-folder counts from the actual files written.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Consistency fixed: root index now shows `tree_growth_monitoring: 1` and the folder index agrees (74 total = 24 planting + 8 link + 41 reject + 1 growth). Now let me sync the retargeted script to the repo, run the local test suite, then commit via the repo's PR flow. First, check the repo's current branch state and diff.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 On the stale merged PR #354 branch with unrelated working-tree noise. The clean move: check the untracked test file, run the local test suite, then open A2 as a fresh branch off `origin/main` containing only the script + test changes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Compile + ruff check pass. The `ruff format --check` reformat list is pre-existing (36 unrelated files, e.g. `tests/test_vault.py` — untouched by me). My two files are clean; only my new file's formatting matters for this PR. Let me confirm my files are format-clean, run pytest, and verify the test file's correctness (it may be pre-existing from PR #354).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1244,21 +1248,25 @@ Compile + ruff check pass. The `ruff format --check` reformat list is pre-existi
 Two issues to fix:
 1. My script needs a ruff-format pass (it's now reformat-clean-required).
 2. 2 test failures — the test file (untracked, no history) was written for the **old** aggregate shape; my per-event changes broke its assumptions. Let me look at the failing assertions and fix both.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the exact failing assertions (lines ~60–90) to fix the test expectations for the new per-event shape.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the top of the test file (lines 1–55) to see `test_parse_event_planting`'s assertions.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the actual assertion failures with full traceback.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1426,4 +1434,66 @@ Clean diff: **2 files, +671** (script retarget + tests). No unrelated noise (wor
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /opt/truesight_autopilot && sed -n '1,50p' tests/test_sync_sunmint_signatures.py; cd /opt/truesight_autopilot && echo "=== dup check ===" && grep -c "PLANT_PK = \|GROW_PK = \|^PLANT_SAMPLE\|^GROWTH_SAMPLE\|^EMAIL_SAMPLE" t; cd /opt/truesight_autopilot && python3 -m compileall -q app scripts tests 2>&1 | tail -1; python3 -m pytest -q 2>&1 | tail -5; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Clean PR: exactly 2 files, +671, no noise. A2's PR is at the `gate:` — dry-run diff review with Gary before the first real push. Reporting.
+
+## A2 PR ready — at gate ✅
+
+### [PR #355: per-event public
+
+
+### 🤖 Autopilot
+
+Gary's 👍 clears the A2 gate: merge PR #355, then first real push to `verify_public_signatures` + re-verify. Starting with the merge.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**A2 merged — the per-event ledger code is in.** ✅
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **PR** | [truesight_autopilot #355](https://github.com/TrueSightDAO/truesight_autopilot/pull/355) — merged (squash, `ca8c1eb`) |
+| **What changed** | `scripts/sync_sunmint_signatures.py` retargeted from the aggregate sunmint layout to the **org-wide per-event ledger** (`verify_public_signatures/tree_<type>/<msg_id>.json` + per-folder `index.json` + root `index.json`, incremental sha-aware PUT); tests updated for the per-event shape (6/6 pass) |
+
+The A2 **gate is now cleared** (your 👍), and the script is merged on `main`. The next step is the **first real `--push`** — but per the one-PR-per-turn rule and the fact that this is the live migration moment, I'm stopping here for a clean handoff.
+
+## Roadmap state
+| Unit | Status |
+|---|---|
+| A1 pivot | ✅ merged |
+| **A2 retarget + migration** | ✅ **merged — script live on main** |
+| **→ A2b: first real `--push` (migration)** | ⏭️ **next** |
+| A3 ledger README | not started |
+| A4 dao_protocol emit hook | not started |
+| A5 docs + UAT | not started |
+
+## RESUME HERE → **A2b: first live push + verify**
+1. Run `/home/ubuntu/scripts/sync_sunmint_signatures.py --push` (real, not dry-run) → writes 74 event files + 5 index files to `TrueSightDAO/verify_public_signatures`
+2. Confirm live raw URLs (e.g. `https://raw.githubusercontent.com/TrueSightDAO/verify_public_signatures/main/tree_planting/171.json`, root `index.json`)
+3. **Re-verify 3 samples offline** from the new live paths (openssl over `signed_payload`)
+4. Report + **ask Gary whether to decommission the legacy `sunmint/signatures.json` mirror** (plan §4) — I will NOT touch it without his explicit go
+5. Then **A3**: ledger README in `verify_public_signatures` (API-only repo → single-file Contents-API write)
+
+Note: the box still has the pre-merge working-tree copy of the script; after the push, pull `main` locally so the deployed `/home/ubuntu/scripts/` copy matches the merged version (it already does — same content; the merge was of the same commit).
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #355 on truesight_autopilot merged successfully (sha: ca8c1eb002387c6ee72cf289645692dd1e1e8f49)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #355 on truesight_autopilot merged successfully (sha: ca8c1eb002387c6ee72cf289645692dd1e1e8f49). Pull Request successfully merged
 
