@@ -3975,11 +3975,13 @@ The popup builder is clear. The plots already carry `farm_id` (RM-P1/RM-P2 → `
 ### 🤖 Autopilot
 
 Need to provide the edit hunk. Let me apply the change to the popup builder:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #333 opened. Let me quickly verify the edit landed correctly on the branch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4041,6 +4043,7 @@ Verified on the branch: the edit is exactly one line added to the popup builder 
 ### 🤖 Autopilot
 
 👍 Go signal received — merging the popup link PR.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4267,4 +4270,60 @@ Now the popup link points to:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== what the popup builds (from farm_id) ==="; echo "farm_id=santa-anna-fazenda -> https://agroverse.shop/farms/santa-anna-fazenda/"; ; cd /tmp/tmb_check && git fetch -q origin fix/sunmint-popup-farm-url && git show FETCH_HEAD:sunmint.html | grep -n -A 3 "FARM_SLUG" | head -8
 • `merge pr` → ✅ PR #335 on truesight_me_beta merged successfully (sha: eb732bc64e4c9a75dc7e6bc4fb95a984a04542f4). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] Also make sure it shows up on production. Looking good
+
+
+### 🤖 Autopilot
+
+Explicit approval received — promoting to production.
+
+
+### 🤖 Autopilot
+
+Sync reported a **conflict** — I must stop and report (never force). Let me gather the divergence details for you (read-only) so we know what needs reconciling.
+
+
+### 🤖 Autopilot
+
+/tmp/tmb_check was cleaned up earlier. Let me re-clone both repos and compare properly.
+
+
+### 🤖 Autopilot
+
+I must stop here per protocol — the sync hit a conflict and I won't force it. Here's the full diagnosis for your call:
+
+## ⚠️ `sync_beta_to_prod` failed — conflict (not promoted)
+
+**`truesight_me_prod` sync from `truesight_me_beta` refused with a merge conflict.** I did NOT force anything. Read-only diagnosis:
+
+### Why it conflicts (histories diverged)
+| | Beta main | Prod main |
+|---|---|---|
+| CNAME | `beta.truesight.me` | `truesight.me` ← **intentional divergence** |
+| Prod-only commits | — | `0b986c7` **Update CNAME** + 2 stats refreshes |
+| Beta-only commits | **#331, #333, #335** (the popup work) + 2 stats refreshes | — |
+
+The fork can't fast-forward: prod has its own CNAME commit (the intentional divergence), and merging would conflict on the `CNAME` file — exactly the case the guardrail exists for.
+
+### The 3 changes you approved are stuck in beta
+- **#333** — popup links to agroverse farm profiles
+- **#335** — slug-map fix (the 404 fix you just verified as "Looking good")
+- **#331** — enriched popups + boundary legend (earlier work)
+
+### Your options to reconcile (pick one)
+1. **I open a normal PR into `truesight_me_prod`** merging the beta-only commits, resolving the CNAME conflict by **keeping prod's `truesight.me`** — this is a clean, non-forced merge that preserves the intentional CNAME divergence. (This is a branch-merge into prod, which I'd only do on your explicit say-so given the rule.)
+2. **You reconcile in the GitHub UI** — repo fork page → "Sync fork" → merge upstream → resolve the CNAME conflict keeping `truesight.me`.
+3. **You approve a one-off `git` merge on the box** (I run it, keep prod CNAME, push) — same result as #1 but via CLI.
+
+None of these touch the CNAME value — `truesight.me` stays. The only question is who clicks the merge. My recommendation: **option 1** — fastest, I verify the merge keeps prod's CNAME and the popup fix lands on `truesight.me/sunmint.html`.
+
+Say the word and I'll execute the option you choose.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && rm -rf tmb_prod_check && git clone -q --depth 5 https://github.com/TrueSightDAO/truesight_me_prod.git tmb_prod_check 2>&1 | tail ; cd /tmp && rm -rf tmb_check tmb_prod_check && git clone -q --depth 20 https://github.com/TrueSightDAO/truesight_me_beta.git tmb_check 2>&1 |
 
