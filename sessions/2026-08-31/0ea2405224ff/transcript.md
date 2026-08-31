@@ -3272,16 +3272,19 @@ The commit landed on main first (before the branch was created), and the branch 
 ### 🤖 Autopilot
 
 Good — the commit `79fa748` is only on the feature branch `feat/rancho-media-update` (main is at 9af9fe1). The earlier "nothing to commit" was because the commit had already been made. The branch is pushed. Now open the PR via the sophia credential helper:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Got the PAT via git credential fill. Opening the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The heredoc-in-subshell mangled the quoting. Let me write it as a small script file instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3457,4 +3460,84 @@ Both checks pass — the header swap is **live on beta**:
 3. **Optional:** archive media masters (currently only in /tmp; YouTube hosts the 3 public videos as canonical copies); Plot-2 walk video + family video are already public on the channel.
 
 **Everything on the beta side of this effort is now live and consistent** — plots (extended RM-P1), trees (2 real), satellite cache, farm page with warm header + 3 videos + 12 images, journey card image, and the SEO rows. Only your prod-approval gate remains for the promotion stack.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16631] The image is cutting off the two human heads
+
+
+### 🤖 Autopilot
+
+The heads are getting cut — my bottom-anchored crop put the people's *bodies* in frame but the heads sit at the top edge, and the hero's `center/cover` on a tall viewport crops even further. Let me re-crop **centered on the heads** instead. First, find the exact head positions:
+
+
+### 🤖 Autopilot
+
+Heads sit at the **top of the skin band (~975px)** — my bottom-anchor put the crop edge right at them. The fix: anchor the crop window **above the heads** with headroom, instead of to the very bottom. Let me re-crop with the heads comfortably inside:
+
+
+### 🤖 Autopilot
+
+New crop: box (0, 815, 1200, 1490) — heads at ~975px now sit at 160px below the top edge (with headroom), bodies fill the lower 2/3. But wait — the hero CSS uses `center center/cover`, and on a **tall** hero (100vh) the visible window can crop the top and bottom of a 16:9 image. Let me check what the hero actually looks like and make the crop resilient — also, the safest fix may be to also change the CSS so the image is not center-cropped on tall viewports. Let me check the current hero CSS and think about what happens at 100vh:
+
+The `.farm-hero` is `min-height: 100vh` with `background: ... center center/cover`. On a typical laptop (16:9 viewport) the 16:9 crop fills exactly. On a **taller** viewport (portrait phones, or ultrawide), `cover` crops the top/bottom of the image — heads at the top of the crop band would get cut. So the robust fix is **both**: (a) re-crop with headroom (done: heads now at ~16% from top), and (b) change the CSS from `center center` to `center 30%` so the background focal point sits on the heads, not the geometric center.
+
+Let me apply the CSS tweak too so heads never get cropped regardless of viewport:
+
+
+### 🤖 Autopilot
+
+Both hero background refs (CSS class + inline style) now use `center 30%/cover` — the background focal point sits on the heads (which are ~16% from the top of the image), so even on tall viewports the heads stay in view. And the image itself was re-cropped with headroom above the heads (top edge at 815px, heads at 975px). Let me verify the crop visually via a coarse "edge" check, then commit + PR:
+
+
+### 🤖 Autopilot
+
+PR #238 opened. Merging per the standing go:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Fixed the cut-off heads in the Rancho Maranta header — PR #238 merged.**
+
+**Root cause:** the original crop was *bottom-anchored* (box `(0, 925, 1200, 1600)`), which put the crop's top edge **right at the heads** (~975px). Combined with the hero's `center center/cover`, on tall viewports the heads got cropped out.
+
+**PR #238 → https://github.com/TrueSightDAO/agroverse_shop_beta/pull/238** (merged, sha `a6877fa`), 2 files:
+
+1. **Re-cropped the header image** with headroom — new box `(0, 815, 1200, 1490)` (top edge 815px vs heads at ~975px → **~160px headroom** above the heads). Verified via skin-profile: heads now ~16% from the top, bodies fill the lower 2/3 (25% skin overall).
+2. **Changed the hero background focal point** — `center center` → **`center 30%`** in BOTH the CSS class (line 114) and the inline style (line 509). So `cover` anchors on the heads regardless of viewport aspect (tall phone vs ultrawide) instead of the geometric center.
+
+## Live on beta (after Pages rebuild + hard refresh)
+
+→ **https://beta.agroverse.shop/farms/rancho-maranta-para/** — both heads should now be fully visible with headroom, on any screen size.
+
+## RESUME HERE →
+
+1. **Governor checks the header on beta** — if the heads are now visible but you want more/less headroom or a different focal %, it's a 1-line tweak (`center 30%` → `center 35%` etc.) + optional re-crop.
+2. **Prod promotion** (gated on your explicit approval) — `sync_beta_to_prod(agroverse_shop_prod)`: farm page #229 + card fix #233 + video embeds #234 #235 + media update #236 + header swap #237 + heads fix #238. And `sync_beta_to_prod(truesight_me_prod)`: impact map #325–#329.
+3. **Optional:** archive media masters (currently only in /tmp; YouTube hosts the 3 public videos as canonical copies).
+
+**Note:** the journey card (brazilian-path) also uses `rancho-maranta-header-7660.jpg` — it will pick up the re-crop automatically since the filename is unchanged; only the pixel content differs (now with heads in frame).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → scanned IMG_7660 for exact head positions (skin band starts ~975px), re-cropped with 160px headroom (box 0,815,1200,1490), updated hero focal point to center 30% (CSS + inline), committed + pushed `fix/rancho-header-heads`, opened PR #238
+• `merge pr` → ✅ PR #238 on agroverse_shop_beta merged (sha: a6877faba95ae4b16aa8ba083ce5a32cf733e80f)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && rm -rf rmh2 && mkdir -p rmh2 && cd rmh2 && curl -s -o orig.jpg "https://beta.agroverse.shop/assets/images/farms/rancho-maranta-IMG_7660.jpg" && python3 - <<'PYEOF' from PIL import Image im = Image.open; cd /tmp/rmh2 && python3 - <<'PYEOF' from PIL import Image im = Image.open('orig.jpg').convert('RGB') W,H = im.size target_ratio = 1600/900 crop_h = int(W / target_ratio) # 675 top = 975 - 160; …(+1 more)
+• `merge pr` → ✅ PR #238 on agroverse_shop_beta merged successfully (sha: a6877faba95ae4b16aa8ba083ce5a32cf733e80f). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && rm -rf rmh2 && mkdir -p rmh2 && cd rmh2 && curl -s -o orig.jpg "https://beta.agroverse.shop/assets/images/farms/rancho-maranta-IM; cd /tmp/rmh2 && python3 - <<'PYEOF' from PIL import Image im = Image.open('orig.jpg').convert('RGB') W,H = im.size # 1200x1600 target_ratio ; cd /tmp && rm -rf agb5 && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git agb5 2>&1 | tail -1; cd agb5 && cp ; …(+1 more)
+• `merge pr` → ✅ PR #238 on agroverse_shop_beta merged successfully (sha: a6877faba95ae4b16aa8ba083ce5a32cf733e80f). Pull Request successfully merged
 
