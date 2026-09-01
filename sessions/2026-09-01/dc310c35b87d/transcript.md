@@ -4395,6 +4395,7 @@ leave as evidence. So explain to me what happens when farmer declares a new farm
 ### 🤖 Autopilot
 
 Great question — let me trace the actual flow precisely rather than guess: what the GAS handler creates on a new farm, and what actually populates the dropdown other farmers see.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4769,4 +4770,54 @@ So your mental model is exactly the implemented logic. The plot-first change nee
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint.html" -o sunmint.html && echo "=== popup /
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Which also makes sense, since a Farm needs FDA FSVP inspection before we could list it.
+
+
+### 🤖 Autopilot
+
+That ties the whole model together — let me check what FSVP context we have, since it's the governance gate that justifies plot-first:
+
+
+### 🤖 Autopilot
+
+Exactly right — and this closes the loop on why **plot-first + governor-backfill** is the correct model:
+
+## FSVP is the governance gate that *justifies* deferring the farm link
+
+- **FSVP = FDA's Foreign Supplier Verification Program** — before a farm's product can be listed/sold in the US lane, the supplier (farm/coop) must be verified: FDA FFR, FSVP status, supplier verification docs (site-visit process, video evidence, supplier onboarding — all in `fda_fsvp/` + `AGROVERSE_FARM_PAGE_CONVENTIONS.md`)
+- The existing farms that have agroverse.shop profiles (Santa Anna, Rancho Maranta, Paulo's La do Sitio — which even has FSVP site code **V-06-29** on its farm page) are the ones that *earned* the association through that verification work
+- So the map's `if (fid) → "View farm profile"` link isn't just a data join — it's implicitly **an FSVP/verification status signal**: unlinked plot = "evidence captured, story not yet built, not yet listable"; linked plot = "verified supplier with a profile"
+
+## The full model now hangs together
+
+```
+Farmer captures → Evidence (raw, immutable)
+                    │ auto
+                    ▼
+Plots (Plot Name = farmer text, Farm ID EMPTY, auto Plot ID)
+                    │ governor backfill — ONLY when the farm story is earned:
+                    │   site visit, FSVP docs, video evidence, hectares reconcile
+                    ▼
+Farm link → agroverse.shop/farms/<slug> profile  (map link appears organically)
+```
+
+- **Farm ID empty** on the map = correctly **no farm link** (can't list what isn't FSVP-verified)
+- **Backfill** = the moment the FSVP/site-visit evidence makes the farm listable → link + profile appear together
+- The impact map code needs **zero changes** — the `if (fid)` guard already implements exactly this behavior
+
+So the model isn't just "simpler" — it's **regulatory-aligned**: you literally cannot (and shouldn't) show a farm profile until FSVP verification exists. The empty Farm ID is the honest state.
+
+I'm fully on board with the design now. The implementation package (when you say go):
+1. **FBE handler** — plot-first creation (auto Plot ID, Plot Name = farmer text, Farm ID empty)
+2. **UI** — `Farm:` label → `Plot:` (or "Área") in the limits app
+3. **Docs** — plan + registry updated with the plot-first model, the backfill workflow, and the FSVP-gate rationale
+4. **Backfill tooling** — documented governor workflow (sheet edit + FARM_SLUG map + regen) — the association is a deliberate, evidence-gated act
+
+Want me to start with the FBE handler + UI (1+2) in one PR?
 
