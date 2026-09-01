@@ -4530,6 +4530,7 @@ Let me implement this carefully.
 ### 🤖 Autopilot
 
 The bodies are tiny because most content is in `<script>`. Let me extract the full HTML (style + body + script) from both files and build the base.html-extending templates programmatically.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4539,16 +4540,19 @@ I have everything. The plan is clean and safe:
 **Design:** Both pipeline pages become Jinja templates that `{% extends "base.html" %}` — instantly inheriting the vault's exact CSS, header, nav (with both pipeline links + Sign in/out based on the `governor_chat_session` **cookie**), and identity badge. The page JS changes from localStorage-token to **cookie-based** auth (`fetch(..., {credentials:'include'})` — `verify_jwt` already reads the cookie), so Gary's existing vault session will be detected and auto-authorize the data call.
 
 Let me build both templates + update both page routes in one PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Templates created. Now update the two page routes to render via `_templates.TemplateResponse` with `_optional_identity` (cookie-based session detection). I need to import the vault helpers — let me check what's importable and update the routes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The map route updated, but the SLP route anchor didn't match — the docstring differs. Let me check the actual SLP route text.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4702,4 +4706,63 @@ Ping me with "go" and I'll restart + verify live.
 **✅ Done this turn — actions taken:**
 • `ssh run` → set -e cd /opt/truesight_autopilot SOPHIA_CRED=$(git credential fill <<< $'protocol=https host=github.com ' 2>/dev/null | awk '/password=/{p
 • `merge pr` → ✅ PR #378 on truesight_autopilot merged successfully (sha: f671fa774c57b430dab9298006fbccc0014d05c9). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+The other sopia mentioned this... what are your thoughts about the wiring?
+
+Now I have the complete, verified picture. Here's the honest answer:
+
+Short answer: mostly yes — with one open item
+
+✅ Pipeline 1 (RSA-signed events): Nothing pending, nothing queued. Edgar endpoint live, keypair verified signing. Empty and healthy. Complete.
+
+✅ Pipeline 2 (Media Archive / farm-media): The *upload* pipeline is fully drained — all 85 videos (71 cleide + 2 paulo + 4 jedielcio + 8 santa-anna) uploaded to YouTube and verified LIVE (public + processed, not just captured IDs), 113 photos archived in farm-media-raw, all 4 manifests committed. The daemon is idle because there's nothing left in the inboxes. That leg is complete.
+
+⚠️ One gap found — farm-page gallery wiring (runbook step 9) is NOT fully done for cleide:
+• Cleide's live farm page (farms/fazenda-cleide-para/index.html) gallery shows only 3 static JPEGs — no YouTube embeds at all (youtube count = 0, none of the uploaded video IDs referenced).
+• By comparison, the other farms (paulo, rancho, santa-anna) have media.json + gallery wiring per the runbook. Cleide's page exists but its video gallery was never wired to the 71 uploaded YouTube videos.
+• The farm-page *itself* exists (map, plot polygon, hero) — so this is the last leg of the pipeline that's incomplete for cleide.
+
+So: pipeline empty = yes; "everything completed" = not quite — one finishing step remains for cleide (embed its YouTube videos in the farm page gallery). The photos+videos are all safely archived regardless; this is a presentation-layer gap, not a data-loss risk.
+
+Want me to wire cleide's gallery to include the 71 YouTube videos (add media.json + gallery entries per the runbook's step-9 pattern, beta repo, PR → merge → beta verify)? That would close the last open item.
+
+———
+✅ Done this turn — actions taken:
+• ssh run ×3 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/fazenda-cleide-para/index.html" -o cleide_; cd /tmp && echo "=== title / structure ==="; grep -oE '<title>[^<]*</title>' cleide_page.html; echo; echo "=== gallery-related markers ===";; cd /tmp && echo "=== gallery section context ==="; grep -n -i -B2 -A8 'gallery' cleide_page.html | head -60; echo; echo "=== images referenc
+
+
+### 🤖 Autopilot
+
+Let me verify the other Sophia's claim directly before giving my thoughts — checking the Cleide page vs Paulo's wired gallery, and the runbook's step-9 pattern.
+
+
+### 🤖 Autopilot
+
+The other Sophia's claim is **verified accurate**. My assessment:
+
+**✅ Confirmed:** Cleide's page has **zero** YouTube references — the `.gallery` div (line 120) is the static-JPEG grid only. Meanwhile Paulo's page uses the runbook's JSON-driven gallery (`media-gallery.js` + `<div id="media-gallery">`), and `media.json` exists for paulo/santa-anna/rancho but **404s for cleide**. So cleide is the one farm missing the step-9 gallery wiring — the 71 YouTube videos are archived but not embedded on her farm page.
+
+**My take on the wiring — yes, do it, with one design decision:**
+
+1. **The standard runbook pattern is the right base** — `media.json` (YouTube IDs + photos) + `media-gallery.js` container, same as paulo. That keeps the farm pages consistent.
+
+2. **The open item is gallery scope** — 71 videos is a *lot* for one page (paulo has ~2). I'd propose:
+   - `media.json` with **all 71** (the archive is complete, queryable)
+   - The page gallery shows a **curated subset first** (e.g. the ~15 farm-worthy ones Grok identified, or first N by relevance) with a "View all 71 on YouTube" link to the channel/playlist — so the page stays fast and beautiful, while the full archive remains reachable
+   - Or a lazy-load/"show more" pattern if we want all 71 inline
+
+3. **Sequence** (runbook step 9): write `media.json` from the committed manifest (`FARM_MEDIA_MANIFESTS/cleide.json`) → wire the gallery div + script tag into `farms/fazenda-cleide-para/index.html` (beta repo) → PR → merge → beta verify → then promote to prod (gate).
+
+**My recommendation: yes, wire it** — it closes the last open item and makes Cleide's page the showpiece it should be (71 videos + 14 photos from her site visit). The only real decision is **curated-subset vs all-71-inline** — your call, or I'll default to curated-first + full-archive link.
+
+Want me to proceed with the wiring (PR on agroverse_shop_beta), starting with building `media.json` from the manifest?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → set -e cd /tmp echo "=== cleide page: gallery/media markers ===" curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta
 
