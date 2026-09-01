@@ -3812,31 +3812,37 @@ Go received — executing the promote unit so all the farm-page updates go live 
 ### 🤖 Autopilot
 
 Sync succeeded (deploy `deploy_20260901T023914Z`). Let me verify all three farm pages on prod now show the new facts.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No matches — could be CDN staleness or HTML entity encoding. Let me check the raw HTML served on prod.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod pages are 200 but the new facts aren't rendering — likely GitHub Pages CDN staleness (sync merged but Pages rebuild is queued). Let me verify the content is actually in the prod repo (source of truth) and check the Pages deploy status.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Content is confirmed on prod's repo (source of truth correct) — the live site just needs the Pages build to finish. The builds API 404'd; let me check the Actions workflow runs instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Pages build is **in progress** (triggered at 02:39:15Z by the sync). That's why the live site still serves the old content. Let me watch it and confirm the new facts go live.
+[1 tool result(s) compacted: watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Watcher needs topic context — I'll poll directly with a bounded loop instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4028,4 +4034,108 @@ Ping me with "go" and I'll build PR2.
 **✅ Done this turn — actions taken:**
 • `deploy autopilot` → Already on the latest commit a2836f7f — no deploy needed. Did NOT restart. Do not retry.
 • `merge pr` ×2 → ✅ PR #1 on farm-media-daemon merged successfully (sha: ce6c530347eea28f4958ae2efda0cff894f8e939). Pull Request successfully merged; ✅ PR #2 on farm-media-daemon merged successfully (sha: d61b1af52c84202059e9a449f36c238ebbfbbc36). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Turn report — PR1 complete: farm-media-daemon repo scaffolded ✅
+
+**Repo created:** [TrueSightDAO/farm-media-daemon](https://github.com/TrueSightDAO/farm-media-daemon) — **public** (per your directi
+
+
+### 🤖 Autopilot
+
+Go received — building PR2 (daemon core). First, let me verify the upload script's exact CLI signature so the daemon calls it correctly.
+
+
+### 🤖 Autopilot
+
+CLI confirmed. Now I'll write the daemon core + CLIs, test them locally on the box first (hard rule), then push. Writing the three files to /tmp for local test:
+
+
+### 🤖 Autopilot
+
+Daemon core written. Now the two CLIs (queue list + manifest commit), then local test:
+
+
+### 🤖 Autopilot
+
+Compile passes, CLIs work. Now a full functional test — fake inbox + stub upload script, run daemon `--once`, verify the loop (upload → yt_id write-back → budget):
+
+
+### 🤖 Autopilot
+
+Functional test caught a real bug: with `--once`, only the **first** item per inbox gets processed (fresh generator each iteration → same first item forever → 9003 never flagged). I need to fix the scan to gather all candidates per pass:
+
+
+### 🤖 Autopilot
+
+Found the second bug: the `processed >= limit` break fires before IMG_9003 gets its metadata check — needs_metadata items shouldn't count against the per-pass upload cap. Fix: only count actual upload attempts toward `limit`:
+
+
+### 🤖 Autopilot
+
+All three cases now pass: pending → uploads + yt_id write-back, already-uploaded → skipped, incomplete → needs_metadata flagged. The daemon core is functionally correct. Let me run ruff + format checks, then push PR2:
+
+
+### 🤖 Autopilot
+
+Ruff wants import-splitting + formatting fixes. Let me apply them, re-verify, then push:
+
+
+### 🤖 Autopilot
+
+All checks pass and the functional smoke test confirms the daemon still works after lint fixes. Pushing PR2 with the three files + systemd unit:
+
+
+### 🤖 Autopilot
+
+PR2 opened (PR #3). Merging it — the governor's go authorizes self-merge:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — PR2 complete: daemon core built & merged ✅
+
+**PR merged:** [#3 — PR2: Daemon core + CLIs + systemd unit](https://github.com/TrueSightDAO/farm-media-daemon/pull/3) — sha `a330c792`.
+
+**What landed (now on farm-media-daemon main):**
+- **`farm_media_daemon.py`** — the singleton daemon per DESIGN.md §4: inbox scan → sidecar validation → daily-budget + per-farm priority → YouTube upload (calls the existing `upload_video_to_youtube.py`) → **yt_id write-back (atomic)** → 429 backoff → logging. **Never touches GitHub.** PID-lockfile singleton, `--once` UAT mode.
+- **`farm_media_queue.py`** — read-only status CLI (uploaded / pending / needs_metadata / error)
+- **`farm_media_manifest.py`** — aggregates sidecars → `FARM_MEDIA_MANIFESTS/<farm>.json` (deliberate commit step)
+- **`systemd/farm-media-daemon.service`** — service unit for the autopilot box
+
+**Testing done (hard rule, all green):**
+- `compileall` ✅ · `ruff check` clean ✅ · `ruff format` clean ✅
+- **Functional test with stub uploader** — verified all 3 states: pending→upload+yt_id write-back ✅, already-uploaded→skipped ✅, incomplete sidecar→`needs_metadata` flag ✅
+- **2 bugs found & fixed during local test:** (1) per-pass scan now iterates all candidates (was stuck on first item in `--once`); (2) metadata checks no longer count against the upload cap (needs_metadata items get flagged even when budget-limited)
+
+---
+
+**RESUME HERE → next unit (PR3):**
+**Wire the daemon to Cleide's real inbox (UAT):**
+1. Create `/home/ubuntu/farm_media_inbox/cleide/` — copy the 6 already-uploaded mp4s (sidecars with their yt_ids) + the next pending mp4 (sidecar, no yt_id) from `cleide_work`
+2. Write `farm_media_daemon_config.yaml` (daily_budget 6, inbox cleide priority 2) on the box
+3. Run `farm_media_daemon.py --once` → confirm it uploads exactly 1 video (real YouTube) + writes yt_id
+4. If good: install the systemd service, **retire the ad-hoc throttled uploader (PID 105025)** and let the daemon take over Cleide's queue
+5. Report the live yt_id + queue state
+
+Ping me with "go" and I'll run PR3.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → verified upload CLI signature · wrote daemon core + CLIs to /tmp · compile+functional tests (found 2 bugs, fixed) · ruff check/format fixes + re-verify + smoke test
+• `git push changes` → PR #3 · `merge pr` → ✅ #3 merged (sha a330c792)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → echo "=== upload script CLI args ==="; grep -nE "add_argument|def main|argparse" /opt/truesight_autopilot/config/youtube/upload_video_to_you; mkdir -p /tmp/fmd && cat > /tmp/fmd/farm_media_daemon.py <<'PY' #!/usr/bin/env python3 """Farm Media Daemon - shared YouTube uploader for Tr; cat > /tmp/fmd/farm_media_queue.py <<'PY' #!/usr/bin/env python3 """farm-media-queue — read-only status of the farm-media inboxes.""" import; …(+5 more)
+• `merge pr` → ✅ PR #3 on farm-media-daemon merged successfully (sha: a330c7920c8d06c2a4d7dd858a2fd5ddb219abc7). Pull Request successfully merged
 
