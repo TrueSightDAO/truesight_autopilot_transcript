@@ -4494,6 +4494,7 @@ UAT found real issues. Let me read the full `main()` (the earlier read was trunc
 ### 🤖 Autopilot
 
 Two real findings to pin down: (1) the budget seed didn't throttle the daemon (it attempted an upload), and (2) IMG_4838's upload failed — but note the throttled uploader also logged `IMG_4838.MOV: FAILED rc=1` at 00:30, right after 4835–37 succeeded — meaning **today's 6-upload quota was exhausted at 4838**, and the daemon's error tail shows the google-api FutureWarning masking the real 429. Let me read the rest of `main()` and test `attempts_today` directly.
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4540,21 +4541,25 @@ Want me to open the fix PR now, or hold until after the quota reset for a live u
 Right — the budget should equal what YouTube actually allows, not my guess. And the manual test just gave us the ground truth: **6 uploads succeeded today, the 7th (IMG_4838) hit 429**. That's the real cap, and it's derivable: the YouTube Data API default is **10,000 units/day ÷ 1,600 units per upload = 6 uploads/day** for this unverified project (62/day if verified).
 
 The subtle bug that matters: the daemon counts **attempts**, not **successes** — a 429-rejected attempt doesn't consume quota, so counting it would under-use the budget. Let me fix the semantics (budget = successes; 429 = quota exhausted → sleep till reset) and update the docs to say "budget = what YouTube allows."
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Budget semantics fix — and the empirical ground truth is: **6 succeeded, the 7th hit 429** = the real daily cap. The daemon has two bugs to fix: (1) it counts *attempts* not *successes* (429-rejected attempts don't consume quota), and (2) it counts by calendar day, but YouTube's quota window resets at **07:05 UTC** — so between 00:00–07:05 UTC it would think the budget is fresh when it isn't. Let me fix both: count successes **since the last reset boundary**, treat 429 as "budget exhausted → sleep till reset," and scan the full upload output (the FutureWarning was masking the 429).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The success-count is **1, not 6** — my seeded log lines (`2026-09-01 00:01 cleide IMG_48xx: SEED rc=0`) don't contain `FAILED`, so they count... but only 1 matched? The issue is the **reset boundary**: the boundary at 07:05 UTC minus 1 day = **2026-08-31 07:05 UTC**, and my seeds are at 00:01–00:06 on **2026-09-01** — those are AFTER the boundary, so they should count. Unless the parse failed. Let me check the seed format vs the strptime (seeds have `: SEED rc=0` → `lt >= boundary` should match...). Actually the real issue: the seeds at 00:01–00:06 09-01 ARE >= 08-31 07:05, so they should count = 6. Getting 1 means only 1 line parsed. Let me look at the actual log lines.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — my **seeded log lines are malformed**: `2026-09-01 00:01` (minute-granularity, no seconds) fails strptime, so only the daemon's real line (`03:36:33,876`) parsed → count=1. The fix is in the **seed**, not the code. But this actually validates the parser is correct — it correctly ignored the malformed seed lines. Let me re-seed properly (with real `log_attempt` format + the 6 real successes from the throttled uploader), then re-test.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4729,4 +4734,46 @@ Ping me with the unit and I'll run it.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → echo "=== install daemon to stable path ===" cd /opt/truesight_autopilot rm -rf farm_media_daemon git clone -q --depth 1 https://github.com/; set -e echo "=== clear stale error on IMG_4838 sidecar ===" python3 - <<'PY' import json p = '/home/ubuntu/media_archive_inbox/farm-media/cl; set -e echo "=== install systemd unit ===" sudo cp /opt/truesight_autopilot/farm_media_daemon/systemd/farm-media-daemon.service /etc/systemd; …(+2 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: agentic_ai_context/FARM_MEDIA_PIPELINE.md
+
+perhaps change it to MEDIA_ARCHIVE_PIPELINE.md??
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181]
+
+
+### 🤖 Autopilot
+
+Good suggestion in principle — but a filename rename touches references across the whole context, so let me check how widely `FARM_MEDIA_PIPELINE.md` is referenced before recommending it.
+
+
+### 🤖 Autopilot
+
+Good suggestion, and it's consistent with the MAP terminology we locked in — but it's a **rename with ~11 reference sites**, so let me give you the full picture before touching anything:
+
+**The reference map:**
+
+| File | Ref type | Should change? |
+|---|---|---|
+| `FARM_MEDIA_PIPELINE.md` itself | title + self-reference | ✅ rename + update |
+| `plans/FARM_MEDIA_DAEMON_PLAN.md` (×2) | live doc | ✅ update |
+| `FARM_MEDIA_MANIFESTS/README.md` (×1) | live doc | ✅ update |
+| `FARM_MEDIA_MANIFESTS/index.json` (×1) | live index | ✅ update |
+| 4 manifest JSONs (`processed_by` / `pipeline` fields) | provenance metadata | ✅ update (they point at the doc) |
+| `ADVISORY_SNAPSHOT.md` (×2) | **historical commit log** | ⛔ leave — never rewrite history |
+
+**My recommendation: do it**, with two guardrails:
+1. **git mv** the file to `MEDIA_ARCHIVE_PIPELINE.md`, add a header note *"formerly FARM_MEDIA_PIPELINE.md"* so old references/links resolve for anyone (or any Sophia) who saw the old name
+2. **Leave ADVISORY_SNAPSHOT.md untouched** — it's a historical log of past commits, rewriting it would falsify history
+
+**One more check I'd do before pushing:** whether the daemon repo (`farm-media-daemon` DESIGN.md/README) or any other repo references the old filename — if so they need updating in the same pass so nothing dangles.
+
+**Result:** one PR to agentic_ai_context (git mv + ~8 reference updates + header note), plus any daemon-repo touch-ups. Everything else (the MAP vocabulary in the docs) stays.
+
+Say **"go"** and I'll execute the rename PR — or tell me to hold and I'll park it.
 
