@@ -4981,26 +4981,31 @@ Key finding: the old URL still returns 200 with **stale CDN content** (raw.githu
 ### 🤖 Autopilot
 
 Now I have the complete scope. The changes are all in the **truesight_autopilot repo** (Sophia's own code): 1 code fix (pipeline URL) + 4 doc/CLI updates (manifest path). Let me apply them all in one PR — using precise edits:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The README/DESIGN.md edits use unicode arrows that don't match byte-for-byte. Let me check the exact bytes of those lines:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The arrow is `\342\206\222` = UTF-8 "→" (3 bytes). My search used "→" which should match... the earlier failure was actually on `farm_media_manifest.py` (path #2) — the docstring edit — not README. Let me check the exact docstring line:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local file may differ from what's on GitHub (the tool clones fresh). Let me check the GitHub version of the docstring:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GitHub **truesight_autopilot repo doesn't have `farm_media_daemon/` at that path** (404) — it's **local-only** (on this box, not committed). So the manifest tooling is local tooling, not repo code. That means the only **repo** change needed is the `app/media_archive_pipeline.py` URL fix. The daemon tooling refs are local-only — I'll update those locally (not a PR). Let me verify the pipeline file's GitHub path and apply the URL fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5215,4 +5220,105 @@ Merged ✅ — stopping here per the one-PR-per-turn rule.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot && echo "=== 1. compileall ===" && python3 -m compileall -q app scripts tests 2>&1 | tail -2; echo "rc=$?" && ec; cd /opt/truesight_autopilot && echo "=== is media_archive_pipeline.py among reformat-needed? ===" && python3 -m ruff format --check app/medi
 • `merge pr` → ✅ PR #384 on truesight_autopilot merged successfully (sha: 08d5a14d55aa2a255cbf7f323a30bd8070833ec6). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Updated the daemon's write-path references to the dedicated `farm_media_manifests` repo.**
+
+**PR #9 — https://github.
+
+
+### 🤖 Autopilot
+
+Go-signal received — the resume text references PR #9 (already merged last turn). The genuine remaining item on my side is the **context-doc pointers**: `MEDIA_ARCHIVE_PIPELINE.md` and `HANDOFF_MANIFEST.md` in agentic_ai_context still mention the old path — and HANDOFF_MANIFEST is the file that drives handoff-context injection, so a stale path there is a real break risk. Verifying the refs first:
+
+
+### 🤖 Autopilot
+
+`MEDIA_ARCHIVE_PIPELINE.md` has **3 stale refs** (lines 16, 33, 99); HANDOFF_MANIFEST is clean. Let me see the exact context around each stale line to build precise edits:
+
+
+### 🤖 Autopilot
+
+Exact anchors in hand. Applying the three edits as a PR to `agentic_ai_context`:
+
+
+### 🤖 Autopilot
+
+PR #888 opened with all 3 edits applied. Verifying the branch (no stale refs), then merging:
+
+
+### 🤖 Autopilot
+
+Clean: **0 stale, 3 new refs**, `mergeable: True`. Merging PR #888:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Closed the last stale manifest reference — the context-doc pointers.**
+
+**PR #888 — https://github.com/TrueSightDAO/agentic_ai_context/pull/888** (merged, sha `3ca119ae`, 1 file)
+
+### Changes to `MEDIA_ARCHIVE_PIPELINE.md` (3 stale refs → new repo)
+- **Line 16** — "The manifests" → `farm_media_manifests/` (repo TrueSightDAO/farm_media_manifests)
+- **Line 33** — table: Manifest/index path → `farm_media_manifests/<farm-id>.json` (dedicated repo)
+- **Line 99** — commit step → `farm_media_manifests/<farm-id>.json` via `git_push_changes` on the data repo
+
+`HANDOFF_MANIFEST.md` verified clean (no stale refs — no change needed).
+
+### Verified
+Branch: **0 stale `FARM_MEDIA_MANIFESTS` refs, 3 new `farm_media_manifests` refs**, `mergeable: True`, merged cleanly.
+
+## Farm media manifest migration — fully complete ✅
+
+| Repo | State |
+|---|---|
+| `farm_media_manifests` (dedicated data repo) | ✅ 7 files live |
+| `agentic_ai_context/FARM_MEDIA_MANIFESTS/` | ✅ pointer README only (PR #887) |
+| `farm-media-daemon` tooling refs | ✅ repointed (PR #9) |
+| `truesight_autopilot` pipeline URL | ✅ repointed (PR #384) |
+| `agentic_ai_context` pipeline doc | ✅ repointed (PR #888) |
+
+## RESUME HERE → next unit
+
+1. **Prod promotion (sunmint #55–#65)** — gated on Gary's explicit go (the only outstanding execution item on the SunMint thread)
+2. **FBE/MR cron triggers + device test** — Gary (tracked in OPEN_FOLLOWUPS)
+3. Nothing else pending on my side — holding here
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → stale-ref audit (MEDIA_ARCHIVE_PIPELINE.md: 3 stale; HANDOFF_MANIFEST.md: clean); exact line anchors; branch verification (0 stale / 3 new)
+• `git push changes` → PR #888 (docs/repoint-manifest-paths, sha 6339ae21)
+• `merge pr` → ✅ PR #888 merged (sha 3ca119ae611809441e6a5ad24933089c1fbcacd8)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/git/trees/main?recursive=1" | python3 -c "
+import sys,json
+d = json.load(sys.stdin)
+paths = [t['path'] for t in d.get('tree',[]) if t['type']=='blob' and t['path'].endswith('.md')]
+print(f'{len(paths)} md files')
+" > /dev/null; for f in MEDIA_ARCHIVE_PIPELINE.md HANDOFF_MANIFEST.md; do echo "-- $f:"; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/$f" | grep -n "FARM_MEDIA_MANIFESTS\|farm_media_manifests" | head -5; done
+• `merge pr` → ✅ PR #888 on agentic_ai_context merged successfully (sha: 3ca119ae611809441e6a5ad24933089c1fbcacd8). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && echo "=== stale FARM_MEDIA_MANIFESTS refs in agentic_ai_context ===" && curl -s "https://api.github.com/repos/TrueSightDAO/agenti; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/MEDIA_ARCHIVE_PIPELINE.md" -o map.md && echo "===; cd /tmp && echo "=== branch: stale vs new refs ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/docs%2Frep
+• `merge pr` → ✅ PR #888 on agentic_ai_context merged successfully (sha: 3ca119ae611809441e6a5ad24933089c1fbcacd8). Pull Request successfully merged
 
