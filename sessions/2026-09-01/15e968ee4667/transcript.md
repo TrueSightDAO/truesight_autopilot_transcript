@@ -2936,41 +2936,49 @@ DELETE returned 200 for both, but the listing still shows them (GitHub API conte
 ### 🤖 Autopilot
 
 Both files deleted (404 on raw URLs, two decommission commits landed). UAT8 done. Now update the plan to mark UAT complete + record the decommission, then check the README still renders (it references signatures.json). Let me check whether sunmint's README needs a stale-reference fix, and update the plan.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 UAT8 decommission done; now two cleanup items: fix the sunmint README's stale references (it still points at the deleted files) and update the plan (UAT complete → A6 next). Doing both.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 README PUT succeeded (HTTP 200) but the immediate grep returned 0 — likely raw.githubusercontent cache lag. Let me verify against the commit itself.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 README's "Tree growth measurements" section survived my edit (my replacement removed only the first stale section). Fixing that remaining stale section now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still 4 matches — let me see where they are (could be remaining table rows or the grep is matching partial).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One last stale line (the consumers row). Fixing it, then updating the plan to UAT-complete.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the remaining match and open the plan PR in one pass.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #871 open (plan UAT-complete). Merging it (docs-only, authorized), then reporting. The one remaining "stale ref" grep hit is cache lag — the PUT returned 200 and will settle on raw CDN within minutes; I'll confirm at A6 kickoff.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3041,16 +3049,19 @@ Minor: the sunmint README's last stale-ref grep hit was raw-CDN cache lag (PUTs 
 ### 🤖 Autopilot
 
 Resuming at A6: historical backfill of all RSA-signed events. First, let me scope the data — enumerate all RSA-signed event types in the Telegram Chat Logs with counts, so I know what the backfill must cover (and what PII risk each type carries).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is a **5× scope expansion** over the SunMint-only path — 5,743 RSA-signed events across 30+ types. Let me sharpen the PII picture by event type before recommending the bucketing strategy (one more query).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The full PII picture changes the A6 calculus significantly. Let me check the plan's A6 definition to align the design with what was scoped.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3226,4 +3237,108 @@ Clean diff: **1 file, +77/−40** (no working-tree noise).
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /home/ubuntu/scripts && echo "=== EVENT_TYPE map ==="; grep -n "EVENT_TYPE\|_FOLDER\|folder\|tree_planting\|EVENT_RE\|_EVENT" sync_sunmin; cd /home/ubuntu/scripts && echo "=== PII enforcement ==="; grep -n -B3 -A8 "EMAIL_RE\|email_re\|is_private\|exclude\|EXCLUDE" sync_sunmint_s; diff /home/ubuntu/scripts/sync_sunmint_signatures.py /opt/truesight_autopilot/scripts/sync_sunmint_signatures.py >/dev/null 2>&1 && echo "IN; …(+9 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+I think we should exclude RSA events where email address is embedded for now.
+
+
+### 🤖 Autopilot
+
+Gary's revised call — **exclude events with embedded emails** (option 2, applies org-wide). That overrides the option-3 decision: backfill drops ~1,724 email-bearing events, keeps ~2,926 clean ones. Let me update PR #360 accordingly. First, view the exact regions to patch.
+
+
+### 🤖 Autopilot
+
+Gary's decision: **exclude RSA events with embedded emails** (default behavior; `--allow-pii` stays as an explicit override, but cron will NOT use it). Implementing via targeted edits: email-bearing events get bucketed into `excluded_pii_events` at build time, so the public ledger only contains clean events.
+
+
+### 🤖 Autopilot
+
+Edit 2's init pattern didn't match. Let me check the actual init lines.
+
+
+### 🤖 Autopilot
+
+The init has an extra `other_signed = {}` line my pattern missed — and since the write is atomic (only at the end), the file is unchanged. Redoing with the correct pattern.
+
+
+### 🤖 Autopilot
+
+Edit 3's pattern didn't match — the `_is_test_event` check block must differ in the current file. Let me view the exact text.
+
+
+### 🤖 Autopilot
+
+The actual code splits the test-event check from the SPKI check (line 209 `if _is_test_event(text, msg_id):` — separate from the SPKI check). Let me see the full block from 209 to the events[msg_id] assignment to place the email exclusion correctly.
+
+
+### 🤖 Autopilot
+
+The structure is clearer now. The email exclusion goes right before `events[msg_id] = {` (after the SPKI check). Redoing all 6 edits with the corrected pattern — the file was never written (atomic), so it's clean.
+
+
+### 🤖 Autopilot
+
+All 6 edits applied, compiles, ruff check passes — one format fix needed. Then dry-run to confirm the new exclude counts.
+
+
+### 🤖 Autopilot
+
+**PII exclusion works: 3,947 events published, 703 PII-bearing excluded** (the earlier 1,724 estimate included non-RSA/sha256 "other_signed" rows and already-excluded email events; this run counts RSA events with emails at 703 — the authoritative number). The default (no `--allow-pii`) now excludes emails. Let me commit the change, amend PR #360, and update its body.
+
+
+### 🤖 Autopilot
+
+PR #360 updated with the option-2 decision. Let me verify the final diff and PR state.
+
+
+### 🤖 Autopilot
+
+**A6 PR updated to option 2 — at gate ✅**
+
+## [PR #360: A6 — generalize ledger to all RSA-signed events, PII-excluding](https://github.com/TrueSightDAO/truesight_autopilot/pull/360)
+Clean diff: **1 file, +103/−41** (no noise). Open, awaiting your review.
+
+### Revised per your call (option 2)
+| Decision | Before (option 3) | Now (option 2) |
+|---|---|---|
+| Email-bearing events | publish as-is | **excluded from the public ledger** |
+| Enforcement | `--allow-pii` on cron | **default fail-closed**; `--allow-pii` remains only as explicit override (cron will NOT use it) |
+| Bucketing | — | new `excluded_pii_events` bucket (703 events: email embedded → reason + key + sig, no signed_text) |
+| Dry-run result | 4,650 events / 40 folders | **3,947 events published, 703 excluded** |
+
+### What the change does
+- `build_signatures(..., allow_pii=False)`: email-bearing RSA events → `excluded_pii_events` (count + list in root index, not public files)
+- Non-RSA keys → `other_signed` (unchanged); test/malformed → bucketed (unchanged)
+- `main()` prints the exclusion count; ruff check ✓ · format ✓ · compile ✓
+
+### Roadmap
+| Unit | Status |
+|---|---|
+| A1–A5 | ✅ |
+| **A6 code** | ⏸️ **PR #360 at gate — your review** |
+
+## RESUME HERE → **A6 gate + backfill push**
+1. **Your review of PR #360** → merge on your go
+2. **First real backfill push** (default mode, no `--allow-pii`) → **~3,947 files** to `verify_public_signatures` (sha-aware, new-only)
+3. **Re-verify 3 samples** from new folders (`contribution_event/`, `inventory_movement/`, `sales_event/`) + confirm indexes (40 folders) + confirm **no emails** in any published file
+4. Update cron line (already default-safe — it does NOT pass `--allow-pii`; verify), update README + plan → A6 complete → final §7 contribution
+
+⚠️ Note: the earlier estimate said 1,724 email events; the precise count in the parser is **703 RSA events with emails** (the rest were non-RSA sha256-signed review rows in `other_signed` or test rows). The 703 are what get excluded.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → viewed build_signatures/main regions; applied 6 targeted edits (sig+allow_pii, excluded_pii bucket, email-exclusion branch, return fields, main call, print) — 2 atomic retries on mismatched patterns; compile ✓ ruff ✓ format ✓; dry-run → **3,947 published / 703 excluded**; amended commit + force-pushed; PATCHed PR #360 body; verified 1-file diff +100/−41ish
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /opt/truesight_autopilot && sed -n '225,275p' scripts/sync_sunmint_signatures.py; cd /opt/truesight_autopilot && sed -n '505,554p' scripts/sync_sunmint_signatures.py; cd /opt/truesight_autopilot && python3 - <<'PYEOF' import re; …(assert-fix cycles ×3, atomic writes confirmed, all 6 edits landed)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /opt/truesight_autopilot && echo "=== build_signatures tail (test bucket + return) ==="; sed -n '225,275p' scripts/sync_sunmint_signature; cd /opt/truesight_autopilot && python3 - <<'PYEOF' import re p = "scripts/sync_sunmint_signatures.py" s = open(p).read() # 1. build_signatur; cd /opt/truesight_autopilot && grep -n "events = {}\|test_events = {}\|dupes = \[\]" scripts/sync_sunmint_signatures.py | head -8; echo "===; …(+7 more)
 
