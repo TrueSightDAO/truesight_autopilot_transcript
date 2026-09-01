@@ -10,104 +10,6 @@
 
 ### 🤖 Autopilot
 
-No visible ledger row (dispatch never matched → GAS never ran → no sheet row created). Let me confirm the SunMint Plots sheet has no TEST row (the GAS handler would have been the only creator):
-[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me find the correct sheet name first:
-[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The SA may not have this spreadsheet ID in its allowlist or the ID is different. Let me check the actual SHEET_ID the generator uses (from build_plots_geojson.py — the source of truth I mirrored):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The SHEET_ID is `1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ` (I had a typo earlier). Let me verify the test row never landed in the Plots tab:
-[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**E2E test complete — honest verdict + cleanup confirmed.** Converging now.
-
-## Live E2E test — results
-
-**Executed:** submitted a signed test `[FARM BOUNDARY EVIDENCE EVENT]` (Farm: `TEST-FARM-E2E-20260901`, `is_new_farm=true`, marked `test-data-e2e-20260901-cleanup-after`, 3 GPS points, placeholder media URL) via the same Edgar `/dao/submit_contribution` path the app uses.
-
-| Step | Result |
-|---|---|
-| Edgar acceptance | ✅ **200 OK** at 10:44:22 (`POST /dao/submit_contribution`) |
-| dispatch → GAS webhook | ❌ **Did not fire** — no "webhook ok" in journal; no `[FARM BOUNDARY EVIDENCE EVENT]` matched |
-| GAS handler → sheet row | ❌ Never ran |
-| **Cleanup** | ✅ **Nothing to clean** — verified SunMint Plots tab: **no TEST row** (5 real plots only: RM-P1/2, SA-P1, CL-P1, LD-P1); GitHub code-search for the test farm: 0 hits |
-
-## Root cause (important finding)
-
-`dispatch_event()` matches on the raw submission **text containing the `[FARM BOUNDARY EVIDENCE EVENT]` marker substring**. The `submit_contribution` tool posts a **structured attributes payload** whose text doesn't include that marker verbatim → dispatch logs "no event-tag routing matched" and skips. So my test proved **Edgar accepts + verifies + records the event**, but the **webhook→GAS leg requires the app's actual submit flow** — the farmer's multipart POST (photos + form fields) whose form body carries the marker text that the router matches.
-
-**The full chain is configured and deployed correctly** (env key ✓, doGet case ✓, handler ✓, webhook URL 200 ✓) — it just needs the **real device flow** (or a raw text submission containing the marker) to fire, which is exactly what Jedielcio's next boundary walk will do.
-
-## What remains (unchanged)
-- **Hourly cron trigger** — you're relaying to Gary (GAS UI, per SCHEDULE_TRIGGERS.md §6) — this is the fallback that would have caught the test event even without the marker-match
-- No other open blockers — the webhook path is verified end-to-end in configuration
-
-## RESUME HERE → next unit
-1. **Real-device test** — when convenient: capture 2–3 boundary photos on `sunmint.truesight.me/limites-da-fazenda/` with a farm name, submit, then check the Plots tab for the new row + the impact map polygon
-2. **Hourly cron trigger** (Gary, GAS UI)
-3. Parked: chrome audit of other pages, `sunmint_mobile/www/` sync
-
-The E2E item is closed with a clear answer: **pipeline deployed + configured + Edgar-verified; the webhook leg needs a real device submission** (or the cron trigger) to fully complete. Want me to file the cron-trigger item in OPEN_FOLLOWUPS.md so it's tracked for Gary?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×15 → cd /tmp && echo "=== how the limites page submits (webhook/Edgar/WhatsApp?) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/; cd /tmp && echo "=== submitBoundary() payload shape (399-470) ===" && sed -n '399,470p' limites_prod.html; echo "=== EDGAR submit endpoint s; cd /tmp && echo "=== queue-flush / EDGAR_SUBMIT_URL usage ===" && grep -n "flush\|EDGAR_SUBMIT_URL\|queueBoundary\|fetch(" limites_prod.html; …(+12 more)
-• `submit contribution` → Contribution submitted successfully.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-go — yes, file the cron-trigger item in OPEN_FOLLOWUPS.md. Good, honest E2E result — this thread is effectively done from my end until the real device test / Gary sets the cron trigger, both of which need him directly.
-
-
-### 🤖 Autopilot
-
-Closing out the thread properly — filing the cron-trigger item in OPEN_FOLLOWUPS.md. Reading the current file first (checking for duplicates + exact format):
-[1 tool result(s) compacted: read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The file is large — let me check for any existing FBE/cron entry first, then append:
-[1 tool result(s) compacted: search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-No existing FBE entry — clean to add. Let me check the file's section structure to place the entry correctly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Adding the FBE cron-trigger entry to the top of `## Pending`:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 PR #877 opened — merging it to land the follow-up entry:
 [1 tool result(s) compacted: merge_pr — detail in artifacts]
 
@@ -4993,6 +4895,7 @@ Admin deploy fix
 ### 🤖 Autopilot
 
 Let me re-list the deployments with their current labels so I can reconcile exactly what you're seeing in the UI with the webhook map:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5060,6 +4963,7 @@ all the deployments allow execute as me and access anonymous
 ### 🤖 Autopilot
 
 Let me verify that claim directly — an anonymous GET to the boundary webhook deployment should return the handler's output (not the sign-in page) if "execute as me + anyone" is really set:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5242,4 +5146,61 @@ Say go and I'll make that change (or, if you'd rather keep @HEAD as the boundary
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && clasp deploym; timeout 25 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'grep -E "FARM_BOUNDARY_EVIDENCE|MEDIA; cd /tmp && echo "=== env keys ===" && timeout 25 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 ; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Verify to make sure
+
+
+### 🤖 Autopilot
+
+Verifying the full picture before touching anything — current env URLs, whether @39 is the anonymous-executable one, and what dispatch actually fires:
+
+
+### 🤖 Autopilot
+
+Env confirmed — both keys still point at **@HEAD** (`AKfycbxrcXTZ…`). The dispatch grep found nothing in the local path; let me find the actual routing/dispatch code on the dao_protocol host to confirm what URL it fires:
+
+
+### 🤖 Autopilot
+
+Now let me see the ROUTING rows for the two boundary events + the webhook-firing code, to confirm the env key names and how the URL is used:
+
+
+### 🤖 Autopilot
+
+Full verification complete. Here's the confirmed end-to-end state:
+
+## Verified facts
+
+**1. Dispatch routing (host code, `dispatch.py`):**
+- `[FARM BOUNDARY EVIDENCE EVENT]` → env key `FARM_BOUNDARY_EVIDENCE` → action `processFarmBoundaryEvidenceFromTelegramChatLogs`
+- `[MEDIA RETRACTION EVENT]` → env key `MEDIA_RETRACTION` → action `processMediaRetractionFromTelegramChatLogs`
+- Fires via `_webhook_url(env_key)` → GET to the URL with `?action=<action>`
+
+**2. Live env (host `.env`):**
+- `DAO_PROTOCOL_WEBHOOK_FARM_BOUNDARY_EVIDENCE=https://script.google.com/macros/s/AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ/exec` (**@HEAD**)
+- `DAO_PROTOCOL_WEBHOOK_MEDIA_RETRACTION=… same @HEAD URL …`
+
+**3. The @HEAD deployment (`AKfycbxrcXTZ…`):**
+- Anonymous probe earlier → **302 → ServiceLogin** (auth wall) — NOT anonymous-executable
+
+**4. The @39 deployment (`AKfycbyoFCTzId…` — the one you just fixed):**
+- Anonymous probe → **200**, benign `macros/echo` relay, body = router's "No valid action" output, **0 ServiceLogin** — **anonymous-executable, running v39 (current code incl. boundary handlers)**
+
+## Conclusion — verified, one config change needed
+
+✅ Your fix works: **@39 executes anonymously with the boundary code.**
+⚠️ But the env keys **still point at @HEAD** (`AKfycbxrcXTZ…`), which is auth-walled — so dispatch currently fires the broken URL.
+
+**The change to make:** update the two env keys on the dao_protocol host to the @39 URL (`https://script.google.com/macros/s/AKfycbyoFCTzIdC1g69ZX3AK894h2siQOKoNSEiuyLDtZJTtarQPHHa5Zl8rjot0vPFUquV2/exec`), restart the service, then verify with a real dispatch.
+
+Want me to make that env change + restart + verify? (production config change — stating it explicitly for your go)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && echo "=== 1. FULL env URLs (both webhook keys) ===" && timeout 25 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChe; cd /tmp && echo "=== 2. dispatch: what URL does webhook_trigger fire? (routing row) ===" && grep -n "FARM_BOUNDARY_EVIDENCE\|MEDIA_RETRACTIO; timeout 30 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'echo "=== dispatch.py on host ==="; f; …(+1 more)
 
