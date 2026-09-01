@@ -4824,31 +4824,37 @@ The E2E chain is now fully traced: `POST /dao/submit_contribution` → `dispatch
 ### 🤖 Autopilot
 
 Test event submitted. Now the critical check — did dispatch fire the webhook? Checking the dao_protocol journal for the "webhook ok" line:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No journal lines yet — the submission may be asynchronous (background dispatch), or the log grep window/log level missed it. Let me check the broader journal + whether the event actually landed in Edgar (query the submission), and confirm the dispatch happened:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `POST /dao/submit_contribution` returned **200 OK at 10:44:22** — the event landed. Dispatch runs in the background after the response. Let me check for the webhook fire + whether the GAS side processed it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dispatch may be running but its logs (webhook trigger logs at INFO "webhook ok") aren't appearing — or the submission's text didn't match the FBE routing (the `submit_contribution` tool may submit a different text format than the raw `[FARM BOUNDARY EVIDENCE EVENT]` marker the router matches). Let me verify what the submission actually logged (is there a ledger row/transaction id?) and whether dispatch was invoked at all:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The POST 200 confirms the event reached the server, but no webhook log and no ledger row with the test data — the submission text likely didn't match the `[FARM BOUNDARY EVIDENCE EVENT]` marker that dispatch matches on. Let me check how `dao.py` calls dispatch (what text it passes) — this determines whether my tool-submitted event triggers the router at all:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dispatch is backgrounded (`background.add_task(dispatch.dispatch_event, text)`) and matches on the raw submission `text`. The `submit_contribution` tool likely sends the attributes in a format that doesn't include the `[FARM BOUNDARY EVIDENCE EVENT]` marker verbatim (so the router skips it — which is why no webhook fired). Let me verify the exact `text` format `submit_contribution` builds (my tool's request body) — check the transaction record or how the tool formats events. Meanwhile, the most direct real-path verification: check whether the submission produced a **transaction/ledger entry** at all (the 200 suggests it did):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4856,6 +4862,7 @@ The dispatch is backgrounded (`background.add_task(dispatch.dispatch_event, text
 The submission landed in a **separate ledger store** (not the local checkout — likely GCS/GitHub via the ledger repo). The critical finding: **no webhook fired** because the tool's submission text doesn't carry the `[FARM BOUNDARY EVIDENCE EVENT]` marker the router matches on.
 
 The honest conclusion: my **tool-path test exercised Edgar's acceptance but not the dispatch→webhook→GAS chain** — the marker text the router needs comes from the **raw farmer submission text** (the `[FARM BOUNDARY EVIDENCE EVENT]` line in the Telegram/chat payload), which only the app's actual submit flow or a properly-formatted raw event carries. Let me verify how dispatch_event matches (prefix/strip) so I can determine whether a raw-formatted event would fire — then check the ledger store for my test row to clean it up:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5006,4 +5013,25 @@ Say go whenever one of those needs attention.
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/OPEN_FOLLOWUPS.md" -o ofu.md && echo "=== section
 • `merge pr` → ✅ PR #877 on agentic_ai_context merged successfully (sha: 177e84d6f47f0fa6fe36a8cb26917445c7ce24f1). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🚀 Sophia is redeploying — back in a few seconds. Please resend your message shortly.
+
+
+### 🤖 Autopilot
+
+I'm back online (redeploy complete) ✅ — and ready. Quick status so we're aligned:
+
+**Where things stand (boundary pipeline):**
+- ✅ All code shipped, deployed, and configured — plan marked complete in the manifest
+- ✅ FBE cron-trigger follow-up filed (PR #877, merged) so it's tracked for Gary
+- 🔲 **Waiting on Gary** for two manual items: (1) set the hourly cron trigger in the GAS UI, (2) real-device boundary test on `sunmint.truesight.me/limites-da-fazenda/` → verify plot row + impact-map polygon
+
+**Nothing is pending on my side right now** — the thread is at a clean pause until Gary does those, or until you point me at something new (chrome audit of the other pages, `sunmint_mobile/www/` sync, or anything else).
+
+What would you like next?
 
