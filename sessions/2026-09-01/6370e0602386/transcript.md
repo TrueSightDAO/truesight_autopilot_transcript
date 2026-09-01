@@ -368,46 +368,60 @@ The generator is running, but I realize I pointed the Grok cache at an empty `/t
 ### 🤖 Autopilot
 
 Likely a timeout or connection blip on that combined command. Let me check the state and relaunch if needed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The log is empty and results stalled at 1 entry — the generator may have died. Let me check properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The generator died silently (nohup log empty, no process, killed at relaunch or crashed). Let me check for a traceback — the relaunch's `pkill` may have killed the first, and the second may have died on the cache-copy race. Let me re-run synchronously in the foreground briefly to see errors, seeding the cache first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The generator works — 25/73 done in 60s (cache hits are fast; uncached Grok calls are the slow part). It was the earlier `nohup`+pkill race that killed it. Let me launch it properly detached this time and poll.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The SSH session likely hangs waiting on the background job's stdout. Let me check whether it's actually running.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It's running — 45/73 done. Let me poll until completion (uncached Grok calls take ~2-5s each; 28 left ≈ 2 min). I'll check back.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 73 descriptions generated. Now let me validate the output — check lengths, blog links, that no entry is empty, and spot-check a few against the plan's stated problems (Fili Marsh, "being the police").
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Episode 12 is now clean and readable. One entry still shows "Fili Marsh" — let me investigate whether Grok was actually called for it (or it fell back to local cleanup), and confirm Grok calls succeeded for the rest.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 41 cache entries now (23 seeded + 18 new Grok calls succeeded). But the Episode 10 TikTok entry still has "Fili Marsh" — that came from the **cached** Grok output (the blog pipeline itself preserved it as a quoted term). Let me verify whether the blog post itself contains it, to decide if this is blog-parity (spec-compliant) or a genuine miss.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -415,11 +429,13 @@ Episode 12 is now clean and readable. One entry still shows "Fili Marsh" — let
 Confirmed — the **blog post itself** says "Fili Marsh" (the cached Grok output came from the blog pipeline). So PR1 achieves exact blog-parity: the description now matches what the blog publishes. The plan's PR1 spec is "same pipeline as blog posts" — this is compliant, and the governor can decide in PR3's review whether to also fix the blog (out of PR1 scope). The plan's PR4/PR5 title work is separate.
 
 Now let me verify the whole file is valid JSON, diff-size is sane, and review the final structure.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wait — the sample `Project 10-13` check says blog link is `False`, but earlier I saw it should map to `after-a-swamp-walk-to-century-old-cacao-trees`. Let me check why — the blog link should be there.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -427,6 +443,7 @@ Wait — the sample `Project 10-13` check says blog link is `False`, but earlier
 The blog link IS there — it maps to `post/project-10-13` (not the swamp-walk slug). My check string `'after-a-swamp'` was wrong; the embed-scan found `project-10-13` as the mapping (multiple posts embed the same video, and `setdefault` kept the first). 27 entries have blog links, all pointing to a real post. Good enough for PR1 — the link is to "that episode's specific blog post URL" where one exists.
 
 Now let me write the generator into the repo as a reusable script (the plan implies generation is reproducible) and prep the PR. First, let me check the SOP §A.4/A.7 to keep PR6-style conventions and see whether there's an existing generator convention.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -468,51 +485,61 @@ Nothing blocking: all data generated and validated; just the PR mechanics remain
 ### 🤖 Autopilot
 
 Committing the generator as a proper script, then opening PR1. First let me review the generator I wrote and check the repo's lint/test setup.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The generator worked but has hardcoded paths and a redundant import — I'll clean it up for committing. First let me check the cache-handling internals of the helpers so the committed script uses the canonical cache path correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The module loads `CACHE_FILE` at import time, so the cleanest committed form uses the repo's canonical cache (cache-first, no duplication). Let me check `transcript_for_blog`'s signature and behavior, then write the committed generator.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I'll write the cleaned, committed generator, merge the Grok cache so reruns are free, and prepare the final JSON.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The cache is tracked and merged (23→41). Now let me verify the youtube_videos.json diff is purely additive (only `description` added, nothing else changed) before committing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The JSON diff is purely additive (trailing commas + `description` field; no values changed). Now let me check how the blog generator loads the Grok key (to match repo conventions), then finalize the script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The helpers already handle the key lookup (env or sibling market_research/.env). My committed script should NOT hardcode the autopilot path — just let `get_api_key()` do its job (env var or repo-adjacent `.env`). Now let me write the clean, committed generator script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file was written (absolute path), but `py_compile` ran from the wrong CWD. Let me verify and compile from the repo.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Script written and compiles. Now let me run it once to confirm it's idempotent (cache-first — should reuse the 41 cached entries and only Grok-call the ~22 uncached, or hit blog-transcript fallback for the rest) and reproduces the same descriptions. But first: the current `youtube_videos.json` in the work repo already has descriptions from `/tmp/new_youtube_videos.json` — the script reads it fresh. Let me run it and diff against the prior output to confirm determinism.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 40 entries differ from the prior run — I need to understand why before committing. Let me check whether the cache grew (Grok re-calls) or it's a truncation-formula difference.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -614,4 +641,72 @@ Nothing blocking: all content generated, validated, committed, and pushed. Just 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×22 → cd /tmp/agroverse_shop_work && echo "=== generator ==="; cat /tmp/gen_descriptions.py; echo; echo "=== repo files ==="; ls scripts/ | head -; cd /tmp/agroverse_shop_work && sed -n '1,60p' scripts/grok_transcript_polish.py; echo "=== transcript_for_blog def ==="; grep -n "def transc; cd /tmp/agroverse_shop_work && sed -n '82,215p' scripts/grok_transcript_polish.py; …(+18 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] go — open the PR, double-check it's against agroverse_shop/agroverse_shop_beta and never agroverse_shop_prod before creating it.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] [Handoff context — this Telegram topic (thread 18528) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go — redeploy killed the turn mid-PR1 open. Please resume.
+
+
+### 🤖 Autopilot
+
+Resuming PR1-open. First, verify the clone's origin remote (must be agroverse_shop or agroverse_shop_beta — never prod), then create the PR.
+
+
+### 🤖 Autopilot
+
+Origin confirmed: `TrueSightDAO/agroverse_shop.git` — the code repo (beta base), **not** prod. Let me verify the pushed branch exists on the remote and then create the PR with gh.
+
+
+### 🤖 Autopilot
+
+Origin redirects to `agroverse_shop_beta` (the repo was renamed; the old `agroverse_shop` URL is a redirect). That's the correct **beta base** — not prod. Branch `youtube/descriptions-pr1` is on origin at sha `8b2b31d`. Creating the PR against it now.
+
+
+### 🤖 Autopilot
+
+A PR already exists — the earlier push or a previous partial run created it: **PR #263**. Let me verify its state and that it targets `agroverse_shop_beta/main` (never prod), and check the diff head matches my commit.
+
+
+### 🤖 Autopilot
+
+Field name corrected. Querying PR #263's details.
+
+
+### 🤖 Autopilot
+
+The `+` key broke jq. Retrying with plain keys.
+
+
+### 🤖 Autopilot
+
+PR #263 is confirmed and open. PR1 is complete. Stopping here per the one-PR-per-turn rule — PR2 runs next turn.
+
+## ✅ PR1 complete — [agroverse_shop_beta PR #263](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/263)
+
+**Repo check passed:** opened against `TrueSightDAO/agroverse_shop_beta` (base `main`, head `youtube/descriptions-pr1`, sha `8b2b31d`). The `agroverse_shop` URL redirects to `agroverse_shop_beta` — that's the correct **beta base, never prod**. Verified: state OPEN, not draft, MERGEABLE.
+
+**What's in it:**
+- `scripts/youtube_videos.json` — `description` field on **all 73 entries** (plan said 68; actual count is 73), each = title + cleaned + Grok-polished transcript (blog-pipeline parity, no new cleanup logic) + per-episode blog post link (27 entries have `post/<slug>`; 46 fall back to homepage where no post exists) + existing hashtag footer, capped at 4900 chars
+- `scripts/generate_youtube_descriptions.py` — reproducible generator (stdlib, reuses `clean_transcript()` + `transcript_for_blog()` verbatim; cache-first)
+- `scripts/transcript_grok_polish_cache.json` — +19 Grok-polished entries (23 → 41), audited benign
+- **Diff: 3 files, +342/−93** (purely additive on the JSON)
+
+**Validation:** compileall ✅, ruff check ✅, ruff format ✅, pytest (0 tests — matches repo baseline), determinism (0 diffs on rerun), spot-checks clean (Episode 12 garbled intro fixed; Episode 10 "Fili Marsh" is blog-parity, matches the live post).
+
+**Scope honored:** local JSON only — **no live YouTube push**. 
+
+## RESUME HERE → PR2
+
+Next turn, write `scripts/youtube_update_video_descriptions.py` (sibling to `youtube_update_video_titles.py`, same `videos().update(part=snippet)` pattern) that pushes the new `description` field from `youtube_videos.json`. **Dry-run only** — print before/after diffs, do not push live. Then **stop at PR3** (5 before/after sample pairs for governor approval in this topic before any live push).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp/agroverse_shop_work && git remote -v && echo "=== current branch ===" && git branch --show-current && echo "=== push URL parse ===" ; cd /tmp/agroverse_shop_work && git ls-remote --heads origin youtube/descriptions-pr1 && echo "=== branch exists on origin ===" && gh repo vi; cd /tmp/agroverse_shop_work && cat > /tmp/pr1_body.md <<'EOF' ## What Adds a `description` field to **all 73 entries** in `scripts/youtube_v; …(+1 more)
 
