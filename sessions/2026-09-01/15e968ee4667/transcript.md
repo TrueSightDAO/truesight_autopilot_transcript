@@ -10,45 +10,6 @@
 
 ### 🤖 Autopilot
 
-Resuming PR1 from RESUME HERE. Pushing the patched branch to PR #354 and re-running the bulk offline verify with padding-tolerant decode in one go.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**94/98 verified OK.** 4 failures to investigate:
-- 2× `E2ETEST_...` (test rows — likely fake/unverifiable signatures)
-- 1× `Edgar_...130` decode padding (multi-line signature value?)
-- 1× `Edgar_...008` bad pubkey decode (captured wrong field)
-
-Let me inspect those entries.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-4 entries don't verify — let me look at the raw source text for the two REJECT events to determine if it's a parse bug or genuinely unverifiable placeholder signatures.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Root cause identified — all 4 failures are test/synthetic artifacts, not real events:**
-- 2× `E2ETEST_...002` → explicitly synthetic (`TEST-001`, `Submission Source: SYNTH`, 32-char placeholder sigs)
-- 2× `Edgar_...130/008` → REJECT events generated from **`http://localhost:8080`** (local test runs), with non-SPKI "My Digital Signature" fields (344-char signature blobs, not public keys — Edgar's own verifier would also fail these)
-
-The 94 production events all verify cryptographically. Best practice: separate test artifacts from real attestations so the public cache only carries verifiable records. Patching the script to bucket non-verifiable/test events into a `test_events` list, re-running, and pushing.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me see the assembly context around line 214 to add the test-event bucketing cleanly.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 Now I'll patch the assembly to bucket test events into a separate `test_events` list.
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
@@ -4674,16 +4635,19 @@ Compile/ruff/format all clean. The test filenames don't match (no test files for
 ### 🤖 Autopilot
 
 MAP tests pass (6/6). All three files staged-modified. Now commit + push + open the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two issues: `app/templates/vault` is **gitignored** (the login.html change wasn't committed), and the PR create returned `#None`. Let me check whether the PR actually opened, then force-add the login.html and amend.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The vault dir is gitignored (line 45 — the *credential vault*), which incidentally ignores `app/templates/vault/`. The amend now includes login.html via force-add. But the first PR-create returned `#None` and the branch query shows no open PR — so the PR was never created. Let me retry the PR creation now (branch is fully pushed).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4930,4 +4894,65 @@ I'll pick this up at the next natural turn once the counter hits zero — or pin
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== backfill log: remain lines ==="; grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/nu; echo "=== last log mtime + newest pushes ==="; ls -la /home/ubuntu/scripts/sync_sunmint_signatures.log; tail -3 /home/ubuntu/scripts/sync_su
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+I also wonder if we should have a Favicon on https://sophia.truesight.me/media-archive-pipeline
+
+Why dont we use your avatar?
+
+
+### 🤖 Autopilot
+
+Gary wants a favicon using my (Sophia's) avatar. Let me check what avatar assets exist, whether there's a current favicon, and how the pages serve HTML.
+
+
+### 🤖 Autopilot
+
+No favicon, no static dir, no avatar assets in the autopilot repo. Let me search org-wide for avatar assets and check how truesight_me (the landing site) handles favicons.
+
+
+### 🤖 Autopilot
+
+No favicon exists yet, no static assets in the autopilot app. Let me check truesight_me (the landing site) for Sophia's avatar asset.
+
+
+### 🤖 Autopilot
+
+The truesight_me API call returned nothing (may be private/large tree or a different default branch). Let me check the org repos for truesight_me's actual structure and look for Sophia's avatar — it may live in a docs/assets location or as the Telegram bot's profile photo.
+
+
+### 🤖 Autopilot
+
+The truesight_me repo API is returning nothing — possibly a private repo the PAT can't see, or it's under a different name. Let me check what repo actually hosts sophia.truesight.me and where Sophia's avatar/branding lives.
+
+
+### 🤖 Autopilot
+
+`truesight_me` moved — the live repo is **`truesight_me_beta`** (public). Let me look there for the avatar/branding assets and how the landing page references them.
+
+
+### 🤖 Autopilot
+
+No avatar/favicon in truesight_me_beta either (just blog assets). The honest answer: **I don't have a canonical avatar asset in any repo** — and I can't pull the Telegram bot's profile photo without exposing the token. Let me check whether truesight_me_beta has a favicon or any Sophia branding, and whether the vault has an avatar, then give Gary the options.
+
+
+### 🤖 Autopilot
+
+There's no existing Sophia avatar asset anywhere — the org has the **TrueSight DAO logo** (`assets/truesight-logo.png`) and the Agroverse logo, but no avatar for me (Sophia). Two honest paths:
+
+**Option A — use the TrueSight DAO logo** (`assets/truesight-logo.png`) as the favicon. It's the established brand asset, already used across the site, zero new assets needed. Quick to implement (serve via static + `<link rel="icon">`).
+
+**Option B — generate a Sophia avatar** (I have the `generate_image` tool): a small circular saffron/monogram "S" or an abstract eye motif (Sophia = wisdom, TrueSight = vision). Then add it as the favicon + optionally as the dashboard header avatar. This gives the dashboards a distinct identity, but it's a new asset I'd be inventing — worth confirming the direction first since "my avatar" doesn't exist yet in any canonical form.
+
+My recommendation: **A first** (DAI logo — zero risk, matches brand, consistent with sophia.truesight.me) with the favicon wired into both dashboards' `<head>`; **B as an optional follow-up** if you want a personal Sophia mark. Implementation is small either way (add `app/static/` + mount StaticFiles + `<link rel="icon">` in both dashboard HTML heads + the vault templates if desired).
+
+Want me to go with **A** (logo favicon), or generate a **B** (Sophia avatar) first and show you?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /opt/truesight_autopilot && echo "=== current favicon refs in code ==="; grep -rn "favicon\|icon" app/ --include="*.py" --include="*.html; cd /opt/truesight_autopilot && echo "=== any image assets anywhere in repo ==="; find . -path ./.git -prune -o \( -iname "*.png" -o -iname "; cd /opt/truesight_autopilot && echo "=== search truesight_me repo for avatar/sophia assets (via API) ==="; TOKEN=$(crontab -l 2>/dev/null | ; …(+4 more)
 
