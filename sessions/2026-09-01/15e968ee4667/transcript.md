@@ -4118,6 +4118,7 @@ HEAD shows **neither** the wiring nor the module — the working tree has it unc
 ### 🤖 Autopilot
 
 Both diffs are empty yet `git status` shows `M app/main.py` — the working tree matches HEAD, and the file was committed at some point. But `git show HEAD:app/main.py | grep signature_ledger_pipeline` returned nothing... contradiction. Let me resolve it — maybe there are multiple worktrees or the grep failed silently.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4127,26 +4128,31 @@ Now it's clear. The main worktree is on branch **`feat/vault-nav-pipeline-links`
 2. Create the A7 branch from **origin/main**, add the module + wiring, and PR it
 
 Let me check the branch's relationship to origin/main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `feat/vault-nav-pipeline-links` is a parked branch that diverged — its `app/main.py` diff includes the A7 wiring *plus* vault nav changes (unrelated). I'll build the A7 PR cleanly from **origin/main**: create a fresh branch, copy my module in, add only the 3 wiring lines, commit, push, PR. The parked branch stays untouched.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The link assertion failed (`link: 0`) — the landing page link must use different markup on origin/main. The import + include succeeded (compile OK), but the link wasn't added. Let me find the actual landing link markup on this branch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The landing link uses a `style="margin-top: 0.75rem;"` attribute (from the parked branch's older main). Adding the signature ledger link with matching style after line 724.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean: `app/main.py` +1 (the link; import/include were already in origin/main — wait, that means origin/main already has the import+include from a prior merged PR, so only the landing link + the module are new). The `tokenomics`/`worktrees/vault` submodule pointers drifted — I'll exclude those. Let me commit just my two files, push, and open the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4213,11 +4219,13 @@ Service is back up — restored the missing signature_ledger_pipeline.py (PR #37
 ### 🤖 Autopilot
 
 Service restored (PR #374 merged the missing module). Continuing with A7 UAT + backfill monitoring. Let me check the backfill progress and test the new dashboard endpoint live.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Backfill is progressing (2478 remain, cursor at `contribution_event/...018`). Dashboard page serves 200, data endpoint correctly 401s without a token. Now the real UAT: verify the data endpoint returns proper data with a governor token. Let me test the module's data-fetch functions directly on the box (same code path as the endpoint) to confirm live data works.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4231,6 +4239,7 @@ All data functions work with live data:
 The backfill is clearly **running continuously** (cursor advanced between my two checks). The dashboard's data layer is verified working. The endpoint 401s correctly without auth. A7 UAT is essentially passing on the data side — the remaining UAT bit is the visual page with a real governor token (which I can't fully simulate here without a live session, but the page served 200 and the JS fetch path is identical to MAP's proven pattern).
 
 Let me do one more check — confirm the deployed module on the box matches the merged PR (post #374 restore), and check service logs for route errors.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4287,11 +4296,13 @@ Reporting A7 UAT + backfill status.
 ### 🤖 Autopilot
 
 Checking backfill progress after the redeploy.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The log shows something I need to verify: cursor advanced (May 27 → June 8) but "2478 files remain" is flat across passes. Let me check whether the last pass actually pushed new files or re-skipped.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4433,4 +4444,66 @@ Want me to merge #377 and deploy?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → echo "=== BACKFILL ==="; grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail -2; echo; cd /opt/truesight_autopilot && echo "=== vault/base.html (head + styles) ==="; sed -n '1,80p' app/templates/vault/base.html; echo "=== follo; cd /opt/truesight_autopilot && echo "=== SLP route: how html served ==="; grep -n "def \|HTMLResponse\|Templates\|return \|@router" app/sign; …(+9 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **PR #377 open** — vault-style restyle for both dashboards. This is a visual-change PR; Gary asked for it directly ("go — continue with the vault-style UI restyle"), so I'll report at the gate for his
+
+
+### 🤖 Autopilot
+
+Gary's 👍 clears the visual gate. Merging PR #377 and deploying.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**Merge blocked by CI — PR #377 stays open.** ✅ (stop-and-report)
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **Attempted** | Merge [truesight_autopilot PR #377](https://github.com/TrueSightDAO/truesight_autopilot/pull/377) (vault-style restyle) — Gary's 👍 cleared the gate |
+| **Result** | ❌ **Refused: CI not green** — failing/pending checks: `smoke`, `test` |
+| **Nothing changed** | No merge, no deploy; the PR branch is intact and the restyle is not live |
+
+## Likely cause (my hypothesis — verify next turn)
+
+The restyle replaced the `<style>` block + header markup inside the `DASHBOARD_HTML` constants. Two candidate failures:
+1. **`test` check** — a unit test likely asserts on the old HTML strings (e.g. Georgia serif font, old badge class names like `.b-uploaded` styling, or exact header markup) in `tests/test_media_archive_pipeline.py` / `tests/test_signature_ledger_pipeline.py`.
+2. **`smoke` check** — the smoke CI may fetch `/media-archive-pipeline` / `/signature-ledger-pipeline` and assert on expected content (e.g. `<h1>Media Archives Pipeline</h1>` — which I kept, but the surrounding structure changed: header is now inside a gradient banner div).
+
+## Roadmap state
+| Unit | Status |
+|---|---|
+| A1–A5 | ✅ |
+| A6 backfill | ⏳ running (~2,478 remain earlier, cursor `contribution_event/…094`) |
+| **A7 dashboard + restyle** | ⏸️ **PR #377 blocked on CI — next step: fix CI, re-push, re-merge** |
+| §7 contribution | pending |
+
+## RESUME HERE → **investigate CI, fix, re-merge**
+
+1. **Read the CI failure**: `gh run list --repo TrueSightDAO/truesight_autopilot` (or GitHub API via token) → get the failing job logs for `test` and `smoke` — confirm which assertions broke
+2. **Fix the tests or the HTML**: if tests assert old strings, update them to the vault markup (badge classes, font, header structure) — but **check whether the assertions are behavior-critical** (auth gate, data keys) vs cosmetic (font/class names); cosmetic-only assertions get updated
+3. Re-run local suite (`pytest -q` — expect only the 3 pre-existing `test_chat_observe.py` failures), push the fix to `feat/vault-style-dashboards`, wait for CI green
+4. **Re-merge #377** → deploy (restart service) → verify both pages 200 + data 401 → visual UAT on the live pages
+5. Backfill monitor → completion checks (root index / 3-sample verify / PII scan / README + plan / §7 contribution)
+
+Note: the merge gate correctly caught this before a broken test suite landed on main — the fix is to make the tests match the new (intended) markup, not to weaken the gate.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ❌ Refused: CI not green (failing-or-pending: smoke, test) on PR #377 — no changes made
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ❌ Failed to merge PR #377 on truesight_autopilot: Refusing to merge PR #377 on truesight_autopilot: CI not green (failing-or-pending: smoke,
 
