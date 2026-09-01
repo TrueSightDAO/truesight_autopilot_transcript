@@ -4740,11 +4740,13 @@ Let me find what manifest you're referring to — searching context + repos for 
 ### 🤖 Autopilot
 
 Let me check the farm-media-daemon plan and repos — that's the likely home of a media manifest:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest convention is `FARM_MEDIA_MANIFESTS/<farm_id>.json` + `index.json` — let me find exactly where they're committed so I give you the precise URLs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4791,31 +4793,42 @@ Yeah, go with the low-risk approach. [System note: the user sent this as a VOICE
 ### 🤖 Autopilot
 
 Go — building the low-risk per-plot derived layer. Grounding in the generator first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the tail of the generator (where it writes output) to add the per-plot emission:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Generator fully understood. Building the per-plot derived layer — a small addition to `build_plots_geojson.py` (aggregate stays the serving artifact; `plots/by-plot/<plot_id>.geojson` emitted alongside) + a unit test:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Patched. Now the unit test for `emit_per_plot` (pure-function test, no sheet/auth needed) — and running the full local suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `NameError` at line 187 — the helper imports `os` but not `re`. Fixing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All green: **16 tests pass**, ruff/format/compile clean. Pushing the PR (placeholder-then-real flow):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4951,4 +4964,65 @@ Which next?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp && rm -rf sm2 && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git sm2 && cd sm2 && echo "=== current plots/ ===" &; cd /tmp/sm2 && export GOOGLE_SERVICE_ACCOUNT_JSON="$(cat /opt/truesight_autopilot/config/google/agroverse_qr_code_manager_gdrive_key.json)" ; cd /tmp/sm2 && echo "=== each by-plot file: single feature + correct plot_id ===" && for f in plots/by-plot/*.geojson; do python3 -c " impor; …(+2 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: I think probably not a good idea to lump all here isn’t it, it becomes really large repo
+
+ https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/FARM_MEDIA_MANIFESTS/
+
+What about having a separate farm_media_manifest repo?
+
+---
+
+[observed, not directed at you — Nobody Will not DM you]: I think probably not a good idea to lump all here isn’t it, it becomes really large repo
+
+ https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/FARM_MEDIA_MANIFESTS/
+
+What about having a separate farm_media_manifests repo?
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+
+### 🤖 Autopilot
+
+Good instinct — let me ground it in actual sizes before recommending, since the right call depends on how big this really gets:
+
+
+### 🤖 Autopilot
+
+Grounded it — here's what the numbers say:
+
+## Current state
+
+| Where | Size | Content |
+|---|---|---|
+| `FARM_MEDIA_MANIFESTS/` (in agentic_ai_context) | **103 KB** (7 files: 5 farm JSONs + index + README) | Video manifests (yt_id + plot/coverage metadata) |
+| `farm-media-raw/` (separate repo already) | **328 MB** | The actual photos/videos |
+| `agentic_ai_context/` (whole repo) | **48 MB** | Everything |
+
+## My honest take
+
+**On size: the manifests are NOT the bloat.** 103 KB, growing a few KB per farm — that will never meaningfully inflate the context repo. The 328 MB is already in its own repo (`farm-media-raw`). So "it becomes really large" isn't actually the risk here.
+
+**But I'd still move them — for ownership, not size.** The real argument is architectural:
+
+1. **agentic_ai_context is the agent's instruction/context repo** — PR-gated, human-reviewed, meant for docs like runbooks and plans. The manifests are **machine-generated data** (written by the farm-media-daemon), not context docs. Mixing machine-writes into a PR-gated repo is exactly the friction we keep hitting elsewhere (the live-edit conflicts, the direct-to-main Contents pushes).
+2. **There's already a natural home pattern** — `farm-media-raw` exists for the raw files. A sibling `farm_media_manifests` repo (the JSON index of them) is the clean pair: **raw media repo + manifest repo, both machine-owned data repos**, separate from the agent context.
+3. **Cleaner automation permissions** — a machine-owned data repo can take direct Contents-API writes from the daemon without fighting the context repo's guardrails.
+
+So: **yes to the separate repo** — my recommendation is `farm_media_manifests` (machine-owned data repo, sibling of `farm-media-raw`), with:
+- Move the 7 existing files over
+- Daemon writes there going forward
+- A small `index.json` as the directory (already exists)
+- Leave a README pointer in agentic_ai_context so agents know where they live (no stale duplicates)
+
+Want me to do it? It needs: creating the repo (I can if `farm_media_manifests` is in the allowed list — otherwise you add it), moving the 7 files, and updating the daemon's write path. I'll confirm the allowed-repo list before creating.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && echo "=== 1. FARM_MEDIA_MANIFESTS in agentic_ai_context (current state) ===" && curl -s "https://api.github.com/repos/TrueSightDA
 
