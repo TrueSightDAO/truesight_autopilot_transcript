@@ -2450,21 +2450,25 @@ Found it — the endpoint expects **form data** (`request.form()`), not JSON: th
 ### 🤖 Autopilot
 
 **`signature_verification: "success"`** — the smoke event passed verification. Now the critical check: did the ledger emit immediately (before the 30-min cron)? Let me look for the new event file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ledger did **not** emit immediately — still 24 events, no smoke file. The verification succeeded but the emit hook didn't fire. This is exactly why we smoke-test. Let me check the service logs for the emit hook's behavior — did it throw, get skipped, or fail the PII/allowlist gate?
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No emit-related log lines at all — the hook either isn't wired in the deployed code path or failed silently (no exception logged, no emit attempt). Three submissions got 200 OK (my two failed-format ones + the successful one). The emit hook is try/except-wrapped and non-fatal, so a silent skip is consistent with a **code-path issue** — let me verify the deployed route actually calls `ledger_emit.emit` (grep the deployed dao.py), and check whether the ledger emit's `github_pat` resolves in the service env.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the bug. The **deployed `dao.py` has no `ledger_emit` call** — the grep shows only unrelated "ledger" matches (expense ledgers). The module exists on disk but the route never calls it. That means the A4 PR's route wiring is **missing from the merged code** — let me verify against the PR #151 diff and the git state on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2685,4 +2689,120 @@ One tiny optional polish I can fold into A5 if you want: make the cron **skip-if
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo "=== how does the CRON write public_key? (check a cron-written file) ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/verif; echo "=== SMOKE-REPRO-0002.json (definitely emit-written) key format ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/verify_pub; echo "=== git history of the live smoke file (who wrote it, when) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/verify_public_sig
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Smoke test FULLY CONFIRMED ✅** — the git history proves it:
+
+```
+fddfeb4f  19:59:36  Emit tree_planting/Edgar_20260831195934_005.json (verified signature)   ← EMIT HOOK fired
+98eee220  20:00:32  cac
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⚙️ ssh run …
+
+
+### 🤖 Autopilot
+
+Resuming at A5: docs + UAT. Let me first read the current plan's A5 section + §6 UAT checklist, and the runbook's current §2/§6, so I update them accurately.
+
+
+### 🤖 Autopilot
+
+I have the UAT checklist (8 items) and runbook map. Let me read the current §2 and §6 of the runbook to draft precise edits, then make one docs PR.
+
+
+### 🤖 Autopilot
+
+I have both sections. Now I'll make the A5 docs PR: update runbook §2 (add the ledger leg to the pipeline map) + §6 (ledger cleanup note), and update the plan (A4 → complete, mark A4.1 dropped). One PR to agentic_ai_context.
+
+
+### 🤖 Autopilot
+
+**I made a mistake** — I used a full-file write and only preserved section *headers* for §3–§5/§7–§8, dropping their real content. The original runbook has substantive sections (4.x E2E procedure, 5 incident traps, 7 sender, 8 status) that I didn't read before overwriting. I must fix this immediately with targeted edits, not a full-file write. Let me pull the original from main and rebuild.
+
+
+### 🤖 Autopilot
+
+Confirmed: my full-file write **destroyed real content** (§4 E2E procedure, §5 incident traps, §7 sender, §8 status). The PR #870 branch is wrong and must be rebuilt — I'll replace the branch's runbook with the true original + only the §2/§6 additions via targeted edits. Rebuilding the branch now.
+
+
+### 🤖 Autopilot
+
+Branch rebuilt correctly — the diff is now **just +13 lines** on the runbook (the plan-file ±1 is a pre-existing main drift, not mine). But I need to also update the **plan file** (A4 → complete) which I promised in the PR body. Let me check the plan status section and add the plan-file edit, then verify the runbook content is intact.
+
+
+### 🤖 Autopilot
+
+Let me update the plan's status table (A4 → complete, A4.1 → dropped) and the A4 row, then push the amended branch.
+
+
+### 🤖 Autopilot
+
+The FARM_MEDIA_DAEMON_PLAN.md ±1 is branch-creation drift (branch was cut from a slightly older main). Let me rebase onto origin/main so the PR shows only my two files.
+
+
+### 🤖 Autopilot
+
+Clean now: **2 files, +15/−1** (runbook +13, plan +3/−1), all 8 runbook sections intact, ledger references present. The PR #870 branch is fixed. Let me verify the PR's diff matches and then merge (docs-only, A5 gate is UAT — but this is the docs update PR; the UAT gate applies to the checklist execution which follows). Merging PR #870.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**A5 docs PR landed (with a self-caught near-miss).** ✅
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **PR** | [agentic_ai_context #870](https://github.com/TrueSightDAO/agentic_ai_context/pull/870) — merged (squash, `dbae43e`) |
+| **What changed** | Docs for the public attestation ledger: |
+| | • `SUNMINT_E2E_RUNBOOK.md` §2 — pipeline map now shows the **ledger leg** (emit hook at verify → `verify_public_signatures/<type>/<msg_id>.json` + 30-min cron reconciliation + public URLs + openssl verify command) |
+| | • `SUNMINT_E2E_RUNBOOK.md` §6 — immutable-attestation cleanup note |
+| | • `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md` — **A4 → complete** (merged #151, deployed, smoke-verified live); ~~A4.1~~ → dropped (false alarm — `verify.verify()` already returns PEM) |
+| **⚠️ Near-miss self-caught** | My first write used a full-file overwrite that **destroyed real runbook content** (§4 E2E procedure, §5 incident traps, §7 sender, §8 status). I caught it immediately, rebuilt the branch from `origin/main` with **targeted edits only**, and verified the final diff is just **2 files, +15/−1** with all 8 runbook sections intact. Lesson reinforced: never full-file-write a doc I haven't fully read. |
+
+## Roadmap state
+| Unit | Status |
+|---|---|
+| A1–A4b | ✅ (all live & verified) |
+| **A5 docs** | ✅ **merged** |
+| **→ A5-UAT: execute §6 UAT checklist** | ⏭️ **next** |
+| A6 backfill | not started |
+
+## RESUME HERE → **A5-UAT: run the 8-item UAT checklist (plan §6)**
+
+Execute and report each item with evidence:
+1. `index.json` + per-event file fetchable (raw.githubusercontent, incognito), valid JSON, `count` > 0
+2. **3 sample events** (≥1 planting, ≥1 growth, + reject/link) — offline openssl re-verify → **3/3**
+3. Every event type ↔ one entry keyed by message ID; zero duplicates; filename == message ID
+4. `tree_growth_monitoring/index.json` rows == Tree Growth Measurements tab rows (dedup col B), incl. Farmer Signature + Analysis SHA-256
+5. New measurement → tab + ledger ≤35 min (proven via emit: 19:59:36)
+6. **PII scan**: grep both JSONs for `@` + phone patterns → zero hits
+7. Public URL shares without auth (incognito)
+8. Post-migration: `sunmint/signatures.json` no longer updated — **needs your call on decommissioning the deprecated mirror** (plan §4)
+
+Then **`gate: UAT`** — present results for your sign-off → **A6 backfill** (all historical RSA event types). Also pending: DAO contribution submission for A1–A5 per plan §7.
+
+———
+**✅ Done this turn — actions taken:**
+• `git push changes` → PR #870 opened (first write was a destructive full-file overwrite — caught & rebuilt)
+• `ssh run` ×4 → rebuilt branch from origin/main with targeted edits (runbook +13, plan +3/−1), verified content intact (8 sections), rebased clean
+• `merge pr` → #870 merged (`dbae43e`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /home/ubuntu/agentic_ai_context 2>/dev/null && git pull -q origin main 2>&1 | tail -1; echo "=== A5 + section 6 of plan ==="; sed -n '/A5; cd /home/ubuntu/agentic_ai_context 2>/dev/null && echo "=== RUNBOOK §2 pipeline map ===" && sed -n '17,44p' SUNMINT_E2E_RUNBOOK.md && echo "; cd /home/ubuntu/agentic_ai_context && git fetch origin -q && echo "=== original runbook from origin/main ===" && git show origin/main:SUNMIN; …(+4 more)
+• `merge pr` → ✅ PR #870 on agentic_ai_context merged successfully (sha: dbae43e522f0dd70094fefdcac1171ef97d008f4). Pull Request successfully merged
 
