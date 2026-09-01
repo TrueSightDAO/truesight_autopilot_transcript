@@ -192,46 +192,55 @@ Let me understand the video→blog mapping better by examining the generator's m
 ### 🤖 Autopilot
 
 Let me examine a blog post's structure to understand how the polished transcript is stored, and look at the manifests.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the Grok polish cache (may already contain polished transcripts) and the story-state mapping (basename → slug).
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me examine the story state (basename → slug) and the cache-key function.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me check the manifests and map all 73 entries to their transcripts.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check for duplicate video IDs and find transcripts for the 9 un-manifested entries.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the santos/IMG videos' transcripts — they have blog posts, so the polished transcript exists in the blog HTML.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the blog posts for those santos video IDs and the full mapping of all 73 entries.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — I now have the full picture of all 73 entries. Let me check for an existing checkout on the box (for credentials/live descriptions), inspect the blog post HTML structure for transcript extraction, and find the santos_subtitled post.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the YouTube config directory and how transcripts are embedded in blog posts.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -295,11 +304,13 @@ go — redeploy killed the turn mid-PR1 work. Please resume.
 ### 🤖 Autopilot
 
 Resuming PR1. Let me first check the state of the work clone (redeploy may have wiped /tmp), Grok key availability, and re-read the plan file.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The work clone survived the redeploy. No Grok key on this box (env + market_research/.env both empty), but the cache has 23 polished entries. Let me see the rest of the helpers, the blog generator's polish call path, and the exact `description_for_video()` footer.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -309,41 +320,49 @@ Work clone survived. Pipeline is now fully clear:
 - Blog polish = `clean_transcript()` → `transcript_for_blog()` (Grok w/ cache fallback)
 
 Let me re-read the plan's PR1 spec from main and build the video_id → blog slug map + transcript availability in one go.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting mismatch: direct grep found santos blog posts earlier, but the Python embed-scan missed them. Let me verify why, and check what the 13 transcript-less entries have available (blog posts exist for santos).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The santos entries DO have blog posts (my earlier read of the list was off). Let me confirm the `transcript_for_blog` fallback behavior and extract the polished transcript from blog HTML for entries lacking manifest transcripts.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me do a comprehensive check: broader video_id→blog mapping, the 4 manifest entries with empty transcripts, and transcript source files.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full picture acquired. Let me check the cache hit rate, a full JSON entry's shape, and whether a 4th santos post exists — then build the generator.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Cache covers 22 of 64 manifest entries; no Grok key on this box, so the remaining entries will fall back to `clean_transcript()` (explicitly allowed by the plan). Let me do the final pre-build checks, then build and run the generator.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Grok key **is** available at `/opt/truesight_autopilot/.env` — so I can run the full blog pipeline (Grok-polished, cache-first) for all entries. Let me write the generator and launch it as a background job (51 uncached Grok calls will take a few minutes, so I'll poll across turns).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The generator is running, but I realize I pointed the Grok cache at an empty `/tmp/grok_cache.json` — that wastes 22 already-cached entries (the repo's `transcript_grok_polish_cache.json` has them). Since results save incrementally, I can restart cleanly with the cache pre-seeded:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -439,4 +458,160 @@ Nothing blocking: all data generated and validated; just the PR mechanics remain
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×27 → ls -d /tmp/agroverse_shop_work 2>/dev/null && cd /tmp/agroverse_shop_work && git status --short | head -3 && git log --oneline -1; echo "---; cd /tmp/agroverse_shop_work 2>/dev/null && sed -n '1,120p' scripts/transcript_publish_helpers.py; cd /tmp/agroverse_shop_work && sed -n '120,260p' scripts/transcript_publish_helpers.py; …(+24 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] go — commit the reproducible generator script (scripts/generate_youtube_descriptions.py) rather than a one-shot hand edit, then open PR1.
+
+
+### 🤖 Autopilot
+
+Committing the generator as a proper script, then opening PR1. First let me review the generator I wrote and check the repo's lint/test setup.
+
+
+### 🤖 Autopilot
+
+The generator worked but has hardcoded paths and a redundant import — I'll clean it up for committing. First let me check the cache-handling internals of the helpers so the committed script uses the canonical cache path correctly.
+
+
+### 🤖 Autopilot
+
+The module loads `CACHE_FILE` at import time, so the cleanest committed form uses the repo's canonical cache (cache-first, no duplication). Let me check `transcript_for_blog`'s signature and behavior, then write the committed generator.
+
+
+### 🤖 Autopilot
+
+Now I'll write the cleaned, committed generator, merge the Grok cache so reruns are free, and prepare the final JSON.
+
+
+### 🤖 Autopilot
+
+The cache is tracked and merged (23→41). Now let me verify the youtube_videos.json diff is purely additive (only `description` added, nothing else changed) before committing.
+
+
+### 🤖 Autopilot
+
+The JSON diff is purely additive (trailing commas + `description` field; no values changed). Now let me check how the blog generator loads the Grok key (to match repo conventions), then finalize the script.
+
+
+### 🤖 Autopilot
+
+The helpers already handle the key lookup (env or sibling market_research/.env). My committed script should NOT hardcode the autopilot path — just let `get_api_key()` do its job (env var or repo-adjacent `.env`). Now let me write the clean, committed generator script.
+
+
+### 🤖 Autopilot
+
+The file was written (absolute path), but `py_compile` ran from the wrong CWD. Let me verify and compile from the repo.
+
+
+### 🤖 Autopilot
+
+Script written and compiles. Now let me run it once to confirm it's idempotent (cache-first — should reuse the 41 cached entries and only Grok-call the ~22 uncached, or hit blog-transcript fallback for the rest) and reproduces the same descriptions. But first: the current `youtube_videos.json` in the work repo already has descriptions from `/tmp/new_youtube_videos.json` — the script reads it fresh. Let me run it and diff against the prior output to confirm determinism.
+
+
+### 🤖 Autopilot
+
+40 entries differ from the prior run — I need to understand why before committing. Let me check whether the cache grew (Grok re-calls) or it's a truncation-formula difference.
+
+
+### 🤖 Autopilot
+
+Root cause found: the current run had **no GROK_API_KEY in env** — `get_api_key()` returns None → `polish_transcript_grok` bails before even reading the cache → falls back to `clean_transcript()` (raw-ish ".." text). The prior run explicitly loaded the key. The committed script correctly delegates key lookup to `get_api_key()` (env or sibling market_research/.env) — I just need to export the key in the shell when running on this box. Let me rerun with the key set.
+
+
+### 🤖 Autopilot
+
+Ran with key set. Let me verify determinism against the prior good run and confirm the cache didn't need new API calls (should be 41 still — all cached).
+
+
+### 🤖 Autopilot
+
+Determinism confirmed — **0 diffs** vs the prior good run, cache stayed at 41 (no new API calls; all cache hits). The output is stable and reproducible.
+
+Now the final gate before committing: run the repo's local test suite (the hard rule — compileall, ruff, format, pytest) before any push. Let me check what tooling is available and run it.
+
+
+### 🤖 Autopilot
+
+Tooling available. Running the full local test suite on the changed files (compileall, ruff check, ruff format check, pytest).
+
+
+### 🤖 Autopilot
+
+Two lint fixes needed: unused `os` import and formatting. Let me fix both and re-run.
+
+
+### 🤖 Autopilot
+
+All lint checks pass. Now the final gate: confirm the script still runs identically after the ruff fixes (determinism), and verify the cache diff is just additions.
+
+
+### 🤖 Autopilot
+
+Everything is green: script runs, 73/73 descriptions, cache diff is 19 additions + 1 deletion (need to verify that 1 deletion isn't destructive — likely a reformat of one key). Let me inspect the cache diff, then commit.
+
+
+### 🤖 Autopilot
+
+The cache diff shows 19 new Grok-polished entries added. Let me confirm the 1 deletion is benign (not data loss) — then commit.
+
+
+### 🤖 Autopilot
+
+Let me verify the deleted cache key is a stale duplicate (same text re-added under a new key) and that Episode 11's description is intact.
+
+
+### 🤖 Autopilot
+
+The key `b8b377fa…` is present in the cache with correct content — so the "deletion" is a move/re-serialize, not data loss. Episode 11's description is intact. Let me do one final confirmation that HEAD's value for that key matches current (benign re-serialization), then run the full suite one last time and commit.
+
+
+### 🤖 Autopilot
+
+Confirmed — the cache diff is purely benign (key present in both, same content; the "deletion" was a JSON re-ordering artifact). All green. Now committing PR1 via `git_push_changes`.
+
+
+### 🤖 Autopilot
+
+`git_push_changes` needs inline content — but my changes live in the verified work clone on the box. Pushing the feature branch from that clone via gh (same clone→branch→PR flow) is the pragmatic path. Let me commit and open the PR.
+
+
+### 🤖 Autopilot
+
+Committed locally. Now push the branch and open the PR.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging — tool budget hit. PR1 is committed and pushed; the only step left is opening the PR.
+
+## State of PR1
+
+**Done this session:**
+- ✅ Wrote clean, reproducible generator `scripts/generate_youtube_descriptions.py` (156 lines, stdlib only, reuses `clean_transcript()` + `transcript_for_blog()` verbatim — no new cleanup logic)
+- ✅ Ran it with GROK key from the box env → **73/73 descriptions** in `youtube_videos.json`, determinism confirmed (0 diffs across reruns; cache stayed at 41 = all cache hits, no wasted API calls)
+- ✅ Blog-parity verified: 13 entries without manifest transcripts get their polished text from the matching blog post HTML; 27 entries get per-episode `post/<slug>` links, 46 fall back to homepage (no post exists)
+- ✅ Full local test gate: `compileall` ✅, `ruff check` ✅ (fixed unused `os` import), `ruff format` ✅, `pytest` — no tests in repo (0 collected, matches baseline)
+- ✅ Cache diff audited: +19 Grok entries (23→41); the 1 "deletion" is a JSON re-order artifact — key `b8b377…` present in HEAD and NOW with identical content
+- ✅ **Committed** on branch `youtube/descriptions-pr1` (sha `8b2b31d`, 3 files: `youtube_videos.json`, `generate_youtube_descriptions.py`, `transcript_grok_polish_cache.json`) and **pushed to origin** — branch is live on GitHub
+
+**⚠️ One thing to verify when opening the PR:** the push's remote hint printed `agroverse_shop_beta/pull/new/…` in the compare URL even though I pushed to `agroverse_shop.git`. Need to confirm the PR opens against `agroverse_shop` (the beta base — correct repo class for code changes), not accidentally against `agroverse_shop_prod`. If the clone's origin is actually the beta repo, that's fine and expected.
+
+## RESUME HERE → open PR1 (next turn)
+
+1. `cd /tmp/agroverse_shop_work && gh pr create` with title/body from my earlier draft (title: "PR1: Add polished YouTube descriptions to youtube_videos.json + reproducible generator") — verify the PR's base repo is `agroverse_shop` (or `agroverse_shop_beta`, if that's what origin is), never prod
+2. Report PR URL + summary in this topic
+3. **STOP** (one PR per turn) — PR2 (`youtube_update_video_descriptions.py`, dry-run only) runs next turn, then stop at PR3's 5-pair review gate
+
+Nothing blocking: all content generated, validated, committed, and pushed. Just the PR-open mechanics + URL remain.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×22 → cd /tmp/agroverse_shop_work && echo "=== generator ==="; cat /tmp/gen_descriptions.py; echo; echo "=== repo files ==="; ls scripts/ | head -; cd /tmp/agroverse_shop_work && sed -n '1,60p' scripts/grok_transcript_polish.py; echo "=== transcript_for_blog def ==="; grep -n "def transc; cd /tmp/agroverse_shop_work && sed -n '82,215p' scripts/grok_transcript_polish.py; …(+18 more)
 
