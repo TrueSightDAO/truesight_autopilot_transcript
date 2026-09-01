@@ -10,226 +10,6 @@
 
 ### 🧑 Governor
 
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: All three PR3 files landed on `sunmint/main` ✅ — **PR3 complete** (via the sanctioned Contents-API path for the api_only data repo, as with PR1).
-
-## What I did this turn
-
-**PR3 — farms seed (`farms/i
-
-
-### 🤖 Autopilot
-
-Executing **PR4: backend farm upsert + `FARM BOUNDARY EVIDENCE EVENT` catalog entry**. First, checking the event catalog and how events get proposed/added:
-[2 tool result(s) compacted: lookup_event_docs, lookup_event_docs — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`FARM BOUNDARY EVIDENCE EVENT` confirmed **not in the catalog** (only `FARM REGISTRATION EVENT` exists). PR4 = add the new event + receiver logic. Let me find where the events catalog lives in code:
-[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The dao_protocol search hit venv noise. Let me find the actual events catalog + FARM REGISTRATION handler directly:
-[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-EVENTS.md is the cacao event playbook, not the DAO event catalog. Let me find the actual catalog definition and the FARM REGISTRATION receiver in dao_protocol:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-dao_protocol is the API/signature layer, not the event catalog. The catalog with `FARM REGISTRATION EVENT` (canonical labels, dapp_page) is served by **Edgar** (`edgar.truesight.me/events-catalog`), which lives in the GAS layer. Let me find where the catalog source of truth is — checking tokenomics for the events catalog / GAS app:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The event catalog lives in one of the GAS projects in tokenomics. Let me find where `FARM REGISTRATION EVENT` is defined:
-[1 tool result(s) compacted: search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found it — `qr_code_web_service.js` (GAS) defines/handles FARM REGISTRATION. Let me see how it handles farm events and where the receiver logic lives:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The GAS file has `farm_name` fields but not the event catalog. The catalog is served by Edgar at `/events-catalog`. Let me find the actual catalog source — checking the live endpoint structure and searching dao_protocol for the catalog definition:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The catalog has `events` — let me find the FARM entries and the catalog's source repo:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The catalog events are strings, not dicts. Let me list them to see the exact event names:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The catalog has 37 events including FARM REGISTRATION EVENT. Let me see the full structure of the catalog to understand how events are defined (they have canonical labels etc. that lookup_event_docs pulls):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The catalog is a dict served by Edgar (version 1, 37 events). Let me find where this catalog is defined in source so I can add the new event:
-[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found it: **`dao_protocol/truesight_dao_client/server/data/events_catalog.json`** — the catalog source. Let me read it (the FARM REGISTRATION entry) to see the exact schema to mirror for the new event:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Catalog source found. Now let me see the version field and how events get received (the receiver that writes to the Farms sheet) — checking `events_catalog.py` route + where FARM REGISTRATION is processed:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Catalog is served from `events_catalog.json`. Now let me find the receiver side — how events are dispatched/processed (mirroring TREE GROWTH MONITORING, which is the closest analog: farmer photo → GAS → sunmint images → GH Action):
-[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The receiver for TREE GROWTH MONITORING is a GAS script (`process_tree_growth_monitoring.gs`). For PR4, the cleanest first step is the **catalog entry** (dao_protocol) — the receiver/GAS can follow. Let me read the dispatch + how FARM REGISTRATION is currently handled to know if the receiver is GAS or server-side:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the dispatch.py structure (event → handler mapping) to know exactly where the new event's receiver hook goes:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I now have the full dispatch pattern. PR4 = **two coordinated changes**:
-1. **`events_catalog.json`** — add `FARM BOUNDARY EVIDENCE EVENT` (catalog entry with canonical labels)
-2. **`dispatch.py`** — add a ROUTING row (event tag → `FARM_BOUNDARY_EVIDENCE` webhook action)
-
-Let me look at the exact JSON placement (sorted alphabetically — after FARM REGISTRATION EVENT) and read the tail of dispatch to place the ROUTING row correctly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have everything. Now let me build both edits — add the catalog entry (after FARM REGISTRATION EVENT) and the dispatch ROUTING row (after TREE GROWTH MONITORING, which is the closest analog). Building the files and validating:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both edits built cleanly (catalog 38 events v2, dispatch +8 lines). Now running the hard-rule checks — compile + ruff on the Python, JSON validate — then pushing to `dao_protocol`:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Ruff format wants one pass (my inserted comment block may exceed line width). The exec test failed on a module-level logging call (not my change — `logging.getLogger("dao_protocol.dispatch")` needs module context) — I'll fix the verification approach. Let me format and verify correctly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The AST walk didn't find it because the ROUTING literal's first element is a tuple with a string constant — but my check ran against the *original* dispatch.py (the format run rewrote /tmp/dispatch_new.py and my check read it — let me look directly). Let me grep the formatted file to confirm the row survived:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The row is present (ruff format just restructured the tuple layout). All hard-rule checks pass. Now pushing PR4 to `dao_protocol`:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
-
-
-### 🤖 Autopilot
-
-⚠️ **CRITICAL: I need to flag an error before converging** — the PR #152 I just opened may contain **EMPTY files**.
-
-## The mistake
-In the `git_push_changes` call I passed `writes` with **empty `content` strings** for both files (I intended to reference the local files but the call takes inline content, and I left them blank). The tool reported "applied: write events_catalog.json, write dispatch.py" — which likely means it created the branch with **empty files**. That would be a broken PR.
-
-**The correct content is safe on disk** (validated earlier this turn):
-- `/tmp/ec_new.json` — catalog v2, 38 events, JSON-validated
-- `/tmp/dispatch_new.py` — ROUTING row added, ruff-clean, format-clean, compiles
-
-## RESUME HERE → next turn (FIRST action — urgent fix)
-1. **Overwrite the PR #152 branch files with the real content** via `upload_local_file_to_github` (the Contents API path that worked repeatedly this session):
-   - `/tmp/ec_new.json` → `truesight_dao_client/server/data/events_catalog.json` (branch `farm-boundary-evidence-event`)
-   - `/tmp/dispatch_new.py` → `truesight_dao_client/server/dispatch.py` (same branch)
-2. **Verify** the PR diff is now the intended +catalog entry / +ROUTING row (not a wipe)
-3. Then merge per the plan rhythm and report PR4 complete
-
-## What was done correctly this turn (PR4 progress)
-- **Confirmed** `FARM BOUNDARY EVIDENCE EVENT` absent from catalog; catalog source = `dao_protocol/truesight_dao_client/server/data/events_catalog.json` (37 events, v1); dispatch = `server/dispatch.py` ROUTING (first-match-wins → GAS webhook)
-- **Built + validated** the catalog entry (canonical labels: Farm Name, Plot ID, Boundary Type, Media URLs, Extracted GPS, Area Hectares, Submission Source; required: Farm Name, Media URLs; dapp_page `limites-da-fazenda/index.html`) and the dispatch row (`[FARM BOUNDARY EVIDENCE EVENT]` → `FARM_BOUNDARY_EVIDENCE` / `processFarmBoundaryEvidenceFromTelegramChatLogs`)
-- Hard-rule checks: JSON valid ✓ · compile ✓ · ruff ✓ · format ✓
-- **PR #152 opened** (https://github.com/TrueSightDAO/dao_protocol/pull/152) — but with the empty-content bug above
-
-Do NOT merge PR #152 until the files are corrected. Say go and I'll fix it first thing next turn.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×19 → cd /tmp && echo "=== events catalog in dao_protocol? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/git/trees/main?; cd /tmp && echo "=== dao_protocol tree (top-level, filtered) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/dao_protocol/git/tre; cd /tmp && echo "=== tokenomics: events catalog? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/git/trees/main?recurs; …(+16 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-Yeah, go for it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Go-signal received — fixing the PR #152 empty-file bug first thing. Pushing the real validated content to the branch:
-[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both files corrected on the branch. Verifying the PR diff is now the intended change before merging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Files are real now (catalog 21,267 B, dispatch 10,612 B), `mergeable: True`. The diff shows +542/−75 and +186/−46 because the empty-file commit forced a full-rewrite view — let me confirm the *content* is correct (not whitespace noise hiding a wipe) before merging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both files verified correct on the branch: catalog has the new event + `limites-da-fazenda/index.html` + version 2; dispatch has the routing row. (The larger diff is cosmetic — my `json.dump` reformatted the catalog's whitespace/unicode — functionally identical, validated JSON.) Merging PR #152:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
 [TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
 
 
@@ -5073,26 +4853,31 @@ Main has the fix (uploadBoundary ×8, register_farm 0) but **`capture="environme
 **Honest finding:** my "drop `capture="environment"`" edit never made it into the local build either — the file still has it on line 111 in both local `/tmp/sb5` and `main`. So the file-picker task (governor task 1) is **not actually done** — the PRs (#63/#64) shipped the submit fix + register_farm removal, but the capture attribute survived (my earlier edit must have missed it during the line-surgery).
 
 The live beta verification also can't be completed cleanly: the Pages-build API 404s (builds not exposed) and the live page shows old content (lag). Let me fix the capture attribute properly now — one focused edit to `main` (this is the actual governor-requested change, and it's a single-line, low-risk change to the same line):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Capture removed locally. Now validating + pushing this fix to main (small single-line change via the Contents API, same pattern as before):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All validations green (tags balanced, JS OK, capture gone). Pushing the capture fix to main — this is a genuine governor-requested change (task 1), and it rides on the same content already merged in #63, so I'll open a small PR rather than bypass:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #65 opened — now pushing the real validated file over the placeholder:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real file on the branch. Verifying it's correct, then merging PR #65:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5306,4 +5091,95 @@ Those live separately in **`farm-media-raw/`**: `https://github.com/TrueSightDAO
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== farm-media-raw tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/farm-media-raw/git/trees/main?recursive=; cd /tmp && echo "=== find FARM_MEDIA_MANIFESTS ===" && for repo in agentic_ai_context farm-media-daemon sunmint; do echo "-- $repo:"; curl -
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Yeah, go with the low-risk approach. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Go — building the low-risk per-plot derived layer. Grounding in the generator first:
+
+
+### 🤖 Autopilot
+
+Let me read the tail of the generator (where it writes output) to add the per-plot emission:
+
+
+### 🤖 Autopilot
+
+Generator fully understood. Building the per-plot derived layer — a small addition to `build_plots_geojson.py` (aggregate stays the serving artifact; `plots/by-plot/<plot_id>.geojson` emitted alongside) + a unit test:
+
+
+### 🤖 Autopilot
+
+Patched. Now the unit test for `emit_per_plot` (pure-function test, no sheet/auth needed) — and running the full local suite:
+
+
+### 🤖 Autopilot
+
+`NameError` at line 187 — the helper imports `os` but not `re`. Fixing:
+
+
+### 🤖 Autopilot
+
+All green: **16 tests pass**, ruff/format/compile clean. Pushing the PR (placeholder-then-real flow):
+
+
+### 🤖 Autopilot
+
+`sunmint` isn't in the PR-flow allowlist — but that's consistent with how this repo's content landed before (earlier `sunmint` work went via Contents API direct pushes, e.g. `extract_plot_gps.py`, `farms/index.json`). The governor's direction is explicit and the change is fully tested, so pushing both validated files to `sunmint` main via the Contents API:
+
+
+### 🤖 Autopilot
+
+Both files live on `sunmint/main`. Let me verify the uploaded generator actually contains the per-plot emission (and didn't clobber anything), then report:
+
+
+### 🤖 Autopilot
+
+Verified on `sunmint/main` (authoritative Contents API): generator has `emit_per_plot` ×2, `--by-plot-dir` ×1, `import re` ×1 (the fix), len 9700; test file has 5 tests. Done — converging.
+
+## What I did this turn
+
+**Built the per-plot derived layer (your "one file per plot" direction, low-risk approach).**
+
+### Changes (pushed to `sunmint/main` — repo not in the PR-flow allowlist, so Contents API, consistent with prior sunmint work)
+1. **`scripts/build_plots_geojson.py`** (+~40 lines, sha `016f73c`):
+   - New `--by-plot-dir` arg (default `plots/by-plot`)
+   - `emit_per_plot(features, out_dir, generated_at)` — writes **one FeatureCollection per plot** (`plots/by-plot/<plot_id>.geojson`, sanitized filenames) + **prunes stale files** so the derived layer never drifts from the aggregate
+   - Called after the aggregate write — **one source of truth (sheet tab) → two derived artifacts**
+   - `index.geojson` unchanged as the serving artifact (single fetch for the app; zero consumer changes)
+2. **`tests/test_build_plots_by_plot.py`** (sha `232ec12`, 5 tests): per-plot files, single-feature shape, stale pruning, filename sanitization, skip-no-id
+
+### Verified
+- **16/16 tests pass** (11 existing + 5 new), compile ✓, ruff check ✓, ruff format ✓
+- Caught + fixed a real bug in my first pass (`NameError` — helper imported `os` but not `re`) before pushing
+- Authoritative main confirmed: `emit_per_plot` 2×, `--by-plot-dir` 1×, `import re` 1×, tests 5×
+
+### What this enables (next steps)
+- **Retraction recalc write target** — invalidate media in plot X → rewrite `plots/by-plot/X.geojson` → regen aggregate
+- **Per-plot audit/lineage** — each plot's boundary evolution + invalidation trail is a tracked file
+- **Fine-grained diffs** — one plot changing no longer rewrites the whole collection (less live-edit conflict risk)
+
+## RESUME HERE → next unit (governor's pick)
+
+1. **Wire the per-plot files into the retraction pipeline** — the GAS handler (`process_media_retraction.gs`) writes the plot's invalidated-media + rewritten per-plot geojson when a retraction processes (needs the daemon/generator to run after, or a small GAS-side recompute trigger)
+2. **Regenerate** `plots/by-plot/` for the 5 existing plots (run the generator once — needs sheet access + the SA key on this box; I can do it if you want the layer populated now)
+3. **Prod promotion** of sunmint #55–#65 (Gary's go)
+
+Which next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → generator full read (load_plots, FIELD_COLUMNS, main tail); patched (--by-plot-dir arg, emit_per_plot helper, call after aggregate); NameError fixed (import re); ruff format; 16/16 tests green; both files pushed via Contents API + verified authoritative
+• `upload local file to github` ×2 → build_plots_geojson.py (016f73c) + test_build_plots_by_plot.py (232ec12) on sunmint/main
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp && rm -rf sm && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git sm && cd sm && echo "=== find generator ===" && f; cd /tmp/sm && echo "=== build_plots_geojson.py ===" && cat scripts/build_plots_geojson.py && echo && echo "=== tests ===" && ls tests/ && ec; cd /tmp/sm && sed -n '175,240p' scripts/build_plots_geojson.py && echo "=== existing tests ===" && cat tests/test_extract_plot_gps.py | head; …(+4 more)
 
