@@ -4251,16 +4251,19 @@ Let me get the manifest's video titles to build the curated media.json, then con
 ### 🤖 Autopilot
 
 Manifest confirmed — 71 items with yt_ids (no titles; YouTube titles follow "Fazenda Cleide — IMG_xxxx (GPS)" pattern). Let me build the curated `media.json` (first ~8 chronological clips + the 3 existing images) and update the page. Building both files now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 media.json built (8 curated YouTube + 3 images). Now the page edit: replace the static `.gallery` div with the JSON-driven container + add the script tag. Let me make the edits via git_push_changes (beta repo, PR flow):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The gallery-div edit's search needs checking too — let me see what scripts cleide's page actually loads at the end of body.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4430,6 +4433,33 @@ I can't measure your time precisely — the session transcripts don't carry per-
 **So roughly 2–2.5 hours of your attention** — the rest was Sophia + the daemon executing, uploading, and fixing autonomously (which is the design working: you steer, the pipeline runs).
 
 **Caveat:** if you want exact numbers, the Telegram client shows per-message timestamps — I don't have access to those. If you'd like, I can log a contribution event for you at a specific minute count — just tell me what feels right (e.g. "log 150 min for Gary") and I'll submit it.
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Okay, two-and-half hours of my time done. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Logging your 2.5 hours (150 min) as a contribution:
+
+
+### 🤖 Autopilot
+
+✅ **Logged** — **Gary Teh, 150 minutes (2.5h)**, Type: Time (Minutes), TDG 0, with the key PRs as evidence.
+
+Both contributions are now on the ledger for this thread:
+- **Sophia Truesight** — 450 min (7.5h) — daemon + dashboard + CI gate + gallery + archive
+- **Gary Teh** — 150 min (2.5h) — direction, decisions, UI review
+
+That closes out the time tracking. Anything else on this thread, or shall we hold here?
 
 ———
 **✅ Done this turn — actions taken:**
