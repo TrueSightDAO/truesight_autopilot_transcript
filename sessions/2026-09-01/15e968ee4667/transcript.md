@@ -3554,36 +3554,43 @@ Resuming A6-trickle: deploy the merged version to the cron location and confirm 
 ### 🤖 Autopilot
 
 Deployed and in sync, cron is default-safe (`--push`, no `--allow-pii`). But the `git pull` diverged — let me verify the deployed file actually contains the rate-limit guard (the cp came from the working tree, which had my changes, but I want to confirm against the merged commit).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 HEAD is my local branch commit (`57bea13`), origin/main is the merged squash (`7a07f7e`) — same content, divergent history. Fixing the divergence and kicking off the first trickle pass manually (rather than waiting up to 30 min for the cron tick).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found a real bug: the fail-closed PII scan is running over **non-published buckets too** (`test_events` — which by design holds test rows that can contain emails). The scan must only gate what's actually published (`events` + `measurements`). Let me find and fix the scan.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see what `_scan` is called on (the fail-closed sweep) to find where it traverses `test_events`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Line 592 scans `files[path]` — which includes the non-published buckets. The scan should only cover published files. Let me see lines 585–600 to fix precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The scan loops over ALL `files`, including the `test_events`/`other_signed`/`excluded_pii` buckets. Let me check what `files` actually contains and whether the test bucket is being written into the ledger.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The scan path reveals two real issues: (1) `_scan(signatures)` sweeps internal buckets (`test_events`, `other_signed`) that aren't all published — but (2) worse, the email-exclusion check (line 237) runs **after** the `other_signed` bucketing (line 228), so a non-SPKI event carrying an email would land in `other_signed` and get **published with the email** — a genuine leak under option 2. Let me confirm `_ledger_files` (what's actually published) before fixing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3594,21 +3601,25 @@ Now I see the full picture. Two precise fixes needed:
 2. **Leak risk**: the email exclusion (line 237) runs *after* the `other_signed` bucketing (line 228) — a non-SPKI event carrying an email would land in `other_signed_events/` and be **published with the email**. Exclusion must apply before bucketing.
 
 Let me view lines 180–250 for exact edits.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the exact structure. The email exclusion must be moved **before** the `other_signed` bucketing (so a non-RSA event with an email is excluded, not published to `other_signed_events`), and the fail-closed scan should only cover `files` (published paths). Let me apply the two fixes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both fixes in, all checks pass, dry-run clean (writes all files, no PII BLOCKED). The fail-closed scan now only sweeps published files, and email-bearing events are excluded before any bucketing. Let me deploy, commit as a fix PR, and kick the first real trickle pass.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #362 open (the PII fix). Merging it and kicking the first real trickle pass now.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3828,4 +3839,33 @@ Note: `deploy_autopilot` was deferred earlier due to active threads; the deploye
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → echo "=== cron log tail ==="; tail -6 /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null; echo "=== how many passes ran ==="; grep; cd /tmp && rm -rf led1 led2; cd /home/ubuntu/scripts && GOOGLE_APPLICATION_CREDENTIALS=/home/ubuntu/creds/google_credentials.json python3 sy; echo "=== skip lines in log? ==="; grep -c "skip\|unchanged" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null; echo "=== deploye; …(+7 more)
 • `merge pr` → ✅ PR #367 on truesight_autopilot merged successfully (sha: d98ce17963c91573e7c9ca280440ba3cfc859719). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Hey, so the Daemon that's running in the background is a documented somewhere, as curious. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good question — let me check exactly where it's documented so I point you at the right spots.
+
+
+### 🤖 Autopilot
+
+Yes — it's documented in three places. Here's the short tour:
+
+**1. The ledger's own README** (in `verify_public_signatures`) — has a whole **"Refresh" section** (line 138): it says the ledger is refreshed by a reconciliation cron on the autopilot box **every 30 minutes**, that new events are published at ingest time by the emit hook, and the cron stays as the reconciliation/backfill safety net.
+
+**2. The SunMint E2E runbook** (`SUNMINT_E2E_RUNBOOK.md`) — the pipeline map at line 44 shows the ledger leg: *"30-min cron (autopilot box, sync_sunmint_signatures.py --push) → reconciliation, idempotent by message ID"* — and line 152 notes ledger files are immutable public attestations.
+
+**3. The plan itself** (`plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`) — decision 0.5 documents the writer split: **primary = dao_protocol emit hook at verify time** (instant, only verified attestations), **reconciliation = the autopilot cron** which heals any emit gap within 30 minutes. And PR2 in the sequencing table is marked done: "cron */30 + first live publish + 3/3 re-verify."
+
+One honest gap in the docs: the cron's **rate-limit trickle** (250 files/pass, the content-addressed skip fix, and the PII exclusion policy) isn't fully described in the README yet — I planned to add that in the A6-complete documentation pass. So it's documented as *"a reconciliation cron runs every 30 minutes"*, but the backfill-trickle mechanics aren't spelled out anywhere yet. Want me to add a short **"Backfill & rate-limit behavior"** subsection to the ledger README as part of the A6 wrap-up? That would close the gap.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== 1. verify_public_signatures README (cron mentions) ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/verify_public_sign
 
