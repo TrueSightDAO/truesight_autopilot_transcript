@@ -17,12 +17,24 @@
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Found both. Let me read the two runbooks to understand what "status" means for each.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I've got the runbooks for both. Now let me check live status of each pipeline. Starting with a parallel sweep — Edgar API health, keypair presence on the box, the media manifests, and any running media jobs.
+[4 tool result(s) compacted: http_fetch, ssh_run, read_repo_file, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -105,4 +117,68 @@ Bottom line: **both pipelines are healthy; nothing needs intervention.**
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → echo "=== .env keypair presence ==="; grep -oE '^(PUBLIC_KEY|PRIVATE_KEY|EMAIL)=' /opt/truesight_autopilot/.env | sed 's/=$/= <set>/'; echo;; echo "=== edgar / dao_protocol service ==="; systemctl is-active dao_protocol 2>/dev/null; systemctl status dao_protocol --no-pager -n 5 2>/; echo "=== cleide_work contents ==="; find /home/ubuntu/cleide_work -maxdepth 2 -type d | head -20; echo; echo "=== cleide counts ==="; find ; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18800] So stuff in both pipelines are completed and the pipelines are empty at this point?
+
+
+### 🤖 Autopilot
+
+Let me ground the "complete" claim on the photo side too — quick check of the pipeline runbook for what "done" includes (HEIC vs JPG), then I'll give you a straight yes/no.
+
+
+### 🤖 Autopilot
+
+The runbook's end-state includes one more leg than just uploads — farm-page gallery wiring. Let me verify that before I say "complete."
+
+
+### 🤖 Autopilot
+
+Cleide's farm-page gallery isn't at that path — let me check what farm pages actually exist in the beta shop.
+
+
+### 🤖 Autopilot
+
+Cleide's farm page is `farms/fazenda-cleide-para/`. Let me check its gallery media.json to confirm the last leg (farm-page wiring) is done.
+
+
+### 🤖 Autopilot
+
+Cleide's page is a single `index.html` (media embedded, no separate media.json). One final check — confirm the page actually references the uploaded videos.
+
+
+### 🤖 Autopilot
+
+The cleide page has zero YouTube references — let me look at what it actually contains before concluding.
+
+
+### 🤖 Autopilot
+
+The page has a gallery section but no YouTube embeds. Let me see what's actually in that gallery to judge whether wiring is complete or skipped.
+
+
+### 🤖 Autopilot
+
+Now I have the complete, verified picture. Here's the honest answer:
+
+## Short answer: mostly yes — with one open item
+
+**✅ Pipeline 1 (RSA-signed events):** Nothing pending, nothing queued. Edgar endpoint live, keypair verified signing. Empty and healthy. **Complete.**
+
+**✅ Pipeline 2 (Media Archive / farm-media):** The *upload* pipeline is fully drained — all 85 videos (71 cleide + 2 paulo + 4 jedielcio + 8 santa-anna) uploaded to YouTube **and verified LIVE** (public + processed, not just captured IDs), 113 photos archived in `farm-media-raw`, all 4 manifests committed. The daemon is idle because there's nothing left in the inboxes. **That leg is complete.**
+
+**⚠️ One gap found — farm-page gallery wiring (runbook step 9) is NOT fully done for cleide:**
+- Cleide's live farm page (`farms/fazenda-cleide-para/index.html`) gallery shows only **3 static JPEGs** — no YouTube embeds at all (`youtube` count = 0, none of the uploaded video IDs referenced).
+- By comparison, the other farms (paulo, rancho, santa-anna) have `media.json` + gallery wiring per the runbook. Cleide's page exists but its video gallery was never wired to the 71 uploaded YouTube videos.
+- The farm-page *itself* exists (map, plot polygon, hero) — so this is the **last leg of the pipeline that's incomplete** for cleide.
+
+So: **pipeline empty = yes; "everything completed" = not quite** — one finishing step remains for cleide (embed its YouTube videos in the farm page gallery). The photos+videos are all safely archived regardless; this is a presentation-layer gap, not a data-loss risk.
+
+Want me to wire cleide's gallery to include the 71 YouTube videos (add `media.json` + gallery entries per the runbook's step-9 pattern, beta repo, PR → merge → beta verify)? That would close the last open item.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/fazenda-cleide-para/index.html" -o cleide_; cd /tmp && echo "=== title / structure ==="; grep -oE '<title>[^<]*</title>' cleide_page.html; echo; echo "=== gallery-related markers ===";; cd /tmp && echo "=== gallery section context ==="; grep -n -i -B2 -A8 'gallery' cleide_page.html | head -60; echo; echo "=== images referenc
 
