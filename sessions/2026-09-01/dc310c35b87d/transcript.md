@@ -4868,6 +4868,7 @@ The honest conclusion: my **tool-path test exercised Edgar's acceptance but not 
 ### 🤖 Autopilot
 
 Let me do the focused dispatch check + locate the test ledger row for cleanup:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5034,4 +5035,36 @@ I'm back online (redeploy complete) ✅ — and ready. Quick status so we're ali
 **Nothing is pending on my side right now** — the thread is at a clean pause until Gary does those, or until you point me at something new (chrome audit of the other pages, `sunmint_mobile/www/` sync, or anything else).
 
 What would you like next?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Service is back up after a brief crash-loop (unrelated to your thread, now fixed via PR #374). Continue whenever you have something new, otherwise still holding on the cron trigger + real device test.
+
+
+### 🤖 Autopilot
+
+Good to know — thanks for the heads-up. Let me do one quick verification that the FBE production config I touched survived the crash-loop intact (cheap insurance, no new work):
+
+
+### 🤖 Autopilot
+
+All good ✅ — the FBE production config survived the crash-loop intact:
+
+| Check | Result |
+|---|---|
+| `truesight-dao-protocol.service` | ✅ active |
+| Healthz | ✅ `{"status":"ok","version":"7f2950f","environment":"production"}` |
+| FBE webhook key in `.env` | ✅ still present (1) |
+| Event catalog | ✅ v2 / 38 events (FBE entry included) |
+
+Nothing broke, nothing to fix. Everything from this thread is still live and healthy.
+
+Still holding on the two Gary-dependent items (cron trigger + real-device test) — both tracked in OPEN_FOLLOWUPS. I'll stay quiet until something new comes up or you point me at the next thing.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → timeout 30 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'echo "=== dao_protocol service ===";
 
