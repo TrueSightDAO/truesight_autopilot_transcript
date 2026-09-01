@@ -4385,26 +4385,31 @@ Let me check the MAP HTML head too so I can make both consistent in one PR.
 Both dashboards have the same structure: header → meta → login → content → footer, with inline styles. The vault restyle = add the **saffron gradient header bar** (like vault/base.html) to both, plus align the body font to the vault's Helvetica and use the vault CSS vars for consistency. I'll rewrite both `DASHBOARD_HTML` heads with the vault header + vars, keeping all JS/auth/render logic identical.
 
 Let me apply the restyle to both modules with targeted edits (replace the `<head>`/header block), then run checks and PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both restyled, compile + ruff + format clean. Let me verify the HTML structure is correct (header + wrap div balance) and test-render both pages locally before committing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both have 2 wrap opens (one in header replacement + the original) — that's a structural issue: my substitution introduced a second `<div class="wrap">` without closing the first. Let me check and fix the div balance properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see the bug: there's a stray `<div class="wrap">` before the header (the original body's wrap) — so the structure is `<div class="wrap"> <header/> <div class="wrap"> sub...` — a stray open div. The header should be **outside** the wrap (full-width banner), and only ONE wrap. Fix: remove the stray `<div class="wrap">` that precedes the header (the one immediately after `<body>`).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The fix applied + compiles; only my *verification snippet* had a Python syntax error (backslash in f-string, unrelated to the code). Let me re-verify structure with a corrected snippet.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4688,4 +4693,41 @@ This is a small, self-contained PR. Order: merge #377 first (restyle) → then A
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot && echo "=== vault: how token is stored ==="; grep -rn "localStorage\|sessionStorage\|getItem\|setItem\|token" a; cd /opt/truesight_autopilot && echo "=== vault set_cookie (path? httponly?) ==="; sed -n '260,275p' app/vault_routes.py; echo; echo "=== aut; cd /opt/truesight_autopilot && echo "=== SLP data endpoint (route + auth) ==="; grep -n -A12 'def data\|@router.get("/data"' app/signature_l; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Good diagnosis, approved — build A7b (shared sophia_token key, cookie-first JS) as its own PR once #376/#377 are merged and CI is unblocked. No need to wait on my go beyond that.
+
+
+### 🤖 Autopilot
+
+Checking PR #376/#377 status and CI state before building A7b.
+
+
+### 🤖 Autopilot
+
+Status check — **A7b correctly not started yet** (its precondition isn't met):
+
+## Current state
+
+| Item | Status |
+|---|---|
+| **PR #376** (`ci: merge_pr refuses to merge when CI is failing/pending`) | 🟡 **open**, unmerged |
+| **PR #377** (vault restyle) | 🟡 **open**, unmerged — CI still **red**: `smoke` ❌ `test` ❌ |
+| **A7b (session unification)** | ⏸️ **holding** — per your condition: build it only *once #376/#377 are merged and CI is unblocked*. Neither is true yet, so I have not started it. |
+| **Backfill** | ✅ progressing: **2,478 → 2,228 files remain** (still declining ~250/pass; cursor on June 14 events) |
+
+## So, standing by on
+
+1. **CI unblock + #376/#377 merge** — being handled by Cleide's farm per your note (I'm holding off on the CI investigation as instructed)
+2. Then **A7b** builds as its own PR (shared `sophia_token` key + cookie-first JS + login-sets-both), deploy via idle-drain, verify `/vault/` → dashboards session carry-over
+
+Nothing needs you right now — ping me when CI clears and I'll pick up the merge + A7b immediately. Backfill keeps trickling in the background meanwhile.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); for pr in 376 377; do echo "===
 
