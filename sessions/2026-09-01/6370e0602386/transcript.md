@@ -1066,6 +1066,7 @@ PR #264 is now **CLOSED** — I need to check whether it was merged or just clos
 ### 🤖 Autopilot
 
 PR #264 was **closed without merging** (no mergeCommit, not merged) — the 405 stale-state likely cascaded into a close. The branch still exists on origin. Let me reopen the PR, sync the branch with current main, and retry the merge.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1358,4 +1359,76 @@ All diffs are **live-fetched** via the YouTube Data API (`videos.list`), not sel
 2. **Homepage fallback for 46 clips** — acceptable, or prefer no link for those?
 
 Say **"go / approved"** (optionally with answers to ① and ②) and I'll proceed to PR4 (live push via the merged script). **Stopping here — nothing live yet.**
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] [Handoff context — this Telegram topic (thread 18528) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: PR3 sample was posted at the end of last turn, but I'll post it cleanly again here so it's unambiguous in the topic — this is the **hard review gate**; no live push happens until you approve.
+
+## 🛑 PR
+
+
+### 🤖 Autopilot
+
+The 👍 emoji-go on the PR3 sample is the explicit approval — proceeding to **PR4 (live push)**. First, let me re-read the plan's PR4 spec and sync the work clone to confirm the merged state.
+
+
+### 🤖 Autopilot
+
+Plan confirms PR4: **live push after PR3 approval** (granted via 👍), then verify with a fresh `videos.list`. The script and 73/73 descriptions are in place. Running the live push now — descriptions only, preserving titles/tags:
+
+
+### 🤖 Autopilot
+
+**Live push complete: `Processed 73 mapping entries.`** — all 73 descriptions pushed to YouTube. Now the plan's PR4 verification step: a **fresh `videos.list`** (independent, not self-report) to confirm the live descriptions actually changed.
+
+
+### 🤖 Autopilot
+
+**PR4 verification: 73/73 MATCH** — the fresh `videos.list` (independent of the push) confirms every live description now equals the repo's polished text. Zero mismatches, zero missing.
+
+Let me check PR5's tooling (title proposals — dry-run only, since title diffs are non-trivial and need the same review pattern per the plan).
+
+
+### 🤖 Autopilot
+
+PR4 is complete and verified. Stopping here to report — PR5 (titles) is the next unit and it has its own dry-run/review pattern per the plan.
+
+## ✅ PR4 complete — LIVE descriptions pushed to YouTube (73/73, verified)
+
+**Governor approved PR3's sample (👍).** Executed the live push via the merged `youtube_update_video_descriptions.py` (descriptions only — titles, tags, categoryId preserved):
+
+- **Push:** `Processed 73 mapping entries.` — all 73 videos' descriptions updated to the cleaned + Grok-polished transcript + per-episode blog link + hashtag footer (≤4900 chars)
+- **Independent verification** (fresh `videos.list`, not the script's self-report):
+  - **MATCH: 73 | MISMATCH: 0 | MISSING: 0** — every live description now equals the repo's source of truth
+
+**Live examples now fixed on the channel:**
+- `33nwH67UIag` — "being the police, episode 12. Ehh, show!" → clean Episode 12 intro + blog link
+- `NKiGfjYMiK4` — "witch plume fungu" → "witches' broom fungus" + Hossman grafting explanation
+- `7Z3XQ1pE8w8` / `sveheAHgF7E` / `0Dfx8CYIJR8` — "Being the police, episode 11/5/7" garbled intros → clean Episode intros
+- `DInvOWCcrIw` — raw "Project 10-13" filename → "After a swamp walk to century-old cacao trees" + blog link
+- All 73: generic homepage footer → specific `post/<slug>` link where the blog post exists (27), homepage fallback otherwise (46)
+
+**Known remaining item (flagged, no action taken):** "Fili Marsh" phrase — live blog post contains it; description now matches blog (parity). If you want it fixed, that's a separate blog edit, not part of this plan.
+
+## RESUME HERE → PR5 (title cleanup)
+
+1. Run `youtube_grok_project_titles.py --scope placeholder --dry-run` (proposes better titles for the placeholder-style ones, e.g. `Project 04-30_Full HD 1081 | Agroverse`, `Export: Full HD 1081 (newer)`) — writes proposed titles to `youtube_videos.json`, **no live push**
+2. Show the proposed title diffs in this topic (same review pattern as PR3 if non-trivial)
+3. After your OK: run with `--push-youtube` (or the plan's PR5 default `--scope placeholder --push-youtube`)
+4. **PR6:** update `agentic_ai_context/sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md` §A.7 so description push (polished transcript, not raw) becomes a permanent pipeline step — prevents recurrence
+5. Report DAO contribution for PR4 + PR5 (the live-impact units) per the plan §5
+
+Say "go" to proceed to PR5's dry-run.
+
+———
+**✅ Done this turn — actions taken:**
+• `read_context_file` → plan PR4 spec (live push post-approval, verify via fresh videos.list)
+• `ssh run` ×3 → sync main; live push 73/73; fresh videos.list verification (73 MATCH / 0 MISMATCH / 0 MISSING); inspected youtube_grok_project_titles.py for PR5
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/agroverse_shop_work && git checkout main 2>&1 | tail -1 && git pull origin main 2>&1 | tail -2 && echo "=== merged script present? =; cd /tmp/agroverse_shop_work && python3 scripts/youtube_update_video_descriptions.py --config-dir /opt/truesight_autopilot/config/youtube 2>&; cd /tmp/agroverse_shop_work && python3 - <<'EOF' 2>&1 | tail -25 import json, sys sys.path.insert(0, 'scripts') from pathlib import Path fro; …(+1 more)
 
