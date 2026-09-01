@@ -3262,36 +3262,43 @@ I think we should exclude RSA events where email address is embedded for now.
 ### 🤖 Autopilot
 
 Gary's revised call — **exclude events with embedded emails** (option 2, applies org-wide). That overrides the option-3 decision: backfill drops ~1,724 email-bearing events, keeps ~2,926 clean ones. Let me update PR #360 accordingly. First, view the exact regions to patch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary's decision: **exclude RSA events with embedded emails** (default behavior; `--allow-pii` stays as an explicit override, but cron will NOT use it). Implementing via targeted edits: email-bearing events get bucketed into `excluded_pii_events` at build time, so the public ledger only contains clean events.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edit 2's init pattern didn't match. Let me check the actual init lines.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The init has an extra `other_signed = {}` line my pattern missed — and since the write is atomic (only at the end), the file is unchanged. Redoing with the correct pattern.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edit 3's pattern didn't match — the `_is_test_event` check block must differ in the current file. Let me view the exact text.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The actual code splits the test-event check from the SPKI check (line 209 `if _is_test_event(text, msg_id):` — separate from the SPKI check). Let me see the full block from 209 to the events[msg_id] assignment to place the email exclusion correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The structure is clearer now. The email exclusion goes right before `events[msg_id] = {` (after the SPKI check). Redoing all 6 edits with the corrected pattern — the file was never written (atomic), so it's clean.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3512,4 +3519,143 @@ Expected completion ~8h from deploy — I'll check progress at the next natural 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /opt/truesight_autopilot && echo "=== cron line (token redacted) ==="; crontab -l 2>/dev/null | grep -i "sync_sunmint" | grep -v "^#" | s; cd /opt/truesight_autopilot && grep -n -B2 -A25 "def _upload" scripts/sync_sunmint_signatures.py | head -50; cd /opt/truesight_autopilot && python3 - <<'PYEOF' p = "scripts/sync_sunmint_signatures.py" s = open(p).read() edits = [ # 1. _push_ledger c; …(+3 more)
 • `merge pr` → ✅ PR #361 on truesight_autopilot merged successfully (sha: 7a07f7e3b2332cbdd7abad26b6e5d14916f158bc). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Rate-limit guard merged — backfill now a safe background trickle.** ✅
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **PR** | [truesight_autopilot #361](https://github.com/TrueSightDAO/truesight_autop
+
+
+### 🤖 Autopilot
+
+Resuming A6-trickle: deploy the merged version to the cron location and confirm the cron line is default-safe.
+
+
+### 🤖 Autopilot
+
+Deployed and in sync, cron is default-safe (`--push`, no `--allow-pii`). But the `git pull` diverged — let me verify the deployed file actually contains the rate-limit guard (the cp came from the working tree, which had my changes, but I want to confirm against the merged commit).
+
+
+### 🤖 Autopilot
+
+HEAD is my local branch commit (`57bea13`), origin/main is the merged squash (`7a07f7e`) — same content, divergent history. Fixing the divergence and kicking off the first trickle pass manually (rather than waiting up to 30 min for the cron tick).
+
+
+### 🤖 Autopilot
+
+Found a real bug: the fail-closed PII scan is running over **non-published buckets too** (`test_events` — which by design holds test rows that can contain emails). The scan must only gate what's actually published (`events` + `measurements`). Let me find and fix the scan.
+
+
+### 🤖 Autopilot
+
+Let me see what `_scan` is called on (the fail-closed sweep) to find where it traverses `test_events`.
+
+
+### 🤖 Autopilot
+
+Line 592 scans `files[path]` — which includes the non-published buckets. The scan should only cover published files. Let me see lines 585–600 to fix precisely.
+
+
+### 🤖 Autopilot
+
+The scan loops over ALL `files`, including the `test_events`/`other_signed`/`excluded_pii` buckets. Let me check what `files` actually contains and whether the test bucket is being written into the ledger.
+
+
+### 🤖 Autopilot
+
+The scan path reveals two real issues: (1) `_scan(signatures)` sweeps internal buckets (`test_events`, `other_signed`) that aren't all published — but (2) worse, the email-exclusion check (line 237) runs **after** the `other_signed` bucketing (line 228), so a non-SPKI event carrying an email would land in `other_signed` and get **published with the email** — a genuine leak under option 2. Let me confirm `_ledger_files` (what's actually published) before fixing.
+
+
+### 🤖 Autopilot
+
+Now I see the full picture. Two precise fixes needed:
+
+1. **Over-block**: `_scan(signatures)` traverses internal buckets (`test_events`, `excluded_pii`) that are **not published** (only `events`, `measurements`, `other_signed_events` go to `files`) — a test row with an email blocks the entire push. The scan should only cover what `files` actually publishes.
+2. **Leak risk**: the email exclusion (line 237) runs *after* the `other_signed` bucketing (line 228) — a non-SPKI event carrying an email would land in `other_signed_events/` and be **published with the email**. Exclusion must apply before bucketing.
+
+Let me view lines 180–250 for exact edits.
+
+
+### 🤖 Autopilot
+
+Now I see the exact structure. The email exclusion must be moved **before** the `other_signed` bucketing (so a non-RSA event with an email is excluded, not published to `other_signed_events`), and the fail-closed scan should only cover `files` (published paths). Let me apply the two fixes.
+
+
+### 🤖 Autopilot
+
+Both fixes in, all checks pass, dry-run clean (writes all files, no PII BLOCKED). The fail-closed scan now only sweeps published files, and email-bearing events are excluded before any bucketing. Let me deploy, commit as a fix PR, and kick the first real trickle pass.
+
+
+### 🤖 Autopilot
+
+PR #362 open (the PII fix). Merging it and kicking the first real trickle pass now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**PII fix merged — backfill is clean to run.** ✅
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **PR** | [truesight_autopilot #362](https://github.com/TrueSightDAO/truesight_autopilot/pull/362) — merged (squash, `7748f89`) |
+| **What changed** | Two real bugs found during the first backfill push attempt: |
+| | 1. **Over-block fix** — fail-closed PII scan was sweeping internal buckets (`test_events`, `excluded_pii`, `other_signed` dicts) that are **never published**, so a single test row containing an email blocked the entire push. Now scans only the `files[]` paths that actually get published. |
+| | 2. **Leak-risk fix** — the email exclusion ran **after** the non-RSA `other_signed` bucketing, meaning a non-SPKI event with an embedded email would have been published into `other_signed_events/`. Exclusion now runs **before** any bucketing. |
+| **Also this turn** | Deployed merged script to cron location (in sync); repo branch diverged — reset to `origin/main` (`7a07f7e`) |
+
+## Why this matters
+The first real `--push` attempt **failed safe** — the fail-closed gate caught a test row with an email and refused to publish anything. That gate just saved us twice (blocked the over-block AND would have leaked via `other_signed`). Dry-run after fixes: **3,947 events, 703 PII excluded, scan passes on published files only.**
+
+## Roadmap state
+| Unit | Status |
+|---|---|
+| A1–A5 | ✅ |
+| A6 code + rate guard + PII fix | ✅ **merged** |
+| **→ A6-trickle: run the background backfill** | ⏭️ **next** |
+
+## RESUME HERE → **A6-trickle: start + monitor the backfill**
+
+1. **Kick the first trickle pass** (manual `--push`, 250-cap): `cd /home/ubuntu/scripts && GOOGLE_APPLICATION_CREDENTIALS=… GITHUB_TOKEN=… python3 sync_sunmint_signatures.py --push` — expect `[info] rate-limit guard: hit 250/run cap; ~3,697 remain`
+2. **Confirm the cron tick** continues it automatically every 30 min (log: `/home/ubuntu/scripts/sync_sunmint_signatures.log`)
+3. **Sanity checks after pass 1**: root `index.json` count climbs; folders appear; `excluded_pii_count: 703` in root index
+4. **Post-backfill verification** (~16 passes / ~8h): 3-sample openssl re-verify from new folders + live PII scan (zero emails in published files)
+5. Update README + plan (A6 complete) → final §7 contribution submission
+
+Note: the deployed copy already has the fixes (copied before the PR merge — same content as merged `7748f89`). The next cron tick will use it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → deployed script; fixed over-block (scan only published files) + leak (email exclusion before bucketing); compile ✓ ruff ✓ format ✓; dry-run clean; opened **PR #362**; merged (`7748f89`); deployed copy in sync
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /opt/truesight_autopilot && sed -n '176,250p' scripts/sync_sunmint_signatures.py (mapped test→SPKI→email→events order); applied 2 fixes (email exclusion moved before other_signed bucketing; scan scoped to files[] only); compile ✓ ruff ✓ format ✓; dry-run clean (no PII BLOCKED); deployed; opened PR #362; merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /opt/truesight_autopilot && git pull -q origin main 2>&1 | tail -1; cp … && echo DEPLOYED && diff … && echo IN SYNC; crontab check (redacted): `--push`, no `--allow-pii`; git reset to origin/main `7a07f7e`; deployed + diff-clean
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /opt/truesight_autopilot && git pull -q origin main 2>&1 | tail -1; cp scripts/sync_sunmint_signatures.py /home/ubuntu/scripts/…; diff IN SYNC; cron line redacted-check (default-safe); git reset HEAD/working to origin/main; first trickle pass attempt → **PII BLOCKED at test_events** (bug found); traced to `_scan(signatures)` sweeping internal buckets + email-after-SPKI ordering; fixed both; dry-run clean
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /opt/truesight_autopilot && git pull -q origin main 2>&1 | tail -1; cp scripts/sync_sunmint_signatures.py /home/ubuntu/scripts/sync_sunmi; grep -c "max_uploads\|rate-limit guard\|time.sleep(0.3)" /home/ubuntu/scripts/sync_sunmint_signatures.py; echo "=== HEAD ==="; cd /opt/trues; cd /opt/truesight_autopilot && git checkout -q main 2>/dev/null || git checkout -q -b main origin/main; git reset --hard -q origin/main && g; …(+8 more)
+• `merge pr` → ✅ PR #362 on truesight_autopilot merged successfully (sha: 7748f89916a33e968b1721e530c90f8eaa36a3ba). Pull Request successfully merged
 
