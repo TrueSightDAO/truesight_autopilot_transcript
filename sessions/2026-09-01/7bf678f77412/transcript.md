@@ -3517,11 +3517,13 @@ Ping me with "promote" or "go" (daemon scaffold).
 ### 🤖 Autopilot
 
 Let me look at Paulo's page highlights section to add the tree age and production figures.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the exact highlight items (lines 522–560) to place the two new facts consistently.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3721,4 +3723,61 @@ Ping me with "promote" or "go".
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #259 on agroverse_shop_beta merged successfully (sha: 2458ab22641d1303a84ccc87b647bd8041307e6f). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] Santa Anna Fazenda Para produces around 1.5 tons a year
+
+
+### 🤖 Autopilot
+
+Adding Santa Anna's annual production figure (~1.5 tons/yr) alongside the harvest-cycle fact:
+
+
+### 🤖 Autopilot
+
+PR #260 opened. You explicitly requested this — merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Santa Anna annual production added ✅
+
+**PR merged:** [#260 — Add Santa Anna Fazenda (Pará) annual production (~1.5 tons/yr)](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/260) — sha `3eb6784f`.
+
+**What changed:** `farms/santa-anna-fazenda-para/index.html` — Farm Highlights grid gained a new item (after Harvest):
+> **📦 Annual Production** — ~1.5 tons of cacao per year
+
+Highlights now read: Cooperative (CEPOTX) · Site Visit · Practice · Fermentation · Location · Tree Age (~30 yrs) · Harvest (once/yr) · **Annual Production (~1.5 t/yr)** · Region · SunMint Program.
+
+---
+
+**CEPOTX farm profile facts — all on beta:**
+| Farm | Facts |
+|---|---|
+| Fazenda Cleide | Annual Production ~1.5 t/yr (PR #256) |
+| Paulo La do Sitio | Tree Age ~40 yrs · Production ~1.2 t/yr (PR #257) |
+| Santa Anna Fazenda (Pará) | Tree Age ~30 yrs (PR #258) · Harvest once/yr (PR #259) · Production ~1.5 t/yr (PR #260) |
+
+---
+
+**RESUME HERE → next unit (pick one):**
+1. **Promote to prod** — `sync_beta_to_prod(agroverse_shop_prod)` to make all farm-page updates live on the public pages (then verify each URL)
+2. **PR1 second half (daemon)** — create public `TrueSightDAO/farm-media-daemon` + scaffold DESIGN.md/config/README
+
+Ping me with "promote" or "go".
+
+———
+**✅ Done this turn — actions taken:**
+• `git push changes` → PR #260 · `merge pr` → ✅ #260 merged (sha 3eb6784f)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #260 on agroverse_shop_beta merged successfully (sha: 3eb6784f45a654e64c10f9dc0d9b3f14ec4d20af). Pull Request successfully merged
 
