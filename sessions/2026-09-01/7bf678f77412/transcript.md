@@ -10,42 +10,6 @@
 
 ### 🤖 Autopilot
 
-Let me see the actual structure of agroverse_shop_beta to find where farm profiles live.
-[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Farm pages live at `agroverse.shop/farms/<slug>`. Let me look at the existing Paulo farm page (a fellow CEPOTX farm) as the template, and check the CEPOTX GACC guide for Cleide's farm details.
-[2 tool result(s) compacted: read_repo_file, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Good context. Let me prep the tooling side before the zip arrives — find the SunMint Plots sheet source-of-truth and the plot generator script.
-[3 tool result(s) compacted: search_code, search_code, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check the SunMint impact map extension plan (has the sheet ID + workflow), the E2E runbook, and whether the zip has arrived in the attachments folder yet.
-[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Disk is at 96% (1.6G free) — a 3GB zip won't fit. Let me check for the zip and find cleanup candidates before it arrives.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The zip is already on the box: `/home/ubuntu/cleide and marcelo's farm.zip` (822M — compressed; likely ~3GB uncompressed, which matches what Gary said). Disk is 96% full, so I'll process it **streaming / selectively, never full-extract**. Let me inspect the zip's contents cheaply and check for cleanup candidates + tooling (exiftool for GPS metadata).
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 The zip appears **truncated** (1.19GB on disk, but no end-of-central-directory record — that's a partial/streaming upload, or still writing). Disk is now at 98% (991MB free). Let me check whether it's still growing and what's inside via a streaming scan.
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
@@ -4688,11 +4652,13 @@ The daemon is installed at `/opt/truesight_autopilot/farm_media_daemon/` ✅.
 **And yes — the reference exists.** `agentic_ai_context/FARM_MEDIA_PIPELINE.md` is exactly the setup reference for other LLMs/Sophia instances — it's explicitly written *"so any Sophia instance can process a farm end-to-end or pick up a farm handed off by a governor"*, with the MAP terminology block, where-things-land table, the 10-step pipeline, handoff checklist, and anti-patterns/lessons. Plus `plans/FARM_MEDIA_DAEMON_PLAN.md` and the public daemon repo (DESIGN.md + README) cover the *queue/daemon* setup. Any other instance can read those and stand up their own media archive queue.
 
 Now finishing the wiring: clear IMG_4838's stale error, install systemd, retire the throttled uploader.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Throttled uploader retired ✅ (was running 5h05m, 6 uploads done). Sidecar error cleared ✅. Now install the systemd service and verify it's running:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4917,4 +4883,154 @@ Ping me with the unit number and I'll run it.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== date ===" date -u +"%H:%M:%SZ" echo "=== daemon service status ===" systemctl status farm-media-daemon.service --no-pager | head -
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Also can we have the implementation plan, execution road map and checklist for having 
+
+https://sophia.truesight.me/media-archive-pipeline displayed here for anyone who is signed in and interested to see.
+
+
+### 🤖 Autopilot
+
+Gary wants the implementation plan + roadmap + checklist for a signed-in pipeline dashboard at `sophia.truesight.me/media-archive-pipeline`. Let me ground the plan in how the truesight_me site actually works (routes, auth) before drafting.
+
+
+### 🤖 Autopilot
+
+Let me check how sophia.truesight.me is actually hosted (which repo serves it, and how auth works) — the migration plan should say.
+
+
+### 🤖 Autopilot
+
+The site is the autopilot box's own nginx + FastAPI app (sophia.truesight.me → the box). Let me check how pages/auth work there so the plan's pre-flight is grounded, not guessed.
+
+
+### 🤖 Autopilot
+
+I have the ground truth for pre-flight: the app is FastAPI on the box (auth via JWT from `.auth` — the DApp's existing governor auth), `sophia.truesight.me` is nginx→app on this box, and there's already an auth router. Let me check the auth router to confirm the "signed-in governor" gate exists.
+
+
+### 🤖 Autopilot
+
+I have solid pre-flight ground truth: the app is FastAPI on this box (nginx → `truesight-autopilot.service`), governor auth already exists (`verify_jwt` raises 401 without a valid token — RSA + JWT via `auth_routes.py`), and the queue data lives on the same box (`media_archive_inbox/` sidecars + `farm_media_uploads.log`). That makes the dashboard cheap: a new route + page in Sophia's own repo, reading local sidecars — no new infra.
+
+Drafting the plan (PR0) now:
+
+
+### 🤖 Autopilot
+
+PR #874 opened. Now let me add the manifest row (part of PR0) — reading the current tail of the manifest first:
+
+
+### 🤖 Autopilot
+
+The manifest is huge — I'll anchor the new row right after the Farm Media Daemon row (its sibling plan) with a targeted edit on the same PR0 branch:
+
+
+### 🤖 Autopilot
+
+Push rejected — the remote branch has new work (likely my own PR #874 merge or a race). Let me re-push with the merge-base resolved:
+
+
+### 🤖 Autopilot
+
+The local checkout doesn't have the branch (the tool uses its own clone). Let me check the PR #874 state directly:
+
+
+### 🤖 Autopilot
+
+PR #874 is open (plan committed). The manifest-row edit failed on a stale clone — let me retry the same edit; the tool will fetch first:
+
+
+### 🤖 Autopilot
+
+Same stale-clone rejection — the tool's clone needs the branch pulled. Let me fix it directly on the box (checkout the branch, apply the edit, push), then PR #874 will carry both commits:
+
+
+### 🤖 Autopilot
+
+The commit landed but I need to verify WHERE (the `checkout -B` failed, so it may have gone onto `main`). Let me check:
+
+
+### 🤖 Autopilot
+
+The manifest-row commit landed on the **wrong branch** — the local checkout was on `rename/media-archive-pipeline` (the stale #873 branch), not the PR #874 branch. The remote PR branch still only has the plan. Let me transplant the commit onto the PR branch properly:
+
+
+### 🤖 Autopilot
+
+The local clone's refs are stale — `origin/plan/media-archive-pipeline-dashboard` isn't visible even though `git ls-remote` showed it. The cleanest fix: recreate the PR branch from the remote head directly and re-apply both commits. Let me do it carefully:
+
+
+### 🤖 Autopilot
+
+The cherry-pick applied (the "keep redundant, empty commits" hint — the manifest commit is now on the PR branch). Let me verify the manifest edit is actually present, then push:
+
+
+### 🤖 Autopilot
+
+The cherry-pick silently dropped the manifest edit (the "keep redundant, empty commits" hint meant the commit was already in the ancestry — but the actual file edit isn't in the PR branch). The file edit exists only on the stray local branch. Let me apply the row edit directly to the PR branch and push:
+
+
+### 🤖 Autopilot
+
+The push may have failed silently (head sha unchanged). Let me verify the remote actually received the commit:
+
+
+### 🤖 Autopilot
+
+The push DID land — remote head is now `ad1ae17` (the previous curl check was cached). PR #874 now carries both commits: the plan + the manifest row. Merging PR0:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Dashboard plan committed (PR0) ✅
+
+**PR merged:** [#874 — Plan: Media Archives Pipeline dashboard at sophia.truesight.me/media-archive-pipeline (PR0)](https://github.com/TrueSightDAO/agentic_ai_context/pull/874) — sha `8a0a5c42`.
+
+**What landed (now on agentic_ai_context main):**
+
+1. **`plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`** — full implementation plan + roadmap + checklist for the signed-in-governor dashboard:
+   - **Goal:** read-only view at `sophia.truesight.me/media-archive-pipeline` — per-farm queue status (uploaded w/ YouTube links / pending / needs_metadata / error), timestamped upload events, committed-vs-live manifest state; any signed-in governor can self-serve (no box access)
+   - **Pre-flight grounded in box facts:** FastAPI app in `truesight_autopilot` (nginx → :8001, own repo); governor auth already exists (RSA + JWT, `verify_jwt` 401 gate — same as DApp chat); **all data local** (sidecars under `media_archive_inbox/`, `/tmp/farm_media_uploads.log`, `FARM_MEDIA_MANIFESTS` on GitHub) — **no new infra**
+   - **Roadmap (one PR per turn):** PR1 (auth-gated data endpoint) → PR2 (dashboard page UI) → PR3 (wire + restart own service) → **PR4 `gate: UAT`** (signed-in verify: 3 states, live refresh, signed-out 401) → PR5 (docs)
+   - Risks: auth-bypass, service-restart blip, sidecar schema drift, stale committed-state labeling, strictly read-only
+2. **`handoffs/HANDOFF_MANIFEST.md`** — new row (sibling of the Farm Media Daemon row): status **new — awaiting kickoff**, thread 17181, RESUME HERE = **PR1**.
+
+**Git wrangling note:** the manifest-row edit hit a stale-clone push-rejection and briefly landed on the wrong local branch; I transplanted it cleanly (fetch → cherry-pick → direct edit → push `ad1ae17`) so PR #874 carried both commits before merge. No content lost.
+
+---
+
+**RESUME HERE → next unit (PR1):**
+**Backend data endpoint** in `truesight_autopilot` — auth-gated `GET /media-archive-pipeline/data`:
+1. `verify_jwt(request)` gate (401 when signed out)
+2. Scan `/home/ubuntu/media_archive_inbox/<source>/<farm_id>/*.mp4.json` sidecars → per-farm counts + items (uploaded/pending/needs_metadata/error)
+3. Read `/tmp/farm_media_uploads.log` tail (upload events)
+4. Fetch `FARM_MEDIA_MANIFESTS/index.json` (committed state)
+5. Defensive parse (never hard-crash on schema drift) + unit tests + local checks (compile/ruff/format/pytest) → PR → report
+
+Ping me with "go" and I'll build PR1.
+
+———
+**✅ Done this turn — actions taken:**
+• `read repo file` ×2 (truesight_me_beta listing, migration plan) · `ssh run` ×4 (nginx/app/auth ground truth: FastAPI + verify_jwt + auth_routes) · `git push changes` → PR #874 (plan) · manifest-row edit via box (cherry-pick + direct edit + push ad1ae17) · `merge pr` → ✅ #874 merged (sha 8a0a5c42)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → set -e CTX=/opt/truesight_autopilot/context/agentic_ai_context cd "$CTX" git fetch origin -q git checkout -q -B plan/media-archive-pipeline-dashboard origin/pl; …(+5 more)
+• `merge pr` → ✅ PR #874 on agentic_ai_context merged successfully (sha: 8a0a5c42dfe32b2828b1879fb2f8877fbbc2984d). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → echo "=== nginx site for sophia.truesight.me ===" sudo grep -rE "server_name|proxy_pass|root " /etc/nginx/sites-enabled/ 2>/dev/null | grep ; echo "=== auth router ===" cat /opt/truesight_autopilot/app/auth.py 2>/dev/null | head -50 echo "---" echo "=== how /governors or protected ; set -e CTX=/opt/truesight_autopilot/context/agentic_ai_context cd "$CTX" git fetch origin -q git checkout -q plan/media-archive-pipeline-das; …(+8 more)
+• `merge pr` → ✅ PR #874 on agentic_ai_context merged successfully (sha: 8a0a5c42dfe32b2828b1879fb2f8877fbbc2984d). Pull Request successfully merged
 
