@@ -8,265 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-I think instead of one big file, we should for each signature have its own separate JSOn file that way there is no possibility of a JSOn file getting to big. Also makes it easier to hook up the emit business logic to do_protocol python or the GAS... thoughts?
-
-
-### 🤖 Autopilot
-
-Strong idea — I'm actually in favor. Here's my honest read:
-
-## Why per-event files is the better design here
-
-| Concern | One big file (current) | Per-event files |
-|---|---|---|
-| Size ceiling | 220 KB now, ~3 KB/event → 3 MB @ 1k events, grows forever, every sync rewrites all of it | None — each event = one small immutable file |
-| Per-attestation URL | `…/signatures.json#<msg_id>` — **fragment anchors don't actually work on raw JSON**, that was a design smell | `…/signatures/171.json` — a **real stable URL** a VVB or a future `[CARBON CREDIT ISSUANCE EVENT]` can cite directly |
-| "Emit" business logic | Emitter must read-modify-write the whole file (race-prone, full rewrite per event) | **Append-only**: dao_protocol Python or the GAS webhook writes exactly one file per event at ingest time — no merge, no races |
-| Sync cost | Full-file sha PUT every 30 min | **Incremental**: sha-aware skip per file; only new/changed events touch GitHub |
-| Audit trail | Single diffable file | Per-event immutable commits + one index (see below) |
-| Enumeration | trivial | needs an index — but **the repo already has this convention** (`trees/index.geojson`, `plots/index.geojson`) |
-
-## Recommended layout (matches existing repo convention)
-
-```
-signatures/
-  index.json          # registry: message_id -> url, event_type, submitted_at (the enumeration surface)
-  171.json            # one file per event — immutable once written (message ID is the stable dedup key)
-  Edgar_20260820112723_046.json
-  ...
-measurements/
-  index.json          # same pattern for growth measurements
-  <msg_id>.json
-```
-
-- **Index = the "all events" surface** (compact, ~1 KB/event metadata) — consumers who want everything fetch `index.json` then fan out, or just hit a single event URL.
-- **Share URL becomes clean:** `https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/signatures/171.json`
-- **Emit path gets real:** the GAS growth webhook (`1UrBgq…`) or dao_protocol already parses each event at ingest → it can emit `signatures/<id>.json` **immediately** (TGM_GITHUB_TOKEN is already set). The 30-min cron stays as **reconciliation/backfill**, not the primary writer. That's the plan's decision 0.5 flipping from "cron only" to "emit-at-ingest + cron reconciliation" — strictly better for freshness.
-
-## Tradeoffs (honest)
-- Repo tree gets busier (73 files now, ~thousands eventually) — mitigated by `signatures/` dir + index; GitHub handles this fine.
-- Two files to document instead of one — README already has a home for this.
-- Migration needed: split the existing 73 events out of `signatures.json` into per-event files + index (one-time script run, keeps commit history).
-
-## Impact if you approve
-1. **PR**: modify `sync_sunmint_signatures.py` → write `signatures/<id>.json` + `signatures/index.json` (+ same for `measurements/`), keep sha-aware incremental PUT, migrate existing 73 events
-2. Update README (URLs + layout)
-3. Cron unchanged (now incremental + reconciliation)
-4. Optionally note the GAS/dao_protocol emit hook for near-real-time (can be a follow-up — the cron path alone is complete)
-
-My recommendation: **adopt it.** Say the word and I'll implement the migration + script change as the next PR (and fold the README update in). Want me to go?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-So basically a new JSOn cache file is generated each time a new RSA event is sent.
-
-Where do you think should be the emission done at dao_protocol python or GAS level?
-
-
-### 🤖 Autopilot
-
-My recommendation: **emit at dao_protocol (Python) — the Edgar verify point.** Here's the reasoning:
-
-## Why dao_protocol wins as the emitter
-
-| Criterion | dao_protocol (Edgar) | GAS webhook |
-|---|---|---|
-| **Verification** | **It IS the verifier** — signature is checked at submission (`check_digital_signature`). Emit-at-verify = only *verified* attestations ever published. Zero chance of the malformed REJECT records we hit. | Second-hand parser — trusts the sheet's content, never re-verifies. |
-| **Event coverage** | Sees **every** event type at ingest (EMAIL REGISTERED, PLANTING, GROWTH, REJECT, LINK) | Only what it's wired to parse (planting + growth + link) |
-| **PII policy** | Enforceable at the exact moment — e.g. EMAIL REGISTERED (contains farmer email) can be **redacted-or-skipped deterministically before publish** | Would need its own PII logic + it may not even see those events |
-| **Freshness** | **Instant** — public the moment the farmer submits | Same-ish, but downstream of the sheet |
-| **Exact bytes** | Publishes the exact string Edgar verified | Re-parsed text — drift risk |
-| **Reliability** | Server-side, logged, retryable | 6-min exec cap; a failed PUT silently drops the event until reconciliation |
-
-GAS's advantages (zero new deploy, `TGM_GITHUB_TOKEN` already set) are real, but they're *convenience* advantages, not *correctness* ones. For a **public audit ledger**, correctness wins — you want the emitter to be the authoritative verifier.
-
-## My proposed end-state (a plan amendment, decision 0.5 flips)
-
-```
-Farmer signs → POST → Edgar (dao_protocol)
-   ├─ verify signature  ── FAIL → reject (as today)
-   └─ verify OK ──► [NEW] emit signatures/<msg_id>.json to TrueSightDAO/sunmint (immediate, idempotent by message ID)
-                    └─► append to Telegram Chat Logs (as today) → GAS tabs (unchanged)
-Cron sync_sunmint_signatures.py = reconciliation/backfill only (already built, covers 73 historical events + any emit gap)
-```
-
-- **Emit = append-only, one small immutable file per event** — no read-modify-write, no races, no size ceiling. Exactly the model you described.
-- **Cron stays as safety net** — so even if an emit fails, the 30-min reconciliation heals it within half an hour.
-- **Idempotency** — keyed by Telegram message ID, so a retried emit can't duplicate.
-
-## Ops prerequisites for the dao_protocol path
-1. **PR to `dao_protocol`** adding a post-verify emit hook (small — reuse the Contents-API PUT pattern, PII fail-closed gate, `--dry-run` style safety).
-2. **A repo-scoped PAT in dao_protocol's env** (autopilot's token stays put; keep them separate).
-3. **Deploy to the dao_protocol box** — that's a live-API code change, so I'd do it only on your explicit go (I can PR + stage it, then you approve the deploy).
-
-## What I'd do next if you approve
-1. Update the plan (decision 0.5 → "dao_protocol emit + cron reconciliation") via PR to agentic_ai_context.
-2. Then either implement the emit hook in dao_protocol (deploy-gated) **or** land the per-event file layout in `sync_sunmint_signatures.py` first (migration of the 73 + index.json) — I'd actually do **the layout change first** so the emit hook writes straight into the final format.
-
-Want me to go with that order? And confirm: **dao_protocol as primary emitter, cron as reconciliation** — yes?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-I actually wonder if the emissions should be all consolidated in sunmint at this point or in subfolders somewhere
-
-Because I am also considering other RSA events like contribution reporting, sales and inventory movement.... thoughts.
-
-
-### 🤖 Autopilot
-
-Good instinct to step back — this is exactly the moment to get the layout right before it hardens. Let me ground the answer in what the org already has.
-[2 tool result(s) compacted: list_org_repos, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The repo list surfaced something important — **`verify_public_signatures`** (public) already exists. Let me check what it is, since it may be the natural home for an org-wide signature ledger.
-[2 tool result(s) compacted: read_repo_file, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`verify_public_signatures` is an **empty placeholder repo** — created but never used. That's a strong signal. Let me check the parallel architecture repos to ground the recommendation.
-[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The org already has the answer in its own conventions. Let me confirm the dao_protocol emit-hook point is real before recommending.
-[1 tool result(s) compacted: search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Great question to raise *now* — before this hardens. And the org already has strong signals on the answer. Here's my grounded take:
-
-## What the org already tells us
-
-**1. `TrueSightDAO/verify_public_signatures` exists — and it's EMPTY.**
-A public repo created, never used, named *exactly* for this. That's the natural home for an org-wide signature ledger.
-
-**2. The house convention is already "one file per entity, not one big aggregate."**
-- `lineage-assets`: `qrs/<qr-id>.json` — one JSON per asset, and its README has a **"Why JSON-per-QR, not aggregated"** section (append-only diffs, independently fetchable, git history = audit trail, scales linearly)
-- `lineage-credentials`: `programs/<p>/pk-<hash>/practice/` — per-person per-event files
-- `sunmint` itself: `trees/index.geojson`, `plots/index.geojson` — index convention
-
-So your per-event-file instinct matches established architecture. 
-
-## Where to put it: **not** sunmint, not subfolders of sunmint
-
-`sunmint` is tree-planting-specific ("repository of all the photos submitted for our DAO's tree planting efforts"). Contribution reporting, sales, and inventory movement are **not** sunmint events — shoehorning them into sunmint would be wrong at the repo-name level and mix concerns.
-
-**Recommendation: consolidate in `verify_public_signatures`, bucketed by event type:**
-
-```
-verify_public_signatures/            # org-wide public RSA attestation ledger
-├── README.md                        # purpose, schema, openssl verify how-to
-├── index.json                       # org-wide index: event_type → count → link
-├── tree_planting/
-│   ├── index.json
-│   └── 171.json                     # one immutable file per event (message ID)
-├── tree_growth_monitoring/
-│   ├── index.json
-│   └── Edgar_20260829143953_012.json
-├── tree_planting_link/  …           # (existing 73 migrate here)
-├── tree_planting_reject/  …
-├── contribution/        …           # future RSA events land here
-├── sales/               …
-└── inventory_movement/  …
-```
-
-## Why this beats "all in sunmint"
-
-| | sunmint (current) | verify_public_signatures (proposed) |
-|---|---|---|
-| Scope | tree events only — wrong home for sales/inventory | **org-wide by name** — every RSA event has a home |
-| Emission hook | cron reads sheets after the fact | **dao_protocol emits at verify time** (the single choke point that sees *every* event type — sunmint today, contribution/sales/inventory tomorrow) |
-| Growth | sunmint becomes a grab-bag | clean taxonomy by event type, matches the event catalog |
-| Naming | misleading for a general ledger | self-describing |
-
-Sunmint keeps its **tree-data caches** (`trees/index.geojson`, `plots/index.geojson`, measurements data) — the ledger holds the **attestations**.
-
-## Migration path (small, safe)
-1. Init `verify_public_signatures` (README + layout + index schema)
-2. Migrate the 73 live events out of `sunmint/signatures.json` → per-event files + indexes (one-time script run; sunmint's file can stay as a deprecated pointer or be removed)
-3. Point `sync_sunmint_signatures.py` at the new repo (cron stays as reconciliation)
-4. dao_protocol emit hook (deploy-gated) as the primary writer — future event types ride the same path
-
-## My recommendation
-**Adopt `verify_public_signatures` as the org-wide ledger, per-event-type subfolders, per-event files, emit-at-dao_protocol.** It's the architecture you're describing, pre-named in the org, and matches every existing convention.
-
-Want me to: (a) draft the plan amendment + repo init as the next PR, or (b) just start with migrating the 73 into the new layout while we settle dao_protocol emission separately? Your call on scope — I'll build whichever you pick.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-I think this is a great idea.
-
-
-### 🤖 Autopilot
-
-Gary's approval locks the new architecture. Per the handoff protocol, the plan is the execution authority — I'll amend it first (one PR this turn) so RESUME HERE reflects the new design, then subsequent turns execute the migration. Let me read the current plan.
-[1 tool result(s) compacted: read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the rest of the plan to capture PR4/UAT and the §5/§6 sections I need to amend.
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the final chunk (PR3-4 + §5/§6) so the amendment covers the full unit list.
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The plan is fully captured. I have the decisions (0.1–0.5), pre-flight, architecture (3.1–3.3), and the sequencing table start. Let me grab the remaining tail (§4 table rows PR2-4 + §5/§6) from the local clone to amend precisely.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Full plan captured. The pivot is clear: **org-wide ledger in `verify_public_signatures`, per-event-type subfolders, one immutable JSON per event, dao_protocol emit-at-verify + cron reconciliation**. I'll land the plan amendment as this turn's PR (docs-only, agentic_ai_context), then stop per one-PR-per-turn.
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Retrying with the parameters passed directly.
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #856 open with the full pivot amendment. Per the one-PR-per-turn rule, I'll stop here and report — the governor's 👍 authorizes merging my own docs PRs, and this is a docs-only roadmap amendment with no gate, so I'll merge it now to keep the manifest/plan in sync.
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
 ### 🤖 Autopilot
 
 **A1 landed — the plan is pivoted to the org-wide ledger.** ✅
@@ -4745,6 +4486,7 @@ PR #381 open. Let me verify the diff is clean (2 files, +2) before reporting.
 ### 🤖 Autopilot
 
 The PR shows **3 files / +52/−17** — not the clean 2-file favicon diff. The branch must be carrying the #380 session changes too (since I branched from `fix/dashboard-session-token-key` which is main+session). Let me check what the third file is.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4752,46 +4494,55 @@ The PR shows **3 files / +52/−17** — not the clean 2-file favicon diff. The 
 Now I see the issue. Main's head is `4edaac7b` (the #380 merge). My local `fix/dashboard-session-token-key` was based on `b19639b` (#378's head, pre-#380), so my favicon branch carries the **#380 changes (login.html + the token-key edits)** as unmerged diffs relative to main — the +24/−8 per dashboard are the #380 changes + favicon line, and login.html is #380's.
 
 So PR #381 is actually **#380 + favicon** — the #380 stuff is already merged to main (`4edaac7b`), making it redundant in this PR. I need to **rebase onto origin/main** so #381 contains only the favicon line.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Unstaged working-tree noise (nginx conf, submodule pointers) blocks the rebase. Stash, rebase, pop.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Staged changes remain. Full stash including staged, then rebase.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Rebased clean — now **2 files, +2** (the #380 changes dropped as "already upstream"). Force-push to update PR #381.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR still shows the old stat — likely GitHub PR metadata lag after force-push. Let me verify the actual branch head SHA matches my rebased commit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The remote PR head is **`1cc3cbbb`** (the old pre-rebase commit) — my force-push didn't update it. That means the earlier push failed silently or pushed to a different ref. Let me check the remote branch's actual head and re-push correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Remote branch head **is** `9581adca` (my rebased commit) — the PR API was showing stale cached data. The PR metadata may just lag. Let me re-query after a moment, and if still stale, force-refresh by closing/reopening isn't needed — let me check the PR's head SHA via the API once more.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PR head is still `1cc3cbbb` — the API confirms it, and the remote branch ref was `9581adca`. This mismatch means the PR is pinned to an older head SHA — the force-push happened **before** the rebase, or GitHub cached the PR association. The PR's head SHA `1cc3cbbb` was the pre-rebase commit. But `git ls-remote` shows `9581adca`... unless there are **two branches** or the PR tracks a different ref. Let me check the PR's head ref explicitly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `git ls-remote` failed because the command ran from the wrong directory (no `cd`). Let me re-check from the repo dir with a cache-busting query to see whether the PR head is truly stale or just cached.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4803,11 +4554,13 @@ The likely explanation: the PR was **created when the branch pointed at `1cc3cbb
 Either way — the current PR contains 2 commits (`b19639b4` + favicon) against base `main` (which is `4edaac7b`). Since `b19639b4`'s content is already upstream (as #380), the *effective* diff is just the favicon line. The +52/−17 stat is GitHub computing against main including the #380 changes as if not-yet-merged... but they ARE merged. This is confusing GitHub merge-base behavior.
 
 **Simplest robust fix:** close PR #381 and reopen a fresh PR from the current clean branch state (`9581adca` = main + favicon only). Let me do that.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fresh PR #382. Let me verify its diff is the clean 2-file favicon change.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4971,4 +4724,71 @@ Note: PR #381 (the stale logo version) stays closed — fully superseded by #382
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → cd /opt/truesight_autopilot && echo "=== search agentic_ai_context for avatar/sophia images ==="; TOKEN=$(crontab -l 2>/dev/null | grep -oP ; cd /tmp && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); echo "=== avatar from agentic_ai_context ==="; curl ; cd /tmp && python3 - <<'EOF' from PIL import Image import base64, io im = Image.open('/tmp/sophia_avatar.jpg').convert('RGB') # center-crop ; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Favicon PR #382 at gate — CI still warming up.** ✅ (stop-and-report)
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **PRs** | [truesight_autopilot #381](https://github.com/TrueSightDAO/truesight_autop
+
+
+### 🤖 Autopilot
+
+Resuming: check CI on #382 head `af9d39a` (Sophia avatar favicon) and merge if green.
+
+
+### 🤖 Autopilot
+
+CI is green on `af9d39a` (test ✅, smoke ✅). Merging PR #382.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**PR #382 merged — Sophia avatar favicon is in.** ✅
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **PR merged** | [truesight_autopilot #382](https://github.com/TrueSightDAO/truesight_autopilot/pull/382) — squash `d24d545e` |
+| **What changed** | **Sophia's avatar** (`assets/sophia-truesight-avatar.jpg` from agentic_ai_context/truesight_me_beta — my canonical avatar, 800×800) center-cropped → 64×64 PNG → embedded as data-URI favicon in both governor dashboards (MAP + SLP). Zero new infra (no static mount/route). Replaced the earlier DAO-logo favicon version (PR #381 closed as superseded). |
+| **CI** | `test` ✅ + `smoke` ✅ on head `af9d39a` → merged cleanly |
+
+## Roadmap state
+| Unit | Status |
+|---|---|
+| A1–A5 | ✅ |
+| A6 backfill | ⏳ running (last seen 1,728 remain) |
+| A7 restyle + session fix + **favicon #382** | ✅ **merged** |
+| **Deploy** | 🎛️ **yours** (you're handling it — favicon will appear in the tab after your next deploy) |
+| §7 contribution | pending |
+
+## RESUME HERE → **backfill completion + wrap-up** (deploy is in your hands)
+1. **Backfill completion** — when `files remain` hits 0 (last seen 1,728): root `index.json` (~40 folders / ~3,947 events / excluded count); **3-sample openssl re-verify** (contribution/inventory/sales); **live PII scan** (zero emails); README + plan A6/A7 complete
+2. **§7 contribution submission** — final time-tracking for A1–A7
+3. After your deploy: you'll see the **Sophia avatar** in the browser tab on both dashboards — worth a confirm it renders (and that the tab icon shows even signed-out, since it's in the HTML head)
+
+Nothing blocked on you right now. The backfill keeps trickling; I'll run the completion checks at the next natural turn once the counter hits zero.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → check-runs on `af9d39a`: test ✅ smoke ✅
+• `merge pr` → ✅ PR #382 merged (`d24d545e`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); echo "=== CI on af9d39a ==="; curl -s -H "Authorization: token 
+• `merge pr` → ✅ PR #382 on truesight_autopilot merged successfully (sha: d24d545e3f33a4f848754f16516841680e55769d). Pull Request successfully merged
 
