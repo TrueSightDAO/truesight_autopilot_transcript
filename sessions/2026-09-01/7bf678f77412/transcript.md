@@ -4220,3 +4220,23 @@ One small wrinkle: the repo is literally named `farm-media-daemon`, and the mani
 
 Want me to add a "Terminology" section to the plan doc (and DESIGN.md) locking in: **Media Pipeline (umbrella) → source namespaces (farm-media, event-media…) → queue → daemon → manifests**? That way every Sophia references the same words, and community-event media slots in later without friction.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] Actually still kind of vague could mean posting to Instagram... How about the media archives pipeline?
+
+
+### 🤖 Autopilot
+
+"Media Archives Pipeline" — yes, that's sharper. "Archive" carries exactly the right connotation: durable storage, indexing, retrieval, queryable forever — versus "posting," which is ephemeral and audience-facing. Instagram, TikTok, the shop page — those are *distribution*. The pipeline is *archival*: capture → process → archive → manifest → query.
+
+So the terminology becomes:
+
+- **Media Archives Pipeline (MAP)** — the umbrella. The system that takes any DAO media (farm visits, community events, anything) from raw capture to durable archive (YouTube + raw repo) with a manifest that makes it queryable forever.
+- **Distribution stays separate** — posting to Instagram, wiring into the shop page, embedding in the DApp — those are consumers of the archive, not the pipeline itself. That separation is what removes the vagueness.
+- Under the umbrella, same parts as before: **the queue** (inbox + sidecars), **the daemon** (shared uploader), **the manifests** (committed, queryable state), plus now a clear **source-namespace** idea (farm-media, event-media) so community events slot in later.
+
+The one honest wrinkle: the current names are farm-scoped (`farm-media-daemon`, `FARM_MEDIA_MANIFESTS`, `farm-media-raw`). If "Media Archives Pipeline" is the umbrella, the farm-specific names read as the first namespace rather than the whole system — which is fine, but worth documenting deliberately rather than letting it drift.
+
+Want me to write the Terminology section into the plan doc + DESIGN.md locking this in — **MAP (Media Archives Pipeline)** as the umbrella, with queue / daemon / manifests / source-namespaces as the fixed vocabulary, and a note that "farm-media-*" names are the farm namespace under it? Then any Sophia (or future thread) picks up the same words.
+
