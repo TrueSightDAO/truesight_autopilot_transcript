@@ -3281,21 +3281,25 @@ Created https://github.com/TrueSightDAO/farm_media_manifests (public, matches fa
 ### 🤖 Autopilot
 
 The governor moved the manifests to a new repo (`farm_media_manifests`) and wants me to check the daemon's details, then restart so the registration takes effect. Let me gather the state first.
+[3 tool result(s) compacted: list_org_repos, search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The governor moved the manifests to a new public repo (`farm_media_manifests`) and merged the registration PR (#383). Let me check what changed in the daemon and the new repo's structure before deploying.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The governor moved the manifests to the new `farm_media_manifests` data repo (Contents-API only, like `farm-media-raw`) and wants me to (a) restart the service via `deploy_autopilot`'s idle-drain guard so the registration takes effect, then (b) migrate the manifests. Let me first check what changed in the daemon and whether the new repo's manifests already carry my GPS backfill.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Big finding: the new repo's manifests use a **different schema** — `latitude`/`longitude` numeric fields (populated!) instead of my `gps`/`gps_source` string. The governor already migrated with GPS. Let me check full coverage and the current service state before deploying.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3306,6 +3310,7 @@ Key findings:
 - The daemon's `farm_media_manifest.py` still writes the **old** location/schema.
 
 Let me deploy (restart with idle-drain) and inspect the daemon's manifest builder + new repo history in parallel.
+[2 tool result(s) compacted: deploy_autopilot, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3318,6 +3323,7 @@ Critical findings so far:
 - **The daemon's `farm_media_manifest.py` still writes the OLD schema** (`gps` string, no lat/lon, no plots/gps_coverage) to `/tmp`, and the daemon README/DESIGN still say manifests live in `agentic_ai_context` — now stale.
 
 Let me verify the new repo's full schema (top-level keys) so I know exactly what the daemon builder must emit, and check whether `agentic_ai_context` still holds the old files.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3502,4 +3508,56 @@ Merge [PR #10](https://github.com/TrueSightDAO/farm-media-daemon/pull/10) (your 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → echo "=== new repo santa-anna manifest (top-level + 2 items) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm_media_manife; echo "=== DESIGN.md sidecar schema ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm-media-daemon/main/DESIGN.md" | sed -n ; cd /tmp && rm -rf farm_daemon_work && git clone -q --depth 1 https://github.com/TrueSightDAO/farm-media-daemon.git farm_daemon_work 2>&1 | t; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] go — merge PR #10, final cleanup item, well-tested.
+
+
+### 🤖 Autopilot
+
+Merging PR #10 — the final cleanup item.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged PR #10 this turn — the final cleanup item. Stopping per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Merged:** [farm-media-daemon PR #10](https://github.com/TrueSightDAO/farm-media-daemon/pull/10) — "farm-media-manifest: emit new farm_media_manifests schema (numeric lat/lon + top-level counts/gps_coverage)" (sha `cd46411`).
+
+- Merged per your approval ("well-tested").
+- `farm_media_manifest.py` on main now emits the **new schema** matching the committed `farm_media_manifests` repo: numeric `latitude`/`longitude` (parsed from sidecar `gps`, S/W negatives preserved) + `gps_raw`, `basename`/`ext`, top-level `counts`/`gps_coverage`/`processed_by`, media-extension inbox scanning, MAP-terminology default inbox path.
+
+## 🏁 Everything you raised is now closed
+
+| Item | Status |
+|---|---|
+| Manifests → new `farm_media_manifests` repo | ✅ done (governor) |
+| Pipeline (daemon #9) repointed | ✅ merged |
+| MEDIA_ARCHIVE_PIPELINE.md refs | ✅ updated |
+| Service registration live | ✅ confirmed |
+| Obsolete GPS backfill branch | ✅ deleted |
+| Daemon builder schema alignment | ✅ **merged (#10, this turn)** |
+
+**Net state:** the farm-media pipeline is fully aligned to the dedicated `farm_media_manifests` data repo with numeric GPS (latitude/longitude) in every future `manifest-commit` output — geo-searchable, schema-consistent, and documented.
+
+## RESUME HERE
+
+No further units — the farm-manifest migration/cleanup is fully complete. ✅ Standing offer if you ever want it: backfill the remaining `gps: null` farm entries (e.g. cleide's 8) once their source files resurface on the box — the `add_gps_to_youtube_videos_json.py` + daemon tooling are ready.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #10 on farm-media-daemon merged successfully (sha: cd4641141dd79a58fd74f828443caa496ec89c72). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #10 on farm-media-daemon merged successfully (sha: cd4641141dd79a58fd74f828443caa496ec89c72). Pull Request successfully merged
 
