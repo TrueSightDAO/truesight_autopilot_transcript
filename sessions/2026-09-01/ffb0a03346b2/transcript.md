@@ -10,60 +10,6 @@
 
 ### 🤖 Autopilot
 
-The file is on prod main but the site still 404s — the deploy may take longer or use a different mechanism. Let me check the prod repo's deployment setup.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Prod repo has the merge (`f8d4071`), CNAME = agroverse.shop, but no Pages deploy workflow — so Pages deploys from a branch directly. Let me check which branch Pages serves from (gh-pages?).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Prod repo has the merge on main but the site still 404s — Pages deploy is likely still building (sync was seconds ago). Let me check the Pages build status via the API.
-[1 tool result(s) compacted: http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Pages API 404 — the prod repo does **not** have GitHub Pages enabled. Something else serves agroverse.shop. Let me check DNS/headers to find the real host.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Prod repo has **no GitHub Pages** (API 404) — yet agroverse.shop resolves to GitHub Pages IPs with `last-modified: Aug 28` (stale!). The site must be served from a different Pages site. Let me check `www.agroverse.shop` and the org site.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`www.agroverse.shop` → `truesightdao.github.io` but apex serves stale content (last-modified Aug 28 — before today's merge). The prod repo has **no Pages enabled** — so something else serves the live site. Let me check the deploy ledger and how prod is actually hosted.
-[2 tool result(s) compacted: read_tool_result, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The prod file is on main but the live site serves stale content. The Pages API says `agroverse_shop_prod` has no Pages — so the live site must be served from elsewhere. Let me check the deploy ledger and how prior prod deploys actually go live.
-[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The page now returns **200** — the deploy propagated (earlier 404 was Pages build lag, ~90s). Let me confirm it's the new page with the videos and map fix.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Prod page is live (200, correct title, `map-santa-anna` present). But **prod's `media.json` is stale** — 3 items (images only), while beta/GitHub main has 6 (3 images + 3 YouTube). The sync merged code, but the **media.json on the prod repo may not have been updated** — or the map fix check needs verifying. Let me check prod main's media.json directly.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 My python check was wrong — `media.json` is a dict (schemaVersion/hero/gallery), so `len()` = 3 top-level keys and iterating gave keys, not items. The git show proves **prod main's gallery includes the YouTube entries** (3 images + youtube videoId present). Let me confirm the served version has all 6 gallery items.
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
@@ -5099,11 +5045,13 @@ The tool works. Let me upload the remaining 31 HEICs via the tool (one call each
 ### 🤖 Autopilot
 
 All 32 photos archived. Now let me verify the archive is complete and update the README (it still says "Private DAO blob store" — needs to reflect the public policy):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 32 photos verified in the archive. Now updating the README to reflect the public policy:
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5147,16 +5095,19 @@ The full index (45 files, sha256, GPS, durations, yt_ids) is in `agentic_ai_cont
 ### 🤖 Autopilot
 
 Explicit approval received — promoting to production.
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sync reported "not behind upstream" — which is suspicious since #248/#249/#251/#252/#253 came after the last sync. Let me verify what prod actually serves before declaring done.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod main already carries the rename (6 refs), COOPOXIN card (2), and 19-item gallery — the earlier syncs/UI merges covered them. But beta HEAD is newer (`1ac2db3`, #254 — La do Sitio field videos). Let me verify whether prod has that latest change too:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5196,6 +5147,7 @@ Farm profile (renamed, registered owner) → CEPOTX page (COOPOXIN card) → Bra
 ### 🤖 Autopilot
 
 Let me pull the exact YouTube titles/descriptions as they appear on the live page and confirm the public repo state.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5249,26 +5201,31 @@ Add the santa anna fazenda videos that are not already uploaded to it
 ### 🤖 Autopilot
 
 Let me investigate the farm-media-daemon repo and PR #5 to understand how it works.
+[2 tool result(s) compacted: list_prs, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The daemon is a YouTube uploader with a queue/inbox design. Let me read the design docs and the merged config to understand the exact intake flow before staging the Santa Anna videos.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The config file path differs. Let me find the actual config location and check the current queue/inbox state on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The config is `config.yaml.example` (not committed). Let me read the daemon, queue CLI, and config template to understand the exact intake path — then check if there's a live inbox/config on the box.
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The daemon repo is merged but the config isn't deployed on the box yet, and there's an inbox at `/home/ubuntu/media_archive_inbox`. Let me check the inbox contents and whether the daemon is installed/deployed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5280,6 +5237,7 @@ My task: **add the Santa Anna videos that aren't already uploaded to the daemon'
 The daemon intake flow (per DESIGN.md): transcode MOV→MP4, GPS re-inject, then drop `<file>.mp4` + `<file>.mp4.json` sidecar into `media_archive_inbox/farm-media/<farm_id>/`, and add the farm to config.yaml `inboxes:`.
 
 Let me check the config's current inboxes and one cleide sidecar for the exact schema, then stage the Santa Anna videos. First, let me look at the daemon code + queue CLI + the config on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5287,6 +5245,7 @@ Let me check the config's current inboxes and one cleide sidecar for the exact s
 Full picture clear. The daemon's intake: sidecars + MP4s in the inbox, config lists the farm. The daemon source isn't deployed on the box yet (only in the repo). My job: **stage the 8 not-yet-uploaded Santa Anna videos into the daemon's inbox format** (transcode MOV→MP4 + build sidecars), add the farm to config.yaml, and (if the daemon runs) they'll upload via the queue.
 
 Let me check the daemon's upload logic and the queue CLI to confirm exactly what fields it uses, and see the actual MP4s (are they already transcoded for cleide?).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5296,11 +5255,13 @@ Now I fully understand the daemon mechanics. Cleide's inbox has 71 mp4+sidecar p
 **Plan for Santa Anna:** transcode the 8 not-yet-uploaded MOVs to MP4, build sidecars (sha256, GPS, duration, title, description), drop them into `media_archive_inbox/farm-media/santa-anna-fazenda`, and add the farm to config.yaml inboxes. The 5 already-on-YouTube videos get **skipped** (they have yt_ids — the daemon skips sidecars with yt_id, but those aren't in this inbox anyway).
 
 Wait — let me reconsider: the 5 already-uploaded videos have `yt_id` set. Per the flow, I should still add **all 13** with their yt_ids so the manifest/inbox reflects reality, and the daemon skips them. But the actual upload task is for the **8 not uploaded**. Let me stage all 13 (5 with yt_id = done, 8 without = pending for daemon). First, let me check what MOVs exist and their current state.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest has all 13 MOVs with sha256/duration and yt_ids where uploaded. Now I'll stage the **8 not-yet-uploaded** MOVs into the daemon inbox: transcode MOV→MP4, build sidecars from the manifest data (sha256, GPS, duration), drop into `farm-media/santa-anna-fazenda/`, and add the farm to config.yaml. Let me first check how cleide's MP4s were transcoded (codec/size) to match the convention, and verify the sidecar GPS format for the Santa Anna MOVs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5412,4 +5373,47 @@ I can set a watcher on the queue if you want a ping when the first Santa Anna up
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → cd /tmp && rm -rf fmd_check && git clone -q --depth 1 https://github.com/TrueSightDAO/farm-media-daemon.git fmd_check 2>&1 | tail -1; cd fmd; echo "=== daemon + config on the box? ==="; ls -la /opt/truesight_autopilot/farm-media-daemon* /opt/truesight_autopilot/config/media_archive; echo "=== inbox tree ==="; find /home/ubuntu/media_archive_inbox -type f 2>/dev/null | head -30; echo "count: $(find /home/ubuntu/media_arch; …(+15 more)
 • `merge pr` → ✅ PR #7 on farm-media-daemon merged successfully (sha: bc2b0740d8518b06f7af1e5821cf9fab7c3aa0a6). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=16593] [Handoff context — this Telegram topic (thread 16593) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+👍 Go received — checking whether the daemon has started uploading the Santa Anna videos (07:05 UTC budget reset) and verifying the queue state.
+
+
+### 🤖 Autopilot
+
+## ✅ Santa Anna videos staged and ready — daemon will upload at 07:05 UTC
+
+### Current state (03:52 UTC)
+| Check | Result |
+|---|---|
+| Daemon service | **active** ✅ |
+| Config | santa-anna-fazenda inbox loaded (priority 1) ✅ |
+| Queue | **8/8 pending** (yt_id=None, no errors) ✅ |
+| Budget | Today's 6-upload budget **spent** → sleeping 3.2h until **07:05 UTC** |
+
+### What happens next
+At **07:05 UTC** the daily budget resets and the daemon starts draining the queue round-robin (cleide priority 2 first, then santa-anna + paulo-la-do-sitio at priority 1). With a shared 6-uploads/day budget and 8 Santa Anna clips queued, expect them to complete over **~2 days**, one or two per cycle.
+
+### The chain is fully set up
+MP4s transcoded → sidecars (sha256, GPS, titles) → inbox watched by the running daemon → YouTube uploads on budget → `yt_id` written back to sidecars → then I refresh `FARM_MEDIA_MANIFESTS/santa-anna-fazenda.json` with the new yt_ids (per the pipeline runbook).
+
+### ⏰ Honest limitation
+A chat turn can't wait 3+ hours, and my watchers poll URLs/AWS — not local files — so I can't auto-ping you when the first upload lands. Options:
+1. **Ping me after 07:05 UTC** and I'll check the sidecars / journal for upload progress
+2. I check in at intervals if you give me a target time
+3. I can also pre-check that nothing blocks the first upload cycle (e.g. YouTube quota/auth sanity) now
+
+Want me to run a quick pre-flight sanity check on the daemon's YouTube credentials + the first file in the queue while we wait — or leave it to run and you ping me after 07:05?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== current UTC time ==="; date -u +"%Y-%m-%d %H:%M:%S UTC"; echo; echo "=== daemon status + recent log ==="; systemctl is-active farm
 
