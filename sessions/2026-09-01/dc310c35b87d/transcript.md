@@ -8,526 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-Go-signal received — resolving the PR #292 conflict, then merge → beta → promote. First, let me see what changed on `main` vs the PR branch for the whitepaper file:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Big divergence found — `main` has moved substantially (Community-First MRV, PM002/VM0047 methodology detail, funding, milestones M0–M8, first funded tree). My PR branch is based on older main. I need to **rebase the v4 content onto current main**. Let me see the full main structure and the complete diff:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Main has evolved significantly — it now has section 13 "On-Chain Carbon Credit Lifecycle" (13.1 How Carbon Is Calculated) where my branch had "13. Carbon Credit Registry Roadmap". Let me see the full main structure (TOC + remaining sections) to plan the rebase correctly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I understand the conflict fully. `main` has evolved: its section 13 is now **"On-Chain Carbon Credit Lifecycle"** (added after my branch was created), while my branch's section 13 is the Registry Roadmap. The correct rebase: **start from current `main`**, apply my v4 changes on top (trees-based section 12, then Registry Roadmap as **14** and Target Buyers as **15**), preserving main's new content (Community-First MRV, funding, milestones, lifecycle section). Let me check main's section 6 staged-path bullet first:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have the full picture. `main` has evolved: its section 13 is now "On-Chain Carbon Credit Lifecycle", section 6 already carries the VM0047/PM002 staged path, and section 12 has funding + milestones. The correct rebase: **start from current `main`**, apply the v4 framing on top (trees-based section 12, Registry Roadmap as **14**, Target Buyers as **15**), preserving all of main's new content. Let me check the exact TOC/article-tail anchors and confirm the PR branch touches only this file:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The PR only touches the one file, so the rebase is clean. Now I'll build the resolved file: start from current `main`, apply the v4 framing on top (trees-based section 12, Registry Roadmap → **14**, Target Buyers → **15**), preserving all of main's new content (Community-First MRV, funding, milestones, lifecycle section):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-One tag mismatch (`</p>` 85 vs `<p` 84) — let me check whether that's pre-existing on `main` or introduced by my edit:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The `</p>` imbalance is **pre-existing on `main`** (57 vs 58 — a stray close in main's own content, which browsers auto-handle); my insert region added **zero** imbalance (file went from −1 to −1). My PR branch version (built on old main) happened to be balanced, but the resolved file correctly inherits main's current state. This is not a regression.
-
-Pushing the resolved file (built on current `main` + my v4 changes) to the PR branch, then attempting the merge:
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Pushed the resolved file. Now attempting the merge again:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merge still fails — stopping here per the one-PR-per-turn rule and reporting the blocker precisely.
-
-## What happened this turn
-
-**Resolved the content conflict but the merge still won't take.** Sequence:
-
-1. **Diagnosed the conflict** — `main` had evolved substantially since PR #292's branch was created (Aug 17): new **Community-First MRV** section, **PM002/VM0047** methodology detail, **funding + milestones M0–M8**, **first funded tree**, and a renumbered section 13 → **"On-Chain Carbon Credit Lifecycle"**. My branch was based on stale main.
-2. **Rebuilt the file correctly** — started from **current `main`** (32,677 bytes) and applied the v4 framing on top:
-   - Section 12 bullet → **fluid scale + trees upside** (hard 10,000 ha ceiling removed)
-   - **Section 14 = Carbon Credit Registry Roadmap** (fluid-by-design callout, indicative registry column, trees-based scale cells, Plan Vivo → Verra → SBCE table)
-   - **Section 15 = Target Buyers & Market Context** (SBTi V2.0 OER tiers, hyperscalers + Re.green, member-registry warm intros, EU € price reference)
-   - TOC updated with 14 + 15 links
-   - **All of main's new content preserved** (verified: Community-First MRV ✓, Milestones ✓, first funded tree ✓, PM002 ✓, lifecycle section ✓)
-   - Tag check: `</p>` 85 vs `<p` 84 — **pre-existing on `main`** (57/58 there too); my insert region added **zero** imbalance; not a regression
-3. **Pushed the resolved file** to the PR branch (commit `6b98019a`) — 40,138 bytes, all markers present, hard ceilings absent
-4. **Merge attempt #2 → ❌ still 405 "merge conflicts"**
-
-## Why it likely still fails
-
-The PR branch was **created Aug 17** and has since diverged from `main` massively (my branch history + main's ~2 weeks of new content). Even though the *file content* at the branch tip is now based on current main, GitHub's **three-way merge against the original merge-base** still sees a conflict — the branch's history is too tangled for a clean auto-merge on that PR object.
-
-## RESUME HERE → next unit (clean redo)
-
-**Close PR #292 and open a fresh PR** — the surgical path for this situation:
-
-1. Fetch **latest `main`** (re-verify it hasn't moved since my 40,138-byte resolved file was built)
-2. Rebuild the resolved file if main moved (re-apply the same 3 edits: S12 bullet, S14+S15 insert, TOC)
-3. Create a **new branch** off current `main` (`whitepaper-carbon-roadmap-v5`), push just this one file
-4. Open a **new PR** (clean single-file diff vs current main — will merge cleanly), **close PR #292** as superseded
-5. Merge → beta live (`beta.truesight.me/sunmint/whitepaper/`) → promote to prod (`sync_beta_to_prod("truesight_me_prod")`)
-
-Say go and I'll execute the fresh-PR path.
-
-———
-**Actions this turn:** diagnostics (`ssh run` ×5: diff main-vs-PR, main structure, PR changed-files) · built resolved file (main + v4 framing) · `upload_file_to_github` (commit `6b98019a`) · `merge_pr #292` → ❌ 405 conflict persists. No PR opened or merged this turn.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×7 → cd /tmp && echo "=== main version of whitepaper ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmi; cd /tmp && echo "=== MAIN structure (headings) ===" && grep -n 'id="[0-9][0-9]*\|<h[34]' wp_main.html | head -40; echo; echo "=== MAIN size/; cd /tmp && echo "=== MAIN TOC ===" && sed -n '70,90p' wp_main.html; echo "=== MAIN remaining headings (after 13.1) ===" && grep -n 'whitepap; …(+4 more)
-• `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
-
-
-### 🧑 Governor
-
-[observed, not directed at you — Nobody Will not DM you]: I am thinking it might make sense to have this module
-
-https://dapp.truesight.me/register_farm.html
-
-Also available here
-https://sunmint.truesight.me/
-
-And included in a dropdown
-
-Separately, I observed that Jedielcio when I was with him at Santa Anna Fazenda in Para spoke with the farmer where he asked that the farmer showed him the boundary of the property which he did. There was a pillar driven into the ground and then another log marking the side of the road.
-
-I wonder if we could have a Dapp module where the farm simply uploads either video or the photo and we store the image or video somewhere perhaps a new dedicated repository, meanwhile have a script that extracts the lat and lng of the image, video and add to the plot information which we could then utilize a phython script to update a plot or create a new plot.
-
-thoughts?
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074]
-
-
-### 🤖 Autopilot
-
-Great instinct — this ties the farm boundary evidence to the plot data model. Let me research the existing pieces before giving you a design: what `register_farm.html` does, how plots/farms are currently modeled, and where media storage lives.
-[3 tool result(s) compacted: read_repo_file, search_context, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`register_farm.html` is a real module already in dapp_beta. Let me see its submission flow + fields, and understand the current farm/plot data model and media storage.
-[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Good context — `register_farm.html` already exists (captures farm name/location, lat/lng, area, ownership, PIX/Wise payout details, entrance photo → `[FARM REGISTRATION]` to Edgar). Now let me check the sunmint site structure (for the dropdown) and whether a plots/farms data model already exists.
-[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Good picture forming. Let me check the FARM REGISTRATION event contract and whether any plot/farm registry exists before I give you a full design.
-[2 tool result(s) compacted: lookup_event_docs, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Very useful — there ARE farm pages (Santa Anna Fazenda, FounderHaus, Rancho Maranta) in the agroverse_shop ecosystem. Let me check what the farm-page data model looks like (how farms are represented — pages, JSON, or ledger) and how the sunmint index dropdown is built.
-[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Solid picture now. One last check — whether a plot/boundary event already exists in the catalog, and where farm registrations land:
-[2 tool result(s) compacted: lookup_event_docs, lookup_event_docs — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have everything I need to give you a grounded design. Here are my thoughts.
-
-## Your instinct is right — here's the full design
-
-### 1. Farm Boundary module on Sunmint (dropdown) ✅ — low effort, high value
-
-`register_farm.html` **already exists** on the dapp (captures farm name, location, lat/lng, area, ownership, payout details, entrance photo → `[FARM REGISTRATION EVENT]` → Edgar). What's missing:
-
-- **Sunmint dropdown** — currently only 2 options: *Registrar Plantio / Monitorar Árvore*. Adding **"Registrar Fazenda"** (and a **"Limites da Fazenda"** boundary option) is a trivial `onNavChange()` addition.
-
-### 2. Farm boundary evidence module — the real gap (and a great one)
-
-No **FARM BOUNDARY** or **PLOT** event exists in Edgar's catalog (confirmed — only `FARM REGISTRATION EVENT`). This is genuinely new ground, and it's exactly the kind of on-chain evidence that makes our carbon credits verifiable. The Jedielcio/Santa Anna story (pillar + log marker on the road, farmer showing the boundary) is precisely the "physical ground truth" that Plan Vivo / Verra VVB auditors want to see recorded.
-
-**Proposed flow:**
-
-| Step | What happens |
-|---|---|
-| **1. Capture** | Farmer/field agent walks the boundary, takes **photos or video** at key markers (the pillar, the log, corners, road-adjacent edges) |
-| **2. Upload + store** | Media → **dedicated repo** (e.g. `sunmint-boundary-evidence`, or a folder in the existing `sunmint` repo under `images/boundaries/`) — same pattern as the current `farm_<timestamp>_<key>.jpg` uploads |
-| **3. EXIF extract** | A **script reads lat/lng from image/video EXIF** (photos have it; videos: geotag in MP4 via `exiftool`/`ffprobe` if the phone writes it) |
-| **4. Plot record** | Python script **updates an existing plot or creates a new one** — farm/plot ledger JSON (e.g. `plots/<farm_slug>.json`): polygon of boundary points, centroid, area, markers list |
-| **5. On-chain anchor** | Emit a **`FARM BOUNDARY EVIDENCE EVENT`** (new catalog entry — propose it) with photo/video URLs + extracted coords, RSA-signed by the farmer |
-
-### 3. Key design decisions to nail down
-
-- **Where do plots live?** Currently farms are represented as **static pages** in agroverse_shop (`Santa Anna Fazenda`, `FounderHaus`, `Rancho Maranta` — recent PRs #225–229) and `[FARM REGISTRATION EVENT]` rows in Edgar/Sheets. There's **no structured plot/geometry data model yet**. I'd propose a **`plots.json` registry** (machine-owned data repo) holding: farm slug, owner, boundary polygon (list of lat/lng), centroid, area ha, marker photo URLs, status. The python script updates this — exactly the "update a plot or create a new plot" you described.
-- **Video vs photo:** photos are simplest (EXIF lat/lng reliable). Video: MP4 geotags are less standardized — I'd capture **both**: video of the walk + a few geotagged photos at the markers, and store photos as the structured evidence (video as supporting). This matches how satellite/field MRV actually works.
-- **Which event?** I'd add a **`FARM BOUNDARY EVIDENCE EVENT`** to Edgar's catalog (canonical labels: Farm Name, Plot ID, Boundary Type, Media URL(s), Extracted Lat/Lng list, Area ha). The `FARM REGISTRATION EVENT` stays as the farm-level create; boundary evidence is plot-level, potentially multiple per farm.
-
-### 4. Phased plan (beta-first, one PR per step)
-
-| Phase | Deliverable | Repo |
-|---|---|---|
-| **1** | Sunmint dropdown: add **"Registrar Fazenda"** (deep-link to dapp `register_farm.html`) + **"Limites da Fazenda"** (new boundary module) | `sunmint_beta` |
-| **2** | **`register_farm_boundary.html`** — camera/upload UI (photo + video), geolocation, submit → `[FARM BOUNDARY EVIDENCE EVENT]` | `dapp_beta` |
-| **3** | **New repo `sunmint-boundary-evidence`** (or folder) for media + **`plots.json`** registry | new repo |
-| **4** | **EXIF extraction + plot update script** (`scripts/extract_plot_gps.py`): reads lat/lng, computes polygon/centroid/area, upserts `plots.json` | `sunmint_beta` or tooling |
-| **5** | Edgar: add **`FARM BOUNDARY EVIDENCE EVENT`** to catalog + GAS receiver | `tokenomics` / `dao_protocol` |
-
-### My recommendation
-
-**Do Phases 1–2 first** (the UI + event — makes the capture real for Jedielcio's next farm visit), then **Phase 3–4** (storage + EXIF → plots.json — the automation you described), then **Phase 5** (catalog event, if you want the on-chain anchor — I'd actually propose it as part of Phase 2 since Edgar events are cheap and it makes the evidence tamper-evident from day one).
-
-One thing I'd flag: **video geotagging is flaky** on some Android phones (EXIF/MP4 geotag not always written). I'd make the module **capture a geotagged photo at each marker + optional video**, so the plot geometry never depends on video metadata.
-
----
-
-Want me to start with **Phase 1** (Sunmint dropdown — quick, visible) or go straight to **Phase 2** (the boundary module + event)? And should I propose the `FARM BOUNDARY EVIDENCE EVENT` catalog entry first so the whole flow anchors on-chain from the start?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/register_farm.html" -o register_farm.html && wc -c registe; cd /tmp && echo "=== sunmint_beta tree (pages) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/git/trees/main?recurs; cd /tmp && echo "=== sunmint index dropdown JS (nav change) ===" && sed -n '932,990p' sun_index.html; echo "=== sunmint pageNav options ==="
-
-
-### 🧑 Governor
-
-[observed, not directed at you — Nobody Will not DM you]: Check the impact map on https://beta.truesight.me/sunmint.html
-
-I believe there is already architecture in place where plots live.
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074]
-
-
-### 🤖 Autopilot
-
-Good pointer — let me check the impact map on the beta site and find where the plot data actually lives.
-[2 tool result(s) compacted: http_fetch, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The page mentions a **Farms Registry** — let me read the impact-map section of the page and find the underlying data.
-[2 tool result(s) compacted: read_tool_result, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-There it is — **`SUNMINT_PLOTS_REGISTRY.md`** exists! You're right, there's already plot architecture. Let me read it and find the actual machine-readable registry (the impact map's data source).
-[2 tool result(s) compacted: read_context_file, read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found it — you're right, the architecture exists. Let me verify the live data and how the impact map consumes it.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-You're right — the architecture is **already in place**, and it even has seed data from Jedielcio's farm. Here's the map of what exists vs. what your idea adds.
-
-## What already exists (your instinct, already built)
-
-| Piece | Where | Status |
-|---|---|---|
-| **Plots registry** | `sunmint/plots/index.geojson` (FeatureCollection of `Polygon` features) | ✅ Live |
-| **Generator script** | `sunmint/scripts/build_plots_geojson.py` (mirrors `build_tree_geojson.py`) | ✅ Exists |
-| **Rebuild workflow** | `.github/workflows/rebuild-plots-index.yml` | ✅ Exists |
-| **Source of truth** | SunMint Farms sheet tab (gspread) | ✅ |
-| **Impact map renders polygons** | `truesight_me_beta/sunmint.html` (`#impact-map`, Leaflet) — loads `plots/index.geojson` + `trees/index.geojson` w/ CDN fallback | ✅ Live on beta |
-| **Seed plots** | **RM-P1** (house, `planted`, TREE PLANTING EVENT at -3.29609,-52.58318) + **RM-P2** (family, `proposed`, ~2.9 ha walk < 5 ha claimed → get CAR polygon) | ✅ Rancho Maranta, Jedielcio family — from the 2026-08-30 visit |
-| **GPS extraction runbook** | `SUNMINT_PLOTS_REGISTRY.md` §3: `exiftool -GPSLatitude -GPSLongitude`, DMS→decimal, **never decode video frames** (HEIC/MOV container metadata) | ✅ Documented |
-
-The runbook even documents your exact three boundary tiers: **`gps_walk`** (perimeter walk, recommended — the pillar-and-log walk Jedielcio did), **`car`/`incra`** (farmer's CAR/INCRA polygon = authoritative), **`approx`** (hull of photo/video GPS points only, clearly labeled).
-
-## What your idea would actually ADD (the deltas)
-
-1. **Sunmint dropdown entry** — currently only *Registrar Plantio / Monitorar Árvore*. Add **"Registrar Fazenda"** (deep-link to `register_farm.html` on the dapp) + **"Limites da Fazenda"** (boundary capture). Trivial `onNavChange()` addition.
-
-2. **Farmer-facing boundary-capture UI** — today the workflow is *manual* (agent runs exiftool → enters sheet row → runs generator). A `register_farm_boundary.html` module (dapp) would let the farmer/field agent **upload photo/video of the boundary markers directly** — auto-extract GPS client-side (or via a script), submit as evidence.
-
-3. **Media → plot automation script** — a script that reads uploaded media's GPS and **upserts a plot row** in the sheet/`plots.json` (create or extend), rather than the manual sheet entry. This is the "python script to update a plot or create a new plot" you described — but it should feed the **existing** Farms-sheet → `build_plots_geojson.py` pipeline, not a parallel one.
-
-4. **(Optional) On-chain anchor** — `FARM BOUNDARY EVIDENCE EVENT` (new catalog entry) or a geo-located `TREE PLANTING EVENT`-style anchor so the parcel has ledger identity, per runbook §3.7.
-
-## My read
-
-The **infrastructure is done — the gap is farmer-facing capture + the media→plot automation**, not storage or registry. So the highest-value work is:
-
-- **Phase 1:** Sunmint dropdown (quick, visible)
-- **Phase 2:** `register_farm_boundary.html` — camera/upload UI → extract GPS → submit boundary evidence (with the existing exiftool runbook as the processing step)
-- **Phase 3:** the upsert script wired into the existing generator workflow (not a new parallel pipeline)
-
-Want me to start Phase 1 (the dropdown), or go straight to designing Phase 2 (boundary capture UI)? And should I check `sunmint/scripts/build_plots_geojson.py` first to see exactly how the sheet→geojson generation works so the new script slots in cleanly?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → cd /tmp && echo "=== sunmint repo tree (plots?) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recursive=; cd /tmp && echo "=== sunmint.html impact map JS (how plots load) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_m
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-So basically when a farmer registers a new farm, the farm should become available in the dropdown even when the farm record doesn't yet exist in our main repository due to either time lag or lack of internet
-
-When the farmer attempts to take a photo of the boundary, the farm should be avaiable in a dropdown for selection, if the farm is not avaiable yet, the farmer can simply include the name
-
-During the next time the farmer, does a boundary event, the farm name should already be in as an option too
-
-This means that if a new farm name is inserted when registering a boundary event, the backend system needs to go ahead and create a new record and the boundary image submission associated with the farm record
-
-Thoughts?
-
-
-### 🤖 Autopilot
-
-Let me check the handoff manifest as directed, and ground the design in what actually exists today (register_farm flow, farm registry index, offline queues).
-[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me see how register_farm actually lands the record (the WhatsApp message tail) and whether any machine-readable farms list exists for dropdown population:
-[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me see the tail of the submit function — whether it POSTs to Edgar or only opens WhatsApp (this determines the backend work):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Your model is exactly right — and it maps to a pattern we already use. Here's my read, grounded in the current code.
-
-## Verdict: this is "local-first, eventually consistent" — and we already do it for tree reports
-
-The sunmint farmer app already keeps tree submissions in an **IndexedDB queue** that flushes when the connection returns. Your proposal is the same pattern applied to **farm identity**: the farm name becomes real on the farmer's device at the moment of first use, and the backend consolidates it lazily. That's the correct architecture for a farmer in the Amazon with intermittent connectivity.
-
-## How your three rules map to mechanics
-
-**Rule 1 — "farm available in dropdown even before the record exists in our repo"**
-The dropdown is a **union of two sources**:
-- **Remote seed** — a machine-generated `farms/index.json` (mirror of the `trees/index.geojson` / `plots/index.geojson` pattern, built from the Farms sheet via the existing workflow) fetched when online
-- **Device-local names** — every farm the farmer has registered or typed on *this device*, stored in IndexedDB
-
-Union, deduped case-insensitively. Offline → device list still shows. Time-lag → device list still shows. No dependency on the repo at all.
-
-**Rule 2 — "if the farm isn't there, the farmer just types the name"**
-Dropdown gets an explicit **"New farm…" free-text option** (same pattern as the tree-species picker on the plant page). Typed name is saved to the device list immediately → it becomes an option *for the next event on that device* (your rule 3), no backend round-trip needed.
-
-**Rule 3 — "backend creates the record and associates the submission"**
-The boundary payload carries the farm name + an `is_new_farm` flag. The Edgar receiver (GAS/dao_protocol routing) **upserts**: if the farm isn't in the Farms sheet → create the row (FARM REGISTRATION-style record), then append the boundary evidence + media + plot reference to it. The existing `build_plots_geojson.py` workflow then regenerates the plot → it appears on the impact map automatically. So the boundary submission **is** what births the farm record.
-
-## Key decisions to nail before building
-
-1. **Identity key** — canonical slug (e.g. `rancho-maranta`) normalized from the name, so "Rancho Maranta" and "rancho-maranta" dedupe to one farm. Display name stays human.
-2. **Where boundary media lands** — per the existing runbook (`SUNMINT_PLOTS_REGISTRY.md`): compressed photos → `sunmint/images/<plot_id>/`; raw videos referenced by URL, never committed to git. Don't invent a parallel store.
-3. **Event contract** — there's no `FARM BOUNDARY EVIDENCE EVENT` in Edgar's catalog today (I checked). I'd add it (canonical labels: Farm Name, Plot ID, Boundary Type, Media URL(s), Extracted GPS list, Area ha) so the evidence is on-chain-anchored from day one, matching the runbook's "anchor on-chain" step.
-4. **Cross-device** — device list is per-phone; a new phone re-seeds from the remote index (which will have the farm by then). Fine for now; note it.
-
-## Phased plan (beta-first, one PR per turn)
-
-| # | Deliverable | Repo |
-|---|---|---|
-| 1 | **Local farm store + union dropdown** in the farmer app (device list, "New farm…" free-text, dedupe) | `sunmint_beta` |
-| 2 | **`farms/index.json`** machine-generated remote seed (generator + workflow, mirroring plots) | `sunmint` |
-| 3 | **Boundary capture UI** ("Limites da Fazenda" — dropdown + camera/upload + GPS + queue) | `sunmint_beta` (farmer app is the right home — it already has camera, geolocation, IndexedDB queue, SW) |
-| 4 | **Backend upsert** — create-or-append farm on boundary event + GAS receiver | `dao_protocol` / `tokenomics` |
-| 5 | **Catalog event** `FARM BOUNDARY EVIDENCE EVENT` + runbook update | `dao_protocol` / `agentic_ai_context` |
-
-One thing worth confirming: **should boundary capture live in the farmer app (sunmint.truesight.me) rather than the dapp?** The farmer app already has camera, geolocation, the offline queue, and the service worker — adding "Registrar Fazenda / Limites da Fazenda" to its dropdown is the natural home, and `register_farm.html` on the dapp stays the deeper web-entry point. 
-
-Want me to start with **PR1 (the local farm store + dropdown)** — it's the foundation everything else sits on, and it's self-contained in the farmer app?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → cd /tmp && echo "=== sunmint repo: any farms index? ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recurs; cd /tmp && echo "=== register_farm submit tail (what happens after whatsapp message) ===" && sed -n '860,910p' reg_farm.html; echo; echo "==; cd /tmp && echo "=== register_farm submit tail (910-975) ===" && sed -n '910,975p' reg_farm.html; echo; echo "=== EDGAR refs in register_far
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] I think we should just extract the boundary from the lat and longitude of what is embedded in the images uploaded
-
-
-### 🤖 Autopilot
-
-Agreed — that's the right simplification, and it matches what we already proved with RM-P1 (the plot was built from the HEIC/MOV GPS cluster). Let me confirm what extraction tooling already exists so the plan is precise:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`exiftool` is on the box and the scripts exist. Let me see how `build_plots_geojson.py` currently works — whether it already consumes image GPS or takes sheet coordinates:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I understand the current pipeline fully. Let me look at how it parses the coordinates column (whether it supports an image-GPS-derived polygon) and the rest of the script:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Agreed — that's the cleanest path, and the tooling is already in place. Here's the refined design with your simplification as the core.
-
-## What your simplification means
-
-Instead of walk-tracks, CAR polygons, or manual sheet entry — **the farmer walks the boundary taking photos (or short videos); the polygon is derived from the GPS embedded in those files.** This is exactly how RM-P1 was seeded (HEIC/MOV GPS cluster → polygon), and `exiftool` is already installed on the box (`/usr/bin/exiftool`), with the runbook's DMS→decimal conversion documented.
-
-## The pipeline (no new storage, no parallel registry)
-
-```
-Farmer walks boundary, photos/videos geotagged
-   → uploaded to sunmint/images/<plot_id>/ (existing pattern)
-   → exiftool -GPSLatitude -GPSLongitude extracts each point
-   → convex hull of points = boundary polygon (approx authority)
-   → upsert plot row in the SunMint Plots sheet (coordinates column)
-   → build_plots_geojson.py regenerates plots/index.geojson
-   → impact map renders the new polygon automatically
-```
-
-This slots **straight into the existing generator** — `build_plots_geojson.py` already accepts a `coordinates` JSON polygon column. The only new piece is **`scripts/extract_plot_gps.py`**: image/video paths → exiftool GPS → convex hull (monotonic chain, no heavy deps) → closed `[lng, lat]` ring → upsert into the sheet.
-
-## The one integrity guardrail (important for carbon credits)
-
-The runbook is explicit: *"Don't invent a polygon from a photo cluster and label it authoritative."* So the hull from photos gets `boundary_authority: "approx"` — honest labeling until a proper walk or the farmer's CAR/INCRA polygon exists (that's the `verified` upgrade path). For credit verification, the boundary authority tier matters to auditors; `approx` is fine as the *default first pass*, then upgradeable. I'd keep that distinction loud in the UI and the ledger.
-
-## Updated phases
-
-| # | Deliverable | Repo |
-|---|---|---|
-| **1** | **`extract_plot_gps.py`** — exiftool GPS → convex hull → polygon ring → upsert sheet row (the automation you described) | `sunmint` |
-| **2** | **Farmer-app boundary module** — "Limites da Fazenda" in dropdown: farm picker (device-local union + "New farm…" free-text) → walk photo capture → offline queue → upload to `images/<plot_id>/` | `sunmint_beta` |
-| **3** | **Farms local store + union dropdown** (the farm-availability rules from before) — can fold into #2 | `sunmint_beta` |
-| **4** | **Backend farm upsert on boundary event** (new farm name → create record) | `dao_protocol`/`tokenomics` |
-| **5** | Catalog event + runbook update | `dao_protocol`/`agentic_ai_context` |
-
-My suggestion: start with **Phase 1** — the extraction script is the core of what you asked for ("python script to update a plot or create a new plot"), it's self-contained in the `sunmint` repo, and it immediately proves the loop with the RM-P1/RM-P2 media already on hand. Then the farmer-app UI (Phase 2/3) rides on a working pipeline.
-
-Shall I build **Phase 1** (`extract_plot_gps.py` + tests) as the first PR?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → cd /tmp && echo "=== existing sunmint scripts ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recursive=1"; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/build_plots_geojson.py" -o build_plots.py && wc -l b; cd /tmp && sed -n '80,244p' build_plots.py
-
-
-### 🧑 Governor
-
-[observed, not directed at you — Nobody Will not DM you]: Partner in China is asking for more information for
-
-We currently don’t have a business partnership, but I believe the information and technology we’ve provided are already starting to bring you benefits and potential areas for improvement. I suggest we first establish a small-scale business collaboration, which will help pave the way for more cooperation and allow us to make the cocoa profits/VCS carbon metrics/forest planting yields among the top in the industry together.
-
-Before we get to the cocoa forest site, there’s no way for us to know any exact data or assessments...
-
-What is the URL to the caches and information you think might be useful. Perhaps generate as PDF to share
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074]
-
-
-### 🤖 Autopilot
-
-Good — let me verify the live URLs that would be most useful to a prospective partner (registries, impact map, whitepaper, satellite), then compile them into a shareable PDF.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The main site URL needs checking — let me find the correct sunmint page on truesight.me, and also grab the latest cache stats (trees count, plots count, satellite scenes) so the PDF has real numbers.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All URLs verified and current data pulled. Now generating the partner information pack PDF with the verified links + real snapshot:
-[1 tool result(s) compacted: generate_pdf — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PDF generated. Sending it to you:
-[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PDF sent ✅
-
-## **`SunMint_Partner_Info_Pack.pdf`** — the URL pack for the China partner
-
-**Section 1 — Live public surfaces (all verified 200 today):**
-- SunMint program page: `https://truesight.me/sunmint.html`
-- Whitepaper: `https://truesight.me/sunmint/whitepaper/`
-- Farmer app: `https://sunmint.truesight.me/`
-- Impact map (beta): `https://beta.truesight.me/sunmint.html`
-- Farm registration: `https://dapp.truesight.me/register_farm.html`
-- DApp hub: `https://dapp.truesight.me/`
-
-**Section 2 — Machine-readable caches (raw URLs, all 200):**
-- Trees registry: `…/sunmint/main/trees/index.geojson`
-- Plots registry: `…/sunmint/main/plots/index.geojson`
-- Satellite cache manifest: `…/sunmint/main/satellite/manifest.json`
-- QR code registry, tokenomics ledger repo, plots runbook (github links)
-
-**Section 3 — Honest pilot data snapshot (matches what the partner said):**
-- 2 plots (RM-P1 planted/approx, RM-P2 proposed/approx), 1 tree registered, Sentinel-2 scenes cached
-- **Explicitly states:** exact cocoa yields / VCS carbon metrics / planting yields are *not yet measurable* at pilot scale — they need mature trees + site verification. The infrastructure to record them is live.
-
-**Section 4–6 —** pipeline explanation (farmer→exiftool→polygon→geojson→impact map), the fluid carbon registry roadmap (Plan Vivo→Verra→SBCE, VM0047), and a suggested small-scale first-collaboration step.
-
-The one URL that was dead (`truesight.me/sunmint/`) is corrected in the pack to the working `sunmint.html` page. Want me to also push this PDF to a repo (e.g. `sunmint` or `agentic_ai_context`) so you have a versioned link to send the partner, or email it directly?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → cd /tmp && for u in "https://truesight.me/sunmint/" "https://truesight.me/sunmint/whitepaper/" "https://sunmint.truesight.me/" "https://beta; cd /tmp && echo "=== truesight.me sunmint paths ==="; for u in "https://truesight.me/sunmint.html" "https://truesight.me/sunmint/index.html"
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
@@ -5085,16 +4565,19 @@ Basically not displaying properly isnt it?
 ### 🤖 Autopilot
 
 Good catch — that's a classic "[object Object]" bug: the farm dropdown is being populated with the raw farm object instead of `farm.name`. Let me diagnose the actual code on the live beta page:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Line 246 shows the bug candidate: `farms.forEach(f => html += '<option value="' + esc(f) + '">' + esc(f) + '</option>')` — treats each farm as a string. If `farms` contains objects (from the remote seed `farms/index.json`), `esc(f)` renders `[object Object]`. Let me see how `farms` is built (the merge of remote objects + local names):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the classic object-vs-string bug. Let me confirm the actual shape of the remote seed (`farms/index.json`) to be certain:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5106,21 +4589,25 @@ Found it — the classic object-vs-string bug. Let me confirm the actual shape o
 - `renderFarmSelect()` then renders `esc(f)` → `[object Object]` in the dropdown
 
 Local farms (strings from IndexedDB) work; remote ones (objects) break. Fix: extract `.name` from objects in `unionFarms()`. Building the fix now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fix applied. Validating the file (tags + JS syntax), then pushing as a PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All validations pass. Pushing the fix as a PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #55 opened — and per the one-PR-per-turn rule I'll stop here and report. But first let me verify the branch diff is clean (single-file, the one fix):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5167,11 +4654,13 @@ Merged PR #55 myself (self-merge authority on beta repos). Holding on prod promo
 ### 🤖 Autopilot
 
 Understood — PR #55 merged on your side, and prod promotion stays gated on Gary's explicit go. Let me verify the merge landed on beta main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #55 shows merged (13:58:49Z) but the raw `main` file doesn't contain the fix — either CDN cache lag or something's off with the merge. Let me check the authoritative Contents API + the merge commit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5240,11 +4729,13 @@ Also dropdown of https://beta.sunmint.truesight.me/instrucoes/ not working
 ### 🤖 Autopilot
 
 Let me diagnose all three issues across the pages — fetching each page's nav dropdown + routing + styles:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the first clue: `monitor-tree-growth` and `instrucoes` are **missing the `farm` option** (no "Registrar Fazenda"), and the extra empty `<option value="">` entries suggest broken dropdowns. Let me examine each page's `onNavChange`/routing and styles:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5257,16 +4748,19 @@ Now I see the issues clearly:
 4. **UI "looks weird"** on limites — need to compare styles.
 
 Let me check the full option lists + the limites styling:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the full picture is emerging. Let me check the instrucoes onNavChange (governor says dropdown not working) and compare the limites page styles vs the main page:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The main branch shows monitor/instrucoes **do** have limites+instrucoes options — so either the live beta is stale (deploy lag) or there's a runtime breakage. Let me check the **live** beta pages directly (what the governor actually sees):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5412,4 +4906,21 @@ Also still open from earlier: the **UI-weirdness on limites** (`.card` vs `.cont
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → cd /tmp && for p in "index.html" "monitor-tree-growth/index.html" "instrucoes/index.html" "limites-da-fazenda/index.html" "register_farm/ind; cd /tmp && for f in pg_monitor-tree-growth_index.html.html pg_instrucoes_index.html.html pg_limites-da-fazenda_index.html.html; do echo "===; cd /tmp && echo "=== monitor nav options (full) ===" && sed -n '141,158p' pg_monitor-tree-growth_index.html.html && echo "=== instrucoes nav; …(+10 more)
 • `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merge hit a 409 "Head branch is out of date" (main moved again — likely the live-editor pattern) — stopping here per the one-PR-per-turn rule and reporting.
+
+## What I did this turn
+
+**Diagnosed all t
+
+
+### 🤖 Autopilot
+
+Go-signal received — retrying the merge of PR #56 (checking current state first):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
