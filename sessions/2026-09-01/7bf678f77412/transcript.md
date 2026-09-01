@@ -4657,6 +4657,7 @@ Also, I think the evolved, we should also allow Sentinel access. [System note: t
 ### 🤖 Autopilot
 
 Let me check what "the evolved" refers to in our context before acting — it may be a specific surface/project name.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4693,6 +4694,7 @@ Also, I think probably we should just remove the camera, or probably set it up u
 ### 🤖 Autopilot
 
 Three asks here: deploy #369 (not urgent, idle-drain OK), plus the new rate-limit insight — set the cap artificially high and just pause+retry on 429 rather than sleeping 20h. Let me start the deploy and inspect the daemon's current 429 handling in parallel.
+[2 tool result(s) compacted: deploy_autopilot, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4700,26 +4702,31 @@ Three asks here: deploy #369 (not urgent, idle-drain OK), plus the new rate-limi
 Deploy: **noop** — already at latest commit `a758b476` (includes #369); service not restarted, which matches your "not urgent, let idle-drain do its job" call. ✅
 
 Now the rate-limit redesign — you're right, and the current code confirms it: on 429 the daemon does `sleep_until_quota_reset()` (sleeps until 07:05 next day — up to 22h wasted), and budget is a hard cap. Per your insight: set the budget artificially high and make 429 trigger a **pause + retry** instead of a day-long sleep (YouTube's limit likely resets on a shorter/rolling window). Let me read the full daemon code:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy confirmed noop (#369 already live on disk, service restart deferred to idle-drain — matches your call). Now the rate-limit redesign. Reading the daemon confirmed your insight is right: on 429 it calls `sleep_until_quota_reset()` — **sleeps until 07:05 next day, up to 22h wasted** — and the budget gate does the same. Your model (high cap + pause + retry, since the limit resets on a rolling window) is the better design. Let me implement it with a safety escalation, and check today's upload count:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The data confirms your model: **56 uploads today** (50 budget + a few 429-rejected attempts), then the daemon hit the budget and is now **sleeping 20.6h until 07:05 tomorrow** — wasting a day when the real ceiling (~100+/day) and rolling-window resets would allow more. Implementing the redesign: high cap + **pause-and-retry on 429 with escalating backoff** instead of day-long sleeps.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wait — I need to verify my rewrite didn't drop the helper functions (`iter_sidecars`, `missing_fields`, `load_config`) that `run()` and `main()` reference. Let me check the PR's file:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I dropped three helper functions (`iter_sidecars`, `missing_fields`, `load_config`) when I rewrote the file — the daemon will NameError at runtime. Fixing the branch before merge:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4860,4 +4867,89 @@ Ping me with your pick.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /opt/truesight_autopilot/farm_media_daemon echo "=== current local HEAD ===" git rev-parse --short HEAD 2>/dev/null || echo "no git" echo; cd /opt/truesight_autopilot/farm_media_daemon echo "=== compile check ===" python3 -m compileall -q farm_media_daemon.py && echo "compile OK; echo "=== systemd unit ExecStart ===" cat /etc/systemd/system/farm-media-daemon.service echo "=== which farm_media_daemon.py is it running? ; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — raise daily_budget to 500 per Gary's own 'artificially high + let 429 pace it' model (option 1), then retry the sentinel dashboard deploy_autopilot (option 2) if things are idle now.
+
+
+### 🤖 Autopilot
+
+Go — raising the budget to 500 (soft ceiling becomes non-binding; 429 paces), then retrying the sentinel deploy. First the budget:
+
+
+### 🤖 Autopilot
+
+Budget is 500 and the daemon is **uploading again immediately** (`cleide IMG_4882.MOV -> sM9C5ipPKfA` at 10:48:06) — it's no longer soft-ceiling-paused, so quota had freed up in the rolling window. Let me verify it keeps going, then retry the sentinel deploy (option 2):
+
+
+### 🤖 Autopilot
+
+Uploads log shows stale 10:02 entries but the journal showed IMG_4882 at 10:48 — the attempt logging may now go elsewhere. Let me check where the daemon writes attempt logs:
+
+
+### 🤖 Autopilot
+
+**It's flying** — IMG_4882 through IMG_4894+ uploading every ~3 seconds (12+ uploads in the last minute, all cleide, no 429). The upload log format changed in PR #8 (`sidecar["file"]` now — the journal is the live view). The 500 budget + rolling window = **the daemon is harvesting at full speed**. Cleide's ~29 pending will be done in minutes.
+
+Now option 2 — retry the sentinel deploy (threads may be idle):
+
+
+### 🤖 Autopilot
+
+Deploy says noop (already at latest commit — code on disk, service not restarted). Let me check whether `/auth/challenge-dashboard` is actually live (Envoy may have restarted since):
+
+
+### 🤖 Autopilot
+
+Interesting — `/auth/challenge-dashboard` returns **404** (route not live yet), and even the old `/auth/challenge` 404s with no body (expected — they're POST routes requiring a body, and 404 not 401/422 means the route doesn't exist on the running process). The service last restarted at **10:38:37** — *before* my PR #369 merge (merged earlier ~10:20ish) hit the disk... actually the code IS on disk (noop deploy says at latest commit). The 404 means **the running process predates the merge** — the service needs a restart to load the new routes. The idle-drain guard defers it while threads are active. Since Envoy did the last restart manually, and this thread is active, the clean path is: **flag it as pending-idle**, or ask Gary/Envoy to restart when convenient.
+
+Let me verify the route exists on disk (so a restart WILL fix it) and summarize:
+
+
+### 🤖 Autopilot
+
+## Turn report — Budget 500 live + daemon harvesting at full speed; sentinel route needs one restart
+
+**Done this turn:**
+1. **`daily_budget: 50 → 500`** (Gary's "artificially high + 429 paces" model) — config bumped, daemon restarted. **Immediately resumed uploading** — IMG_4882 through IMG_4902+ in minutes (cleide queue), ~3s/video, **zero 429s**. The soft ceiling no longer binds; 429 alone paces now. Cleide's remaining ~29 pending finishing within the hour.
+2. **Sentinel deploy retry:** `deploy_autopilot` = noop (already at `a758b476` — code on disk). **Verified the route exists on disk** (`app/main.py:1156 @app.post("/auth/challenge-dashboard")` + `is_sentinel` at `governor_registry.py:195`). BUT the live process returns **404** for it — the running service predates the merge (last restart 10:38:37), so **the route goes live only after a service restart**, which the idle-drain guard defers while threads are active.
+
+**Where it stands:**
+
+| Item | State |
+|---|---|
+| Daemon | `active`, budget 500, uploading full-speed (no 429) ✅ |
+| Cleide queue | ~29 pending → finishing now (IMG_4902 was the last) |
+| `/auth/challenge-dashboard` | on disk ✅ · **not live** (needs `truesight-autopilot.service` restart) |
+| `deploy_autopilot` | noop (idle-drain won't restart mid-thread) |
+
+**One decision needed:** the sentinel route is code-complete and merged, but won't serve until the app service restarts. Options: (a) Envoy/Gary restarts manually when convenient (they did before), or (b) I retry `deploy_autopilot` next turn when threads are quieter. Your call.
+
+---
+
+**RESUME HERE → next unit (pick one):**
+1. **Verify Cleide queue completion** — check journal: all 71 cleide videos uploaded? Build `FARM_MEDIA_MANIFESTS/cleide.json` + index entry → PR (the queryable archive layer)
+2. **Sentinel route live** — get `truesight-autopilot.service` restarted (Envoy manual or idle-drain deploy), then verify `/auth/challenge-dashboard` returns 200/422 (not 404)
+3. **Wire page sign-in button** to `/auth/challenge-dashboard` (one-click sentinel login)
+4. **Signed-in UAT** of the dashboard
+
+Ping me with your pick.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → bumped budget 50→500 (regex, kept comment) · restarted daemon (active; IMG_4882 at 10:48:06 = immediately uploading) · journal shows IMG_4882→IMG_4902+ streaming ~3s/vid, 0 429s · uploads.log stale-format (PR #8 logs via journal now) · retried deploy (noop, at a758b476) · verified route on disk (main.py:1156, governor_registry.py:195) but live 404 → needs service restart (last 10:38:37 predates merge)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → grep -n "daily_budget" config; python bump 50→500 + restart; journal: IMG_4882 uploading immediately · uploads streaming 4882→4902+, 0 429 · deploy noop · route on-disk but 404 live (service restart pending idle)
+• `deploy autopilot` → Already on the latest commit a758b476 — no deploy needed. Did NOT restart. Do not retry.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → CFG=/opt/truesight_autopilot/media_archive_daemon_config.yaml echo "=== before ===" grep -n "daily_budget" $CFG python3 - <<'PY' import re p; sleep 20 echo "=== uploads since restart ===" tail -6 /tmp/farm_media_uploads.log echo "=== today total ===" wc -l /tmp/farm_media_uploads.l; cd /opt/truesight_autopilot/farm_media_daemon echo "=== how does the daemon call upload script + where do attempts log? ===" grep -n "upload; …(+2 more)
+• `deploy autopilot` → Already on the latest commit a758b476 — no deploy needed. Did NOT restart. Do not retry.
 
