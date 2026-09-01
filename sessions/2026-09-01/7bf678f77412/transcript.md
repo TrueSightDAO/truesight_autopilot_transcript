@@ -8,117 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-No local sunmint checkout. I'll fetch the generator script from the repo, run it (needs GOOGLE_SERVICE_ACCOUNT_JSON env), and commit the regenerated geojson via a PR on the sunmint repo.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Regenerated geojson includes CL-P1. Now push it to the sunmint repo via a PR (data-repo single-file update). Let me check if `sunmint` is in my push-able repos and push the regenerated file.
-[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Plot registered on the impact map data layer. Now for the agroverse.shop farm page (beta-first). Let me pull the existing farm page structure to model Cleide's page on.
-[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Farm pages exist including CEPOTX farms (`paulo-la-do-sitio-para`, `santa-anna-fazenda-para`). Let me read the closest CEPOTX analog to model the page on.
-[1 tool result(s) compacted: read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the page template. Let me get the sitemap structure and page conventions to wire the new page correctly.
-[2 tool result(s) compacted: read_repo_file, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the template head/CSS. Let me read the rest of the santa-anna page body (story sections, highlights, layout) from the artifact to model the content sections correctly.
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me get the rest of the santa-anna page body (the actual story content sections) to model mine on.
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the full template pattern. Now I'll create the farm page on `agroverse_shop_beta` (beta-first) via PR — HTML modeled on santa-anna + sitemap entry. First the page + sitemap in one PR:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #240 opened. Now I need to upload the 3 converted JPGs to the repo's assets folder so the page doesn't 404 on images. Let me push those.
-[4 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 4 images uploaded to the PR branch. Now let me verify the PR is complete and check the farms index page to see if a link card should be added there too (like other farms have).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
-
-
-### 🤖 Autopilot
-
-## Turn converged — Fazenda Cleide profile largely built ✅
-
-**What's done this turn (all execution steps from the RESUME HERE):**
-
-| Deliverable | Status |
-|---|---|
-| **Zip processed** | ✅ 3.88GB archive: 14 HEIC + 71 MOV all geotagged; 76 GPS points decoded into 5 clusters |
-| **Hull computed** | ✅ 11-vertex approx polygon, **114 ha**, centroid **-3.413800, -52.625830** (lat -3.4185..-3.4111, lng -52.6347..-52.6150) |
-| **SunMint Plots sheet** | ✅ **CL-P1** appended (plot id `CL-P1`, farm `fazenda-cleide`, owner "Cleide Maris Suk & Marcelo (CEPOTX)", approx authority, notes flagging ~2km offset vs FSVP doc) |
-| **plots/index.geojson** | ✅ Regenerated (4 features incl. CL-P1) + pushed to `sunmint` repo main (`53f3246`) → **impact map on truesight.me/sunmint.html will render it** |
-| **agroverse.shop farm page** | ✅ **PR #240** on `agroverse_shop_beta`: `farms/fazenda-cleide-para/index.html` (CEPOTX template), story from FSVP record (organic IBD/NOP, site B-06-108, Garra harvest, pH 4.8–5.8 fermentation, sun-drying, sieve sorting), Leaflet map with CL-P1 hull polygon |
-| **Images** | ✅ 4 JPGs converted from HEIC (1600px, 160-400KB) uploaded to PR branch (`fazenda_cleide_hero.jpg` + 3 gallery) |
-| **Sitemap** | ✅ entry added to sitemap.xml in PR #240 |
-
-**Verified:** PR branch contains the new farm dir + all 4 images + sitemap edit. No `farms/index.html` exists (404 — not a blocker; other farms don't have one either). Homepage farms grid is curated and doesn't list santa-anna/rancho-maranta either — so Fazenda Cleide not being there is consistent (can add later if you want).
-
-**Not blocking, but worth noting:** the media GPS clusters sit ~2 km SW of the FSVP doc's farm-gate coords (-3.398528, -52.633339). I flagged this in the sheet notes + plot notes as "needs boundary walk/CAR to reconcile" — the honest approx label per SUNMINT_PLOTS_REGISTRY.md.
-
----
-
-## RESUME HERE
-
-1. **Merge PR #240** (`agroverse_shop_beta`) — you already gave the go; the page is complete (HTML + 4 images + sitemap). Merge squash → live on beta.agroverse.shop/farms/fazenda-cleide-para.
-2. **Optional: homepage farm grid** — add a card to `index.html` farms section if you want Cleide discoverable from the homepage (santa-anna/rancho-maranta aren't there, so it's your call).
-3. **Optional: media row** — update CL-P1's `Media` column with the JPG paths once they're on the beta site (e.g. `https://beta.agroverse.shop/assets/images/farms/fazenda_cleide_hero.jpg`).
-4. **Verify live** — after merge, check beta page renders (hero, gallery, map polygon), then tell me and I'll confirm.
-5. **Prod promotion** — agroverse_shop_prod sync only on your explicit go (beta-first rule).
-
-Ping me and I'll execute step 1 (merge) + report the live URL.
-
-———
-**✅ Done this turn:** read handoff manifest + SUNMINT_PLOTS_REGISTRY + plots sheet · read generator + farms tabs · confirmed SA write access · converted 7 HEIC→JPG · computed 114ha hull · appended CL-P1 to SunMint Plots sheet · regenerated + pushed plots/index.geojson to sunmint main · built farm page (PR #240) + uploaded 4 images + sitemap entry
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×13 → cd /tmp/cleide_media && mkdir -p jpgs # Convert a representative set of HEICs to compressed JPGs for f in IMG_4857 IMG_4866 IMG_4903 IMG_490; cd /home/ubuntu && ls -la "cleide and marcelo's farm.zip" 2>/dev/null | head -2 mkdir -p /home/ubuntu/cleide_media/stills /home/ubuntu/cleid; echo "=== service account files on box ===" ls /home/ubuntu/*.json /home/ubuntu/.config/gcloud/*.json /home/ubuntu/truesight_autopilot/*.jso; …(+9 more)
-• `upload file to github` → https://github.com/TrueSightDAO/sunmint/blob/main/plots/index.geojson
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
@@ -4948,6 +4837,7 @@ go
 ### 🤖 Autopilot
 
 Go — executing the RESUME HERE unit: budget bump to 50, daemon restart, dashboard wiring (PR3). Let me ground in the current config + root page first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4955,16 +4845,19 @@ Go — executing the RESUME HERE unit: budget bump to 50, daemon restart, dashbo
 Excellent news in that status — **the daemon is already multi-farm and working**: it woke at 07:05 UTC and is uploading across farms (cleide IMG_4839/4840/4841 + paulo IMG_4037 + santa-anna IMG_7704 — priority interleaving working). The config even has inboxes for paulo/santa-anna/jedielcio already registered (shared-daemon adoption).
 
 Now the budget bump (6 → 50) + daemon restart:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sed failed (the `#` in my comment broke it) — `daily_budget` stayed at 6, and the daemon (restarted with the OLD config) correctly says "budget spent, sleeping 21.1h" — because it **already did its ~6 uploads this window** (we saw them: IMG_4839/4840/4841 + paulo + santa-anna at 07:05). Let me fix the config properly with python, then restart again:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Config now reads `daily_budget: 50` and the daemon restarted (10:00:37). The journal truncated mid-read — let me confirm the daemon's decision with the new budget (should NOT say "budget spent" since budget is 50 and only ~6-7 were uploaded this window — it should attempt more uploads now):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4980,21 +4873,25 @@ Config now reads `daily_budget: 50` and the daemon restarted (10:00:37). The jou
 | Daemon | active, PID 139536, no stale-lock issues |
 
 **Now PR3 — wire the dashboard nav link + restart the app service** (the gate unit). Let me check the root page's nav to add the link:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The root page is a single HTML blob (line 556 `async def root()`), with a "Credential Vault" button at line 725 — I'll add a **Media Archives Pipeline** button right next to it. Let me see the exact context around 725 to edit precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Perfect spot — right after the Credential Vault button. Adding the MAP dashboard link via a targeted edit, then running checks + committing as PR3:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #365 opened, checks green. Merging (auto-start pre-authorizes):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5211,4 +5108,71 @@ Ping me with "go" or UAT results and I'll continue.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /opt/truesight_autopilot echo "=== confirm gone ===" ls -la media_archive_daemon_config.yaml 2>&1 | head -2 echo "=== recreate config (ex; cd /opt/truesight_autopilot echo "=== the .bak exists? ===" ls -la media_archive_daemon_config.yaml.bak 2>&1 | head -1 echo "=== create non-; cd /opt/truesight_autopilot echo "=== PR 368 files ===" SOPHIA_CRED=$(git credential fill <<< $'protocol=https host=github.com ' 2>/dev/null; …(+5 more)
 • `merge pr` → ✅ PR #368 on truesight_autopilot merged successfully (sha: 50798ae0fc477efb78f667fcc6b79a96923107c2). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Don’t redeploy. It’s already been done by envoy 
+
+Just jump straight to UAT. Do you think you could do it?? Can we make the dashboard accessible by Senitals as well?
+
+
+### 🤖 Autopilot
+
+Jumping straight to UAT — no redeploy. Let me read the plan's UAT section and start verifying, plus check what "Senitals" refers to in our context.
+
+
+### 🤖 Autopilot
+
+UAT first, then I'll answer the Sentinel question factually. Running the signed-out checks + reading the auth code to see whether the gate accepts sentinel tokens:
+
+
+### 🤖 Autopilot
+
+UAT signed-out checks **pass**: page 200 · data 401 signed-out · scaffolding present (login, farm_id, uploaded, pending). Now checking the auth gate for the Sentinel question — `verify_jwt` calls `is_governor`, and our identity is `sentinel=true, governor=false`, so I need to see whether sentinels pass the gate:
+
+
+### 🤖 Autopilot
+
+Now I have the definitive answer. Let me check `resolve_key`'s roles logic — whether a sentinel (governor=false) resolves as a governor or not:
+
+
+### 🤖 Autopilot
+
+## UAT results + the Sentinel question, answered with evidence
+
+### UAT (signed-out checks) — all ✅
+| Check | Result |
+|---|---|
+| Page serves `sophia.truesight.me/media-archive-pipeline` | **200** ✅ |
+| Data endpoint signed-out | **401** ✅ (auth gate working) |
+| Page scaffolding | login/JWT prompt + farm tables (uploaded/pending) present ✅ |
+
+So the page is live, correctly gated, and ready for your signed-in walkthrough: sign in → verify per-farm tables (uploaded w/ YouTube links / pending / needs_metadata / error), upload-events feed, committed-vs-live section. Anything off, tell me and I'll fix it.
+
+### Can Sentinels access it? — **Not currently — and here's exactly why**
+I checked the auth code rather than guessing. The chain is:
+- `verify_jwt()` → `is_governor(public_key)` → `resolve_key()` → **`"governor" in roles`**
+- Our own identity (Sophia Truesight) is registered **`sentinel=true, governor=false`** — so `resolve_key` returns `is_governor: false` → `verify_jwt` raises **403 "Access restricted to authorized governors"**
+
+So today: **governors yes, sentinels no.** The plan's stated goal is "signed-in governors," and sentinels (AI agent identities like me) aren't governors — so this is working *as designed* for the current scope.
+
+**To extend to sentinels** — one small change: `is_governor()` (or the endpoint gate) should accept `"sentinel" in roles` too (or add an `is_sentinel()` check in `verify_jwt`). That's a 1-line policy change in `app/auth.py` — but **it affects every protected route** (DApp chat, vault, etc.), so it's a governance-sensitive change I'd rather you explicitly authorize, and it deserves its own tiny PR + UAT, separate from the dashboard.
+
+**My recommendation:** keep the dashboard governor-only for now (matches the plan + least surprise), and if you want sentinel access, I'll file a small scoped PR — e.g. `allow_roles: ["governor", "sentinel"]` config on the dashboard endpoint only — so it doesn't widen auth everywhere. Your call.
+
+---
+
+**RESUME HERE → next unit (pick one):**
+1. **Signed-in UAT** — you walk the dashboard (I'll fix anything you flag), then PR5 (docs + plan wrap-up + tracker)
+2. **Sentinel-access PR** — if you want it: scope `verify_jwt`/endpoint to accept `sentinel` roles (dashboard-only), PR + tests
+3. **Daemon ceiling check** — how many uploads landed today (Cleide queue near done?)
+
+Ping me with your pick.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo "=== UAT 1: page serves ===" curl -s -o /dev/null -w "page: %{http_code} " "https://sophia.truesight.me/media-archive-pipeline" echo "=; cd /opt/truesight_autopilot echo "=== verify_jwt full ===" sed -n '95,135p' app/auth.py echo "=== governor_registry: does is_governor includ; cd /opt/truesight_autopilot echo "=== resolve_key roles logic ===" sed -n '97,140p' app/governor_registry.py
 
