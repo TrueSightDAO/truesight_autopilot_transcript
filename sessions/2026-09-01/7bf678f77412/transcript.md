@@ -4783,36 +4783,43 @@ I have the pattern: root page is inline HTML, JWT login via `/auth/send-challeng
 The chat uses `X-Public-Key` header or Bearer JWT — the DApp does signature-based login client-side. For the dashboard page, the cleanest is: the page itself is served without auth (so the login form renders), but the **data endpoint is auth-gated** (already done in PR1). The page will call `/media-archive-pipeline/data` with the JWT from `localStorage` (set by the DApp chat flow), and show a login prompt if 401.
 
 Let me write the PR2 frontend — a self-contained HTML page with inline CSS/JS that reads the JWT (from localStorage or a token param), calls the data endpoint, and renders the tables:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Page HTML ready (7KB). Now add the route to the media_archive_pipeline.py module and run checks:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two ruff errors — let me see them:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `HTMLResponse` isn't imported at module top. Let me fix the import properly (add to the top imports, clean the inline import):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All checks pass. Let me also add a quick unit test for the route + status logic, then run the tests:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 6 new tests pass. Committing PR2 (page route + tests) and opening the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #364 opened. Merging (auto-start handoff pre-authorizes execution):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4869,6 +4876,7 @@ Yo, by the way, I don't think we should restrict ourselves to just sex video upd
 ### 🤖 Autopilot
 
 Two things — your quota question and the blocked PR2. Let me resolve the conflict and check the YouTube quota facts in parallel.
+[2 tool result(s) compacted: ssh_run, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5026,4 +5034,73 @@ Ping me with "go" and I'll restart + verify live.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /opt/truesight_autopilot echo "=== current daemon config ===" cat media_archive_daemon_config.yaml 2>/dev/null || cat /home/ubuntu/media_; cd /opt/truesight_autopilot # Back up + bump budget cp media_archive_daemon_config.yaml media_archive_daemon_config.yaml.bak sed -i 's/^dail; cd /opt/truesight_autopilot python3 - <<'PY' import re p = 'media_archive_daemon_config.yaml' src = open(p).read() src = re.sub(r'^daily_bud; …(+4 more)
 • `merge pr` → ✅ PR #365 on truesight_autopilot merged successfully (sha: 8cecb9f37095dd0f15e385f06547cf9cea2acd12). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🚀 Sophia is redeploying — back in a few seconds. Please resend your message shortly.
+
+
+### 🤖 Autopilot
+
+Go — executing PR3b: restart the app service and verify the dashboard is live.
+
+
+### 🤖 Autopilot
+
+Right — the guard blocks manual restarts (it would sever this very thread). The correct path is `deploy_autopilot` (idle-drain aware). Let me use it:
+
+
+### 🤖 Autopilot
+
+Deploy deferred — 3 threads are mid-turn (including this one, and the other Sophia threads 11074/17194). It will NOT restart while active threads are running (that's the idle-drain guard working correctly). The right move: retry when threads idle, or register a watcher. Since this thread itself is one of the busy ones, the deploy can't complete *from within* my own turn.
+
+Let me verify the current code state is at least committed/pushed correctly, and set expectations:
+
+
+### 🤖 Autopilot
+
+**Great state on both fronts:**
+
+| Check | Result |
+|---|---|
+| Code | local == origin/main (`6773d1c`) — everything merged is on the box |
+| Routes | `media-archive-pipeline` present in both files ✅ |
+| **Uploads** | **56 videos up** (log line count) — IMG_4879/4880/4881 streaming now! The 50/day ceiling test is **smashing it**: from 6/day → **56 and counting**, no 429 yet |
+
+The daemon is chewing through Cleide's queue at ~1 video/2-3s. At this rate the 65 pending finish **today**, not in 11 days.
+
+**The only remaining blocker: the deploy.** `deploy_autopilot` deferred because **3 threads are mid-turn** (this one + the other two Sophia threads 11074/17194) — the idle-drain guard won't restart while they're active, by design. It cannot complete from inside my own turn.
+
+---
+
+**RESUME HERE → next unit (PR3b deploy + PR4 UAT):**
+1. **Retry `deploy_autopilot`** from a fresh turn (when threads are idle) — it will idle-drain then restart the service, making `/media-archive-pipeline` live with the nav button
+2. **Verify live**: `sophia.truesight.me/media-archive-pipeline` serves the page; signed-out → login prompt; `/data` → 401 without token
+3. **Check the ceiling**: uploads log should show the real daily cap (50? 100?) — if still uploading at ~60+, the bucket is confirmed
+4. **PR4 UAT** — Gary signs in, verifies the dashboard states (uploaded/pending/needs_metadata/error + events + manifests)
+5. Then PR5 (docs wrap-up)
+
+Ping me with "go" (fresh turn) and I'll retry the deploy.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 (blocked restart by guard) · `deploy_autopilot` → deferred (3 threads mid-turn, idle-drain guard working as designed) · `ssh run` ×1 → confirmed code current (6773d1c), routes present, **56 uploads and counting** (IMG_4879-4881 streaming, no 429)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot echo "=== pull latest (nav link + dashboard page) ===" git pull -q origin main 2>&1 | tail -2 echo "=== rest; cd /opt/truesight_autopilot echo "=== local HEAD vs origin/main ===" git fetch -q origin 2>/dev/null echo "local:  $(git rev-parse --short HEAD)" echo "origin: $(git rev-parse --short origin/main)" echo "=== is; echo "=== daemon still uploading? (ceiling test) ===" tail -3 /tmp/farm_media_uploads.log 2>/dev/null wc -l /tmp/farm_media_uploads.log
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot echo "=== pull latest (nav link + dashboard page) ===" git pull -q origin main 2>&1 | tail -2 echo "=== restart ; cd /opt/truesight_autopilot echo "=== local HEAD vs origin/main ===" git fetch -q origin 2>/dev/null echo "local: $(git rev-parse --short HE
+• `deploy autopilot` → Deploy DEFERRED: 3 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
 
