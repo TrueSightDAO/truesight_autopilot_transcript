@@ -8,296 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Go for it
-
-
-### 🤖 Autopilot
-
-Go-signal received — executing. Per protocol, checking the manifest row, and merging the plan PR (#853) to complete PR0:
-[2 tool result(s) compacted: read_context_file, merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**PR0 complete — merged the implementation plan for the SunMint Impact Map Extension.**
-
-**PR #853 — https://github.com/TrueSightDAO/agentic_ai_context/pull/853** (merged, sha `923bf9a`)
-- `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md` — full implementation plan/roadmap/checklist, including your correction that the impact map is **already live in prod** (byte-identical beta/prod, verified)
-- `handoffs/HANDOFF_MANIFEST.md` — new row for the plan (thread 11074, auto-start, "in progress — PR0 committed")
-
-## RESUME HERE → PR1 (next unit, fresh turn)
-
-**Enriched plot popups** on `truesight_me_beta/sunmint.html` — per the plan's §5 checklist:
-1. Read the current popup builder (`bindPopup` in `loadPlots()`)
-2. Add boundary-authority label (approx | gps_walk | car | incra) with friendly text
-3. Add status, hectares, owner, region, verified_at lines
-4. Add legend chip(s) in the `#plotSelector` area/controls
-5. Verify tags balanced + JS syntax; run local suite (compile/lint/format)
-6. Open PR, report URL
-
-Then PR2 (farms selector/filter) → PR3 (farms registry section) → PR4 (status styling + legend + media thumbnails) → PR5 (UAT gate on beta) → promote to prod only with your approval.
-
-———
-**✅ Done this turn — actions taken:**
-• `read context file` → handoffs/HANDOFF_MANIFEST.md (protocol check — row present, auto-start)
-• `merge pr` → ✅ PR #853 on agentic_ai_context merged (sha 923bf9a9e7015d0b44b8328b186bac6e2f48f8aa)
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #853 on agentic_ai_context merged successfully (sha: 923bf9a9e7015d0b44b8328b186bac6e2f48f8aa). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merged ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**PR0 complete — merged the implementation plan for the SunMint Impact Map Extension.**
-
-**PR #853 — https://github.com
-
-
-### 🤖 Autopilot
-
-Go-signal received + auto-start confirmed — executing **PR1: Enriched plot popups**. First, let me read the current popup builder in `loadPlots()`:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the full `loadPlots` function and the tree popup for reference — lines ~600–700:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR1 executing — I have the current popup builder. Let me see the map section HTML (lines 225–260) to place a legend correctly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the full picture. Now let me check the existing CSS for `.plot-chip` / `.view-chip` (to match legend styling) and find a good CSS insertion point:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-No `<style>` block — styling is inline. I'll build the enriched popup with inline styles (consistent with the page's approach) plus a compact legend below the map controls. Let me create the edits — the popup builder in `loadPlots()` and a legend row after the map controls:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Wait — I need to verify what actually landed. Both my edits had replace identical to search (a paste error — no real change). Let me check the PR content:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-My edits were botched — the second edit accidentally **removed the `<div id="satelliteHistory">` opening tag** and the first was a no-op. The PR currently breaks the satellite-history section. Let me fix this properly by building the correct file locally and pushing the whole corrected file:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Right — I fetched fresh `main` (which is intact), so the "restore" step was wrong there. Let me redo with only the enrichment + legend edits (steps 2 & 3):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-File is correct now (42,877 bytes, all tags balanced, satelliteHistory intact, legend + enriched popup present). JS syntax check needs a real node run — the extraction succeeded (4 inline scripts). Let me verify JS syntax and then push the corrected whole file to the PR branch:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-JS syntax OK. Now let me fix the broken PR #331 — the current PR branch has the bad edit (removed satelliteHistory div). I'll push the corrected whole file to the same branch via the Contents API (which worked for the whitepaper PR), replacing the botched content:
-[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I accidentally wrote a placeholder string instead of the real content — let me immediately replace it with the actual corrected file via `upload_local_file_to_github` (reads the local file):
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now the PR branch has the real corrected file. Let me verify the PR #331 diff is now clean (only enrichment + legend, satelliteHistory intact):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #331 is now clean: **+22 / −3**, exactly the enrichment + legend, satelliteHistory intact, all tags balanced, JS syntax OK. This is the PR1 deliverable. Let me do a final verification that the PR branch file is well-formed end-to-end, then report (I'll stop here — merge is part of the flow but per the one-PR-per-turn rule I report first and merge on the next go):
-
-Actually — the plan says PRs get merged as part of executing the plan (go-signal authorizes merge). The turn directive says stop after opening/merging a PR. I've opened/updated PR #331 this turn. Let me verify final state and report with the merge pending the next unit, consistent with the established rhythm.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR1 complete and verified ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**PR1 — Enriched plot popups + boundary-authority legend** (from the SUNMINT_IMPACT_MAP_EXTENSION_PLAN roadmap).
-
-**PR #331 — https://github.com/TrueSightDAO/truesight_me_beta/pull/331** (branch `impact-map-enriched-popups`, **+22/−3**, verified clean)
-
-### Changes to `truesight_me_beta/sunmint.html`:
-
-1. **Enriched plot popups** (`loadPlots()` → `bindPopup`): now show, when present in the geojson properties —
-   - **Name** (HTML-escaped)
-   - **Status** — colored + friendly (Proposed 🟠 / Planted 🟢 / Verified 🔵)
-   - **Boundary authority** — friendly label (Approx (photo hull) / GPS walk / CAR polygon / INCRA polygon)
-   - **Hectares**, **Owner**, **Region**, **Verified at**
-   - Graceful fallback for old plots missing fields (no blank lines)
-
-2. **Boundary-authority legend** — new row under the map controls with color-dot swatches for the four authority tiers (approx / gps_walk / car / incra), so the honesty tier is explained on-page (matters for carbon-credit auditors per the plots runbook)
-
-3. **XSS-safe** — all user-derived fields run through an `esc()` HTML-escape helper
-
-### Verification (hard rule)
-- ✅ All tags balanced (div/section/p/span/strong/h2/h3/table/button)
-- ✅ JS syntax OK (`node --check` on extracted inline scripts)
-- ✅ `satelliteHistory` div intact (my first edit attempt accidentally dropped it — caught and corrected before merge)
-- ✅ No placeholder content; diff is exactly the intended enrichment
-- Note: the intermediate botched edit (removed `<div id="satelliteHistory">`) was fully corrected — PR diff shows only +22/−3 clean additions
-
-## RESUME HERE → PR2 (next unit, fresh turn)
-
-**Merge PR #331** (I'll do it at the top of the next turn per the plan's merge-on-execution flow, or you can go now), then:
-
-**PR2 — Farms selector/filter dropdown**: derive unique farms from plots `farm_id`, add `#farmSelector` (All farms + each farm), filter polygons + tree markers on selection, keep plot-chip/view-chip interplay working.
-
-Say go and I'll merge PR1 + start PR2.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×10 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint.html" -o sunmint_beta_page.html && wc -c s; cd /tmp && sed -n '600,700p' sunmint_beta_page.html; cd /tmp && sed -n '225,260p' sunmint_beta_page.html; …(+5 more)
-• `upload file to github` → https://github.com/TrueSightDAO/truesight_me_beta/blob/impact-map-enriched-popups/sunmint.html
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: PR1 complete and verified ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**PR1 — Enriched plot popups + boundary-authority legend** (from the SUNMINT_IMPACT_MAP_EXTENSION_PL
-
-
-### 🤖 Autopilot
-
-Go-signal received — executing. Per the plan, first merge PR #331 (PR1 complete), then start PR2 (farms selector). Let me merge and check the plan file to confirm PR2's exact spec:
-[2 tool result(s) compacted: merge_pr, read_context_file — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**PR1 shipped — merged the enriched plot popups + boundary-authority legend.**
-
-**PR #331 — https://github.com/TrueSightDAO/truesight_me_beta/pull/331** (merged, sha `81ee428`)
-
-What landed on `truesight_me_beta/main` (impact map on `beta.truesight.me/sunmint.html`):
-- **Enriched plot popups** — name (HTML-escaped), colored status (Proposed 🟠 / Planted 🟢 / Verified 🔵), boundary authority with friendly label (Approx (photo hull) / GPS walk / CAR polygon / INCRA polygon), hectares, owner, region, verified_at — with graceful fallback for older plots missing fields
-- **Boundary-authority legend** — color-dot swatches under the map controls (approx / gps_walk / car / incra), explaining the honesty tier on-page (per `SUNMINT_PLOTS_REGISTRY.md`)
-- **XSS-safe** — `esc()` helper on all user-derived fields
-- Verified: tags balanced, JS syntax OK (`node --check`), satelliteHistory intact, diff clean (+22/−3)
-
-Plan status updated: **PR0 ✅ · PR1 ✅ · PR2 next.**
-
-## RESUME HERE → PR2 (next unit, fresh turn)
-
-**Farms selector/filter dropdown** (plan §5 PR2 checklist):
-1. Derive unique farms from plots `farm_id` (+ fallback to owner)
-2. Add `#farmSelector` dropdown (All farms + each farm)
-3. Filter polygons + tree markers on selection; clear on All
-4. Keep plot-chip/view-chip interplay working
-5. Verify tags balanced + JS syntax; open PR, report URL
-
-Then PR3 (Farms Registry section) → PR4 (status styling + legend + media thumbnails) → PR5 (`gate: UAT`, 7-step check on beta) → promote to prod only with your explicit approval.
-
-I'll auto-start PR2 on the next go per the plan's auto-start manifest row — or just say go.
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #331 on truesight_me_beta merged successfully (sha: 81ee428b9af53873142c852635744273178b3410). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merged ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**PR1 shipped — merged the enriched plot popups + boundary-authority legend.**
-
-**PR #331 — https://github.com/TrueSigh
-
-
-### 🤖 Autopilot
-
-Executing **PR2: Farms selector/filter dropdown** — auto-start confirmed. Let me read the current page state (post-PR1) focusing on the selector/load logic:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the loadPlots / viewSelector / plotSelector logic in full (lines 500–700) to plan the farms selector integration precisely:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the rest of the loadPlots function (the plot filter + view interplay):
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the final part of loadPlots (the view-chip interplay and end of function):
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The artifact is nesting — let me read the tail of loadPlots directly with sed:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 I need to see the middle chunk (the view-chip interplay, lines 660–700) to know exactly where the farm filter should hook in:
@@ -5100,21 +4810,25 @@ No token in env — but the autopilot's **tools** have a working token (they wro
 ### 🤖 Autopilot
 
 Both files now on the PR branch (identical to main). Let me verify the PR is a no-op diff and merge to close it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The diff shows the branch files are still **empty** (0 additions, full-file deletions) — the uploads didn't take effect on the PR head. Let me check the branch's actual current state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch **has** the real content (limites 25390, register_farm 54107 — matches main exactly). The PR files-diff showing "-464/-1222" is stale cache — GitHub computes the diff against the merge-base, and since main advanced past the branch point, the comparison is against the wrong base. The branch tip commits confirm real content. The PR is effectively **identical to main content-wise** — let me re-check the diff against main directly, then merge (which closes it):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch is byte-identical to main for both files — the PR is a true no-op now (safe to merge; merging closes it without touching content). Merging PR #58:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5166,6 +4880,7 @@ status?
 ### 🤖 Autopilot
 
 Quick status check on the one open loose end (PR #58) before reporting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5173,6 +4888,7 @@ Quick status check on the one open loose end (PR #58) before reporting:
 Status snapshot:
 
 **Open loose end:** PR #58 still open (`mergeable: False`, branch still exists). My plan to close it was to delete the branch — let me try that now via the Contents API token path (the one that provably works for writes):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5398,4 +5114,190 @@ Merged ✅ — stopping here per the one-PR-per-turn rule.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp && for p in "index.html" "monitor-tree-growth/index.html" "instrucoes/index.html" "limites-da-fazenda/index.html" "register_farm/ind; cd /tmp && echo "=== CSS: nav-dropdown / select / option styles per page ===" && for f in nav_index.html.html nav_monitor-tree-growth_index.; cd /tmp && echo "=== INDEX body top (236-262) ===" && sed -n '236,262p' nav_index.html.html && echo && echo "=== LIMITES body top (44-80) ==; …(+2 more)
 • `merge pr` → ✅ PR #59 on sunmint_beta merged successfully (sha: a71c70b79f5c32054e5aef4fb445ca7562aaf3e8). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Come up with a unit test and then keep running it locally to verify yourself to ensure it passes and then merge. Once merge then let me know
+
+
+### 🤖 Autopilot
+
+Understood — building a unit test that locks in the nav-dropdown UI convention across all sunmint pages, running it locally until green, then merging. First, a clean local checkout of `sunmint_beta` to test against, plus checking the exact per-page state (selected options, onNavChange form):
+
+
+### 🤖 Autopilot
+
+Checkout confirmed at PR #59's merge, all 5 pages have consistent structure (selected option matches page, `function onNavChange` everywhere). Now building the regression test that locks in the convention:
+
+
+### 🤖 Autopilot
+
+Two test failures — both are real findings, and one reveals monitor still isn't fully standardized. Let me check the actual i18n dict format (my test assumed `"navPlant"` with double quotes) and monitor's missing label rule:
+
+
+### 🤖 Autopilot
+
+Both failures are legitimate findings:
+
+1. **i18n test failure**: My test assumed `"navPlant"` appears twice (pt+en dicts) — but index has `navPlant: "Registrar Plantio"` (pt) and only the en dict. Actually the grep shows only 2 hits for `navPlant` in index — `data-i18n` attribute + pt dict key. Let me check if the **en dict has navPlant at all** (this would be a real i18n gap).
+
+2. **Monitor missing `.nav-dropdown label` CSS** — a real standardization gap (index has it, monitor doesn't — so the label renders unstyled/bold-default there).
+
+Let me verify the en dicts:
+
+
+### 🤖 Autopilot
+
+Interesting findings:
+- **index, monitor, instrucoes** — en dicts all have the 5 nav keys ✓
+- **limites** — en dict scan found nothing (my awk may have missed it — but earlier grep showed `navLabel: "Page:"` exists). Let me check its en dict directly.
+- **register_farm** — nothing found — likely uses different dict structure (it's the copied dapp page).
+
+Also, note **monitor's en dict is missing `navFarm`** — wait, no: line 331 shows navInstrucoes, 332 navLimites, but I need to check navFarm. Looking at the output: monitor has navPlant, navMonitor, navInstrucoes, navLimites — **no navFarm line visible**! That's a real gap — monitor's en dict lacks `navFarm`. Let me check precisely:
+
+
+### 🤖 Autopilot
+
+Now I see the real state:
+- **monitor**: `navFarm: 'Registrar Fazenda'` at line 245 — but is that the **pt or en dict**? Line 245 uses single quotes and says "Registrar Fazenda" (Portuguese!) — so monitor's **en dict may actually contain a Portuguese value for navFarm**, OR line 245 is in the pt dict. Let me check the dict boundaries.
+- **limites en dict**: scan found nothing — but earlier I saw `navLabel: "Page:"` … let me check where limites' en dict is.
+- **register_farm**: no i18n dict keys at all (`data-i18n` attributes only, no JS dict) — it uses a different i18n mechanism.
+
+This is exactly why the governor asked for a test — the convention is inconsistent. Let me dig into each page's dict structure precisely:
+
+
+### 🤖 Autopilot
+
+The dict shapes differ (monitor uses `I18N` with single quotes; limites uses `STRINGS`; register_farm uses a different scheme) — my count-based assertion was too brittle. Let me verify the real state: monitor's en dict for navFarm, limites' nav keys, and register_farm's mechanism:
+
+
+### 🤖 Autopilot
+
+Now the full picture is clear:
+- **monitor en dict**: has navLabel/navPlant/navMonitor/navInstrucoes/navLimites — **but NO navFarm** in the en dict (pt has it at 245, en stops at navLimites line 332). So switching monitor to English shows "Registrar Fazenda" (pt) for the farm option — a real bug!
+- **limites**: STRINGS pt + en both have all 5 nav keys ✓
+- **register_farm**: uses `setLang` → `setLanguage` (Google Translate engine) — no JS dict keys, so `navFarm` count is 0 there legitimately
+
+So my test found **one real bug**: monitor's en dict is missing `navFarm`. Let me fix that first, then make the test reflect reality (register_farm uses the Google-Translate mechanism, so it's exempt from the JS-dict assertion):
+
+
+### 🤖 Autopilot
+
+Confirmed — a **pattern of real gaps** (this is exactly why the test was worth it):
+- **monitor en dict**: missing `navFarm` (0)
+- **instrucoes en dict**: missing `navFarm` (0)
+- **limites en dict**: my awk found 0 for navFarm — but earlier grep showed `navFarm:'Register Farm'` in the STRINGS en block (line 21 of the pt+en scan)... the awk's `"en"` trigger missed because limites uses `en: {` with single quotes? Let me verify limites directly.
+- **index**: has it (1) ✓
+
+Let me check limites precisely and then fix the missing keys:
+
+
+### 🤖 Autopilot
+
+Confirmed — the real bug pattern:
+- **limites en dict**: `navFarm` present? The block shows farmLabel etc. but **no `navFarm:` line visible in this excerpt** (lines 143-152 cover farmLabel→emailUnlinked, the nav keys must be earlier — line 141-142). Earlier grep showed line 21 of the scan = `navFarm:'Register Farm'` in the en block ✓ (that was from `sed -n '121,160p'` line 21 = actual line 141). So limites **does** have navFarm in en.
+- **instrucoes en dict**: **missing navFarm** (243-250 shows navLabel/navPlant/navMonitor/navInstrucoes/navLimites, no navFarm) — real gap
+- **monitor en dict**: **missing navFarm** (325-332) — real gap
+
+So the real fixes: **add `navFarm` to instrucoes en dict + monitor en dict**. Then the test (adjusted to reality) passes. Let me apply both fixes and adjust the test:
+
+
+### 🤖 Autopilot
+
+Both en dicts now have `navFarm`. Now updating the test to reflect the true convention (register_farm exempt from JS-dict assertion since it uses Google-Translate engine), then running the full suite until green:
+
+
+### 🤖 Autopilot
+
+Progress — 6/7 pass. The remaining failure is real: **monitor lacks the `.nav-dropdown label` CSS rule** (it has `.nav-dropdown` and `.nav-dropdown select` but no label rule — so the "Página:" label renders bold-default while other pages style it identically). Let me add it to monitor, matching the reference:
+
+
+### 🤖 Autopilot
+
+All **7 tests pass** ✅. Now running the full local hard-rule suite (compile + ruff + format + pytest) before pushing:
+
+
+### 🤖 Autopilot
+
+Format needs one pass — applying it, then re-verifying everything green:
+
+
+### 🤖 Autopilot
+
+All four hard-rule checks green (compile ✓, ruff ✓, format ✓, 7 tests ✓). Now pushing: the test file + the two real fixes it caught (monitor + instrucoes en `navFarm`, monitor `.nav-dropdown label` CSS). Then merging:
+
+
+### 🤖 Autopilot
+
+⚠️ The writes payload carried empty content again (my recurring mistake). Fixing immediately — pushing the real validated files to the PR branch:
+
+
+### 🤖 Autopilot
+
+Test file corrected. Now pushing the three page fixes (monitor en navFarm, instrucoes en navFarm, monitor label CSS) to the same branch:
+
+
+### 🤖 Autopilot
+
+All three files + test now on the branch. Verifying the PR is complete and green, then merging:
+
+
+### 🤖 Autopilot
+
+All three files byte-match my locally-validated versions, `mergeable: True`. Merging PR #60:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Stopping here per the one-PR-per-turn rule — merge hit the 409 "head out of date" again (main moved — the live-editor pattern), so the merge retries next turn.
+
+## What I did this turn
+
+**Built the nav-UI convention regression test, ran it locally until green, and opened PR #60 with the fixes it caught.**
+
+**PR #60 — https://github.com/TrueSightDAO/sunmint_beta/pull/60** (branch `fix/nav-ui-regression-test`, 4 files, `mergeable: True`, all files byte-verified) — **merge blocked on 409 "head out of date"** (main moved after branch cut).
+
+### The test — `tests/test_nav_ui_convention.py` (7 tests)
+Locks in the standardized nav-dropdown convention across all 5 pages (index, monitor, instrucoes, limites, register_farm):
+1. Exactly one `.nav-dropdown` + `#pageNav` select per page
+2. Reference CSS rules present (`.nav-dropdown`, `.nav-dropdown select`, `.nav-dropdown label`)
+3. All 5 nav options (plant/monitor/farm/limites/instrucoes) present
+4. Selected option matches the page
+5. `onNavChange` defined + routes every option
+6. pt + en i18n keys for every nav option (register_farm exempt — uses Google-Translate engine)
+7. All inline scripts parse (`node --check`)
+
+### Real bugs the test caught (fixed in the PR)
+1. **monitor en dict missing `navFarm`** — showed "Registrar Fazenda" (pt) in English mode
+2. **instrucoes en dict missing `navFarm`** — same bug
+3. **monitor missing `.nav-dropdown label` CSS** — unstyled "Página:" label vs other pages
+
+### Verification (hard rule, all green locally)
+- `compileall` ✓ · `ruff check` ✓ · `ruff format --check` ✓ · **`pytest` 7/7 ✓**
+- All 4 branch files **byte-identical** to locally-validated versions (Contents API)
+
+## RESUME HERE → next unit (fresh turn)
+
+**Merge PR #60** — retry `merge_pr` (main likely caught up; if still 409, re-verify file state + merge). Then **prod promotion for #55–#60** still gated on Gary's explicit go.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → clean clone @ PR #59; per-page nav audit (selected options, onNavChange form, i18n dict formats pt/en); real-gap verification (monitor/instrucoes en missing navFarm; monitor missing label CSS); fixes applied locally; test written + iterated to green; hard-rule suite green (compile/ruff/format/pytest 7/7)
+• `git push changes` → PR #60 (⚠️ empty writes payload again — fixed via Contents API)
+• `upload local file to github` ×3 → real test + 3 fixed pages to branch (sha ddd798a2 / 373a664f / d29792b8)
+• `ssh run` → PR #60 verified (4 files, byte-match, mergeable True)
+• `merge pr` → ❌ 409 "Head branch is out of date" (blocker — retry next turn)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → cd /tmp && rm -rf sb_test && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint_beta.git sb_test 2>&1 | tail -1; cd sb_test && e; cd /tmp/sb_test && mkdir -p tests && cat > tests/test_nav_ui_convention.py <<'PYEOF' """Regression guard: the sunmint nav-dropdown UI conven; cd /tmp/sb_test && echo "=== index i18n dict format (navPlant) ===" && grep -n 'navPlant\|navLabel' index.html | head -5 && echo && echo "==; …(+12 more)
+• `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
 
