@@ -4567,11 +4567,13 @@ Found it — my **seeded log lines are malformed**: `2026-09-01 00:01` (minute-g
 **Count is 6 — correct!** And this exposes the crucial insight the fix captures: the 6 uploads spanned **08-31 22:40 → 09-01 00:30** — all within ONE quota window (08-31 07:05 → 09-01 07:05, since the reset is at 07:05 UTC, not midnight). That's exactly why IMG_4838 hit 429 even though it was "today": the window hadn't reset. The fixed `successes_since_reset` correctly counts 6 in the window → daemon will sleep till 07:05.
 
 Let me verify the daemon `--once` now exits cleanly with "budget spent" instead of attempting an upload:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — the `--once` still attempted IMG_4838 instead of exiting. But wait — look closely: it says **"quota exhausted"** now (the new detection worked!), and rc=0. But why did it attempt at all, when the log has 6 successes in the window? Ah — I see it: the daemon **doesn't use the seeded log path**. `main()` likely defaults `--log-file` to `/tmp/farm_media_daemon.log` — which is where I seeded. But it attempted... Let me check: the `successes_since_reset` counted 6, so `used >= budget` should have hit the `--once` return. Unless the config's daily_budget isn't 6 (maybe the config uses `daily_budget: 6` — yes). Let me check whether it read the log at all — maybe `main()` builds logpath differently (e.g. `--log-file` default vs my seed path mismatch).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4776,4 +4778,90 @@ Good suggestion, and it's consistent with the MAP terminology we locked in — b
 **Result:** one PR to agentic_ai_context (git mv + ~8 reference updates + header note), plus any daemon-repo touch-ups. Everything else (the MAP vocabulary in the docs) stays.
 
 Say **"go"** and I'll execute the rename PR — or tell me to hold and I'll park it.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Good suggestion, and it's consistent with the MAP terminology we locked in — but it's a **rename with ~11 reference sites**, so let me give you the full picture before touching anything:
+
+**The refere
+
+
+### 🤖 Autopilot
+
+Go received — executing the rename. First, checking whether the daemon repo references the old filename (so nothing dangles):
+
+
+### 🤖 Autopilot
+
+Daemon repo is clean — no dangling references. Now let me get the full current content of the pipeline doc (only ~159 chars were truncated) so I can rename it faithfully with the "formerly" header note:
+
+
+### 🤖 Autopilot
+
+I have most of the file — let me get the remaining tail so the rename write is complete and faithful:
+
+
+### 🤖 Autopilot
+
+I have the full picture — the file is long, so the safest rename is a real `git mv` on the box checkout (preserves content byte-for-byte) plus sed on the reference files. Let me do it in one shot:
+
+
+### 🤖 Autopilot
+
+The rename committed and pushed — but `gh pr create` failed (token lacks GraphQL permission) and the file's own "READ THIS FILE first" self-reference (line 108) still has the old name. Let me fix the self-reference and open the PR via the GitHub REST API instead:
+
+
+### 🤖 Autopilot
+
+PR #873 opened via REST API (gh GraphQL token lacked permission). This is the rename PR Gary explicitly approved — merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Pipeline doc renamed to `MEDIA_ARCHIVE_PIPELINE.md` ✅
+
+**PR merged:** [#873 — Rename FARM_MEDIA_PIPELINE.md → MEDIA_ARCHIVE_PIPELINE.md (MAP terminology)](https://github.com/TrueSightDAO/agentic_ai_context/pull/873) — sha `3c58802f`.
+
+**What changed (now on agentic_ai_context main):**
+| File | Change |
+|---|---|
+| `MEDIA_ARCHIVE_PIPELINE.md` | **git mv** from `FARM_MEDIA_PIPELINE.md` (content byte-identical) — title updated to MAP framing + **"formerly FARM_MEDIA_PIPELINE.md"** header note so old links resolve; self-reference fixed |
+| `plans/FARM_MEDIA_DAEMON_PLAN.md` | ref updated |
+| `FARM_MEDIA_MANIFESTS/README.md` | ref updated |
+| `FARM_MEDIA_MANIFESTS/index.json` | ref updated |
+| 4 farm manifests (la-do-sitio, paulo, rancho-maranta, santa-anna) | `processed_by`/`pipeline` refs updated |
+| `ADVISORY_SNAPSHOT.md` | **left untouched** (historical commit log — never rewrite history) |
+
+**Mechanics:** did the rename as a real `git mv` on the box checkout (byte-exact), sed'd the 7 live reference files, opened the PR via **REST API** (gh's GraphQL token lacked permission — `Resource not accessible by personal access token`), then merged.
+
+**Terminology now fully consistent:** `MEDIA_ARCHIVE_PIPELINE.md` = the MAP runbook; old references anywhere resolve via the header note.
+
+---
+
+**RESUME HERE → next unit (pick one):**
+1. **Daemon live-upload proof** — the systemd daemon should wake at **~07:05 UTC** and upload IMG_4838+. Check `sudo journalctl -u farm-media-daemon -n 20` + sidecar for yt_id. (Register a watcher or ping me after.)
+2. **Cleide manifest + index** — build `FARM_MEDIA_MANIFESTS/cleide.json` from the sidecars + add to index.json → PR (the queryable archive layer)
+3. **Farm-page media.json** — wire Cleide's YouTube gallery into agroverse_shop_beta → PR
+4. **"Standing up your own MAP queue" doc** — add a section to MEDIA_ARCHIVE_PIPELINE.md pointing at the daemon repo + config recipe, so other Sophia instances can replicate
+
+Ping me with the unit and I'll run it.
+
+———
+**✅ Done this turn — actions taken:**
+• `search_code` (daemon repo — clean, 0 refs) · read full pipeline doc
+• `ssh run` ×2 → git mv + sed 7 refs + title/formerly note + commit + push · REST-API PR (gh GraphQL blocked) · fixed self-reference + re-pushed · PR #873 created
+• `merge pr` → ✅ #873 merged (sha 3c58802f)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → set -e CTX=/opt/truesight_autopilot/context/agentic_ai_context cd "$CTX" git fetch origin -q git checkout -q main git pull -q origin main gi; set -e CTX=/opt/truesight_autopilot/context/agentic_ai_context cd "$CTX" git checkout -q rename/media-archive-pipeline echo "=== fix self-re
+• `merge pr` → ✅ PR #873 on agentic_ai_context merged successfully (sha: 3c58802f48e2e243e5455574c1478bfebbc73010). Pull Request successfully merged
 
