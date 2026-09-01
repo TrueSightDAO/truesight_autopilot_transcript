@@ -1072,6 +1072,7 @@ PR #264 was **closed without merging** (no mergeCommit, not merged) — the 405 
 ### 🤖 Autopilot
 
 The box's gh token can't reopen (read-only for PR mutation), but the platform `merge_pr` tool has merge capability. Let me try merging #264 directly — it may need the branch synced first, but let me attempt.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1127,21 +1128,25 @@ Note: the only thing lost is PR number #264's open state — the script content 
 ### 🤖 Autopilot
 
 Resuming: recreate PR2's PR fresh (stale branch deleted → re-push → open), then merge, then stop at PR3.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The script wasn't in the clone (it only lived on the now-deleted PR branch commit). I have the full content in context from the earlier push — I'll recreate the file locally, then re-push via `git_push_changes` (same content, fresh branch + PR on current main).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Script recreated (148 lines, compiles). Now re-open the PR via `git_push_changes` — same branch name, fresh base on current main, opens a new PR.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fresh PR recreated: **[agroverse_shop_beta PR #266](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/266)** — same content as #264, now based on current main. Merging it.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1431,4 +1436,90 @@ Say "go" to proceed to PR5's dry-run.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp/agroverse_shop_work && git checkout main 2>&1 | tail -1 && git pull origin main 2>&1 | tail -2 && echo "=== merged script present? =; cd /tmp/agroverse_shop_work && python3 scripts/youtube_update_video_descriptions.py --config-dir /opt/truesight_autopilot/config/youtube 2>&; cd /tmp/agroverse_shop_work && python3 - <<'EOF' 2>&1 | tail -25 import json, sys sys.path.insert(0, 'scripts') from pathlib import Path fro; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] [Handoff context — this Telegram topic (thread 18528) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go — proceed to PR5's dry-run, post the title diffs here before any live push.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] [Handoff context — this Telegram topic (thread 18528) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: PR4 is complete and verified. Stopping here to report — PR5 (titles) is the next unit and it has its own dry-run/review pattern per the plan.
+
+## ✅ PR4 complete — LIVE descriptions pushed to YouTube (
+
+
+### 🤖 Autopilot
+
+Proceeding to PR5's dry-run. Running the title-proposal script in dry-run mode (no live push) — it needs the Grok key on the box.
+
+
+### 🤖 Autopilot
+
+Dry-run found **0 entries** for `--scope placeholder` — suspicious. Let me inspect the scope logic and the current titles in the JSON to understand why.
+
+
+### 🤖 Autopilot
+
+`--scope placeholder` returned **0** — the JSON titles already have `(video & transcript)` suffixes (not the generic `Project XX-XX | Agroverse` pattern the scope regex matches). Key question: are the **live** titles still ugly, or did a prior run already push these? Let me compare live vs JSON titles and check git history.
+
+
+### 🤖 Autopilot
+
+`should_process` requires basename to start with `"Project "` **and** the current JSON title to match the generic `Project MM-DD | Agroverse` regex. But all titles now have `(video & transcript)` suffixes — so nothing matches `placeholder` scope. The interesting finding: **PR1's description push also changed titles?** No — looking at the git log, the JSON's `title` field was already changed in an earlier commit... Actually the titles with `(video & transcript)` came from a **previous title run** that already happened before this plan. So:
+
+- **Live titles** may already be the clean ones (need to verify), OR
+- The JSON titles were updated but **never pushed live** (live still shows `Project 04-30_Full HD 1081 | Agroverse`)
+
+Let me check the live vs JSON title state for a few.
+
+
+### 🤖 Autopilot
+
+Excellent finding! **Live titles are already clean** — only **5/73** differ from JSON, and those are merely the ` | Agroverse` suffix (live has the clean title WITHOUT the brand suffix; JSON includes it). So the title cleanup from a **previous run** already happened live. PR5's placeholder pass found 0 because there are no generic `Project MM-DD | Agroverse` titles left.
+
+So PR5's remaining work is tiny: either (a) align the 5 JSON titles to live (drop the suffix) — or (b) push the JSON titles live (add suffix). The suffix decision is a branding call. Let me check what the titles script does and whether "| Agroverse" is desired, then present the finding.
+
+
+### 🤖 Autopilot
+
+PR5 dry-run findings are complete. Let me present the results — **no live push this turn** (the governor asked to see title diffs first).
+
+## 📋 PR5 — Title Cleanup: Dry-run Findings (no live push)
+
+**Ran:** `youtube_grok_project_titles.py --scope placeholder --dry-run` with Grok key loaded.
+
+**Result: `would update 0 entries`** — and after investigation, that's actually **good news**: the channel's titles were already cleaned by a previous title run (before this plan). Verified against **live YouTube**:
+
+### Key finding — live titles are already clean (73/73)
+- **68/73 live titles exactly match** the repo's JSON titles
+- **5/73 differ only by the `| Agroverse` brand suffix** (live has clean title *without* suffix, JSON has it *with* suffix):
+
+| Video | LIVE (current) | JSON (repo) |
+|---|---|---|
+| `Rr0QOztkFSw` | `Cacao Pods on Trunks at Santa Anna Fazenda` | `…Fazenda \| Agroverse` |
+| `9LeB2PtZ4UE` | `Fermentation at Santa Anna Fazenda` | `…Fazenda \| Agroverse` |
+| `U7tQ5-4eOEg` | `Cacao Drying Shed at Santa Anna Fazenda` | `…Fazenda \| Agroverse` |
+| `54qpxpM9urk` | `Jedielcio: US & China Buyers at Santa Anna` | `…Santa Anna \| Agroverse` |
+| `KK5m2n9eQHs` | `Jedielcio Cheers: Viva! at Santa Anna` | `…Santa Anna \| Agroverse` |
+
+- **No placeholder-style titles remain** in JSON or live (`Project MM-DD | Agroverse`, `Export: Full HD 1081`, etc. — all gone; 3 borderline "Export:/Project" JSON titles shown above are *already* the clean derived titles with descriptive text, not raw filenames)
+
+### So PR5's actual remaining work is just the suffix consistency question
+**Your call — which do you prefer?**
+1. **Align JSON → live** (drop `| Agroverse` from the 5 JSON titles) — live stays as-is, repo matches reality
+2. **Align live → JSON** (push `| Agroverse` suffix to those 5) — brand consistency across all 73, but touches live
+3. **Leave it** — 5-title cosmetic difference, zero impact on discoverability
+
+My recommendation: **Option 1** — the brand suffix is redundant (channel name is already displayed on YouTube), and it keeps live untouched. Option 2 is also defensible if you want uniform branding.
+
+**No live push happened.** Say which option you prefer (or "go with your rec" for Option 1) and I'll execute + update the JSON accordingly.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp/agroverse_shop_work && set -a && source /opt/truesight_autopilot/.env 2>/dev/null; set +a; echo "GROK key present: $([ -n "$GROK_API; cd /tmp/agroverse_shop_work && echo "=== scope logic ===" && grep -n "scope" scripts/youtube_grok_project_titles.py | head -30 && echo "=== ; cd /tmp/agroverse_shop_work && echo "=== git log for youtube_videos.json (last 8) ===" && git log --oneline -8 -- scripts/youtube_videos.jso; …(+2 more)
 
