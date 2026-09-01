@@ -1968,3 +1968,38 @@ Noted — thanks for the independent verification. The 10-minute CDN cache expla
 
 Standing by. Whenever you're ready, just say **"promote"** and I'll sync `truesight_me_prod` from beta — that pushes the fixed post (real photos, new captions, updated og/twitter meta) to the live `truesight.me` URL you flagged. I won't touch prod before then.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] Jedielcio is CEPOTX 
+
+This sentence seems wrong.
+
+
+### 🤖 Autopilot
+
+You're right — that sentence conflates the farmer with the cooperative. Let me check the sourcing doc for the correct relationship before proposing a fix.
+
+
+### 🤖 Autopilot
+
+You're right — and the sourcing doc confirms it. CEPOTX is the **cooperative** (Coop. Central de Produção Orgânica da Transamazônica e Xingu, CNPJ 22.568.369/0001-38); Jedielcio is described as "CEPOTX **agronomist / technical liaison**" (per the FDA FSVP site-visit report) — so *"Jedielcio is CEPOTX"* wrongly fuses a person with an organization.
+
+Let me read the exact sourcing-doc phrasing and the post's current sentence to propose a precise fix:
+
+
+### 🤖 Autopilot
+
+Confirmed — you're right, and the sourcing doc backs you:
+
+- **CEPOTX** = the cooperative: *Coop. Central de Produção Orgânica da Transamazônica e Xingu* (CNPJ 22.568.369/0001-38) — the beans-only supplier out of Pará/Altamira
+- **Jedielcio** = the person — per the FDA FSVP site-visit record he's "CEPOTX **agronomist / technical liaison**," and the sourcing doc calls CEPOTX "**Jedielcio's network**" — he's the human who connects us to the co-op, not the co-op itself
+
+The post's sentence ("Jedielcio is CEPOTX — the cooperative network that supplies our beans…") fuses the person with the organization. Proposed fix:
+
+> **Jedielcio is the agronomist and technical liaison for CEPOTX** — the cooperative network that supplies our beans out of Pará, Altamira side, the organic almonds that ship to Bahia for conversion.
+
+(Or lighter: *"Jedielcio works with CEPOTX — the cooperative network that supplies…"*)
+
+Want me to make the edit? I'll open a small beta PR (truesight_me_beta) with that one-line fix — it'll ride along with the image fix when we promote to prod, so both land on truesight.me together. Just say which wording you prefer (or give me yours) and I'll PR it.
+
