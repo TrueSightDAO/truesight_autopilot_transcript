@@ -10,54 +10,6 @@
 
 ### 🤖 Autopilot
 
-The app queues to IndexedDB (offline-first) — the flush posts to Edgar's `EDGAR_SUBMIT_URL`. Let me see the flush function and the actual Edgar endpoint it hits, so my test event exercises the real chain:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The flush posts `formData` (multipart with photos) to `edgar.truesight.me/dao/submit_contribution` — same endpoint as the contribution tool. The cleanest E2E that exercises the real chain (Edgar → dispatch → GAS webhook) without fabricating photo uploads is to submit a `[FARM BOUNDARY EVIDENCE EVENT]` via the same signed-submission path with test-data markers. Let me check how the submit_contribution endpoint routes to dispatch (event_name/type mapping) so my payload lands correctly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-No `submit_contribution` in the server routes — the endpoint must be served elsewhere (the Edgar FastAPI root or a proxy). Let me check the main app + dao.py for the route and how it dispatches events to GAS:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The E2E chain is now fully traced: `POST /dao/submit_contribution` → `dispatch_event()` → GAS webhook. The cleanest real-path test: submit a signed test `[FARM BOUNDARY EVIDENCE EVENT]` via the same Edgar submission path the app uses, marked clearly as test data. Per the duplicate-guard, this is the first FBE submission — no prior test event exists. Let me run it with test-data markers and observe the webhook fire:
-[1 tool result(s) compacted: submit_contribution — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Test event submitted. Now the critical check — did dispatch fire the webhook? Checking the dao_protocol journal for the "webhook ok" line:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-No journal lines yet — the submission may be asynchronous (background dispatch), or the log grep window/log level missed it. Let me check the broader journal + whether the event actually landed in Edgar (query the submission), and confirm the dispatch happened:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The `POST /dao/submit_contribution` returned **200 OK at 10:44:22** — the event landed. Dispatch runs in the background after the response. Let me check for the webhook fire + whether the GAS side processed it:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The dispatch may be running but its logs (webhook trigger logs at INFO "webhook ok") aren't appearing — or the submission's text didn't match the FBE routing (the `submit_contribution` tool may submit a different text format than the raw `[FARM BOUNDARY EVIDENCE EVENT]` marker the router matches). Let me verify what the submission actually logged (is there a ledger row/transaction id?) and whether dispatch was invoked at all:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 The POST 200 confirms the event reached the server, but no webhook log and no ledger row with the test data — the submission text likely didn't match the `[FARM BOUNDARY EVIDENCE EVENT]` marker that dispatch matches on. Let me check how `dao.py` calls dispatch (what text it passes) — this determines whether my tool-submitted event triggers the router at all:
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
@@ -4911,6 +4863,7 @@ I think they should be exposed via doGet such that whenever dao_protocol python 
 ### 🤖 Autopilot
 
 Good question — let me verify the actual deployed state rather than rely on memory: checking the doGet router for both cases + the deployed GAS version + the dispatch env keys:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5167,4 +5120,38 @@ Want me to (a) verify access on the other 3 deployments the same way to find whi
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== anonymous GET to boundary webhook (@HEAD deployment) ===" && curl -s -m 30 -w " HTTP_STATUS:%{http_code} " "https://scr; cd /tmp && echo "=== follow redirect ===" && curl -s -m 30 -L -w " FINAL_HTTP:%{http_code} FINAL_URL:%{url_effective} " -o /tmp/anon_out.htm
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Share with me the actual webhook URL and I will examine it myself
+
+
+### 🤖 Autopilot
+
+Here are the exact webhook URLs from the dao_protocol `.env` (both are the **same deployment** — `@HEAD`):
+
+**FARM_BOUNDARY_EVIDENCE** (line 45):
+```
+https://script.google.com/a/macros/agroverse.shop/s/AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ/exec
+```
+
+**MEDIA_RETRACTION** (line 46):
+```
+https://script.google.com/a/macros/agroverse.shop/s/AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ/exec
+```
+
+**Dispatch actions used** (appended as `?action=…`):
+- FBE: `?action=processFarmBoundaryEvidenceFromTelegramChatLogs`
+- MR: `?action=processMediaRetractionFromTelegramChatLogs`
+
+For your own examination, try these from a **logged-out/incognito** browser window:
+1. `https://script.google.com/a/macros/agroverse.shop/s/AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ/exec` (no action — should return the fallback message listing valid actions **if** it executes anonymously)
+2. Same URL + `?action=processFarmBoundaryEvidenceFromTelegramChatLogs`
+
+If #1 shows the sign-in page, the deployment is NOT "Anyone" (as my probe found). If it shows the handler's output text, then anonymous execution works and my earlier probe was affected by something else (e.g. the workspace-SSO flavor of the URL).
+
+Note: this is the `script.google.com/a/macros/agroverse.shop/` (Google Workspace) flavor of the deployment URL — the same deployment also has a non-workspace flavor at `script.google.com/macros/s/<same-id>/exec` if you want to test whether the org SSO is the interceptor.
 
