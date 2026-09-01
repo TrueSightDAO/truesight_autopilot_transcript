@@ -1699,26 +1699,31 @@ Montage ready. Sending it for your eyes before pushing — given the image feedb
 ### 🤖 Autopilot
 
 Good feedback — the pod must be the subject, not the person. Let me pull new candidate frames from IMG_7654 where the pod itself fills the frame. First, locate the grok_client API and the exact clip filenames:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The original IMG_7654 clip is on disk. The montage frames showed the farmer holding pods — I need frames where the **pod itself fills the frame**. Let me dense-scan IMG_7654 (the hero/contrast clip) looking for frames with strong crimson content (the pod close-ups), and extract a spread of candidates for both #1 (both varieties/contrast) and #3 (crimson pod close-up):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The scan shows crimson frames at t≈8–15s (f008–f015), but they're dim/sharpness-low at 960px — the pod is small in frame. To make the pod the clear subject I need **full-res extraction + tight crop on the pod**. Let me pull full-res frames at the best crimson moments and crop tightly, then montage:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The crop loop double-prefixed `crop_` (the montage listcomp globbed the already-cropped files). The crops themselves succeeded (594×1190 tight center crops at full res). Let me redo just the montage, globbing only the single-crop files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Montage of 8 tight crimson-pod crops built. Sending for review:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1854,4 +1859,88 @@ Montage rebuilt with the corrected crimson crop (t11.5, pod ~85% of frame, no to
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /home/ubuntu/rm_media && ls -la fs8_pick2/full/crop_t8.0.jpg && python3 - <<'PYEOF' from PIL import Image, ImageDraw import os src = "/ho; cd /opt/truesight_autopilot && set -a && . ./.env 2>/dev/null; set +a; ./.venv/bin/python - <<'PYEOF' import sys, json sys.path.insert(0, "/; cd /home/ubuntu/rm_media && python3 - <<'PYEOF' from PIL import Image, ImageDraw import os src = "/home/ubuntu/rm_media/fs8_pick2/full/crop_
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] 👍 All three approved — HERO, CRIMSON (now correctly tight, pod fills the frame, great catch on the off-by-one), and Ponta Verde. Push to beta, PR the post HTML, merge, verify on beta, then report back before I authorize prod promotion.
+
+
+### 🤖 Autopilot
+
+👍 All three approved — pushing to beta now. First, let me check the current post HTML (to see which image paths it references) and locate the approved Ponta Verde yellow pod file on the box:
+
+
+### 🤖 Autopilot
+
+Approved — pushing to beta. Let me see the full post HTML (all image references) to make precise edits, and verify the yellow-pod file:
+
+
+### 🤖 Autopilot
+
+All three approved images are ready. I have the post HTML. Let me read the tail of the post (the foliage figure block) so I can make precise edits — removing the portrait/duplicate figures and wiring in the approved set:
+
+
+### 🤖 Autopilot
+
+Let me get the exact foliage-figure block (to remove the unapproved figures cleanly) from the full post artifact:
+
+
+### 🤖 Autopilot
+
+I have the full post structure. Now let me grab the exact figure blocks (yellow-pod duplicate + foliage) from the raw file so my edit hunks match precisely:
+
+
+### 🤖 Autopilot
+
+I have the exact figure blocks. Plan: upload the 3 approved images as new files (keeping old ones for rollback), then edit the post HTML to point at them. First the uploads:
+
+
+### 🤖 Autopilot
+
+All 3 approved images uploaded to beta assets. Now I need the exact foliage block text (the rejected IMG_7669 shot) to remove it cleanly:
+
+
+### 🤖 Autopilot
+
+All three approved images are on beta assets. Now the HTML edits — swapping in the approved set, removing the two unapproved figures (the rejected IMG_7669 tree shot and the redundant yellow-pod duplicate + the foliage shot), and updating meta:
+
+
+### 🤖 Autopilot
+
+PR #345 opened with the HTML edits. The 3 approved images are already on beta assets (uploaded to main). Merging the PR per your authorization:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Merged — FS#8 now uses the approved real field photos
+
+**PR #345 merged** (sha `1f7eba96`) → https://github.com/TrueSightDAO/truesight_me_beta/pull/345
+
+**What changed on the beta post** (the-tree-the-industry-despises-feeds-the-family-every-month.html):
+- **Hero** → `fs8-hero-v3.jpg` — IMG_7654 t6.0, both varieties, pod-only, no farmer torso (your approved pick)
+- **Ponta Verde** → `fs8-large-yellow-pod-v2.jpg` — IMG_7672, smooth bright-yellow pod, 4:3 (replaces the rejected IMG_7669 tree shot)
+- **Common cacao** → `fs8-common-pod-v3.jpg` — IMG_7654 t11.5, tight furrowed crimson pod ~85% of frame (the fixed crop — off-by-one resolved)
+- **Removed** the redundant `fs8-yellow-pod.jpg` figure and the unapproved `fs8-foliage.jpg` figure
+- **og:image / twitter:image** → new hero (v3)
+- All 3 JPGs uploaded to `assets/blog/` on beta main (44a2187, f051ba2, 5556e5e)
+
+## RESUME HERE → next steps
+1. **Verify the beta render** — open `https://beta.truesight.me/blog/posts/the-tree-the-industry-despises-feeds-the-family-every-month.html` and confirm the 3 approved images display correctly (hero, Ponta Verde yellow pod, crimson close-up) with the updated captions
+2. **Report back to Gary before prod** — per his instruction: *"verify on beta, then report back before I authorize prod promotion."* The old portrait/blurry files (`fs8-hero-contrast.jpg`, `fs8-ponta-verde-tree.jpg`, `fs8-common-pod.jpg`, `fs8-yellow-pod.jpg`, `fs8-foliage.jpg`) remain in `assets/blog/` — harmless leftovers, can be cleaned in a later PR
+3. **On his "promote"** → `sync_beta_to_prod(truesight_me_prod)` to fix the live `truesight.me` URL he flagged
+
+**Not done:** beta render verification (needs my next turn), prod promotion (awaits Gary's explicit go after his beta check).
+
+**Note on FS#9:** it's already live on beta with its own photo set + YouTube embeds (PR #342/#343, merged earlier) — this PR was only the FS#8 image fix.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → echo '=== fs8_hero/web ==='; ls -la /home/ubuntu/rm_media/fs8_hero/web/ 2>/dev/null; echo; echo '=== fs8_frames (v2 set w/ yellow pod) ===';; ls -la /home/ubuntu/rm_media/fs8_frames/web/fs8-large-yellow-pod-v2.jpg && python3 -c "from PIL import Image; im=Image.open('/home/ubuntu/rm; curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/the-tree-the-industry-despises-feeds-the-family-eve
+• `merge pr` → ✅ PR #345 on truesight_me_beta merged successfully (sha: 1f7eba96dfa303c3d8a88dd5541d682efb141258). Pull Request successfully merged
 
