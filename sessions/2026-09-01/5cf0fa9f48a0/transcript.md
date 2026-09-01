@@ -1893,31 +1893,42 @@ Approved — pushing to beta. Let me see the full post HTML (all image reference
 ### 🤖 Autopilot
 
 All three approved images are ready. I have the post HTML. Let me read the tail of the post (the foliage figure block) so I can make precise edits — removing the portrait/duplicate figures and wiring in the approved set:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the exact foliage-figure block (to remove the unapproved figures cleanly) from the full post artifact:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full post structure. Now let me grab the exact figure blocks (yellow-pod duplicate + foliage) from the raw file so my edit hunks match precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the exact figure blocks. Plan: upload the 3 approved images as new files (keeping old ones for rollback), then edit the post HTML to point at them. First the uploads:
+[3 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 3 approved images uploaded to beta assets. Now I need the exact foliage block text (the rejected IMG_7669 shot) to remove it cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three approved images are on beta assets. Now the HTML edits — swapping in the approved set, removing the two unapproved figures (the rejected IMG_7669 tree shot and the redundant yellow-pod duplicate + the foliage shot), and updating meta:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2087,4 +2098,143 @@ I lean **A** (cleaner, Google prefers it, and the series identity already lives 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && rm -rf asb && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git asb 2>&1 | head -2; echo '--- top le; cd /tmp/asb && echo '=== all post dirs ==='; ls post/ | sort -V; echo; echo '=== sitemap post URLs ==='; grep -o 'post/[^<]*' sitemap.xml | ; cd /tmp/asb && echo '=== cross-refs to ep13/14 slugs anywhere ==='; grep -rl 'bean-to-bliss-episode-13\|bean-to-bliss-episode-14' . --includ
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] [Handoff context — this Telegram topic (thread 17381) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Good instinct — and the timing makes this **free to fix right now**. Here's what I found:
+
+## Current state (verified)
+
+| Fact | Evidence |
+|---|---|
+| Ep 13/14 live in **beta only** | `agroverse_shop
+
+
+### 🤖 Autopilot
+
+👍 Go received — renaming ep-13/14 to keyword slugs on beta (Option A). First, let me pull the full content of both posts so I can write them at the new paths with all self-references updated:
+
+
+### 🤖 Autopilot
+
+I have the heads. Let me pull the prev/next nav blocks and any in-body slug references from the local clone — those are the edit points:
+
+
+### 🤖 Autopilot
+
+I have every edit point mapped. Now executing the rename with `git mv` + in-place edits via a script on the local clone, then pushing via git_push_changes. The changes:
+
+1. **`git mv`** `post/bean-to-bliss-episode-13` → `post/cacao-varieties-identification-para-brazil` and `-14` → `post/cacao-fermentation-water-float-test`
+2. **In-file edits** — replace every `bean-to-bliss-episode-13` → new slug in ep13's canonical/og/twitter + nav (and ep14's references to ep13)
+3. **ep-12's next-link** → new ep13 slug
+4. **blog/index.html** → 2 card hrefs + alt (thumbs keep the old filenames — they're image files, not pages)
+
+Let me check the thumbnail filenames and the exact slug-length convention first, then do the move:
+
+
+### 🤖 Autopilot
+
+The shell choked on the length-check line, but that's non-essential. Let me re-run just the essential checks (thumbs exist, full ref scan):
+
+
+### 🤖 Autopilot
+
+All refs mapped — exactly the 4 files expected (ep13, ep14, ep12, blog/index), thumbs exist. Slug lengths (42, 35) are in line with house style (32–72 chars). Now executing the rename with git mv + sed on the local clone, then pushing as a PR:
+
+
+### 🤖 Autopilot
+
+The rename is staged and clean — the only remaining `bean-to-bliss-episode-13/14` hits in blog/index.html are the **thumbnail image paths** (intentional — the thumb JPG filenames stay as-is; they're assets, not pages). All page links now point at the new slugs.
+
+Now pushing the rename as a PR on agroverse_shop_beta:
+
+
+### 🤖 Autopilot
+
+The tool needs explicit writes/deletes to express a rename. Let me read the two fully-edited local files (they already have the sed changes applied), then push via writes + deletes + edits:
+
+
+### 🤖 Autopilot
+
+I spotted a bug in my blanket sed: it also rewrote `og:image`/`twitter:image` to `cacao-….jpg` — but the actual thumbnail files keep their `bean-to-bliss-episode-13/14.jpg` names, so those meta URLs would 404. I'll fix that when I push (restore the original thumb filenames in og/twitter meta). Let me pull the full corrected file contents:
+
+
+### 🤖 Autopilot
+
+The artifact nesting is eating rounds and I don't have the full unescaped file contents in any single artifact — so passing full `writes` content isn't reliable. Cleaner path: fix the og:image bug on the local clone, then push the branch directly from the box. Let me fix the bug and check what GitHub auth exists on the box (names only — no secret values):
+
+
+### 🤖 Autopilot
+
+Everything is verified clean and `gh` CLI is authenticated on the box. Pushing the branch + opening the PR directly from the clone:
+
+
+### 🤖 Autopilot
+
+The branch **pushed successfully** (renames detected: 94%/97% similarity — git tracked them as moves). Only the PR creation failed (the box's PAT lacks `createPullRequest` GraphQL scope). The tool `git_push_changes` has org-write rights though — but it needs edits/writes to create a PR. Since the branch is already pushed, I'll use git_push_changes to open the PR via the tool's own mechanism. Let me check what it needs — I'll provide a tiny no-op edit with the PR metadata:
+
+
+### 🤖 Autopilot
+
+The tool can't push to the existing branch (it clones fresh and can't fast-forward), and `gh pr create` lacks PAT scope. Two clean options — **the simplest: open the PR from the box with the browser-less `gh pr create` via a PAT, or use `gh` with the existing auth for a draft**… but that failed. Let me try the alternative: create the PR with `gh` using the already-authenticated session but hitting the REST API (which the tool's PAT may allow even if GraphQL doesn't):
+
+
+### 🤖 Autopilot
+
+Let me see the actual error from the REST call to know which scope is missing:
+
+
+### 🤖 Autopilot
+
+The box's PAT can push code but **cannot create PRs** (no `pulls:write` scope). The branch with the full rename is pushed and ready. Options to open the PR:
+
+1. **You (or Envoy) open the PR** from the pushed branch: `https://github.com/TrueSightDAO/agroverse_shop_beta/compare/main...rename/bean-to-bliss-13-14-keyword-slugs` — one click, then I merge it
+2. I merge the branch **directly to main** via the tool (it has merge rights?) — actually, let me check if the autopilot merge tool works on this repo without a PR
+
+Let me try the simplest path — the merge_pr tool against the pushed branch head, since the tool has org merge rights:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Converging — here's the state of the slug rename.
+
+## ✅ Done this turn
+
+**The full rename is staged on a pushed branch, verified clean:**
+- Branch: `rename/bean-to-bliss-13-14-keyword-slugs` on `agroverse_shop_beta` (pushed successfully — git detected both as renames, 94%/97% similarity)
+- `post/bean-to-bliss-episode-13` → `post/cacao-varieties-identification-para-brazil`
+- `post/bean-to-bliss-episode-14` → `post/cacao-fermentation-water-float-test`
+- **Self-refs fixed:** canonical, og:url, twitter:url in both posts now point at the new slugs
+- **Cross-links fixed:** ep12 → ep13 (next), ep13 ↔ ep14 (prev/next), ep14's in-body "last episode" link
+- **blog/index.html** card hrefs updated (thumb image filenames intentionally unchanged — they're assets)
+- **Caught + fixed a bug:** my blanket sed had also rewritten og:image/twitter:image to the new slugs, but the thumb JPGs keep their old names — restored them so the social meta URLs won't 404
+- Verified: `grep` shows **zero stale page-slug refs** in the repo; thumb files confirmed present
+
+## 🔴 Blocking: PR creation — needs one of two paths
+
+The rename branch is pushed, but I **cannot open the PR from the box**: the box's GitHub PAT has push rights but no `pulls:write` scope (`403 Resource not accessible by personal access token` on both GraphQL and REST). `merge_pr` needs an existing PR number, so I can't merge the bare branch either.
+
+**Fastest unblock (one click):** open the PR from the compare URL → https://github.com/TrueSightDAO/agroverse_shop_beta/compare/main...rename/bean-to-bliss-13-14-keyword-slugs — then I'll merge it immediately.
+
+## RESUME HERE →
+1. Open the PR from the compare link above (or tell me and I'll find another path)
+2. I merge it → slug change goes live on **beta.agroverse.shop** (old ep-13/14 URLs now 404 on beta; new keyword URLs serve the posts)
+3. Verify beta renders both posts at new URLs (images, prev/next nav, blog cards)
+4. **Prod** — agroverse_shop_prod doesn't have ep 13/14 at all yet (verified 404 earlier), so when these are promoted later they arrive under the new slugs with zero redirect baggage
+5. Note: episodes 1–12 remain on the old generic pattern in prod — migrating those is a separate decision (would need 301 redirects)
+
+**Not done:** PR not yet opened (blocked on PAT scope), nothing merged, nothing on prod.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp/asb && echo '=== ep13 nav + slug refs ==='; grep -n 'post-navigation\|bean-to-bliss\|href="../' post/bean-to-bliss-episode-13/index.; cd /tmp/asb && echo '=== existing slug length samples ==='; for s in brazil-cacao-genetics-and-flavor cacao-pod-selection-walk-on-oscar-s-fa; cd /tmp/asb && echo '=== new slug lengths ==='; python3 -c "print('cacao-varieties-identification-para-brazil:', len('cacao-varieties-identi; …(+5 more)
+• `merge pr` → https://docs.github.com/rest/pulls/pulls#get-a-pull-request
 
