@@ -4558,11 +4558,13 @@ The map route updated, but the SLP route anchor didn't match — the docstring d
 ### 🤖 Autopilot
 
 The SLP docstring differs. Let me fix the SLP route with the correct anchor.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both modules load cleanly. Now let me run the hard-rule checks (ruff + format + tests) on the changed files, then commit as a PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4765,4 +4767,123 @@ Want me to proceed with the wiring (PR on agroverse_shop_beta), starting with bu
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → set -e cd /tmp echo "=== cleide page: gallery/media markers ===" curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: The other Sophia's claim is **verified accurate**. My assessment:
+
+**✅ Confirmed:** Cleide's page has **zero** YouTube references — the `.gallery` div (line 120) is the static-JPEG grid only. Meanwhil
+
+
+### 🤖 Autopilot
+
+Go received — wiring Cleide's farm-page gallery. Let me ground in the exact pattern: paulo's `media.json` format, the `media-gallery.js` script, and the runbook's step-9.
+
+
+### 🤖 Autopilot
+
+I have the full pattern. `media-gallery.js` fetches `./media.json`, renders `gallery[]` items (youtube iframes + images). Now let me see how the cleide page's static gallery is structured and how paulo's page embeds the media-gallery div + script, so I wire cleide identically.
+
+
+### 🤖 Autopilot
+
+I have the complete pattern. Now I'll build it for cleide:
+
+1. **`media.json`** — schema v1: the 3 existing static JPEGs as `image` entries + **curated YouTube subset** of her 71 videos (with titles/captions from the manifest), keeping the page fast; full 71 remain in the archive manifest
+2. **`index.html`** — replace the static `.gallery` div with the JSON-driven `<div class="farm-videos-container" id="media-gallery">` + add the `media-gallery.js` script tag (same as paulo)
+
+Let me get the manifest's video titles to build the curated media.json, then construct both files.
+
+
+### 🤖 Autopilot
+
+Manifest confirmed — 71 items with yt_ids (no titles; YouTube titles follow "Fazenda Cleide — IMG_xxxx (GPS)" pattern). Let me build the curated `media.json` (first ~8 chronological clips + the 3 existing images) and update the page. Building both files now:
+
+
+### 🤖 Autopilot
+
+media.json built (8 curated YouTube + 3 images). Now the page edit: replace the static `.gallery` div with the JSON-driven container + add the script tag. Let me make the edits via git_push_changes (beta repo, PR flow):
+
+
+### 🤖 Autopilot
+
+The gallery-div edit's search needs checking too — let me see what scripts cleide's page actually loads at the end of body.
+
+
+### 🤖 Autopilot
+
+The page ends with the Leaflet map script. The `</body>` is at line 143. I'll add `media-gallery.js` right before `</body>` — the leaflet script is inline at 142-143, so I'll anchor on the closing `</script>\n</body>\n</html>`.
+
+
+### 🤖 Autopilot
+
+Both search strings failed — the first edit's gallery div block must differ in whitespace/encoding too. Let me get the exact bytes of both regions from the raw file.
+
+
+### 🤖 Autopilot
+
+File bytes look identical to my search. Let me isolate with a minimal single-line anchor to find the discrepancy:
+
+
+### 🤖 Autopilot
+
+The bytes are exact (LF endings, identical content). The search failure is odd — the git_push_changes tool may handle the search differently (perhaps strict on the full block including the `\n` after `</div>` plus the following `<h2>`). Let me try **single-line anchors** instead of multi-line blocks: replace just the `<div class="gallery">` line, and add the script tag on its own line anchor.
+
+
+### 🤖 Autopilot
+
+PR #265 opened. Merging (go authorized this wiring):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Cleide farm-page gallery wired to her media archive ✅
+
+**PR merged:** [#265 — feat: Cleide farm-page gallery — media.json (curated YouTube) + media-gallery.js](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/265) — sha `c482fbd2`.
+
+**What landed (now on agroverse_shop_beta main) — closes the last open leg of the MAP pipeline for Cleide (runbook step 9):**
+
+1. **`farms/fazenda-cleide-para/media.json`** (new, schema v1) — the JSON-driven gallery data:
+   - **8 curated YouTube clips** (IMG_4832–4839, yt_ids pulled from `FARM_MEDIA_MANIFESTS/cleide.json` — the manifest we built earlier) with titles + captions
+   - **3 existing static JPEGs** (sun-drying, fermentation barrel, sorting) preserved
+   - `_note` pointing to the full 71-video archive manifest
+2. **`farms/fazenda-cleide-para/index.html`** — the static `.gallery` div is now a **JSON-driven media gallery** (`<div id="media-gallery">` + `media-gallery.js` script), exactly the paulo/santa-anna/rancho pattern, plus a **"View all 71 videos from the farm visit on YouTube →"** link.
+
+**Verified before merging:**
+- Cleide was the **only** farm missing this wiring (her `media.json` 404'd; paulo/santa-anna/rancho all had it) — confirmed against the live beta repo
+- `media-gallery.js` reads `./media.json` and renders YouTube iframes + images (never breaks the page on missing JSON)
+
+**Design decision (as flagged):** curated-subset-first (8 videos) + full-archive link, so the page stays fast and beautiful while all 71 remain reachable.
+
+---
+
+**RESUME HERE → next unit (promote + verify):**
+1. **Beta verify** — check `https://beta.agroverse.shop/farms/fazenda-cleide-para/` renders the gallery with the 8 YouTube embeds (need Gary's explicit approval to promote)
+2. **Promote to prod** — `sync_beta_to_prod(agroverse_shop_prod)` after approval, then verify `agroverse.shop/farms/fazenda-cleide-para/`
+3. Optional follow-ons (all Gary-flagged non-required): signed-in UAT of the pipeline dashboard, page sign-in button wiring
+
+Ping me with "beta verify" or "promote" and I'll continue.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → verified the other Sophia's claim (cleide media.json 404 vs others 200) · pulled paulo's media.json schema + media-gallery.js · inspected cleide page's static gallery (lines 118–126) + script structure · hexdump confirmed exact bytes (LF endings) · built media.json (8 curated YouTube + 3 images) from the cleide manifest
+• `git push changes` → PR #265 (media.json + gallery div + script + YouTube link) · `merge pr` → ✅ #265 merged (sha c482fbd2)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → set -e cd /tmp echo "=== paulo media.json (schema) ===" curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/paulo-la-do-sitio-para/media.json" | head -60; set -e cd /tmp echo "=== cleide page: static gallery section (lines 110-140) ===" sed -n '110,140p' cleide_page.html; set -e cd /tmp echo "=== exact bytes: gallery div (lines 118-126) ===" sed -n '118,126p' cleide_page.html | cat -A; …(+2 more)
+• `merge pr` → ✅ PR #265 on agroverse_shop_beta merged successfully (sha: c482fbd2fd2ac5d5ca8c8f10964c68678550cfde). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → set -e cd /tmp echo "=== paulo media.json (schema) ===" curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/far; set -e cd /tmp echo "=== cleide page: static gallery section (lines 110-140) ===" sed -n '110,140p' cleide_page.html echo "" echo "=== paulo; set -e cd /tmp echo "=== cleide manifest: sample item structure ===" curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_cont; …(+4 more)
+• `merge pr` → ✅ PR #265 on agroverse_shop_beta merged successfully (sha: c482fbd2fd2ac5d5ca8c8f10964c68678550cfde). Pull Request successfully merged
 
