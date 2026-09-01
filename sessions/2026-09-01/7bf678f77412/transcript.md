@@ -4076,21 +4076,25 @@ Schema captured. Now let me check what a cleide sidecar contains (to map fields 
 ### 🤖 Autopilot
 
 Sidecars have sha256, duration, GPS (text), yt_id — but GPS needs parsing into lat/lng to match the paulo schema. Let me build the manifest with a script (parse GPS, match schema) and commit via PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest built: **71 items, 63/71 GPS, 71/71 sha256, 71/71 yt_ids** (matches paulo's schema: farm_id, plots, source_zips, counts, gps_coverage, items with lat/lng/objects/yt_id). Now committing both files (manifest + index entry) via PR:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest is complete (71 items, full artifact saved). Rather than passing 21KB inline, I'll commit it from the box's agentic_ai_context checkout (same path as the La do Sitio manifest PR) + update index.json, then open the PR via REST:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #878 opened — the Cleide archive manifest (71 videos) + index entry. The auto-start handoff pre-authorizes execution; merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4142,6 +4146,7 @@ go — option 2, quick verify the dashboard reflects Cleide's 71 uploaded, then 
 ### 🤖 Autopilot
 
 Go — quick verification that the dashboard reflects Cleide's 71, then final wrap-up status on the other queues. Checking both in parallel.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4197,26 +4202,31 @@ go — option 4 only (plan/handoff doc wrap-up), then hold. Everything else (far
 ### 🤖 Autopilot
 
 Go — option 4 (plan/handoff wrap-up) only. Let me read the current daemon plan + handoff manifest rows to update them accurately.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the daemon plan (tail) to update it completely, then make the edits.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full daemon plan captured. Let me also read the dashboard plan to update it accurately in the same wrap-up pass.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both plans fully read. Now the wrap-up PR — one PR touching 3 files: both plans (completion/execution status) + the handoff manifest rows.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #879 opened — the wrap-up (3 files: both plan docs + handoff manifest). Gary explicitly directed this wrap-up (option 4), so merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4280,6 +4290,7 @@ https://sophia.truesight.me/
 ### 🤖 Autopilot
 
 Gary's right — let me look at the landing page buttons and the vault pages to fix both the layout and the missing links.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4393,4 +4404,131 @@ Ping me with "go" (restart+verify) or hold.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → cd /opt/truesight_autopilot echo "=== landing page buttons (root route) ===" grep -n "Credential Vault\|Media Archives\|Signature\|button\|b; cd /opt/truesight_autopilot echo "=== routes containing pipeline/vault/signature ===" grep -rn "signature-ledger-pipeline\|media-archive-pip; cd /opt/truesight_autopilot echo "=== vault_routes.py: page routes + nav ===" grep -n "@router.get\|def \|nav\|href\|<a " app/vault_routes.p; …(+10 more)
 • `merge pr` → ✅ PR #372 on truesight_autopilot merged successfully (sha: 8d70a2d24e4ddfb02925ea7f5b2f2616a71e4ab6). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — restart+verify (option 1), but use your own deploy_autopilot (idle-drain guard) rather than me doing a raw SSH restart — RSA-sig thread is still mid-turn and I don't want to freeze it again like earlier.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+You're back up — I found + fixed the crash (restored app/signature_ledger_pipeline.py, dropped during #372's merge since that branch descended from the A7 branch; merged as PR #374, service stable, NRestarts=0, all endpoints verified 200/401). Root cause of BOTH this and the earlier media_archive_dashboard incident: merge_pr never checks CI status before merging — your own scripts/smoke_tools.py already imports app.main and would catch this exact class of bug, but merge_pr calls the GitHub merge API directly without waiting for/checking those checks. Please build a proper fix: merge_pr should check the PR's combined CI status (checks-api) before merging and refuse/warn if not green, with tests. This is the real prevention fix Gary asked for — go ahead.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+Go — building the real prevention fix: `merge_pr` must check the PR's combined CI status before merging. Let me find the implementation.
+
+
+### 🤖 Autopilot
+
+`github_client.py:357` is the merge_pr implementation. Let me read it + the surrounding helper methods (what's available for status checks).
+
+
+### 🤖 Autopilot
+
+Interesting — the CI gate **already exists** in `merge_pr` (lines 375-393, `_ci_status`)! Let me check when it was added, whether CI is actually configured for this repo, and whether tests exist — the gate may be new or incomplete.
+
+
+### 🤖 Autopilot
+
+There IS already a `test_merge_pr_ci_gate.py` and CI workflows exist (`smoke.yml`, `test.yml`) — so the gate and tests were added after the incident (probably by Envoy or another Sophia). Let me check the test file and whether the current gate has a gap: the report says merge_pr "never checks CI before merging" — but the gate exists. Let me verify the tests actually pass and look for gaps (e.g. does `_ci_status` handle the "checks pending but statuses ok" case, or GitHub Actions with `conclusion: null`).
+
+
+### 🤖 Autopilot
+
+The CI gate + tests **already exist** — added by Envoy (the test docstring says exactly this). Let me verify when the gate landed relative to the #372 incident, and run the tests to confirm it's working and covers the gap.
+
+
+### 🤖 Autopilot
+
+The tests pass (7/7) but `git log` shows **no commits** — meaning Envoy's fix is **uncommitted on the box** (working tree only, not on GitHub main). That's a critical gap: the gate exists locally but a fresh clone/deploy won't have it. Let me confirm.
+
+
+### 🤖 Autopilot
+
+Confirmed — Envoy's CI-gate fix (81 lines in `github_client.py` + the test file) is **uncommitted on the box only**. It works locally (7/7 tests pass) but any deploy/pull would lose it — exactly the class of loss we're preventing. The fix: **commit it** so it's on origin/main. Let me verify it's the only intended change, run the full check suite, and commit.
+
+
+### 🤖 Autopilot
+
+The diff is exactly Envoy's CI-gate fix (the `_ci_status` method + the gate in `merge_pr`), clean and complete. It's uncommitted — I need to commit it so it survives deploys. Running the full check suite (hard rule) before committing:
+
+
+### 🤖 Autopilot
+
+All checks green. Also let me run the wider test surface touching github_client to make sure nothing regressed, then commit + push + PR:
+
+
+### 🤖 Autopilot
+
+Committed + pushed (`e7f6468`). Opening the PR via REST:
+
+
+### 🤖 Autopilot
+
+PR #376 opened — the CI-gate fix that was sitting uncommitted on the box (would have been lost on any deploy). Merging — and this merge is itself a live demonstration of the gate (it'll check this PR's own CI status first):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — CI-gate fix committed + **the gate just proved itself live** ✅
+
+**PR opened:** [#376 — ci: merge_pr refuses to merge when CI is failing/pending](https://github.com/TrueSightDAO/truesight_autopilot/pull/376) — sha `e7f6468`
+
+**What I found & did:**
+- **Envoy's CI-gate fix was sitting uncommitted on the box only** (81 lines in `app/github_client.py` + `tests/test_merge_pr_ci_gate.py`, 7 tests) — any deploy would have silently lost it, the exact class of loss we're preventing. I verified the diff (clean, only the gate), ran the full local suite (compile ✅ · ruff ✅ · format ✅ · 20 related tests pass ✅), committed it on a fresh branch from `origin/main`, and opened PR #376.
+
+**The money moment — the gate refused its own merge:**
+> ❌ `Refusing to merge PR #376 ... CI not green (failing-or-pending: test, smoke)`
+
+The merge_pr CI gate **blocked the merge** because this PR's `test` + `smoke` GitHub Actions checks are failing/pending. That's the prevention fix working exactly as designed — it caught the exact scenario that crashed the service twice (merging on unverified CI).
+
+**Why it's red (likely):** the repo's `test` workflow runs the full pytest suite, which has the **5 pre-existing failures we've seen all session** (`test_chat_observe.py`, vault, sync_sunmint — untouched files). So the repo's CI is chronically red, and the gate now refuses every merge until that's addressed.
+
+**This is the honest consequence of the fix:** the gate does its job — but the repo can't merge anything until CI is actually green. That's the real work now.
+
+---
+
+**RESUME HERE → next unit (unblock CI → merge #376):**
+1. **Inspect the actual CI runs** on PR #376 (`GET /repos/.../commits/e7f6468/check-runs`) — confirm `test` is failing on the 5 pre-existing pytest failures and `smoke` is failing/pending on what
+2. **Fix CI to green**: either (a) fix the 5 pre-existing test failures, (b) quarantine/`xfail` them with a tracked reason, or (c) if smoke fails on something real, fix it — all in a follow-up PR
+3. **Re-merge #376** once CI is green — the gate will then pass, and future merges are protected
+4. Optional: add a `merge_pr` CI-gate mention to the plan docs/roles so the behavior is documented
+
+Ping me with "go" and I'll pull the CI logs and start unblocking.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → located `merge_pr` in github_client.py · found Envoy's `_ci_status` gate + 7 tests **uncommitted** · verified origin/main has 0 copies (deploy-loss risk) · ran compile/ruff/format + 20 related tests (all pass) · committed `e7f6468` on `ci/merge-pr-gate` · pushed + opened PR #376 · `merge_pr` → **REFUSED by its own gate** (test+smoke failing/pending) — live proof the fix works
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ❌ Failed to merge PR #376 on truesight_autopilot: Refusing to merge PR #376 on truesight_autopilot: CI not green (failing-or-pending: test, smoke). Failing/pending checks: test, smoke
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /opt/truesight_autopilot echo "=== find merge_pr implementation ===" grep -rn "def merge_pr\|merge_pr" app/*.py scripts/*.py tools/*.py 2; cd /opt/truesight_autopilot echo "=== github_client.merge_pr (lines 340-420) ===" sed -n '340,420p' app/github_client.py echo "" echo "=== d; cd /opt/truesight_autopilot echo "=== when was _ci_status / the CI gate added? ===" git log --oneline -5 -- app/github_client.py 2>/dev/null; …(+7 more)
+• `merge pr` → ❌ Failed to merge PR #376 on truesight_autopilot: Refusing to merge PR #376 on truesight_autopilot: CI not green (failing-or-pending: test,
 
