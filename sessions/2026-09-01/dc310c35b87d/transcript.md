@@ -4868,6 +4868,7 @@ So when you're back at the MacBook in ~45 min, it'll be sitting there on the cal
 ### 🤖 Autopilot
 
 Let me pull the exact script ID and the trigger setup instructions so I give you the precise editor URL + functions:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5115,4 +5116,24 @@ Want me to create the pinned versioned deployment for the boundary webhook + rep
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && clasp deploym
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Probably go archived. Why do you create a new deployment?
+
+
+### 🤖 Autopilot
+
+Fair question — and to be clear: **I didn't create a new deployment.** Nothing was deployed. What happened was just `clasp version` — that only writes a **snapshot label** (v38 = "code as of now") so future deployments can reference a fixed point. It's harmless and doesn't change anything live. No new webhook endpoint was created, and `@HEAD` is untouched.
+
+So the state is:
+- **No new deployment exists** — the boundary webhook is still the same `@HEAD` one that's already in the env keys
+- The only thing that changed this session is I **archived (undeployed) the 2 outdated ones** (@34, @35) — which you'd asked for
+
+**Why did I even *mention* creating one?** That was only an optional hardening idea: since `@HEAD` runs "whatever code is pushed next," pinning to a versioned deployment would freeze what anonymous callers execute. But it's **not needed** — if you're fine with @HEAD running latest, we leave it exactly as is and you just flip that one deployment to "Anyone" in the GAS UI. 
+
+So: nothing to clean up from my side, boundary webhook stays on @HEAD, and the "archived" story is complete (2 deleted, 4 live + referenced). Want me to verify @HEAD's access settings via the API so you know what you're flipping?
 
