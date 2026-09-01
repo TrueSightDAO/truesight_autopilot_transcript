@@ -3748,11 +3748,13 @@ Something's wrong — the log shows **13 passes all stuck at "3730 files remain"
 ### 🤖 Autopilot
 
 Event files are deterministic locally (only `index.json`'s `generated_at` differs) — yet the cron log shows the **same event files re-pushed with different hashes every pass**, and "3730 remain" never declines. Contradiction → the deployed script must differ from what I dry-ran. Let me compare a remote-pushed file against the local build and check skip lines.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Same script, remote file matches local build, but **zero skip lines in the log** — meaning `_upload` never hits the sha-skip branch. The push loop isn't using the sha-aware skip. Let me look at `_push_ledger` and `_upload` to see why.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3766,6 +3768,7 @@ Why? `_upload` only skips on HTTP **422** (`unchanged`), but GitHub returns **20
 2. The event file `Edgar_20250901114223_110.json` matched locally between runs... but wait, the dry-run I compared wrote `_ledger` — the CRON run may write different content. Let me check what actually differs — pull the remote file and compare with the local build directly.
 
 Let me get the actual remote-vs-local diff to see the non-deterministic field.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3773,31 +3776,37 @@ Let me get the actual remote-vs-local diff to see the non-deterministic field.
 **Root cause found.** The remote file content matches the local build (deterministic), yet the log shows the SAME files re-pushed with NEW commit hashes every pass, and "3730 remain" never moves. That means GitHub's Contents API is creating a **new commit every PUT** even for identical content — the sha-aware skip never triggers, so each cron pass re-pushes the same first 250 files forever. The GET fetches the blob sha, but the code only skips on HTTP **422**, and a PUT with a valid sha + identical content returns **200 with a fresh commit** instead of a no-op.
 
 The robust fix: compare the **local blob sha** (git blob hash of the exact bytes) against the remote file's sha, and skip the PUT entirely when they match — no reliance on GitHub's no-op behavior. And count every examined file toward the cap so the trickle advances through the set.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fix applied and clean. Now let me verify it actually skips already-pushed files (quick test with a small cap), then deploy + PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Fix verified working**: 19/20 skipped (blob sha match), only 1 new push, and the counter advances (3960 remain — the trickle now progresses through the set instead of re-pushing the same 250). Committing the fix as a PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 HTTP 400 — the JSON body was likely malformed (the `\"` escapes in the shell string). Let me check the error and retry with a simpler body.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed fine; only the PR-body JSON was malformed. Retrying with a clean heredoc body.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #367 open and verified. Merging it now so the next cron pass resumes the backfill correctly (this is the fix that un-sticks it).
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4009,4 +4018,162 @@ Which track do you want me to start with next turn? (I'd suggest A7 PR1 — the 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → echo "=== backfill progress ==="; tail -3 /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null; echo "=== cron passes today ==="; gr; echo "=== last 'remain' lines ==="; grep "files remain" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail -3; echo "=== la; cd /opt/truesight_autopilot && echo "=== is it stuck? last 3 remain lines + counts ==="; grep "files remain" /home/ubuntu/scripts/sync_sunmi; …(+4 more)
 • `merge pr` → ✅ PR #370 on truesight_autopilot merged successfully (sha: a758b476dc3dc67ebbda67c94c35f55af89fb2cc). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Backfill genuinely un-stuck — cursor fix merged.** ✅
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **PR** | [truesight_autopilot #370](https://github.com/TrueSightDAO/truesight_autopilot/pull/370) — 
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — same here, my 10:37 UTC restart killed this turn too. Please resume the A7 signature ledger dashboard / backfill monitoring.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⚙️ ssh run …
+
+
+### 🤖 Autopilot
+
+Resuming A7 + backfill monitoring. First, check backfill progress and find the MAP dashboard implementation to copy-adapt.
+
+
+### 🤖 Autopilot
+
+**Backfill is progressing beautifully**: 3730 → 2977 → 2727 → 2478 remain — ~250/pass declining. At this rate it finishes in ~10 more passes (~5h). And I found the MAP implementation: `app/media_archive_pipeline.py` (route + data endpoint + HTML) wired into `app/main.py`. Let me read it to copy-adapt for the signature ledger dashboard.
+
+
+### 🤖 Autopilot
+
+MAP pattern captured — I'll copy-adapt it into `app/signature_ledger_pipeline.py`. The data comes from the public GitHub repo (live tree API) + the local cron log + cursor file.
+
+
+### 🤖 Autopilot
+
+Compile + ruff pass; needs one format pass. Then wire the router into `main.py` (include_router + landing-page link) and run the full suite.
+
+
+### 🤖 Autopilot
+
+Interesting — line 518 already has `signature_ledger_pipeline_router` wired. Let me check if that was pre-existing or if I need the import + landing link.
+
+
+### 🤖 Autopilot
+
+The wiring (import + router + landing link) is already in `main.py` — unexpected. Let me check git status to see whether that's committed on main or local uncommitted changes from a prior attempt.
+
+
+### 🤖 Autopilot
+
+The `main.py` wiring already exists as uncommitted local changes (from a prior killed turn). Let me verify the main.py diff is exactly the 3 wiring lines (nothing else), then commit the A7 PR with just my module + that wiring.
+
+
+### 🤖 Autopilot
+
+`git diff app/main.py` is empty — meaning the wiring is already committed on HEAD, not uncommitted. Let me verify HEAD actually contains the wiring and check the recent commits.
+
+
+### 🤖 Autopilot
+
+HEAD shows **neither** the wiring nor the module — the working tree has it uncommitted (my earlier `git diff app/main.py` returned empty because... let me recheck: the working tree diff shows `M app/main.py` in status, but `git diff app/main.py` empty is odd. Actually — the grep on `git show HEAD:app/main.py` returned nothing for signature_ledger_pipeline, yet `git status` shows `M app/main.py`. The diff being empty + status showing M suggests the index vs working tree. Let me look more carefully — maybe the wiring got committed in a prior killed turn's commit but the module file didn't, OR the diff is being swallowed. Let me check properly.
+
+
+### 🤖 Autopilot
+
+Both diffs are empty yet `git status` shows `M app/main.py` — the working tree matches HEAD, and the file was committed at some point. But `git show HEAD:app/main.py | grep signature_ledger_pipeline` returned nothing... contradiction. Let me resolve it — maybe there are multiple worktrees or the grep failed silently.
+
+
+### 🤖 Autopilot
+
+Now it's clear. The main worktree is on branch **`feat/vault-nav-pipeline-links`** (commit `3b8f2c7`) — not `main`. That branch already contains the wiring (import + router + landing link at lines 33/518/728) but **not** the module file. So a prior turn created the wiring branch but the module was never committed. I need to:
+1. Confirm what `feat/vault-nav-pipeline-links` is vs `main` (it may be an old parked branch)
+2. Create the A7 branch from **origin/main**, add the module + wiring, and PR it
+
+Let me check the branch's relationship to origin/main.
+
+
+### 🤖 Autopilot
+
+`feat/vault-nav-pipeline-links` is a parked branch that diverged — its `app/main.py` diff includes the A7 wiring *plus* vault nav changes (unrelated). I'll build the A7 PR cleanly from **origin/main**: create a fresh branch, copy my module in, add only the 3 wiring lines, commit, push, PR. The parked branch stays untouched.
+
+
+### 🤖 Autopilot
+
+The link assertion failed (`link: 0`) — the landing page link must use different markup on origin/main. The import + include succeeded (compile OK), but the link wasn't added. Let me find the actual landing link markup on this branch.
+
+
+### 🤖 Autopilot
+
+The landing link uses a `style="margin-top: 0.75rem;"` attribute (from the parked branch's older main). Adding the signature ledger link with matching style after line 724.
+
+
+### 🤖 Autopilot
+
+Clean: `app/main.py` +1 (the link; import/include were already in origin/main — wait, that means origin/main already has the import+include from a prior merged PR, so only the landing link + the module are new). The `tokenomics`/`worktrees/vault` submodule pointers drifted — I'll exclude those. Let me commit just my two files, push, and open the PR.
+
+
+### 🤖 Autopilot
+
+**A7 PR #373 open** — clean 2-file diff (+259). This is the A7 PR1 (backend + page in one). Per the one-PR-per-turn rule I stop here. Reporting.
+
+## A7 PR1 ready — at gate ✅
+
+### [truesight_autopilot PR #373: Signature Ledger Pipeline dashboard](https://github.com/TrueSightDAO/truesight_autopilot/pull/373)
+Clean diff: **2 files, +259** (new module + 1 landing link; no submodule noise).
+
+### What it does
+Copy-adapts the MAP dashboard pattern → **`/signature-ledger-pipeline`** (governors-only JWT):
+- **Per-event-type folder counts** (`contribution_event`, `inventory_movement`, `sales_event`, …) fetched live from the ledger's GitHub tree API
+- **Backfill status card**: files remaining (~250/pass → ~N passes), cursor position, complete flag — read from the cron log + cursor file
+- **Recent cron activity** log tail
+- Read-only, no write paths; 401 → login prompt (same as MAP)
+
+### Backfill status (checked this turn)
+**Progressing correctly now**: 3730 → 2977 → 2727 → **2478 remain** (~250/pass declining). ETA ~5h. The cursor fix holds.
+
+## Roadmap state
+| Unit | Status |
+|---|---|
+| A1–A5 | ✅ |
+| A6 (code + backfill running) | ⏳ **2478 remain** |
+| **A7 dashboard** | ⏸️ **PR #373 at gate — awaiting your review** |
+| §7 contribution | pending |
+
+## RESUME HERE → **A7 gate + deploy (then A7 UAT)**
+1. **Your review of PR #373** → merge on your go
+2. **Restart `truesight-autopilot.service`** (own service, brief chat blip) to load the new route → health-check `/ping` + the new page's 401 behavior
+3. **A7 UAT** (copy MAP's): sign in as governor → open `/signature-ledger-pipeline` → verify: folders table with counts, backfill status card matches the log, log tail renders, signed-out gets 401
+4. Then **backfill monitor → completion** (when files remain = 0): root index ~40 folders / ~3,947 events / excluded 703, 3-sample openssl re-verify, live PII scan, README + plan update, §7 contribution
+
+Want me to merge #373 and deploy next turn?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → checked backfill (2478 remain, progressing); read MAP module (pattern); wrote `app/signature_ledger_pipeline.py` (262 ln, compile+ruff+format clean); found parked branch `feat/vault-nav-pipeline-links` (unrelated); built clean branch `feat/a7-signature-ledger-dashboard` from origin/main; added landing link (+1); committed 2 files; pushed; opened **PR #373** via REST; verified 2-file diff
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → echo "=== BACKFILL PROGRESS ==="; grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail -3; echo "=== cursor ==="; cat /home; …(+6 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → echo "=== BACKFILL PROGRESS ==="; grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail; cd /opt/truesight_autopilot && cat > app/signature_ledger_pipeline.py <<'PYEOF' """Signature Ledger Pipeline dashboard — read-only data endp; cd /opt/truesight_autopilot && python3 -m ruff format app/signature_ledger_pipeline.py >/dev/null 2>&1 && echo FORMATTED; python3 -m ruff fo; …(+11 more)
 
