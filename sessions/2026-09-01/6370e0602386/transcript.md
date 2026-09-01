@@ -2424,31 +2424,37 @@ The JSON uses 4-space indent, not 2. Redoing the edits with correct indentation:
 ### 🤖 Autopilot
 
 The tool's second call based its fresh clone on main (not my first commit) — non-fast-forward. I'll do the JSON edits on the box against the actual branch and push, which updates PR #269.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The checkout failed ("Aborting") — I need to inspect the actual working-tree state before proceeding. Let me diagnose precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand the full state: the remote branch `youtube/gps-in-cache` (PR #269) has the script but **main's version** of the JSON (no GPS); my working tree has the GPS edits based on main. Since the branch's JSON == main's, I can cleanly swap in my edited version and push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed to the branch — PR #269 now has both the script and the GPS JSON edits. Let me verify PR #269's final state and confirm the JSON parses on the remote.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The remote branch now has everything: script + 5 GPS entries. Let me confirm PR #269's state (the gh field name was wrong) and then report.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 gh CLI is being finicky with fields/flags, but I have everything I need from the git-level verification (remote JSON validates with exactly the 5 expected GPS entries). Let me do one final clean state check of the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2656,4 +2662,49 @@ Want me to prep anything now (e.g. extend the script's `--source-dirs` and docum
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp/agroverse_shop_work 2>/dev/null && git checkout main -q 2>&1 | tail -1 && git pull origin main -q 2>&1 | tail -1 && echo "HEAD: $(gi; cd /tmp/agroverse_shop_work && python3 -c " import json, os d = json.load(open('scripts/youtube_videos.json')) nogps = [(k, v.get('video_id'; cd /tmp/agroverse_shop_work && echo "=== 1) join cache video_ids vs farm manifests (yt_id) ==="; python3 -c " import json, glob d = json.loa; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] You mean the YouTube videos you uploaded has no way to resolve to your local JSON manifest? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right to push on this — let me re-check. I may have dismissed the incoming manifests too fast: my parser returned 0 items, which usually means I grabbed the wrong key, not that they're empty. Let me read the actual manifest structure and the `uploaded_via` field properly.
+
+
+### 🤖 Autopilot
+
+Now I can see the real structure. The manifest DOES have the source path (`/Users/garyjob/Downloads/B2B ep 10 - tiktok part 2_Full HD 1080p.MP4`) — matching the cache basenames exactly (67 videos in `videos`, 63 upload candidates). So the link exists at the **manifest level** (path + basename + sha256) — the cache entries just don't store the source path. My earlier join failed because I searched a `file` key that doesn't exist (it's `path`).
+
+So the resolution chain IS there: cache basename → manifest `videos[]` (path/sha256) → local file. The 68 aren't unreachable — they're reachable through the manifest, IF the files themselves exist somewhere. Let me check whether these source files (with those exact sha256s) exist on the box under any name, and whether the manifests themselves carry GPS.
+
+
+### 🤖 Autopilot
+
+You're absolutely right to push — I was wrong. **The resolution chain does exist, I just didn't look hard enough.** Here's the corrected picture:
+
+**The chain exists:**
+- Cache keys (73) ↔ manifest basenames: **63 of 73 match exactly** (the incoming-videos manifests have `path` + `basename` + `sha256` for each source file — e.g. `B2B ep 10 - tiktok part 2_Full HD 1080p.MP4` ↔ `/Users/garyjob/Downloads/B2B ep 10 - tiktok part 2_Full HD 1080p.MP4`)
+- So 63/68 of the non-GPS entries **do resolve to a source path** — just via the manifest, not a field in the cache
+- The 10 cache keys not in the April manifest: the 5 IMG_* (already have GPS) + 4 santos_* + `Project 04-27(1)` — those resolve through other manifests (July one has 2; santos may be in a different manifest)
+
+**But the manifest does NOT carry GPS** (0/67 entries have latitude/longitude — keys stop at `youtube_upload_recommended`). The GPS lives only in the **file metadata** of those source files — which are on **your Mac** (`/Users/garyjob/Downloads/…`), not this box (0 basename hits in /home/ubuntu).
+
+**So the real answer:** the resolution from YouTube → JSON cache → manifest → source path is **100% there** — but the last hop (source file → GPS) requires the files to be reachable, and they're on your Mac. The manifests even store `sha256`, so once a file lands on the box I can match by hash, not just name.
+
+**Two ways to close the last hop:**
+1. **Sync the source files** (or a zip of `/Users/garyjob/Downloads`' videos) to the box — then I re-run the GPS backfill; it'll match by basename/sha256 and pull exact embedded GPS for the 63.
+2. **Extend the manifest/ingest to extract GPS at upload time** — the MAP pipeline already does this for farm media (`exiftool -GPSCoordinates`, stored in farm manifests); we could add the same step to `youtube_batch_incoming.py` so future uploads capture GPS into the cache **while the file is still in hand** (before it leaves the Mac/upload dir).
+
+Option 2 is actually the robust fix — GPS should be captured **at ingest**, when the file's metadata is available, not backfilled later. Want me to:
+- **(a)** add GPS extraction to `youtube_batch_incoming.py` (like the farm MAP pipeline: `exiftool -GPSCoordinates` on the source path, store `latitude/longitude/gps_source: file_exif` in the cache entry at upload), and
+- **(b)** write a one-shot `--from-manifest` mode for `add_gps_to_youtube_videos_json.py` that takes the source path from the incoming manifests and re-runs exiftool when files are present?
+
+That closes the loop properly at both ends — say the word and I'll open that PR.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/agroverse_shop_work && echo "=== manifest top-level structure ==="; python3 -c " import json m = json.load(open('docs/incoming_video; cd /tmp/agroverse_shop_work && echo "=== manifest entries: do they have GPS? ==="; python3 -c " import json for mf in ['docs/incoming_videos
 
