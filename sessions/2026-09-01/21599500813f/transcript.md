@@ -40,26 +40,31 @@ I've got the runbooks for both. Now let me check live status of each pipeline. S
 ### 🤖 Autopilot
 
 Both runbooks are in hand. Now checking live state — Edgar service health, the media daemon, cleide manifest, and any known issues.
+[4 tool result(s) compacted: ssh_run, ssh_run, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SSH key to dao_protocol host isn't authorized from here — no problem, I'll check Edgar over HTTP instead. The daemon is running locally, so let me query it directly.
+[3 tool result(s) compacted: http_fetch, ssh_run, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edgar's endpoint is alive (405 on GET = expects POST; 404 on /health just means no such route). The daemon is running and actively uploading. Let me dig into queue state, sidecar health, photos, and Edgar's actual POST behavior.
+[3 tool result(s) compacted: ssh_run, http_fetch, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edgar endpoint is confirmed live. Now let me find the daemon's actual inbox path, its current state, and check photo uploads in farm-media-raw.
+[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both pipelines are coming into focus. Let me get the precise queue state, photo counts, the real daemon config, and run a local RSA self-test on the keypair.
+[3 tool result(s) compacted: ssh_run, ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -181,4 +186,38 @@ Want me to wire cleide's gallery to include the 71 YouTube videos (add `media.js
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/fazenda-cleide-para/index.html" -o cleide_; cd /tmp && echo "=== title / structure ==="; grep -oE '<title>[^<]*</title>' cleide_page.html; echo; echo "=== gallery-related markers ===";; cd /tmp && echo "=== gallery section context ==="; grep -n -i -B2 -A8 'gallery' cleide_page.html | head -60; echo; echo "=== images referenc
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: what are the status of the two dameons?
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=18800]
+
+
+### 🤖 Autopilot
+
+Noted that this was observed (not directed at me) — but it's the same question I've been working on this session, and it's read-only, so I'll give you the status of both daemons. Quick fresh check:
+
+
+### 🤖 Autopilot
+
+Both daemons are **up and running** (fresh check):
+
+| Daemon | Service | Status | Health evidence |
+|---|---|---|---|
+| **RSA event pipeline** (Edgar / dao_protocol) | `dao_protocol` on Edgar host | ✅ **Live** | `POST /dao/submit_contribution` → **200 OK** just now (`signature_verification: no_signature_format` = empty-body probe, expected) |
+| **Media archive pipeline** (MAP) | `farm-media-daemon.service` | ✅ **active (running)** | PID 151113, `--config media_archive_daemon_config.yaml`; queue drained (85/85 videos yt_id'd, 0 pending, 0 error); last upload batch cleide `IMG_4924.MOV → vBPBZ6oUlfc` ~10:49 UTC, then idle as expected |
+
+**Both healthy, both empty of pending work.** No intervention needed.
+
+Side observations from the sweep (unrelated to the two pipelines, but worth noting):
+- `certbot.service` and `snap.certbot.renew.service` show **failed** on this box — cert renewal, not related to either daemon. Can look if you want.
+- Autopilot stack (main agent, Telegram adapter, attention watchdog, vault) all active/running.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== daemon-ish services ==="; systemctl list-units --type=service --no-pager | grep -iE 'daemon|autopilot|bot|edgar|media' | head -15;
 
