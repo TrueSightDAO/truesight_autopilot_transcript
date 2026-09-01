@@ -5016,21 +5016,25 @@ The anchor failed on the escape mismatch (file has literal `─` box chars, my P
 ### 🤖 Autopilot
 
 The regex is too fragile with the box chars. Let me use line-number-based surgery instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The submit block is lines 592–626 (ends right before `function getDeviceGps` at 627). Line-based surgery:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Odd — `buildBoundaryShareText` present but `uploadBoundary`/`flushBoundaryQueue` missing. Let me inspect what actually landed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All functions landed correctly (my check string was just wrong). Now wiring the flush init + online listener, and removing the farm nav option/route/i18n from limites, then the other three pages:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5165,4 +5169,51 @@ Stopping here per the one-PR-per-turn rule.
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && echo "=== PR #63 branch tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/git/trees/fix%2Fremove-regis
 • `merge pr` → ✅ PR #64 on sunmint_beta merged successfully (sha: 4d0c574e286c336fd31eafc33972c734675ec3e7). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — merge PR #63, then verify beta live.
+
+
+### 🤖 Autopilot
+
+Go-signal received — merging PR #63, then verifying beta live:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule (the beta-live verification carries to next turn).
+
+## What I did this turn
+
+**Merged PR #63 — the three governor-requested changes** (sha `fca602d2`, 5 files).
+
+**PR #63 — https://github.com/TrueSightDAO/sunmint_beta/pull/63** (merged)
+
+### What's now on `sunmint_beta/main`
+1. **Local file picker** on `/limites-da-fazenda/` — dropped `capture="environment"` so users can choose photos/videos from gallery/local files, not just the camera
+2. **Boundary submit online-send fix** (the "just queued even though online" bug) — `submitBoundary()` now stores real file Blobs, **sends immediately when online** (signed `[FARM BOUNDARY EVIDENCE EVENT]` with `attachment` per file, 409-idempotent, mirroring index.html's tree-report path), queues only on offline/failure, flushes on load + `online` event
+3. **register_farm removal (nav side)** — `farm` option + `/register_farm/` routes + `navFarm` i18n removed from all 4 pages (page itself deleted via PR #64 last turn)
+4. **Regression test updated** — 4 nav options, page removed, dead exemption code cleaned (7/7 pass, ruff/format/compile green)
+
+## RESUME HERE → next unit (fresh turn)
+
+1. **Verify beta live** — `beta.sunmint.truesight.me/limites-da-fazenda/`: file input offers local files (no camera-only), submit sends immediately when online (not just "queued"), nav has no "Registrar Fazenda", `/register_farm/` 404s
+2. **Prod promotion** (#55–#64) — gated on Gary's explicit go
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #63 on sunmint_beta merged successfully (sha: fca602d23d4d2a1c581e97f1eb1698e1c85ae52d). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #63 on sunmint_beta merged successfully (sha: fca602d23d4d2a1c581e97f1eb1698e1c85ae52d). Pull Request successfully merged
 
