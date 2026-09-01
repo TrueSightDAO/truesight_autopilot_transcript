@@ -4342,6 +4342,7 @@ The constants are in a shared file. Let me find `SOURCE_SHEET_URL` in the projec
 ### 🤖 Autopilot
 
 Found the source sheet: `1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ`. Let me check the SunMint Plots tab for the test farm row:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4722,4 +4723,50 @@ Farmer submits → Evidence tab (raw, immutable)
 ```
 
 That's a clean, evidence-first model with the association problem solved by *deferring* it rather than forcing it. I'm on board — say go and I'll implement: (1) FBE handler plot-first creation, (2) UI Farm→Plot label, (3) docs, (4) backfill workflow documented for the governor side.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Which means while the "SunMint Plots" Farm ID is left empty, while it might show up on https://truesight.me/sunmint.html clicking on the plot direct now yield a link to the farm's profile... (I am assuming this is the business logic right now... correct me if I am wrong)
+
+
+### 🤖 Autopilot
+
+Let me verify against the actual impact-map code rather than assume — checking how the plot popup decides to show the farm profile link:
+
+
+### 🤖 Autopilot
+
+Confirmed — your assumption is **exactly right**, and here's the precise business logic from the code (line 670–673 of `truesight_me_beta/sunmint.html`):
+
+```js
+var fid = props.farm_id || props.farmId || '';
+var FARM_SLUG = { 'santa-anna-fazenda': 'santa-anna-fazenda-para', 'rancho-maranta': 'rancho-maranta-para' };
+var fslug = FARM_SLUG[fid] || fid;
+if (fid) popupHtml += '<br/><a href="https://agroverse.shop/farms/' + fslug + '/" ...>View farm profile on Agroverse ↗</a>';
+```
+
+## So, the current behavior (you're correct):
+
+| Plot state | Popup behavior |
+|---|---|
+| **Farm ID empty** (the new plot-first flow) | `fid` = empty → **`if (fid)` fails → NO farm profile link shown.** Popup just shows the plot name/media. Clicking gives no farm link. ✅ exactly what you described |
+| Farm ID present, in `FARM_SLUG` map | Link → `agroverse.shop/farms/<mapped-slug>/` |
+| Farm ID present, not in map | Link → `agroverse.shop/farms/<farm_id>/` (falls back to raw id — may 404) |
+
+## Implications for the plot-first model
+
+1. **Empty Farm ID = graceful degradation** — the map still renders the polygon and popup (the `if (fid)` guard prevents a broken link). So the new flow needs **zero change** on the map side: unlinked plots just show no farm link. ✅
+
+2. **The "View farm profile" link is a *derived* feature** — it appears only after the governor backfills Farm ID. That's the natural hook for "the story is complete enough to link."
+
+3. **The `FARM_SLUG` map is a manual second map** (line 671) — even after backfill, the plot's `farm_id` (e.g. `rancho-maranta`) must ALSO be in `FARM_SLUG` to hit the pretty agroverse.shop URL, else it falls back to raw id. Worth remembering: **backfill = 2 spots** (Plots tab Farm ID + this slug map), and the slug map is where a mismatch silently 404s.
+
+So your mental model is exactly the implemented logic. The plot-first change needs nothing on the map side; the farm-link appears organically once the governor backfills the association. Want me to proceed with the full plot-first implementation (FBE handler + UI label + docs + backfill workflow), with the slug-map gotcha noted in the docs?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint.html" -o sunmint.html && echo "=== popup /
 
