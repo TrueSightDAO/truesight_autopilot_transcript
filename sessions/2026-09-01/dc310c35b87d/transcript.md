@@ -8,341 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Promotion complete — everything is live on prod.** ✅
-
-## ✅ What's live now on `sunmint.truesight.me` (verified)
-
-| URL | Status | Content check |
-|---|---|---|
-| `/` | 200 | ✅ **"Registrar Fazenda"
-
-
-### 🤖 Autopilot
-
-Go-signal received — proceeding with the **GAS receiver follow-on** (the flagged gap that completes the boundary pipeline end-to-end). Let me check the manifest/plan per protocol and investigate the tokenomics GAS structure:
-[2 tool result(s) compacted: read_context_file, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The GAS receiver doesn't exist yet (the function name was a dispatch.py doc placeholder). Let me investigate how the existing FARM REGISTRATION receiver works in the GAS layer so I can mirror it:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The `agroverse_qr_code_web_service` project is the GAS layer. Let me check its main `.gs` file (the web service that receives events) and how FARM REGISTRATION is handled:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-No `.gs` files in the tree — let me look at the full structure of that folder to see what's actually there:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The folder is Python tooling, not the GAS service itself. Let me find where FARM REGISTRATION is actually handled — checking the webhook handler and searching for the event name in tokenomics:
-[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The GAS web service lives at `google_app_scripts/1MnAsIQAxcSfZO_hALOtMFJ4y1k4OnqeXKMwYs6xev600rPNUYepqcXsT/qr_code_web_service.js`. Let me see how it handles FARM REGISTRATION / TREE GROWTH events so I can mirror the pattern for the boundary evidence handler:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The `qr_code_web_service.js` handles QR codes, not farm/media events. The dispatch routing references `processFarmBoundaryEvidenceFromTelegramChatLogs` — mirroring the existing chat-log-processing pattern. Let me find how TREE GROWTH MONITORING media is processed today:
-[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The GAS receiver does **not exist** — my dispatch.py docstring referenced a function name, but there's no handler. The closest analog is `process_tree_growth_monitoring.gs`. Let me read its structure to ground the build plan:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The TGM handler is the perfect template — it scans Telegram Chat Logs, mirrors photos to GitHub, and appends tracking rows. Let me read its full body to build a faithful mirror for boundary evidence:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The TGM handler is a complete template — cron-scans Telegram Chat Logs, parses the event marker, dedupes via a tracking tab, mirrors media to GitHub, and appends rows. The boundary handler mirrors this + adds the **farm upsert** (rule 4) + **index rebuild triggers**. Let me get the constants block to mirror the pattern faithfully:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the complete template. Now building the boundary-evidence GAS handler — mirroring the TGM pattern (shared constants, FBE_ prefix, farm upsert for rule 4, media mirror, tracking tab):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Node won't check `.gs` directly — let me copy to `.js` and check:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-GAS handler built + syntax-checked. Let me verify the actual Farms tab name the generator uses (so `FBE_FARMS_TAB` matches reality), then push:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The generator reads the **"SunMint Plots"** tab — my handler referenced a non-existent "SunMint Farms" tab. The farm record lives **inside** the SunMint Plots sheet (the generator's source of truth). Let me check the exact column order so the upsert writes to the right cells:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The farm record is a row in the **"SunMint Plots"** tab (the generator's source of truth) — my handler should upsert there, not a separate Farms tab. Let me get the FIELD_COLUMNS column names to write to the correct cells:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have the full schema. The upsert must target the **"SunMint Plots"** tab (SHEET_ID `1qbZZhf…`, the generator's source of truth) and write by matching the header names — not a separate Farms tab. Let me rewrite the handler's upsert to match reality:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The replacement left the old function body dangling. Let me inspect and fix:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The old function body dangled after my new function (my replace only hit the header line). Removing the stale block:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Clean — no stale `FBE_FARMS_TAB` refs, `FBE_PLOTS_TAB` used 3×, node check passes. Now pushing to `tokenomics`:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I made the same placeholder mistake as before — the PR has a PLACEHOLDER file. Fixing immediately by pushing the real content to the branch:
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Real file pushed. Verifying the PR diff is the actual handler (not placeholder) before merging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Verified — real handler on the branch (12,627 B, marker + upsert present, no placeholder), `mergeable: True`. Merging PR #452:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — the GAS receiver (the flagged gap) is now in place. Stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**Built + merged the missing GAS receiver for `FARM BOUNDARY EVIDENCE EVENT`** — completing the dispatch routing added in dao_protocol PR #152.
-
-**PR #452 — https://github.com/TrueSightDAO/tokenomics/pull/452** (merged, sha `c750ac50`) — `google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_farm_boundary_evidence.gs` (12.6 KB, +277/−0)
-
-### The handler (`processFarmBoundaryEvidenceFromTelegramChatLogs`), mirroring the proven TGM pattern:
-1. **Cron-scans Telegram Chat Logs** for the `[FARM BOUNDARY EVIDENCE EVENT]` marker (same fallback as TREE GROWTH MONITORING)
-2. **Parses**: Farm Name, Plot ID, Boundary Type, Media URLs, Extracted GPS, Area (ha), Is New Farm, Submission Source, signature + transaction id
-3. **Dedup** by Telegram Message ID via a new "Farm Boundary Evidence" tracking tab
-4. **⭐ Farm upsert (governor rule 4)**: new farm name → creates the row in the **SunMint Plots tab** (the generator's source of truth, SHEET_ID `1qbZZhf…`) — written **by header name** so `build_plots_geojson.py`'s FIELD_COLUMNS matching keeps working; existing farm/plot matched by plot id or farm id
-5. Boundary Type/status/boundary_authority default to `approx`/`proposed`/`approx`; media URLs recorded (v1 keeps original URLs — blob mirror lands with the GAS webhook path)
-6. **NO ledger booking** — evidence accumulates as the plot record (matches the plan's decision; only a future CARBON CREDIT ISSUANCE EVENT books the ledger)
-7. `FBE_` prefix on all new identifiers; reuses shared constants/helpers; no `doGet` collision
-
-### Process notes
-- **Caught my own placeholder bug again**: the first `git_push_changes` write carried a PLACEHOLDER string — fixed immediately with `upload_local_file_to_github` (real 12,627 B handler), verified via API (marker ✓, upsert ✓, no placeholder ✓) before merging
-- `node --check` passed on the final file; hard-rule suite not applicable to GAS JS but syntax-validated
-
-## RESUME HERE → next unit (governor's pick)
-
-The boundary pipeline is now **complete end-to-end** (plan marked complete in manifest):
-
-1. **Deploy the GAS handler** — `clasp push` to the GAS project (`1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v`) + set the cron trigger (the file is merged but not deployed to the GAS runtime — same as the dao_protocol deploy earlier, this is a production deployment needing your go)
-2. **End-to-end live test** — Jedielcio's next visit: capture boundary walk on `sunmint.truesight.me/limites-da-fazenda/` → submit → GAS processes → farm upserted → `extract_plot_gps.py` builds polygon → impact map shows it
-3. **`sunmint_mobile/www/`** — native APK web layer still needs the register_farm page + nav (flagged)
-4. Anything else you want
-
-Say go and I'll deploy the GAS handler (or start whichever you pick).
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×11 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/git/trees/main?recursive=1" | python3 -c "…; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_tree_growth_monitoring.gs" -o tgm.gs && sed; …(+8 more)
-• `git push changes` → https://github.com/TrueSightDAO/tokenomics/pull/452 (placeholder bug — fixed via upload)
-• `merge pr` → ✅ PR #452 on tokenomics merged (sha c750ac50f2b2845983a42be35823db274dd441f9)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×18 → cd /tmp && echo "=== find GAS files in tokenomics ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/git/trees/main?recur; cd /tmp && echo "=== qr_code_web_service files (.gs / Code) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/git/trees/; cd /tmp && echo "=== full agroverse_qr_code_web_service tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/git/trees; …(+15 more)
-• `merge pr` → ✅ PR #452 on tokenomics merged successfully (sha: c750ac50f2b2845983a42be35823db274dd441f9). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merged ✅ — the GAS receiver (the flagged gap) is now in place. Stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**Built + merged the missing GAS receiver for `FARM BOUNDARY EVIDEN
-
-
-### 🤖 Autopilot
-
-Go-signal received — deploying the GAS handler to the production GAS project (explicitly approved as option 1). First, checking the host setup + running a dry-run deploy (no GAS change by default):
-[2 tool result(s) compacted: ssh_run, gas_deploy_project — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The dry-run shows the project folder has **only 3 files** — my new `process_farm_boundary_evidence.gs` isn't in the local checkout yet (it was merged to GitHub but the deploy host's checkout hasn't pulled). Let me pull the tokenomics repo in the context checkout, verify the file lands, then deploy:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Checkout pulled — the handler is now in the project folder (12,645 B). Deploying to the GAS runtime (you approved this):
-[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Deployed ✅ — GAS handler pushed to the production project (6 files, deploy ledger `deploy_20260901T030111Z_...`). Final piece: the **cron trigger**. Let me check how the TGM handler is triggered so FBE gets the same:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-No trigger setup in the repo — TGM's cron trigger was likely configured manually in the GAS UI. Let me check whether the TGM trigger is documented anywhere (to mirror it for FBE):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the SCHEDULE_TRIGGERS.md to see how TGM's trigger is documented (so FBE gets the same treatment):
-[1 tool result(s) compacted: read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**GAS handler deployed to production** ✅ — and the trigger situation is now clear.
-
-## What I did this turn
-
-**Deployed the `FARM BOUNDARY EVIDENCE` GAS receiver** (you approved the production deploy):
-
-1. **Pre-flight**: tokenomics checkout at `/opt/truesight_autopilot/context/tokenomics` was behind — pulled `origin/main` (now at `c750ac5`, PR #452 merged); the new `.gs` file landed in the project folder ✓
-2. **Dry-run deploy** — confirmed project files (now 4 source files + appsscript.json + Version.gs)
-3. **`clasp push --force`** → **6 files pushed at 03:01 UTC** including `process_farm_boundary_evidence.gs` ✓
-4. **Deploy ledger recorded**: `deploy_20260901T030111Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9` (evidence URL in `ecosystem_change_logs/deploys/entries/`)
-5. **Trigger check**: consulted `SCHEDULE_TRIGGERS.md` — GAS cron triggers are configured **manually in the Apps Script UI** (Edit → Current project's triggers → time-driven). There is no repo-level trigger automation; TGM's trigger was set by hand the same way.
-
-## ⚠️ One manual step remains (needs a human with GAS access)
-
-The handler is deployed but **has no cron trigger yet** — so it only fires if/when a webhook or manual run calls it. Per the TGM pattern, set in the GAS UI (`script.google.com` → project `1UrBgqLnnQc6PV4…` → Triggers):
-
-- **Function:** `processFarmBoundaryEvidenceFromTelegramChatLogs`
-- **Event:** Time-driven → **Minutes timer → every 5–10 minutes**
-- (Backup to the Edgar→GAS webhook path, same as all the other cron processors)
-
-I don't have a way to create GAS triggers programmatically from here without the owner's OAuth flow — this is the one manual configuration item. **If you (or whoever owns `garyjob@agroverse.shop`'s GAS) can add that trigger, the pipeline is fully live end-to-end.**
-
-## RESUME HERE → next unit
-
-1. **You set the cron trigger** in GAS UI (2 minutes) → then the FBE pipeline is complete: capture → queue → Edgar → dispatch → GAS receiver → farm upsert → plots regeneration
-2. **Update `SCHEDULE_TRIGGERS.md`** (tokenomics) with the new FBE entry — I can do this as a small PR (documenting the function + recommended schedule + the manual-setup note)
-3. **End-to-end live test** — Jedielcio's next farm visit: capture boundary on `sunmint.truesight.me/limites-da-fazenda/` → verify the polygon lands on the impact map
-4. `sunmint_mobile/www/` sync (still flagged)
-
-Want me to do #2 (the SCHEDULE_TRIGGERS.md PR) now?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → echo "=== tokenomics checkout on host ===" && ls -d ~/tokenomics /opt/tokenomics ~/work/tokenomics 2>/dev/null; find / -maxdepth 3 -name "to; cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main -q && git log --oneline -3 origin/main && echo "=== local HEAD ===" ; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && cat appsscrip; …(+1 more)
-• `gas deploy project` ×2 → ok; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260901T030129Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-Every 2 minutes?? That seems somewhat aggresive isnt it?
-
-
-### 🤖 Autopilot
-
-Fair challenge — and to be clear, I actually recommended every **5–10 minutes**, not 2 (mirroring the sales/inventory processors, which run 5–15 min). But you're right that even that is more aggressive than this workload needs.
-
-**Boundary evidence isn't latency-critical.** A farmer uploads photos; whether the polygon shows up 10 minutes or 2 hours later makes no practical difference. The expensive steps (mirroring media, sheet writes, triggering the plot rebuild) only happen when there's actually a new submission — so the cost of frequent polling is mostly wasted GAS quota checks against an empty chat log.
-
-**My honest recommendation: every 30–60 minutes** (or even a few times a day). The Telegram Chat Logs scan is cheap, and this is a "backup processor" anyway — the primary path is the Edgar→GAS webhook, which fires instantly on submission. The cron is just the safety net for missed webhooks, exactly like the other processors.
-
-So: **60-minute trigger** is plenty for the fallback role. Want me to go with that (and document it as such in the SCHEDULE_TRIGGERS.md update)?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-How about every hour and then the GAS has a doGet which gets triggered when dao_protocol gets such a submission. It is similar to the other patterns
-
-
-### 🤖 Autopilot
-
-Exactly right — that's the standard pattern. **Webhook-first (instant) + hourly cron fallback** mirrors how every other processor in the ecosystem works (sales, inventory, QR updates all do this: Sidekiq webhook on submission + a time-driven backup cron).
-
-Let me verify the handler has the `doGet` entry point for the webhook path (it should, mirroring the other processors):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The cron function exists (line 213) and the file correctly avoids a second `doGet` (comment line 21 — it lives in `process_qr_code_updates.js`). Let me confirm the `doGet` action router there actually dispatches the FBE action (that's the instant webhook path from dao_protocol):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found the gap — the doGet router handles QR updates, tree planting, tree growth, and resend — but **NOT the FBE action**. So the instant webhook path (dao_protocol → GAS) is broken even though the cron function exists. Let me confirm what action dao_protocol's dispatch sends, then add the router case:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have the exact pattern to mirror. The fix: add a `processFarmBoundaryEvidenceFromTelegramChatLogs` case to the doGet router (matching the dispatch action name), plus update `SCHEDULE_TRIGGERS.md` with the hourly recommendation. Let me build both changes:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 Now I have the exact anchors. Building the doGet router case + fallback message update + SCHEDULE_TRIGGERS.md entry, then pushing as one PR:
@@ -5097,11 +4762,13 @@ Now I have the exact refs. Applying targeted edits (avoiding the unicode arrow/d
 ### 🤖 Autopilot
 
 PR #9 opened. Verifying the branch edits + checking mergeability:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean: **0 old refs, new refs present** in all 3 files, `mergeable: True`. Merging PR #9:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5167,16 +4834,19 @@ No runtime behavior change — the commit step stays a deliberate Sophia/governo
 ### 🤖 Autopilot
 
 Go — unblocking PR #384. Running the local hard-rule suite first (the CI gate: compile/ruff/format/pytest), then retrying the merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All tests pass (836 passed, 1 skipped), compile ✓, ruff ✓. The format warnings are pre-existing (32 untouched files — my one-line change isn't among them; let me confirm), then retry the merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My file is already formatted ✓ and CI is now **clean** (`mergeable_state: clean` — the test/smoke checks passed). Retrying the merge:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5243,26 +4913,31 @@ Merged ✅ — stopping here per the one-PR-per-turn rule.
 ### 🤖 Autopilot
 
 Go-signal received — the resume text references PR #9 (already merged last turn). The genuine remaining item on my side is the **context-doc pointers**: `MEDIA_ARCHIVE_PIPELINE.md` and `HANDOFF_MANIFEST.md` in agentic_ai_context still mention the old path — and HANDOFF_MANIFEST is the file that drives handoff-context injection, so a stale path there is a real break risk. Verifying the refs first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `MEDIA_ARCHIVE_PIPELINE.md` has **3 stale refs** (lines 16, 33, 99); HANDOFF_MANIFEST is clean. Let me see the exact context around each stale line to build precise edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Exact anchors in hand. Applying the three edits as a PR to `agentic_ai_context`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #888 opened with all 3 edits applied. Verifying the branch (no stale refs), then merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean: **0 stale, 3 new refs**, `mergeable: True`. Merging PR #888:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5446,4 +5121,65 @@ Deploy verified end-to-end. Converging:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → cd /opt/truesight_autopilot 2>/dev/null && echo "=== deploy tooling ===" && ls scripts/ 2>/dev/null | grep -i deploy; echo "---"; grep -rln ; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/sophia/SOPHIA_VAULT_HOTFIX_AND_OPS_SAFETY.md" -o ; cd /opt/truesight_autopilot && echo "=== deploy.sh head ===" && head -40 scripts/deploy.sh && echo "=== deploy.py: idle-drain guard ===" && ; …(+8 more)
 • `deploy autopilot` → Already on the latest commit 08d5a14d — no deploy needed. Did NOT restart. Do not retry.
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Thoughts on these
+
+---
+
+[observed, not directed at you — Nobody Will not DM you]: https://beta.sunmint.truesight.me/limites-da-fazenda/
+
+Choose files should also allow choosing of file from local instead of just strict camera
+
+---
+
+[observed, not directed at you — Nobody Will not DM you]: I think maybe this module is redundant after considering how the users interact with the DAPp
+
+https://beta.sunmint.truesight.me/register_farm/
+
+Remove it fully from Sunmint. Dapp.
+
+---
+
+[Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+When I select a new farm and select a photo and click submit nothing happens. It just queued even though I have Internet connection
+
+[Attachment auto-processed: **fd67770efa45459885532148e6afbd77.jpg**]
+- Type: Image (OCR confidence: 90.4%, quality: good)
+
+Extracted text:
+```
+1:56 sat LTE GD: 7 beta.sunmint.truesightme Send farm boundary photos Walk the farm corners (post, fence, roadside) and take photos. The photo GPS marks the boundary. Farm: BSY~}( cou We-la la Fazenda Cleide Paulo La Do Sitio Para Rancho Maranta Santa Anna Fazenda New farm... Link email (optional)
+```
+
+
+### 🤖 Autopilot
+
+These three are the same items I already implemented and merged earlier this session — here's where each stands, with a quick live re-check so my answer is grounded in what's actually on beta now:
+
+
+### 🤖 Autopilot
+
+All three are **already done and live on beta** — I implemented them earlier this session:
+
+| Feedback | Status on live beta now |
+|---|---|
+| **1. Choose files should allow local files, not just camera** | ✅ **Done** — `capture="environment"` count = **0** on the live page (PR #65, merged + Pages rebuilt). The input is now `accept="image/*,video/*" multiple` → browser offers gallery/local files; camera still available on mobile. |
+| **2. register_farm is redundant — remove it fully** | ✅ **Done** — live beta `/register_farm/` returns **HTTP 404** (page deleted via PR #64; nav options/routes/i18n removed from all 4 pages via PR #63). |
+| **3. Select farm → select photo → submit: nothing happens, "just queued" even online** | ✅ **Done** — live page has the **online-send fix** (6 refs to `uploadBoundary`/`flushBoundaryQueue` — PR #63). Root cause was: `submitBoundary()` always queued to IndexedDB and **there was no flush path at all**. Now it sends immediately when online (signed `[FARM BOUNDARY EVIDENCE EVENT]` with photo attachments, 409-idempotent), queues only offline/failure, and flushes on reconnect. |
+
+## Why you might still see the old behavior
+
+The screenshot shows `beta.sunmint.truesight.me` at **1:56** — the fixes (esp. #63's submit-send + #65's file picker) were merged and Pages-rebuilt after that. If you're still seeing "just queued," the likely cause is a **cached old page** (service-worker/CF/browser cache) — a hard refresh should pull the new bundle. My live checks above are against the *current* beta response: capture gone, online-send code present, register_farm 404.
+
+**One honest caveat:** the submit fix makes the *browser* send immediately when online — but per the earlier E2E finding, the full chain to a sheet row still depends on the GAS processing side (the **cron trigger Gary hasn't set yet**, or an owner-authenticated session). The browser will POST to Edgar fine; whether the webhook→GAS leg completes is the still-open Gary item.
+
+**Nothing new to build on these three** — they're shipped. Want me to also check prod (`sunmint.truesight.me`) for the same three fixes, or is that waiting on Gary's promote go?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && echo "=== LIVE beta limites: capture gone? (PR #65) ===" && curl -s "https://beta.sunmint.truesight.me/limites-da-fazenda/" -o li
 
