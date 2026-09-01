@@ -8,85 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-Instrucoes needs the nav-option + i18n edits (the earlier assert aborted before writing them). Let me apply those now:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All verified. Pushing PR2 — new page + nav on all 3 existing pages + SW cache entry:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #51 opened. Let me verify the PR branch matches my validated local build (byte-compare), then merge same-turn (drift window is minutes):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The pushed page differs from my local draft by 85 bytes (I hand-tweaked the `writes` content — different `esc()` usage and hardcoded `pt-BR`). I must validate the **pushed** file's JS syntax + tags before merging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Pushed file validates (tags balanced, both scripts pass `node --check`). Now merging PR #51:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — PR2 shipped. Stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**PR2 — "Limites da Fazenda" boundary capture module** (from SUNMINT_BOUNDARY_SUBMISSION_PLAN §5 PR2 checklist).
-
-**PR #51 — https://github.com/TrueSightDAO/sunmint_beta/pull/51** (merged, sha `c028596e`) — branch `farm-boundaries-capture-module` (new page + 3 page edits + SW)
-
-### Changes to `sunmint_beta`:
-1. **NEW `limites-da-fazenda/index.html`** (13,305 B) — the boundary-capture page:
-   - **Farm picker** = union of device-local IndexedDB farms + remote `farms/index.json` seed + **"➕ Nova fazenda…"** free-text (governor rules 1–3: farm selectable before repo record exists; free-text fallback; typed name persists for next event via IndexedDB)
-   - **Camera/photo capture** (`capture="environment"`, image+video, multiple) with thumbnails
-   - **Offline queue** (IndexedDB `sunmint-boundary-queue`) mirroring the tree-report pattern; pending badge; auto-flush on reconnect
-   - **Boundary evidence record**: `type: FARM_BOUNDARY_EVIDENCE`, farm_name, `is_new_farm` flag, media list, captured_at, device GPS (rule 4 hook — backend upsert is PR4)
-   - i18n (pt-BR default), service-worker registration
-2. **Nav dropdown** on all 4 pages (`/`, `/monitor-tree-growth/`, `/instrucoes/`, + new) — "Limites da Fazenda" (pt) / "Farm Boundaries" (en) + routing to `/limites-da-fazenda/`
-3. **`service-worker.js`** — caches the new page for offline load
-
-### Verification (hard rule)
-- ✅ New page: tags balanced (input void per convention), both inline scripts pass `node --check` (validated the *pushed* file, not just my local draft)
-- ✅ All 3 edited pages: `navLimites` present (×3) + route added, JS `node --check` clean
-- ✅ SW cache list updated
-- ✅ `mergeable: True`, merged same turn
-
-**Live on beta now** (`beta.sunmint.truesight.me/limites-da-fazenda/` — GitHub Pages auto-deploys on merge).
-
-## RESUME HERE → PR3 (next unit, fresh turn)
-
-**Machine-generated farms seed** (plan §5 PR3): `scripts/build_farms_index.py` (mirror plots generator) → `sunmint/farms/index.json`, so the farmer-app dropdown has the remote seed for rule 1 across all devices. Steps:
-1. Mirror `build_plots_geojson.py` (same SHEET_ID + Farms tab) → emit `farms/index.json` (farm_id + name list)
-2. Add/update the rebuild workflow (or extend `rebuild-plots-index.yml`)
-3. Land on `sunmint` via Contents API (api_only repo — the sanctioned path, as with PR1)
-4. Report + note the farmer-app already consumes `farms/index.json` (PR2's `REMOTE_FARMS_URL`)
-
-Plan status: **PR0 ✅ · PR1 ✅ · PR2 ✅ · PR3 next · PR4 (backend upsert + `FARM BOUNDARY EVIDENCE EVENT`) · PR5 = `gate: UAT`**
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×14 → cd /tmp && echo "=== sunmint_beta tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/git/trees/main?recursive=1" |; cd /tmp && echo "=== onNavChange + section show/hide logic ===" && sed -n '930,1000p' sunmint_index.html; echo "=== section ids ===" && grep; cd /tmp && echo "=== IndexedDB queue pattern in index.html ===" && grep -n "indexedDB\|openDB\|putTreeReport\|flushTreeReportQueue\|TREE_REP; …(+11 more)
-• `merge pr` → ✅ PR #51 on sunmint_beta merged successfully (sha: c028596eb093780862c1a5b53685cacd9d3df102). Pull Request successfully merged
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
@@ -5058,16 +4979,24 @@ All 7 tests pass, all pages validate (tags + JS). The `register_farm` string sti
 ### 🤖 Autopilot
 
 The test file has two more `register_farm` references (lines 91, 93) — a comment + the `DICT_PAGES` filter. Since the page is now removed entirely, the exemption logic is dead code. Let me clean it and re-run the suite + hard-rule checks:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All green (compile ✓, ruff ✓, format ✓, 7/7 tests ✓ — the "Can't list 'scripts'" is just because this repo has no `scripts/` dir). Now pushing all 5 changes (4 pages + test + register_farm deletion) as one PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #63 opened with the placeholder — now pushing the real validated files to the branch (4 pages + test), then handling the `register_farm/` deletion:
+[5 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5116,16 +5045,19 @@ go — finish PR #63 (delete register_farm/index.html via Contents API or git_pu
 ### 🤖 Autopilot
 
 Go-signal received — finishing PR #63. First, verifying the current branch state (5 files present, register_farm still there):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch confirmed: 5 updated files + `register_farm/index.html` still present, `mergeable: True`. The Contents-API path can't delete, so I'll remove the page via a small deletion PR (git_push_changes `deletes`), then merge both:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #64 opened with the deletion. Merging it first (it touches `register_farm/` only — independent of PR #63):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5328,4 +5260,58 @@ The governor's task 1 (local file picker) was **not actually done** by PR #63 �
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp && echo "=== 1. limites file input (capture removed?) ===" && curl -s "https://beta.sunmint.truesight.me/limites-da-fazenda/" -o lim; cd /tmp && echo "=== main (authoritative) limites ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/limites-d; cd /tmp && echo "=== main input line ===" && grep -n 'type="file"' lim_main.html && echo && echo "=== main capture context ===" && grep -n '; …(+5 more)
 • `merge pr` → ✅ PR #65 on sunmint_beta merged successfully (sha: 5f6752b6742c4767ec3f4cfc1d3a7cf3d5d39788). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — re-verify beta live once Pages catches up.
+
+
+### 🤖 Autopilot
+
+Go — re-verifying beta live now that Pages should have caught up:
+
+
+### 🤖 Autopilot
+
+Live page shows a mixed state: **#63's content is live** (uploadBoundary ×3, register_farm gone from limits + main index ✓) but **#65 hasn't landed** (capture still present) — Pages picked up #63 but not #65 yet. The chain broke on `grep -c` exit codes; let me finish the remaining checks with exit-safe guards:
+
+
+### 🤖 Autopilot
+
+`main capture: 1` from raw.githubusercontent is suspicious — I merged #65 which dropped it. Let me check the authoritative Contents API (raw is CDN-lagged as we've seen):
+
+
+### 🤖 Autopilot
+
+Verification complete — converging with the honest picture:
+
+## Beta live verification results
+
+| Check | Beta live | Main (authoritative) |
+|---|---|---|
+| `#63` submit-online fix (uploadBoundary/flushBoundaryQueue) | ✅ **live** (3/3 refs) | ✅ (3/3) |
+| `#63` register_farm removed from nav (all 4 pages) | ✅ **live** (0 refs everywhere) | ✅ (0) |
+| `#63` `/register_farm/` page | ✅ **404** | — |
+| `#65` capture dropped (local file picker) | ⏳ **still shows old input** (`capture="environment"` present) | ✅ **correct** (capture 0, line 111 = `accept="image/*,video/*" multiple>`) |
+
+## What this means
+
+- **PR #63's changes are fully live on beta** — the submit-now-sends-online fix and the register_farm removal are confirmed working in production-facing beta
+- **PR #65's capture-drop is on `main` (verified authoritative: capture 0)** — the raw.githubusercontent `capture: 1` is CDN cache lag (we've seen this pattern repeatedly); the live beta site simply hasn't rebuilt for #65 yet (it picked up #63 but not #65 — Pages lag, and this repo doesn't expose the builds API so I can't watch it directly)
+- The `grep -c` exit-code breakage mid-run was cosmetic — all checks completed on the second pass
+
+**Net:** all governor tasks are on `main` and will be live on beta shortly after the next Pages build. No code changes needed — this is purely deploy lag.
+
+## RESUME HERE → next unit
+
+1. **Re-check live limits once more later** — if `capture="environment"` is still present after a reasonable delay, that's a Pages build issue to chase (hard-refresh / cache-bust)
+2. **Prod promotion** (#55–#65) — gated on Gary's explicit go
+3. Nothing else pending on my side
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && echo "=== 1. live limits: capture dropped? ===" && curl -s "https://beta.sunmint.truesight.me/limites-da-fazenda/" -o lim_live2.h; cd /tmp && echo "=== register_farm page status ===" && curl -s -o /dev/null -w "HTTP %{http_code} " "https://beta.sunmint.truesight.me/regis; cd /tmp && echo "=== authoritative main (Contents API) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/limi
 
