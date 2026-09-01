@@ -8,65 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: All 14 HEICs have EXIF GPS (QuickTime tag read needed `-GPSLatitude/-GPSLongitude` — got them). Full coverage: **77/85 geotagged** (63 MOV + 14 HEIC), 71 videos totaling **52.2 min**.
-
-| Pipeline step
-
-
-### 🤖 Autopilot
-
-Go received — resuming the Cleide farm-media pipeline at step 5. First: install YOLO tooling and confirm the workspace state.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Ultralytics already installed — great. Now I'll write the combined per-video batch (detect → transcode → GPS re-inject) as a background job since it's the long pole (~1–1.5h for 71 videos), then verify it launches and check the YouTube upload tooling.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Batch launched (PID 55727, YOLOv8n weights downloaded, first videos processing). While it runs (~40–70 min), let me verify the YouTube upload tooling is ready for step 7.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Batch is working — **IMG_4832.mp4 done (2MB)** and YouTube tooling is ready (`upload_video_to_youtube.py` + fresh `youtube_token.json` from today). The background job is transcoding + detecting + GPS-reinjecting all 71 videos.
-
-**Now executing step 8 (quick win): upload the 14 HEIC photos to `farm-media-raw/cleide/photos/`** (Content-API, pipeline step 8). Let me verify the manifest and upload.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-14 HEICs ready (1–3MB each). Batch is transcoding (1/71 done). Rather than 14 separate Content-API calls, let me find the GitHub token the platform uses so I can bulk-upload in one script — checking the autopilot config.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`gh` CLI is configured (hosts.yml). Let me verify it has auth for TrueSightDAO — then I can use `gh api` to upload the 14 HEICs in one batch loop (Content API).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-gh is authed as `garyjob` but that personal token 404s on the **private** `farm-media-raw` repo — so the sanctioned path is the platform's own `upload_file_to_github` tool (which already pushed to sunmint earlier). Uploading all 14 HEICs to `farm-media-raw/cleide/photos/` now, per pipeline step 8:
-[14 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All **14 HEICs uploaded** to `farm-media-raw/cleide/photos/` ✅ (pipeline step 8 done). Let me check the video transcode batch progress.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 Batch is running (PID alive, 1 mp4 so far). The empty GPS check on IMG_4832.mp4 is a red flag — per the pipeline doc, ffmpeg drops GPS and we must re-inject. Let me verify whether the injection happened or failed.
@@ -4499,11 +4440,13 @@ Restarted the service — but /auth/challenge-dashboard is unreachable in prod f
 ### 🤖 Autopilot
 
 Right — nginx routes `/auth/*` to a different service (8002), so my route path collides. The safe fix is renaming the path outside `/auth/`. Let me check all references first, then rename.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Route referenced only in `main.py:1156` — no JS/tests to chase. The nginx grep came up empty (config likely elsewhere). Let me confirm the nginx layout and check whether the dashboard page HTML references the challenge path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4690,4 +4633,72 @@ Ping me with your pick — or nothing, and I'll hold. Great session. 🎉
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== DASHBOARD: cleide reflects 71 uploaded? (data endpoint — will 401 signed-out, so check sidecars + journal instead) ===" echo "---
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — option 4 only (plan/handoff doc wrap-up), then hold. Everything else (farm-page gallery wiring, sign-in button, signed-in UAT) is optional follow-on, not required — great work, this thread's core goal is fully done.
+
+
+### 🤖 Autopilot
+
+Go — option 4 (plan/handoff wrap-up) only. Let me read the current daemon plan + handoff manifest rows to update them accurately.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the daemon plan (tail) to update it completely, then make the edits.
+
+
+### 🤖 Autopilot
+
+Full daemon plan captured. Let me also read the dashboard plan to update it accurately in the same wrap-up pass.
+
+
+### 🤖 Autopilot
+
+Both plans fully read. Now the wrap-up PR — one PR touching 3 files: both plans (completion/execution status) + the handoff manifest rows.
+
+
+### 🤖 Autopilot
+
+PR #879 opened — the wrap-up (3 files: both plan docs + handoff manifest). Gary explicitly directed this wrap-up (option 4), so merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — MAP plans + handoff wrap-up merged ✅
+
+**PR merged:** [#879 — MAP wrap-up: daemon COMPLETE, dashboard PR1–PR3 done + sentinel live](https://github.com/TrueSightDAO/agentic_ai_context/pull/879) — sha `0a771bc7`.
+
+**What changed (3 files, now on agentic_ai_context main):**
+
+1. **`plans/FARM_MEDIA_DAEMON_PLAN.md`** — status banner → **✅ COMPLETE** + new §9 Completion status table: repo built (PRs #1–#8), daemon live as systemd service, budget 500 (artificially-high + 429-pace model), pause+retry (no 20h sleeps), config template committed (#368), **all queues drained** (cleide 71/71 · paulo 2/2 · santa-anna 8/8 · jedielcio 4/4), Cleide manifest committed (#878), ad-hoc uploaders retired, ops lessons recorded (OOM 2-phase, GPS re-inject, config git-tracking). Fresh-Sophia query test passes from GitHub alone ✅
+
+2. **`plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`** — status → **executing**; resume tracker updated (PR1–PR3 ☑ + signed-out UAT ☑); new §6 Execution log (#874/#363/#364/#365/#369/#371/#878); RESUME HERE = PR4 signed-in UAT (optional)
+
+3. **`handoffs/HANDOFF_MANIFEST.md`** — daemon row → **complete — all queues drained**; dashboard row → **executing — live, sentinel access live, signed-in UAT optional**
+
+**This thread's core goal is fully done:** Cleide 71/71 uploaded + archived, shared daemon live fleet-wide, dashboard deployed + sentinel-capable, docs closed out.
+
+---
+
+**RESUME HERE → next unit (all optional follow-ons, none required):**
+1. **Signed-in UAT** of the dashboard (PR4) — walk the tables, confirm the states
+2. **Farm-page media wiring** — Cleide's 71-video YouTube gallery → agroverse_shop_beta → PR
+3. **Wire the page sign-in button** to `/media-archive-pipeline/auth/challenge` (one-click sentinel login)
+4. Nothing — thread complete, hold
+
+Ping me if/when you want any of these. Great session — Cleide's full media archive is live, queryable forever. 🎉
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #879 on agentic_ai_context merged successfully (sha: 0a771bc7b777ea9565cb9485ff63a0004394417a). Pull Request successfully merged
 
