@@ -8,67 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-Verified — the PR branch README is correct (0 stale claims remain). Merging PR #26:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**Investigated the flagged `sunmint_mobile/www/` sync — and found the flag was based on a wrong premise.**
-
-The prior recommendation ("sync `www/` with `sunmint_beta/main` + add the service worker") assumed `www/` was a stale mirror of the web app. Investigation showed otherwise:
-
-| Check | Finding |
-|---|---|
-| `www/index.html` vs `sunmint_beta` | **Deliberately divergent** — mobile has native Capacitor adaptations (`@capacitor` refs, SQLite queue, Filesystem, secure storage) per the mobile plan's PR4–PR7 |
-| `www/` service worker | Absent (404) — **and unnecessary**: pages ship inside the native bundle (`webDir: www`), always available offline |
-| App's offline story | Already offline-first by design — native SQLite + Filesystem queue, no IndexedDB eviction risk |
-| Root cause of the bad flag | **README falsely claimed `www/index.html` is a "byte-identical copy of the web app"** (2 places) |
-
-**Conclusion:** the sync would have regressed the native camera/geo/SQLite work, and a service worker is pointless on the bundled Capacitor app. The real fix was correcting the stale documentation that misled the recommendation.
-
-**PR #26 — https://github.com/TrueSightDAO/sunmint_mobile/pull/26** (merged, sha `29c51be`)
-- README relationship paragraph: `www/` is now described as a **Capacitor-adapted** copy that diverges from `sunmint_beta` where native plugins replace web APIs
-- Added an **Offline note**: the web site's `service-worker.js` does not apply to the mobile app; offline-first is handled by the native bundle + SQLite/Filesystem queue
-- Repo-layout line updated to match — **0 stale "byte-identical" claims remain** (verified on the PR branch)
-
-Docs-only change; no build artifacts touched. Verified on the PR branch via the authoritative Contents API before merging.
-
-## RESUME HERE → next unit
-
-With the mobile `www/` question resolved (no sync needed — the app is already offline-first by design), the open items from this thread are:
-
-1. **Sunmint whitepaper PR #292** (`truesight_me_beta`) — the carbon-registry roadmap + Apple/hyperscaler/SBTi buyer content is still **unmerged**. Next step: merge to beta → promote to prod, or update it first with the "trees not ceilings" + fluid-roadmap + member-registry framing that's now in the PDF v4.
-2. **Whitepaper PDF v4** — optionally push to a repo for versioning, or add an SBTi V2.0 buyer-alignment section first.
-3. **`SUNMINT_MOBILE_APP_PLAN.md` manifest row is stale** ("new — awaiting kickoff" but 26 PRs are done) — worth a small doc fix to reflect actual progress.
-
-Which would you like next?
-
-———
-**✅ Done this turn — actions taken:**
-• `read context file` → handoffs/HANDOFF_MANIFEST.md (confirmed SUNMINT_MOBILE_APP_PLAN governs this work)
-• `read context file` → plans/SUNMINT_MOBILE_APP_PLAN.md (pre-flight facts, PR sequence)
-• `ssh run` ×5 → mobile repo tree/PRs, www SW presence (0), byte-size diffs, plan PR list, capacitor.config, README offline section, SW 404, README stale claims, @capacitor refs in www
-• `git push changes` → https://github.com/TrueSightDAO/sunmint_mobile/pull/26 (branch fix/readme-www-divergence-note, sha 9b0799cbb)
-• `merge pr` → ✅ PR #26 on sunmint_mobile merged (sha 29c51bef0e2eb7694f97eb852ad04399d6c62e92)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → echo "=== sunmint_mobile tree (recent) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_mobile/git/trees/main?recursive=1"; echo "=== www/index.html: has SW registration? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_mobile/main/www/index; echo "=== mobile www/index.html: offline queue mechanism? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_mobile/mai; …(+3 more)
-• `merge pr` → ✅ PR #26 on sunmint_mobile merged successfully (sha: 29c51bef0e2eb7694f97eb852ad04399d6c62e92). Pull Request successfully merged
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11074] Why not standardize to the same source instead of a separate enum??
@@ -4694,31 +4633,37 @@ Say go and I'll run the webhook verification.
 ### 🤖 Autopilot
 
 Go-signal received — verifying the FBE webhook path live. Let me find the GAS web-app URL (from dispatch.py or deploy records) and how the doGet router is invoked:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the GAS web-app URL (the doGet endpoint dispatch calls) — checking dispatch.py's webhook URL and the deploy records:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Local checkout doesn't have the latest ledger (it's on GitHub) and no URL refs locally. Let me pull the ledger and search the dao_protocol repo for the GAS webhook URL pattern:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ledger doesn't hold the web-app URL. Let me find the GAS web-app URL dao_protocol uses for doGet actions — searching the repo and the GAS project's deployment:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The web-app URL isn't in code. `clasp deployments` will list the GAS deployment with its `/exec` URL directly — let me get it, then hit the doGet with the FBE action to verify the router responds:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 6 deployments found — the `@HEAD` one (`AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ`) is the live web-app URL. Let me hit the doGet with the FBE action to verify the webhook path responds (it will scan Telegram Chat Logs for pending FBE events):
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4957,4 +4902,70 @@ Say go and I'll add the .env key + restart the service.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /opt/truesight_autopilot/context/dao_protocol && echo "=== how dispatch posts to GAS webapp (URL source) ===" && grep -rn "script.google\; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dao_protocol/main/truesight_dao_client/server/dispatch.py" -o dispatch.py; cd /tmp && echo "=== ROUTING rows (FARM BOUNDARY + neighbors) ===" && grep -n "FARM BOUNDARY\|TREE GROWTH\|FARM REGISTRATION" dispatch.py; e; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go
+
+
+### 🤖 Autopilot
+
+Go-signal received — adding the missing webhook env key and restarting the service (production change, explicitly approved):
+
+
+### 🤖 Autopilot
+
+Webhook key added + service restarted + active. Let me verify the server is healthy and the env key is actually loaded (healthz + journal):
+
+
+### 🤖 Autopilot
+
+**Webhook path fully configured and live** ✅ — but I must verify one last thing: the GAS web-app URL's **deployment access** (public form works only if the web app is published to "Anyone"). The TGM webhook uses the same shape, but let me confirm the deployment's access mode matches (otherwise the webhook 403s and falls to cron). Since my earlier anonymous probe hit the Google sign-in wall, let me check whether TGM's working webhook behaves the same (i.e. whether the sign-in wall is expected for all of these, or TGM's is truly anonymous):
+
+
+### 🤖 Autopilot
+
+**E2E webhook path fully configured and live** ✅
+
+## What I did this turn
+
+**Added the missing `DAO_PROTOCOL_WEBHOOK_FARM_BOUNDARY_EVIDENCE` to the production dao_protocol server + restarted** (you approved the production change):
+
+| Step | Result |
+|---|---|
+| Append webhook key to `/home/ubuntu/dao_protocol/.env` | ✅ appended (idempotent) |
+| Restart `truesight-dao-protocol.service` | ✅ active |
+| Healthz | ✅ `{"status":"ok","version":"7f2950f","environment":"production"}` |
+| Catalog | ✅ v2 / 38 events |
+| Env loaded in process | ✅ (key visible in `/proc/<pid>/environ`) |
+| **Webhook URL reachability** | ✅ **FBE URL returns 200** — and the known-working TGM webhook returns 200 identically, confirming the deployment is publicly callable and my earlier sign-in-wall probe was a client-side artifact (http_fetch vs curl -L) |
+
+The dispatch chain is now **complete and instant**: `[FARM BOUNDARY EVIDENCE EVENT]` → Edgar → `dispatch_event()` → `GET https://script.google.com/macros/s/AKfy…/exec?action=processFarmBoundaryEvidenceFromTelegramChatLogs` → doGet router → handler → farm upsert + plot regeneration.
+
+## FBE webhook E2E — final status (all links verified)
+
+| Link | State |
+|---|---|
+| Capture page (prod) | ✅ |
+| Edgar catalog v2/38 | ✅ |
+| dispatch routing row | ✅ |
+| `.env` webhook URL | ✅ **now configured** |
+| GAS doGet router case | ✅ deployed |
+| GAS handler | ✅ deployed |
+| **Hourly cron fallback** | 🔲 **manual** — set in GAS UI (`processFarmBoundaryEvidenceFromTelegramChatLogs`, every 60 min, per SCHEDULE_TRIGGERS.md §6) |
+
+## RESUME HERE → next unit
+
+1. **Set the hourly cron trigger** (you/GAS owner, 2 min in the GAS UI) — the **only** remaining manual item
+2. **Live E2E test** — submit a test `[FARM BOUNDARY EVIDENCE EVENT]` through the app → watch the webhook fire (`journalctl -u truesight-dao-protocol` shows "webhook ok") → GAS processes → sheet row upserts. Writes a record — needs your go
+3. Open items still parked: chrome audit of other pages, `sunmint_mobile/www/` sync
+
+Want me to run the live E2E test event (option 2), or is there anything else?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → timeout 40 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'set -e; echo "=== 1. idempotent appen; timeout 30 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'echo "=== healthz ==="; curl -s -m 10; cd /tmp && echo "=== probe TGM webhook URL (known-working, no action) — expect same auth behavior as FBE ===" && TGM_URL=$(timeout 25 ssh -i
 
