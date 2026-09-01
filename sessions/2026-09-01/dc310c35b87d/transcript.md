@@ -8,138 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-Go-signal noted — but there's genuinely **no next unit I can execute right now**, and I don't want to manufacture work just to satisfy an auto-advance gate. Honest status:
-
-**Executable units remaining: none.** The boundary pipeline is code-complete, deployed, configured, and verified. The only two open items both require **Gary directly**:
-1. **Hourly cron trigger** — GAS UI, manual (tracked in OPEN_FOLLOWUPS, PR #877)
-2. **Real-device boundary test** — needs a phone on `sunmint.truesight.me/limites-da-fazenda/`
-
-**Parked options I can pick up anytime you say the word** (offered before, not approved yet):
-- Chrome audit + consistency pass on `/monitor-tree-growth/`, `/instrucoes/`, `/register_farm/` (same logo/lang-toggle/email/APK treatment I gave `/limites-da-fazenda/`)
-- `sunmint_mobile/www/` sync for the next APK build
-- Anything new you bring in
-
-So — want me to start one of the parked items, or hold here until Gary does his two manual steps? I'll stay quiet otherwise.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-go — a redeploy killed the turn, but there was nothing pending on your side anyway (holding for Gary's cron trigger + device test). Just checking you're responsive.
-
-
-### 🤖 Autopilot
-
-Responsive ✅ — alive and holding.
-
-**Status confirmed:**
-- Nothing pending on my side — boundary pipeline complete, deployed, verified (healthz + catalog re-checked after the crash-loop: all green)
-- Holding on the two Gary-dependent items (cron trigger + real-device test), both tracked in OPEN_FOLLOWUPS
-- Parked options ready on your word: chrome audit of the other sunmint pages, `sunmint_mobile/www/` sync, or anything new
-
-Say the word when there's something to do.
-
-
-### 🧑 Governor
-
-[observed, not directed at you — Nobody Will not DM you]: https://beta.sunmint.truesight.me/limites-da-fazenda/
-
-Farm:
-
-[object Object]
-
-Basically not displaying properly isnt it?
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-
-### 🤖 Autopilot
-
-Good catch — that's a classic "[object Object]" bug: the farm dropdown is being populated with the raw farm object instead of `farm.name`. Let me diagnose the actual code on the live beta page:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Line 246 shows the bug candidate: `farms.forEach(f => html += '<option value="' + esc(f) + '">' + esc(f) + '</option>')` — treats each farm as a string. If `farms` contains objects (from the remote seed `farms/index.json`), `esc(f)` renders `[object Object]`. Let me see how `farms` is built (the merge of remote objects + local names):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found it — the classic object-vs-string bug. Let me confirm the actual shape of the remote seed (`farms/index.json`) to be certain:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Bug confirmed** — you're right, it's the classic "[object Object]" bug:
-
-- `farms/index.json` (remote seed) is an array of **objects** (`{farm_id, name, region, …}`)
-- `getRemoteFarms()` correctly extracts `data.farms`, but `unionFarms()` does `String(n).trim()` on each item — so each **object** becomes `"[object Object]"`
-- `renderFarmSelect()` then renders `esc(f)` → `[object Object]` in the dropdown
-
-Local farms (strings from IndexedDB) work; remote ones (objects) break. Fix: extract `.name` from objects in `unionFarms()`. Building the fix now:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Fix applied. Validating the file (tags + JS syntax), then pushing as a PR:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All validations pass. Pushing the fix as a PR:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #55 opened — and per the one-PR-per-turn rule I'll stop here and report. But first let me verify the branch diff is clean (single-file, the one fix):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR verified clean (1 file, +3/−2, `mergeable: True`, fix present). Stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**Fixed the "[object Object]" bug in the Farm dropdown** (governor caught it on `beta.sunmint.truesight.me/limites-da-fazenda/`).
-
-**PR #55 — https://github.com/TrueSightDAO/sunmint_beta/pull/55** (branch `fix/farm-select-object-object`, 1 file +3/−2, `mergeable: True`)
-
-### Root cause
-`farms/index.json` (remote seed) is an array of **objects** (`{farm_id, name, region, plot_count, …}` — verified live: 4 farms). `unionFarms()` did `String(n).trim()` on each union item — so every remote object became the literal `"[object Object]"`, and `renderFarmSelect()` rendered that in the dropdown. Local farms (plain strings from IndexedDB) worked; remote seed farms broke.
-
-### Fix
-In `unionFarms()`, resolve objects to their `.name` before dedup/render:
-```js
-const nm = (n && typeof n === 'object' && n.name) ? String(n.name) : String(n);
-```
-Dedup still case-insensitive on the resolved name.
-
-### Verified
-- Live seed shape confirmed (objects with `name`)
-- Tags balanced; both inline scripts pass `node --check`
-- Branch diff clean: 1 file, +3/−2, fix present, `mergeable: True`
-
-## RESUME HERE → next unit
-
-**Merge PR #55 → promote to prod** (`sync_beta_to_prod("sunmint_prod")`) → verify `sunmint.truesight.me/limites-da-fazenda/` shows real farm names (Fazenda Cleide, Rancho Maranta, Santa Anna Fazenda, Paulo La Do Sitio Para). Say go and I'll merge + promote + verify.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/limites-da-fazenda/index.html" -o limites_main.html && ; cd /tmp && echo "=== lines 195-260 (farm store, remote fetch, merge, render) ===" && sed -n '195,260p' limites_main.html; cd /tmp && echo "=== REMOTE_FARMS_URL in the page ===" && grep -n "REMOTE_FARMS_URL" limites_main.html | head -3; echo; echo "=== live farms; …(+3 more)
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
@@ -4943,11 +4811,13 @@ Key finding: the **no-action probe executed** (returned the handler's fallback m
 ### 🤖 Autopilot
 
 Now it's a 302 (redirect → sign-in) with 0 bytes — **inconsistent with the first probe's 200**. Let me check where the redirect points and retry a few times (Google's anonymous execution can be flaky, and there's the workspace-SSO flavor vs the plain one):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — the redirect goes to `script.googleusercontent.com/macros/echo` with an auth token (that's the normal GAS async execution pattern), but the follow-up returned a **404 HTML page**. This is the classic "deployment exists but this action's execution failed / deployment version mismatch" symptom. Let me confirm the @37 deployment actually has the boundary handler code (it's the TREE_PLANTING_REJECT deployment from @37 — it may **not** include the newer boundary code), and check what version @37 pinned vs when the handlers were added:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4959,6 +4829,7 @@ Now I have the full picture:
 - Note also there are now **versions 38 and 39** (the `clasp version` I ran earlier created 38; something created 39 too — likely your GAS UI edits while you were fixing the deployment access).
 
 The decisive check: does version 37's code contain the boundary handler? Let me compare what version the **@37 deployment** pins against when the handler was introduced:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4996,16 +4867,19 @@ I already did.
 ### 🤖 Autopilot
 
 Let me verify what you did — checking the deployment list, the current env webhook URLs, and probing anonymously:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **You redeployed @37 → it's now version @39** (the same deployment ID `AKfycbyoFCTzId…` now points at version 39 — current code with the boundary handlers). That's the fix. Let me confirm the env keys still point at that ID, and probe anonymously to verify execution:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the env keys' full URLs match the @39 ID (not a different one), and follow the redirect on the probe to see where the 302 goes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5017,6 +4891,7 @@ Two separate issues are now clear:
 **2. The @39 probe's 302 → `script.googleusercontent.com/macros/echo`** — that's actually the **normal GAS async-execution redirect** (the deployment DID accept the call and started executing; the `echo` URL is Google's response-relay). But my curl didn't follow it far enough / the relay returned nothing useful. So @39 may actually be **executing fine** — the 302-with-echo is Google's standard pattern, not an auth wall (the earlier sign-in 302 went to `ServiceLogin`, different).
 
 **The fix is clear: repoint the two env keys to the @39 deployment** (which you've made anonymous-executable with the current code). Let me confirm the @39 redirect is the benign echo pattern (vs ServiceLogin), then repoint the env:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5046,16 +4921,19 @@ Verify to make sure
 ### 🤖 Autopilot
 
 Verifying the full picture before touching anything — current env URLs, whether @39 is the anonymous-executable one, and what dispatch actually fires:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Env confirmed — both keys still point at **@HEAD** (`AKfycbxrcXTZ…`). The dispatch grep found nothing in the local path; let me find the actual routing/dispatch code on the dao_protocol host to confirm what URL it fires:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me see the ROUTING rows for the two boundary events + the webhook-firing code, to confirm the env key names and how the URL is used:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5203,4 +5081,62 @@ Also confirmed: the earlier anonymous `curl` 302s are just the GAS async-redirec
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → timeout 40 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'set -e; ENV=/home/ubuntu/dao_protocol; timeout 60 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'set -e; echo "=== service mgmt ==="; ; timeout 90 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'set -e; sudo systemctl restart truesi; …(+7 more)
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+leave as evidence. So explain to me what happens when farmer declares a new farm. IS that farm created as a record somewhere that another farmer can later select?
+
+
+### 🤖 Autopilot
+
+Great question — let me trace the actual flow precisely rather than guess: what the GAS handler creates on a new farm, and what actually populates the dropdown other farmers see.
+
+
+### 🤖 Autopilot
+
+Now let me check the other side of the question — what actually feeds the farm dropdown other farmers see (the farms index + how the app builds the select):
+
+
+### 🤖 Autopilot
+
+Full trace complete — here's the honest answer to your question:
+
+## What happens when a farmer declares a new farm
+
+**1. App side:** farmer types a new name (the "New farm..." option in the dropdown), picks boundary photos, submits → the app POSTs a signed `[FARM BOUNDARY EVIDENCE EVENT]` to Edgar.
+
+**2. Ledger:** the event is recorded in the DAO ledger (Edgar).
+
+**3. GAS handler creates the record — YES, a durable row.** Dispatch fires the (now anonymous-executable) webhook → `processFarmBoundaryEvidenceFromTelegramChatLogs()` → `fbeUpsertFarm_()`:
+- Slugs the name (`"Fazenda Cleide"` → `fazenda-cleide`)
+- Looks for an existing row by plot-id or farm-slug in the **SunMint Plots sheet**
+- Not found → **appends a new row** (Plot ID, Farm ID = slug, Plot Name, Status `proposed`, Boundary Authority `approx`)
+
+**4. The dropdown for OTHER farmers — this is the gap.** The select is fed by **`farms/index.json` in the `sunmint` repo** (fetched via `REMOTE_FARMS_URL`, line 156), NOT by the sheet directly. And that index is a **generated artifact** — it only updates when someone runs the farms-index generator (the same family as `build_plots_geojson.py`). 
+
+## So the direct answer
+
+| Question | Answer |
+|---|---|
+| Is the farm created as a record? | ✅ **Yes** — a row in the SunMint Plots sheet (the source of truth), created by the GAS handler automatically |
+| Can *another* farmer select it later? | ⚠️ **Only after the farms index is regenerated** — the dropdown reads `farms/index.json` (a committed, generated file), and nothing auto-runs the generator when a new farm lands |
+| What about the creating farmer? | ✅ Sees it immediately via **local farms** (IndexedDB union — `getLocalFarms()` + remote) |
+
+**Net:** the farm IS persisted server-side on declaration, but "selectable by other farmers" has a manual regeneration step in the middle. The current 4 farms (Cleide, Paulo, Rancho, Santa Anna) are in the index because someone ran the generator — my test rows (TDP1 etc.) are in the sheet but *not* in `farms/index.json`, which is exactly why the dropdown doesn't show them.
+
+## The fix (if you want it automatic)
+
+Make the farms index regenerate as part of the same pipeline — either:
+1. **GAS handler also updates `farms/index.json`** (it can write the repo via the same GitHub-API pattern we use), or
+2. **A post-processing step** (the daemon/autopilot) reruns the generator after each processed event and commits the index, or
+3. **The app falls back to fetching the plots geojson** for the dropdown when the index is stale (it already fetches both)
+
+Want me to implement one of these — my pick would be **(2)** a small autopilot-side watcher that regenerates + commits the farms index whenever the SunMint Plots sheet gains a new farm, since it reuses the proven generator path?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== FBE; cd /tmp && echo "=== farms/index.json in sunmint repo (what feeds the dropdown?) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/
 
