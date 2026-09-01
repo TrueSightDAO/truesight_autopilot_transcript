@@ -8,51 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=17181] status
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Status — chain healthy, on track:**
-
-| Stage | State |
-|---|---|
-| Transcode | 🔄 **21/71 mp4s** (IMG_4853 just done; ~1.5 min/vid) |
-| YOLO detect | ⏳ waiting for transcode (PID 70181) |
-| GPS re-inject | ⏳ chained after detect |
-| YouTube upload | ⏳ armed, waiting (PID 70457) |
-| Disk | 57% (34G free) |
-| Manifest yt_ids/gps | 0 now — final write happens at chain end (expected) |
-
-**ETA:** ~50 min left on transcode → ~10 min detect → ~5 min GPS fix → then ~3h for the 71 YouTube uploads (~3 min each). Total **~4h to full completion** (uploader stops on first failure + logs to `yt_upload_log.txt`).
-
-Everything is running unattended — no action needed. I'll pick up automatically when the chain lands (build `cleide.json` manifest + index entry + farm-page media wiring). Ping me anytime for another status.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /home/ubuntu/cleide_work echo "=== date ==="; date -u +"%H:%M:%SZ" echo "=== transcode (69990) ===" ps -p 69990 --no-headers -o pid,etime
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Status — chain healthy, on track:**
-
-| Stage | State |
-|---|---|
-| Transcode | 🔄 **21/71 mp4s** (IMG_4853 just done; ~1.5 min/vid) |
-| YOLO detect | ⏳ waiting for transcode (PID 70181) |
-| GPS re-in
-
-
 ### 🤖 Autopilot
 
 Go received — checking the chain's progress.
@@ -4594,6 +4549,7 @@ The test's premise is outdated: `parse_event` now **includes** email events (exc
 ### 🤖 Autopilot
 
 Now I see the **smoke** failure: it's a **ruff failure** — "132 fixable with the `--fix` option" — the smoke workflow runs `ruff check` over the whole repo and it fails. But wait — that's a repo-wide formatting failure, which exists on origin/main too (pre-existing, the "11 format-flagged files" I noted all session). Let me see what smoke actually does and whether this is pre-existing on main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4604,16 +4560,19 @@ Now the full picture is clear:
 - **`smoke` workflow** (Python 3.11, `ruff check app tests scripts` + `ruff format --check` + `smoke_tools.py` + pytest): the log shows **`ruff check` failing with 132 fixable issues** — repo-wide pre-existing lint debt (the same "11 format-flagged files" I saw all session, but ruff check counts more). That's **pre-existing on origin/main**, not caused by my PR.
 
 Let me confirm the ruff failure is pre-existing (not from my files) by running ruff on the branch and comparing against main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My files are clean — the 2 remaining ruff errors are **pre-existing unused imports elsewhere** (not mine). The smoke run on CI showed 132 issues because CI uses a different ruff version (`requirements-dev.txt` pinned) than the box. Let me identify the 2 remaining errors and check whether they're on origin/main (pre-existing), then decide: fix them (2 tiny cleanups) or xfail.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 2 ruff errors exist **on origin/main too** (pre-existing — not caused by my branch). But my last restore may have clobbered the quarantine. Let me verify the quarantine is still on the branch and identify the 2 pre-existing errors precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4668,6 +4627,7 @@ go — another redeploy killed the turn. Please resume the CI-unblock work for P
 ### 🤖 Autopilot
 
 Resuming the CI-unblock for PR #376. Let me check the current branch state (redeploys may have reset things).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4813,4 +4773,197 @@ Holding here per your instruction — #377 is RSA-sig's to merge now that CI is 
 **✅ Done this turn — actions taken:**
 • `deploy autopilot` → Deploy DEFERRED: 1 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
 • `ssh run` ×4 → set -e cd /opt/truesight_autopilot echo "=== disk HEAD vs origin/main ===" git fetch -q origin 2>/dev/null echo "local: $(git rev-parse --sh; set -e cd /opt/truesight_autopilot git pull -q origin main 2>&1 | tail -2 echo "now: $(git rev-parse --short HEAD)" echo "" echo "=== confir; set -e cd /opt/truesight_autopilot # Align to origin/main (squash-merge truth); keep working tree changes git reset -q --hard origin/main 2>; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+The UI of 
+https://sophia.truesight.me/media-archive-pipeline
+https://sophia.truesight.me/signature-ledger-pipeline
+
+Still looks drastically different from 
+https://sophia.truesight.me/vault/
+https://sophia.truesight.me/vault/followups
+https://sophia.truesight.me/vault/status
+
+Also the session that is detected in 
+
+https://sophia.truesight.me/vault/
+https://sophia.truesight.me/vault/followups
+https://sophia.truesight.me/vault/status
+
+Is not detected here 
+https://sophia.truesight.me/media-archive-pipeline
+https://sophia.truesight.me/signature-ledger-pipeline
+
+When I go to 
+https://sophia.truesight.me/media-archive-pipeline
+https://sophia.truesight.me/signature-ledger-pipeline
+
+It does not detect my active session. And is still presenting to me request to sign in
+
+
+### 🤖 Autopilot
+
+Gary's right — the two pipeline pages should match the vault's look AND detect his existing session. Let me investigate how the vault pages detect identity vs how the pipeline pages do it.
+
+
+### 🤖 Autopilot
+
+Found the pattern: the vault detects identity via the **`governor_chat_session` JWT cookie** (`_optional_identity` reads the cookie, `verify_jwt` validates it) and renders `identity.name` + Sign out. The pipeline pages must not read that cookie. Let me check what the pipeline pages do for identity and how they're rendered.
+
+
+### 🤖 Autopilot
+
+Root cause confirmed — **two different auth mechanisms**:
+- **Vault** (`vault_routes.py`): server-rendered, reads the **`governor_chat_session` JWT cookie** via `_optional_identity(request)` → template shows `identity.name` + Sign out. Session = the cookie.
+- **Pipeline pages**: client-side JS reads **`localStorage`** (`map_token` / `slp_token`) — a *different* token store. They never look at the session cookie, so Gary's active vault session isn't detected → always prompts to sign in.
+
+The fix: make the pipeline pages use the **same session cookie** as the vault. Concretely:
+1. **Server-side**: the page route should read `_optional_identity(request)` (same helper) and render the identity in the header + a Sign out link (same as base.html)
+2. **Client-side**: the JS should read the JWT from the `governor_chat_session` **cookie** (not localStorage), or better — since the page is server-rendered with identity, the data fetch can be authorized by cookie automatically
+
+Let me check how `_optional_identity` is exposed and whether the data endpoint accepts the cookie (verify_jwt reads the cookie?):
+
+
+### 🤖 Autopilot
+
+Root cause is clear: `verify_jwt` reads the `governor_chat_session` cookie — so the **cookie already authenticates the data endpoints**. The problem is purely client-side: the pipeline pages use `localStorage` tokens and their own inline CSS/header, never reading the cookie or matching the vault's UI. Fix: server-render identity from the cookie (like the vault) and unify the styling. Let me see the vault base.html template structure and the pipeline page HTML to unify them.
+
+
+### 🤖 Autopilot
+
+I have the full vault base.html design. The cleanest fix that satisfies both asks (visual consistency + session detection): **convert the two pipeline pages to use the same `base.html` template** (extend it) — that instantly gives them the vault's CSS/nav/header/identity rendering (cookie-based sign-in/out) and kills the separate localStorage flow. Let me check whether the pipeline pages can use Jinja templates (does the app mount Jinja2Templates?) and see the vault_routes page-render pattern.
+
+
+### 🤖 Autopilot
+
+This is the right fix: convert both pipeline pages to Jinja templates extending the vault's `base.html` — inheriting the CSS/header/nav/identity cookie logic, and the data fetches auto-authenticate via the `governor_chat_session` cookie (verify_jwt reads it). Let me check base.html's block structure to write the templates correctly.
+
+
+### 🤖 Autopilot
+
+I now have the full picture. The cleanest, lowest-risk fix: **convert both pipeline pages to Jinja templates extending `vault/base.html`** — inherits the exact vault CSS/nav/header/identity (cookie session detection, Sign in/out), and since `verify_jwt` already reads the `governor_chat_session` cookie, the data fetches will auto-authenticate. I'll:
+1. Create `app/templates/vault/media_archive_pipeline.html` + `signature_ledger_pipeline.html` (extend base.html, keep their table/JS logic but read cookie instead of localStorage)
+2. Update both page routes to render via `_templates.TemplateResponse` with `identity = _optional_identity(request)`
+3. Update the JS to fetch with `credentials: 'include'` (cookie) instead of localStorage token
+
+Let me implement this carefully.
+
+
+### 🤖 Autopilot
+
+The bodies are tiny because most content is in `<script>`. Let me extract the full HTML (style + body + script) from both files and build the base.html-extending templates programmatically.
+
+
+### 🤖 Autopilot
+
+I have everything. The plan is clean and safe:
+
+**Design:** Both pipeline pages become Jinja templates that `{% extends "base.html" %}` — instantly inheriting the vault's exact CSS, header, nav (with both pipeline links + Sign in/out based on the `governor_chat_session` **cookie**), and identity badge. The page JS changes from localStorage-token to **cookie-based** auth (`fetch(..., {credentials:'include'})` — `verify_jwt` already reads the cookie), so Gary's existing vault session will be detected and auto-authorize the data call.
+
+Let me build both templates + update both page routes in one PR.
+
+
+### 🤖 Autopilot
+
+Templates created. Now update the two page routes to render via `_templates.TemplateResponse` with `_optional_identity` (cookie-based session detection). I need to import the vault helpers — let me check what's importable and update the routes.
+
+
+### 🤖 Autopilot
+
+The map route updated, but the SLP route anchor didn't match — the docstring differs. Let me check the actual SLP route text.
+
+
+### 🤖 Autopilot
+
+The SLP docstring differs. Let me fix the SLP route with the correct anchor.
+
+
+### 🤖 Autopilot
+
+Both modules load cleanly. Now let me run the hard-rule checks (ruff + format + tests) on the changed files, then commit as a PR.
+
+
+### 🤖 Autopilot
+
+Tests pass (10/10) but ruff wants fixes: 2 errors (unused `Path` import — it's already imported in the module) + format. Let me auto-fix with ruff, re-verify, then commit.
+
+
+### 🤖 Autopilot
+
+All green. Let me do a quick live render check (spin up the page via the running app's template dir — actually let me test the template renders with TestClient), then commit + PR.
+
+
+### 🤖 Autopilot
+
+Both pages now render in the **vault style** (nav-bar + both pipeline links + Sign in link when signed out) with 200s. The fix works. Let me also verify a signed-in (cookie) render shows the identity — then commit + PR.
+
+
+### 🤖 Autopilot
+
+The settings import path differs — let me check how to access jwt_secret properly.
+
+
+### 🤖 Autopilot
+
+`settings` comes from `app.config`. Let me redo the signed-in render test with the right import.
+
+
+### 🤖 Autopilot
+
+Both behaviors verified:
+- **Signed out** → 200, vault-style nav, both pipeline links, **Sign in** link
+- **Signed in (cookie)** → 200, identity rendered, **Sign out** link
+
+Exactly matching the vault's session detection. Now commit + PR (the CI gate will check it):
+
+
+### 🤖 Autopilot
+
+`app/templates/vault` is gitignored — but the templates ARE served from there and the existing vault templates (base.html etc.) are tracked. Let me check: is `app/templates/vault/` really ignored, or only some entries? And how are base.html/index.html tracked?
+
+
+### 🤖 Autopilot
+
+The `.gitignore` line `vault/` ignores the path, but the **existing vault templates are tracked** (`git ls-files` shows them — tracked files override gitignore). So I need `git add -f` to force-add my new templates (same as the tracked originals were added). Let me force-add and commit.
+
+
+### 🤖 Autopilot
+
+## Turn report — Pipeline pages now vault-style with cookie session detection (PR #378)
+
+**PR opened:** [#378 — ui: vault-style pipeline pages + cookie session detection](https://github.com/TrueSightDAO/truesight_autopilot/pull/378)
+
+**Both of Gary's issues addressed:**
+
+1. **Visual consistency** — both pipeline pages (`/media-archive-pipeline`, `/signature-ledger-pipeline`) were standalone inline-HTML pages with their own CSS/header. Now they're **Jinja templates extending `vault/base.html`** — inheriting the vault's exact stylesheet, saffron header, nav-bar (Vault · Follow-ups · System Status · Media Archives Pipeline · Signature Ledger Pipeline), and footer. They look like siblings of `/vault/` now.
+
+2. **Session detection** — root cause: pipeline pages read a **localStorage token** (`map_token`/`slp_token`), never the `governor_chat_session` **cookie** the vault uses. So Gary's active vault session wasn't detected → always prompted to sign in. Now:
+   - Page route renders `identity = _optional_identity(request)` (same as vault) → header shows **his name + Governor badge + Sign out** when the cookie is present
+   - JS fetches use `credentials: 'include'` (cookie) instead of Bearer localStorage — `verify_jwt` already reads the cookie, so the data endpoint auto-authenticates his session
+
+**Verified via TestClient:**
+| State | Result |
+|---|---|
+| Signed out | 200 · vault-style nav · both pipeline links · **Sign in** link |
+| Signed in (cookie) | 200 · identity rendered · **Sign out** link |
+
+Both modules import clean, compile OK, ruff clean, format clean, 10/10 related tests pass.
+
+**Note:** `app/templates/vault/` is in `.gitignore` (line 45 `vault/`) but the existing vault templates are tracked — I force-added the two new templates (same as the originals). PR #378 is open; the **CI gate (#376) is now live**, so the merge will only go through when test+smoke are green.
+
+---
+
+**RESUME HERE → next unit:**
+1. **Merge #378 once CI is green** (the gate enforces it — check `test` + `smoke` on the PR), then restart/verify live that `/media-archive-pipeline` and `/signature-ledger-pipeline` render vault-style and detect Gary's session
+2. Optional: check the followups/status pages didn't regress (base.html nav was already updated in #372)
+
+Ping me with "go" and I'll merge + verify.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×21 → set -e cd /opt/truesight_autopilot echo "=== how does vault_routes detect the session/identity? ===" grep -n "identity\|session\|cookie\|tok; set -e cd /opt/truesight_autopilot echo "=== media_archive_pipeline.py: how does the page detect identity? ===" grep -n "identity\|cookie\|v; set -e cd /opt/truesight_autopilot echo "=== verify_jwt: does it read the cookie? ===" sed -n '/def verify_jwt/,/^def /p' app/auth.py | head; …(+18 more)
 
