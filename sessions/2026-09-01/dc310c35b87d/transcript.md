@@ -4890,6 +4890,7 @@ No visible ledger row (dispatch never matched → GAS never ran → no sheet row
 ### 🤖 Autopilot
 
 Let me find the correct sheet name first:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5094,4 +5095,23 @@ Go-signal noted — but there's genuinely **no next unit I can execute right now
 - Anything new you bring in
 
 So — want me to start one of the parked items, or hold here until Gary does his two manual steps? I'll stay quiet otherwise.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — a redeploy killed the turn, but there was nothing pending on your side anyway (holding for Gary's cron trigger + device test). Just checking you're responsive.
+
+
+### 🤖 Autopilot
+
+Responsive ✅ — alive and holding.
+
+**Status confirmed:**
+- Nothing pending on my side — boundary pipeline complete, deployed, verified (healthz + catalog re-checked after the crash-loop: all green)
+- Holding on the two Gary-dependent items (cron trigger + real-device test), both tracked in OPEN_FOLLOWUPS
+- Parked options ready on your word: chrome audit of the other sunmint pages, `sunmint_mobile/www/` sync, or anything new
+
+Say the word when there's something to do.
 
