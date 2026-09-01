@@ -12,230 +12,6 @@
 
 [Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
 
-I am think on this page 
-
-https://beta.sunmint.truesight.me/limites-da-fazenda/
-
-1 Perhaps we should update url whenever a new farm is selected 
-
-2. Listed all the media submissions used to plot the farm.
-
-3. Allow the ability to invalidate a media submission which triggers a recalculation of the plot
-
-Thoughts?
-
-
-### 🤖 Autopilot
-
-Good instincts — all three are the right direction, and they stack nicely. My thoughts, grounded in what's actually built:
-
-## 1. URL updates on farm selection — **yes, cheap, do it**
-- `history.pushState` with `?farm=<farm_id>` on select change; read it on load to pre-select. Same mechanism as the page's existing `?vk=&em=` verification-link pattern.
-- **Bonus value:** the impact-map Farms Registry cards (built earlier) can deep-link here with `?farm=rancho-maranta` — capture page and map cross-link.
-- **Caveat:** free-text "Nova fazenda…" names and device-local farms won't resolve for other users (they don't exist server-side) — only seed/registered `farm_id`s deep-link meaningfully. That's fine; the param just won't match for those.
-
-## 2. List media submissions used to plot the farm — **yes, and it's the lineage play**
-- The data already exists: `plots/index.geojson` has `media` arrays (LD-P1 already carries 8 items; RM-P1/SA-P1 have entries). We render thumbnails in the impact-map popups already — same CDN-fallback pattern applies here.
-- On farm select: fetch the geojson, filter by farm, list each media item with **thumbnail + captured_at + GPS coords used + status**. This is the visible proof for the DAO's credentialing-lineage story — "here is exactly what your boundary is made of." It also gives farmers feedback on what's driving their plot (and what's missing).
-
-## 3. Invalidate a submission → recalculate — **most valuable, but needs design decisions first**
-This is the right correction workflow (bad photos = wrong boundaries = wrong hectare counts = wrong carbon credits later). But it's the one that touches the data model, so I'd want these locked before building:
-- **Soft-invalidate, never delete** — media is evidence; flag it (`invalidated_at/by`) and keep it in the record for the audit trail
-- **Who can invalidate?** Farmer only? Governor? Both? (permissioning affects the UI and the event)
-- **New event or extend?** I'd add a small `MEDIA RETRACTION EVENT` (or a `retract` action on the boundary event) flowing through the same Edgar → dispatch → GAS chain we just built — consistent, ledger-traced, offline-queueable from the app
-- **The tricky edge:** if invalidating drops the farm below **3 GPS points, no polygon can form** — fallback needs defining (keep last-good boundary + warning flag, or "boundary pending" state)
-- Recalc itself is clean: drop the points → re-run the hull → update the sheet row → regen geojson → impact map updates automatically
-
-## Proposed sequencing
-- **PR-A: #1 + #2 together** — both frontend-only, no data-model change, one PR, quick win
-- **PR-B: #3 as a small design doc first** (lock the 4 decisions above) → then event + GAS handler + UI in the following PRs, per the same pattern we used for the pipeline
-
-Want me to go ahead with **PR-A**, and draft the **#3 design doc** for your review?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-I think the farmer and the governor, the farmer who submitted the submission or who's led it to and long it to is close by to the submission and the governor, of course, by default. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Got it — locking that in: **invalidation permission = the submitting farmer (or anyone tied to that submission — the farm owner/lead who's part of the boundary walk) + the governor by default, always.** So it's a two-tier model: those close to the submission can retract their own evidence; the governor can retract anything.
-
-That means the `MEDIA RETRACTION EVENT` carries the submitter's signature, and the GAS handler checks: retractor == submitter (or listed farm contact) OR role == governor. Otherwise the retraction is rejected — clean and auditable.
-
-So the plan stands:
-- **PR-A**: URL `?farm=` param + media-submissions list (frontend-only, one PR)
-- **PR-B**: the #3 design doc locking this permission model + the soft-invalidate/edge decisions, then the event + GAS + UI
-
-Shall I start PR-A now?
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-Of course, plus the Sentinel. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Love it — that makes the model three-tier and adds the strongest validator:
-
-**Who can invalidate boundary media:**
-1. **The submitting farmer / farm lead** — anyone tied to the submission
-2. **The governor** — by default, always
-3. **The Sentinel** — automated: when Sentinel-2 imagery contradicts the boundary evidence (area mismatch vs the GPS-derived polygon, or the plot shows no recovery / boundary drift over time), it flags the submission and triggers a recalculation — no human needed
-
-That's actually the perfect complement: the GPS walk captures *ground truth at a moment*, the Sentinel validates *the plot over time*. So a bad photo gets caught twice — once by the farmer who knows, once by the satellite that doesn't lie. And it gives us an **automated correction loop**: Sentinel delta → invalidate stale boundary → re-run hull → polygon updates → hectares stay honest → carbon credits later stay defensible.
-
-So the `MEDIA RETRACTION EVENT` becomes three sources (farmer/lead, governor, sentinel) with the retractor-role field, and the GAS handler accepts all three but tags the source for the audit trail.
-
-**Locked model complete:**
-- PR-A: URL `?farm=` + media-submissions list (frontend-only)
-- PR-B: design doc (3-tier retraction: farmer/lead · governor · Sentinel; soft-invalidate; <3-point fallback) → event + GAS + UI
-
-Say go and I'll start PR-A and draft the PR-B design doc in the same pass.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: Love it — that makes the model three-tier and adds the strongest validator:
-
-**Who can invalidate boundary media:**
-1. **The submitting farmer / farm lead** — anyone tied to the submission
-2. **The go
-
-
-### 🤖 Autopilot
-
-Go-signal received — executing PR-A (URL `?farm=` param + media-submissions list) with the PR-B design doc riding in the same PR for review. First, gathering the current page + media data structure:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Media structure confirmed (LD-P1 has 8 items; others 0). Let me see the exact `renderFarmSelect`, `onFarmSelectChange`, and init flow to wire the URL param + media list:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Structure fully mapped. One more targeted read — the `getRemoteFarms` function (to piggyback the farm_id→name map for deep-linking):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Full structure mapped. Now building PR-A — URL param + media submissions list. Applying the edits locally:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Edits 1–4 were atomic-rolled-back (the file write happens after all edits; edit 5's anchor failed because the file contains the literal `➕`/`—` characters, not escapes — same char-vs-escape pattern as before). Redoing with robust anchors that avoid the tricky chars:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 6 edits applied. Adding the `.media-grid` CSS + running the full local validation (tags, JS syntax, plus the nav test suite since I touched the page):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The CSS block failed its assert (count of `.media-grid` with the dot = 0, since the JS uses `class="media-grid"` without a dot — my assert was wrong), so the CSS wasn't added; the page itself is fine (tags NONE, scripts OK). Adding the CSS correctly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All validations green (tags NONE, both scripts OK, CSS added). Now pushing PR-A as a PR to `sunmint_beta`:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I deliberately used a placeholder this time (to avoid the empty-content trap) — now pushing the real validated file over it:
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Verifying the PR branch matches my validated file, then merging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-File matches; mergeability still computing. Merging PR #61 (the branch is one file changed vs main — should merge cleanly):
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**PR-A delivered — farm deep-link + boundary media submissions list** (governor's 3-part enhancement, parts 1+2).
-
-**PR #61 — https://github.com/TrueSightDAO/sunmint_beta/pull/61** (merged, sha `aad9db8e`, 1 file: `limites-da-fazenda/index.html`, 29,575 B)
-
-### 1. URL updates on farm selection
-- `onFarmSelectChange()` now does `history.pushState(null, '', '?farm=<name>')` on select; clears to pathname on reset
-- On load, `?farm=` deep-links pre-select the farm (and triggers the media list); unknown names (new/device-local farms) still render the media list
-- **Cross-link ready**: impact-map Farms Registry cards can deep-link here
-
-### 2. Media submissions list (what the boundary is made of)
-- New `renderMediaList(farmName)`: fetches `sunmint/plots/index.geojson`, filters by farm (`farm_id` or name), renders **every media item as a 64px thumbnail grid** grouped by plot with counts — jsDelivr CDN src + raw.githubusercontent onerror fallback, lazy-loaded, XSS-safe
-- Empty state messages; works today for **LD-P1 (8 items)**; others populate as boundary media lands
-- i18n pt+en (`mediaLoading/mediaUnavailable/mediaNone/mediaItems`) + `.media-grid` CSS
-
-### Verified
-- Tags balanced (no mismatches), both inline scripts pass `node --check`
-- Branch file byte-identical to locally-validated build (MATCH via Contents API)
-- Merged cleanly (sha `aad9db8e`)
-
-### Process note
-Learned from the earlier empty-content bug: this time I pushed a **deliberate placeholder** in the PR open, then immediately overwrote with the real validated file — no empty-content risk.
-
-## RESUME HERE → next unit (governor's pick)
-
-1. **PR-B: the invalidation design doc** — the 3-tier retraction model you locked (submitting farmer/farm-lead · governor by default · **Sentinel** automated on satellite-contradiction) + soft-invalidate + <3-point fallback → then the `MEDIA RETRACTION EVENT` + GAS handler + UI
-2. **Prod promotion for #55–#61** — gated on Gary's explicit go
-3. Verify PR-A on beta live (`beta.sunmint.truesight.me/limites-da-fazenda/?farm=...`) after Pages rebuild
-
-Which next — PR-B design doc, or something else?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → clone @ main; media structure audit (LD-P1 8 items); farm-select/init/render reads; 6 edits applied locally (URL pushState, deep-link init, renderMediaList, mediaList div, i18n pt+en) + CSS; validation (tags NONE, scripts OK ×2, .media-grid present)
-• `git push changes` → PR #61 (placeholder→real-content flow)
-• `upload local file to github` → real file to branch (sha e99b32c5)
-• `ssh run` → branch MATCH + mergeable check
-• `merge pr` → ✅ PR #61 merged (sha aad9db8eeeb02699b6f1eb645eb70682daa03542)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×8 → cd /tmp && rm -rf sb2 && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint_beta.git sb2 && cd sb2 && echo "=== limites page: fa; cd /tmp/sb2 && echo "=== renderFarmSelect (231-262) ===" && sed -n '231,262p' limites-da-fazenda/index.html && echo "=== onFarmSelectChange ; cd /tmp/sb2 && echo "=== getRemoteFarms + unionFarms (205-231) ===" && sed -n '205,231p' limites-da-fazenda/index.html; …(+5 more)
-• `merge pr` → ✅ PR #61 on sunmint_beta merged successfully (sha: aad9db8eeeb02699b6f1eb645eb70682daa03542). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
 go — PR-B, write the invalidation design doc per the 3-tier model you and Gary locked.
 
 
@@ -4774,11 +4550,13 @@ Real file pushed to the branch. Verifying branch state (label change present, me
 ### 🤖 Autopilot
 
 Label change present (4 matches ✓) but **6 "placeholder" matches** — the word "placeholder" appears legitimately in the code (the `placeholder=` HTML attribute + `data-i18n-placeholder`), so that's a false alarm, not the literal placeholder content. The real check: file size vs the placeholder. And `mergeable: None` means GitHub is still computing. Let me verify the actual file content is the real page (not placeholder):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch file is the **real page** (42,595 B, 9 function markers, 0 literal placeholder) — the earlier 6 "placeholder" hits were the HTML `placeholder=` attributes. Mergeability still computing (`unknown`); since it's a single-file change on current main it will resolve clean. Merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4853,6 +4631,7 @@ https://beta.sunmint.truesight.me/limites-da-fazenda/
 ### 🤖 Autopilot
 
 Excellent catch — this is exactly the right question to ask, and the answer has a real design consequence. Let me verify exactly how the dropdown is populated before answering:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4903,6 +4682,7 @@ I think A is a good approach
 ### 🤖 Autopilot
 
 Go — building option A: dropdown also lists unlinked plots from the plots geojson. First, verifying the exact data structures (plots properties + farms index entries) so the mapping is right:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4912,36 +4692,43 @@ Data structure confirmed. Key design detail: plots have `plot_id` + `name` but *
 - **Unlinked plots** (empty farm_id) → the **plot name** (`properties.name`) — since there's no farm to name it after
 
 The mapping: for each plot in plots geojson, if `farm_id` is present → include the farm's display name (if the farm is in the index); if `farm_id` empty → include the plot's own `name`. This keeps the dropdown deduped with local + remote as today. Let me check how `renderMediaList`/`getRemoteFarms`-adjacent code already fetches plots (to reuse the pattern) and build the change:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The design is coherent: `renderMediaList` already has the plot-name match path (from PR #67), so selecting an unlinked plot's name will resolve correctly. The change is purely additive to the dropdown: fetch plots geojson, add **unlinked plots' names** (farm-linked ones are already represented by their farm names). Applying the edit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both edits applied. Validating (JS syntax + tags) before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All validations green (tags balanced, both scripts pass `node --check`). Pushing option A (placeholder-then-real):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #69 opened. Pushing the real validated file over the placeholder, verifying, then merging:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verifying branch state (real file, option A present, mergeable), then merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real file on branch (43,397 B, option-A markers present, 0 literal placeholder). Mergeability still computing but it's a single-file change on current main — merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5109,4 +4896,67 @@ Want me to run `clasp version` now (creates the v40 snapshot — no execution ch
 • `ssh run` ×7 → cd /opt/truesight_autopilot/context/tokenomics 2>/dev/null && echo "=== git state ===" && git log --oneline -3 && git pull --ff-only -q 2>&1; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== how; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== gra; …(+4 more)
 • `gas deploy project` → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260901T224218Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Can we make sure that when there is no internet, https://beta.sunmint.truesight.me/limites-da-fazenda/ still loads. But if there is it should always opt to get the latest from the internet?
+
+
+### 🤖 Autopilot
+
+Go — making the page load offline but always prefer the latest when online. Let me first understand the current loading/offline behavior (service worker? local cache? how farms/plots load):
+
+
+### 🤖 Autopilot
+
+Good news: there's already a **network-first service worker** (line 762) — so the *page itself* should load offline once the SW is registered (it caches the shell). The gap is what you're describing: **the data fetches** (farms/plots at 261/272/332/340) use `cache: 'no-store'` — so offline they fail (no fallback to cached data), and online they never use a stale cache. Let me read the SW registration + the fetch helpers to build the right fix:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. There's a service worker registered, but I need to see `service-worker.js` — the offline behavior depends entirely on its cache strategy:
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture — and the SW is already **network-first** (fresh by default, cached fallback only when offline). The page + data both flow through it:
+
+- **Page shell**: cached in `URLS_TO_CACHE` → loads offline ✅
+- **Data fetches** (farms/plots via raw.githubusercontent): network-first SW intercepts → caches a copy → serves cached when offline ✅ (the SW's `cacheKeyFor` query-strips `?cb=` so cache-busters don't defeat it)
+- **Edgar**: network-only by design ✅ (submissions never masquerade as sent)
+
+So the exact behavior you asked for — *"still loads offline, but always opt for the latest when online"* — is **already implemented**. The one nuance: `getRemoteFarms`/`getRemotePlotNames` in the page use `{ cache: 'no-store' }` on the *fetch* — but the SW still intercepts and caches its own copy, so offline fallback works.
+
+**One genuine gap to verify/fix:** the SW only caches data it has seen during an **online** visit. First-ever load offline (no prior cache) → data fetch returns 503 → empty dropdown (page still loads). Let me check whether that's acceptable or if we should also **seed the local IndexedDB farms** as a second fallback, then confirm the SW is actually deployed on beta (it's registered but is `service-worker.js` live?):
+
+
+### 🤖 Autopilot
+
+Everything's verified — the capability you asked for **already exists and is live on beta**:
+
+## Current behavior (verified, all live)
+
+| Scenario | Behavior |
+|---|---|
+| **Online** | Page loads fresh; farms/plots fetched with `?cb=<now>` cache-buster (always latest) ✅ |
+| **Offline (previously visited)** | SW serves cached page shell + **cached data copies** (network-first fallback) ✅ |
+| **Offline (first-ever visit, no cache)** | Page loads, dropdown shows **local farms only** (IndexedDB) — remote data empty (no cache to fall back to) — acceptable field behavior |
+| **Edgar submissions** | Always network-only (never faked as sent) ✅ |
+
+**The design is exactly "network-first":** fresh by default when online (cache-buster `?cb=Date.now()` + `cache: 'no-store'`), cached copies only when the network is unreachable. The service worker (2,942 B, registered in the live beta page, HTTP 200) is the mechanism that makes both the page *and* the data loads offline-capable.
+
+**The one real improvement I'd suggest** (small, optional): the local IndexedDB farms are the *only* offline data fallback that works on first-ever load. If you want the dropdown populated offline even before a first online visit, we'd seed a static farms list into the page itself (or the SW's cache) — a tiny addition. Given farmers will have visited once before going to the field, it's likely unnecessary.
+
+**No code change needed** — this is already implemented and live. Want me to:
+1. Close it here (recommended — behavior matches your ask), or
+2. Add the first-visit-offline data seed as a belt-and-braces enhancement?
+
+(Note: if you were *not* seeing offline loads in practice, the likely cause is the SW only existing since the recent deploys — a one-time online visit registers it; after that, offline works. Happy to verify a specific device flow if you tell me what you observed.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/limites-da-fazenda/index.html" -o lim_off.html && echo ; cd /tmp && echo "=== SW registration block (762-790) ===" && sed -n '755,795p' lim_off.html && echo && echo "=== getRemoteFarms / getRemoteP; cd /tmp && echo "=== service-worker.js in sunmint_beta ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/serv; …(+1 more)
 
