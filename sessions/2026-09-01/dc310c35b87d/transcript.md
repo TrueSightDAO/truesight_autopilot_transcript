@@ -8,390 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-Good question — let me pull the actual record: timestamps from this thread's transcript and any contribution entries already logged in the ledger.
-[2 tool result(s) compacted: search_transcript, read_oracle_logs — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The transcript search found nothing (no attachment content), and the oracle log isn't relevant. The time spent is in **this conversation's own history** — let me pull the actual timestamps from the session transcript repo, which is the authoritative record of my work:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The transcript repo stores sessions by date. Let me find this thread's session (around 2026-08-31 / 2026-09-01) and check the usage/contribution records:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found a `usage.jsonl` record. Let me read it — that's the authoritative time-tracking for the sessions:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The usage.jsonl only has a test record — sparse. Let me check the worker usage logs and any contribution entries already recorded in the ledger for this work:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The transcript repo has no worker usage records for these dates (only a test entry). Let me check whether any contribution entries were already logged in the ledger for this work, and look at the session transcript size for a workload proxy:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The audit trail is thin — let me do one final check for already-logged contribution events in the cache, then give you the honest picture:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Here's the honest picture, straight from the audit trail:
-
-## What the record shows
-
-I checked the authoritative sources — `truesight_autopilot_transcript` (session transcripts + `usage.jsonl`), `treasury-cache`, `contributors-cache`, and the oracle/ledger logs:
-
-| Source | What's there | Usable for cost? |
-|---|---|---|
-| Session transcripts | 47 session files for 08-30/31 + 09-01 (all sessions, not just this thread) | No duration/cost metadata |
-| `usage.jsonl` | 1 line — a **test** record (`{"caller":"test"}`), nothing real | ❌ |
-| Worker usage (`usage/<date>/workers.jsonl`) | **Does not exist** for 08-30/31/09-01 | ❌ |
-| `treasury-cache` / `contributors-cache` | No contribution entries for this work | ❌ (nothing logged yet) |
-
-**Bottom line: there is no automated time/cost accounting for this work.** The usage tracking is effectively not recording — the only entry is a test row. So I can't give you exact minutes or dollars from the ledger.
-
-## What I CAN give you — evidence-based reconstruction
-
-- **Calendar span:** the boundary-submission plan ran entirely **2026-08-31 → 2026-09-01** (manifest creation date + final merge date). The impact-map work that preceded it in this same thread was also 08-31 → 09-01.
-- **Work units (countable):** the boundary plan = **9 units**: plan PR, `extract_plot_gps.py` + 11 tests, capture module + nav + SW, farms seed + generator + workflow, catalog + dispatch, UAT (7 checks), server deploy, prod promote, manifest completion. Plus ~6 units for the impact-map extension in the same thread.
-- **A reasonable estimate:** based on the depth (4 repos touched, ~15 commits, dozens of tool calls, a full UAT + production deploy), I'd estimate **roughly 4–6 agent-hours** of work on the boundary pipeline, including the impact-map thread work that fed it. That's an **estimate**, not a ledger fact.
-
-## Recommendation
-
-If you want this **on the ledger**, I'll file a **[CONTRIBUTION EVENT]** for the boundary pipeline work (e.g. 300–360 minutes, "SunMint boundary submission pipeline — plan, scripts, farmer-app module, backend event, UAT, deploy") with the PR URLs as evidence. The TDG issuance is up to you.
-
-Want me to log it — and if so, what minutes/TDG should I submit?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → cd /tmp && echo "=== find session transcripts ===" && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot_transcript/git/; cd /tmp && echo "=== sessions 2026-08-31 .. 09-01 ===" && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot_transcript/; cd /tmp && echo "=== usage.jsonl for session 1b5816442fb3 ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_autopilo; …(+3 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-file based on that
-
-
-### 🤖 Autopilot
-
-Filing the contribution based on the estimate. First, verifying the event contract per protocol:
-[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Submitting the contribution — 300 minutes (5 hrs, the mid-estimate) for the boundary pipeline + impact map work:
-[1 tool result(s) compacted: submit_contribution — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-✅ **Contribution filed.**
-
-## Submitted — [CONTRIBUTION EVENT]
-
-| Field | Value |
-|---|---|
-| **Type** | Time (Minutes) |
-| **Amount** | **300** (5 hrs — mid-estimate) |
-| **Description** | SunMint boundary submission pipeline + impact map extension (2026-08-31→09-01): plan, `extract_plot_gps.py` + 11 tests, Limites da Fazenda capture module, farms seed index, `FARM BOUNDARY EVIDENCE EVENT` catalog + dispatch, UAT (7/7), dao_protocol deploy, prod promote — repos: sunmint, sunmint_beta, dao_protocol, agentic_ai_context, truesight_me_beta |
-| **Contributor** | Sophia Truesight (admin+sophia@truesight.me) |
-| **TDG Issued** | 0 (pending your call) |
-
-Submitted successfully to Edgar ✅ — it'll appear in the ledger and be eligible for TDG award.
-
-**Notes:**
-- I used **300 minutes** (the mid-point of my 4–6 hr estimate) — adjust if you think it should be more/less; I can submit a correction.
-- **TDG Issued = 0** — tell me what TDG you want to award (if any) and I'll update, or you can award it in the DApp.
-- The estimate covered the boundary pipeline + the impact-map work in this thread that fed it. If you want them split into two contributions (impact map vs boundary), say so and I'll refile.
-
-Want me to also file the **GAS receiver follow-on** as an OPEN_FOLLOWUPS entry (the flagged gap: `processFarmBoundaryEvidenceFromTelegramChatLogs` has dispatch routing but no GAS handler yet), so it's tracked for the next session?
-
-———
-**✅ Done this turn — actions taken:**
-• `submit contribution` → Contribution submitted successfully.
-
-
-### 🧑 Governor
-
-[observed, not directed at you — Nobody Will not DM you]: https://sunmint.truesight.me/limites-da-fazenda/ styling is totally different from https://sunmint.truesight.me/
-
-Also register farm is missing from dropdown, I am thinking we should make a copy of what is https://dapp.truesight.me/register_farm.html
-
-available here too https://sunmint.truesight.me/register_farm.html
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-
-### 🤖 Autopilot
-
-Let me investigate both issues — the styling mismatch and the missing register-farm dropdown entry:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The styling mismatch is confirmed — my `limites-da-fazenda` page uses a **saffron/earthen/cream palette** (custom `:root` vars) while the main app uses a different style block. Let me see the main app's actual design language to match it:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed: the main app uses a **light-gray (#f5f5f5) + white-card + Arial + 600px** design, while my `limites-da-fazenda` page used the **saffron/earthen/cream** brand palette — a real mismatch. Let me check the nav dropdown structure and the dapp's register_farm page:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I see the nav options: plant/monitor/limites/instrucoes — **no "Registrar Fazenda"**. The governor wants register_farm available on sunmint too. Let me check the dapp's register_farm.html (to copy it) and how the nav routes (to add the option):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both issues are now fully diagnosed. Here's the plan — two changes to `sunmint_beta` (beta-first):
-
-## Issue 1 — Styling mismatch on `/limites-da-fazenda/`
-My page used the **saffron/earthen/cream** brand palette (`--saffron:#E8A13D` etc.), but the main app + register_farm both use the **light-gray #f5f5f5 + white-card + Arial + 600px max-width** design. Fix: **restyle `limites-da-fazenda/index.html` to match the main app's design language** (same background, container, fonts, nav-dropdown, buttons, lang-toggle).
-
-## Issue 2 — Register farm missing from dropdown
-The dapp's `register_farm.html` (52,280 B, same #f5f5f5 style) is a full-featured page. The governor wants it available on sunmint too. Options:
-- **A (simple):** Add `<option value="farm" data-i18n="navFarm">Registrar Fazenda</option>` to the nav + route `farm → /register_farm/` — and copy `register_farm.html` into `sunmint_beta/register_farm/index.html` (styled to match, reusing the dapp page's logic)
-- **B (deeper):** Host the single dapp page at both locations (shared source) — but the sunmint site is a separate GitHub Pages deploy, so a copy is the practical approach
-
-I'll go with **A** (copy + style-match + nav entry), mirroring exactly how the sunmint app already hosts its pages.
-
-Let me build both changes in one PR to `sunmint_beta`:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the full picture. Both fixes go in one PR to `sunmint_beta`: (1) restyle `limites-da-fazenda` to the main app's gray/white design, (2) add "Registrar Fazenda" nav option + route + i18n, (3) copy `register_farm.html` to `sunmint_beta/register_farm/index.html`. Building now:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have everything needed. Let me check the register_farm nav structure (to adapt the copy for sunmint), then build the full PR:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both issues diagnosed and the fix plan is clear. Let me build all three changes locally (restyle limites page, create the register_farm copy for sunmint with the app's nav, add the nav option + routing + i18n to the main page), then push as one PR:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Limites page restyled ✓. Now building the register_farm copy with sunmint nav injection + the main-page nav/routing/i18n changes:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now let me build the register_farm copy with the sunmint nav (adding it right after `<body>`), the i18n, and the full page:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both pages built. Now the main-page nav edits (add `farm` option, route, i18n both languages), then push all three files in one PR:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All three files built (the size delta is UTF-8 char-vs-byte counting, not corruption — edits are pure additions). Let me verify all three locally, then push as one PR to `sunmint_beta`:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All three validated (tags balanced, scripts parse). Now pushing — two modified files via edits (PR flow) and the new register_farm page to the same branch. Let me get the exact restyle anchors first:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The limites page already has the nav dropdown structure. Let me confirm beta main matches prod (so my edits apply to the right base), then push the PR:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All three files validated and beta==prod confirmed (identical md5). Now pushing the PR to `sunmint_beta` — nav edits + restyle edits in one call:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #53 opened — but I still need to add the new `register_farm/` page to the branch. Adding it now:
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both changes are on the branch. Verifying the PR is complete and well-formed before merging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #53 looks complete (3 files, +1254/−25). Let me confirm mergeability and verify key content on the branch before merging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Content verified on the branch (all three files correct). Merging PR #53:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**Fixed both issues the governor flagged** (styling mismatch + missing Register Farm nav entry).
-
-**PR #53 — https://github.com/TrueSightDAO/sunmint_beta/pull/53** (merged, sha `52175b88`)
-
-### 1. Styling: `/limites-da-fazenda/` now matches the main app
-The page used the saffron/earthen/cream brand palette while the main app (`sunmint.truesight.me`) uses the light-gray `#f5f5f5` + white-card + Arial + 600px design. Restyled:
-- `body` → `#f5f5f5`, centered flex column (same as main)
-- `.container` → max-width 600px, white, 8px radius, same shadow
-- Header → plain gray (no saffron gradient)
-- Buttons → green `#4CAF50` (main app's accent), inputs/selects → same border-radius/padding
-- Content wrapped in `.container` for consistency
-
-### 2. Register Farm now in the dropdown + available on sunmint
-- **Nav option** `value="farm"` (pt: "Registrar Fazenda" / en: "Register Farm") added to the main page dropdown (between Monitorar and Limites) + i18n keys in both languages + route → `/register_farm/`
-- **New page** `sunmint_beta/register_farm/index.html` (53,236 B) — a copy of `dapp.truesight.me/register_farm.html` (same full form: farm name, location, geo, hectares, land use, ownership, planting opt-in, payment/PIX, photo → Edgar `[FARM REGISTRATION EVENT]`) with the **sunmint nav injected** (so farmers navigate back to plant/monitor/limites without leaving the site)
-
-### Verified
-- Beta==prod md5 identical (both pages) before building
-- All three files validated: tags balanced, scripts parse, no saffron left on limites
-- PR branch API-verified: navFarm ✓, farm route ✓, no saffron ✓, f5f5f5 ✓, register_farm nav ✓
-
-**Live on beta now** (`beta.sunmint.truesight.me`): dropdown has "Registrar Fazenda" → `/register_farm/`; `/limites-da-fazenda/` restyled to match.
-
-## RESUME HERE → next unit (fresh turn)
-
-**Promote to prod** — the merged changes need to reach `sunmint.truesight.me`:
-- `sync_beta_to_prod("sunmint_prod")` (fork-sync from `sunmint_beta`) — **or** verify prod auto-synced and just confirm the live pages (nav dropdown shows "Registrar Fazenda", `/register_farm/` loads, `/limites-da-fazenda/` restyled)
-- **Requires your go** (prod promote is always-stop)
-
-Also worth noting: `sunmint_mobile/www/` (native APK web layer) will need the same nav/page additions when you next ship an APK — flagging for later.
-
-Say go and I'll promote to prod + verify live.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×16 → cd /tmp && echo "=== main sunmint index.html: style approach ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_prod/ma; cd /tmp && echo "=== main index style block (26-95) ===" && sed -n '26,95p' sunmint_prod_index.html; cd /tmp && echo "=== nav dropdown in main index ===" && grep -n "nav-dropdown\|onNavChange\|pageNav\|<select" sunmint_prod_index.html | head; …(+13 more)
-• `merge pr` → ✅ PR #53 on sunmint_beta merged successfully (sha: 52175b8846e128c6bffabc7aa4a8a14b965ac551). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-promot
-
-
-### 🤖 Autopilot
-
-Go-signal received — promoting to prod. Executing the fork-sync and verifying live:
-[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Prod synced ✅ — deploy recorded (`deploy_20260901T025240Z_sunmint-prod`). Verifying the live site:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Prod repo synced (HEAD `5d55c72`) but the live site is serving stale content — likely Pages deploy lag. Let me verify the repo content vs the live site, and set a watcher:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Repo is correct (all 3 files, commit `52175b88` in history) — the live site lag is the GitHub Pages build. Let me set a watcher on the live URLs to confirm when Pages catches up:
-[2 tool result(s) compacted: watch_url, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Interesting — the HEAD request now returns 200 with a fresh `last-modified: 02:53:17` (Pages just caught up). Let me re-verify all the live checks:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Promotion complete — everything is live on prod.** ✅
-
-## ✅ What's live now on `sunmint.truesight.me` (verified)
-
-| URL | Status | Content check |
-|---|---|---|
-| `/` | 200 | ✅ **"Registrar Fazenda" in dropdown** (navFarm ×3 — option + i18n pt/en) |
-| `/register_farm/` | 200 | ✅ Full farm registration page with sunmint nav |
-| `/limites-da-fazenda/` | 200 | ✅ **Restyled** — no saffron (0), `#f5f5f5` present |
-
-**Deploy record:** `deploy_20260901T025240Z_sunmint-prod` in `ecosystem_change_logs` (evidence URL in the ledger).
-
-**Flow:** `sunmint_beta` PR #53 merged → `sync_beta_to_prod(sunmint_prod)` (merge-upstream, no force) → GitHub Pages rebuilt (~2 min lag, caught up at 02:53 UTC) → live verified.
-
-## What this means for the farmer workflow
-
-Farmers on `sunmint.truesight.me` now have the complete flow in one place:
-- **Registrar Plantio** (plant a tree) → **Monitorar Árvore** → **Registrar Fazenda** (new! the dapp's full farm-registration form) → **Limites da Fazenda** (boundary photo capture, styled to match) → **Instruções**
-- All pages share the same gray/white design language and the same dropdown nav
-
-## RESUME HERE → next unit (open items)
-
-1. **`sunmint_mobile/www/`** — the native APK's embedded web layer needs the same nav + register_farm page when you next build an APK (flagged; requires the mobile repo update + rebuild)
-2. **GAS receiver follow-on** — `processFarmBoundaryEvidenceFromTelegramChatLogs` in tokenomics (boundary submissions route via dispatch but have no GAS handler yet — the farm-row upsert + plot regeneration won't auto-fire until it exists)
-3. Everything else in the boundary plan is complete (plan marked complete in manifest)
-
-Want me to tackle the GAS handler next, or the mobile www sync?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → cd /tmp && echo "=== live prod checks ===" && for u in "https://sunmint.truesight.me/" "https://sunmint.truesight.me/register_farm/" "https:; cd /tmp && echo "=== prod REPO content (authoritative) ===" && for p in "index.html" "register_farm/index.html" "limites-da-fazenda/index.ht; cd /tmp && echo "=== sunmint_prod Pages build status ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_prod/pages/builds/la; …(+1 more)
-
-
 ### 🧑 Governor
 
  You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
@@ -5137,11 +4753,18 @@ All 7 files fetched (103 KB total). Now pushing them to the new `farm_media_mani
 ### 🤖 Autopilot
 
 5 manifests + README pushed. Now the `index.json` — it references `FARM_MEDIA_MANIFESTS/...` paths which need to become root-level in the new repo. Let me fix + push it, then handle the source cleanup:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All files moved to the new repo. Verifying the authoritative state of both repos, then converging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5197,46 +4820,55 @@ Which next?
 ### 🤖 Autopilot
 
 Go — executing the cleanup: remove the old `FARM_MEDIA_MANIFESTS/` data from `agentic_ai_context` and replace with a pointer README (one source of truth). First verifying the exact file list in the dir:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 7 files confirmed (103 KB — matches what was moved). Now removing them + adding a pointer README in one PR to `agentic_ai_context`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #887 opened — but I spot a conflict in the applied list: the write (pointer README) and delete (old README) target **the same path**, so the delete likely removed the write. Verifying the branch state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The write/delete conflict confirmed: the pointer README was canceled by its own delete — PR shows 7 removals, no pointer. Fixing by re-adding the pointer README to the branch (same path, now deleted → re-created as the pointer), which yields the exact desired diff:
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pointer README re-added. Verifying the final PR diff (6 data files removed + pointer README), then merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The diff still shows only removals — the PR files API may be stale after the upload commit. Verifying the branch tree directly (authoritative):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Head sha is my upload commit (`0295ee8d59`) but the tree query shows no FARM_MEDIA_MANIFESTS — contradictory. Let me check the commit's actual tree directly (authoritative, no branch-name encoding involved):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The commit **did** add the pointer README — the earlier tree query's branch-name URL-encoding (`chore%2Fmove-...`) was the issue. The commit `0295ee8d59` explicitly shows `added FARM_MEDIA_MANIFESTS/README.md`. So the branch now has: 6 data files deleted + pointer README added. Let me re-query the branch with proper encoding and merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — the branch tree has **only** `FARM_MEDIA_MANIFESTS/README.md` (629 B pointer) — the 6 data files are gone. Exactly the desired end state. Merging PR #887:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5301,11 +4933,13 @@ go — both follow-ups: cleanup the old FARM_MEDIA_MANIFESTS/ dir in agentic_ai_
 ### 🤖 Autopilot
 
 Go — executing both follow-ups. The cleanup was merged last turn (PR #887), so let me verify it's in place and then update the daemon's write path. Grounding first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Cleanup verified (pointer README only ✓). Now let me find where the daemon's manifest write path is configured — checking the repo + config:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5426,4 +5060,84 @@ for f in d: print(f\"  {f['name']}  {f.get('size',0)} B\")
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /tmp && echo "=== 1. verify cleanup: FARM_MEDIA_MANIFESTS dir in agentic_ai_context (should be pointer README only) ===" && curl -s "http; cd /tmp && echo "=== farm-media-daemon repo tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/farm-media-daemon/git/trees/main; cd /tmp && echo "=== farm_media_manifest.py (writer) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm-media-daemon/main/; …(+9 more)
 • `merge pr` → ❌ Failed to merge PR #384 on truesight_autopilot: Refusing to merge PR #384 on truesight_autopilot: CI not green (failing-or-pending: test,
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — update the daemon's write path to farm_media_manifests.
+
+
+### 🤖 Autopilot
+
+Go — updating the daemon's write path. First, the key correction from last turn: the daemon tooling **is committed** to `TrueSightDAO/farm-media-daemon` (my earlier 404 was against the wrong repo). Let me get the exact current references there:
+
+
+### 🤖 Autopilot
+
+Now I have the exact refs. Applying targeted edits (avoiding the unicode arrow/dash in search strings):
+
+
+### 🤖 Autopilot
+
+PR #9 opened. Verifying the branch edits + checking mergeability:
+
+
+### 🤖 Autopilot
+
+Clean: **0 old refs, new refs present** in all 3 files, `mergeable: True`. Merging PR #9:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Updated the daemon's write-path references to the dedicated `farm_media_manifests` repo.**
+
+**PR #9 — https://github.com/TrueSightDAO/farm-media-daemon/pull/9** (merged, sha `954d9c0b`, 3 files)
+
+### Changes
+- **`farm_media_manifest.py`** — docstring: `FARM_MEDIA_MANIFESTS/<farm>.json` → `farm_media_manifests/<farm>.json` (repo TrueSightDAO/farm_media_manifests)
+- **`README.md`** — manifest-commit CLI description now points at the dedicated repo
+- **`DESIGN.md`** — "GitHub is the committed state" section + CLI reference updated to the new repo
+
+No runtime behavior change — the commit step stays a deliberate Sophia/governor step (the daemon never touches GitHub); the CLI's `--outdir` still writes locally and whoever commits now knows the target repo.
+
+### Verified
+- Branch: **0 old `FARM_MEDIA_MANIFESTS` refs, 2/1/2 new `farm_media_manifests` refs** across the 3 files
+- `mergeable: True`, merged cleanly
+
+## Status recap — farm media manifest migration complete ✅
+
+| Repo | State |
+|---|---|
+| `farm_media_manifests` (new data repo) | ✅ 7 files live |
+| `agentic_ai_context/FARM_MEDIA_MANIFESTS/` | ✅ pointer README only (PR #887) |
+| `farm-media-daemon` tooling refs | ✅ repointed (PR #9) |
+| `truesight_autopilot` pipeline URL | ⚠️ PR #384 merged-to-branch but **CI-blocked** (test/smoke checks) |
+
+## RESUME HERE → next unit
+
+1. **Unblock PR #384** (truesight_autopilot) — the one remaining stale ref: `app/media_archive_pipeline.py` `MANIFEST_INDEX_URL`. Re-run the local hard-rule suite (compile/ruff/format/pytest) to confirm the one-line change passes CI, then retry `merge_pr`. **Note:** this is the last piece — until merged, the live dashboard reads a URL that's 404 per Contents API (stale CDN content masks it).
+2. Context-doc pointer updates (optional): `agentic_ai_context/MEDIA_ARCHIVE_PIPELINE.md` + `HANDOFF_MANIFEST.md` still mention the old path
+3. Otherwise holding: prod promotion (sunmint #55–#65) gated on Gary's go
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → farm-media-daemon repo refs audit (3 files, old path found); branch verification (0 old / 2+1+2 new refs)
+• `git push changes` → PR #9 (chore/repoint-manifest-path-to-dedicated-repo, sha 87c96e33)
+• `merge pr` → ✅ PR #9 merged (sha 954d9c0b1c5686e30cfcdbe34b69c9b5f7e2d9c8)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== farm-media-daemon repo: FARM_MEDIA_MANIFESTS refs ===" && for f in farm_media_manifest.py README.md DESIGN.md; do echo ; cd /tmp && echo "=== branch: no old refs, new refs present ===" && for f in farm_media_manifest.py README.md DESIGN.md; do echo "-- $f:"; cu
+• `merge pr` → ✅ PR #9 on farm-media-daemon merged successfully (sha: 954d9c0b1c5686e30cfcdbe34b69c9b5f7e2d9c8). Pull Request successfully merged
 
