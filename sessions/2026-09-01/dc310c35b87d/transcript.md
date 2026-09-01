@@ -5059,6 +5059,7 @@ Confirmed — the real bug pattern:
 - **monitor en dict**: **missing navFarm** (325-332) — real gap
 
 So the real fixes: **add `navFarm` to instrucoes en dict + monitor en dict**. Then the test (adjusted to reality) passes. Let me apply both fixes and adjust the test:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5258,4 +5259,24 @@ This is the right correction workflow (bad photos = wrong boundaries = wrong hec
 - **PR-B: #3 as a small design doc first** (lock the 4 decisions above) → then event + GAS handler + UI in the following PRs, per the same pattern we used for the pipeline
 
 Want me to go ahead with **PR-A**, and draft the **#3 design doc** for your review?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+I think the farmer and the governor, the farmer who submitted the submission or who's led it to and long it to is close by to the submission and the governor, of course, by default. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — locking that in: **invalidation permission = the submitting farmer (or anyone tied to that submission — the farm owner/lead who's part of the boundary walk) + the governor by default, always.** So it's a two-tier model: those close to the submission can retract their own evidence; the governor can retract anything.
+
+That means the `MEDIA RETRACTION EVENT` carries the submitter's signature, and the GAS handler checks: retractor == submitter (or listed farm contact) OR role == governor. Otherwise the retraction is rejected — clean and auditable.
+
+So the plan stands:
+- **PR-A**: URL `?farm=` param + media-submissions list (frontend-only, one PR)
+- **PR-B**: the #3 design doc locking this permission model + the soft-invalidate/edge decisions, then the event + GAS + UI
+
+Shall I start PR-A now?
 
