@@ -3228,6 +3228,7 @@ Plan:
 1. Delete remote `gps/farm-manifest-backfill` (my box branch, avoid confusion)
 2. `git_push_changes` on fresh branch `gps/farm-manifest-backfill` with ONLY the script as a write → creates branch + opens PR (app token works)
 3. `upload_file_to_github` the 3 manifests to that branch → PR updates
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3419,4 +3420,86 @@ Everything else is in place — the manifests, GPS, geo-searchability, and the p
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo "=== farm-media-daemon farm_media_manifest.py (current) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm-media-daemon; cd /tmp/aac_work && git checkout main -q 2>&1 | tail -1 && git pull origin main -q 2>&1 | tail -1; echo "=== MEDIA_ARCHIVE_PIPELINE.md refs ; cd /tmp/aac_work 2>/dev/null && echo "=== local branches ==="; git branch | head -10; echo "=== delete obsolete local branch if present ==="
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] [Handoff context — this Telegram topic (thread 18528) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Yeah, go ahead and close it out then the stuff that you raise them is to be closed [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Closing out the remaining item: aligning the daemon's manifest builder to the new schema. Let me gather the new-repo schema details and the daemon's sidecar/DESIGN references in parallel.
+
+
+### 🤖 Autopilot
+
+Closing out the last item — aligning `farm-media-daemon`'s manifest builder to the new repo's schema (numeric `latitude`/`longitude` + top-level `plots/source_zips/counts/gps_coverage`, replacing the old `gps`-string emit). Let me clone the daemon repo and make the change.
+
+
+### 🤖 Autopilot
+
+Cloned. Now let me rewrite the manifest builder to emit the new repo's schema (numeric `latitude`/`longitude`, `gps_raw`, `basename`/`ext`, top-level `counts`/`gps_coverage`/`plots`/`source_zips`), and test it with a synthetic sidecar.
+
+
+### 🤖 Autopilot
+
+Compiles. Now functional test with synthetic sidecars (with + without GPS, no-sidecar case) and the full local gate.
+
+
+### 🤖 Autopilot
+
+Bug caught: my loop counted the `.MOV.json` sidecars themselves as media files. Fixing the filter to skip sidecars and only process media files.
+
+
+### 🤖 Autopilot
+
+Media files now correctly identified (only `IMG_3333.MOV` — the two `.MOV.json` sidecars excluded). But the sidecar-reading path isn't hit (that item had no sidecar). Let me test the GPS-parsing path by pointing at a dir where media + sidecar exist, and verify the GPS string parses to numeric lat/lon.
+
+
+### 🤖 Autopilot
+
+All three cases work perfectly: GPS sidecar → numeric lat/lon (`-3.4146, -52.6285`) ✓, null-GPS → `latitude: null` ✓, no-sidecar → error ✓. Now the local test gate (compile, ruff, format, pytest) before pushing.
+
+
+### 🤖 Autopilot
+
+All gates pass. Now opening the PR via `git_push_changes` with the updated script.
+
+
+### 🤖 Autopilot
+
+PR opened. Stopping per the one-PR-per-turn rule.
+
+## 📦 PR opened — [farm-media-daemon PR #10](https://github.com/TrueSightDAO/farm-media-daemon/pull/10)
+
+**"farm-media-manifest: emit new farm_media_manifests schema (numeric lat/lon + top-level counts/gps_coverage)"** (branch `fix/manifest-builder-new-schema`, sha `39d02c5`)
+
+**What changed:** `farm_media_manifest.py` (the `manifest-commit` CLI) — aligned to the **new repo's schema**:
+- Items: `latitude`/`longitude` **numeric** (parsed from sidecar `gps` string, S/W negatives preserved) + `gps_raw`, `basename`/`ext`, plus existing sha256/duration/objects/yt_id/uploaded_at/error
+- Top-level: `plots`, `source_zips`, `generated`, `processed_by: MEDIA_ARCHIVE_PIPELINE.md`, `counts` (per-ext), `gps_coverage` (`"N/M files with GPS"`)
+- Skips sidecar `.json` files when scanning (media exts only), updated default `--inbox` to `media_archive_inbox/farm-media` (MAP terminology)
+
+**Testing:** synthetic inbox (3 cases: GPS → `-3.4146, -52.6285` numeric ✓, null-GPS → null ✓, no-sidecar → error ✓) · compileall ✓ · ruff ✓ · format ✓ · pytest baseline ✓.
+
+## Close-out status — everything you raised is now closed
+
+| Item | Status |
+|---|---|
+| Manifests → new `farm_media_manifests` repo | ✅ done (governor) |
+| Pipeline (daemon #9) repointed | ✅ done |
+| MEDIA_ARCHIVE_PIPELINE.md refs | ✅ done |
+| Service registration live | ✅ confirmed (no restart needed) |
+| My obsolete `gps/farm-manifest-backfill` branch | ✅ deleted |
+| **Daemon builder schema alignment** | 🟡 **PR #10 open** |
+
+## RESUME HERE → merge PR #10
+
+Merge [PR #10](https://github.com/TrueSightDAO/farm-media-daemon/pull/10) (your 👍/"merge") — the final cleanup item. After that: everything is aligned to the new `farm_media_manifests` repo with the correct schema, and the daemon produces GPS-bearing numeric manifests on every future `manifest-commit`. No further units.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → echo "=== new repo santa-anna manifest (top-level + 2 items) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm_media_manife; echo "=== DESIGN.md sidecar schema ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm-media-daemon/main/DESIGN.md" | sed -n ; cd /tmp && rm -rf farm_daemon_work && git clone -q --depth 1 https://github.com/TrueSightDAO/farm-media-daemon.git farm_daemon_work 2>&1 | t; …(+5 more)
 
