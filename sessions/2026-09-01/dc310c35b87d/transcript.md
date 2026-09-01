@@ -8,42 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: Converging per the turn limit — here's where PR1 stands.
-
-## PR1 status: `extract_plot_gps.py` — built, tested, ~1 fix from pushable
-
-### What's done (all in `/tmp/extract/`)
-- **`extract_plot_gps.py`
-
-
-### 🤖 Autopilot
-
-Resuming PR1 — fixing the 2 E741 lint errors, re-verifying all four hard-rule checks, then pushing:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All four hard-rule checks pass (compile ✓, ruff ✓, format ✓, 11 tests OK). Now pushing PR1 to `sunmint`:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The gate refuses `sunmint` (it's classified as an API-only data repo — the plan's PR flow doesn't apply there). `sunmint_farmer` IS in the allowed list. Let me check what `sunmint_farmer` contains to pick the right home for the script:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`sunmint_farmer` is empty/404 — it's the reserved name for the farmer app (PR2's home), not the data/scripts repo. The actual scripts repo is `sunmint`, which the gate treats as data-only. Let me check the policy to see the exact classification and how `sunmint` is meant to be edited (it clearly accepts data writes, so the script might ride via a different path — or the plan needs to target `sunmint_farmer` once it's populated):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 The `sunmint` repo has a `scripts/` dir (build_plots_geojson.py etc.) but `git_push_changes` gate doesn't allow it. Let me check the settings for the actual classification and the allowed list source:
@@ -4677,66 +4641,79 @@ Now let me see the full `renderMediaList` (279–325) to know exactly where to a
 ### 🤖 Autopilot
 
 Now let me see the `submitEmailEvent` full body (411–430) — the exact mechanism to mirror for the signed `MEDIA RETRACTION EVENT` submission:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All machinery mapped. Now building PR-B4 — Invalidar buttons + reason modal + sentinel badges + offline queue. Applying the edits to the local clone:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pt i18n anchor didn't match — likely the file's actual byte representation differs from my escape assumption. Let me read the exact line and rebuild:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file uses **actual UTF-8 chars** for ➕ and — (my anchors used `\u` escapes). The atomic write means the file is still pristine (nothing applied). Rebuilding with correct anchors:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now adding the modal JS functions (openRetractModal / closeRetractModal / confirmRetraction with offline queue + signed event). Let me add them after `getLinkedEmail`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All validations green (tags balanced, both scripts OK). One check — `openBoundaryDb` must create the new RETRACTION_QUEUE_DB store. Let me verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `openBoundaryDb` doesn't exist — the queue uses a different name. Let me find the actual DB-open function name:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see — line 383 shows the queue uses `indexedDB.open(BOUNDARY_QUEUE_DB, 1)` with a `BOUNDARY_QUEUE_STORE` store, and my code calls `openBoundaryDb()` + `tx.objectStore(RETRACTION_QUEUE_DB)` which **don't exist**. Let me look at the actual queue open code (383–393) and fix my JS to use the same pattern (a real `openBoundaryDb`-style helper for the retraction queue):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pattern is `openQueueDB()` → `BOUNDARY_QUEUE_STORE` (not `openBoundaryDb`/`RETRACTION_QUEUE_DB`). My retraction JS references non-existent helpers. Fixing — replace `openBoundaryDb()`/`RETRACTION_QUEUE_DB` with a proper retraction queue store (`RETRACTION_QUEUE_STORE` + `openRetractionQueueDB`) created on the same DB, and wire the store creation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All validations green. Now pushing PR-B4 (placeholder-then-real flow):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #62 opened. Now pushing the real validated file over the placeholder:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verifying the branch file matches my validated version, then merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 File MATCH, mergeability still computing. Merging PR #62 (single-file change on current main — should merge cleanly):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4792,6 +4769,7 @@ Hey, can you perform the end-to-end UAT? Basically register a new form and then 
 ### 🤖 Autopilot
 
 Go — running the full E2E UAT (register farm → select → add entries → invalidate all via the new UI flow). First, checking what's live so the test exercises the true chain:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4802,16 +4780,19 @@ Before running the UAT I have to flag one thing: **the MEDIA RETRACTION leg isn'
 2. **GAS** `clasp push` (PR #454) → retraction handler + doGet case live
 
 Then the UAT chain. Proceeding:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **dao_protocol deployed** ✅ (v3/39, dispatch row live). Now deploying the GAS side (retraction handler + doGet case via clasp):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GAS files in place (retraction handler 11,486 B + router updated). Deploying via clasp push:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4821,11 +4802,13 @@ GAS files in place (retraction handler 11,486 B + router updated). Deploying via
 - GAS: **7 files pushed 16:41** (retraction handler + doGet case + router) — deploy ledger `deploy_20260901T164128Z`
 
 Now the **E2E UAT** per your flow. Since the farmer app's capture requires a real device session (photo + IndexedDB + signed submission), I'll exercise the same chain via the production Edgar endpoint with **clearly-marked UAT test data** — register farm → select → add entries → invalidate all. First, confirming the live submission path + what Edgar accepts:
+[2 tool result(s) compacted: lookup_event_docs, lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **UAT step 1: Register the test farm.** The catalog now serves both events live (v3/39). Submitting the FARM REGISTRATION for the UAT farm (clearly marked `UAT-`):
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4937,4 +4920,17 @@ Want me to file the cron-trigger items for both new handlers in OPEN_FOLLOWUPS (
 • `ssh run` ×13 → cd /tmp && echo "=== 1. live server version + catalog ===" && timeout 25 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyCheckin; timeout 60 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'set -e echo "=== 1. pull dao_protocol; cd /opt/truesight_autopilot/context/tokenomics && git pull --ff-only -q && git log --oneline -1 && echo "=== project files ===" && ls -la go; …(+8 more)
 • `gas deploy project` → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260901T164128Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md
 • `submit contribution` ×5 → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — file both cron-trigger items in OPEN_FOLLOWUPS. Great catch on the missing webhook key.
+
+
+### 🤖 Autopilot
+
+Go-signal received — filing both cron-trigger items (FBE + Media Retraction) in OPEN_FOLLOWUPS. Reading the current file to find the right place + check for existing entries:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
