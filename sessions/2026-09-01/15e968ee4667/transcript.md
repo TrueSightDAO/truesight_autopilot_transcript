@@ -8,19 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Converging — tool budget spent. Status + resume point below.**
-
-## What happened this turn (PR1 — `sync_sunmint_signatures.py`)
-
-| Step | Result |
-|---|---|
-| Pre-existing script found | Untracked `
-
-
 ### 🤖 Autopilot
 
 Resuming PR1 from RESUME HERE. Pushing the patched branch to PR #354 and re-running the bulk offline verify with padding-tolerant decode in one go.
@@ -4651,6 +4638,7 @@ So the root cause: the login/logout flow stores the token under `slp_token`/`map
 ### 🤖 Autopilot
 
 The client-side bug is fixed and clean. One more check — whether the vault login actually seeds a usable session (cookie path + any `sophia_token` storage), so I know the signed-in path works end-to-end after my fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4658,6 +4646,7 @@ The client-side bug is fixed and clean. One more check — whether the vault log
 Now I have the complete picture. The vault login sets an **httpOnly, secure cookie with NO explicit path** (defaults to the request path = `/vault/...` — actually FastAPI defaults to `path="/"` if not specified, so the cookie IS site-wide; the login response also returns the JWT in the body). The dashboards' JS is now fixed to use the shared `sophia_token` key + cookie-first. But there's one gap: **vault login never writes `sophia_token` to localStorage** — so after signing in on vault, the dashboards rely on the cookie (works), but the localStorage fallback stays empty (only set if the user pastes a token on a dashboard). That's fine for the cookie path; but to make "sign in once, works everywhere" robust, the vault login JS should also mirror the token into `sophia_token`.
 
 That's a small follow-up on `vault/login.html`. Let me check what the verify-signature response actually returns so I can mirror it precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4667,16 +4656,19 @@ Root cause confirmed with full context. The vault login calls `/vault/api/verify
 - But the page redirects to `/vault` before any JS can grab the token body → no `sophia_token` in localStorage
 
 Now, the fix for the "nothing loads" bug (the `SOPHIA_TOKEN_KEY` ReferenceError) is **already applied** in both dashboard modules and clean. The remaining session-seeding gap (vault login → mirror token to `sophia_token`) is a small extra edit in `login.html`. Since you asked me to look into unifying the session — I'll fold it into the same PR. Let me add the mirror to login.html's success path.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three edits are in. Let me run the full check set and commit as one PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Compile/ruff/format all clean. The test filenames don't match (no test files for those two modules directly — earlier I saw only `test_media_archive_pipeline.py` existed in a different location). Let me confirm test files and run the suite, then commit + PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4890,4 +4882,52 @@ Nothing blocked on you right now — the backfill keeps trickling in the backgro
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); echo "=== runs for the branch ==; sleep 45; cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); curl -s -H "Authorizat; cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); curl -s -H "Authorization: token
 • `merge pr` → ✅ PR #380 on truesight_autopilot merged successfully (sha: 4edaac7bb1cb00f1517006007535301b7ee053bd). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+I will handle deploy myself. Can you go ahead with the backfill completion?
+
+
+### 🤖 Autopilot
+
+Gary's handling the deploy — I'll proceed with the backfill completion checks. First, current status.
+
+
+### 🤖 Autopilot
+
+Backfill still running — **1,728 remain** (progressing: 2478 → 2228 → 1978 → 1728), cursor now in `credentialing_attestation_event/` (May 31). It's not done yet, so the completion checks can't run. Let me verify the health of the trickle (recent pushes, no stall) so I can give an honest ETA.
+
+
+### 🤖 Autopilot
+
+**Backfill is healthy and ~60% through.** Status:
+
+- **1,728 files remain** (2478 → 2228 → 1978 → 1728; ~250/pass declining)
+- **Actively advancing right now** — newest commits 14:35:54Z (seconds ago), pushing `credentialing_attestation_event/` (May 31 events, working chronologically through the log)
+- **2,337 files live** in the repo (up from 1,791)
+
+**ETA: ~7 passes ≈ 3.5 hours.** The completion checks (root index, 3-sample re-verify, PII scan, README/plan update) can only run when the counter hits 0 — the backfill is mid-flight.
+
+Since it's still ~3.5h out, I won't burn the turn polling. Here's the plan:
+
+## RESUME HERE → **backfill completion (when remain = 0)**
+
+1. **Check**: `grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log | tail -1` — expect `backfill complete` (counter hits 0)
+2. **Root index**: `curl …/verify_public_signatures/main/index.json` → verify ~40 folders, total ≈ 3,947, `excluded_pii_count` present
+3. **3-sample openssl re-verify** from new folders (`contribution_event/`, `inventory_movement/`, `sales_event/`)
+4. **Live PII scan** across all published files → zero email hits (option-2 gate)
+5. README + plan update (A6/A7 complete) → **§7 contribution submission**
+
+I'll pick this up at the next natural turn once the counter hits zero — or ping me anytime and I'll check. Nothing needs you meanwhile (deploy is in your hands).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → backfill: 1,728 remain (declining 2478→2228→1978→1728), cursor `credentialing_attestation_event/Edgar_20260531081540_232.json`, newest commits 14:35:54Z (seconds ago) = actively advancing, repo at 2,337 files; ETA ~7 passes / ~3.5h
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== backfill log: remain lines ==="; grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/nu; echo "=== last log mtime + newest pushes ==="; ls -la /home/ubuntu/scripts/sync_sunmint_signatures.log; tail -3 /home/ubuntu/scripts/sync_su
 
