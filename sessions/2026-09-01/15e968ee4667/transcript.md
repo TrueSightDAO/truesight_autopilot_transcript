@@ -3736,11 +3736,13 @@ Want me to check back in and report when it's done?
 ### 🤖 Autopilot
 
 Checking the backfill progress after the redeploy.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Something's wrong — the log shows **13 passes all stuck at "3730 files remain"** (constant), and the same event files are being re-pushed with **different hashes every run**. The backfill is NOT progressing: the sha-aware skip never fires, which means the event-file content is **non-deterministic** (changes every run). Let me confirm by generating twice and diffing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3914,4 +3916,97 @@ The data is *already public* (the ledger is a public repo), so the page is a **c
 My recommendation: **yes, build it** — but as a natural **A7** after A6 completes (the backfill needs to be done first so the queue display has real content, and it doubles as the UAT surface for the trickle). It's cheap (MAP already proved the pattern), and it gives governors a live window into the daemon you were just asking about.
 
 Want me to add A7 to the plan and build it after the backfill finishes? Or would you rather I scope it now in parallel?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+I didn't use scope it as a parallel because I don't think you really need to wait for the [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — building the queue display in parallel, no need to wait for the backfill. Let me scope A7 by finding how MAP is implemented so I can copy-adapt it.
+
+
+### 🤖 Autopilot
+
+The MAP dashboard has a plan file. Let me read it to learn the implementation pattern, and get the current backfill "remain" count.
+
+
+### 🤖 Autopilot
+
+Found a real problem — the backfill is **stuck again**. The log shows "3730 files remain" repeated across passes even after the skip fix, and the last lines are all `[skip]`. Let me diagnose and fix it.
+
+
+### 🤖 Autopilot
+
+**Found the real bug.** The trickle never advances because `_push_ledger` always starts from the **beginning** of `sorted(files)`: every pass examines the same first 250 paths — now all `[skip]` — then breaks at the cap. It never reaches the unpushed files. ("3730 remain" is constant because `done` counts *examined* files, not *pushed* ones.)
+
+The fix: a **cursor file** so each pass resumes where the last one left off, counting pushes (not examined) toward the cap — plus a **count-based fast path** so steady-state reconciliation is 1 GET per pass, not 3,980.
+
+
+### 🤖 Autopilot
+
+Compile + ruff clean. I need to wire the cursor into `main()` and pass a cursor path from the cron invocation, then test that a second pass resumes after the cursor. Let me check how `main()` calls `_push_ledger` and patch it.
+
+
+### 🤖 Autopilot
+
+`_push_ledger` is called with `max_uploads` — I'll wire the cursor path in. Let me find a sensible cursor location and patch the call.
+
+
+### 🤖 Autopilot
+
+**Fixed and verified.** Pass 1 examined 5 (mostly skips, cursor advanced to `...114.json`), pass 2 **resumed past the cursor** and pushed 2 NEW files (`...140`, `...142`), with the remain counter now **declining** (3730 → 3725). The trickle genuinely advances now. Let me commit + PR + merge this critical fix.
+
+
+### 🤖 Autopilot
+
+PR #370 open. Merging it so the next cron pass resumes with the cursor fix.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**Backfill genuinely un-stuck — cursor fix merged.** ✅
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **PR** | [truesight_autopilot #370](https://github.com/TrueSightDAO/truesight_autopilot/pull/370) — merged (squash, `a758b47`) |
+| **What changed** | `_push_ledger` now persists a **cursor file** (`.ledger_cursor`) and **resumes past it** each pass; counts **new pushes** toward the cap (not examined files); clears the cursor when the full set is done |
+
+## Why this was the real fix
+
+While scoping the A7 dashboard you asked about, I checked the backfill log and found it **stuck again**: "3730 files remain" repeated across passes even after the content-addressed skip fix. Root cause: `_push_ledger` always restarted from the **top** of `sorted(files)` — every pass examined the same first 250 paths (all `[skip]`) and broke at the cap, never reaching the unpushed tail. The skip fix stopped re-pushes but didn't advance.
+
+**Verified the fix live:** pass 1 (cap 5) examined 5, cursor at `…114.json`; pass 2 resumed past it and **pushed 2 NEW files**; remain counter declined **3730 → 3725**. The cron now genuinely progresses ~250 files/pass → ~16 passes → complete in ~8h.
+
+## Roadmap state
+| Unit | Status |
+|---|---|
+| A1–A5 | ✅ |
+| A6 code + guard + PII fix + skip fix + **cursor fix** | ✅ **merged** |
+| **→ A6-trickle: backfill progressing in background** | ⏳ **running** (now actually advancing) |
+| **A7 queue dashboard** (your new request) | 🔜 next, in parallel |
+
+## RESUME HERE → **A7 dashboard (parallel) + backfill monitoring**
+
+Two parallel tracks now:
+1. **A7 — signature ledger pipeline dashboard** (your request, no need to wait for backfill): copy-adapt the MAP pattern (`plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md` is the template — auth-gated `/signature-ledger-pipeline` page + `/data` endpoint in `truesight_autopilot`, JWT-governor-gated, status badges per event-type folder: `published` / `pending` / `excluded_pii` / `error`, cron pass log tail, root index + folder indexes). Add an A7 section to the plan + manifest row, then PR1 backend → PR2 frontend → PR3 wire+restart (own service) → PR4 UAT gate.
+2. **A6-trickle monitor**: check `tail /home/ubuntu/scripts/sync_sunmint_signatures.log` each turn — expect the "files remain" counter declining now (3730 → …); when it hits 0: root index ~40 folders / ~3,947 events / `excluded_pii_count: 703`, 3-sample openssl re-verify, live PII scan (zero emails), README update, plan A6-complete, §7 contribution submission.
+
+Which track do you want me to start with next turn? (I'd suggest A7 PR1 — the backend data endpoint — since the backfill needs no human input while it runs.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → echo "=== backfill progress ==="; tail -3 /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null; echo "=== cron passes today ==="; gr; echo "=== last 'remain' lines ==="; grep "files remain" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail -3; echo "=== la; cd /opt/truesight_autopilot && echo "=== is it stuck? last 3 remain lines + counts ==="; grep "files remain" /home/ubuntu/scripts/sync_sunmi; …(+4 more)
+• `merge pr` → ✅ PR #370 on truesight_autopilot merged successfully (sha: a758b476dc3dc67ebbda67c94c35f55af89fb2cc). Pull Request successfully merged
 
