@@ -10,18 +10,6 @@
 
 ### 🤖 Autopilot
 
-Go-signal received — running the live E2E test, marked clearly as test data, with cleanup in the same turn. First, the event contract + how the app's submit path works (to know exactly what chain I'm exercising):
-[2 tool result(s) compacted: lookup_event_docs, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Event contract confirmed (required: Farm Name + Media URLs). Let me read the app's `submitBoundary()` to mirror the exact payload shape, then construct the test event:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 The app queues to IndexedDB (offline-first) — the flush posts to Edgar's `EDGAR_SUBMIT_URL`. Let me see the flush function and the actual Edgar endpoint it hits, so my test event exercises the real chain:
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
@@ -4874,6 +4862,7 @@ Let me pull the exact script ID and the trigger setup instructions so I give you
 ### 🤖 Autopilot
 
 Let me confirm the exact script ID we deployed to (the one this thread used) and find the trigger doc:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5136,4 +5125,46 @@ So the state is:
 **Why did I even *mention* creating one?** That was only an optional hardening idea: since `@HEAD` runs "whatever code is pushed next," pinning to a versioned deployment would freeze what anonymous callers execute. But it's **not needed** — if you're fine with @HEAD running latest, we leave it exactly as is and you just flip that one deployment to "Anyone" in the GAS UI. 
 
 So: nothing to clean up from my side, boundary webhook stays on @HEAD, and the "archived" story is complete (2 deleted, 4 live + referenced). Want me to verify @HEAD's access settings via the API so you know what you're flipping?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+all the deployments allow execute as me and access anonymous
+
+
+### 🤖 Autopilot
+
+Let me verify that claim directly — an anonymous GET to the boundary webhook deployment should return the handler's output (not the sign-in page) if "execute as me + anyone" is really set:
+
+
+### 🤖 Autopilot
+
+The anonymous probe returned **HTTP 302 (redirect → Google sign-in)** — so the "Anyone" claim is **not actually true** for that deployment, at least not from an unauthenticated caller. Let me follow the redirect to confirm it's going to accounts.google.com (i.e., auth wall, not the handler):
+
+
+### 🤖 Autopilot
+
+Confirmed — the probe is definitive:
+
+## The boundary webhook is **NOT** anonymous-executable right now
+
+- Anonymous GET to `AKfycbxrcXTZnQ…` (`@HEAD`) → **302 → "Sign in - Google Accounts"** (ServiceLogin for `agroverse.shop`)
+- So despite "all the deployments allow execute as me and access anonymous" being the *intended* setting, the **live behavior is the auth wall** — unauthenticated callers get the sign-in page, not the handler
+
+**Why the mismatch:** a couple of possibilities:
+1. The access setting didn't actually save as "Anyone" for this deployment (common gotcha: each deployment has its own access; editing the code/deploy can reset it)
+2. The `script.google.com/**/a/macros/agroverse.shop/**` (workspace GWS) flavor of the URL always routes through the org's SSO regardless of the deployment access setting — the **`/a/agroverse.shop` ServiceLogin** in the redirect suggests the domain-level SSO gate is intercepting before the deployment's own access applies
+3. It's possible a *different* deployment ID in the env is the one set to Anyone, but the FBE/MR keys point at this one
+
+**The pragmatic fix I'd recommend (and it's the thing you were heading toward):** don't fight the org SSO — make dao_protocol the **authenticated caller**. Either:
+- **(a)** swap the two env webhook keys to a deployment whose access is genuinely "Anyone" (verify by re-probing after the flip), or
+- **(b)** better: **move the GAS trigger off anonymous doGet entirely** — the **cron trigger** is the clean execution path (you were setting it anyway), and the webhook's only real job becomes a lightweight "poke" that the cron picks up.
+
+Want me to (a) verify access on the other 3 deployments the same way to find which ones are truly "Anyone", so you can decide which to repoint? That's a read-only probe — no changes.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== anonymous GET to boundary webhook (@HEAD deployment) ===" && curl -s -m 30 -w " HTTP_STATUS:%{http_code} " "https://scr; cd /tmp && echo "=== follow redirect ===" && curl -s -m 30 -L -w " FINAL_HTTP:%{http_code} FINAL_URL:%{url_effective} " -o /tmp/anon_out.htm
 
