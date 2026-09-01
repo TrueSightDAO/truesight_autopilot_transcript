@@ -4803,6 +4803,7 @@ Which next?
 ### 🤖 Autopilot
 
 Go — starting the implementation. Per the roadmap order, unit 1 first: **the GAS handler change** (`fbeUpsertFarm_` plot-first + auto Plot ID + Farm ID empty + the repository_dispatch ping). Grounding in the current handler:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4943,4 +4944,116 @@ The token is used for `POST /repos/TrueSightDAO/sunmint/dispatches` — so it mu
 If you'd rather not paste a PAT into the UI, I can set it **programmatically** on the next `clasp push` run — e.g. a one-liner in the project that writes `PropertiesService.getScriptProperties().setProperty('FBE_GH_PAT', ...)` — but the UI path above is the cleanest and you control the secret directly.
 
 Want me to also verify the `sunmint` repo's `repository_dispatch` workflow accepts the `plots-index-rebuild` event type (so the ping actually triggers a rebuild once the PAT is set)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+I have set FBE_GH_PAT here
+
+https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/settings
+
+
+Check the convention to follow for recording that FBE_GH_PAT has been set to this editor as well as the permissions its needs. 
+That way we dont fumble around in the future.
+
+
+### 🤖 Autopilot
+
+Good practice — let me check the conventions in context for recording credential/secrets setup before writing anything:
+
+
+### 🤖 Autopilot
+
+The convention exists — **`GAS_SCRIPT_PROPERTIES.md`** is the canonical registry (created 2026-08-31). Let me read it to add `FBE_GH_PAT` in the right format:
+
+
+### 🤖 Autopilot
+
+The convention is clear: `GAS_SCRIPT_PROPERTIES.md` is the canonical registry, and updating it requires a row in §2 + a one-line entry in `CONTEXT_UPDATES.md`. Let me check the CONTEXT_UPDATES format to match it exactly:
+
+
+### 🤖 Autopilot
+
+Convention confirmed: update `GAS_SCRIPT_PROPERTIES.md` §2 registry + append one line to `CONTEXT_UPDATES.md`. Making both changes in one PR:
+
+
+### 🤖 Autopilot
+
+PR #892 opened. Now applying the real edits to both files on the branch — fetching current content, adding the FBE_GH_PAT row + context line, and pushing:
+
+
+### 🤖 Autopilot
+
+Now applying both real edits to the local clone, then pushing the real files to the PR branch:
+
+
+### 🤖 Autopilot
+
+Both edits verified locally. Pushing the real files to the PR branch (overwriting the placeholder), then merging:
+
+
+### 🤖 Autopilot
+
+Both real files pushed to the branch. Verifying the PR state (both edits present, mergeable), then merging:
+
+
+### 🤖 Autopilot
+
+Both files present on the branch (1× FBE_GH_PAT each), 2 files changed, mergeable. Merging PR #892:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Recorded `FBE_GH_PAT` as SET per the GAS Script Properties convention** (so we never fumble around re-checking it).
+
+**PR #892 — https://github.com/TrueSightDAO/agentic_ai_context/pull/892** (merged, sha `a05ed7f1`, 2 files)
+
+### Changes (exactly per the convention in `GAS_SCRIPT_PROPERTIES.md`)
+1. **`GAS_SCRIPT_PROPERTIES.md` §2 registry** — new row:
+   > `FBE_GH_PAT` | GitHub PAT for `repository_dispatch` (`plots-index-rebuild`) from the FBE handler | **SET (2026-09-01)** | repo-scoped PAT; needs **Actions: write** on `TrueSightDAO/sunmint` (same pattern as TGM_GITHUB_TOKEN). Set by Gary. **Do NOT re-check.**
+2. **`CONTEXT_UPDATES.md`** — appended the one-line entry per the append-only format
+
+### The convention (now codified for future sessions)
+- Secrets live in GAS Script Properties, never committed source
+- **A property whose value is set = recorded `SET` — do not re-verify** (rule 2)
+- Record the **permission it needs** (Actions: write on sunmint) so scope issues are diagnosable without guessing
+- Same pattern as the existing `TGM_GITHUB_TOKEN` entry (which proves HTTP 204 on `repository_dispatch`)
+
+## RESUME HERE → next unit (governor's pick)
+
+1. **Deploy the plot-first GAS handler** — `clasp push` the tokenomics project (PR #455 is merged but not deployed) so the plot-first FBE logic + `pingPlotsIndexRebuild_` (now backed by the set FBE_GH_PAT) go live — deploy needs your go (production GAS)
+2. **Python builder fix** (sunmint PR): `build_farms_index.py` skip empty Farm ID rows
+3. **UI label** (sunmint_beta PR): `Farm:` → `Plot:` in the limits app
+4. Then end-to-end re-verify: new plot → sheet row → dispatch ping → indexes rebuild
+
+Which next?
+
+———
+**✅ Done this turn — actions taken:**
+• `search context` ×2 + `read context file` ×2 → found the canonical convention (GAS_SCRIPT_PROPERTIES.md, created 2026-08-31) + append-only CONTEXT_UPDATES format
+• `git push changes` → PR #892 (docs/record-fbe-gh-pat, placeholder→real flow)
+• `ssh run` ×2 → local edits applied + verified (1× FBE_GH_PAT in each file)
+• `upload local file to github` ×2 → real files to branch (77b18727, d4bb0c56)
+• `merge pr` → ✅ PR #892 merged (a05ed7f1)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/aacg && python3 - <<'PYEOF' ; cd /tmp && echo "=== branch: FBE_GH_PAT rows ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/docs%2Frecord-fbe-gh-pat/GAS_SCRIPT_PROPERTIES.md" | grep -c "FBE_GH_PAT"; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/docs%2Frecord-fbe-gh-pat/CONTEXT_UPDATES.md" | grep -c "FBE_GH_PAT"; echo "=== PR mergeable ===" && curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/pulls/892" | python3 -c "import sys,json; d=json.load(sys.stdin); print('mergeable:', d.get('mergeable'), '| files:', d.get('changed_files'))"
+• `merge pr` → ✅ PR #892 on agentic_ai_context merged successfully (sha: a05ed7f1a12bd40826eb06a4c9fca71532a64e7c). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && rm -rf aacg && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aacg 2>/dev/null && cd aacg && echo ; cd /tmp/aacg && python3 - <<'PYEOF' import io # Edit 1: add FBE_GH_PAT row after the TGM_GITHUB_TOKEN row p = 'GAS_SCRIPT_PROPERTIES.md' s =; cd /tmp && echo "=== branch: FBE_GH_PAT rows ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/docs%2Frecor
+• `merge pr` → ✅ PR #892 on agentic_ai_context merged successfully (sha: a05ed7f1a12bd40826eb06a4c9fca71532a64e7c). Pull Request successfully merged
 
