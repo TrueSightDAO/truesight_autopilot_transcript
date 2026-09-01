@@ -4516,6 +4516,7 @@ All features verified on the branch. `mergeable` is None (GitHub still computing
 ### 🤖 Autopilot
 
 Still computing. Let me wait a moment and try the merge — the PR is a single-file change on the same base as main, so it should merge cleanly:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4577,26 +4578,31 @@ Hey, you there? [System note: the user sent this as a VOICE message via the Tele
 ### 🤖 Autopilot
 
 I'm here — on it. "FTE" = the **FBE (Farm Boundary Evidence) GAS router update** (PR #453 — merged but not yet pushed to the GAS runtime). Deploying that now, plus promoting the limites chrome to prod:
+[2 tool result(s) compacted: sync_beta_to_prod, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod promoted (deploy ledger `deploy_20260901T102246Z_sunmint-prod`), and the local GAS checkout is at `b7794ce` (PR #453) with the FBE doGet case present (4 refs). Now deploying the GAS project with the router update:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod promoted ✅ and GAS checkout is ready (PR #453 at `b7794ce`, FBE doGet case present). But the deploy is **blocked by a live lease** — `L-20260901-08` (agent `sophia`, started 09:55:31Z, TTL 30 min) — likely a stale lease from my earlier dry-run in this session. It expires ~10:25:31Z (seconds away). Waiting briefly and retrying:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Lease should be expired now (started 09:55 + 30 min = 10:25; it's 10:23:46 — 2 min to go). Let me wait a touch longer and retry the push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sleep exceeded the 60s shell cap. The lease is definitely expired now (well past 10:25). Retrying the GAS push:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4736,4 +4742,29 @@ Which next?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /opt/truesight_autopilot/context/tokenomics && echo "=== dispatch: GAS webhook URL used for actions ===" && grep -rn "exec\|doGet\|webapp; cd /opt/truesight_autopilot/context/tokenomics && echo "=== GAS webapp URL refs ===" && grep -rn "script.google.com/macros/s\|/exec" truesig; cd /home/ubuntu/ecosystem_change_logs && git pull -q 2>/dev/null; echo "=== latest FBE deploy ledger ===" && cat deploys/entries/deploy_2026; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+What does TGM stand for??
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+**TGM = Tree Growth Monitoring** — the existing GAS processor I used as the template for the FBE handler. It's the `[TREE GROWTH MONITORING EVENT]` flow: farmers submit photos of their planted trees' growth, the GAS cron/webhook scans Telegram Chat Logs, mirrors the photos to the sunmint repo, and appends tracking rows to the Trees sheet.
+
+Related abbreviations in the same family:
+- **TGM** — Tree Growth Monitoring (the template handler: `process_tree_growth_monitoring.gs`)
+- **FBE** — Farm Boundary Evidence (the new handler I built: `process_farm_boundary_evidence.gs`)
+- **TGP** — Tree Planting (the `process_tree_planting_link.js` action)
+
+So when I said "mirrors the proven TGM pattern," I meant the FBE handler reuses the exact same structure as the existing Tree Growth Monitoring processor (scan chat logs → dedupe → mirror media → append rows) — just for boundary photos instead of tree-growth photos.
 
