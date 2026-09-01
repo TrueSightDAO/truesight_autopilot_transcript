@@ -3450,26 +3450,31 @@ Ping me with "go" and I'll run it.
 ### 🤖 Autopilot
 
 Let me add that to Cleide's farm profile — first checking the page's stats section structure.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the highlights grid — I'll add an **Annual Production** item. Opening the PR (this is a small content change):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Search string mismatch — likely whitespace/line-ending difference. Let me check the exact bytes around line 113.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The line exists exactly as expected — the issue is that my search string included a trailing newline + the next line that doesn't match (the file uses `</div>` right after, no blank line). Let me fix the search to just the single line:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #256 opened. You explicitly requested this content — merging it:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3655,4 +3660,65 @@ Ping me with "promote" or "go".
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/santa-anna-fazenda-para/index.html" -o /tmp/santa_pag; sed -n '523,558p' /tmp/santa_page.html
 • `merge pr` → ✅ PR #258 on agroverse_shop_beta merged successfully (sha: f7859ebacb2625509c340b7b2ea2e52ae36ccce6). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] Santana Fazenda Impara only produces around one time a year. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Adding the once-a-year harvest cycle to Santa Anna's page — using the same highlight pattern:
+
+
+### 🤖 Autopilot
+
+PR #259 opened. You explicitly requested this — merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Santa Anna harvest cycle added ✅
+
+**PR merged:** [#259 — Add Santa Anna Fazenda (Pará) harvest cycle (~once per year)](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/259) — sha `2458ab22`.
+
+**What changed:** `farms/santa-anna-fazenda-para/index.html` — Farm Highlights grid gained a new item (after Tree Age):
+> **🌾 Harvest** — Produces roughly once per year
+
+Highlights now read: Cooperative (CEPOTX) · Site Visit · Practice · Fermentation · Location · Tree Age (~30 yrs) · **Harvest (once/yr)** · Region · SunMint Program.
+
+---
+
+**CEPOTX farm profile facts — all on beta:**
+| Farm | Facts |
+|---|---|
+| Fazenda Cleide | Annual Production ~1.5 t/yr (PR #256) |
+| Paulo La do Sitio | Tree Age ~40 yrs · Production ~1.2 t/yr (PR #257) |
+| Santa Anna Fazenda (Pará) | Tree Age ~30 yrs (PR #258) · Harvest once/yr (PR #259) |
+
+---
+
+**RESUME HERE → next unit (pick one):**
+1. **Promote to prod** — `sync_beta_to_prod(agroverse_shop_prod)` to make all farm-page updates live on the public pages (then verify each URL)
+2. **PR1 second half (daemon)** — create public `TrueSightDAO/farm-media-daemon` + scaffold DESIGN.md/config/README
+
+Ping me with "promote" or "go".
+
+———
+**✅ Done this turn — actions taken:**
+• `git push changes` → PR #259 · `merge pr` → ✅ #259 merged (sha 2458ab22)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #259 on agroverse_shop_beta merged successfully (sha: 2458ab22641d1303a84ccc87b647bd8041307e6f). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #259 on agroverse_shop_beta merged successfully (sha: 2458ab22641d1303a84ccc87b647bd8041307e6f). Pull Request successfully merged
 
