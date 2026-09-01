@@ -5025,6 +5025,7 @@ This is exactly why the governor asked for a test — the convention is inconsis
 ### 🤖 Autopilot
 
 The dict shapes differ (monitor uses `I18N` with single quotes; limites uses `STRINGS`; register_farm uses a different scheme) — my count-based assertion was too brittle. Let me verify the real state: monitor's en dict for navFarm, limites' nav keys, and register_farm's mechanism:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5035,6 +5036,7 @@ Now the full picture is clear:
 - **register_farm**: uses `setLang` → `setLanguage` (Google Translate engine) — no JS dict keys, so `navFarm` count is 0 there legitimately
 
 So my test found **one real bug**: monitor's en dict is missing `navFarm`. Let me fix that first, then make the test reflect reality (register_farm uses the Google-Translate mechanism, so it's exempt from the JS-dict assertion):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5046,6 +5048,7 @@ Confirmed — a **pattern of real gaps** (this is exactly why the test was worth
 - **index**: has it (1) ✓
 
 Let me check limites precisely and then fix the missing keys:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5210,4 +5213,49 @@ The test will now catch any future nav/i18n regression on every merge in the sta
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #60 on sunmint_beta merged successfully (sha: 0f26bf8bb7efae7e57767dbc9afcb76f091a9657). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+I am think on this page 
+
+https://beta.sunmint.truesight.me/limites-da-fazenda/
+
+1 Perhaps we should update url whenever a new farm is selected 
+
+2. Listed all the media submissions used to plot the farm.
+
+3. Allow the ability to invalidate a media submission which triggers a recalculation of the plot
+
+Thoughts?
+
+
+### 🤖 Autopilot
+
+Good instincts — all three are the right direction, and they stack nicely. My thoughts, grounded in what's actually built:
+
+## 1. URL updates on farm selection — **yes, cheap, do it**
+- `history.pushState` with `?farm=<farm_id>` on select change; read it on load to pre-select. Same mechanism as the page's existing `?vk=&em=` verification-link pattern.
+- **Bonus value:** the impact-map Farms Registry cards (built earlier) can deep-link here with `?farm=rancho-maranta` — capture page and map cross-link.
+- **Caveat:** free-text "Nova fazenda…" names and device-local farms won't resolve for other users (they don't exist server-side) — only seed/registered `farm_id`s deep-link meaningfully. That's fine; the param just won't match for those.
+
+## 2. List media submissions used to plot the farm — **yes, and it's the lineage play**
+- The data already exists: `plots/index.geojson` has `media` arrays (LD-P1 already carries 8 items; RM-P1/SA-P1 have entries). We render thumbnails in the impact-map popups already — same CDN-fallback pattern applies here.
+- On farm select: fetch the geojson, filter by farm, list each media item with **thumbnail + captured_at + GPS coords used + status**. This is the visible proof for the DAO's credentialing-lineage story — "here is exactly what your boundary is made of." It also gives farmers feedback on what's driving their plot (and what's missing).
+
+## 3. Invalidate a submission → recalculate — **most valuable, but needs design decisions first**
+This is the right correction workflow (bad photos = wrong boundaries = wrong hectare counts = wrong carbon credits later). But it's the one that touches the data model, so I'd want these locked before building:
+- **Soft-invalidate, never delete** — media is evidence; flag it (`invalidated_at/by`) and keep it in the record for the audit trail
+- **Who can invalidate?** Farmer only? Governor? Both? (permissioning affects the UI and the event)
+- **New event or extend?** I'd add a small `MEDIA RETRACTION EVENT` (or a `retract` action on the boundary event) flowing through the same Edgar → dispatch → GAS chain we just built — consistent, ledger-traced, offline-queueable from the app
+- **The tricky edge:** if invalidating drops the farm below **3 GPS points, no polygon can form** — fallback needs defining (keep last-good boundary + warning flag, or "boundary pending" state)
+- Recalc itself is clean: drop the points → re-run the hull → update the sheet row → regen geojson → impact map updates automatically
+
+## Proposed sequencing
+- **PR-A: #1 + #2 together** — both frontend-only, no data-model change, one PR, quick win
+- **PR-B: #3 as a small design doc first** (lock the 4 decisions above) → then event + GAS handler + UI in the following PRs, per the same pattern we used for the pipeline
+
+Want me to go ahead with **PR-A**, and draft the **#3 design doc** for your review?
 
