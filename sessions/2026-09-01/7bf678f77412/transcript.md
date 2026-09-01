@@ -4259,6 +4259,7 @@ Want me to write the Terminology section into the plan doc + DESIGN.md locking t
 ### 🤖 Autopilot
 
 Let me find every reference to the pipeline in agentic_ai_context so the terminology propagates everywhere consistently.
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4435,4 +4436,70 @@ Ping me with "go" and I'll wire it.
 
 Go received — wiring the daemon to Cleide's real inbox (PR3/4). First: check the current state — uploader progress, mp4s on disk, and the throttled uploader's manifest (for the yt_ids already earned).
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] rather than call it farm_media_daemon_config.yaml perhaps call it media_archive_daemon_config.yaml?
+
+
+### 🤖 Autopilot
+
+Right — consistent with the MAP rename. Let me find every reference to the config filename so the rename is complete.
+
+
+### 🤖 Autopilot
+
+Search index may not cover the new repo — let me search the code directly for the filename reference.
+
+
+### 🤖 Autopilot
+
+Found all references — the config default in the daemon, the systemd unit, and the config template comment. Renaming to `media_archive_daemon_config.yaml` in one PR:
+
+
+### 🤖 Autopilot
+
+PR #5 opened. Merging — you explicitly requested this rename:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Config renamed to `media_archive_daemon_config.yaml` ✅
+
+**PR merged:** [#5 — Rename config to media_archive_daemon_config.yaml (MAP terminology)](https://github.com/TrueSightDAO/farm-media-daemon/pull/5) — sha `c5039535`.
+
+**What changed (3 files, now on farm-media-daemon main):**
+| File | Change |
+|---|---|
+| `farm_media_daemon.py` | `--config` default → `/opt/truesight_autopilot/media_archive_daemon_config.yaml` |
+| `config.yaml.example` | Copy-instruction comment updated to the new name |
+| `systemd/farm-media-daemon.service` | `ExecStart` `--config` path updated |
+
+**No migration needed** — the box config file doesn't exist yet (Cleide wiring is the next unit) and the service isn't installed, so nothing on the host references the old name.
+
+**Terminology now consistent across the whole MAP stack:**
+- Queue root: `media_archive_inbox/` (PR #4)
+- Config: `media_archive_daemon_config.yaml` (PR #5)
+- Repo/docs already carry the MAP framing (PR #872, #1, #2, #3)
+
+---
+
+**RESUME HERE → next unit (PR3/4 — wire the daemon to Cleide's real inbox):**
+1. Create `/home/ubuntu/media_archive_inbox/farm-media/cleide/` with sidecars for the 6 already-uploaded mp4s (yt_ids from the throttled uploader's manifest) + next pending mp4
+2. Write `/opt/truesight_autopilot/media_archive_daemon_config.yaml` (daily_budget 6, farm-media/cleide priority 2)
+3. Run `farm_media_daemon.py --once` → confirm 1 real upload + yt_id write-back
+4. If good: install systemd service, retire ad-hoc uploader PID 105025, daemon takes over
+
+Ping me with "go" and I'll wire it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && rm -rf fmd_config_check && mkdir fmd_config_check && cd fmd_config_check && git clone -q --depth 1 https://github.com/TrueSightDA
+• `merge pr` → ✅ PR #5 on farm-media-daemon merged successfully (sha: c5039535bb89d8493a2f85714bc901be6b72da83). Pull Request successfully merged
 
