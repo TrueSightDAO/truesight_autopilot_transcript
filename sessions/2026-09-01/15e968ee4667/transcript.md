@@ -4377,6 +4377,7 @@ Both dashboards serve inline `DASHBOARD_HTML` constants. The vault style is saff
 I have the full SLP HTML. The current design already uses a warm palette (saffron-ish cards, badges) but has a plain header (just `<h1>`, no gradient banner). The vault style = saffron gradient header bar with identity, plus the same card/badge language. The cleanest vault-consistent restyle: add the gradient header block (matching vault/base.html) to both dashboards' HTML while keeping all the JS/auth/render logic identical.
 
 Let me check the MAP HTML head too so I can make both consistent in one PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4615,4 +4616,76 @@ Nothing needs you right now. Standing by — ping me when the CI note clears or 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail -3; echo "---cursor---"; cat /hom
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+https://sophia.truesight.me/signature-ledger-pipeline
+
+Signature Ledger Pipeline
+Live queue state for the public RSA attestation ledger — signed-in governors only
+Signed out — log in to view.
+You need to be a signed-in governor to view the pipeline.
+
+Go to the Sophia landing page and sign in, or paste your session token below.
+
+JWT token
+ View pipeline
+
+
+UI/UX is different from 
+https://sophia.truesight.me/vault/
+
+Also the session on https://sophia.truesight.me/vault/
+is not transferred
+https://sophia.truesight.me/signature-ledger-pipeline
+
+
+### 🤖 Autopilot
+
+Two real issues — let me ground both in code before answering.
+
+
+### 🤖 Autopilot
+
+Root cause is visible. Let me confirm the two specifics: how the vault cookie is scoped, and how the dashboard data endpoints authenticate.
+
+
+### 🤖 Autopilot
+
+Both issues are now precisely diagnosed. Let me confirm the SLP data endpoint's exact auth call to state the fix correctly.
+
+
+### 🤖 Autopilot
+
+Diagnosis complete — I have both root causes and the fix path. Here's the full picture.
+
+## Two issues, both confirmed in code
+
+### 1. Session doesn't carry over (real bug)
+- **Vault** authenticates via an **httpOnly JWT cookie** (`governor_chat_session`, set by `vault_routes.py` — httpOnly, secure, samesite=lax, 1h)
+- **Both dashboards** use **separate localStorage keys** (`slp_token` / `map_token`) — the page JS reads its own key, and the `/data` endpoints call `verify_jwt(request)` which checks the `Authorization` header **or** the cookie (`auth.py:141`)…
+
+So the dashboards *would* work via the vault cookie — **but their JS never sends the cookie for the data fetch, and worse, the login flow only stores the pasted token in `localStorage`, never in the cookie**. The page shows the login card because `slp_token` is empty in localStorage, even though a valid `governor_chat_session` cookie exists from `/vault/`.
+
+**Fix (shared session, all pages):** each dashboard's JS should, before showing the login card, **check the cookie first** (`fetch('/data')` will send the cookie automatically since it's same-origin — the current code *does* fetch, but on 401 it removes `slp_token` and shows login; it never tries reading the cookie… actually the cleanest fix): **have the `/data` endpoint already work with the cookie (it does via `verify_jwt`)** — so the real fix is the JS: on page load, just call `/data` with `credentials:'same-origin'` (default) and **fall back to localStorage only when the cookie fails**. Plus: when a pasted token works, **also set it as the cookie** (or at least share one key across pages, e.g. `sophia_token`).
+
+### 2. UI/UX differs from vault (mostly the restyle I already have, not merged yet)
+The vault look (saffron gradient header, cards, badges) is **exactly what PR #377 delivers** — you're seeing the *old* SLP page because #377 is still blocked on CI. Once it merges, the SLP page gets the vault-style header/banner. So issue 2 is "merge #377," issue 1 is a separate small fix.
+
+## Proposed follow-up (A7b) — unify session state
+
+One PR in `truesight_autopilot`:
+1. **Shared token key**: replace `slp_token`/`map_token` with a single `sophia_token` localStorage key (read by all governor-gated pages; vault keeps its cookie as primary, dashboards use cookie-first via `/data`, localStorage as fallback)
+2. **Cookie-first JS**: on load, attempt `/data` (cookie auto-sent); only if 401, check `sophia_token` from localStorage as `Authorization: Bearer`; only if that fails, show the login card
+3. **Login sets both**: pasted token → store `sophia_token` *and* (if the endpoint accepts it) set the cookie — so a dashboard login carries back to `/vault/` too
+4. Optionally: `/vault/` login page also writes `sophia_token` on success (client-side mirror of the cookie) — one sign-in, every page
+
+This is a small, self-contained PR. Order: merge #377 first (restyle) → then A7b (session). Want me to proceed with the A7b session-unification PR now (independent of the CI investigation on #377)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /opt/truesight_autopilot && echo "=== vault: how token is stored ==="; grep -rn "localStorage\|sessionStorage\|getItem\|setItem\|token" a; cd /opt/truesight_autopilot && echo "=== vault set_cookie (path? httponly?) ==="; sed -n '260,275p' app/vault_routes.py; echo; echo "=== aut; cd /opt/truesight_autopilot && echo "=== SLP data endpoint (route + auth) ==="; grep -n -A12 'def data\|@router.get("/data"' app/signature_l; …(+1 more)
 
