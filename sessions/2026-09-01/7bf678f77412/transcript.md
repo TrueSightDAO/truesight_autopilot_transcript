@@ -3335,26 +3335,31 @@ Let me find the settings file that holds `allowed_repos` (could be a config/sett
 ### 🤖 Autopilot
 
 Let me check how a prior plan handled the allowed_repos change (SOPHIA_PERSONAL_REPO_PUSH_PLAN) and look for the settings file on the box.
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ssh call needs host+command. Let me find the settings file where `allowed_repos` is defined (it's referenced as `settings.allowed_repos` in git_tools.py).
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me try the settings lookup more directly — checking the settings module on the box with a shorter, targeted command.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Settings file not in those spots. Let me find where settings.py actually lives on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No settings.py at top level — `settings` must be in `app/` or a config. Let me search the whole app dir for the allowed_repos definition.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3490,4 +3495,83 @@ Ping me with "promote" or "go" (daemon scaffold).
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/fazenda-cleide-para/index.html" -o /tmp/cleide_page.h; sed -n '108,115p' /tmp/cleide_page.html | cat -A | head -15
 • `merge pr` → ✅ PR #256 on agroverse_shop_beta merged successfully (sha: ac292aa9733abf92ec146cbbb9748cb5c4e8aa5b). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] Also, indicate that Paolo's farm, the trees are around 40 years old and the yearly production is also 1.2 tons. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me look at Paulo's page highlights section to add the tree age and production figures.
+
+
+### 🤖 Autopilot
+
+Let me see the exact highlight items (lines 522–560) to place the two new facts consistently.
+
+
+### 🤖 Autopilot
+
+Got the exact structure. I'll add **Tree Age** and **Annual Production** items to Paulo's highlights. Opening the PR:
+
+
+### 🤖 Autopilot
+
+Let me check the exact whitespace/encoding around the Location item.
+
+
+### 🤖 Autopilot
+
+The emoji is encoded as surrogate pairs in my source (🌳 = `\ud83c\udf33`) — in the raw file it's the same UTF-8 tree emoji but my JSON encoding of the search string broke it. Let me use a search string without the emoji — match on the plain text parts instead:
+
+
+### 🤖 Autopilot
+
+PR #257 opened. You explicitly requested this — merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Paulo's tree age + production added ✅
+
+**PR merged:** [#257 — Add Paulo's farm tree age (~40 yrs) and annual production (1.2 tons/yr)](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/257) — sha `8e23d10d`.
+
+**What changed:** `farms/paulo-la-do-sitio-para/index.html` — Farm Highlights grid gained two new items (after Location):
+> **🌳 Tree Age** — ~40 years old
+> **📦 Annual Production** — ~1.2 tons of cacao per year
+
+Highlights now read: Recognition · Cooperative (CEPOTX) · FSVP Site Code (V-06-29) · Location · **Tree Age** · **Annual Production** · Family · Instagram · Practice · Region.
+
+---
+
+**Farm profiles updated today (both on beta):**
+| Farm | New facts |
+|---|---|
+| Fazenda Cleide | Annual Production ~1.5 t/yr (PR #256) |
+| Paulo La do Sitio | Tree Age ~40 yrs · Annual Production ~1.2 t/yr (PR #257) |
+
+---
+
+**RESUME HERE → next unit (pick one):**
+1. **Promote to prod** — `sync_beta_to_prod(agroverse_shop_prod)` to make both updates live on the public pages (then verify both URLs)
+2. **PR1 second half (daemon)** — create public `TrueSightDAO/farm-media-daemon` + scaffold DESIGN.md/config/README
+
+Ping me with "promote" or "go".
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → pulled paulo-la-do-sitio-para/index.html, located highlights grid (lines 522–560), inspected Location item exact bytes (emoji = surrogate pair issue)
+• `git push changes` → PR #257 · `merge pr` → ✅ #257 merged (sha 8e23d10d)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/paulo-la-do-sitio-para/index.html" -o /tmp/paulo_page; sed -n '522,560p' /tmp/paulo_page.html; grep -n "Location" /tmp/paulo_page.html | head -3; echo "---"; sed -n '536,541p' /tmp/paulo_page.html | cat -A
+• `merge pr` → ✅ PR #257 on agroverse_shop_beta merged successfully (sha: 8e23d10d747ae936ea347bdb0e324db9eb9f43e2). Pull Request successfully merged
 
