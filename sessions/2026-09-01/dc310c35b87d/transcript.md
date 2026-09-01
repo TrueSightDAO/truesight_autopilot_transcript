@@ -4881,31 +4881,37 @@ I have the full picture. Both fixes go in one PR to `sunmint_beta`: (1) restyle 
 ### 🤖 Autopilot
 
 I have everything needed. Let me check the register_farm nav structure (to adapt the copy for sunmint), then build the full PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both issues diagnosed and the fix plan is clear. Let me build all three changes locally (restyle limites page, create the register_farm copy for sunmint with the app's nav, add the nav option + routing + i18n to the main page), then push as one PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Limites page restyled ✓. Now building the register_farm copy with sunmint nav injection + the main-page nav/routing/i18n changes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me build the register_farm copy with the sunmint nav (adding it right after `<body>`), the i18n, and the full page:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both pages built. Now the main-page nav edits (add `farm` option, route, i18n both languages), then push all three files in one PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three files built (the size delta is UTF-8 char-vs-byte counting, not corruption — edits are pure additions). Let me verify all three locally, then push as one PR to `sunmint_beta`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5058,4 +5064,180 @@ Want me to tackle the GAS handler next, or the mobile www sync?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && echo "=== live prod checks ===" && for u in "https://sunmint.truesight.me/" "https://sunmint.truesight.me/register_farm/" "https:; cd /tmp && echo "=== prod REPO content (authoritative) ===" && for p in "index.html" "register_farm/index.html" "limites-da-fazenda/index.ht; cd /tmp && echo "=== sunmint_prod Pages build status ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_prod/pages/builds/la; …(+1 more)
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Promotion complete — everything is live on prod.** ✅
+
+## ✅ What's live now on `sunmint.truesight.me` (verified)
+
+| URL | Status | Content check |
+|---|---|---|
+| `/` | 200 | ✅ **"Registrar Fazenda"
+
+
+### 🤖 Autopilot
+
+Go-signal received — proceeding with the **GAS receiver follow-on** (the flagged gap that completes the boundary pipeline end-to-end). Let me check the manifest/plan per protocol and investigate the tokenomics GAS structure:
+
+
+### 🤖 Autopilot
+
+The GAS receiver doesn't exist yet (the function name was a dispatch.py doc placeholder). Let me investigate how the existing FARM REGISTRATION receiver works in the GAS layer so I can mirror it:
+
+
+### 🤖 Autopilot
+
+The `agroverse_qr_code_web_service` project is the GAS layer. Let me check its main `.gs` file (the web service that receives events) and how FARM REGISTRATION is handled:
+
+
+### 🤖 Autopilot
+
+No `.gs` files in the tree — let me look at the full structure of that folder to see what's actually there:
+
+
+### 🤖 Autopilot
+
+The folder is Python tooling, not the GAS service itself. Let me find where FARM REGISTRATION is actually handled — checking the webhook handler and searching for the event name in tokenomics:
+
+
+### 🤖 Autopilot
+
+The GAS web service lives at `google_app_scripts/1MnAsIQAxcSfZO_hALOtMFJ4y1k4OnqeXKMwYs6xev600rPNUYepqcXsT/qr_code_web_service.js`. Let me see how it handles FARM REGISTRATION / TREE GROWTH events so I can mirror the pattern for the boundary evidence handler:
+
+
+### 🤖 Autopilot
+
+The `qr_code_web_service.js` handles QR codes, not farm/media events. The dispatch routing references `processFarmBoundaryEvidenceFromTelegramChatLogs` — mirroring the existing chat-log-processing pattern. Let me find how TREE GROWTH MONITORING media is processed today:
+
+
+### 🤖 Autopilot
+
+The GAS receiver does **not exist** — my dispatch.py docstring referenced a function name, but there's no handler. The closest analog is `process_tree_growth_monitoring.gs`. Let me read its structure to ground the build plan:
+
+
+### 🤖 Autopilot
+
+The TGM handler is the perfect template — it scans Telegram Chat Logs, mirrors photos to GitHub, and appends tracking rows. Let me read its full body to build a faithful mirror for boundary evidence:
+
+
+### 🤖 Autopilot
+
+The TGM handler is a complete template — cron-scans Telegram Chat Logs, parses the event marker, dedupes via a tracking tab, mirrors media to GitHub, and appends rows. The boundary handler mirrors this + adds the **farm upsert** (rule 4) + **index rebuild triggers**. Let me get the constants block to mirror the pattern faithfully:
+
+
+### 🤖 Autopilot
+
+I have the complete template. Now building the boundary-evidence GAS handler — mirroring the TGM pattern (shared constants, FBE_ prefix, farm upsert for rule 4, media mirror, tracking tab):
+
+
+### 🤖 Autopilot
+
+Node won't check `.gs` directly — let me copy to `.js` and check:
+
+
+### 🤖 Autopilot
+
+GAS handler built + syntax-checked. Let me verify the actual Farms tab name the generator uses (so `FBE_FARMS_TAB` matches reality), then push:
+
+
+### 🤖 Autopilot
+
+The generator reads the **"SunMint Plots"** tab — my handler referenced a non-existent "SunMint Farms" tab. The farm record lives **inside** the SunMint Plots sheet (the generator's source of truth). Let me check the exact column order so the upsert writes to the right cells:
+
+
+### 🤖 Autopilot
+
+The farm record is a row in the **"SunMint Plots"** tab (the generator's source of truth) — my handler should upsert there, not a separate Farms tab. Let me get the FIELD_COLUMNS column names to write to the correct cells:
+
+
+### 🤖 Autopilot
+
+Now I have the full schema. The upsert must target the **"SunMint Plots"** tab (SHEET_ID `1qbZZhf…`, the generator's source of truth) and write by matching the header names — not a separate Farms tab. Let me rewrite the handler's upsert to match reality:
+
+
+### 🤖 Autopilot
+
+The replacement left the old function body dangling. Let me inspect and fix:
+
+
+### 🤖 Autopilot
+
+The old function body dangled after my new function (my replace only hit the header line). Removing the stale block:
+
+
+### 🤖 Autopilot
+
+Clean — no stale `FBE_FARMS_TAB` refs, `FBE_PLOTS_TAB` used 3×, node check passes. Now pushing to `tokenomics`:
+
+
+### 🤖 Autopilot
+
+I made the same placeholder mistake as before — the PR has a PLACEHOLDER file. Fixing immediately by pushing the real content to the branch:
+
+
+### 🤖 Autopilot
+
+Real file pushed. Verifying the PR diff is the actual handler (not placeholder) before merging:
+
+
+### 🤖 Autopilot
+
+Verified — real handler on the branch (12,627 B, marker + upsert present, no placeholder), `mergeable: True`. Merging PR #452:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — the GAS receiver (the flagged gap) is now in place. Stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Built + merged the missing GAS receiver for `FARM BOUNDARY EVIDENCE EVENT`** — completing the dispatch routing added in dao_protocol PR #152.
+
+**PR #452 — https://github.com/TrueSightDAO/tokenomics/pull/452** (merged, sha `c750ac50`) — `google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_farm_boundary_evidence.gs` (12.6 KB, +277/−0)
+
+### The handler (`processFarmBoundaryEvidenceFromTelegramChatLogs`), mirroring the proven TGM pattern:
+1. **Cron-scans Telegram Chat Logs** for the `[FARM BOUNDARY EVIDENCE EVENT]` marker (same fallback as TREE GROWTH MONITORING)
+2. **Parses**: Farm Name, Plot ID, Boundary Type, Media URLs, Extracted GPS, Area (ha), Is New Farm, Submission Source, signature + transaction id
+3. **Dedup** by Telegram Message ID via a new "Farm Boundary Evidence" tracking tab
+4. **⭐ Farm upsert (governor rule 4)**: new farm name → creates the row in the **SunMint Plots tab** (the generator's source of truth, SHEET_ID `1qbZZhf…`) — written **by header name** so `build_plots_geojson.py`'s FIELD_COLUMNS matching keeps working; existing farm/plot matched by plot id or farm id
+5. Boundary Type/status/boundary_authority default to `approx`/`proposed`/`approx`; media URLs recorded (v1 keeps original URLs — blob mirror lands with the GAS webhook path)
+6. **NO ledger booking** — evidence accumulates as the plot record (matches the plan's decision; only a future CARBON CREDIT ISSUANCE EVENT books the ledger)
+7. `FBE_` prefix on all new identifiers; reuses shared constants/helpers; no `doGet` collision
+
+### Process notes
+- **Caught my own placeholder bug again**: the first `git_push_changes` write carried a PLACEHOLDER string — fixed immediately with `upload_local_file_to_github` (real 12,627 B handler), verified via API (marker ✓, upsert ✓, no placeholder ✓) before merging
+- `node --check` passed on the final file; hard-rule suite not applicable to GAS JS but syntax-validated
+
+## RESUME HERE → next unit (governor's pick)
+
+The boundary pipeline is now **complete end-to-end** (plan marked complete in manifest):
+
+1. **Deploy the GAS handler** — `clasp push` to the GAS project (`1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v`) + set the cron trigger (the file is merged but not deployed to the GAS runtime — same as the dao_protocol deploy earlier, this is a production deployment needing your go)
+2. **End-to-end live test** — Jedielcio's next visit: capture boundary walk on `sunmint.truesight.me/limites-da-fazenda/` → submit → GAS processes → farm upserted → `extract_plot_gps.py` builds polygon → impact map shows it
+3. **`sunmint_mobile/www/`** — native APK web layer still needs the register_farm page + nav (flagged)
+4. Anything else you want
+
+Say go and I'll deploy the GAS handler (or start whichever you pick).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/git/trees/main?recursive=1" | python3 -c "…; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_tree_growth_monitoring.gs" -o tgm.gs && sed; …(+8 more)
+• `git push changes` → https://github.com/TrueSightDAO/tokenomics/pull/452 (placeholder bug — fixed via upload)
+• `merge pr` → ✅ PR #452 on tokenomics merged (sha c750ac50f2b2845983a42be35823db274dd441f9)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×18 → cd /tmp && echo "=== find GAS files in tokenomics ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/git/trees/main?recur; cd /tmp && echo "=== qr_code_web_service files (.gs / Code) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/git/trees/; cd /tmp && echo "=== full agroverse_qr_code_web_service tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/tokenomics/git/trees; …(+15 more)
+• `merge pr` → ✅ PR #452 on tokenomics merged successfully (sha: c750ac50f2b2845983a42be35823db274dd441f9). Pull Request successfully merged
 
