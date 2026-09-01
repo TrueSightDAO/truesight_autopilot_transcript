@@ -2062,31 +2062,37 @@ The pull aborted because the untracked `youtube_update_video_descriptions.py` (i
 ### 🤖 Autopilot
 
 Clone now current (HEAD = `97ca127` = origin/main with PR5), untracked blocker removed, my edits intact (both files still reference `build_description`). Now I must re-verify my edits still work on the current base (PR5 changed titles — could the validator/generator be affected? The validator checks `description` exists; PR5 only touched titles, so descriptions are intact). Quick re-verification, then push via git_push_changes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Everything verified on the current base. Opening the PR via `git_push_changes` with the full edited file contents (the tool needs write payloads). Let me grab the final file contents to pass as writes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files are verified on the current base. I need the exact post-format file contents to pass as `writes` to `git_push_changes` (must match what I tested). Let me dump both files to an artifact.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the changed files in the work clone. Rather than reproduce full contents (truncated in the output), let me get the exact `git diff` vs origin/main to build precise edit hunks for `git_push_changes`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The diff is mostly ruff-format normalization plus my semantic changes. Let me read the full diff artifact to get every hunk precisely.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the complete diff. Now opening the PR via `git_push_changes` with precise edits (exact-substring hunks — the search strings are unique in origin/main since they match the old format, and the replaces are my new format).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2135,21 +2141,25 @@ Merged PR #268 myself (sha a0c1e15). Go ahead with the small SOP follow-up doc n
 ### 🤖 Autopilot
 
 Governor merged PR #268 (sha `a0c1e15`). Proceeding with the small SOP follow-up doc note. Let me pull the current SOP (post PR #881) and find the exact anchor.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sed matched nothing — heading text differs. Let me grep the actual section markers.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The SOP already has the §A.7 + checklist content from PR #881. The one line that's now **stale** post-#268: line 54 says `youtube_batch_incoming.py`'s upload-time `description_for_video()` **writes the raw Whisper transcript** — that's no longer true (PR #268 made ingress write the polished `description` directly). Let me update that line to reflect the new ingress behavior, and also make sure the checklist step 3 mentions the ingress fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the exact text. Two stale spots post-#268: line 54 says ingress "writes the raw Whisper transcript" (now false — PR #268 made ingress write the polished description), and the "What future agents should not do" bullet says "always run youtube_update_video_descriptions.py (or the polish pipeline)" which can be sharpened to mention ingress is now safe. Let me make the minimal, accurate edits.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2316,4 +2326,145 @@ Want me to open that as a plan + PR (PR1 = schema + backfill script), or adjust 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /tmp/agroverse_shop_work && echo "=== manifest sample entries ==="; python3 -c " import json m = json.load(open('docs/incoming_videos_202; echo "=== GPS tools on box ==="; which exiftool ffprobe ffmpeg 2>&1; python3 -c "import exiftool; print('pyexiftool OK')" 2>&1 | head -1; py; cd /tmp/agroverse_shop_work && echo "=== youtube_videos.json entries keys (IMG/santos) ==="; python3 -c " import json d = json.load(open('sc; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] [Handoff context — this Telegram topic (thread 18528) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go — proceed with the plan (schema extension + backfill script + SOP note).
+
+
+### 🤖 Autopilot
+
+Executing the plan: PR1 = schema extension (latitude/longitude/gps_source) + backfill script. Let me sync the clone, inspect the current cache formatting, and hunt for any source MOVs with exact EXIF GPS on the box (the governor's ask is "embedded in the file itself" — exact beats the manifest's rounded values).
+
+
+### 🤖 Autopilot
+
+Exact source MOVs **are on the box** (`/home/ubuntu/santa_anna_fazenda/IMG_7734.MOV` etc.) — so I can extract the true embedded GPS, not the rounded manifest values. First fix the clone (untracked file blocking pull) and verify exact GPS on the source files.
+
+
+### 🤖 Autopilot
+
+Now I have the full data picture:
+- **5 IMG entries have exact embedded GPS** in the source MOVs on the box (e.g. `IMG_7734.MOV` → `3°17'33.00"S, 52°34'20.64"W` ≈ **-3.29250, -52.57240**) — much more precise than the manifest's rounded `3.0, 52.0`
+- The clone is synced to main (`a0c1e15` = PR #268 merged), my old edits stashed away
+- The other 68 entries are non-farm videos (Bean to Bliss etc.) whose source files are off-box — GPS unknown
+
+Plan is clear. Now build the backfill script: read exact GPS from source files via exiftool where present (the 5 IMG MOVs), with the farm manifest as a documented fallback source, and add `latitude`/`longitude`/`gps_source` to the JSON. Let me write the script.
+
+
+### 🤖 Autopilot
+
+All 44 Santa Anna manifest entries are rounded (3.0/52.0) — so the manifests can't provide precise GPS; the **source MOVs are the only exact source** (and only 5 of them are YouTube entries). The backfill script should therefore: (1) use exact EXIF from local source files, (2) fall back to farm-manifest rounded values only when the file is absent (with a `gps_source` flag distinguishing precision). Writing the script now.
+
+
+### 🤖 Autopilot
+
+Script works: **5 IMG entries get exact GPS from source-file EXIF** (`-3.292500, -52.572400 [file_exif]` — real farm-plot precision, not rounded). 68 others show "no GPS source found" (their sources are off-box). The farm-manifest fallback didn't fire because those 5 matched EXIF first (correct) and the other 68 aren't farm media. Let me see the remaining lines and run the full local test gate.
+
+
+### 🤖 Autopilot
+
+Dry-run is clean (5 exact EXIF matches, 68 honest "no source"), compile ✅, ruff ✅. Only formatting needs fixing. Let me apply ruff format, then write the changes and validate the result.
+
+
+### 🤖 Autopilot
+
+All 5 IMG entries now carry exact GPS (`file_exif`), no bad entries, gates pass. Now open the PR with the script + JSON change.
+
+
+### 🤖 Autopilot
+
+`git_push_changes` needs the content passed in the call — it doesn't read my local clone. Let me get the exact file contents (script + JSON) to pass as write payloads.
+
+
+### 🤖 Autopilot
+
+I have everything needed. Opening the PR with the script as a full write + 5 targeted JSON edits (anchored on unique video_id+title pairs, inserting the GPS fields after the title line):
+
+
+### 🤖 Autopilot
+
+PR #269 opened with the script, but I didn't include the 5 JSON edits in the payload. Let me push them to the same branch (updates PR #269 — not a new PR):
+
+
+### 🤖 Autopilot
+
+The edit anchor didn't match — let me fetch the actual JSON entry bytes from the repo to build the correct anchor.
+
+
+### 🤖 Autopilot
+
+The JSON uses 4-space indent, not 2. Redoing the edits with correct indentation:
+
+
+### 🤖 Autopilot
+
+The tool's second call based its fresh clone on main (not my first commit) — non-fast-forward. I'll do the JSON edits on the box against the actual branch and push, which updates PR #269.
+
+
+### 🤖 Autopilot
+
+The checkout failed ("Aborting") — I need to inspect the actual working-tree state before proceeding. Let me diagnose precisely.
+
+
+### 🤖 Autopilot
+
+Now I understand the full state: the remote branch `youtube/gps-in-cache` (PR #269) has the script but **main's version** of the JSON (no GPS); my working tree has the GPS edits based on main. Since the branch's JSON == main's, I can cleanly swap in my edited version and push:
+
+
+### 🤖 Autopilot
+
+Pushed to the branch — PR #269 now has both the script and the GPS JSON edits. Let me verify PR #269's final state and confirm the JSON parses on the remote.
+
+
+### 🤖 Autopilot
+
+The remote branch now has everything: script + 5 GPS entries. Let me confirm PR #269's state (the gh field name was wrong) and then report.
+
+
+### 🤖 Autopilot
+
+gh CLI is being finicky with fields/flags, but I have everything I need from the git-level verification (remote JSON validates with exactly the 5 expected GPS entries). Let me do one final clean state check of the PR.
+
+
+### 🤖 Autopilot
+
+PR #269 is OPEN and MERGEABLE, local matches remote. Stopping here per the one-PR-per-turn rule.
+
+## 📦 PR opened — [agroverse_shop_beta PR #269](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/269)
+
+**"GPS in media cache: latitude/longitude/gps_source fields + backfill script"** (branch `youtube/gps-in-cache`, sha `3a336e9`, **OPEN + MERGEABLE**)
+
+**What changed:**
+1. **`scripts/add_gps_to_youtube_videos_json.py`** (new) — reusable backfill tool:
+   - Reads GPS from the **source file's own embedded metadata** via `exiftool -GPSCoordinates` (QuickTime/EXIF DMS → decimal, S/W negative) — the exact values embedded in the files, not rounded aggregates
+   - Falls back to `FARM_MEDIA_MANIFESTS/<farm>.json` when the file isn't on the box
+   - Records `gps_source: file_exif | farm_manifest` so LLMs know the precision tier
+   - `--write` to apply; dry-run by default
+2. **`scripts/youtube_videos.json`** — 5 IMG entries now carry exact GPS (all `file_exif`):
+   | Entry | Latitude | Longitude |
+   |---|---|---|
+   | IMG_7734.MOV | -3.292500 | -52.572400 |
+   | IMG_7740.MOV | -3.292300 | -52.572200 |
+   | IMG_7741.MOV | -3.292300 | -52.572200 |
+   | IMG_7722.MOV | -3.292500 | -52.572100 |
+   | IMG_7705.MOV | -3.292200 | -52.571800 |
+
+   (Real Santa Anna Fazenda plot precision — the committed farm manifests only have rounded 3.0/52.0)
+
+**Testing:** compileall ✅ · ruff check ✅ · ruff format ✅ · JSON validated on the remote branch (73 entries, 5 with GPS, 0 bad) ✅ · DMS parser verified against real exiftool output ✅ · no live YouTube calls (cache-only).
+
+**Honest scope note:** 68/73 entries have no local source file (Bean to Bliss / Project clips live off-box on your Mac) — they show "no GPS source found" and will auto-fill when the script re-runs after those sources sync to the box.
+
+## RESUME HERE → merge PR #269 + optional SOP note
+
+1. **Merge PR #269** (your 👍/"merge") — GPS is now in the cache schema, LLMs can search media by lat/lon.
+2. Optional follow-up (say the word): add "GPS fields are part of the uniform media-cache format" + the backfill step to `sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md` so future ingress writes lat/lon too (1-line doc PR, next turn).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → cd /tmp/agroverse_shop_work && git checkout main -q 2>&1 | tail -1 && git pull origin main -q 2>&1 | tail -1; echo "HEAD: $(git log --onelin; cd /tmp/agroverse_shop_work && echo "=== untracked blockers ==="; git status --short | head; echo "=== remove identical-to-origin blocker if; echo "=== EXACT GPS from source MOVs (the 5 IMG youtube entries) ==="; for f in /home/ubuntu/santa_anna_fazenda/IMG_7734.MOV /home/ubuntu/sa; …(+12 more)
 
