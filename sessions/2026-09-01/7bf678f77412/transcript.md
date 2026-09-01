@@ -3895,21 +3895,25 @@ Ping me with "go" or "status".
 ### 🤖 Autopilot
 
 Go received — resuming the plan. Executing PR1 second half (create the public repo) and checking the Cleide uploader in parallel:
+[2 tool result(s) compacted: create_repo, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two issues: (1) the box's running process still has the stale `allowed_repos` (PR #359 merged but config loads at process start → needs redeploy), and (2) the Cleide uploader has 0 yt_ids after 4h — let me check why.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Uploader running 4h with empty log and empty manifest — something's off. Let me look at the manifest file and the script's logic directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest is a list (85 items), so my earlier dict-based check was broken. And the empty log = buffered stdout. Let me diagnose properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3922,6 +3926,7 @@ Now I have the full picture — the uploader is **working correctly** (my earlie
 - Behavior matches design: ~6/day cap → resume-safe, yt_id written to manifest
 
 **Repo creation is blocked** — the running box still has the pre-#359 `allowed_repos` (config loads at process start). The fix is `deploy_autopilot` (a governor-gated step). Options:
+[1 tool result(s) compacted: pin_note — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3980,21 +3985,25 @@ Say "deploy", "skip", or "defer".
 ### 🤖 Autopilot
 
 Go received — proceeding with the recommended path: deploy the autopilot (picks up PR #359's allowed_repos), then create the public daemon repo.
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy reports we're already on commit a2836f7f (the #359 merge) — but the process wasn't restarted, so let me test whether `create_repo` now sees the updated settings:
+[1 tool result(s) compacted: create_repo — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Repo created ✅ — `https://github.com/TrueSightDAO/farm-media-daemon` (public). Now scaffolding the contents per PR1: DESIGN.md (the full contract we designed), config.yaml template, README, .gitignore.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 DESIGN.md landed (PR #1). Now the config template, README, and .gitignore:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4138,4 +4147,30 @@ Ping me with "go" and I'll run PR3.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → echo "=== upload script CLI args ==="; grep -nE "add_argument|def main|argparse" /opt/truesight_autopilot/config/youtube/upload_video_to_you; mkdir -p /tmp/fmd && cat > /tmp/fmd/farm_media_daemon.py <<'PY' #!/usr/bin/env python3 """Farm Media Daemon - shared YouTube uploader for Tr; cat > /tmp/fmd/farm_media_queue.py <<'PY' #!/usr/bin/env python3 """farm-media-queue — read-only status of the farm-media inboxes.""" import; …(+5 more)
 • `merge pr` → ✅ PR #3 on farm-media-daemon merged successfully (sha: a330c7920c8d06c2a4d7dd858a2fd5ddb219abc7). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: I wonder if there should be a view here for logged in governors which shows the pipeline?
+
+https://sophia.truesight.me/media-pipeline??
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181]
+
+
+### 🤖 Autopilot
+
+Good instinct — and it fits naturally into the architecture we just built. A few thoughts on how it would work:
+
+**What it should show:** the same three states the queue CLIs expose — uploaded (yt_id + link), pending (in queue), needs_metadata/error — per farm, plus the committed GitHub manifest state. Essentially a read-only dashboard over the inbox sidecars + `FARM_MEDIA_MANIFESTS/`.
+
+**Where it should live:** not inside the daemon repo (that stays dumb infrastructure). Best as a page on `truesight_me` (Sophia's site, so `sophia.truesight.me/media-pipeline`) that reads the queue state — either from the box's sidecars via a small read API, or from GitHub manifests if we keep them fresh. Since the whole design makes GitHub the shared source of truth, the cleanest version reads the committed manifests + the live queue for freshness.
+
+**Auth:** logged-in governors only, gated by the same auth the DApp/site uses — the pipeline has video URLs and farm GPS, fine for governors, not something we'd want fully public by default.
+
+**Timing note:** the commit model matters here. If we want the dashboard to reflect reality instantly, we need either the auto-committer we discussed (sidecars → manifests pushed periodically) or a live sidecar read. Otherwise the view lags behind the daemon.
+
+I'd fold this into the daemon plan as a future unit (PR6+ candidate) rather than build it now — the daemon's not even wired to Cleide's real inbox yet. Want me to add it to the plan doc's roadmap as a follow-up, or is this a "park it" idea for now?
 
