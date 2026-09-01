@@ -1223,6 +1223,7 @@ The awk pattern didn't match (log lines are indented differently). Let me pull t
 ### 🤖 Autopilot
 
 I have the 5 diffs. Let me pull the full NEW descriptions from `youtube_videos.json` for these videos (so the governor sees complete text, not 120-char truncations) plus the Fili Marsh context.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1382,6 +1383,7 @@ Say **"go / approved"** (optionally with answers to ① and ②) and I'll procee
 ### 🤖 Autopilot
 
 The 👍 emoji-go on the PR3 sample is the explicit approval — proceeding to **PR4 (live push)**. First, let me re-read the plan's PR4 spec and sync the work clone to confirm the merged state.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1582,4 +1584,78 @@ PR opened. Per the one-PR-per-turn rule, I'm stopping here — PR #267 is ready 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/agroverse_shop_work && grep -n "Agroverse\"" scripts/youtube_videos.json | head -20 && echo "=== raw lines around those entries ==="; cd /tmp/agroverse_shop_work && python3 -c "import json; d=json.load(open('scripts/youtube_videos.json')); print('JSON valid, entries:', len(
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] [Handoff context — this Telegram topic (thread 18528) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go — merged PR #267 myself (sha 97ca127). Proceed to PR6 (SOP doc update to prevent recurrence).
+
+
+### 🤖 Autopilot
+
+Merging confirmed (sha 97ca127). Proceeding to PR6 — the SOP doc update. Let me read the current SOP §A.7 and the plan's PR6 spec in parallel.
+
+
+### 🤖 Autopilot
+
+PR6 spec confirmed (doc-only, pre-authorized). The SOP has §A.7 (title sync) + an end-to-end checklist that both need the description-sync step. Let me clone `agentic_ai_context` and inspect the exact bytes (trailing whitespace matters for exact-substring edits).
+
+
+### 🤖 Autopilot
+
+Now let me get the exact bytes of the end-to-end checklist block (trailing spaces matter for exact-substring edits).
+
+
+### 🤖 Autopilot
+
+Both blocks captured. Let me verify each search-string uniqueness in the clone (grep -c must be 1 for each), then push.
+
+
+### 🤖 Autopilot
+
+H2/H4 mismatched (likely em-dash byte encoding in my pattern). Let me re-verify with simpler substrings.
+
+
+### 🤖 Autopilot
+
+All 5 anchors are unique (H2 "See also" = 1, H4 "dry-run, then apply" = 1). The em-dash is UTF-8 `—` (M-bM-^@M-^T) — I'll match around it with plain ASCII anchors. Now pushing PR6 with 4 edits: §A.7 gets a new "descriptions" bullet + renumbered heading, checklist gains description-sync step, and the not-do section gets a recurrence guard.
+
+
+### 🤖 Autopilot
+
+PR6 opened — stopping per the one-PR-per-turn rule.
+
+## 📦 PR6 opened — [agentic_ai_context PR #881](https://github.com/TrueSightDAO/agentic_ai_context/pull/881)
+
+**What changed** (`sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md`, doc-only, 4 edits):
+1. **§A.7** heading → "Push title + description updates to YouTube" + new mandatory bullet: after any blog regen, run `youtube_update_video_descriptions.py --dry-run` then the real push — with the note that upload-time `description_for_video()` writes **raw ASR** and must be re-synced from the polished `description` field (written by `generate_youtube_descriptions.py`)
+2. **§A.7 OAuth bullet** — description script needs same `youtube.force-ssl` scope; `--config-dir` for out-of-repo OAuth files (e.g. autopilot box)
+3. **End-to-end checklist** — renumbered: step 3 = description re-sync (dry-run → apply), step 4 = OAuth recovery
+4. **"What future agents should not do"** — added: "Do not push raw Whisper ASR text as a YouTube description"
+
+**Verified:** all 4 edit anchors unique in repo copy (grep -c = 1 each) before pushing · documentation only — no code, no live API calls.
+
+## RESUME HERE → merge PR6, close out the plan
+
+1. **Merge PR #881** (your 👍/"merge" — pre-authorized, doc-only). Or I merge next turn.
+2. **Update the plan's resume tracker** (`plans/YOUTUBE_DESCRIPTION_TITLE_CLEANUP_PLAN.md` §4) — mark PR1–PR6 built/merged, flip `RESUME HERE →` to "Complete" (small follow-up PR to agentic_ai_context).
+3. **Report DAO contribution** per plan §5 (live-impact units PR4 + PR5) — signed as Sophia Truesight.
+
+**Full plan status:**
+| Unit | Status |
+|---|---|
+| PR1 description field + generator | ✅ merged (#263) |
+| PR2 description push script | ✅ merged (#266) |
+| PR3 5-pair review sample | ✅ approved (👍) |
+| PR4 live description push | ✅ done + verified 73/73 match |
+| PR5 title alignment | ✅ merged (#267, your merge) |
+| PR6 SOP prevent-recurrence | 🟡 **PR #881 open** |
+
+Nothing live left to push — all 73 descriptions are live and verified; PR6 is the last code/doc change.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && rm -rf aac_work && git clone --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aac_work 2>&1 | tail -1 && cd aac_w; cd /tmp/aac_work && sed -n '/### End-to-end checklist/,/^## B\./p' sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md | cat -A | head -25; cd /tmp/aac_work && echo "=== H1: heading ===" && grep -c '7. \*\*Push title updates to YouTube\*\* (mandatory whenever manifest titles drif; …(+1 more)
 
