@@ -10,74 +10,6 @@
 
 ### 🤖 Autopilot
 
-Prod sync succeeded. Let me verify the broken link now resolves.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The sync reported success but the redirect isn't on prod — likely a `.syncignore` exclusion (I saw that file in the prod repo listing earlier). Let me check.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Sync merged (prod HEAD = merge commit `398a1ccf`) but prod's `legacy-redirects.js` still lacks the entry. Let me check the file's commit history on prod to see what actually landed.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The redirect commit IS in prod's git history (`338ece9f` on the prod file path), yet raw fetches don't show the entry — that smells like CDN staleness. Let me verify via the authoritative GitHub API and the actual commit diff.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Authoritative answer: the redirect **is on prod** — GitHub API confirms both entries in prod main's `js/legacy-redirects.js` (commit `338ece9f` +2 lines). The 404 you'd still see is **GitHub Pages CDN cache** (raw fetch was stale; Pages caches files, sometimes 10+ min).
-
-Let me check the GitHub Pages deployment status to confirm the live deploy is building.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check what the **live site** actually serves for legacy-redirects.js (that's what the browser loads, distinct from raw.githubusercontent).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-There it is — the Pages deployment is still **queued** (`pages build and deployment queued 16:42:14`, triggered by the prod sync merge). The live site still serves the OLD redirect file (0 entries) because the new build hasn't deployed yet. GitHub Pages typically takes 1–3 minutes to build+deploy. Let me wait and re-check.
-[1 tool result(s) compacted: watch_url — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The watcher needs a topic context — I'll poll directly on the box with a bounded loop instead.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The JS with the redirect entries is now live (2 entries confirmed at 16:43:46) — but the short slug still reports HTTP 404. That's likely **expected behavior** of this mechanism: GitHub Pages serves the `404.html` page with HTTP status 404, and the redirect happens **client-side in the browser** (JS `window.location.replace`). curl doesn't run JS, so it reports 404. Let me confirm against an existing redirect that works this way.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed — this is working as designed:
-
-- **`/recipes` (an existing, working legacy redirect) also returns HTTP 404 to curl** — that's just how GitHub Pages works: it serves `404.html` with status 404, and the redirect happens client-side in the browser (`window.location.replace`). curl doesn't execute JS, so it sees the 404 status even though the redirect works fine for humans.
-- The short-slug page **is** serving the 404 handler (`LEGACY_REDIRECTS` ×2, `window.location.replace`, `Redirecting`) which loads `/js/legacy-redirects.js` — and that JS now has the 2 Fazenda Cleide entries (live since 16:43:46).
-- **In a browser**, typing `agroverse.shop/farms/fazenda-cleide/` now instantly bounces to `/farms/fazenda-cleide-para/` (200).
-
-So the broken link is fixed for real users. Let me do a final proof — simulate what the browser does (fetch the JS map and resolve the path):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 ## ✅ Your link is fixed, Gary
 
 **`https://agroverse.shop/farms/fazenda-cleide/` now works** — browser-equivalent resolution confirmed:
@@ -4732,11 +4664,23 @@ I dropped three helper functions (`iter_sidecars`, `missing_fields`, `load_confi
 ### 🤖 Autopilot
 
 The remote branch has my first commit; the tool's clone is stale. Let me fix it directly on the box — pull the branch, apply the helper restore, and push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All green — helpers restored, ruff clean, format clean, functional import test passes, and the live config loads correctly (budget 50). Committing + pushing + merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4788,6 +4732,7 @@ go — option 1 (apply the pause+retry daemon update, restart farm-media-daemon.
 ### 🤖 Autopilot
 
 Go — applying the daemon update to the box and restarting the service. Pulling the merged code first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4952,4 +4897,71 @@ Ping me with your pick.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → CFG=/opt/truesight_autopilot/media_archive_daemon_config.yaml echo "=== before ===" grep -n "daily_budget" $CFG python3 - <<'PY' import re p; sleep 20 echo "=== uploads since restart ===" tail -6 /tmp/farm_media_uploads.log echo "=== today total ===" wc -l /tmp/farm_media_uploads.l; cd /opt/truesight_autopilot/farm_media_daemon echo "=== how does the daemon call upload script + where do attempts log? ===" grep -n "upload; …(+2 more)
 • `deploy autopilot` → Already on the latest commit a758b476 — no deploy needed. Did NOT restart. Do not retry.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Restarted the service — but /auth/challenge-dashboard is unreachable in prod for a different reason than expected: nginx's /auth/ location block proxies to 127.0.0.1:8002 (a separate service), not your app on 8001. Confirmed: localhost:8001/auth/challenge-dashboard returns 400 (route exists, needs body) but the public domain returns 404 (nginx never reaches your app for that path). PR #369's route path collides with an existing nginx routing rule. You'll need either a different path outside /auth/ (e.g. /media-archive-pipeline/auth/challenge) or an nginx location override — the latter touches shared infra config, so I'd lean toward the path rename as the safer fix. Your call.
+
+
+### 🤖 Autopilot
+
+Right — nginx routes `/auth/*` to a different service (8002), so my route path collides. The safe fix is renaming the path outside `/auth/`. Let me check all references first, then rename.
+
+
+### 🤖 Autopilot
+
+Route referenced only in `main.py:1156` — no JS/tests to chase. The nginx grep came up empty (config likely elsewhere). Let me confirm the nginx layout and check whether the dashboard page HTML references the challenge path:
+
+
+### 🤖 Autopilot
+
+Let me read the actual nginx config for the sophia domain to see the /auth/ proxy rule (the earlier grep didn't match — likely formatted differently):
+
+
+### 🤖 Autopilot
+
+Confirmed: nginx `location /auth/` → **8002** (the vault worker), so any `/auth/*` route never reaches my app on 8001. The dashboard page's login is **paste-token only** (no challenge call in the HTML), so renaming the route is fully safe — zero client references. I'll rename to `/media-archive-pipeline/auth/challenge` (outside `/auth/`, matches the dashboard's namespace). Small PR:
+
+
+### 🤖 Autopilot
+
+PR #371 opened — merging (the fix is directly implied by the governor's report and my recommendation they accepted):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Sentinel route moved out of the nginx `/auth/` collision ✅
+
+**PR merged:** [#371 — Move sentinel challenge route to /media-archive-pipeline/auth/challenge](https://github.com/TrueSightDAO/truesight_autopilot/pull/371) — sha `0f7f0f50`.
+
+**What was wrong (Envoy's finding):** nginx `location /auth/` → **8002** (the vault worker), so `/auth/challenge-dashboard` never reached the app on 8001 — public 404 despite the route existing. Confirmed by reading the nginx site config (`location /auth/ { proxy_pass 127.0.0.1:8002; }`).
+
+**What changed:** `app/main.py` — route renamed to **`POST /media-archive-pipeline/auth/challenge`** (inside the dashboard's namespace, outside `/auth/`). **Zero client references existed** (the dashboard login is paste-token only — no challenge call in the HTML), so it's a pure server-side rename; no nginx config touched (avoided shared-infra change, per the safer option).
+
+**Checks:** single-line edit, no test impact (the sentinel tests hit `verify_payload` directly, not the route path).
+
+**Note:** needs the same service restart to go live (route is on disk at `0f7f0f50` after merge + pull, but the running process still serves the old paths).
+
+---
+
+**RESUME HERE → next unit (pick one):**
+1. **Make the route live** — pull `0f7f0f50` on the box + restart `truesight-autopilot.service` (Envoy manual, or `deploy_autopilot` when idle), then verify `POST /media-archive-pipeline/auth/challenge` returns 422/400 (route exists) not 404, and sentinels can mint JWTs
+2. **Verify Cleide queue completion** — daemon should have finished all 71; build `FARM_MEDIA_MANIFESTS/cleide.json` + index entry → PR
+3. **Wire the page sign-in button** to the renamed challenge route (one-click sentinel login)
+4. **Signed-in UAT** of the dashboard
+
+Ping me with your pick.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot echo "=== all challenge-dashboard references ===" grep -rn "challenge-dashboard" app/ tests/ 2>/dev/null echo "=; echo "=== nginx locations for the sophia domain ===" sudo grep -rn "location" /etc/nginx/sites-enabled/ 2>/dev/null | grep -iE "auth|media-a; echo "=== sophia nginx site ===" sudo cat /etc/nginx/sites-enabled/sophia 2>/dev/null | grep -nE "location|proxy_pass|8001|8002|/auth|media-
+• `merge pr` → ✅ PR #371 on truesight_autopilot merged successfully (sha: 0f7f0f50fd8014cbf88d1b894ab8c2537255304e). Pull Request successfully merged
 
