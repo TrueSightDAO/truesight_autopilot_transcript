@@ -4355,6 +4355,7 @@ Gary wants the vault-style UI restyle for both dashboards (MAP + signature ledge
 ### 🤖 Autopilot
 
 Both dashboards use inline HTML with bespoke classes. Let me examine the vault base template + followups.html (which likely already uses the vault style) to understand the target design language.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4362,11 +4363,13 @@ Both dashboards use inline HTML with bespoke classes. Let me examine the vault b
 Now I have the vault design language: saffron gradient header, `--saffron` CSS vars, `.card` containers, `.badge` pills, `.btn` styles, `extends base.html` with `{% block content %}`. Both dashboards (MAP + SLP) currently use inline bespoke HTML. The restyle: convert both to vault-style templates.
 
 Let me check how the dashboards' HTML is served (inline string in module vs template) and how the vault routes render templates, so I know the minimal wiring change.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both dashboards serve inline `DASHBOARD_HTML` constants. The vault style is saffron gradient header + cards + badges + CSS vars. Best approach: rewrite both `DASHBOARD_HTML` constants to embed the vault design language (self-contained, auth behavior unchanged, visual consistency). Let me see the full current HTML of both to rewrite faithfully.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4570,4 +4573,46 @@ The gate is doing its job — the fix is to make the tests match the intended ma
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ❌ Failed to merge PR #377 on truesight_autopilot: Refusing to merge PR #377 on truesight_autopilot: CI not green (failing-or-pending: smoke,
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Merge still blocked by CI — investigation is the next step.** ✅ (stop-and-report)
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **Attempted** | Merge [PR #377](https://github.com/TrueSightDAO/truesig
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — redeploy killed the turn. Still holding off on the CI investigation per my earlier note (Cleide's farm is on it) — just checking you're responsive.
+
+
+### 🤖 Autopilot
+
+Quick responsiveness + backfill status check.
+
+
+### 🤖 Autopilot
+
+I'm here and responsive ✅
+
+**Backfill is progressing nicely:**
+- Files remaining: **2,727 → 2,478 → 2,228** (declining ~250/pass, exactly the trickle design)
+- Cursor now at `contribution_event/Edgar_20260614141724_012.json` (June 14 events — advancing through the historical log)
+- Last cron pass: Sep 1 13:35 UTC
+
+**Holding on CI per your note** — no CI investigation this turn (Cleide's farm is on it). PR #377 stays parked at the gate until that clears; the restyle branch is intact and ready to merge the moment CI goes green.
+
+Nothing needs you right now. Standing by — ping me when the CI note clears or if you want a status read anytime.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail -3; echo "---cursor---"; cat /hom
 
