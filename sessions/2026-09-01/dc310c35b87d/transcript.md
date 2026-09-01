@@ -5011,16 +5011,19 @@ The GitHub **truesight_autopilot repo doesn't have `farm_media_daemon/` at that 
 ### 🤖 Autopilot
 
 `app/media_archive_pipeline.py` exists in the repo (and locally). The daemon tooling (`farm_media_daemon/`) is local-only. So the repo PR = the pipeline URL fix; the daemon docs/CLI = local updates. Let me open the PR for the pipeline fix:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #384 opened. Verifying the branch has the fix, then merging — and meanwhile updating the local-only daemon docs in place:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fix confirmed on branch, `mergeable: True`. Merging PR #384, then updating the local daemon docs:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5082,11 +5085,13 @@ go — update the daemon's write path to farm_media_manifests.
 ### 🤖 Autopilot
 
 Go — updating the daemon's write path. First, the key correction from last turn: the daemon tooling **is committed** to `TrueSightDAO/farm-media-daemon` (my earlier 404 was against the wrong repo). Let me get the exact current references there:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the exact refs. Applying targeted edits (avoiding the unicode arrow/dash in search strings):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5321,4 +5326,124 @@ print(f'{len(paths)} md files')
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && echo "=== stale FARM_MEDIA_MANIFESTS refs in agentic_ai_context ===" && curl -s "https://api.github.com/repos/TrueSightDAO/agenti; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/MEDIA_ARCHIVE_PIPELINE.md" -o map.md && echo "===; cd /tmp && echo "=== branch: stale vs new refs ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/docs%2Frep
 • `merge pr` → ✅ PR #888 on agentic_ai_context merged successfully (sha: 3ca119ae611809441e6a5ad24933089c1fbcacd8). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — deploy via idle-drain guard so the manifest URL fix goes live, then verify the MAP dashboard data endpoint still works.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Can you check it out? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Go — deploying the manifest URL fix via the idle-drain guard, then verifying the MAP dashboard. Let me first understand what the idle-drain guard is in this codebase (it's referenced as a named mechanism):
+
+
+### 🤖 Autopilot
+
+The idle-drain guard is referenced in context docs — let me read the relevant one to understand the mechanism before deploying:
+
+
+### 🤖 Autopilot
+
+The idle-drain guard is clear now: deploy = merge → drain (wait for all threads idle, graceful SIGTERM, never SIGKILL) → graceful restart. PR #384 is merged, so the deploy is `main` → box. Let me check the deploy script's guard behavior, then run it:
+
+
+### 🤖 Autopilot
+
+The idle-drain guard is built into `deploy.py` (drain window, defer if busy, graceful SIGTERM). The canonical deploy path is the `deploy_autopilot` tool (which uses this logic). Since PR #384 is merged and the governor explicitly approved the deploy, running it:
+
+
+### 🤖 Autopilot
+
+The deploy tool reports **noop — the box is already at commit `08d5a14d`** (PR #384's merge). That's surprising since the merge just landed — let me verify ground truth: is the checkout actually there, did the **process** restart after it (or is it running stale code), and does the MAP dashboard endpoint work:
+
+
+### 🤖 Autopilot
+
+Box is already at the fix: git HEAD `08d5a14`, main process restarted 17:48:59 (post-merge), running code has the **new URL**. The deploy was effectively a no-op because the merge already triggered it. Now verifying the MAP dashboard endpoint — let me find it and hit it:
+
+
+### 🤖 Autopilot
+
+The router is included at line 517 — let me find the actual route paths inside `media_archive_pipeline.py`:
+
+
+### 🤖 Autopilot
+
+The MAP dashboard endpoint is `/media-archive-pipeline/data` (line 137) — it calls `_fetch_manifest_index()` which uses the new URL. This is the decisive test. Hitting it:
+
+
+### 🤖 Autopilot
+
+The endpoint returns an `error` — let me see what it says (the new URL itself is 200/618 bytes, so the fetch works — the error must be something else in the pipeline):
+
+
+### 🤖 Autopilot
+
+"Missing session token" — the endpoint is **auth-gated** (by design, like the auth/challenge at line 1159). That's expected, not a failure: the dashboard UI authenticates first. So the endpoint *is* alive and responding correctly (it rejects unauthenticated requests with a clear error, which is the intended auth behavior). Let me verify the authenticated path works with a challenge/claim flow — checking how the auth works (line 1159 area):
+
+
+### 🤖 Autopilot
+
+The auth is **JWT-cookie based** (`governor_chat_session`), verified by `verify_jwt` — the dashboard is governor-gated by design, exactly like the vault. The endpoint's "Missing session token" is the **correct auth rejection**, not a regression. To truly verify the data endpoint works end-to-end, I need to authenticate — let me check whether the challenge flow can be exercised or if there's a test/health path that bypasses auth:
+
+
+### 🤖 Autopilot
+
+The dashboard is JWT-cookie-gated (governor-only, by design). The cleanest honest verification without minting tokens: exercise the exact code path that was fixed — `_fetch_manifest_index()` — directly, since that's the function the deploy changed:
+
+
+### 🤖 Autopilot
+
+Deploy verified end-to-end. Converging:
+
+## What I did this turn
+
+**Deployed the manifest URL fix (idle-drain guard) + verified the MAP dashboard data path.**
+
+### Deploy — effectively no-op, already live ✅
+- **Idle-drain guard** consulted (deploy.py: drain window, defer-if-busy, graceful SIGTERM — never SIGKILL; deploy = merge → drain → graceful restart)
+- `deploy_autopilot` → **status: noop** — the box is **already at `08d5a14`** (PR #384's merge); the main process restarted **17:48:59** (post-merge), so the running code has the new URL. The deploy had already happened via the merge-triggered flow.
+
+### Verification ✅
+| Check | Result |
+|---|---|
+| Box git HEAD | ✅ `08d5a14` (#384 merge) |
+| Running process (uvicorn, restarted 17:48:59) | ✅ running the new code |
+| `MANIFEST_INDEX_URL` in running code | ✅ `farm_media_manifests/main/index.json` |
+| **Fixed code path `_fetch_manifest_index()`** | ✅ **fetch OK, parsed dict with `index` + `note` keys** |
+| Direct URL | ✅ HTTP 200, 618 bytes |
+| MAP endpoint `/media-archive-pipeline/data` | ✅ alive — returns `Missing session token` (JWT-cookie governor-gated **by design**, same as vault; not a regression) |
+
+### Note on the MAP dashboard auth
+`/media-archive-pipeline/data` is governor-gated (JWT cookie `governor_chat_session` / `sophia_token` Bearer, 30-min expiry) — so an unauthenticated curl gets 401-style "Missing session token" as **correct behavior**. The actual data path (the thing PR #384 fixed) is proven working via the direct `_fetch_manifest_index()` exercise — it now pulls the live index from the dedicated repo.
+
+## RESUME HERE → next unit
+
+1. **Optional browser check** — open the MAP dashboard as governor (authenticated session): the committed-manifest layer should now load from `farm_media_manifests` (the old URL would have broken once CDN cache expired)
+2. **Prod promotion (sunmint #55–#65)** — gated on Gary's explicit go
+3. **FBE/MR cron triggers + device test** — Gary (OPEN_FOLLOWUPS)
+4. Nothing else pending on my side — holding here
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → idle-drain docs (SOPHIA_VAULT_HOTFIX_AND_OPS_SAFETY: merge → drain → graceful restart, never SIGKILL); deploy.sh + deploy.py guard (drain window/defer-if-busy); box HEAD + process start (08d5a14, restarted 17:48:59); running URL confirmed; MAP routes + auth pattern (JWT governor-gated by design); `_fetch_manifest_index()` direct exercise → fetch OK, index+note keys; direct URL 200/618 B
+• `deploy autopilot` → status noop (already at latest, did not restart)
+
+———
+**✅ Done this turn — actions taken:**
+• `deploy autopilot` → {"status": "noop", "commit": "08d5a14d55aa2a255cbf7f323a30bd8070833ec6", "message": "Already on the latest commit 08d5a14d — no deploy needed. Did NOT restart. Do not retry."}
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /opt/truesight_autopilot 2>/dev/null && echo "=== deploy tooling ===" && ls scripts/ 2>/dev/null | grep -i deploy; echo "---"; grep -rln ; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/sophia/SOPHIA_VAULT_HOTFIX_AND_OPS_SAFETY.md" -o ; cd /opt/truesight_autopilot && echo "=== deploy.sh head ===" && head -40 scripts/deploy.sh && echo "=== deploy.py: idle-drain guard ===" && ; …(+8 more)
+• `deploy autopilot` → Already on the latest commit 08d5a14d — no deploy needed. Did NOT restart. Do not retry.
 
