@@ -10,169 +10,6 @@
 
 ### 🤖 Autopilot
 
-Dry-run is 95% right, but I caught a real inconsistency: the root index shows `tree_growth_monitoring: count 0` while a growth event file **does** exist (`Edgar_20260829143953_012` — it's in chat logs but the measurements tab is still empty, so the events-loop record is what got written, and the measurements block then clobbered the folder index to 0). Also the measurement record lacks `event_type` for schema uniformity. Let me fix `_ledger_files` to compute per-folder counts from the actual files written.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Consistency fixed: root index now shows `tree_growth_monitoring: 1` and the folder index agrees (74 total = 24 planting + 8 link + 41 reject + 1 growth). Now let me sync the retargeted script to the repo, run the local test suite, then commit via the repo's PR flow. First, check the repo's current branch state and diff.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-On the stale merged PR #354 branch with unrelated working-tree noise. The clean move: check the untracked test file, run the local test suite, then open A2 as a fresh branch off `origin/main` containing only the script + test changes.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Compile + ruff check pass. The `ruff format --check` reformat list is pre-existing (36 unrelated files, e.g. `tests/test_vault.py` — untouched by me). My two files are clean; only my new file's formatting matters for this PR. Let me confirm my files are format-clean, run pytest, and verify the test file's correctness (it may be pre-existing from PR #354).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Two issues to fix:
-1. My script needs a ruff-format pass (it's now reformat-clean-required).
-2. 2 test failures — the test file (untracked, no history) was written for the **old** aggregate shape; my per-event changes broke its assumptions. Let me look at the failing assertions and fix both.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me see the exact failing assertions (lines ~60–90) to fix the test expectations for the new per-event shape.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the top of the test file (lines 1–55) to see `test_parse_event_planting`'s assertions.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me see the actual assertion failures with full traceback.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both failures are clear: the test file predates the `payload` field (added in PR #354's verification fix) and the per-event retarget. I'll update the test to match the current script contract, then run the full suite.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-One more failure at line 104 — the `out["events"]["172"]` assertions (growth event in chat logs but not in growth tab). Let me check the current contract: does `build_signatures` include chat-log-only events?
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Root cause found: the test's mock chat rows use `"MIIB_PUBKEY_ABC"` / `"TXN_HASH_123"` placeholder keys, which fail the `public_key.startswith(_SPKI_PREFIX)` real-key check — so they're bucketed as test events and `events` is empty (count 0). The dry-run is fine (real data), the test mocks need a realistic SPKI-prefixed key. Let me fix the test fixtures.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`MIIB_PUBKEY_ABC` appears twice (in PLANT_SAMPLE + the growth mock). Let me check all occurrences and patch precisely.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Clear now: `MIIB_PUBKEY_ABC` appears in both the sample (line 19) and the parse assertion (line 49); the growth mock also expects `MIIB_PUBKEY_GROW` at lines 63/129/141. Best approach: define SPKI-prefixed constants at the top of the test file and use them consistently. Let me rewrite the test file cleanly with proper fixtures.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
-
-
-### 🤖 Autopilot
-
-**Converging — mid-A2, one blocking bug in the test file.**
-
-## Progress this turn (A2: retarget to per-event ledger)
-
-| Step | Result |
-|---|---|
-| **Script retargeted** (`/home/ubuntu/scripts/sync_sunmint_signatures.py`, 6 patches) | ✅ GH_API → `TrueSightDAO/verify_public_signatures`; docstring + usage updated; deduped duplicated `_is_test_event`/`_SPKI_PREFIX`; added `_ledger_files()` (per-event folders + per-folder `index.json` + root `index.json`), `_write_ledger_local`, `_push_ledger`; write loop now builds the ledger instead of the two aggregate files. Compiles. |
-| **Dry-run (A2 gate prep)** | ✅ **74 event files + 5 index files**: `tree_planting/` 24 · `tree_planting_link/` 8 · `tree_planting_reject/` 41 · `tree_growth_monitoring/` 1 (new growth event `Edgar_20260829143953_012` landed since PR2 — cron picked it up). PII scan passed. Layout matches plan §3.1. |
-| **Consistency bug fixed** | Root index initially showed `tree_growth_monitoring: count 0` while an event file existed — `_ledger_files` now derives per-folder counts from **actual files written**, and measurement records get a uniform `event_type`. Re-dry-run confirms counts agree (74 total). |
-| **Sample files verified** | `tree_planting/171.json` (Gary's planting) — full self-verifying triple, `verifiable: true`; growth measurement record correct. |
-| **Local test suite** | ✅ compileall · ✅ ruff check · my script needs one `ruff format` pass. `tests/test_sync_sunmint_signatures.py` (untracked, predates payload field + retarget) needed updating: 2 failures fixed (payload key, SPKI-prefixed fixtures), but **final patch left `NameError: name 'PLANT_PK' is not defined` at collection** — the constants block I inserted didn't land in the expected scope/order. |
-
-## Blocking
-
-The test file is in a broken intermediate state (`NameError` at collection) — the constants insertion and the sample-string patches aren't consistent yet. Everything else (script, dry-run output, PII scan, ledger shape) is done and verified.
-
-## RESUME HERE → finish A2 test file + PR
-
-1. **Inspect the top of `/opt/truesight_autopilot/tests/test_sync_sunmint_signatures.py`** (lines 1–45) — the `PLANT_PK`/`GROW_PK`/`SIG` constants block placement is wrong (likely inserted after `PLANT_SAMPLE`'s usage or inside a string literal). Move the constants block to the top (after imports) and reference them in the samples.
-2. `python3 -m ruff format scripts/sync_sunmint_signatures.py tests/test_sync_sunmint_signatures.py` — make both format-clean.
-3. Full suite: `python3 -m compileall -q app scripts tests` && `python3 -m ruff check app scripts tests` && `ruff format --check` (my files) && `python3 -m pytest -q` (expect only the 3 pre-existing `test_chat_observe.py` failures).
-4. **Open the A2 PR**: fresh branch off `origin/main` (NOT the stale `feat/sunmint-public-signatures-cache`) containing **only** `scripts/sync_sunmint_signatures.py` + `tests/test_sync_sunmint_signatures.py` (the box's working tree has unrelated noise: `events_catalog_snapshot.json`, `nginx/sophia.conf`, etc. — exclude all of it).
-5. Post-PR: **`gate: dry-run diff review with Gary`** (ledger layout + PII scan evidence: 74 files / 5 indexes, zero emails) before the first real push to `verify_public_signatures`. Then A3 (README) next.
-
-One note for the review: the migration also covers **decommissioning** the legacy `sunmint/signatures.json` mirror after the first successful ledger push (plan §4) — I'll confirm with you before touching it.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×21 → cd /home/ubuntu/agentic_ai_context 2>/dev/null && git pull -q origin main 2>/dev/null; sed -n '/A1/,/A3/p' plans/SUNMINT_PUBLIC_SIGNATURES_P; cd /home/ubuntu/agentic_ai_context && grep -n "A2\|A3" plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md | head -20; echo "=== script head ==="; grep ; cd /home/ubuntu/agentic_ai_context && sed -n '/### Post-pivot sequencing/,/No prod/p' plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md | head -30; ec; …(+18 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Converging — mid-A2, one blocking bug in the test file.**
-
-## Progress this turn (A2: retarget to per-event ledger)
-
-| Step | Result |
-|---|---|
-| **Script retargeted** (`/home/ubuntu/scripts/sync_s
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
-
-
-### 🤖 Autopilot
-
-Resuming mid-A2: fixing the test-file `NameError`. Let me inspect the top of the test file to see where the constants landed.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The constants block actually landed at the top correctly this time (the earlier NameError was mid-patch state). Let me verify there are no duplicate definitions, run the tests, and format both files.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-6/6 tests pass, both files format-clean + ruff-clean. Full suite check now.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Full suite: **823 passed, 3 failed — all 3 in `test_chat_observe.py` (pre-existing, #319, unrelated)**. My change: 6/6 new tests pass, format/lint clean. Hard rule satisfied.
-
-Now opening the A2 PR — fresh branch off `origin/main` containing **only** the two files (working tree has unrelated noise I must exclude).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 Branch switch blocked by my local modified script. Clean approach: the retargeted script is safely in `/home/ubuntu/scripts/`; the test file is untracked. Let me stash-reset and rebuild the branch with copies.
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
@@ -4569,6 +4406,7 @@ Remote branch is at `af9d39a` but PR head still shows `9581adca` — GitHub PR-h
 ### 🤖 Autopilot
 
 PR head updated to `af9d39a` (the Sophia avatar favicon). Now check CI on the new head, and if green, merge.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4633,11 +4471,13 @@ Note: PR #381 (the stale logo version) stays closed — fully superseded by #382
 ### 🤖 Autopilot
 
 Resuming: check CI on #382 head `af9d39a` (Sophia avatar favicon) and merge if green.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 CI is green on `af9d39a` (test ✅, smoke ✅). Merging PR #382.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4909,4 +4749,116 @@ Want me to proceed with this documentation PR (README + PROJECT_INDEX.md)? It's 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== current repo tree (top-level dirs + files) ==="; TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); curl; echo "=== README section headers ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/verify_public_signatures/main/README.md | grep
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: The verdict is clear — **the README is stale relative to the actual repo**, and the context docs don't fully reflect it either. Here's the assessment:
+
+## Not fully documented — 3 gaps found
+
+### 1. R
+
+
+### 🤖 Autopilot
+
+Proceeding with the documentation PR. Let me get the full current README and the PROJECT_INDEX structure to make precise edits.
+
+
+### 🤖 Autopilot
+
+I have the full README. Now let me find where API-only data repos (like treasury-cache, lineage-credentials) are listed in PROJECT_INDEX so the new entry lands in the right section.
+
+
+### 🤖 Autopilot
+
+I have the PROJECT_INDEX structure (table format). Let me find the exact section where machine/data repos live (treasury-cache, lineage-credentials, etc.) so I place the new row correctly.
+
+
+### 🤖 Autopilot
+
+The artifact keeps nesting — let me grep the PROJECT_INDEX directly on the box for the section structure and where machine/data repos are listed.
+
+
+### 🤖 Autopilot
+
+The PROJECT_INDEX table has a **qr_codes** row (line 17) but no `verify_public_signatures` row. I'll add a row to the DAO/Agroverse table after qr_codes. Now let me build the doc updates: (1) new PROJECT_INDEX row, (2) updated README. Starting with the README edits (Layout, Privacy, Future→Published types, Refresh) via targeted edits on the repo copy.
+
+
+### 🤖 Autopilot
+
+Now building the updated README (targeted edits on the clone, then a Contents-API write — the sanctioned path for this API-only data repo), and the PROJECT_INDEX row via PR.
+
+
+### 🤖 Autopilot
+
+README updated (+50/−30). Now push it to the repo via the sanctioned Contents-API path (API-only data repo — single-file write, no branch/PR for data repos), then add the PROJECT_INDEX row via a proper PR.
+
+
+### 🤖 Autopilot
+
+README pushed to `verify_public_signatures` (commit `0b1b9c8`). Now add the PROJECT_INDEX.md row via a PR to agentic_ai_context.
+
+
+### 🤖 Autopilot
+
+Right — I need to provide the actual edit. Let me add the PROJECT_INDEX row as an edit hunk.
+
+
+### 🤖 Autopilot
+
+PR #890 open (PROJECT_INDEX row). Let me verify the diff is clean, then merge it (docs-only, and Gary's 👍 authorized the doc work).
+
+
+### 🤖 Autopilot
+
+Clean 1-file PR (+1/−0), mergeable. Merging #890 (docs-only, authorized).
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**Repo documentation gap closed — README refreshed + PROJECT_INDEX row added.** ✅
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **README** | `verify_public_signatures/README.md` updated in-place (Contents-API write, commit `0b1b9c8` — the sanctioned path for API-only data repos): |
+| | • **Layout**: 4-folder tree → real **33-folder table with live counts** (contribution_event 2,172 · inventory_movement 661 · sales_event 282 · …) |
+| | • **Privacy**: documents the **2026-09-02 option-2 policy** — email-bearing events excluded (`excluded_pii_events` bucket, `excluded_pii_count: 1,650`), fail-closed scan, `--allow-pii` never used by cron |
+| | • **Refresh**: emit hook is **live** (not "planned"), cron described fully (sha-aware skip, 250/run trickle, cursor), backfill noted |
+| | • **"Future event types"** section removed (those folders are live now); root-index example updated with real counts + `excluded_pii_count` |
+| **PR merged** | [agentic_ai_context #890](https://github.com/TrueSightDAO/agentic_ai_context/pull/890) — squash `8ae9fcf` — **PROJECT_INDEX.md** gains a `verify_public_signatures` row (purpose, writers, PII policy, API-only write rule, plan/runbook pointers) so future sessions can find the repo |
+| **Verified** | README pushed + confirmed commit; PR #890 clean (1 file, +1/−0), mergeable, merged |
+
+## Why this mattered
+You asked whether the repo structure was properly documented — it wasn't (3 gaps: stale layout, privacy section predating the exclusion policy, no PROJECT_INDEX entry). Both docs now reflect the post-A6 reality.
+
+## Roadmap state
+| Unit | Status |
+|---|---|
+| A1–A5 | ✅ |
+| A6 backfill | ⏳ running (last seen 828 remain → likely ~330 now, ~2 passes left) |
+| A7 dashboards (restyle/session/favicon) | ✅ merged + live |
+| **Repo documentation** | ✅ **done this turn** |
+| §7 contribution | pending |
+
+## RESUME HERE → **backfill completion + wrap-up**
+1. **Check** `grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log | tail -1` — the counter was **828** a while back, so it's likely near/at **0** now
+2. When complete: root `index.json` (~40 folders / ~3,947 events / `excluded_pii_count: 1,650`) → **3-sample openssl re-verify** from new folders → **live PII scan** (zero emails) → plan A6/A7 marked complete
+3. **Final §7 contribution submission** (time tracking for A1–A7) — closes the plan
+
+Nothing else outstanding. The backfill is the only thing still moving, and it's nearly done — I'll verify completion and close out the plan at the next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → echo "=== FULL README ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/verify_public_signatures/main/README.md | head -160; cd /home/ubuntu/agentic_ai_context 2>/dev/null && git pull -q origin main 2>&1 | tail -1; echo "=== section headers ==="; grep -n "^## \|^##; cd /home/ubuntu && echo "=== clone verify_public_signatures ==="; if [ ! -d verify_public_signatures/.git ]; then git clone -q https://githu; …(+3 more)
+• `merge pr` → ✅ PR #890 on agentic_ai_context merged successfully (sha: 8ae9fcf0d3981b00683a3791acaa53ce23da8c4f). Pull Request successfully merged
 
