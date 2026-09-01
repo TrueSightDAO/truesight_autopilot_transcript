@@ -3547,6 +3547,7 @@ The emoji is encoded as surrogate pairs in my source (🌳 = `\ud83c\udf33`) —
 ### 🤖 Autopilot
 
 PR #257 opened. You explicitly requested this — merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3601,21 +3602,25 @@ Ping me with "promote" or "go".
 ### 🤖 Autopilot
 
 Let me pull Santa Anna's page (Pará) and find its highlights section.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the exact highlight items to place the tree-age fact consistently.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Got the structure. I'll add a **Tree Age** item after Location (matching the pattern from Cleide/Paulo). Opening the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #258 opened. You explicitly requested this — merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3865,4 +3870,82 @@ Ping me with "go" or "status".
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → echo "=== CLEIDE: 1.5 tons ==="; curl -sL "https://agroverse.shop/farms/fazenda-cleide-para/" | grep -o "1.5 tons[^<]*" | head -2; echo "===; echo "=== CLEIDE page status + highlights ==="; curl -sL -o /tmp/p_cleide.html -w "%{http_code} " "https://agroverse.shop/farms/fazenda-clei; echo "=== prod repo raw: does cleide have Annual Production? ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_pr; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Promote unit complete — all farm facts LIVE on production
+
+**Prod sync** (`deploy_20260901T023914Z`) + **Pages build finished (~60s)**, and all three CEPOTX farm pages now serve the new facts on
+
+
+### 🤖 Autopilot
+
+Go received — resuming the plan. Executing PR1 second half (create the public repo) and checking the Cleide uploader in parallel:
+
+
+### 🤖 Autopilot
+
+Two issues: (1) the box's running process still has the stale `allowed_repos` (PR #359 merged but config loads at process start → needs redeploy), and (2) the Cleide uploader has 0 yt_ids after 4h — let me check why.
+
+
+### 🤖 Autopilot
+
+Uploader running 4h with empty log and empty manifest — something's off. Let me look at the manifest file and the script's logic directly.
+
+
+### 🤖 Autopilot
+
+The manifest is a list (85 items), so my earlier dict-based check was broken. And the empty log = buffered stdout. Let me diagnose properly:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture — the uploader is **working correctly** (my earlier check just used the wrong manifest structure):
+
+**Cleide uploader status (healthy):**
+- ✅ **6 uploaded so far**: IMG_4832 (`NGQ9BP97_t4`), 4833 (`qmONEO7gjkM`), 4834 (`_O--VctSMzo`), 4835 (`eND8SsYvGp4`), 4836 (`wTXm1-bcoc0`), + 1 more
+- The FAILED rc=1 lines are the **quota hits** — script retries with 600s backoff until the cap window clears; e.g. IMG_4835 failed 3× then succeeded at 00:30
+- Behavior matches design: ~6/day cap → resume-safe, yt_id written to manifest
+
+**Repo creation is blocked** — the running box still has the pre-#359 `allowed_repos` (config loads at process start). The fix is `deploy_autopilot` (a governor-gated step). Options:
+
+
+### 🤖 Autopilot
+
+## Status — Cleide uploader healthy; daemon repo needs one governor decision
+
+**Cleide uploader (PID 105025) — working as designed:**
+- ✅ **6/71 videos on YouTube**: IMG_4832 (`NGQ9BP97_t4`) · 4833 (`qmONEO7gjkM`) · 4834 (`_O--VctSMzo`) · 4835 (`eND8SsYvGp4`) · 4836 (`wTXm1-bcoc0`) · 4837 (`FDmHyqBKXfE`)
+- 429 quota hits auto-retry with 600s backoff (e.g. IMG_4835 failed 3× then succeeded) — resume-safe, yt_id written to manifest
+- Pace: ~6/day on the unverified project → **~11 more days** to finish 71 at this rate (faster if you ever verify the GCP project → 100/day)
+
+**Daemon repo creation — blocked on a deploy:**
+- `create_repo(farm-media-daemon)` refused: *"not in settings.allowed_repos"* — the **running box** still loads the pre-#359 config (merged but only picked up at process start)
+- The fix is **`deploy_autopilot`** — which per policy is a **governor-gated step**, so I need your explicit call
+
+**Your options:**
+1. **"Deploy"** → I run `deploy_autopilot` (rebuilds the box's autopilot with #359), then create the public repo + scaffold DESIGN.md/config/README (PR1 second half)
+2. **"Skip deploy"** → I hand-edit a local settings override to unblock creation now, and deploy properly later (less clean)
+3. **Defer** → daemon stays on paper (plan PR0 committed); Cleide keeps uploading via the throttled script meanwhile
+
+My recommendation: **option 1** — it's the clean path and the deploy is low-risk (config-only change).
+
+Say "deploy", "skip", or "defer".
+
+———
+**✅ Done this turn — actions taken:**
+• `create repo` → blocked (stale allowed_repos on running box)
+• `ssh run` ×3 → diagnosed uploader (manifest is a list — 6 yt_ids live, quota backoff working), confirmed config.py load-at-start issue
+
+———
+**✅ Done this turn — actions taken:**
+• `create repo` → blocked
+• `ssh run` ×3 → cd /home/ubuntu/cleide_work; echo "=== uploader (105025) ==="; ps -p 105025 --no-headers -o pid,etime; echo "=== yt_ids ==="; python3 -c "import json; m=json.load(open('manifest.json')); print(len(m), sum(1 for i in m if i.get('yt_id')))"; tail -10 yt_upload_log.txt; python3 -c "import json; m=json.load(open('manifest.json')); [print(i['file'], i['yt_id']) for i in m if i.get('yt_id')]"
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /home/ubuntu/cleide_work; echo "=== uploader (105025) ==="; ps -p 105025 --no-headers -o pid,etime 2>/dev/null || echo "uploader not runn; cd /home/ubuntu/cleide_work; echo "=== uploader full log ==="; ls -la *.log 2>/dev/null; cat throttled_uploader.log 2>/dev/null | tail -20; ; cd /home/ubuntu/cleide_work; echo "=== manifest size/keys ==="; ls -la manifest.json; python3 -c "import json; m=json.load(open('manifest.js; …(+1 more)
 
