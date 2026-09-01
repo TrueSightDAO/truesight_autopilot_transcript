@@ -1464,11 +1464,13 @@ The daemon (running, systemd) burned **today's 6-video budget at 07:05 UTC on cl
 ### 🤖 Autopilot
 
 👍 Go received. Executing: (1) reorder daemon config so jedielcio uploads first, (2) get the 4 videos onto YouTube, (3) collect yt_ids, (4) open the Field Signals #9 beta PR. First, gather the config order, budget state, and upload-script usage in one pass:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The config file path moved (Sophia redeployed, per the handoff note). Let me locate the current config and state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1606,4 +1608,72 @@ Merging PR #343 (the index card) now.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #343 on truesight_me_beta merged successfully (sha: fd85a3f3b94d060d96203ca69ed269c60d55806d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Also, can you fix this blog post with proper images 
+
+https://truesight.me/blog/posts/the-tree-the-industry-despises-feeds-the-family-every-month.html
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] 
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] [Handoff context — this Telegram topic (thread 17381) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⚙️ upload local file to github …
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] go — sorry, my service restart at 10:37 UTC killed your in-flight turn (round 17) mid-work, no fault of yours. Please pick back up on the blog post image fix.
+
+
+### 🤖 Autopilot
+
+Picking back up on the FS#8 image fix. First, let me inventory the sharp v2 frames on the box and check the current prod state of the post:
+
+
+### 🤖 Autopilot
+
+Picking up the FS#8 image fix. The prod post still uses the **portrait, blurry video frames** (`fs8-hero-contrast.jpg`, `fs8-ponta-verde-tree.jpg`, `fs8-common-pod.jpg`) — the v2 sharp frames from the sharpness scan are on the box but still portrait 1080×1920, which is exactly what renders "messed up." Fix: crop the sharp frames to web ratios (hero 16:9, rest 4:3) and wire them into the post beta-first.
+
+Step 1 — crop the sharp frames on the box:
+
+
+### 🤖 Autopilot
+
+Crops done — hero 16:9, others 4:3. Gary rejected the IMG_7669 tree shot earlier ("7669 not good"), so I'll replace the *Ponta Verde tree* figure with the large yellow pod frame (IMG_7672 — the A-type phenotype from the dossier) instead of the rejected 7669 frame. Cropping that one too and building a confirmation montage:
+
+
+### 🤖 Autopilot
+
+Montage ready. Sending it for your eyes before pushing — given the image feedback history, confirmation first is the right call:
+
+
+### 🤖 Autopilot
+
+## 📸 FS#8 final image set sent (message 18515)
+
+**The problem with the live prod post:** it still uses the **portrait 9:16, blurry video frames** — `fs8-hero-contrast.jpg`, `fs8-ponta-verde-tree.jpg`, `fs8-common-pod.jpg` — which render as giant tall columns in the 600px blog column. That's the "messed up" look.
+
+**The fix (ready to push):**
+1. **HERO** — both varieties in one frame, IMG_7654 @4s (sharpness 4634, the sharpest frame of the whole scan), cropped **16:9** (1080×607) — replaces the old portrait hero
+2. **Ponta Verde** — large smooth yellow pod, IMG_7672, cropped **4:3** (1080×810) — **replaces the IMG_7669 tree shot you said "not good"**
+3. **Common cacao** — crimson furrowed pod, IMG_7654 @8s (sharp, was blurry @11s), cropped **4:3** (1080×810)
+
+**Please confirm the montage** (or tell me to swap any). On your OK I'll:
+1. Upload the 3 new JPGs to `truesight_me_beta` (beta-first)
+2. Update the post HTML to point at the new files (new PR)
+3. Merge → verify on beta → then **prod promotion needs your separate "promote"** (prod repo is `truesight_me_prod`, sync from beta)
+
+**Note:** the URL you sent is `truesight.me` (prod) — the fix flows beta → prod, so you'll see it on prod only after the promote step. Beta preview URL will be available after the PR merges.
+
+**RESUME HERE →** awaiting your montage confirmation (👍 = push to beta; or tell me which images to swap).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo '=== fs8_frames (v2 sharp crops) ==='; ls -la /home/ubuntu/rm_media/fs8_frames/ 2>/dev/null | grep -v '^total'; echo; echo '=== dims ==; mkdir -p /home/ubuntu/rm_media/fs8_frames/web && cd /home/ubuntu/rm_media/fs8_frames && python3 - <<'PYEOF' from PIL import Image import os ; cd /home/ubuntu/rm_media/fs8_frames && python3 - <<'PYEOF' from PIL import Image import os def crop_to(src, dst, ratio): im = Image.open(src
 
