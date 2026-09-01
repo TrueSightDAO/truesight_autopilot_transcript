@@ -4814,6 +4814,7 @@ Now the **E2E UAT** per your flow. Since the farmer app's capture requires a rea
 ### 🤖 Autopilot
 
 Farm registered. **UAT step 2:** add boundary entries to that farm — 4 media submissions (well above the 3-point hull minimum) with GPS coords, marked UAT. Submitting the first batch:
+[2 tool result(s) compacted: submit_contribution, submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4933,4 +4934,75 @@ go — file both cron-trigger items in OPEN_FOLLOWUPS. Great catch on the missin
 
 Go-signal received — filing both cron-trigger items (FBE + Media Retraction) in OPEN_FOLLOWUPS. Reading the current file to find the right place + check for existing entries:
 [1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go
+
+
+### 🤖 Autopilot
+
+Go — reading the current OPEN_FOLLOWUPS.md to find the existing FBE entry (from PR #877) and add the Media Retraction one alongside it:
+
+
+### 🤖 Autopilot
+
+Found the existing FBE entry (from PR #877). Now adding the **Media Retraction** cron-trigger entry right after it, plus updating the FBE entry with today's UAT findings (webhook key verified, E2E accepted 5 events):
+
+
+### 🤖 Autopilot
+
+Both entries verified on the branch (FBE updated + new Media Retraction entry, with the missing-key finding documented). Merging PR #886:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Filed both cron-trigger items in OPEN_FOLLOWUPS** (per your go).
+
+**PR #886 — https://github.com/TrueSightDAO/agentic_ai_context/pull/886** (merged, sha `1e475492`)
+
+### Changes to `OPEN_FOLLOWUPS.md`
+1. **Updated the existing FBE entry** with today's UAT findings: 5 test submissions accepted (Edgar 200), webhook probe from server returned 200, sheet confirmed clean (no UAT rows — GAS processing needs the authenticated session or the cron, which is the blocker)
+2. **Added the new Media Retraction entry** — same manual GAS UI trigger as FBE (same project `1UrBgqLnnQc6PV4…`, `processMediaRetractionFromTelegramChatLogs`, hourly, per SCHEDULE_TRIGGERS.md §7), documenting the full retraction leg (PR #153 catalog v3/39 + dispatch, the missing `MEDIA_RETRACTION` env key found + fixed, PR #62 app UI, 3-tier permission model) and noting **both triggers can be set in the same GAS UI session**
+
+Both items are now tracked for Gary with full context for any agent or human to pick up.
+
+## Status recap
+
+| Item | State |
+|---|---|
+| Cron triggers (FBE + Media Retraction) | 🔲 tracked in OPEN_FOLLOWUPS, needs Gary (GAS UI, ~2 min) |
+| Prod deploys (dao_protocol v3/39 + GAS handlers) | ✅ done this thread (your UAT go covered them) |
+| UAT | ✅ server-side chain verified; device-flow leg needs the cron or a browser session |
+| Prod promotion (sunmint #55–#62) | 🔲 gated on Gary's explicit go |
+
+## RESUME HERE → next unit
+
+1. **Gary**: set the two cron triggers (same GAS project, one UI session) → then the on-device UAT completes (register farm → boundary photos → invalidate → polygon recalc)
+2. **Prod promotion** of sunmint #55–#62 — gated on Gary's go
+3. Nothing else pending on my side — holding here
+
+———
+**✅ Done this turn — actions taken:**
+• `read context file` → OPEN_FOLLOWUPS.md (existing FBE entry from PR #877 found; structure confirmed)
+• `git push changes` → PR #886 (branch followups/media-retraction-cron-trigger, sha 340940cb)
+• `ssh run` → branch verified (FBE entry ✓, MR entry ✓, missing-key finding ✓)
+• `merge pr` → ✅ PR #886 merged (sha 1e475492)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/contents/OPEN_FOLLOWUPS.md?ref=followups/media-retraction-c
+• `merge pr` → ✅ PR #886 on agentic_ai_context merged successfully (sha: 1e475492077affafc82830f397763448508b22b9). Pull Request successfully merged
 
