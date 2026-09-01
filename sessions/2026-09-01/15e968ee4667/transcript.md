@@ -4310,6 +4310,7 @@ The log shows something I need to verify: cursor advanced (May 27 → June 8) bu
 The backfill **is progressing correctly** — the log shows real pushes (6264 push lines, last ones through June 6) and the "2478 remain" line was from the last *capped* pass. The repo has **1,791 JSON files** live now (up from ~75 originally, and climbing past the 1,609 I saw earlier). The cursor advanced (June 8 file), pushes continue every pass. It's mid-backfill, roughly 60% through, ~2-3h to go.
 
 One observation: the last log line is a push, and the count "2478 remain" was logged at the cap — so the remain counter will keep declining. Let me confirm the recent passes are still pushing new files (not stuck) by checking the newest files in the repo.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4348,6 +4349,7 @@ go — continue with the vault-style UI restyle for both dashboards whenever you
 ### 🤖 Autopilot
 
 Gary wants the vault-style UI restyle for both dashboards (MAP + signature ledger pipeline). Let me gather the current state: backfill progress, the vault template style, and how both dashboards currently render.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4502,6 +4504,68 @@ Note: the merge gate correctly caught this before a broken test suite landed on 
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ❌ Refused: CI not green (failing-or-pending: smoke, test) on PR #377 — no changes made
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ❌ Failed to merge PR #377 on truesight_autopilot: Refusing to merge PR #377 on truesight_autopilot: CI not green (failing-or-pending: smoke,
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+PR #377 approved — the diff description (pure CSS/template, vault vars, auth/JS/data untouched) is exactly what was asked, go ahead and merge + deploy (use deploy_autopilot's idle-drain guard, not a raw restart). Also Gary flagged a real gap while testing: signing in on /vault/ doesn't carry over to /media-archive-pipeline or /signature-ledger-pipeline — each page apparently needs its own separate login instead of sharing session/token state. Please look into unifying that (shared localStorage key or session cookie across all governor-gated pages) as a follow-up after the restyle deploys.
+
+
+### 🤖 Autopilot
+
+Gary approved #377 and wants merge + deploy (with deploy_autopilot's idle-drain), plus a follow-up on unifying session state across governor-gated pages. Starting with the merge.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**Merge still blocked by CI — investigation is the next step.** ✅ (stop-and-report)
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **Attempted** | Merge [PR #377](https://github.com/TrueSightDAO/truesight_autopilot/pull/377) (vault restyle) per Gary's approval + deploy instruction |
+| **Result** | ❌ **Refused again: CI not green** (`smoke`, `test` failing) |
+| **Nothing changed** | No merge, no deploy — PR branch intact, restyle not live |
+
+## What this means
+
+Gary approved the **diff content** (pure CSS/template, vault vars, auth/JS/data untouched — exactly as described), but the **CI gate is a hard wall** and it's correctly refusing a merge with failing checks. The CI failures are almost certainly the test/smoke assertions that still expect the **old HTML** (Georgia serif, old badge classes, old header structure) — they need updating to match the new vault markup, not a gate override. This is the same pattern as last turn; the blocker is concrete and fixable.
+
+## Roadmap state
+| Unit | Status |
+|---|---|
+| A1–A5 | ✅ |
+| A6 backfill | ⏳ running |
+| **A7 restyle (PR #377)** | ⏸️ **blocked: CI red (smoke, test)** |
+| **A7b session unification** (Gary's new flag: `/vault/` login doesn't carry to `/media-archive-pipeline` or `/signature-ledger-pipeline` — need shared localStorage key / session cookie across all governor-gated pages) | 🔜 after restyle deploys |
+| §7 contribution | pending |
+
+## RESUME HERE → **fix CI, re-merge, deploy, then session unification**
+
+1. **Diagnose CI**: GitHub API → workflow runs for `feat/vault-style-dashboards` → failing job logs for `test` + `smoke` → identify the exact assertions on old HTML strings
+2. **Fix**: update `tests/test_media_archive_pipeline.py` / `tests/test_signature_ledger_pipeline.py` (and any smoke assertions) to the new vault markup — only cosmetic/structural assertions change; auth/data assertions stay
+3. Local suite (`pytest -q` — expect only the 3 pre-existing `test_chat_observe.py` failures) → push to branch → **wait for CI green**
+4. **Re-merge #377** → deploy via **`deploy_autopilot`** (idle-drain guard, per Gary — NOT a raw restart) → verify both pages 200 + data 401 + vault look live
+5. **A7b — unify session state**: investigate how `/vault/` stores its token vs the dashboards' `slp_token`/`map_token` localStorage keys → introduce a **shared key** (e.g. `sophia_token` or a session cookie) used by all governor-gated pages so signing in once works everywhere; PR + deploy
+6. Backfill monitor → completion checks + §7 contribution
+
+The gate is doing its job — the fix is to make the tests match the intended markup. Ready to execute on the next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ❌ Refusing to merge PR #377 on truesight_autopilot: CI not green (failing-or-pending: smoke, test)
 
 ———
 **✅ Done this turn — actions taken:**
