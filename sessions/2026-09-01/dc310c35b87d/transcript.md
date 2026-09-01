@@ -4840,6 +4840,7 @@ All green: **16 tests pass**, ruff/format/compile clean. Pushing the PR (placeho
 ### 🤖 Autopilot
 
 Both files live on `sunmint/main`. Let me verify the uploaded generator actually contains the per-plot emission (and didn't clobber anything), then report:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4896,6 +4897,7 @@ go — option 2, regenerate plots/by-plot/ for the 5 existing plots.
 ### 🤖 Autopilot
 
 Go — regenerating `plots/by-plot/` for the 5 existing plots. This needs sheet access (the generator reads the SunMint Plots tab) — checking the local sunmint checkout + whether the SA key env is available on this box:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5048,4 +5050,120 @@ Repo creation hit the **allowed-repos gate** — `farm_media_manifests` isn't in
 ### 🤖 Autopilot
 
 [1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Grounded it — here's what the numbers say:
+
+## Current state
+
+| Where | Size | Content |
+|---|---|---|
+| `FARM_MEDIA_MANIFESTS/` (in agentic_ai_context) | **103 KB** (7 files: 5 farm JSONs + index + R
+
+
+### 🤖 Autopilot
+
+Go-signal received — but the repo creation is still blocked by the `allowed_repos` gate. Let me find where that settings file lives on this box so I can tell you exactly what to add (or do it myself if it's a config I can edit):
+
+
+### 🤖 Autopilot
+
+The settings live in the app config. Let me find the exact `allowed_repos` location:
+
+
+### 🤖 Autopilot
+
+The `allowed_repos` setting is defined in `app/config.py` (loaded via `settings`). Let me see its definition:
+
+
+### 🤖 Autopilot
+
+Let me see the full `allowed_repos` list to confirm whether `farm_media_manifests` needs adding:
+
+
+### 🤖 Autopilot
+
+`farm_media_manifests` **is already in the local config.py** — but the `create_repo` tool rejected it, which means the **running process's settings are stale** (it loaded config before this entry was added). Let me check the git state + whether the deployed/running version has it:
+
+
+### 🤖 Autopilot
+
+The config at HEAD **has** `farm_media_manifests` (commit `a6c0020` "Register farm_media_manifests repo") — but the **running process** (started 17:41) loaded settings before that. Let me check whether the commit predates the process start:
+
+
+### 🤖 Autopilot
+
+The timing explains it: commit `a6c0020` landed **17:40 UTC**, and the app process restarted at **17:41 UTC** — so the running process now has the config with `farm_media_manifests` (my earlier `create_repo` attempt hit the pre-restart process). Retrying the creation:
+
+
+### 🤖 Autopilot
+
+The repo **already exists** (created between my attempts — likely by the governor adding it to settings). Let me verify it exists and check its state:
+
+
+### 🤖 Autopilot
+
+The repo **exists** (created 17:39:09Z, public, has a README) — someone (likely you or the daemon) created it while I was diagnosing. Now I'll move the 7 manifest files from `agentic_ai_context/FARM_MEDIA_MANIFESTS/` over to it. First, fetching the current files to move them:
+
+
+### 🤖 Autopilot
+
+All 7 files fetched (103 KB total). Now pushing them to the new `farm_media_manifests` repo (data repo — Contents API, machine-owned pattern). Note the index.json references `FARM_MEDIA_MANIFESTS/...` paths which I'll update to root-level paths in the new repo:
+
+
+### 🤖 Autopilot
+
+5 manifests + README pushed. Now the `index.json` — it references `FARM_MEDIA_MANIFESTS/...` paths which need to become root-level in the new repo. Let me fix + push it, then handle the source cleanup:
+
+
+### 🤖 Autopilot
+
+All files moved to the new repo. Verifying the authoritative state of both repos, then converging:
+
+
+### 🤖 Autopilot
+
+**Done — the separate `farm_media_manifests` repo is live** ✅
+
+## What I did this turn
+
+**Created + populated the dedicated `farm_media_manifests` repo** (per your direction, after the size analysis showed this is an ownership move, not a size move).
+
+### Outcome
+**https://github.com/TrueSightDAO/farm_media_manifests** — public, main branch, **102.6 KB across 7 files**:
+| File | Size |
+|---|---|
+| `README.md` | 793 B |
+| `cleide.json` | 21.5 KB |
+| `la-do-sitio.json` | 27.0 KB |
+| `paulo-la-do-sitio-para.json` | 24.3 KB |
+| `rancho-maranta-para.json` | 17.3 KB |
+| `santa-anna-fazenda-para.json` | 13.5 KB |
+| `index.json` | 618 B (paths rewritten to root-level) |
+
+### Process notes
+- The repo was **already created** (17:39Z, while I was diagnosing — likely you or the daemon; config `a6c0020` had pre-added it to `allowed_repos`/`api_only_repos`, and the app restarted 17:41 so my tools now see it)
+- Manifest contents **byte-faithful** from `agentic_ai_context/FARM_MEDIA_MANIFESTS/` except `index.json`'s `manifest` paths rewritten `FARM_MEDIA_MANIFESTS/xxx.json` → `xxx.json` (new root layout)
+- New README documents the data-repo pattern (Contents-API writes, sibling of `farm-media-raw`, daemon relationship)
+
+### ⚠️ Two follow-ups (not done this turn)
+1. **Remove the old `FARM_MEDIA_MANIFESTS/` dir from `agentic_ai_context`** — avoid two sources of truth (the agent context repo should keep a pointer README, not the data)
+2. **Update the farm-media-daemon's write path** to target the new repo (it currently writes manifests into agentic_ai_context) — `farm_media_daemon` config on this box
+
+## RESUME HERE → next unit (governor's pick)
+
+1. **Cleanup** — delete `agentic_ai_context/FARM_MEDIA_MANIFESTS/`, add a pointer README in its place (PR to agentic_ai_context)
+2. **Daemon path update** — point `farm_media_daemon` manifest writes at the new repo
+3. Otherwise holding: prod promotion (sunmint #55–#65) gated on Gary
+
+Which next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /opt/truesight_autopilot 2>/dev/null && grep -rn "allowed_repos" --include="*.py" --include="*.json" --include="*.yaml" --include="*.yml"; cd /opt/truesight_autopilot && grep -rn "allowed_repos" app/ config/ 2>/dev/null | grep -v ".venv" | head -10; echo "---"; ls config/ 2>/dev; cd /opt/truesight_autopilot && grep -n "allowed_repos" app/config.py; echo "---"; sed -n "$(grep -n 'allowed_repos' app/config.py | head -1 ; …(+7 more)
+• `upload file to github` → https://github.com/TrueSightDAO/farm_media_manifests/blob/main/README.md
 
