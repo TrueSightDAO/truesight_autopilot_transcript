@@ -3888,21 +3888,25 @@ Checking backfill completion status.
 ### 🤖 Autopilot
 
 The index events map id → url — I should use the URL from the index, not construct it from the id. Let me fix the verify script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 3/3 PASS. Now the live PII scan — I'll scan the locally-built ledger set (identical content to what was pushed) for email patterns, plus verify the root index fields.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the live PII scan across the built published set (excluding the test bucket and excluded_pii bucket — those are never published).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The scan output shows **`emails=[]` on every hit** — zero email PII. The "phone" hits are all **false positives**: my phone regex matched the 14-digit timestamps in the message IDs (`20260509023226` = the Edgar_ ID, not a phone number). Let me get the final count and confirm no real phone numbers exist.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4110,4 +4114,151 @@ That closes the SUNMINT_PUBLIC_SIGNATURES_PLAN. Nothing else outstanding — the
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); echo "=== check-runs on head 2ff; sleep 60; cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); echo "=== check-runs o
 • `merge pr` → ✅ PR #385 on truesight_autopilot merged successfully (sha: 0dc1438fc4fbba36bff88549d4abb619cc015ae3). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — finish §7 contribution submission and wrap the plan
+
+
+### 🤖 Autopilot
+
+Finishing §7 (contribution submission) and wrapping the plan. First, gather the plan's §7 spec, the PR evidence list, and confirm the root-index field is live.
+
+
+### 🤖 Autopilot
+
+Plan §7 references OPERATING_INSTRUCTIONS §7 for the submission format. Let me read it, and gather the PR evidence list.
+
+
+### 🤖 Autopilot
+
+§7 references the AI→Edgar contribution convention. Let me read it and gather the confirmed PR evidence list in parallel.
+
+
+### 🤖 Autopilot
+
+PR evidence list captured. The contribution-convention doc wasn't found under that name — let me search for it.
+
+
+### 🤖 Autopilot
+
+No matches. Let me check the OPERATING_INSTRUCTIONS artifact for the §7 submission format (it was offloaded).
+
+
+### 🤖 Autopilot
+
+Let me read the contribution convention doc to follow the exact format.
+
+
+### 🤖 Autopilot
+
+Let me find the actual filename.
+
+
+### 🤖 Autopilot
+
+The convention file is likely in `conventions/` or `contributions/`. Let me check both.
+
+
+### 🤖 Autopilot
+
+Let me check prior submission conventions for consistency (contributor name format, how PR evidence is listed).
+
+
+### 🤖 Autopilot
+
+Let me read the plan's §7 in full and the OPERATING_INSTRUCTIONS §7 section to get the exact submission format.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the plan — the §7 and status sections (offloaded).
+
+
+### 🤖 Autopilot
+
+Let me read the plan's remaining tail — the §7 + status section and the A6/A7 sequencing rows.
+
+
+### 🤖 Autopilot
+
+Now I have the full plan context. Let me check the OPERATING_INSTRUCTIONS §7 (contribution submission) and how prior plans closed out, to match the convention for the final submission.
+
+
+### 🤖 Autopilot
+
+Let me grep the local OPERATING_INSTRUCTIONS for the §7 contribution-submission format directly.
+
+
+### 🤖 Autopilot
+
+Let me check the contribution convention file via GitHub (it's referenced but missing locally) and look for how prior contributions were submitted.
+
+
+### 🤖 Autopilot
+
+Found it — the convention doc lives at `dao/DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md`. Let me read it for the exact submission format.
+
+
+### 🤖 Autopilot
+
+I have everything needed. The convention requires **two separate events** for Sophia's time (raw machine execution + direct time), with PR URLs as evidence. Let me file both submissions.
+
+
+### 🤖 Autopilot
+
+Both §7 contributions submitted ✅. Now the final step — mark the plan complete (A6/A7 done, §7 filed).
+
+
+### 🤖 Autopilot
+
+Plan close-out PR opened (#891). Merging it to finalize.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**🏁 SUNMINT_PUBLIC_SIGNATURES_PLAN — COMPLETE.** All units done, §7 contributions filed, plan closed.
+
+## This turn — the plan's final steps
+
+| Item | Detail |
+|---|---|
+| **§7 contributions** | ✅ **Two events filed** per the Sophia time-split convention (raw execution + direct time): |
+| | • `Sophia Truesight` · **240 min** — "Raw machine execution…" (16 PRs as evidence) |
+| | • `Sophia Truesight` · **480 min** — "Direct time (engagement/analysis)…" (11 PRs as evidence) |
+| | Both `Contribution submitted` ✅ · TDG 0 (informational — you can award later) |
+| **Plan close-out PR** | [agentic_ai_context #891](https://github.com/TrueSightDAO/agentic_ai_context/pull/891) — merged (`8336154`) — status → **✅ COMPLETE**, A6/A7/§7 all marked done |
+
+## The full plan at a glance
+
+| Unit | Status |
+|---|---|
+| A1–A5 (ledger + emit hook + docs + UAT) | ✅ |
+| A6 (backfill 3,964 events / 34 types, PII-clean) | ✅ |
+| A7 (MAP + SLP dashboards, vault-style, session, favicon) | ✅ |
+| §7 (contributions) | ✅ filed |
+| **PLAN** | ✅ **CLOSED** |
+
+## RESUME HERE → nothing pending on this plan
+
+The plan is fully closed. Standing state:
+- **Ledger**: `verify_public_signatures` — 3,964 self-verifying RSA attestations, 34 event types, openssl-verifiable, PII-clean, cron-reconciled + emit-at-verify
+- **Dashboards**: sophia.truesight.me `/signature-ledger-pipeline` + `/media-archive-pipeline` live (deploy is yours to trigger if you haven't already — the code is merged)
+- **Backlog**: per your earlier note, the OPEN_FOLLOWUPS email-redaction design item and any other items remain filed there — nothing else in flight
+
+If you want the deploy of the latest (favicon/session) changes to go live, just say "deploy" — otherwise this plan is wrapped. Anything else you'd like me to pick up?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /home/ubuntu/agentic_ai_context 2>/dev/null && git pull -q origin main 2>&1 | tail -1; echo "=== plan §7 / contribution section ==="; gre; cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); for repo in truesight_autopilot ; cd /home/ubuntu/agentic_ai_context && grep -n -A25 "## 7\." OPERATING_INSTRUCTIONS.md | head -60; …(+1 more)
+• `create dao submission` ×2 → Contribution submitted
+• `merge pr` → ✅ PR #891 on agentic_ai_context merged successfully (sha: 8336154dd05b64d11da166fcaaa7c4a276601da8). Pull Request successfully merged
 
