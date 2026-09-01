@@ -10,42 +10,6 @@
 
 ### 🤖 Autopilot
 
-The POST 200 confirms the event reached the server, but no webhook log and no ledger row with the test data — the submission text likely didn't match the `[FARM BOUNDARY EVIDENCE EVENT]` marker that dispatch matches on. Let me check how `dao.py` calls dispatch (what text it passes) — this determines whether my tool-submitted event triggers the router at all:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The dispatch is backgrounded (`background.add_task(dispatch.dispatch_event, text)`) and matches on the raw submission `text`. The `submit_contribution` tool likely sends the attributes in a format that doesn't include the `[FARM BOUNDARY EVIDENCE EVENT]` marker verbatim (so the router skips it — which is why no webhook fired). Let me verify the exact `text` format `submit_contribution` builds (my tool's request body) — check the transaction record or how the tool formats events. Meanwhile, the most direct real-path verification: check whether the submission produced a **transaction/ledger entry** at all (the 200 suggests it did):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The submission landed in a **separate ledger store** (not the local checkout — likely GCS/GitHub via the ledger repo). The critical finding: **no webhook fired** because the tool's submission text doesn't carry the `[FARM BOUNDARY EVIDENCE EVENT]` marker the router matches on.
-
-The honest conclusion: my **tool-path test exercised Edgar's acceptance but not the dispatch→webhook→GAS chain** — the marker text the router needs comes from the **raw farmer submission text** (the `[FARM BOUNDARY EVIDENCE EVENT]` line in the Telegram/chat payload), which only the app's actual submit flow or a properly-formatted raw event carries. Let me verify how dispatch_event matches (prefix/strip) so I can determine whether a raw-formatted event would fire — then check the ledger store for my test row to clean it up:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me do the focused dispatch check + locate the test ledger row for cleanup:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-No dispatch log lines at all after the submission — confirming the background task's log output isn't hitting journald (INFO logger config) or the task didn't match. The ledger store isn't local (submissions go to the GitHub/GCS ledger via the API's own flow). 
-
-**Honest E2E verdict:** my tool-path test **proved Edgar accepts the event (200)** but did **not** exercise the dispatch→webhook→GAS chain, because `submit_contribution` posts a structured payload whose text doesn't contain the raw `[FARM BOUNDARY EVIDENCE EVENT]` marker the router matches. The true chain requires the **app's actual submit flow** (farmer uploads photos → multipart POST with the marker text → dispatch → GAS doGet). That flow can't be fully simulated from the autopilot box without a real device/browser session.
-
-Let me clean up the test row (check the ledger for it), then report:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 No visible ledger row (dispatch never matched → GAS never ran → no sheet row created). Let me confirm the SunMint Plots sheet has no TEST row (the GAS handler would have been the only creator):
 [1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
@@ -5154,4 +5118,72 @@ For your own examination, try these from a **logged-out/incognito** browser wind
 If #1 shows the sign-in page, the deployment is NOT "Anyone" (as my probe found). If it shows the handler's output text, then anonymous execution works and my earlier probe was affected by something else (e.g. the workspace-SSO flavor of the URL).
 
 Note: this is the `script.google.com/a/macros/agroverse.shop/` (Google Workspace) flavor of the deployment URL — the same deployment also has a non-workspace flavor at `script.google.com/macros/s/<same-id>/exec` if you want to test whether the org SSO is the interceptor.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Both seem to be pointing to the same URL
+
+Why dont we try this one instead
+https://script.google.com/macros/s/AKfycbyoFCTzIdC1g69ZX3AK894h2siQOKoNSEiuyLDtZJTtarQPHHa5Zl8rjot0vPFUquV2/exec
+
+I just fixed it.
+
+
+### 🤖 Autopilot
+
+Testing the @37 deployment URL you just fixed — anonymous probe first (no auth), to confirm it actually executes now:
+
+
+### 🤖 Autopilot
+
+Key finding: the **no-action probe executed** (returned the handler's fallback message, HTTP 200) — so your fix worked, **@37 is now anonymous-executable** ✅. But the boundary action returned HTTP 000 (no response — likely timeout or crash mid-run). Let me retry with a longer timeout and capture the body:
+
+
+### 🤖 Autopilot
+
+Now it's a 302 (redirect → sign-in) with 0 bytes — **inconsistent with the first probe's 200**. Let me check where the redirect points and retry a few times (Google's anonymous execution can be flaky, and there's the workspace-SSO flavor vs the plain one):
+
+
+### 🤖 Autopilot
+
+Interesting — the redirect goes to `script.googleusercontent.com/macros/echo` with an auth token (that's the normal GAS async execution pattern), but the follow-up returned a **404 HTML page**. This is the classic "deployment exists but this action's execution failed / deployment version mismatch" symptom. Let me confirm the @37 deployment actually has the boundary handler code (it's the TREE_PLANTING_REJECT deployment from @37 — it may **not** include the newer boundary code), and check what version @37 pinned vs when the handlers were added:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture:
+
+- **@37 = version 37** ("post-#449/#450 reject col A OR col D + rebuild dispatch") — and the **boundary handler code exists in the local working tree** but I need to check whether version 37 predates when `processFarmBoundaryEvidence` was added to the code. The local file has it (4+1 refs), but **@37's snapshot may not** — which would explain the 404 on the boundary action (the deployment runs older code that lacks that function).
+
+- Note also there are now **versions 38 and 39** (the `clasp version` I ran earlier created 38; something created 39 too — likely your GAS UI edits while you were fixing the deployment access).
+
+The decisive check: does version 37's code contain the boundary handler? Let me compare what version the **@37 deployment** pins against when the handler was introduced:
+
+
+### 🤖 Autopilot
+
+Now the timeline is conclusive:
+
+- **`processFarmBoundaryEvidence`** added in commits **#452 → #453** (and MR in #454)
+- **Version 37** ("post-#449/#450 reject col A OR col D + rebuild dispatch") was created **before** #452/#453/#454 — so **@37's pinned code does NOT contain the boundary handler**
+
+**That's why the boundary action on @37 404s:** the deployment executes version-37 code, which has no `processFarmBoundaryEvidenceFromTelegramChatLogs` function → the doGet router falls through → 404/error page. The no-action probe returned 200 only because *some* router exists there.
+
+**So @37 is the wrong deployment for the boundary chain — even though it's now anonymous-executable.** The correct one is **@HEAD** (or a NEW versioned deployment of the current code, which includes #452/#453/#454).
+
+## My recommendation
+
+1. **Create a fresh versioned deployment from current HEAD** (code includes FBE + MR handlers + doGet router) — e.g. `clasp deploy 38 "SunMint boundary webhook (anonymous)"` (or 39 — 38/39 both exist as snapshots; check which is current)
+2. **Set its access to "Anyone"** (your GAS UI fix, same as you just did for @37)
+3. **Repoint the two env keys** (FARM_BOUNDARY_EVIDENCE + MEDIA_RETRACTION) to the new deployment URL
+4. Restart dao_protocol → verify with an anonymous probe (should return the handler output, not 404/sign-in)
+
+Want me to do step 1 + verify which snapshot is current, so you can flip access and I repoint the env?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && echo "=== anonymous GET to @37 deployment (no action) ===" && curl -s -m 30 -L -w " FINAL_HTTP:%{http_code} " "https://script.goo; cd /tmp && echo "=== boundary action, 120s timeout ===" && timeout 130 curl -s -m 120 -w " FINAL_HTTP:%{http_code} SIZE:%{size_download} TIM; cd /tmp && echo "=== retry 1: follow redirect for boundary action ===" && curl -s -m 60 -L -w " FINAL_HTTP:%{http_code} SIZE:%{size_download; …(+2 more)
 
