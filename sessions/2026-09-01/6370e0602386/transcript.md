@@ -2573,6 +2573,7 @@ Merge [PR #885](https://github.com/TrueSightDAO/agentic_ai_context/pull/885) (yo
 ### 🤖 Autopilot
 
 Merging PR #885 — the final GPS SOP note.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2618,21 +2619,25 @@ No further units — this thread's GPS work is complete. ✅ Standing offer if y
 ### 🤖 Autopilot
 
 Let me check whether the off-box source files have made it to this box yet, and what GPS sources are actually reachable right now — that determines whether the backfill can complete.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The box has many more source files than I thought. Let me cross-reference the 68 non-GPS cache entries against all local media files to see if any match by basename.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 8038 local media files — but the cache keys are **upload filenames** ("Full HD 1080p" suffixed), which mostly won't match the source MOV names. The promising bridge is the **farm manifests** (they store `yt_id` per file, per the MAP pipeline). Let me join the 68 entries' video_ids against all farm manifests, and also check for direct basename hits (santos/oscar files).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No matches via manifest yt_id (0) and no source files on-box for the 68 (they live on your Mac per the upload manifests). Let me do one final check — whether the cache entries carry any source-path field that could bridge to local files, and whether the incoming manifests hold GPS.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2640,6 +2645,7 @@ No matches via manifest yt_id (0) and no source files on-box for the 68 (they li
 The investigation is complete — and the honest answer is: **no, I can't fully backfill the other 68 right now**. The cache entries carry no source-path field, the incoming manifests are keyed differently (0 items matched, no GPS fields), and none of the 68 source files exist on this box (8038 local media files, zero basename matches). The data simply isn't reachable from here — it lives on your Mac.
 
 Let me make sure I hand you the cleanest possible restart path so this completes the moment the sources are available.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2676,6 +2682,7 @@ Want me to prep anything now (e.g. extend the script's `--source-dirs` and docum
 ### 🤖 Autopilot
 
 You're right to push on this — let me re-check. I may have dismissed the incoming manifests too fast: my parser returned 0 items, which usually means I grabbed the wrong key, not that they're empty. Let me read the actual manifest structure and the `uploaded_via` field properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2683,6 +2690,7 @@ You're right to push on this — let me re-check. I may have dismissed the incom
 Now I can see the real structure. The manifest DOES have the source path (`/Users/garyjob/Downloads/B2B ep 10 - tiktok part 2_Full HD 1080p.MP4`) — matching the cache basenames exactly (67 videos in `videos`, 63 upload candidates). So the link exists at the **manifest level** (path + basename + sha256) — the cache entries just don't store the source path. My earlier join failed because I searched a `file` key that doesn't exist (it's `path`).
 
 So the resolution chain IS there: cache basename → manifest `videos[]` (path/sha256) → local file. The 68 aren't unreachable — they're reachable through the manifest, IF the files themselves exist somewhere. Let me check whether these source files (with those exact sha256s) exist on the box under any name, and whether the manifests themselves carry GPS.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2879,4 +2887,60 @@ After that: your earlier ask to backfill the **68 existing** entries still needs
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → cd /tmp/agroverse_shop_work && git checkout main -q 2>&1 | tail -1 && git pull origin main -q 2>&1 | tail -1 && echo "HEAD: $(git log --onel; cd /tmp/agroverse_shop_work && echo "=== youtube_batch_incoming.py: full-ish (entry creation + save) ==="; grep -n "def \|description\|youtu; cd /tmp/agroverse_shop_work && sed -n '254,385p' scripts/youtube_batch_incoming.py; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] Really, there are no Bowser on your local animal. They have been all been removed for a while. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me verify the current state of the media dirs on the box — sounds like you're saying the source files are gone from here too.
+
+
+### 🤖 Autopilot
+
+Good news: the media dirs are all still here (356 media files under ~), and **3 of the 5 IMG sources remain** — `IMG_7734`, `IMG_7740`, `IMG_7741` are present; only `IMG_7722` and `IMG_7705` are gone. Let me quickly re-check whether any of the YouTube cache entries still lack GPS and can be backfilled from what's actually on the box right now.
+
+
+### 🤖 Autopilot
+
+The clone had a pull-abort again (untracked blocker), but the key numbers are clear: **73 total, 5 with GPS, 68 still missing** — and zero of the 68 are resolvable from on-box dirs (the IMG_7722/IMG_7705 that were used in PR #269 were already captured then; their GPS is already in the cache).
+
+Let me clear the blocker and confirm the state cleanly.
+
+
+### 🤖 Autopilot
+
+My working tree still has the local (uncommitted) edits from PR #270's development — that's why pull aborted; it's not a real blocker. The clone is dirty with the same changes that are now in PR #270 (committed remotely). Let me clean it up so the box is in a sane state, and verify the GPS state from the clean main.
+
+
+### 🤖 Autopilot
+
+Now I have the clean picture. Let me also confirm PR #270 got merged (HEAD is `04aef42` "Capture GPS at upload ingress (#270)" — looks merged!) and answer your actual question.
+
+
+### 🤖 Autopilot
+
+Understood — I read you correctly now: the source files (the "Bowsers"/originals) aren't on the box anymore, and haven't been for a while. I verified the state, and here's where things actually stand:
+
+**Confirmed current state:**
+- **PR #270 is already merged** (sha `04aef42`, merged 17:01 UTC — looks like it landed right after I opened it). So GPS capture at upload ingress is **live on main** for all future uploads. ✅
+- The cache has **5/73 entries with GPS** — all `IMG_*` Santa Anna clips, captured from the source files *when they were still present* (that's the point of PR #269 — we extracted them in time).
+- **The other 68 have no GPS** — and my scan confirms their source files are not on this box (only 356 media files remain under `~`, and none match those 68 basenames; the farm dirs still exist but hold the farm archives, not the YouTube upload sources).
+
+**So you're right — the originals are gone from here.** That means the 68 can't be backfilled from this box; they'd have to come from wherever the originals now live (your Mac's `~/Downloads`, or an archive). The good news:
+- The **schema + scripts are ready** (backfill tool + ingress capture), so the moment any of those files reappear (even one at a time), GPS gets filled automatically.
+- Every **new** upload from now on carries GPS at ingress — that part is permanently wired.
+
+Want me to:
+- **(a)** log this as an open follow-up (in `OPEN_FOLLOWUPS.md`): "68 YouTube entries pending GPS once source files resurface," so it's tracked across sessions, and/or
+- **(b)** check whether the farm-media repos/`farm-media-raw` or any archive on GitHub carry those originals (the farm `zips` may be synced somewhere)?
+
+Say which and I'll do it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → echo "=== media dirs on box now ==="; for d in /home/ubuntu/santa_anna_fazenda /home/ubuntu/santa_anna_new /home/ubuntu/santa_anna_work /hom; cd /tmp/agroverse_shop_work && git checkout main -q 2>&1 | tail -1 && git pull origin main -q 2>&1 | tail -1 && python3 -c " import json, sy; cd /tmp/agroverse_shop_work && git status --short | head -5; echo "---"; git stash list | head -3; echo "=== untracked blockers ==="; git st; …(+1 more)
 
