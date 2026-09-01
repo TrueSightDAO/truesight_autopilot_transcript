@@ -8,112 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-Go-signal received — executing **PR4: Status styling + legend + media thumbnails**. Per protocol, reading the plan + fetching freshest main first:
-[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Note: raw.githubusercontent shows 47,359 bytes (CDN cache lag — seen before) but the commit list confirms PR3 merged. Let me fetch the authoritative main via the Contents API, then look at the polygon/popup region for PR4:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Authoritative main is 50,193 bytes (PR3 present). Now building PR4 — status-based polygon styling, status legend, media thumbnails — locally with precise edits:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Hunk 2 failed — the Agroverse link line has a literal `↗` (escaped as `\u2197` in source but the actual file has the char). Let me check the exact bytes:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Right — the file has the literal `↗` character (M-bM-^FM-^W), not the `\u2197` escape. Let me redo with the literal character:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 3 edits applied (52,295 bytes). Verifying tags + JS syntax before pushing:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All checks pass — the `img 7/0` is expected (void elements are self-closing `<img …/>`, matching the page's existing style — the `satHistoryImg` is also self-closed). All 12 other tags balanced, all 4 scripts pass `node --check`. Pushing as PR4:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #341 opened. Verifying branch matches validated build + mergeable, then merging same turn:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Verified: byte-identical (52,295), `mergeable: True`, state `clean`. Merging:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — PR4 shipped. Stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**PR4 — Status styling + plot-status legend + media thumbnails** (from SUNMINT_IMPACT_MAP_EXTENSION_PLAN, §5 PR4 checklist).
-
-**PR #341 — https://github.com/TrueSightDAO/truesight_me_beta/pull/341** (merged, sha `e9fd277c`) — branch `impact-map-status-styling-media`, **+66/−3** (built on post-PR3 main, 50,193 → 52,295 bytes)
-
-### Changes to `truesight_me_beta/sunmint.html`:
-1. **Status-based polygon styling** — new `STYLE` map applied at polygon creation:
-   - `proposed` → dashed (6 4), light fill (0.08)
-   - `planted` → solid, medium fill (0.15)
-   - `verified` → heavier stroke (3px), strong fill (0.30)
-2. **Media thumbnails in popups** — up to 4 images from `props.media` / `media_urls` array, 64px lazy-loaded, **jsDelivr CDN src + raw.githubusercontent onerror fallback** (absolute URLs pass through), XSS-safe via `esc()`
-3. **Plot-status legend** — new "Plot status:" row (Proposed dashed / Planted / Verified) above satellite-history, complementing the existing boundary-authority legend from PR1
-
-### Verification (hard rule)
-- ✅ Tags balanced (div 58/58, section 6/6, span 29/29; img void self-closed per page convention)
-- ✅ All 4 inline scripts pass `node --check`
-- ✅ PR branch byte-identical to validated build (52,295, API-verified)
-- ✅ `mergeable: True`, state `clean`, merged same turn
-
-**Live on beta now** (`beta.truesight.me/sunmint.html`): plot polygons visually distinguish proposed (dashed orange) vs planted (solid green) vs verified (bold blue); popups show boundary-evidence thumbnails when media exists; status legend under the map.
-
-## RESUME HERE → PR5 (next unit, fresh turn)
-
-**PR5 = `gate: UAT`** — 7-step check on `beta.truesight.me/sunmint.html` (plan §5 PR5 checklist):
-1. Page loads, map renders, trees + plots visible
-2. Plot popups show full detail (boundary authority, status, ha, owner, region, verified_at)
-3. Farms dropdown filters plots/trees correctly; All restores
-4. Farms Registry section shows aggregated farms
-5. Legend renders; status styling distinct
-6. Media thumbnails load (fallback OK)
-7. No console errors; offline still renders
-
-**Note:** this is a **verification gate, not a code change** — I'll fetch the live beta page + data endpoints, verify each step, and report pass/fail with evidence. **This is an always-stop gate per plan §3f/§5c — after UAT passes, I STOP and wait for your explicit approval before promoting to prod** (`sync_beta_to_prod truesight_me_prod`).
-
-Plan status: **PR0 ✅ · PR1 ✅ · PR2 ✅ · PR3 ✅ · PR4 ✅ · PR5 (UAT gate) next · promote = governor-approved only**.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×7 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/sunmint.html" -o p4_base.html && wc -c p4_base.htm; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/truesight_me_beta/contents/sunmint.html?ref=main" | python3 -c " import json,s; cd /tmp && python3 - <<'PYEOF' html = open('p4_main.html').read() def rep(old, new, label): global html c = html.count(old) assert c == 1, f; …(+3 more)
-• `merge pr` → ✅ PR #341 on truesight_me_beta merged successfully (sha: e9fd277ced68d8eebc52a51604a7f80f9e3aa73d). Pull Request successfully merged
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
@@ -4760,31 +4654,37 @@ Say go and I'll start PR-A and draft the PR-B design doc in the same pass.
 ### 🤖 Autopilot
 
 Go-signal received — executing PR-A (URL `?farm=` param + media-submissions list) with the PR-B design doc riding in the same PR for review. First, gathering the current page + media data structure:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Media structure confirmed (LD-P1 has 8 items; others 0). Let me see the exact `renderFarmSelect`, `onFarmSelectChange`, and init flow to wire the URL param + media list:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Structure fully mapped. One more targeted read — the `getRemoteFarms` function (to piggyback the farm_id→name map for deep-linking):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full structure mapped. Now building PR-A — URL param + media submissions list. Applying the edits locally:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edits 1–4 were atomic-rolled-back (the file write happens after all edits; edit 5's anchor failed because the file contains the literal `➕`/`—` characters, not escapes — same char-vs-escape pattern as before). Redoing with robust anchors that avoid the tricky chars:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 6 edits applied. Adding the `.media-grid` CSS + running the full local validation (tags, JS syntax, plus the nav test suite since I touched the page):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4947,4 +4847,114 @@ Which next?
 • `ssh run` ×2 → cd /tmp && rm -rf aac && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aac && cd aac && ls plans/ | head -30; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/contents/plans/SUNMINT_MEDIA_INVALIDATION_DESIGN.md?ref=des
 • `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/design/media-invalidation-retraction/plans/SUNMINT_MEDIA_INVALIDATION_DESIGN.md
 • `merge pr` → ✅ PR #884 on agentic_ai_context merged successfully (sha: d5e5f2ce0c30dc16bbcb57ba69bd9c9b359e8f6e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — PR-B2, the MEDIA RETRACTION EVENT catalog + dispatch routing.
+
+
+### 🤖 Autopilot
+
+Go-signal received — executing PR-B2: `MEDIA RETRACTION EVENT` catalog + dispatch routing (mirroring the FBE PR #152 pattern). Grounding first:
+
+
+### 🤖 Autopilot
+
+`MEDIA RETRACTION EVENT` is confirmed absent (38 events, FBE present). Let me see the exact FBE catalog entry + dispatch ROUTING row structure to mirror:
+
+
+### 🤖 Autopilot
+
+The catalog events are dicts now (not plain strings) — let me inspect the actual structure:
+
+
+### 🤖 Autopilot
+
+Now I have the exact catalog structure (dict of name → entry with category/description/canonical_labels/required_fields/dapp_page). Building the new entry + dispatch ROUTING row:
+
+
+### 🤖 Autopilot
+
+Catalog updated (39 events, v3). Now adding the dispatch ROUTING row (after the FBE row, mirroring its tuple structure):
+
+
+### 🤖 Autopilot
+
+All hard-rule checks pass (compile ✓, ruff ✓, format ✓, JSON valid 39 events). Pushing the PR — using the placeholder-then-real pattern to avoid the empty-content trap:
+
+
+### 🤖 Autopilot
+
+PR #153 opened. Now pushing the real validated files over the placeholders:
+
+
+### 🤖 Autopilot
+
+⚠️ Wait — I hand-reconstructed that catalog JSON in the upload, which risks corrupting the other 38 entries. The authoritative file is the one I edited locally (`/tmp/dp/.../events_catalog.json` — built from the real repo content + my one addition). Let me push THAT instead, byte-exact:
+
+
+### 🤖 Autopilot
+
+Now pushing the real dispatch.py (with the ROUTING row) to the branch:
+
+
+### 🤖 Autopilot
+
+Verifying the branch files match my validated local versions exactly, then merging:
+
+
+### 🤖 Autopilot
+
+Both files MATCH my validated local versions, `mergeable: True`. Merging PR #153:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**PR-B2 delivered — `MEDIA RETRACTION EVENT` catalog + dispatch routing.**
+
+**PR #153 — https://github.com/TrueSightDAO/dao_protocol/pull/153** (merged, sha `693f56c7`)
+
+### Changes
+1. **`events_catalog.json` v2→v3 (38→39 events)** — new `MEDIA RETRACTION EVENT`:
+   - canonical labels: Plot ID, Media URLs, Reason, Retractor Email, Retraction Source
+   - required: Plot ID, Media URLs, Reason, Retractor Email
+   - `dapp_page: limites-da-fazenda/index.html`
+   - description documents the 3-tier retraction model (farmer/lead · governor · sentinel) + soft-invalidate + polygon recalc per the design doc
+2. **`dispatch.py`** — ROUTING row `"[MEDIA RETRACTION EVENT]"` → (`MEDIA_RETRACTION`, `processMediaRetractionFromTelegramChatLogs`) with doc comment, mirroring the FBE pattern
+
+### Verified
+- `lookup_event_docs` confirmed absent before adding (38 events)
+- Hard-rule suite green: compile ✓, ruff ✓, ruff format ✓, JSON valid (39 events)
+- Branch files **byte-identical** to locally-validated versions (MATCH ×2 via Contents API)
+- Merged cleanly
+
+### Process notes
+- Used the placeholder-then-real flow (learned from earlier) — and caught + corrected my own hand-reconstruction risk by pushing the authoritative locally-built file instead
+- **Not deployed yet** — the live Edgar server still serves v2/38 until the production box pulls + restarts (same as FBE PR #152 needed a deploy; that's a production change awaiting your/gary's go)
+
+## RESUME HERE → next unit (governor's pick)
+
+1. **PR-B3** — `processMediaRetraction.gs` GAS handler + doGet router case + SCHEDULE_TRIGGERS entry (tokenomics; mirror `process_farm_boundary_evidence.gs`)
+2. **Deploy dao_protocol PR #153 to prod** (git pull + restart on the box) so the catalog serves v3/39 — needs your go (production)
+3. **Prod promotion for sunmint #55–#61** — gated on Gary's go
+
+Which next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && rm -rf dp && git clone -q --depth 1 https://github.com/TrueSightDAO/dao_protocol.git dp && cd dp && echo "=== catalog: FBE entry ; cd /tmp/dp && echo "=== catalog: FBE string + its position ===" && python3 -c " import json c=json.load(open('truesight_dao_client/server/da; cd /tmp/dp && python3 -c " import json c=json.load(open('truesight_dao_client/server/data/events_catalog.json')) print('top-level keys:', li; …(+3 more)
+• `upload file to github` → https://github.com/TrueSightDAO/dao_protocol/blob/feat/media-retraction-event/truesight_dao_client/server/data/events_catalog.json
+• `merge pr` → ✅ PR #153 on dao_protocol merged successfully (sha: 693f56c7467385158c22a56b257c94989519410e). Pull Request successfully merged
 
