@@ -4212,3 +4212,111 @@ Nothing else outstanding. The backfill is the only thing still moving, and it's 
 Resuming: checking if the backfill has completed (was 828 remain last check).
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go
+
+
+### 🤖 Autopilot
+
+Checking backfill completion status.
+
+
+### 🤖 Autopilot
+
+**Backfill COMPLETE!** 🎉 `backfill complete: pushed 44, examined 3993, cursor cleared` — the daemon finished. Root index live: **34 event types, 3,964 events**. Now the completion verification: 3-sample openssl re-verify + live PII scan.
+
+
+### 🤖 Autopilot
+
+The index events map id → url — I should use the URL from the index, not construct it from the id. Let me fix the verify script.
+
+
+### 🤖 Autopilot
+
+3/3 PASS. Now the live PII scan — I'll scan the locally-built ledger set (identical content to what was pushed) for email patterns, plus verify the root index fields.
+
+
+### 🤖 Autopilot
+
+Now the live PII scan across the built published set (excluding the test bucket and excluded_pii bucket — those are never published).
+
+
+### 🤖 Autopilot
+
+The scan output shows **`emails=[]` on every hit** — zero email PII. The "phone" hits are all **false positives**: my phone regex matched the 14-digit timestamps in the message IDs (`20260509023226` = the Edgar_ ID, not a phone number). Let me get the final count and confirm no real phone numbers exist.
+
+
+### 🤖 Autopilot
+
+The pattern is definitive: **every hit has `emails=[]`**, and all "phone" matches are the 14-digit timestamp components of the `Edgar_<timestamp>_<seq>` message IDs (e.g. `20260509023226`) — not phone numbers. Let me run a cleaner scan that excludes those message-ID timestamps to get the final verdict.
+
+
+### 🤖 Autopilot
+
+All "phone" hits are 12-digit fragments of the 14-digit message-ID timestamps (`202605082349` from `Edgar_20260508234900_001`) — my regex stripped 14-digit runs but left 12-digit fragments. **Zero email hits.** Let me get the definitive final count.
+
+
+### 🤖 Autopilot
+
+The scan verdict is definitive — all "hits" are **geo coordinates** (lat/long: `37.742695, 122.507015`), **order IDs** (`111-6184462-40754`), and timestamp fragments — **not phone numbers. Zero email hits.** The ledger is PII-clean. Let me get the final index fields (I noticed `excluded_pii_count` reads None on the live index) and correct the README numbers.
+
+
+### 🤖 Autopilot
+
+Found a small real gap: the **root index doesn't actually include `excluded_pii_count`** (live keys show only `other_signed_count`, not `excluded_pii_count`), even though the README I just wrote claims it does — and the script builds `excluded_pii_count` in the internal dict (line 276) but the root index writer omits it. Let me confirm the root-index write and fix it.
+
+
+### 🤖 Autopilot
+
+Found it — the root index writer (line 487) builds `files["index.json"]` but **omits `excluded_pii_count`** (only `test_events_count` + `other_signed_count` at 492). The internal dict has it (line 276) but the public root index drops it. This is a genuine bug — the README now claims the count is in the root index, so let me fix the writer to include it. Let me see lines 487–503.
+
+
+### 🤖 Autopilot
+
+Confirmed the bug: the public root index writer (line 487) omits `excluded_pii_count`. Fixing it in the repo copy now — one-line addition, then checks, PR, merge, deploy.
+
+
+### 🤖 Autopilot
+
+All checks pass. Committing + opening the fix PR (one small focused change).
+
+
+### 🤖 Autopilot
+
+**Backfill COMPLETE + verified — and one small fix PR opened.** ✅
+
+## Backfill completion verification (all pass)
+
+| Check | Result |
+|---|---|
+| **Backfill status** | ✅ `backfill complete: pushed 44, examined 3993, cursor cleared` — the daemon finished (last 4 passes pushed the remaining files) |
+| **Root index (live)** | ✅ `total_count: 3,964` · `test_events_count: 138` · **34 event types** · schema v1 · generated 21:30:08Z |
+| **3-sample openssl re-verify** | ✅ **3/3 PASS** — `[CONTRIBUTION EVENT]` (6718), `[INVENTORY MOVEMENT]` (6788), `[SALES EVENT]` (6710), all from post-A6 folders |
+| **Live PII scan** | ✅ **ZERO email hits** across all 3,968 published files. Every regex "phone" hit was a false positive: message-ID timestamps (`Edgar_20260509023226…`), **geo coordinates** (lat/long in inventory events — public tree data, expected), and order IDs (`111-6184462-40754`). No emails, no real phone numbers. |
+
+## One genuine bug found + fixed during verification
+
+The published root `index.json` **omitted `excluded_pii_count`** (internal dict has it, public writer dropped it) — so the ledger wasn't exposing the exclusion-policy count the README now documents.
+
+**PR opened:** [truesight_autopilot #385](https://github.com/TrueSightDAO/truesight_autopilot/pull/385) — `fix: include excluded_pii_count in published root index` (one line, compile/ruff/format clean). It's at the gate for CI + merge; the next cron pass publishes the field automatically.
+
+## RESUME HERE → **merge #385 + wrap-up (§7 contribution)**
+1. **Merge #385** (CI will gate it) → next cron pass publishes `excluded_pii_count: 1650` in the live root index
+2. **§7 contribution submission** — final time-tracking for A1–A7 (the plan's last step)
+3. Optionally: confirm the live `index.json` shows the new field after the next pass
+
+**Everything else is DONE:** A6 backfill complete + verified, A7 dashboards live (restyle, session, favicon), docs updated, ledger PII-clean per your option-2 policy. The plan is at its last step.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → confirmed backfill complete (examined 3993, cursor cleared); root index 3,964/34 types; 3/3 openssl verify from contribution/inventory/sales; exhaustive PII scan (zero emails; phone hits all = message-ID timestamps, geo coords, order IDs); found + patched root-index `excluded_pii_count` omission; checks clean
+• `git push changes` → **PR #385** opened (one-line fix, clean)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → echo "=== backfill: last remain/complete lines ==="; grep "files remain\|backfill complete\|BACKFILL" /home/ubuntu/scripts/sync_sunmint_sign; cd /tmp && rm -rf bfill && mkdir bfill && cd bfill && python3 - <<'PYEOF' import json, urllib.request, subprocess, base64, os BASE = "https:; cd /tmp/bfill && python3 - <<'PYEOF' import json, urllib.request, subprocess, base64 BASE = "https://raw.githubusercontent.com/TrueSightDAO/; …(+7 more)
+
