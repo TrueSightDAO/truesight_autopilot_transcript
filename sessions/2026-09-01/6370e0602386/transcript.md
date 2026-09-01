@@ -1759,6 +1759,7 @@ Em-dash is standard UTF-8 `—` — likely my JSON-embedded dash got mangled in 
 ### 🤖 Autopilot
 
 Tracker PR opened (#882). Now the DAO contribution report (plan §5) — signing as Sophia Truesight with PR evidence:
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1806,6 +1807,7 @@ Merge [PR #882](https://github.com/TrueSightDAO/agentic_ai_context/pull/882) (yo
 ### 🤖 Autopilot
 
 Merging PR #882 — the final close-out.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1859,11 +1861,13 @@ Thanks for the smooth run, Gary — one of the cleanest end-to-end pipelines (pl
 ### 🤖 Autopilot
 
 Good question — I actually already filed one as part of the close-out (plan §5 called for it), but let me ground the estimate in the real timeline and confirm what's on the ledger.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me retry the timeline check with a more robust approach.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1892,26 +1896,31 @@ So: nothing new to file — the contribution is in. If you'd rather I adjust the
 ### 🤖 Autopilot
 
 Good instinct — that's exactly the regression we fixed, and you're right that SOP documentation alone isn't a guarantee. Let me check how new videos actually enter the JSON cache to find the right enforcement point.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The search on `agroverse_shop` returned 0 — the repo was renamed to `agroverse_shop_beta`, and code search only indexes default branches under the new name. Let me search org-wide and check the beta repo.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Code search is flaky on the renamed repo, but I know the files exist. Let me check what actually writes new entries into `youtube_videos.json` — that's the enforcement point.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it. `youtube_batch_incoming.py` is the **ingress point** — new videos get added to `youtube_videos.json` at upload time (line 295 SKIP-if-exists, line 315 writes the raw-ASR description). That's the exact place that would reintroduce raw ASR descriptions on the next batch. Let me confirm the precise write path.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ingress point is confirmed: `youtube_batch_incoming.py` line 315 builds the description from **raw ASR** (`v.get("transcript")`) every time a new video is uploaded — exactly how the 73 got polluted. That's the enforcement point to fix. Let me grab the three remaining pieces: what `description_for_video` does, what fields get saved into the JSON cache, and whether the PR1 generator exports a reusable polished-description builder.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1943,11 +1952,13 @@ That closes the loop: uniform format enforced at the single point where videos e
 ### 🤖 Autopilot
 
 Opening the loop-closing PR. Let me read both files in full to refactor precisely.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Loop confirmed — the ingress point is `youtube_batch_incoming.py` (builds desc from raw ASR, saves entries with no `description` field). Fix plan: export reusable helpers from `generate_youtube_descriptions.py`, use them at upload time, save the polished `description` into the cache entry, and fail-fast if any entry lacks one. First, check `description_for_video` isn't imported elsewhere, then apply the refactor to the work clone for testing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1955,31 +1966,37 @@ Loop confirmed — the ingress point is `youtube_batch_incoming.py` (builds desc
 Both consumers are the two files I'm touching — clean refactor. Now apply the changes to the work clone:
 
 **Edit 1** — `generate_youtube_descriptions.py`: wrap the per-entry description building into an exported `build_description(bn, entry, raw_by_bn=None, id2slug=None)` function, and have `main()` call it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edit 1 applied. Now **Edit 2** — `youtube_batch_incoming.py`: import the builder, replace the raw-ASR description at upload time, and save the polished `description` field into the cache entry. Plus **Edit 3**: a fail-fast validator (missing `description` field → error) so a non-uniform entry can never silently land.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Compile OK — but I caught a bug in my own edit: `raw_by_bn` is referenced in the `build_description` call but never defined in `main()`, and `load_manifests()` (hardcoded manifests) doesn't match the `--manifest` the upload script uses. Fixing by building `raw_by_bn` from the current manifest and dropping the unused import:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 3 ruff errors + format drift. Let me see all errors and auto-fix the formatting.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `os` unused was auto-fixed (it was pre-existing in the file but ruff now flags it since my edits shifted things — actually it was already unused before; the fix is harmless). The 2 remaining E402s are pre-existing (the file imports after `sys.path.insert` — that's the file's established pattern). Let me confirm the E402s are pre-existing (not introduced by me) and that the file still compiles + works.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 E402 was pre-existing (1 on main), my edit added 1 more (the `build_description` import — same established pattern, acceptable per the repo's own style). Now the real functional test: run the generator's determinism check (unchanged output) + a `--dry-run` of the upload script to prove the new builder path works end-to-end.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2098,4 +2115,70 @@ That closes the loop you spotted: uniform, polished descriptions enforced at the
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×21 → cd /tmp/agroverse_shop_work && echo "=== generate_youtube_descriptions.py (full) ==="; cat -n scripts/generate_youtube_descriptions.py | hea; cd /tmp/agroverse_shop_work && echo "=== youtube_batch_incoming.py imports+main head (1-60) ==="; sed -n '1,60p' scripts/youtube_batch_incom; cd /tmp/agroverse_shop_work && echo "=== who imports description_for_video ==="; grep -rln "description_for_video" scripts/ --include="*.py"; …(+18 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] [Handoff context — this Telegram topic (thread 18528) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Merged PR #268 myself (sha a0c1e15). Go ahead with the small SOP follow-up doc note too.
+
+
+### 🤖 Autopilot
+
+Governor merged PR #268 (sha `a0c1e15`). Proceeding with the small SOP follow-up doc note. Let me pull the current SOP (post PR #881) and find the exact anchor.
+
+
+### 🤖 Autopilot
+
+Sed matched nothing — heading text differs. Let me grep the actual section markers.
+
+
+### 🤖 Autopilot
+
+The SOP already has the §A.7 + checklist content from PR #881. The one line that's now **stale** post-#268: line 54 says `youtube_batch_incoming.py`'s upload-time `description_for_video()` **writes the raw Whisper transcript** — that's no longer true (PR #268 made ingress write the polished `description` directly). Let me update that line to reflect the new ingress behavior, and also make sure the checklist step 3 mentions the ingress fix.
+
+
+### 🤖 Autopilot
+
+I have the exact text. Two stale spots post-#268: line 54 says ingress "writes the raw Whisper transcript" (now false — PR #268 made ingress write the polished description), and the "What future agents should not do" bullet says "always run youtube_update_video_descriptions.py (or the polish pipeline)" which can be sharpened to mention ingress is now safe. Let me make the minimal, accurate edits.
+
+
+### 🤖 Autopilot
+
+SOP follow-up PR opened. Stopping per the one-PR-per-turn rule.
+
+## 📦 SOP follow-up PR opened — [agentic_ai_context PR #883](https://github.com/TrueSightDAO/agentic_ai_context/pull/883)
+
+**"SOP: note upload ingress now writes polished descriptions (PR #268)"** (branch `sop/ingress-polished-description`, sha `2e0715c`, doc-only, 2 edits):
+
+1. **§A.7 bullet** — was stale post-#268 (still said `description_for_video()` "writes the raw Whisper transcript"). Now states: since PR #268, `youtube_batch_incoming.py` builds upload-time descriptions from the polished pipeline (`build_description` — clean + Grok polish) and stores them in the `description` field at ingress, so **new uploads are clean by default**; re-sync via `youtube_update_video_descriptions.py` is now for existing/live videos.
+2. **"What future agents should not do"** — raw-ASR guardrail sharpened: new uploads are covered by the ingress polish; the re-sync script applies to pre-existing videos.
+
+Kept minimal and accurate — no code, no live calls.
+
+## Full picture — loop now closed end-to-end
+
+| Piece | Status |
+|---|---|
+| PR1 description field + generator | ✅ #263 |
+| PR2 description push script | ✅ #266 |
+| PR4 live push (73/73) | ✅ verified |
+| PR5 title alignment | ✅ #267 |
+| PR6 SOP prevent-recurrence | ✅ #881 |
+| **PR #268 ingress polish (your merge)** | ✅ `a0c1e15` |
+| **SOP sync for ingress (this PR)** | 🟡 **#883 open** |
+
+## RESUME HERE → merge PR #883
+
+Merge [PR #883](https://github.com/TrueSightDAO/agentic_ai_context/pull/883) (your 👍/"merge", doc-only) — then this thread is fully wrapped: descriptions uniform + enforced at ingress + documented. No further units.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/aac_work && git pull origin main -q 2>&1 | tail -1; sed -n '53,57p' sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md; sed -n '74,87p' sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md
+• `git push changes` → ✅ PR #883 opened: https://github.com/TrueSightDAO/agentic_ai_context/pull/883
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/aac_work 2>/dev/null && git pull origin main -q 2>&1 | tail -1; cd /tmp/aac_work && echo "=== §A.7 current (post #881) ==="; sed -n ; cd /tmp/aac_work && echo "=== headings around A.7 ==="; grep -n "A\.7\|Push title\|Push title updates\|title updates\|description" sops/DOWN; cd /tmp/aac_work && echo "=== exact lines 53-57 & 74-87 ==="; sed -n '53,57p' sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md; echo "---"; sed -n '74,8
 
