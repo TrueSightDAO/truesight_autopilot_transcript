@@ -1756,36 +1756,43 @@ Once you pick, I'll crop to 4:3/16:9, upload to beta, PR the post, merge, verify
 ### 🤖 Autopilot
 
 Picking up: #3 = t8.0 (4:3 crop, pod as subject), hero = pod-only tight crop — both varieties if a frame shows both (t5.0 was the both-pods frame per the earlier dense scan), else strongest single pod. Since I can't see images directly, I'll verify my crops with Grok vision before pushing. First, the grok client API + extract the needed frames:
+[2 tool result(s) compacted: read_local_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both key facts in hand: the grok client uses `grok_analyze_images` (works with custom `user_context`), and the hero-candidate frames are extracted full-res. Now let me run Grok vision on the hero candidates (t4.5–t6.0) + t8.0 to verify which frame actually shows both varieties with the pod as subject — before I crop and push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Grok's read: t4.5–t5.5 = crimson pod but **farmer torso dominant** (the thing to avoid); **t6.0 = green pods, no torso, sharp** — the cleanest pod-only candidate so far. Let me extract the t6.5–t7.5 range too and re-run Grok requesting strict JSON so I can definitively pick the hero:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The JSON parse succeeded (status: success) but the description didn't print — likely Grok returned the frames array under a different key than `image_description`. Let me dump the full parsed response to see the per-frame verdicts:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Grok's verdicts: **t6.0 is the standout** — green pods, **no farmer torso**, both varieties visible, sharp, quality 7 (the others all have torso-dominant composition). t6.0 fits the brief exactly: pod(s) as subject, minimal person, both varieties in frame. Final picks: **hero = t6.0, crimson = t8.0**. Cropping both to web ratios and building the final montage for your confirmation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `web/` subdir didn't exist — the crop script failed creating it. Let me mkdir and re-run:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All crops done (hero 1080×607 16:9 + 1080×810 4:3, crimson 1080×810 4:3). Sending the final confirmation montage:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1817,16 +1824,19 @@ Per the delegated decisions, with Grok-verified composition:
 ### 🤖 Autopilot
 
 Good catch — confirmed bug: I used the **full t8.0 frame** (`crimson_t8.0.jpg`, copied from `t8.0.jpg`) as the crop source instead of the **approved tight crop** (`crop_t8.0.jpg`, the top-right candidate you picked). So the 4:3 crop was centered on the wide torso shot, not the pod. Re-cropping from the correct source now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Wait — I need to double-check myself. The approved candidate (top-right of the candidate sheet, t8.0) was labeled `crop_t8.0.jpg` at **594×1190** — but let me verify that IS the tight pod crop and not the wide frame mislabeled. The earlier crop run produced `crop_t8.0.jpg` from `t8.0.jpg` at 55%×62% center — but the reviewer said the pod is in the **bottom-right quarter** of the wide frame, and my center-crop would have captured center, not bottom-right. Let me verify what `crop_t8.0.jpg` actually contains vs the wide frame, using Grok:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The parse failed but the raw text is decisive: **my `crop_t8.0.jpg` has pod only ~20–25% with farmer torso dominant** — it is NOT the tight pod-filling crop the reviewer approved. There's a labeling mismatch: the reviewer said "t8.0, top-right of the sheet," but in my montage layout top-right was actually `crop_t12.0`. The pod sits in the **bottom-right quarter** of the wide frame per the reviewer. Let me locate the pod precisely with Grok (bounding box in the wide frame), crop to it, and also check the t11.5–t15.0 crops to find the true approved frame:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1834,11 +1844,13 @@ The parse failed but the raw text is decisive: **my `crop_t8.0.jpg` has pod only
 Now I have the answer: **`crop_t11.5.jpg` is the winner** — pod is the main subject, **85% of frame**, **no farmer torso**, deep purple-red with green ridges, sharp. That's exactly the "tight, pod fills frame" the reviewer wanted. (t12.0 was 80% but torso visible; t12.5+ all torso-dominant or wrong color.)
 
 So the **approved top-right candidate was actually `crop_t11.5`** (my montage order put t11.5 top-right — the reviewer's "t8.0" label was off, but the image they approved is t11.5). Let me build the final crimson 4:3 crop from **crop_t11.5.jpg** and re-send the montage:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Montage rebuilt with the corrected crimson crop (t11.5, pod ~85% of frame, no torso). Sending for approval:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1943,4 +1955,16 @@ PR #345 opened with the HTML edits. The 3 approved images are already on beta as
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → echo '=== fs8_hero/web ==='; ls -la /home/ubuntu/rm_media/fs8_hero/web/ 2>/dev/null; echo; echo '=== fs8_frames (v2 set w/ yellow pod) ===';; ls -la /home/ubuntu/rm_media/fs8_frames/web/fs8-large-yellow-pod-v2.jpg && python3 -c "from PIL import Image; im=Image.open('/home/ubuntu/rm; curl -s https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/main/blog/posts/the-tree-the-industry-despises-feeds-the-family-eve
 • `merge pr` → ✅ PR #345 on truesight_me_beta merged successfully (sha: 1f7eba96dfa303c3d8a88dd5541d682efb141258). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] Verified independently: PR #345 merge is correct (checked via GitHub Contents API, bypassing CDN), all 3 new images (hero-v3, large-yellow-pod-v2, common-pod-v3) are uploaded and return 200 at beta.truesight.me/assets/blog/. The HTML page itself is still showing old content because beta.truesight.me caches pages max-age=600 (10min) — that's just cache catching up, not a bug. I'll re-check shortly; no action needed from you on this. Nice work on the fix.
+
+
+### 🤖 Autopilot
+
+Noted — thanks for the independent verification. The 10-minute CDN cache explains the stale HTML; the content is correct underneath (all 3 images 200 on beta assets, HTML merged in #345).
+
+Standing by. Whenever you're ready, just say **"promote"** and I'll sync `truesight_me_prod` from beta — that pushes the fixed post (real photos, new captions, updated og/twitter meta) to the live `truesight.me` URL you flagged. I won't touch prod before then.
 
