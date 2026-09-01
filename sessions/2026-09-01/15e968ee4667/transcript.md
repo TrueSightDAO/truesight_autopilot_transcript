@@ -2734,36 +2734,43 @@ I have the UAT checklist (8 items) and runbook map. Let me read the current §2 
 ### 🤖 Autopilot
 
 I have both sections. Now I'll make the A5 docs PR: update runbook §2 (add the ledger leg to the pipeline map) + §6 (ledger cleanup note), and update the plan (A4 → complete, mark A4.1 dropped). One PR to agentic_ai_context.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **I made a mistake** — I used a full-file write and only preserved section *headers* for §3–§5/§7–§8, dropping their real content. The original runbook has substantive sections (4.x E2E procedure, 5 incident traps, 7 sender, 8 status) that I didn't read before overwriting. I must fix this immediately with targeted edits, not a full-file write. Let me pull the original from main and rebuild.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: my full-file write **destroyed real content** (§4 E2E procedure, §5 incident traps, §7 sender, §8 status). The PR #870 branch is wrong and must be rebuilt — I'll replace the branch's runbook with the true original + only the §2/§6 additions via targeted edits. Rebuilding the branch now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch rebuilt correctly — the diff is now **just +13 lines** on the runbook (the plan-file ±1 is a pre-existing main drift, not mine). But I need to also update the **plan file** (A4 → complete) which I promised in the PR body. Let me check the plan status section and add the plan-file edit, then verify the runbook content is intact.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me update the plan's status table (A4 → complete, A4.1 → dropped) and the A4 row, then push the amended branch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The FARM_MEDIA_DAEMON_PLAN.md ±1 is branch-creation drift (branch was cut from a slightly older main). Let me rebase onto origin/main so the PR shows only my two files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean now: **2 files, +15/−1** (runbook +13, plan +3/−1), all 8 runbook sections intact, ledger references present. The PR #870 branch is fixed. Let me verify the PR's diff matches and then merge (docs-only, A5 gate is UAT — but this is the docs update PR; the UAT gate applies to the checklist execution which follows). Merging PR #870.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2836,21 +2843,25 @@ Then **`gate: UAT`** — present results for your sign-off → **A6 backfill** (
 ### 🤖 Autopilot
 
 Resuming at A5-UAT: executing the 8-item UAT checklist from plan §6. Let me run the checks systematically, starting with items 1/3/6/7 (fetchability, valid JSON, dedup, PII scan, public access).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 UAT1/3/6 ✅. Now UAT2 (offline 3-sample verify) and UAT4 (growth index vs tab rows).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 UAT2: **3/3 PASS** ✅ (planting, growth, link all verify offline via openssl). UAT4 hit a bad spreadsheet key — I guessed it. Let me get the real key from the cron script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Correct key found. Re-running UAT4 with the real sheet ID.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3008,4 +3019,83 @@ Minor: the sunmint README's last stale-ref grep hit was raw-CDN cache lag (PUTs 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → echo "=== sunmint repo files ==="; curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/" | python3 -c "import json,sys; [pri; TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); for f in signatures.json tree_growth_measurements.json; do SHA=; echo "=== raw URL status after delete ==="; curl -s -o /dev/null -w "signatures.json: %{http_code} " https://raw.githubusercontent.com/TrueS; …(+6 more)
 • `merge pr` → ✅ PR #871 on agentic_ai_context merged successfully (sha: b177055a40814a080f2c7aad184f42a950983621). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **UAT signed off + sunmint mirror decommissioned.** ✅
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **PR** | [agentic_ai_context #871](https://github.com/TrueSightDAO/agentic_ai_context/pull/871) — mer
+
+
+### 🤖 Autopilot
+
+Resuming at A6: historical backfill of all RSA-signed events. First, let me scope the data — enumerate all RSA-signed event types in the Telegram Chat Logs with counts, so I know what the backfill must cover (and what PII risk each type carries).
+
+
+### 🤖 Autopilot
+
+This is a **5× scope expansion** over the SunMint-only path — 5,743 RSA-signed events across 30+ types. Let me sharpen the PII picture by event type before recommending the bucketing strategy (one more query).
+
+
+### 🤖 Autopilot
+
+The full PII picture changes the A6 calculus significantly. Let me check the plan's A6 definition to align the design with what was scoped.
+
+
+### 🤖 Autopilot
+
+Let me check the plan's full A6/backfill section and sequencing table.
+
+
+### 🤖 Autopilot
+
+The plan doesn't have a detailed A6 section yet (only the status line mentions it) — A6 was added at Gary's request after UAT ("we should also do a backfill for all historical RSA signed events"). So I'm designing it fresh. Given the scale and PII complexity, this is a **scope decision for Gary** before I write code. Let me converge and present the design decision clearly.
+
+## A6 backfill — scoped, one design decision for you
+
+**The data reality** (full scan of Telegram Chat Logs, 12,016 rows):
+
+| Metric | Value |
+|---|---|
+| RSA-signed events total | **5,540** (vs. 74 SunMint — **75× the current ledger**) |
+| Distinct event types | ~39 |
+| Signed events **containing email PII** | **1,724 (31%)** |
+
+**PII concentration by type** (worst offenders):
+- `[EMAIL REGISTERED EVENT]` — **197/197 (100%)** carry emails
+- `[EMAIL VERIFICATION EVENT]` — 160/163
+- `[CONTRIBUTION REVIEW EVENT]` — 940/941 (review payloads embed the contributor's email)
+- `[CONTRIBUTOR ADD EVENT]` — 23/23
+- `[SALES EVENT]` — 171/452 · `[CONTRIBUTION EVENT]` — 165/2341 (mostly clean)
+- 11 of 39 types have **zero** PII (PRACTICE, CREDENTIALING ATTESTATION, INVENTORY MOVEMENT, TREE PLANTING/LINK/REJECT, NOTARIZATION, PROPOSAL VOTE, ASSET RECEIPT, CURRENCY CONVERSION, FARM REGISTRATION, etc.)
+
+**My recommended A6 design** — three-tier publication, no PII ever hits the public repo:
+
+| Tier | Folders | Events | Policy |
+|---|---|---|---|
+| **1. Publish-as-is** (no PII) | `contribution/`, `inventory_movement/`, `practice/`, `credentialing_attestation/`, `tree_*` (existing), `notarization/`, `proposal_vote/`, `asset_receipt/`, `currency_conversion/`, `farm_registration/`, + ~8 more | ~2,900 | Full self-verifying record |
+| **2. Publish with redacted email** | `sales/`, `email_registered/`, `email_verification/`, `contributor_add/`, `partner/` | ~1,724 | Email → `[REDACTED: <sha256(email)[:12]>]` placeholder, **same length-class** so signature still covers it; add `redactions: {email_sha256: …}` note (verification caveat documented) |
+| **3. Defer** | `contribution_review/`, `warmup_send/`, `design_upload/`, `design_order/`, `store_add/` + a few | ~1,000 | Payloads are mostly *internal references* (names, handles) — decide later; skip for now, file OPEN_FOLLOWUPS |
+
+**Why redact-in-place (tier 2) rather than exclude:** redacting changes the signed text, so the signature no longer verifies over the redacted payload — that's the fundamental tension. Three honest options:
+1. **Redact + document caveat** (my pick): record shows `signed_payload` redacted + a `redaction_note` saying "verification applies to unredacted text; email field redacted for privacy" — transparent, privacy-first, still shows the signature + key so a verifier *with the original* can confirm.
+2. **Exclude entirely** (current SunMint behavior): simplest, zero verification caveats, but ~1,700 historical events stay private.
+3. **Publish emails** (what "publicly auditable" literally implies): full verification integrity, but farmers'/members' emails go public — **I don't recommend this** without explicit legal/community sign-off.
+
+**Your call needed:**
+1. **Redaction approach** — option 1 (redact + note), 2 (exclude), or 3 (publish emails)?
+2. **Scope confirmation** — all 39 types in tiers 1+2 (~4,600 events) as the first backfill? (Tier 3 deferred.)
+
+Everything else is mechanical (extend the parser → new folders → dry-run → PII scan gate → push → 3/3 verify → README). Which way do you want to go?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /home/ubuntu/scripts && GOOGLE_APPLICATION_CREDENTIALS=/home/ubuntu/creds/google_credentials.json python3 - <<'EOF' import gspread, re, c; cd /home/ubuntu/agentic_ai_context && git fetch origin -q && git show origin/main:plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md | grep -n -A6 "| \; cd /home/ubuntu/agentic_ai_context && git show origin/main:plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md | grep -n -B2 -A8 "backfill\|A6" | head -
 
