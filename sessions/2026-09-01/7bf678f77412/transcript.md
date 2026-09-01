@@ -10,12 +10,6 @@
 
 ### 🤖 Autopilot
 
-The zip appears **truncated** (1.19GB on disk, but no end-of-central-directory record — that's a partial/streaming upload, or still writing). Disk is now at 98% (991MB free). Let me check whether it's still growing and what's inside via a streaming scan.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 The zip is coming through as a truncated/invalid archive — let me check the full output and re-verify cleanly (file may still be uploading).
 [2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
@@ -4939,56 +4933,67 @@ Drafting the plan (PR0) now:
 ### 🤖 Autopilot
 
 PR #874 opened. Now let me add the manifest row (part of PR0) — reading the current tail of the manifest first:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest is huge — I'll anchor the new row right after the Farm Media Daemon row (its sibling plan) with a targeted edit on the same PR0 branch:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Push rejected — the remote branch has new work (likely my own PR #874 merge or a race). Let me re-push with the merge-base resolved:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local checkout doesn't have the branch (the tool uses its own clone). Let me check the PR #874 state directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #874 is open (plan committed). The manifest-row edit failed on a stale clone — let me retry the same edit; the tool will fetch first:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Same stale-clone rejection — the tool's clone needs the branch pulled. Let me fix it directly on the box (checkout the branch, apply the edit, push), then PR #874 will carry both commits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The commit landed but I need to verify WHERE (the `checkout -B` failed, so it may have gone onto `main`). Let me check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The manifest-row commit landed on the **wrong branch** — the local checkout was on `rename/media-archive-pipeline` (the stale #873 branch), not the PR #874 branch. The remote PR branch still only has the plan. Let me transplant the commit onto the PR branch properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local clone's refs are stale — `origin/plan/media-archive-pipeline-dashboard` isn't visible even though `git ls-remote` showed it. The cleanest fix: recreate the PR branch from the remote head directly and re-apply both commits. Let me do it carefully:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The cherry-pick applied (the "keep redundant, empty commits" hint — the manifest commit is now on the PR branch). Let me verify the manifest edit is actually present, then push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The cherry-pick silently dropped the manifest edit (the "keep redundant, empty commits" hint meant the commit was already in the ancestry — but the actual file edit isn't in the PR branch). The file edit exists only on the stray local branch. Let me apply the row edit directly to the PR branch and push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5154,4 +5159,119 @@ Ping me with "go" and I'll build PR2.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /opt/truesight_autopilot echo "=== app dir ===" ls app/ 2>/dev/null | head -30 echo "=== main.py routes (first 60 lines) ===" sed -n '1,6; cd /opt/truesight_autopilot echo "=== media_archive_pipeline.py exists? ===" ls -la app/media_archive_pipeline.py 2>/dev/null || echo "NOT F; cd /opt/truesight_autopilot echo "=== full media_archive_pipeline.py ===" cat app/media_archive_pipeline.py echo "" echo "=== git status ===; …(+4 more)
 • `merge pr` → ✅ PR #363 on truesight_autopilot merged successfully (sha: 17c4ca00a2487d92ae7d3bf8328b0bfffdf5766e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Envoy TrueSight]: go
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⏸️ Paused before the next unit.
+Gate: unit 'PR1** — backend data endpoint (auth-gated) in `truesight_autopilot`.' not found in resume tracker
+Reply 'go' to continue.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+PR1 is merged — executing PR2 (frontend dashboard page). Let me ground in the existing page/auth patterns first.
+
+
+### 🤖 Autopilot
+
+Let me see the root page structure and how the DApp chat page does its login flow (to reuse the same pattern):
+
+
+### 🤖 Autopilot
+
+I have the pattern: root page is inline HTML, JWT login via `/auth/send-challenge` + `/auth/verify-code`, and protected endpoints use `verify_jwt(request)`. Now let me check how an existing page calls the auth endpoints client-side (to reuse the exact login flow):
+
+
+### 🤖 Autopilot
+
+The chat uses `X-Public-Key` header or Bearer JWT — the DApp does signature-based login client-side. For the dashboard page, the cleanest is: the page itself is served without auth (so the login form renders), but the **data endpoint is auth-gated** (already done in PR1). The page will call `/media-archive-pipeline/data` with the JWT from `localStorage` (set by the DApp chat flow), and show a login prompt if 401.
+
+Let me write the PR2 frontend — a self-contained HTML page with inline CSS/JS that reads the JWT (from localStorage or a token param), calls the data endpoint, and renders the tables:
+
+
+### 🤖 Autopilot
+
+Page HTML ready (7KB). Now add the route to the media_archive_pipeline.py module and run checks:
+
+
+### 🤖 Autopilot
+
+Two ruff errors — let me see them:
+
+
+### 🤖 Autopilot
+
+`HTMLResponse` isn't imported at module top. Let me fix the import properly (add to the top imports, clean the inline import):
+
+
+### 🤖 Autopilot
+
+All checks pass. Let me also add a quick unit test for the route + status logic, then run the tests:
+
+
+### 🤖 Autopilot
+
+All 6 new tests pass. Committing PR2 (page route + tests) and opening the PR:
+
+
+### 🤖 Autopilot
+
+PR #364 opened. Merging (auto-start handoff pre-authorizes execution):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — PR2 built; merge blocked on a conflict (next turn)
+
+**PR opened:** [#364 — PR2: Media Archives Pipeline dashboard page](https://github.com/TrueSightDAO/truesight_autopilot/pull/364)
+
+**What changed (on branch `feat/media-archive-pipeline-page`):**
+- **`app/media_archive_pipeline.py`** — added `GET /media-archive-pipeline` (HTML page, self-contained inline CSS/JS matching Sophia's landing aesthetic):
+  - JWT login flow: reads token from `localStorage` (`map_token`) or a paste-in box; **401 → login prompt** (signed-out safe)
+  - Per-farm tables: **uploaded** (YouTube links) / **pending** / **needs_metadata** / **error** with GPS + duration
+  - Recent **upload-events feed** (timestamped, from the daemon log)
+  - **Committed manifests** (GitHub index) section
+  - Strictly read-only (no write paths, per plan §5)
+- **`tests/test_media_archive_pipeline.py`** (new) — 6 unit tests for `_status_of` / `_parse_sidecar` — **all pass**
+
+**Checks:** compile ✅ · ruff clean ✅ (fixed 2 F821 undefined-HTMLResponse, added proper import) · format ✅ · 6/6 new tests ✅ (full suite: 828 pass / 5 pre-existing failures in untouched files).
+
+**⚠️ Blocked:** `merge_pr` failed — **PR #364 has merge conflicts** (the `main.py` wiring from PR #363 + whatever landed after). The conflicts are almost certainly in `app/media_archive_pipeline.py` or `main.py` (another commit touched them between PRs).
+
+---
+
+**RESUME HERE → next unit (unblock PR2):**
+1. **Rebase/resolve**: on the box, `git fetch origin main`, rebase `feat/media-archive-pipeline-page` onto `origin/main`, resolve conflicts (likely the HTML block or import lines), re-run compile/ruff/tests
+2. Force-push the resolved branch → merge PR #364
+3. Then **PR3** (wire nav link + restart `truesight-autopilot.service`, gate: own-service restart) → **PR4 UAT** (Gary signs in and verifies)
+
+Ping me with "go" and I'll resolve + merge.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → grounded in root-page/auth patterns · built DASHBOARD_HTML (7KB) · appended page route to module · fixed ruff F821 (HTMLResponse import) · wrote 6 unit tests (pass) · committed branch `feat/media-archive-pipeline-page` · pushed + opened PR #364
+• `merge pr` → ❌ blocked: merge conflicts on PR #364
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /opt/truesight_autopilot echo "=== how root / page is served ===" grep -n "@app.get(\"/\"\|HTMLResponse\|FileResponse\|static" app/main.p; cd /opt/truesight_autopilot echo "=== root page (lines 555-640) ===" sed -n '555,640p' app/main.py echo "=== is there an existing chat/dapp ; cd /opt/truesight_autopilot echo "=== chat page: how does it login client-side? ===" grep -rn "send-challenge\|verify-code\|signChallenge\|l; …(+6 more)
+• `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
 
