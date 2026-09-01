@@ -3876,11 +3876,13 @@ go
 ### 🤖 Autopilot
 
 Checking backfill completion status.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Backfill COMPLETE!** 🎉 `backfill complete: pushed 44, examined 3993, cursor cleared` — the daemon finished. Root index live: **34 event types, 3,964 events**. Now the completion verification: 3-sample openssl re-verify + live PII scan.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4034,4 +4036,78 @@ That closes the plan. Nothing else outstanding.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ❌ Failed to merge PR #385 on truesight_autopilot: Refusing to merge PR #385 on truesight_autopilot: CI not green (failing-or-pending: test,
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — recheck CI on #385 and merge when green
+
+
+### 🤖 Autopilot
+
+Rechecking CI on #385 head `2ff371e`.
+
+
+### 🤖 Autopilot
+
+Both `test` checks still `in_progress`. Waiting ~60s and rechecking (same as the #380 pattern).
+
+
+### 🤖 Autopilot
+
+CI is green on head `2ff371e` (both test ✅). Merging PR #385.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**PR #385 merged — root-index fix is in.** ✅
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **PR merged** | [truesight_autopilot #385](https://github.com/TrueSightDAO/truesight_autopilot/pull/385) — squash `0dc1438` |
+| **What changed** | Published root `index.json` now includes **`excluded_pii_count`** (was built internally but dropped by the public writer). The next cron pass will publish `excluded_pii_count: 1650` in the live root index — making the A6 option-2 exclusion policy externally visible. |
+| **CI** | The earlier merge refusal was pure timing — both `test` jobs were `in_progress`; after ~60s they completed **success** → merged cleanly. Same pattern as #380. |
+
+## Roadmap state
+
+| Unit | Status |
+|---|---|
+| A1–A5 | ✅ |
+| A6 backfill | ✅ complete + verified (3,964 events, 34 types, 3/3 openssl, PII-clean) |
+| A7 dashboards | ✅ live (restyle/session/favicon) |
+| **#385 root-index fix** | ✅ **merged** |
+| **§7 contribution submission** | ⏭️ **next — the plan's final step** |
+
+## RESUME HERE → **§7 contribution submission (closes the plan)**
+
+1. **Optional confirm**: the next 30-min cron pass publishes `excluded_pii_count` in the live `index.json` (quick curl check next turn)
+2. **§7 final submission** via `create_dao_submission`: contribution for A1–A7 time tracking with PR URLs as evidence (#151 emit hook, #360 generalization, #361 rate guard, #362 PII fix, #367 skip fix, #370 cursor fix, #373/#377/#378/#380/#382 dashboards+session+favicon, #385 root index, #890 docs) — the plan's last unit
+3. **Plan completion**: mark A6/A7 + §7 done in `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md` (docs PR), report UAT-complete to you
+
+That closes the SUNMINT_PUBLIC_SIGNATURES_PLAN. Nothing else outstanding — the daemon is running steady-state (cron reconciliation + emit hook), the ledger is public + verifiable + PII-clean, and the dashboards are live.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → check-runs on `2ff371e`: test in_progress → (60s) → **both success**; PR mergeable: true
+• `merge pr` → ✅ PR #385 merged (`0dc1438`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); curl -s -H "Authorization: token $TOKEN" "https://api.github.com/repos/TrueSightDAO/truesight_autopilot/commits/2ff371e918a55973e82b1cf13accdf76d1f1f68b/check-runs" | python3 -c "import json,sys; d=json.load(sys.stdin); [print(r['name'],'->',r['status'],r['conclusion']) for r in d.get('check_runs',[])]"; PR #385 state: open, mergeable True, head 2ff371e9
+• `sleep 60` + re-check → test ✅ test ✅ completed success
+• `merge pr` → ✅ PR #385 merged (`0dc1438`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); echo "=== check-runs on head 2ff; sleep 60; cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); echo "=== check-runs o
+• `merge pr` → ✅ PR #385 on truesight_autopilot merged successfully (sha: 0dc1438fc4fbba36bff88549d4abb619cc015ae3). Pull Request successfully merged
 
