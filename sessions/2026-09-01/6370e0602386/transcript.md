@@ -2002,11 +2002,13 @@ E402 was pre-existing (1 on main), my edit added 1 more (the `build_description`
 ### 🤖 Autopilot
 
 Determinism holds — the refactored generator produces byte-identical output. Now the functional test of the upload-script path: `--dry-run` (no live API call, no upload) with a temp manifest to prove `build_description` is invoked and the validator passes.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The validator passed (no "no polished description" error) and the flow ran clean. The "SKIP missing file" is expected (my test video path is fake) — the key proof is: **validator passed** (all 73 entries have descriptions) and **exit 0**. To fully prove the new builder path at upload time, let me test with a real-ish path so it reaches the description-building line.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2014,11 +2016,13 @@ The validator passed (no "no polished description" error) and the flow ran clean
 **Dry-run reaches the upload line cleanly** (`DRY-RUN upload: TESTCLIP...` — meaning the validator passed, the entry survived all skips, and `build_description()` built the polished description before the dry-run short-circuit). No live API calls, mapping untouched.
 
 Let me also confirm the upload path compiles the polished description correctly — the dry-run short-circuits before saving, but I can directly exercise the `build_description` call with this entry to confirm output. Then run pytest, and I'm ready to push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My test's first import line was nonsense (`raw_by_bn` is a local var in `main()`, not a module attr — my mistake in the test, not the code). The actual import I need works fine. Let me redo the direct test correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2034,6 +2038,7 @@ All functional tests pass:
 - ✅ compileall: OK (E402s pre-existing pattern)
 
 Now committing and opening the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2181,4 +2186,53 @@ Merge [PR #883](https://github.com/TrueSightDAO/agentic_ai_context/pull/883) (yo
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/aac_work 2>/dev/null && git pull origin main -q 2>&1 | tail -1; cd /tmp/aac_work && echo "=== §A.7 current (post #881) ==="; sed -n ; cd /tmp/aac_work && echo "=== headings around A.7 ==="; grep -n "A\.7\|Push title\|Push title updates\|title updates\|description" sops/DOWN; cd /tmp/aac_work && echo "=== exact lines 53-57 & 74-87 ==="; sed -n '53,57p' sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md; echo "---"; sed -n '74,8
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] go — merge PR #883, doc-only.
+
+
+### 🤖 Autopilot
+
+Merging PR #883 — the final doc-only SOP sync.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged PR #883 this turn. Stopping per the one-PR-per-turn rule — this was the final unit of the thread.
+
+## What I did this turn
+
+**Merged:** [agentic_ai_context PR #883](https://github.com/TrueSightDAO/agentic_ai_context/pull/883) — "SOP: note upload ingress now writes polished descriptions (PR #268)" (sha `e33ff95`).
+
+- Merged per your approval (doc-only).
+- `sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md` on main now correctly states: since PR #268, `youtube_batch_incoming.py` writes polished descriptions at upload ingress (clean + Grok polish, stored in the `description` field), so **new uploads are clean by default** — with the re-sync script reserved for existing/live videos. The stale "ingress writes raw ASR" text and the old guardrail are gone.
+
+## 🏁 Thread fully wrapped — loop closed end-to-end
+
+| Piece | Result |
+|---|---|
+| PR1 description field + generator | ✅ #263 |
+| PR2 description push script | ✅ #266 |
+| PR4 live push (73/73) | ✅ live-verified |
+| PR5 title alignment | ✅ #267 |
+| PR6 SOP prevent-recurrence | ✅ #881 |
+| Ingress polish (your merge) | ✅ #268 (`a0c1e15`) |
+| SOP sync for ingress (this turn) | ✅ **#883** |
+
+**Net state:** all 73 YouTube descriptions live + polished + verified; every future upload now writes a uniform, polished `description` at ingress (with a fail-fast validator if the cache ever regresses); SOP documents the whole flow.
+
+## RESUME HERE
+
+No further units — this thread is complete. ✅ (Standing offers, if you ever want them: the "Fili Marsh" blog-parity fix, or a fresh topic for new work.)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #883 on agentic_ai_context merged successfully (sha: e33ff95fdff228ad47bfe613e8fae70d65384017). Pull Request successfully merged
 
