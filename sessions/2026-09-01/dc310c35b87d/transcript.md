@@ -10,176 +10,6 @@
 
 ### 🧑 Governor
 
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] Pull latest and check why http://sunmint.treesight.me/ and beta version not accessible??
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: search_context, list_org_repos — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[3 tool result(s) compacted: search_context, http_fetch, http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me dig into this — first, check DNS and the sunmint repos to understand what's deployed where.
-[3 tool result(s) compacted: ssh_run, read_repo_file, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Interesting — the domain in your message (`sunmint.treesight.me`) is actually a typo: the real domain is **truesight.me**. Let me verify prod and beta both work, and check the Pages config.
-[4 tool result(s) compacted: http_fetch, http_fetch, read_repo_file, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both real sites return 200 from here. Let me check the domain question, GitHub Pages status, and recent commits.
-[4 tool result(s) compacted: search_context, ssh_run, http_fetch, http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-GitHub Pages API returns 404 for both `sunmint_beta` and `sunmint_prod` — Pages isn't enabled on those repos, yet the sites serve fine. The Pages site must be hosted from a different repo. Let me check where.
-[4 tool result(s) compacted: http_fetch, http_fetch, http_fetch, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both real URLs return **200 from this box**, and `sunmint.treesight.me` doesn't resolve (that TLD isn't registered). Let me confirm which repo actually hosts the Pages site and check repo state.
-[2 tool result(s) compacted: ssh_run, list_prs — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both real domains serve 200 from this box, but the GitHub Pages API returns 404 for all repos — that's a red flag worth verifying. Let me dig into headers, deploy state, and check for the "treesight.me" typo anywhere in the org.
-[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both real domains serve **200** (GitHub Pages, `server: GitHub.com`, last-modified Aug 11 2026). Let me rule out a local-DNS artifact and confirm the `treesight.me` typo from an independent resolver.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Diagnosis complete. Here's the full picture:
-
-## What I checked (all from this autopilot box + GitHub API)
-
-| Check | Result |
-|---|---|
-| `http://sunmint.treesight.me/` | ❌ **DNS NXDOMAIN** — `treesight.me` doesn't exist |
-| `sunmint.truesight.me` (prod) | ✅ **200 OK** — GitHub Pages, `server: GitHub.com` |
-| `beta.sunmint.truesight.me` (beta) | ✅ **200 OK** — same |
-| HTTPS + HTTP both | ✅ both 200, no redirect issues |
-| DNS via Google 8.8.8.8 (independent resolver) | `treesight.me` → **no records**; both truesight.me hosts → resolve to `truesightdao.github.io` |
-| `CNAME` in `sunmint_prod` / `sunmint_beta` | ✅ `sunmint.truesight.me` / `beta.sunmint.truesight.me` — correct |
-| GitHub Pages API on sunmint repos | 404 — but the sites *are* served, so Pages is enabled repo-side (API likely blocked by token scope); pages are publishing fine |
-| `search_context`/`search_code` for "treesight" | 0 matches anywhere in the org — no doc or code uses that spelling |
-| Recent sunmint_beta PRs | #1–#5 all merged (latest Aug 11), consistent with `last-modified: Tue, 11 Aug 2026 08:55` on the live files |
-
-## Root cause
-**`treesight.me` is a typo — the real domain is `truesight.me`.** The URL you pasted (`sunmint.treesight.me`) doesn't resolve because that domain isn't registered, so no browser can reach it. There's nothing wrong with the sites themselves: prod and beta both serve 200 from here and from Google's DNS.
-
-The "not accessible" symptom is almost certainly the **DNS failure on the misspelled host** — exactly what I hit too.
-
-## What to use instead
-- **Prod:** `https://sunmint.truesight.me/`
-- **Beta:** `https://beta.sunmint.truesight.me/`
-
-Both are up. If you were using the typo'd URL (e.g. in a QR code, WhatsApp link, or farmer materials), that's the thing to fix. Want me to search the repos/QR codes/docs for any `treesight` (or `truesight` variant) that might have been generated with the typo so we can catch it at the source?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → for d in sunmint.truesight.me beta.sunmint.truesight.me sunmint.treesight.me; do echo "=== $d ==="; dig +short $d; echo "--- CNAME chain ---; echo "=== whois treesight.me (registry) ==="; whois treesight.me 2>&1 | grep -iE "domain name|no match|status|registrar|creation" | head -10; echo "=== whois treesight.me ==="; whois treesight.me 2>&1 | grep -iE "Domain Name|No match|Status|Registrar:|Creation" | head -8; echo "===; …(+3 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] Based on our understanding of Sunmint and our community as well as the location of where we are thinking of doing cacao tree planting in the Amazon rainforest which carbon credit registry do you suggest we register our carbon credit program
-
-
-### 🤖 Autopilot
-
-Good strategy question — let me pull the DAO's mission/strategy docs and any prior carbon-credit context, plus research the current registry landscape for Amazon agroforestry (cacao).
-[4 tool result(s) compacted: search_context, search_context, read_context_file, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the Sunmint whitepaper's carbon-credit section and research the current registry landscape (it changes — ICVCM approvals, Brazil's new regulated market, etc.).
-[3 tool result(s) compacted: read_context_file, web_search, web_search — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check whether the DAO context already has a stance on carbon registries, so I build on prior thinking rather than duplicating it.
-[4 tool result(s) compacted: search_context, search_context, search_context, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-One more targeted check — Plan Vivo cacao/agroforestry precedent and Brazil's regulated market (SBCE) status for removals.
-[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Here's my recommendation, grounded in the DAO context (Sunmint whitepaper, legal-structuring proposal, mission) and current registry landscape.
-
-## Short answer: **Plan Vivo** — for the pilot and early credits
-
-Your whitepaper already leans toward **Verra (VM0017/ARR)** — that's the right instinct *at scale*, but it's the wrong first registry for what Sunmint actually is right now. For a smallholder + Indigenous-community cacao agroforestry program in the Amazon, **Plan Vivo** is the fit. Here's the reasoning.
-
-## Registry comparison (for your exact use case)
-
-| | **Plan Vivo** | **Verra (VCS)** | **Gold Standard** |
-|---|---|---|---|
-| Built for | Smallholder/community-led agroforestry, restoration | Large-scale, all project types | High-integrity, SDG-aligned |
-| Fit for cacao agroforestry | ✅ Core model (agroforestry tech spec) | ✅ ARR (VM0017/VM0042) but heavy | ⚠️ Limited forestry; premium buyers |
-| Entry cost | **Low** — PIN $1k, PDD $1.5–3k; **microscale option** (≤10k credits/yr) audited by Independent Experts instead of full VVBs | High — full VVB validation/verification, methodology + legal costs | High (similar to Verra) |
-| Community benefit | **Mandatory** (~60% of credit revenue to communities) | Optional (CCB add-on) | Required, no fixed share |
-| Credit price | €15–40/tCO₂e premium | Volume/liquidity, lower price | Premium |
-| Registry | S&P Global registry | Verra Registry | Gold Standard Impact Registry |
-| CCP label (ICVCM) | Pursuing (expected 2026) | ✅ Eligible + methods approved | ✅ Eligible |
-| Share of credits issued in Brazil | Small | **71%** | 6% |
-
-## Why Plan Vivo, specifically for us
-
-1. **It matches who we work with.** It was designed for exactly Sunmint's shape — community-led agroforestry by smallholders, degraded-land restoration, FPIC, benefit-sharing. That's our whitepaper's §7, §10, §12 verbatim.
-2. **Mandatory community benefit aligns with the mission.** "Restore 10,000 hectares in service of healing the world with love" — a registry that *requires* credit revenue to flow to communities is the one that makes that promise structurally true, not voluntary. It also de-risks the DAO's benefit-sharing story.
-3. **Cost-appropriate for pilot scale.** We start small (pilot hectares → micro-volume). Plan Vivo's microscale track (internal audit by Independent Experts, low fees) means we're not burning $50–100k on Verra validation before we have proven MRV and a first harvest.
-4. **Premium pricing for our actual buyers.** Per LEGAL_ENTITY_STRUCTURING_PROPOSAL_v2, credits go to **commercial funders (Channel 2/5)** — the same people who pay premiums for integrity. Impact funds/family offices (Channel 3) don't take credits at all, but they *fund* the program and care about the registry's grassroots credibility.
-5. **It fits our on-chain MRV.** Plan Vivo is explicitly open to digital MRV and remote sensing — Sunmint's QR/tree-reporting/photo-GPS pipeline is a *feature* here, not a compliance burden.
-
-## What about the others?
-
-- **Verra VCS** — the right *later* move. At 10,000+ ha / >100k tCO₂e, buyer acceptance and liquidity matter, and Verra is the default (71% of credits issued in Brazil). Standard playbook: **Plan Vivo for the pilot → Verra (or a second listing) at scale**. Don't pay Verra's overhead before you have volume.
-- **Gold Standard** — honorable mention if a specific premium ESG buyer demands it; otherwise Plan Vivo gives the same premium for less cost.
-- **Brazil SBCE** (Law 15,042/2024) — **not yet, and not for us soon**: agriculture is excluded from the cap, removals accounting is still undefined, and no voluntary methodology/registry has been approved. Watch it, don't wait on it. Also still pending: Article 6 clarity.
-- **ACR** — US-centric, only 4% of Brazil issuance; skip.
-
-## Recommended path (Dr Manhattan lens — long-term coherence, not one-off wins)
-
-1. **Now:** Register the pilot under **Plan Vivo** (PIN → PDD → agroforestry technical spec). Update the whitepaper's carbon section from "Verra VM0017" to the phased plan — keeps our docs honest and sets the credibility floor early.
-2. **Meanwhile:** Keep building the on-chain MRV (Sunmint tree reports → farmer/tree registries) — that's our differentiator and Plan Vivo verification will *use* it.
-3. **At scale:** Re-evaluate Verra VCS (or dual-listing) once hectares and credit volume justify the cost.
-4. **Stay current on:** SBCE rulemaking (how removals will be recognized) — a potential future compliance premium, not a current dependency.
-
-**Mission tie-back:** the registry we choose is the *trust infrastructure* for the 10,000-hectare goal. Plan Vivo makes community benefit non-negotiable and keeps the program credible with the exact funders and farmers who carry the mission — while keeping the door open to Verra at scale.
-
-Want me to draft the Plan Vivo PIN/PDD skeleton (Project Idea Note) or update the whitepaper snapshot's carbon-credit section to reflect this phased strategy?
-
-
-### 🧑 Governor
-
 [Telegram context: chat_id=-1003919341801, thread_id=11074] Generate a PDF listing the stages and the registry for each stage. Indicar clearly
 
 
@@ -4803,6 +4633,7 @@ I see the exact row format now — the status column is `**in progress \u2014 PR
 ### 🤖 Autopilot
 
 Manifest update PR opened. Merging it to complete the housekeeping:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4866,36 +4697,43 @@ Figure out how much time or spending on this look at your transcript. [System no
 ### 🤖 Autopilot
 
 Good question — let me pull the actual record: timestamps from this thread's transcript and any contribution entries already logged in the ledger.
+[2 tool result(s) compacted: search_transcript, read_oracle_logs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript search found nothing (no attachment content), and the oracle log isn't relevant. The time spent is in **this conversation's own history** — let me pull the actual timestamps from the session transcript repo, which is the authoritative record of my work:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript repo stores sessions by date. Let me find this thread's session (around 2026-08-31 / 2026-09-01) and check the usage/contribution records:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found a `usage.jsonl` record. Let me read it — that's the authoritative time-tracking for the sessions:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The usage.jsonl only has a test record — sparse. Let me check the worker usage logs and any contribution entries already recorded in the ledger for this work:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript repo has no worker usage records for these dates (only a test entry). Let me check whether any contribution entries were already logged in the ledger for this work, and look at the session transcript size for a workload proxy:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The audit trail is thin — let me do one final check for already-logged contribution events in the cache, then give you the honest picture:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4942,11 +4780,13 @@ file based on that
 ### 🤖 Autopilot
 
 Filing the contribution based on the estimate. First, verifying the event contract per protocol:
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Submitting the contribution — 300 minutes (5 hrs, the mid-estimate) for the boundary pipeline + impact map work:
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4993,21 +4833,25 @@ available here too https://sunmint.truesight.me/register_farm.html
 ### 🤖 Autopilot
 
 Let me investigate both issues — the styling mismatch and the missing register-farm dropdown entry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The styling mismatch is confirmed — my `limites-da-fazenda` page uses a **saffron/earthen/cream palette** (custom `:root` vars) while the main app uses a different style block. Let me see the main app's actual design language to match it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: the main app uses a **light-gray (#f5f5f5) + white-card + Arial + 600px** design, while my `limites-da-fazenda` page used the **saffron/earthen/cream** brand palette — a real mismatch. Let me check the nav dropdown structure and the dapp's register_farm page:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the nav options: plant/monitor/limites/instrucoes — **no "Registrar Fazenda"**. The governor wants register_farm available on sunmint too. Let me check the dapp's register_farm.html (to copy it) and how the nav routes (to add the option):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5025,11 +4869,13 @@ The dapp's `register_farm.html` (52,280 B, same #f5f5f5 style) is a full-feature
 I'll go with **A** (copy + style-match + nav entry), mirroring exactly how the sunmint app already hosts its pages.
 
 Let me build both changes in one PR to `sunmint_beta`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture. Both fixes go in one PR to `sunmint_beta`: (1) restyle `limites-da-fazenda` to the main app's gray/white design, (2) add "Registrar Fazenda" nav option + route + i18n, (3) copy `register_farm.html` to `sunmint_beta/register_farm/index.html`. Building now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5145,4 +4991,71 @@ Say go and I'll promote to prod + verify live.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×16 → cd /tmp && echo "=== main sunmint index.html: style approach ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_prod/ma; cd /tmp && echo "=== main index style block (26-95) ===" && sed -n '26,95p' sunmint_prod_index.html; cd /tmp && echo "=== nav dropdown in main index ===" && grep -n "nav-dropdown\|onNavChange\|pageNav\|<select" sunmint_prod_index.html | head; …(+13 more)
 • `merge pr` → ✅ PR #53 on sunmint_beta merged successfully (sha: 52175b8846e128c6bffabc7aa4a8a14b965ac551). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+promot
+
+
+### 🤖 Autopilot
+
+Go-signal received — promoting to prod. Executing the fork-sync and verifying live:
+
+
+### 🤖 Autopilot
+
+Prod synced ✅ — deploy recorded (`deploy_20260901T025240Z_sunmint-prod`). Verifying the live site:
+
+
+### 🤖 Autopilot
+
+Prod repo synced (HEAD `5d55c72`) but the live site is serving stale content — likely Pages deploy lag. Let me verify the repo content vs the live site, and set a watcher:
+
+
+### 🤖 Autopilot
+
+Repo is correct (all 3 files, commit `52175b88` in history) — the live site lag is the GitHub Pages build. Let me set a watcher on the live URLs to confirm when Pages catches up:
+
+
+### 🤖 Autopilot
+
+Interesting — the HEAD request now returns 200 with a fresh `last-modified: 02:53:17` (Pages just caught up). Let me re-verify all the live checks:
+
+
+### 🤖 Autopilot
+
+**Promotion complete — everything is live on prod.** ✅
+
+## ✅ What's live now on `sunmint.truesight.me` (verified)
+
+| URL | Status | Content check |
+|---|---|---|
+| `/` | 200 | ✅ **"Registrar Fazenda" in dropdown** (navFarm ×3 — option + i18n pt/en) |
+| `/register_farm/` | 200 | ✅ Full farm registration page with sunmint nav |
+| `/limites-da-fazenda/` | 200 | ✅ **Restyled** — no saffron (0), `#f5f5f5` present |
+
+**Deploy record:** `deploy_20260901T025240Z_sunmint-prod` in `ecosystem_change_logs` (evidence URL in the ledger).
+
+**Flow:** `sunmint_beta` PR #53 merged → `sync_beta_to_prod(sunmint_prod)` (merge-upstream, no force) → GitHub Pages rebuilt (~2 min lag, caught up at 02:53 UTC) → live verified.
+
+## What this means for the farmer workflow
+
+Farmers on `sunmint.truesight.me` now have the complete flow in one place:
+- **Registrar Plantio** (plant a tree) → **Monitorar Árvore** → **Registrar Fazenda** (new! the dapp's full farm-registration form) → **Limites da Fazenda** (boundary photo capture, styled to match) → **Instruções**
+- All pages share the same gray/white design language and the same dropdown nav
+
+## RESUME HERE → next unit (open items)
+
+1. **`sunmint_mobile/www/`** — the native APK's embedded web layer needs the same nav + register_farm page when you next build an APK (flagged; requires the mobile repo update + rebuild)
+2. **GAS receiver follow-on** — `processFarmBoundaryEvidenceFromTelegramChatLogs` in tokenomics (boundary submissions route via dispatch but have no GAS handler yet — the farm-row upsert + plot regeneration won't auto-fire until it exists)
+3. Everything else in the boundary plan is complete (plan marked complete in manifest)
+
+Want me to tackle the GAS handler next, or the mobile www sync?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && echo "=== live prod checks ===" && for u in "https://sunmint.truesight.me/" "https://sunmint.truesight.me/register_farm/" "https:; cd /tmp && echo "=== prod REPO content (authoritative) ===" && for p in "index.html" "register_farm/index.html" "limites-da-fazenda/index.ht; cd /tmp && echo "=== sunmint_prod Pages build status ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_prod/pages/builds/la; …(+1 more)
 
