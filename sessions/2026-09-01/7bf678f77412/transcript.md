@@ -4738,21 +4738,25 @@ Go — applying the daemon update to the box and restarting the service. Pulling
 ### 🤖 Autopilot
 
 Code updated to `730936e` (PR #8) — pause+retry present. Now verify syntax and restart the service:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Service restarted and **active** — but it's still saying "budget spent; sleeping 20.6h." The old `sleep_until_quota_reset` message is from the *old* code path... wait, no — the new code's soft-ceiling branch pauses 60s, it doesn't sleep 20.6h. The log line at 10:26:20 shows the old message format, which means **the systemd unit is still running the old binary** — likely the service `ExecStart` points at a different path than `/opt/truesight_autopilot/farm_media_daemon/`. Let me check the unit file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The restarted daemon logged the OLD "daily budget spent; sleeping 20.6h" message — but the new code only sleeps on 429-persisting. Let me check the on-disk code and where the running process logs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the on-disk code is **correct** (PR #8: only `sleep_until_quota_reset` contains that string, called only from the 429-persisting branch). But the log at 10:26 shows the message — meaning the **running process loaded the OLD file** at its 10:26 start... no wait, I restarted at 10:26 and it logged it *after* the restart with the NEW binary. So the new code DID hit `sleep_until_quota_reset` — meaning it hit **429-persisting**. Let me look at the full restart log to see the sequence (quota exhausted → backoff → sleep fallback?):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4762,16 +4766,19 @@ Now I see it clearly. The 10:26 restart logged "daily budget spent; sleeping 20.
 Wait — look at the **sequence**: the 10:26 line appears immediately after "stale lockfile ignored" with no "quota exhausted" warning before it. In the new code, `sleep_until_quota_reset` is only reached after a 429 warning + backoff escalation. There's no such warning → the running code at 10:26 was still **OLD** (which sleeps on budget at the loop top).
 
 But I pulled to `730936e` and compiled OK before restarting... unless the restart raced the pull? No — the pull finished, THEN restart. Hmm — one more possibility: **the service `Restart=always` + `RestartSec=30`** — my `systemctl restart` at 10:26 restarted the OLD process tree, but maybe a crashed old instance respawned... Let me just verify the process's actual loaded code and confirm which file it reads:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The clean start (10:47:18) produced **no new log line** — and the on-disk code has the new messages (line 167, 185). The new daemon is running the new code but logged nothing yet because it's inside the soft-ceiling pause (60s) or the 429 backoff. Let me wait a few seconds and confirm what it's doing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The daemon is running the new code (PID 150929, `Ss` = sleeping) and hasn't logged since the clean start — meaning it's in the **soft-ceiling pause** (`budget 50 reached; pausing` → 60s loop), which is exactly the new behavior. Wait — but I need to double check: with `successes_since_reset >= budget` (56 ≥ 50), the soft-ceiling branch pauses 60s and breaks. But it should log `budget %d reached; pausing` each time... it's been 14s since start, so the first log line should have appeared. Unless the 60s pause happened and no new line because it's waiting in `time.sleep(60)` — the log line comes BEFORE the sleep. Let me check if it logged to a different file or the log line went elsewhere:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4964,4 +4971,85 @@ Ping me with your pick.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot echo "=== all challenge-dashboard references ===" grep -rn "challenge-dashboard" app/ tests/ 2>/dev/null echo "=; echo "=== nginx locations for the sophia domain ===" sudo grep -rn "location" /etc/nginx/sites-enabled/ 2>/dev/null | grep -iE "auth|media-a; echo "=== sophia nginx site ===" sudo cat /etc/nginx/sites-enabled/sophia 2>/dev/null | grep -nE "location|proxy_pass|8001|8002|/auth|media-
 • `merge pr` → ✅ PR #371 on truesight_autopilot merged successfully (sha: 0f7f0f50fd8014cbf88d1b894ab8c2537255304e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — restarted, verified live: POST /media-archive-pipeline/auth/challenge now 400 (not 404), sentinel route confirmed reachable. Proceed to option 2: verify Cleide queue completion + build the FARM_MEDIA_MANIFESTS/cleide.json archive PR.
+
+
+### 🤖 Autopilot
+
+Go — verifying Cleide queue completion and building the archive manifest. First, the queue state + the existing manifest schema to match.
+
+
+### 🤖 Autopilot
+
+**Cleide queue 100% COMPLETE** — all 71 sidecars have yt_ids, 0 pending, daemon finished the last video (IMG_4924) at 10:49:18. The whole queue uploaded in under an hour once the budget went to 500. Now let me check the existing manifest schema + index format to match:
+
+
+### 🤖 Autopilot
+
+Schema captured. Now let me check what a cleide sidecar contains (to map fields — it may not have sha256/duration since the daemon wrote it), then build the manifest + index entry.
+
+
+### 🤖 Autopilot
+
+Sidecars have sha256, duration, GPS (text), yt_id — but GPS needs parsing into lat/lng to match the paulo schema. Let me build the manifest with a script (parse GPS, match schema) and commit via PR:
+
+
+### 🤖 Autopilot
+
+Manifest built: **71 items, 63/71 GPS, 71/71 sha256, 71/71 yt_ids** (matches paulo's schema: farm_id, plots, source_zips, counts, gps_coverage, items with lat/lng/objects/yt_id). Now committing both files (manifest + index entry) via PR:
+
+
+### 🤖 Autopilot
+
+Manifest is complete (71 items, full artifact saved). Rather than passing 21KB inline, I'll commit it from the box's agentic_ai_context checkout (same path as the La do Sitio manifest PR) + update index.json, then open the PR via REST:
+
+
+### 🤖 Autopilot
+
+PR #878 opened — the Cleide archive manifest (71 videos) + index entry. The auto-start handoff pre-authorizes execution; merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Cleide archive manifest committed ✅
+
+**PR merged:** [#878 — Add Fazenda Cleide media manifest + index entry](https://github.com/TrueSightDAO/agentic_ai_context/pull/878) — sha `d8b5fa59`.
+
+**Cleide queue verified 100% complete:** all 71 sidecars have yt_ids, 0 pending, 0 failed — the daemon finished the last video (IMG_4924 → `vBPBZ6oUlfc`) at 10:49:18, **the entire 71-video queue uploaded in under an hour** once the budget went to 500.
+
+**What landed (now on agentic_ai_context main):**
+1. **`FARM_MEDIA_MANIFESTS/cleide.json`** — 21KB, 71 MOV items in the exact paulo schema (farm_id, plots CL-P1, source_zips, counts, gps_coverage, items with latitude/longitude/objects/yt_id):
+   - **71/71 yt_ids** (every video live on YouTube)
+   - **71/71 sha256** (dedupe + provenance)
+   - **63/71 GPS** (lat/lng parsed from sidecar GPSCoordinates; the 8 without are the un-geotagged originals)
+   - `processed_by: MEDIA_ARCHIVE_PIPELINE.md` (MAP-conformant)
+2. **`FARM_MEDIA_MANIFESTS/index.json`** — added `cleide` entry (updated 2026-09-01). Index now: rancho-maranta, paulo-la-do-sitio, santa-anna-fazenda, **cleide**.
+
+**MAP archive layer is now complete for Cleide:** raw photos (14 HEIC in farm-media-raw) + all 71 videos (YouTube, manifest-linked) + GPS + sha256 — queryable by any Sophia via the manifest/index.
+
+---
+
+**RESUME HERE → next unit (pick one):**
+1. **Farm-page media wiring** — add Cleide's YouTube gallery (71 videos) to `agroverse_shop_beta` farm page (media.json / gallery section) → PR → beta verify
+2. **Signed-in UAT of the dashboard** — verify per-farm tables now show Cleide 71 uploaded (the manifest + sidecars feed it)
+3. **Wire the page sign-in button** to `/media-archive-pipeline/auth/challenge` (one-click sentinel login — route is live now per Envoy)
+4. **Daemon post-Cleide status** — check remaining queues (paulo/santa-anna/jedielcio) still uploading; report totals
+
+Ping me with your pick.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → INBOX=/home/ubuntu/media_archive_inbox/farm-media/cleide echo "=== sidecar count ===" ls $INBOX/*.json 2>/dev/null | wc -l echo "=== with yt; CTX=/opt/truesight_autopilot/context/agentic_ai_context echo "=== index.json format ===" cat $CTX/FARM_MEDIA_MANIFESTS/index.json 2>/dev/nul; echo "=== one cleide sidecar (full) ===" python3 - <<'PY' import json p = '/home/ubuntu/media_archive_inbox/farm-media/cleide/IMG_4832.mp4.j; …(+2 more)
+• `merge pr` → ✅ PR #878 on agentic_ai_context merged successfully (sha: d8b5fa59f2204191e8cf3f53d25d333d2837e628). Pull Request successfully merged
 
