@@ -2209,6 +2209,7 @@ Merge [PR #883](https://github.com/TrueSightDAO/agentic_ai_context/pull/883) (yo
 ### 🤖 Autopilot
 
 Merging PR #883 — the final doc-only SOP sync.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2258,41 +2259,49 @@ No further units — this thread is complete. ✅ (Standing offers, if you ever 
 ### 🤖 Autopilot
 
 Good idea — GPS in the cache makes the whole archive geo-searchable by LLMs. Let me investigate where the media files live, whether GPS metadata is actually embedded in them, and what extraction tools are available before proposing a plan.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest paths point to Gary's Mac (`/Users/garyjob/Downloads/…`) — the source files aren't on this box, and the manifests have no lat/lon fields yet. Let me check where originals actually live (farm-media repos / inventory) and whether the IMG_* entries are photos with EXIF GPS, so the plan targets the right ingress point.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — there are already `/tmp/gps_*.mp4` files on the box and a `MEDIA_ARCHIVE_PIPELINE.md` + `FARM_MEDIA_DAEMON_PLAN.md` in context. Let me check what those GPS files are and read the media archive pipeline doc.
+[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The MAP pipeline doc reveals GPS is already extracted for farm media (manifests get `latitude`/`longitude`), but `youtube_videos.json` has no geo, and there are unexplained `/tmp/gps_*.mp4` test files from a prior session. Let me check the actual manifests and the daemon plan to see exactly where GPS is — and where it's missing.
+[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GPS is already a first-class field in the **farm-media manifests** (la-do-sitio: 65/72 with lat/lon) and the MAP pipeline extracts it from file metadata — but `youtube_videos.json` (the cache we've been working on) has **no geo fields**. Let me size the backfill coverage: which of the 73 entries are farm videos with GPS already recorded, and what local files carry GPS.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GPS is extensively recorded in the **farm manifests** (209/240 with lat/lon) but the `youtube_videos.json` cache has zero geo fields, and the source MOV/MP4s (Gary's Mac paths + farm inboxes) aren't on this box — only test clips. Let me redo the cross-reference robustly and check the farm-manifest item keys.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Only 5/73 `youtube_videos.json` entries map to farm manifests, and those show **rounded** GPS (3.0/52.0 — that's "Para, Brazil" precision, not the real -3.2962, -52.583 from the source files). Let me verify the precision in the farm manifests and check for sidecars/inbox files with real GPS on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. Let me verify the cleide manifest precision and confirm whether the `/tmp/gps_*` files are the exact source clips for the 5 IMG entries (they're Santa Anna GPS).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2338,11 +2347,13 @@ go — proceed with the plan (schema extension + backfill script + SOP note).
 ### 🤖 Autopilot
 
 Executing the plan: PR1 = schema extension (latitude/longitude/gps_source) + backfill script. Let me sync the clone, inspect the current cache formatting, and hunt for any source MOVs with exact EXIF GPS on the box (the governor's ask is "embedded in the file itself" — exact beats the manifest's rounded values).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Exact source MOVs **are on the box** (`/home/ubuntu/santa_anna_fazenda/IMG_7734.MOV` etc.) — so I can extract the true embedded GPS, not the rounded manifest values. First fix the clone (untracked file blocking pull) and verify exact GPS on the source files.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2353,11 +2364,13 @@ Now I have the full data picture:
 - The other 68 entries are non-farm videos (Bean to Bliss etc.) whose source files are off-box — GPS unknown
 
 Plan is clear. Now build the backfill script: read exact GPS from source files via exiftool where present (the 5 IMG MOVs), with the farm manifest as a documented fallback source, and add `latitude`/`longitude`/`gps_source` to the JSON. Let me write the script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 44 Santa Anna manifest entries are rounded (3.0/52.0) — so the manifests can't provide precise GPS; the **source MOVs are the only exact source** (and only 5 of them are YouTube entries). The backfill script should therefore: (1) use exact EXIF from local source files, (2) fall back to farm-manifest rounded values only when the file is absent (with a `gps_source` flag distinguishing precision). Writing the script now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2467,4 +2480,69 @@ PR #269 is OPEN and MERGEABLE, local matches remote. Stopping here per the one-P
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /tmp/agroverse_shop_work && git checkout main -q 2>&1 | tail -1 && git pull origin main -q 2>&1 | tail -1; echo "HEAD: $(git log --onelin; cd /tmp/agroverse_shop_work && echo "=== untracked blockers ==="; git status --short | head; echo "=== remove identical-to-origin blocker if; echo "=== EXACT GPS from source MOVs (the 5 IMG youtube entries) ==="; for f in /home/ubuntu/santa_anna_fazenda/IMG_7734.MOV /home/ubuntu/sa; …(+12 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] [Handoff context — this Telegram topic (thread 18528) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Merged PR #269 myself (sha 9a7d585). Go ahead with the SOP note follow-up too.
+
+
+### 🤖 Autopilot
+
+Governor merged PR #269 (sha `9a7d585`). Proceeding with the SOP note follow-up — adding GPS fields to the uniform media-cache format docs. Let me pull the current SOP and check the MAP pipeline doc's GPS section for accurate cross-referencing.
+
+
+### 🤖 Autopilot
+
+The SOP has the description/ingress content. Now let me find the best spots to add the GPS note — the checklist and the uniform-format guidance — and check the MAP pipeline doc's GPS section for accurate cross-reference.
+
+
+### 🤖 Autopilot
+
+Found a wart too: the checklist has a stale duplicate step "3." left from PR #881's renumbering (steps 4 then 3). Since I'm touching this section for GPS, I'll fix that numbering as well. Let me get the exact bytes (trailing spaces matter).
+
+
+### 🤖 Autopilot
+
+Now I have exact bytes. I'll make 3 edits: (1) fix the stale duplicate step-3 line, (2) add a GPS step to the checklist, (3) add a GPS bullet under §A.7's description bullet referencing the backfill script + farm-manifest fallback. Opening the doc-only PR:
+
+
+### 🤖 Autopilot
+
+SOP note PR opened. Stopping per the one-PR-per-turn rule.
+
+## 📦 SOP follow-up PR opened — [agentic_ai_context PR #885](https://github.com/TrueSightDAO/agentic_ai_context/pull/885)
+
+**"SOP: GPS is part of the uniform media-cache format (PR #269 follow-up)"** (branch `sop/gps-in-cache-note`, sha `b2fa850`, doc-only, 2 edits):
+
+1. **§A.7** — added GPS bullet: entries in `youtube_videos.json` carry `latitude`/`longitude`/`gps_source` (exact EXIF from source file, or farm-manifest rounded fallback marked accordingly — PR #269); backfill via `add_gps_to_youtube_videos_json.py`; "lets LLMs search media assets by latitude/longitude."
+2. **End-to-end checklist** — added **step 5**: run the GPS backfill when entries lack GPS (dry-run → `--write`).
+3. **Bonus fix:** removed a stale duplicate checklist step ("3. If step 2 errors on token/scope…") left over from PR #881's renumbering — it duplicated step 4's OAuth recovery.
+
+**Testing:** doc-only; exact-substring anchors verified against current file bytes (including trailing-space markers) before pushing.
+
+## Full loop now closed
+
+| Piece | Status |
+|---|---|
+| GPS schema + backfill script (PR #269) | ✅ merged (`9a7d585`, your merge) |
+| 5 IMG entries with exact EXIF GPS in cache | ✅ live on main |
+| SOP: GPS = uniform cache format (this PR) | 🟡 **#885 open** |
+
+68/73 entries remain "no GPS source found" until their off-box source files sync to the box — the script auto-fills them on re-run.
+
+## RESUME HERE → merge PR #885
+
+Merge [PR #885](https://github.com/TrueSightDAO/agentic_ai_context/pull/885) (your 👍/"merge", doc-only) — then this GPS enhancement is fully done: schema + backfill + SOP lock-in. No further units.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/aac_work && git pull origin main -q 2>&1 | tail -1; grep -n -i "gps\|latitude\|uniform\|cache format\|description" sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md | head -25; grep -n "A\.7\|Push title" sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md; sed -n '70,90p' sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md; grep -n -i "gps\|latitude\|longitude" MEDIA_ARCHIVE_PIPELINE.md | head -12; sed -n '/### End-to-end checklist/,/### What future agents/p' sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md | cat -A; sed -n '56p' sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md | cat -A
+• `git push changes` → ✅ PR #885 opened: https://github.com/TrueSightDAO/agentic_ai_context/pull/885
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/aac_work && git pull origin main -q 2>&1 | tail -1 && echo "=== SOP: find GPS/cache/description mentions ===" && grep -n -i "gps\|la; cd /tmp/aac_work && echo "=== SOP checklist section (70-90) ==="; sed -n '70,90p' sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md; echo "=== MAP pipeli; cd /tmp/aac_work && echo "=== checklist exact bytes ==="; sed -n '/### End-to-end checklist/,/### What future agents/p' sops/DOWNLOADS_MEDIA
 
