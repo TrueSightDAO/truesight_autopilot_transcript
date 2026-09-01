@@ -1934,6 +1934,7 @@ All three approved images are on beta assets. Now the HTML edits — swapping in
 ### 🤖 Autopilot
 
 PR #345 opened with the HTML edits. The 3 approved images are already on beta assets (uploaded to main). Merging the PR per your authorization:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1992,6 +1993,7 @@ This sentence seems wrong.
 ### 🤖 Autopilot
 
 You're right — that sentence conflates the farmer with the cooperative. Let me check the sourcing doc for the correct relationship before proposing a fix.
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1999,6 +2001,7 @@ You're right — that sentence conflates the farmer with the cooperative. Let me
 You're right — and the sourcing doc confirms it. CEPOTX is the **cooperative** (Coop. Central de Produção Orgânica da Transamazônica e Xingu, CNPJ 22.568.369/0001-38); Jedielcio is described as "CEPOTX **agronomist / technical liaison**" (per the FDA FSVP site-visit report) — so *"Jedielcio is CEPOTX"* wrongly fuses a person with an organization.
 
 Let me read the exact sourcing-doc phrasing and the post's current sentence to propose a precise fix:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2036,21 +2039,30 @@ But should have relevant keywords from the blog post. Thoughts?
 ### 🤖 Autopilot
 
 Good question — and the timing is perfect since these are still pre-publish. Let me check how slugs are actually structured in the agroverse shop blog before answering.
+[2 tool result(s) compacted: search_code, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The slug search came up empty in code — let me check the actual agroverse_shop_beta repo for the post structure and how those episode slugs are defined.
+[1 tool result(s) compacted: search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: list_prs, list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GitHub code search doesn't index it (0 hits for both "bean-to-bliss" and "bean-to-bliss-episode") — the shop's post pages are likely defined in a Google Sheet or GAS project rather than the repo. Let me check the repo structure and look for the post source.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the posts are real HTML dirs in `agroverse_shop_beta/post/`. Episodes 1–14 exist as `bean-to-bliss-episode-N`. Let me see the full list, the sitemap, and one episode's structure + how slugs are referenced internally (blog index, sitemap, og tags) so I can assess the rename impact.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2060,6 +2072,7 @@ Found it — the posts live in `agroverse_shop_beta/post/` as real HTML dirs. Ke
 - Ep 13 = *"How many varieties, really?"*, Ep 14 = *"What floats is better"*
 
 Let me check cross-references and whether prod already has these, so I can scope the rename properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2116,11 +2129,13 @@ I lean **A** (cleaner, Google prefers it, and the series identity already lives 
 ### 🤖 Autopilot
 
 👍 Go received — renaming ep-13/14 to keyword slugs on beta (Option A). First, let me pull the full content of both posts so I can write them at the new paths with all self-references updated:
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the heads. Let me pull the prev/next nav blocks and any in-body slug references from the local clone — those are the edit points:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2237,4 +2252,91 @@ The rename branch is pushed, but I **cannot open the PR from the box**: the box'
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /tmp/asb && echo '=== ep13 nav + slug refs ==='; grep -n 'post-navigation\|bean-to-bliss\|href="../' post/bean-to-bliss-episode-13/index.; cd /tmp/asb && echo '=== existing slug length samples ==='; for s in brazil-cacao-genetics-and-flavor cacao-pod-selection-walk-on-oscar-s-fa; cd /tmp/asb && echo '=== new slug lengths ==='; python3 -c "print('cacao-varieties-identification-para-brazil:', len('cacao-varieties-identi; …(+5 more)
 • `merge pr` → https://docs.github.com/rest/pulls/pulls#get-a-pull-request
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] not true, can't you just git directly?
+
+
+### 🤖 Autopilot
+
+You're right — the PAT has repo write scope (it pushed the branch fine), so I can push the rename straight to main. Doing that now, with a safety rebase first in case main moved:
+
+
+### 🤖 Autopilot
+
+Parens in the echo broke the shell wrapper — and main hasn't moved (my commit sits directly on origin/main), so no rebase is even needed. Direct push:
+
+
+### 🤖 Autopilot
+
+**Pushed to main** (`fe6a3a1..a3b6b5a HEAD -> main`) — the rename is live on `agroverse_shop_beta` main, no PR needed. You were right, direct git was the way.
+
+Now let me verify the new slugs actually serve on beta (bypassing CDN cache, hitting the raw files first, then the live site):
+
+
+### 🤖 Autopilot
+
+Good progress: the rename is on main (new files 200, old slugs 404 on GitHub raw). But **beta.agroverse.shop returns 404 on the new URLs** — the beta site isn't serving from main directly. Let me check how beta deploys (branch? pipeline? does it serve `post/` dirs at all?):
+
+
+### 🤖 Autopilot
+
+Diagnosis is clear now:
+
+- **Old slugs serve fine on beta** (ep-12 → 200, keyword posts → 200) — so beta DOES serve `post/` dirs
+- **But the new slugs 404 on beta** even though they're on main
+- **Pages build deploy** exists in the workflow — beta.agroverse.shop is likely GitHub Pages with a **build cache**: the rename commit landed on main, but the Pages **build hasn't run/redeployed** since the push (Pages builds are often triggered by specific events, not every push — and a rename of dirs needs a fresh build to re-serve the new paths)
+
+The fix is to **trigger the Pages build** (empty commit or via the API) so beta re-deploys with the renamed dirs. Let me check the Pages build status and trigger it:
+
+
+### 🤖 Autopilot
+
+The Pages build is **in progress right now** (`status: building`, created 14:32:32Z — triggered by my push to main). Pages serves from `main` root, CNAME beta.agroverse.shop — so once this build finishes, the new slug URLs will serve. Let me register a watcher on the new URL so I get notified when it goes live, and confirm the build outcome:
+
+
+### 🤖 Autopilot
+
+The Pages build is still running (no error). The watcher can't run outside a Telegram topic, so I'll verify manually — let me check again in a bit, and meanwhile confirm the blog index card hrefs are correct on main (so the cards don't link to 404s):
+
+
+### 🤖 Autopilot
+
+**Done — the rename is fully live on beta.** The Pages build completed and both new URLs return **200**.
+
+## ✅ Rename complete — verified live
+
+| URL (beta.agroverse.shop) | Status |
+|---|---|
+| `/post/cacao-varieties-identification-para-brazil/` (ep 13) | **200** ✅ |
+| `/post/cacao-fermentation-water-float-test/` (ep 14) | **200** ✅ |
+| `/post/bean-to-bliss-episode-13/` (old) | 404 (gone, as intended) |
+| `/post/bean-to-bliss-episode-14/` (old) | 404 (gone, as intended) |
+
+**What shipped (direct git push to `agroverse_shop_beta` main, `a3b6b5a`, no PR):**
+- `git mv` ep13 → `cacao-varieties-identification-para-brazil`, ep14 → `cacao-fermentation-water-float-test` (git tracked both as renames)
+- canonical / og:url / twitter:url updated in both posts
+- Cross-links fixed: ep12 → ep13 (next), ep13 ↔ ep14 (prev/next), ep14's in-body link
+- blog/index.html card hrefs → new slugs (thumb images intentionally keep their filenames)
+- Fixed a bug my sed introduced: og:image/twitter:image pointed at non-existent `cacao-….jpg`; restored to the real `bean-to-bliss-episode-13/14.jpg` thumbs
+
+**Why it initially 404'd:** GitHub Pages was rebuilding after the push (build finished ~15s later) — the rename itself was always correct on main.
+
+## RESUME HERE →
+1. **You (or Envoy) eyeball the beta pages** — the two posts at their new keyword URLs, nav links (prev/next + "← Back to Blog"), and the blog cards — confirm everything reads right
+2. **Prod promotion** — `agroverse_shop_prod` doesn't have ep 13/14 at all yet (verified 404 earlier), so when these are promoted they'll arrive under the new slugs with zero redirect baggage. Promotion needs your explicit "promote" (sync_beta_to_prod)
+3. Episodes 1–12 still use the old generic pattern in prod — separate decision if you want to migrate those (would need 301 redirects)
+4. Optional cleanup: the old pushed branch `rename/bean-to-bliss-13-14-keyword-slugs` is now redundant (merged to main via direct push) — can be deleted
+
+**Not done:** prod promotion (awaits your go), human eyeball on beta pages, branch cleanup.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp/asb && echo '=== current local state ==='; git log --oneline -3; git push origin HEAD:main 2>&1 | tail -5; …(+4 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp/asb && set -e echo '=== current local state ===' git log --oneline -3 echo; echo '=== fetch main ===' git fetch origin main 2>&1 | t; cd /tmp/asb && git push origin HEAD:main 2>&1 | tail -5; echo '=== 1. raw files exist on main ===' for p in post/cacao-varieties-identification-para-brazil/index.html post/cacao-fermentation-water-; …(+4 more)
 
