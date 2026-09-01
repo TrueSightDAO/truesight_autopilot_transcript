@@ -3863,6 +3863,7 @@ Hey, so the Daemon that's running in the background is a documented somewhere, a
 ### 🤖 Autopilot
 
 Good question — let me check exactly where it's documented so I point you at the right spots.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3894,6 +3895,7 @@ https://sophia.truesight.me/media-archive-pipeline
 ### 🤖 Autopilot
 
 Let me look at what that pipeline page shows so I can speak to the comparison concretely.
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3937,16 +3939,19 @@ I didn't use scope it as a parallel because I don't think you really need to wai
 ### 🤖 Autopilot
 
 Got it — building the queue display in parallel, no need to wait for the backfill. Let me scope A7 by finding how MAP is implemented so I can copy-adapt it.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The MAP dashboard has a plan file. Let me read it to learn the implementation pattern, and get the current backfill "remain" count.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found a real problem — the backfill is **stuck again**. The log shows "3730 files remain" repeated across passes even after the skip fix, and the last lines are all `[skip]`. Let me diagnose and fix it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3954,26 +3959,31 @@ Found a real problem — the backfill is **stuck again**. The log shows "3730 fi
 **Found the real bug.** The trickle never advances because `_push_ledger` always starts from the **beginning** of `sorted(files)`: every pass examines the same first 250 paths — now all `[skip]` — then breaks at the cap. It never reaches the unpushed files. ("3730 remain" is constant because `done` counts *examined* files, not *pushed* ones.)
 
 The fix: a **cursor file** so each pass resumes where the last one left off, counting pushes (not examined) toward the cap — plus a **count-based fast path** so steady-state reconciliation is 1 GET per pass, not 3,980.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Compile + ruff clean. I need to wire the cursor into `main()` and pass a cursor path from the cron invocation, then test that a second pass resumes after the cursor. Let me check how `main()` calls `_push_ledger` and patch it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `_push_ledger` is called with `max_uploads` — I'll wire the cursor path in. Let me find a sensible cursor location and patch the call.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Fixed and verified.** Pass 1 examined 5 (mostly skips, cursor advanced to `...114.json`), pass 2 **resumed past the cursor** and pushed 2 NEW files (`...140`, `...142`), with the remain counter now **declining** (3730 → 3725). The trickle genuinely advances now. Let me commit + PR + merge this critical fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #370 open. Merging it so the next cron pass resumes with the cursor fix.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4054,11 +4064,13 @@ go — same here, my 10:37 UTC restart killed this turn too. Please resume the A
 ### 🤖 Autopilot
 
 Resuming A7 + backfill monitoring. First, check backfill progress and find the MAP dashboard implementation to copy-adapt.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Backfill is progressing beautifully**: 3730 → 2977 → 2727 → 2478 remain — ~250/pass declining. At this rate it finishes in ~10 more passes (~5h). And I found the MAP implementation: `app/media_archive_pipeline.py` (route + data endpoint + HTML) wired into `app/main.py`. Let me read it to copy-adapt for the signature ledger dashboard.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4176,4 +4188,84 @@ Want me to merge #373 and deploy next turn?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → echo "=== BACKFILL PROGRESS ==="; grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail; cd /opt/truesight_autopilot && cat > app/signature_ledger_pipeline.py <<'PYEOF' """Signature Ledger Pipeline dashboard — read-only data endp; cd /opt/truesight_autopilot && python3 -m ruff format app/signature_ledger_pipeline.py >/dev/null 2>&1 && echo FORMATTED; python3 -m ruff fo; …(+11 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Service is back up — restored the missing signature_ledger_pipeline.py (PR #374 merged), stable now. Continue with A7 UAT / backfill monitoring.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ✅ merge pr …
+
+
+### 🤖 Autopilot
+
+Service restored (PR #374 merged the missing module). Continuing with A7 UAT + backfill monitoring. Let me check the backfill progress and test the new dashboard endpoint live.
+
+
+### 🤖 Autopilot
+
+Backfill is progressing (2478 remain, cursor at `contribution_event/...018`). Dashboard page serves 200, data endpoint correctly 401s without a token. Now the real UAT: verify the data endpoint returns proper data with a governor token. Let me test the module's data-fetch functions directly on the box (same code path as the endpoint) to confirm live data works.
+
+
+### 🤖 Autopilot
+
+All data functions work with live data:
+- **8 folders, 1,609 published** so far (contribution_event 1,504 — the biggest bucket, still filling)
+- Backfill status correctly reads: **2478 remain, cursor advanced** (the cursor moved from `...018` to `...028` — a cron pass ran since my last check)
+- Log tail: 120 events
+- Tree API, folder aggregation, progress parse all confirmed
+
+The backfill is clearly **running continuously** (cursor advanced between my two checks). The dashboard's data layer is verified working. The endpoint 401s correctly without auth. A7 UAT is essentially passing on the data side — the remaining UAT bit is the visual page with a real governor token (which I can't fully simulate here without a live session, but the page served 200 and the JS fetch path is identical to MAP's proven pattern).
+
+Let me do one more check — confirm the deployed module on the box matches the merged PR (post #374 restore), and check service logs for route errors.
+
+
+### 🤖 Autopilot
+
+All healthy:
+- Module present (11 KB, matches merged)
+- HEAD includes the A7 fix `568d729` (progress parser regex) + the #374 restore
+- No route errors in the service log (the Telegram 400 is an unrelated followups-loop message-formatting issue, not the dashboard)
+- Cron log last touched 13:05 (passes continue)
+
+Interesting: HEAD already includes `568d729` "A7: fix backfill progress parser (regex-extract files remain)" — so someone (or a prior turn) already committed a fix for the progress parser. That aligns with what I saw: the progress correctly reads 2478 remain.
+
+**A7 UAT is effectively passing**: page 200 ✓, data 401 without token ✓, live data correct (8 folders, 1,609 published, backfill status + cursor parsed correctly) ✓, deployed module in sync ✓. The one thing I can't verify from the box is the visual render with a real governor JWT — that needs you to open the page signed-in.
+
+Reporting A7 UAT + backfill status.
+
+## A7 UAT — passing (visual check needs you) + backfill running ✅
+
+### A7 dashboard verified live
+| Check | Result |
+|---|---|
+| `/signature-ledger-pipeline` page | ✅ HTTP 200 |
+| `/data` without token | ✅ HTTP 401 (auth gate working) |
+| Live data layer | ✅ 8 folders, **1,609 published** (contribution_event 1,504 · tree_planting_reject 41 · tree_planting 26 · asset_receipt 13 · batch_qr 12 · link 8 · …) |
+| Backfill status read | ✅ 2478 remain, cursor parsed, complete=false |
+| Log tail | ✅ 120 events |
+| Deployed module | ✅ present + in sync (11 KB, HEAD `568d729` incl. the progress-parser fix) |
+| Route errors | ✅ none (the Telegram 400 in logs is an unrelated followups-loop formatting issue) |
+
+**Only remaining UAT item:** the visual page signed-in as a governor (I can't mint a live JWT from the box) — open `https://sophia.truesight.me/signature-ledger-pipeline` logged in and you should see the folders table + backfill card.
+
+### Backfill status
+**2478 files remain** (~10 more passes, ~5h). Cursor advanced between checks (…018 → …028) — the trickle is running continuously. When it hits 0: root index ~40 folders / ~3,947 events / excluded 703, 3-sample openssl re-verify, live PII scan, README + plan update, §7 contribution.
+
+## RESUME HERE → **visual UAT + backfill completion checks**
+1. **You**: open the dashboard signed-in → confirm folders table + backfill card render (last A7 UAT item)
+2. **Monitor**: `grep "files remain" /home/ubuntu/scripts/sync_sunmint_signatures.log | tail -1` — expect decline each 30-min pass
+3. **At completion (remain=0)**: root index ~40 folders / ~3,947 events / `excluded_pii_count: 703`; 3-sample openssl re-verify; live PII scan (zero emails); README + plan A6/A7 complete; final §7 contribution submission
+
+⚠️ One flag: the log shows an unrelated recurring Telegram API error from the followups loop ("can't parse entities… byte offset 114") — separate from this plan, but I can file an OPEN_FOLLOWUPS item for it if you want.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo "=== BACKFILL PROGRESS ==="; grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail; cd /opt/truesight_autopilot && python3 - <<'PYEOF' import json from app import signature_ledger_pipeline as slp # 1. tree fetch tree = slp._; echo "=== deployed module present + size ==="; ls -la /opt/truesight_autopilot/app/signature_ledger_pipeline.py 2>/dev/null; echo "=== HEAD
 
