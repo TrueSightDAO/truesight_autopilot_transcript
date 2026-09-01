@@ -4587,6 +4587,7 @@ logpath = os.path.join(os.path.dirname(args.log_file), "farm_media_uploads.log")
 So the daemon logs to **`/tmp/farm_media_uploads.log`**, NOT `/tmp/farm_media_daemon.log` where I seeded the 6 successes! The two were different files — my seed never got read, so `used=0`, and it attempted IMG_4838 (correctly detecting "quota exhausted" thanks to the full-tail fix, then exiting in `--once` mode).
 
 So the fix logic is **correct** (it detected the 429 properly and exited), just my seed was in the wrong file. The daemon's own logpath is the authoritative one. The daemon is actually behaving **exactly as designed** now — the seeding was just a UAT artifact. Let me re-seed into the right file and re-verify the clean exit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4598,11 +4599,13 @@ So the fix logic is **correct** (it detected the 429 properly and exited), just 
 - In `--once`, exits cleanly when budget spent; in daemon mode, sleeps till 07:05
 
 All checks pass (compile, ruff, functional). Pushing the fix as PR #6:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #6 opened — merging (this is the UAT-driven fix, governor's go covers it):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4675,6 +4678,7 @@ Go for it. Is there an agentic_ai_context that other LLMs or instances of Sophia
 ### 🤖 Autopilot
 
 Two things: (1) finish the daemon wiring, (2) answer your question about the setup reference. Let me check what's in agentic_ai_context for other Sophias, and install the daemon on the box.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4864,4 +4868,53 @@ Ping me with the unit and I'll run it.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → set -e CTX=/opt/truesight_autopilot/context/agentic_ai_context cd "$CTX" git fetch origin -q git checkout -q main git pull -q origin main gi; set -e CTX=/opt/truesight_autopilot/context/agentic_ai_context cd "$CTX" git checkout -q rename/media-archive-pipeline echo "=== fix self-re
 • `merge pr` → ✅ PR #873 on agentic_ai_context merged successfully (sha: 3c58802f48e2e243e5455574c1478bfebbc73010). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Turn report — Pipeline doc renamed to `MEDIA_ARCHIVE_PIPELINE.md` ✅
+
+**PR merged:** [#873 — Rename FARM_MEDIA_PIPELINE.md → MEDIA_ARCHIVE_PIPELINE.md (MAP terminology)](https://github.com/TrueSight
+
+
+### 🤖 Autopilot
+
+Go received — resuming. Checking the daemon's live-upload status (it should have woken at the 07:05 UTC quota reset):
+
+
+### 🤖 Autopilot
+
+## Status — daemon healthy, correctly waiting for quota reset
+
+| Check | Result |
+|---|---|
+| Service | `active (running)` — PID 125586, 7.1M RSS, auto-restart on |
+| Behavior | `daily budget spent; sleeping 3.2h to 07:05:00 UTC` — **exactly right** |
+| Uploads log | 5× rc=0 (IMG_4833–4837) + IMG_4832 (`NGQ9BP97_t4`) from the throttled era = **6 total in this quota window** |
+| Sidecars | 71 present; **6 with yt_id** (my grep pattern excluded the `N`-prefixed `NGQ9…` — IMG_4832 is there) |
+| Lockfile | stale-lock warning handled gracefully (`stale lockfile ignored`) — singleton intact |
+
+The daemon restarted cleanly at 03:52 (fresh PID) and re-confirmed the same budget-sleep — the 07:05 UTC reset logic is stable across restarts. Nothing needs action: at **07:05 UTC it wakes and uploads IMG_4838 onward**, 6/day, writing yt_ids to sidecars as it goes.
+
+**Current MAP state for Cleide:**
+- Queue: 71 sidecars (6 done, 65 pending) → `media_archive_inbox/farm-media/cleide/`
+- Daemon: systemd service, will churn through ~6/day (~11 days)
+- Photos: 14 HEICs in `farm-media-raw/cleide/photos/` ✅
+- Raw archive: zip + mp4s on the box
+
+---
+
+**RESUME HERE → next unit (pick one):**
+1. **Register a watcher** for the 07:05 UTC wake — I can `watch_url`/poll the journal so we get notified when IMG_4838 uploads (or you ping me ~3.5h from now)
+2. **Cleide manifest + index** — build `FARM_MEDIA_MANIFESTS/cleide.json` from the 71 sidecars (6 yt_ids now, rest pending) + add to index.json → PR (the queryable archive layer, works even mid-upload)
+3. **Farm-page media.json** — wire Cleide's YouTube gallery into agroverse_shop_beta → PR
+4. **"Standing up your own MAP queue" section** in MEDIA_ARCHIVE_PIPELINE.md (point at daemon repo + config recipe) so other Sophias can replicate
+
+Ping me with the unit number and I'll run it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== date ===" date -u +"%H:%M:%SZ" echo "=== daemon service status ===" systemctl status farm-media-daemon.service --no-pager | head -
 
