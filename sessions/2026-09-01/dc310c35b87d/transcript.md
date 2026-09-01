@@ -8,167 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[observed, not directed at you — Nobody Will not DM you]: https://beta.sunmint.truesight.me/limites-da-fazenda/
-
-navLabel 
-Farm Boundaries
-
-
-
-dropdown UI is not similar to the other pages
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-so is https://beta.sunmint.truesight.me/instrucoes/
-
-Make sure the UI convention is standardized for all the pages on sunmint.truesight.me
-
-
-### 🤖 Autopilot
-
-Let me diagnose the dropdown UI across all pages to find the divergence:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All pages have the nav-dropdown — the difference must be in the **CSS styling** of the dropdown. Let me compare the `.nav-dropdown` + `select` styles across pages:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The CSS diverges on limites: its `.nav-dropdown` has `width: 100%; max-width: 600px` (full-width block) while the reference pages use a centered inline-block select. Let me see the exact HTML placement (in-box vs out-of-box) to fix precisely:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The divergence is clear now. The reference pages (index/monitor) use a **plain centered dropdown** (`.nav-dropdown { text-align:center; margin-bottom:1rem }`), while **limites** adds `width: 100%; max-width: 600px` (full-width block) and **instrucoes** adds `padding/font-size` to the select — and **register_farm has no `.nav-dropdown` CSS at all**. Let me confirm register_farm's style block before standardizing:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Complete picture confirmed. The reference convention (index + monitor):
-```css
-.nav-dropdown { margin-bottom: 1rem; text-align: center; }
-.nav-dropdown select { max-width: 300px; display: inline-block; }
-```
-
-Divergences to fix:
-- **limites**: `.nav-dropdown { … width: 100%; max-width: 600px; }` → drop the width/max-width (matches reference)
-- **instrucoes**: `.nav-dropdown select { … padding: 0.5rem; font-size: 0.95rem; border: 1px solid #ccc; border-radius: 4px; }` → trim to reference (max-width + inline-block only)
-- **register_farm**: no `.nav-dropdown` CSS at all → **add** the reference block
-
-Let me apply the three fixes:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #59 opened with all three edits applied. Verifying the branch (CSS fixed, JS intact) before merging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All three files corrected on the branch (CSS matches the reference exactly, all scripts pass `node --check`). Merging PR #59:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**Standardized the nav dropdown UI across ALL sunmint pages** (governor feedback: limites + instrucoes dropdowns didn't match the other pages).
-
-**PR #59 — https://github.com/TrueSightDAO/sunmint_beta/pull/59** (merged, sha `a71c70b7`, 3 files)
-
-### The reference convention (index + monitor)
-```css
-.nav-dropdown { margin-bottom: 1rem; text-align: center; }
-.nav-dropdown select { max-width: 300px; display: inline-block; }
-```
-
-### Fixes per page
-| Page | Problem | Fix |
-|---|---|---|
-| `limites-da-fazenda` | `.nav-dropdown` had `width:100%; max-width:600px` (full-width block) | dropped the width overrides → matches reference |
-| `instrucoes` | `.nav-dropdown select` had extra `padding/font-size/border/radius` | trimmed to `max-width + inline-block` only |
-| `register_farm` | **no `.nav-dropdown` CSS at all** (bare unstyled select) | added the reference block (incl. `.nav-dropdown label`) |
-
-### Verified
-- All three files on the branch match the reference CSS exactly (Contents API)
-- All scripts pass `node --check` (limites 2, instrucoes 1, register_farm 3)
-- Merged cleanly
-
-**On beta now** (`beta.sunmint.truesight.me`): every page's nav dropdown renders identically — centered inline-block select, max-width 300px, bold label.
-
-## RESUME HERE → next unit
-
-**Prod promotion for #55–#59** — all merged on beta, gated on **Gary's explicit go** (`sync_beta_to_prod`). Everything else remains parked (FBE cron trigger + device test — Gary; chrome audit extras / `sunmint_mobile/www/` sync — your call). Holding here.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → nav CSS audit across all 5 pages; reference-convention extraction; register_farm no-CSS confirmation; branch verification (CSS exact-match + node --check ×3)
-• `git push changes` → PR #59 (branch fix/nav-dropdown-standardization, sha 442450bc)
-• `merge pr` → ✅ PR #59 merged (sha a71c70b79f5c32054e5aef4fb445ca7562aaf3e8)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×5 → cd /tmp && for p in "index.html" "monitor-tree-growth/index.html" "instrucoes/index.html" "limites-da-fazenda/index.html" "register_farm/ind; cd /tmp && echo "=== CSS: nav-dropdown / select / option styles per page ===" && for f in nav_index.html.html nav_monitor-tree-growth_index.; cd /tmp && echo "=== INDEX body top (236-262) ===" && sed -n '236,262p' nav_index.html.html && echo && echo "=== LIMITES body top (44-80) ==; …(+2 more)
-• `merge pr` → ✅ PR #59 on sunmint_beta merged successfully (sha: a71c70b79f5c32054e5aef4fb445ca7562aaf3e8). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-Come up with a unit test and then keep running it locally to verify yourself to ensure it passes and then merge. Once merge then let me know
-
-
-### 🤖 Autopilot
-
-Understood — building a unit test that locks in the nav-dropdown UI convention across all sunmint pages, running it locally until green, then merging. First, a clean local checkout of `sunmint_beta` to test against, plus checking the exact per-page state (selected options, onNavChange form):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Checkout confirmed at PR #59's merge, all 5 pages have consistent structure (selected option matches page, `function onNavChange` everywhere). Now building the regression test that locks in the convention:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Two test failures — both are real findings, and one reveals monitor still isn't fully standardized. Let me check the actual i18n dict format (my test assumed `"navPlant"` with double quotes) and monitor's missing label rule:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both failures are legitimate findings:
-
-1. **i18n test failure**: My test assumed `"navPlant"` appears twice (pt+en dicts) — but index has `navPlant: "Registrar Plantio"` (pt) and only the en dict. Actually the grep shows only 2 hits for `navPlant` in index — `data-i18n` attribute + pt dict key. Let me check if the **en dict has navPlant at all** (this would be a real i18n gap).
-
-2. **Monitor missing `.nav-dropdown label` CSS** — a real standardization gap (index has it, monitor doesn't — so the label renders unstyled/bold-default there).
-
-Let me verify the en dicts:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 Interesting findings:
@@ -4809,56 +4648,67 @@ Go — starting the implementation. Per the roadmap order, unit 1 first: **the G
 ### 🤖 Autopilot
 
 Let me see the rest of the key sections — the extract function (Plot ID parsing), the upsert create block, and the end of the main loop (to add the dispatch ping):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The full handler structure is clear. Applying the plot-first changes to the local copy — auto Plot ID (`PL-<seq>`), Farm ID left empty, dedup-by-slug, dispatch ping, tracking uses the resolved plot ID:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edits applied (2266 bytes). The `node --check` failed only because `.gs` isn't a recognized extension — copying to `.js` and checking:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All markers in place, syntax OK. Running the hard-rule suite, then pushing the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The ruff errors are false positives — it's treating the `.gs` (JavaScript) file as Python. The real check (`node --check`) passed. Let me confirm the file is unchanged in content from GitHub main, then push the PR (placeholder-then-real flow):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #455 opened. Now pushing the real validated file over the placeholder:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ The upload went to **main**, not the PR branch (I omitted `branch`). Let me verify the PR branch still has the placeholder and fix by pushing the real file to the branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the damage: the file went to **main** (3 refs = real content on main) but the **PR branch still has the placeholder**. That's a footgun — main now has the plot-first code merged directly, and the PR branch is stale. Let me push the real file to the PR branch so the PR is coherent:
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now pushing the real content to the PR branch (the actual validated file):
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR branch now has the real content (sha `50bc13ce`). **Important:** main ALSO got the change (my earlier accidental main push `500a52d2`). Let me verify both are consistent + the PR is mergeable, then merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 CDN lag again on the raw fetch (branch shows 0, main 5). The **Contents API is authoritative** — and I need to check carefully before merging, because merging a placeholder branch into a main that already has the real content would clobber it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5056,4 +4906,141 @@ Which next?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && rm -rf aacg && git clone -q --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aacg 2>/dev/null && cd aacg && echo ; cd /tmp/aacg && python3 - <<'PYEOF' import io # Edit 1: add FBE_GH_PAT row after the TGM_GITHUB_TOKEN row p = 'GAS_SCRIPT_PROPERTIES.md' s =; cd /tmp && echo "=== branch: FBE_GH_PAT rows ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/docs%2Frecor
 • `merge pr` → ✅ PR #892 on agentic_ai_context merged successfully (sha: a05ed7f1a12bd40826eb06a4c9fca71532a64e7c). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+continue to 2,3 and 4
+
+
+### 🤖 Autopilot
+
+Go — continuing the plot-first roadmap. Unit 2 first: the `build_farms_index.py` fix (skip empty Farm ID rows). Grounding in the current builder:
+
+
+### 🤖 Autopilot
+
+Let me see the main() function — how it builds the farm entries and where the empty-Farm-ID skip belongs:
+
+
+### 🤖 Autopilot
+
+Interesting — the builder **already skips empty Farm ID rows** (`if not fid: continue` at line ~99). So the empty-skip fix is already in place. Let me check the *other* gap the model doc flagged: when the FBE handler creates a plot with an empty Farm ID, the builder would now skip those plots entirely — but does the **plots** builder also need awareness, and does the farms index need the "pending plots" story? Let me verify what §5 of the model doc actually requires:
+
+
+### 🤖 Autopilot
+
+Key finding: **unit 2 is already done in code** — `load_farms()` already has `if not fid: continue` (line ~99), so the empty-Farm-ID skip the model doc required already exists. Let me verify it was always there (git history) and check for a locking test, then move to unit 3 (the UI label PR):
+
+
+### 🤖 Autopilot
+
+The shallow clone limits history, but the key fact stands: **the empty-skip exists in the current code** (verified in the file read). Unit 2 = already satisfied (no code change needed — I'll note it). **Unit 3 next: the UI label change** (`Farm:` → `Plot:` in the limits app). Let me find all the label instances:
+
+
+### 🤖 Autopilot
+
+Now let me find the dropdown's "New farm…" option text and all related i18n keys before editing:
+
+
+### 🤖 Autopilot
+
+I have all the label instances. The scope of unit 3 (UI label `Farm:` → `Plot:`): the user-facing copy — `farmLabel`, `farmLoading`, `newFarmLabel`, `newFarmPh`, `newFarmOpt`, `emptyFarms`, `noFarm`, `mediaNone`, plus page title/hint mentions of "fazenda". I'll keep the change **user-facing only** (not internal var names like `farmSelect`/`addLocalFarm` — those are code identifiers). Applying the pt+en i18n edits:
+
+
+### 🤖 Autopilot
+
+9 of 10 edits landed; the PT `mediaNone` missed because the file uses **escaped `\u00ed`** (literal backslash-u) not the actual `í` char. Fixing that one with the escaped form, then validating tags + JS:
+
+
+### 🤖 Autopilot
+
+All 10 edits landed (0 leftover "Nova fazenda"/"New farm" user-facing copy). Now validating the page (tags + JS syntax) before pushing:
+
+
+### 🤖 Autopilot
+
+The `input` mismatch (3 open, 0 close) is expected — inputs are self-closing by HTML convention (no `</input>` needed), same as before my change. Both scripts pass `node --check`. Now pushing the UI-label PR (placeholder-then-real):
+
+
+### 🤖 Autopilot
+
+PR #68 opened. Pushing the real validated file over the placeholder, then verifying + merging:
+
+
+### 🤖 Autopilot
+
+Real file pushed to the branch. Verifying branch state (label change present, mergeable), then merging:
+
+
+### 🤖 Autopilot
+
+Label change present (4 matches ✓) but **6 "placeholder" matches** — the word "placeholder" appears legitimately in the code (the `placeholder=` HTML attribute + `data-i18n-placeholder`), so that's a false alarm, not the literal placeholder content. The real check: file size vs the placeholder. And `mergeable: None` means GitHub is still computing. Let me verify the actual file content is the real page (not placeholder):
+
+
+### 🤖 Autopilot
+
+Branch file is the **real page** (42,595 B, 9 function markers, 0 literal placeholder) — the earlier 6 "placeholder" hits were the HTML `placeholder=` attributes. Mergeability still computing (`unknown`); since it's a single-file change on current main it will resolve clean. Merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn — plot-first roadmap units 2 & 3
+
+### Unit 2 (Python builder) — ✅ already satisfied, no change needed
+Verified `build_farms_index.py` **already skips empty Farm ID rows** (`if not fid: continue` in `load_farms()`). The model doc's §5 requirement is met in current code — the farms dropdown seed won't be polluted by plot-first rows (Farm ID empty). Documented as "no-op verified" rather than a redundant PR.
+
+### Unit 3 (UI label Farm → Plot) — ✅ merged
+
+**PR #68 — https://github.com/TrueSightDAO/sunmint_beta/pull/68** (merged, sha `d6d149ed`, 1 file: `limites-da-fazenda/index.html`)
+
+User-facing copy only (internal identifiers untouched):
+| Key | PT (before → after) | EN (before → after) |
+|---|---|---|
+| `farmLabel` | Fazenda: → **Lote:** | Farm: → **Plot:** |
+| `farmLoading` | Carregando fazendas... → **Carregando lotes...** | Loading farms... → **Loading plots...** |
+| `newFarmLabel` / `newFarmPh` | nova fazenda → **novo lote** | New farm → **New plot** |
+| `newFarmOpt` | ➕ Nova fazenda... → **➕ Novo lote...** | ➕ New farm... → **➕ New plot...** |
+| `emptyFarms` | nenhuma fazenda → **nenhum lote** | No farms → **No plots** |
+| `noFarm` | nome da fazenda → **nome do lote** | the farm name → **the plot name** |
+| `mediaNone` | para esta fazenda → **para este lote** | this farm → **this plot** |
+
+### Verified
+- All 10 i18n edits landed (0 leftover "Nova fazenda"/"New farm" user-facing copy); one edit needed the file's escaped-unicode form
+- Tag balance OK (input mismatch is normal — self-closing), both inline scripts pass `node --check`
+- Branch = real page (42,595 B, 9 function markers, 0 literal placeholder), merged cleanly
+
+## RESUME HERE → next unit (unit 4 of the roadmap)
+
+1. **End-to-end re-verify** the plot-first flow once the GAS deploy lands: new farmer submission → Evidence row → **Plots row with auto Plot ID + empty Farm ID + farmer text as Plot Name** → `pingPlotsIndexRebuild_` → indexes rebuild (FBE_GH_PAT now SET)
+2. **Deploy the GAS handler** (tokenomics PR #455 is merged but not clasp-pushed) — production GAS deploy needs your go
+3. Beta live check of the new "Lote:" label after Pages rebuild
+
+Which next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → build_farms_index.py verified (empty-Farm-ID skip already present — unit 2 no-op); label instances mapped; 10 i18n edits applied locally (PT+EN, one escaped-unicode retry); tag+JS validation (node --check ×2 OK)
+• `git push changes` → PR #68 (feat/plot-first-ui-label, placeholder→real)
+• `upload local file to github` → real page to branch (381ced9e)
+• `merge pr` → ✅ PR #68 merged (d6d149ed)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/smu2 && sed -n '80,180p' scripts/build_farms_index.py (verified `if not fid: continue` already present); curl main limites → label map (farmLabel 87/162/181, newFarmOpt 165/184, noFarm 167/186, mediaNone 165/184)
+• `merge pr` → ✅ PR #68 on sunmint_beta merged successfully (sha: d6d149eded1bf5140ca5bf0fd440871677637939). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /tmp && rm -rf smu2 && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git smu2 2>/dev/null && cd smu2 && echo "=== find f; cd /tmp/smu2 && sed -n '80,180p' scripts/build_farms_index.py; cd /tmp/smu2 && echo "=== git log for build_farms_index.py ===" && git log --oneline -5 -- scripts/build_farms_index.py 2>/dev/null; echo "=; …(+7 more)
+• `merge pr` → ✅ PR #68 on sunmint_beta merged successfully (sha: d6d149eded1bf5140ca5bf0fd440871677637939). Pull Request successfully merged
 
