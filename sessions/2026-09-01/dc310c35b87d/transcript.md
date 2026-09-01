@@ -4945,6 +4945,7 @@ Cleanup verified (pointer README only ✓). Now let me find where the daemon's m
 ### 🤖 Autopilot
 
 Let me read the daemon's manifest writer + config to see how the target repo/path is determined:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4956,21 +4957,25 @@ That changes the picture: the manifests I moved came from **manual commits**, no
 2. **Update any local tools/scripts** that reference the old `agentic_ai_context/FARM_MEDIA_MANIFESTS/` path
 
 Let me check what actually references the old path on this box (and in the daemon repo), then make the minimal updates:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture — and there's an **urgent live-code break**: `app/media_archive_pipeline.py:34` points `MANIFEST_INDEX_URL` at the OLD location — which I just emptied. That URL now **404s**, breaking the media-archive dashboard's committed-manifest state. Let me confirm and fix that first (highest severity):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Old URL returns 200 — but that's suspicious (index.json was deleted). Likely raw.githubusercontent serving the pointer README content (directory-README fallback). Let me check what it actually returns:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key finding: the old URL still returns 200 with **stale CDN content** (raw.githubusercontent cache), but the **authoritative Contents API says index.json is GONE** (404). So `MANIFEST_INDEX_URL` in `media_archive_pipeline.py` **will break** once the CDN cache expires — the live dashboard's committed-manifest state is on borrowed time. Fixing it now (highest priority), together with the daemon tooling refs in the same repo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5140,4 +5145,74 @@ No runtime behavior change — the commit step stays a deliberate Sophia/governo
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== farm-media-daemon repo: FARM_MEDIA_MANIFESTS refs ===" && for f in farm_media_manifest.py README.md DESIGN.md; do echo ; cd /tmp && echo "=== branch: no old refs, new refs present ===" && for f in farm_media_manifest.py README.md DESIGN.md; do echo "-- $f:"; cu
 • `merge pr` → ✅ PR #9 on farm-media-daemon merged successfully (sha: 954d9c0b1c5686e30cfcdbe34b69c9b5f7e2d9c8). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⚙️ git push changes …
+
+
+### 🤖 Autopilot
+
+Go — unblocking PR #384. Running the local hard-rule suite first (the CI gate: compile/ruff/format/pytest), then retrying the merge:
+
+
+### 🤖 Autopilot
+
+All tests pass (836 passed, 1 skipped), compile ✓, ruff ✓. The format warnings are pre-existing (32 untouched files — my one-line change isn't among them; let me confirm), then retry the merge:
+
+
+### 🤖 Autopilot
+
+My file is already formatted ✓ and CI is now **clean** (`mergeable_state: clean` — the test/smoke checks passed). Retrying the merge:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Unblocked and merged PR #384 — the last stale manifest reference.**
+
+**PR #384 — https://github.com/TrueSightDAO/truesight_autopilot/pull/384** (merged, sha `08d5a14d`)
+
+### The fix
+`app/media_archive_pipeline.py:34` — `MANIFEST_INDEX_URL` repointed from the old (now-deleted) `agentic_ai_context/FARM_MEDIA_MANIFESTS/index.json` → **`farm_media_manifests/main/index.json`** (dedicated repo). Without this, the media-archive dashboard's committed-manifest state would break once the stale CDN cache expired.
+
+### How unblocked
+1. **Local hard-rule suite** (the CI gate): compile ✓, ruff check ✓, pytest **836 passed / 1 skipped** ✓ — and confirmed my file is `already formatted` (the 32 reformat warnings are pre-existing, untouched files)
+2. CI state on the PR: `mergeable_state: clean` (the test/smoke checks from last turn's failure had since passed)
+3. Merged cleanly
+
+## Farm media manifest migration — now 100% complete ✅
+
+| Repo | State |
+|---|---|
+| `farm_media_manifests` (dedicated data repo) | ✅ 7 files live |
+| `agentic_ai_context/FARM_MEDIA_MANIFESTS/` | ✅ pointer README only (PR #887) |
+| `farm-media-daemon` tooling refs | ✅ repointed (PR #9) |
+| `truesight_autopilot` pipeline URL | ✅ repointed (PR #384) |
+
+## RESUME HERE → next unit
+
+1. **Optional context-doc pointers** — `agentic_ai_context/MEDIA_ARCHIVE_PIPELINE.md` + `HANDOFF_MANIFEST.md` still mention the old path (small PR when convenient)
+2. Otherwise holding: **prod promotion (sunmint #55–#65)** gated on Gary's explicit go; FBE/MR cron triggers + device test (Gary); `farm_media_manifests` repo is a data repo — daemon write path lives with the local CLI (already repointed)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → hard-rule suite (compile ✓, ruff ✓, format: 32 pre-existing only, my file clean, pytest 836 pass/1 skip); CI state check (mergeable_state: clean)
+• `merge pr` → ✅ PR #384 merged (sha 08d5a14d55aa2a255cbf7f323a30bd8070833ec6)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot && echo "=== 1. compileall ===" && python3 -m compileall -q app scripts tests 2>&1 | tail -2; echo "rc=$?" && ec; cd /opt/truesight_autopilot && echo "=== is media_archive_pipeline.py among reformat-needed? ===" && python3 -m ruff format --check app/medi
+• `merge pr` → ✅ PR #384 on truesight_autopilot merged successfully (sha: 08d5a14d55aa2a255cbf7f323a30bd8070833ec6). Pull Request successfully merged
 
