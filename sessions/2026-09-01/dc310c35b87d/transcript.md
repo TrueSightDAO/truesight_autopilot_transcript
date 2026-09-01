@@ -4708,11 +4708,13 @@ Go — continuing the plot-first roadmap. Unit 2 first: the `build_farms_index.p
 ### 🤖 Autopilot
 
 Let me see the main() function — how it builds the farm entries and where the empty-Farm-ID skip belongs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — the builder **already skips empty Farm ID rows** (`if not fid: continue` at line ~99). So the empty-skip fix is already in place. Let me check the *other* gap the model doc flagged: when the FBE handler creates a plot with an empty Farm ID, the builder would now skip those plots entirely — but does the **plots** builder also need awareness, and does the farms index need the "pending plots" story? Let me verify what §5 of the model doc actually requires:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4880,4 +4882,108 @@ Want me to build A?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/limites-da-fazenda/index.html" -o limdd.html && echo "=
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+I think A is a good approach
+
+
+### 🤖 Autopilot
+
+Go — building option A: dropdown also lists unlinked plots from the plots geojson. First, verifying the exact data structures (plots properties + farms index entries) so the mapping is right:
+
+
+### 🤖 Autopilot
+
+Data structure confirmed. Key design detail: plots have `plot_id` + `name` but **no `plotName`** property; farms index has `farm_id` + `name`. For option A, the dropdown should list:
+- **Farm-linked plots** → the **farm name** (from farms index, as today)
+- **Unlinked plots** (empty farm_id) → the **plot name** (`properties.name`) — since there's no farm to name it after
+
+The mapping: for each plot in plots geojson, if `farm_id` is present → include the farm's display name (if the farm is in the index); if `farm_id` empty → include the plot's own `name`. This keeps the dropdown deduped with local + remote as today. Let me check how `renderMediaList`/`getRemoteFarms`-adjacent code already fetches plots (to reuse the pattern) and build the change:
+
+
+### 🤖 Autopilot
+
+The design is coherent: `renderMediaList` already has the plot-name match path (from PR #67), so selecting an unlinked plot's name will resolve correctly. The change is purely additive to the dropdown: fetch plots geojson, add **unlinked plots' names** (farm-linked ones are already represented by their farm names). Applying the edit:
+
+
+### 🤖 Autopilot
+
+Both edits applied. Validating (JS syntax + tags) before pushing:
+
+
+### 🤖 Autopilot
+
+All validations green (tags balanced, both scripts pass `node --check`). Pushing option A (placeholder-then-real):
+
+
+### 🤖 Autopilot
+
+PR #69 opened. Pushing the real validated file over the placeholder, verifying, then merging:
+
+
+### 🤖 Autopilot
+
+Verifying branch state (real file, option A present, mergeable), then merging:
+
+
+### 🤖 Autopilot
+
+Real file on branch (43,397 B, option-A markers present, 0 literal placeholder). Mergeability still computing but it's a single-file change on current main — merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Built option A — the dropdown now lists unlinked plots** (per your decision), closing the "new plot only selectable on the creating device" gap.
+
+**PR #69 — https://github.com/TrueSightDAO/sunmint_beta/pull/69** (merged, sha `c96dbbcf`, 1 file: `limites-da-fazenda/index.html`)
+
+### The change
+1. **New `getRemotePlotNames()`** — fetches `plots/index.geojson`, returns the `name` of every feature with **empty `farm_id`** (unlinked plots)
+2. **`unionFarms()`** now merges three sources: local IndexedDB + remote farms index + **unlinked plot names** (deduped as before)
+3. Farm-linked plots still appear via farm names (unchanged); unlinked plots appear by their **own plot name**
+
+### Behavior now
+| Plot state | Dropdown shows on any device | Map profile link |
+|---|---|---|
+| Farm-linked | ✅ farm name | ✅ (gated on farm_id) |
+| Unlinked (empty Farm ID) | ✅ **plot name** (new) | ❌ none — correctly gated until FSVP backfill |
+
+Selection is decoupled from the FSVP gate — the impact-map `if (fid)` link logic is untouched, so unverified plots render/select but don't link to a farm profile until the governor backfills.
+
+### Verified
+- Real file on branch (43,397 B, option-A markers 3×, 0 literal placeholder), both scripts pass `node --check`, tags balanced
+- Merged cleanly
+
+## RESUME HERE → next unit (governor's pick)
+
+1. **End-to-end re-verify** once the GAS handler deploys: new plot → Evidence + Plots rows (auto Plot ID, empty Farm ID, farmer text as name) → dropdown shows it by plot name on any device → backfill links it
+2. **Deploy GAS handler** (tokenomics PR #455 merged, not clasp-pushed) — production GAS, needs your go
+3. Verify option A live on beta after Pages rebuild
+
+Which next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → plots/farms data verified (farm_id on all 5, no plotName prop); PLOTS_URL + renderMediaList patterns confirmed; edits applied (getRemotePlotNames + unionFarms 3-source merge); tags + node --check ×2 OK
+• `git push changes` → PR #69 (feat/dropdown-unlinked-plots, placeholder→real)
+• `upload local file to github` → real page to branch (9247575e)
+• `merge pr` → ✅ PR #69 merged (c96dbbcf)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && echo "=== plots geojson feature properties ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/ind; cd /tmp && grep -n "PLOTS_URL\|plots/index.geojson\|renderMediaList\|getPlots\|fetchPlots" limdd.html | head && echo "=== renderMediaList he; cd /tmp && python3 - <<'PYEOF' import io p='limdd.html' s=io.open(p,encoding='utf-8').read() # 1) Add getRemotePlotNames() after getRemoteFa; …(+2 more)
+• `merge pr` → ✅ PR #69 on sunmint_beta merged successfully (sha: c96dbbcfaf22aa3c59c0be6f677663cd064f1c13). Pull Request successfully merged
 
