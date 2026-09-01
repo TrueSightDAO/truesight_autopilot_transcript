@@ -8,56 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merged ✅ — PR2 shipped. Stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**PR2 — "Limites da Fazenda" boundary capture module** (from SUNMINT_BOUNDARY_SUBMISSION_PLAN §5 PR2 check
-
-
-### 🤖 Autopilot
-
-Executing **PR3: farms seed (`farms/index.json`)**. Per protocol, reading the plan's PR3 spec + the plots generator to mirror it:
-[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⏸️ Paused before the next unit.
-Gate: turn did not open a PR — halting auto-advance
-Reply 'go' to continue.
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⚙️ ssh run …
-
-
-### 🤖 Autopilot
-
-Go-signal received — resuming **PR3: farms seed (`farms/index.json`)**. Gathering the plan spec + generator pattern in parallel:
-[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Plan + generator pattern in hand. PR2 already wired the farmer-app side (`REMOTE_FARMS_URL` fetches `farms/index.json` + unions with local) — so PR3 is the **seed side**: generator + `farms/index.json` + workflow. Let me see the generator's output/write pattern and the rebuild workflow to mirror them:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR3 spec confirmed (generator → `farms/index.json`, farmer app already fetches it from PR2). Let me get the exact farm_ids from the live plots registry, then build the generator + seed:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 4 farms confirmed: rancho-maranta, santa-anna-fazenda, fazenda-cleide, paulo-la-do-sitio-para. Now building `build_farms_index.py` (mirroring the plots generator) + the seed + a new workflow:
@@ -5116,6 +5066,7 @@ go — merge PR #63, then verify beta live.
 ### 🤖 Autopilot
 
 Go-signal received — merging PR #63, then verifying beta live:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5163,11 +5114,13 @@ go — verify beta live.
 ### 🤖 Autopilot
 
 Go — verifying beta live. Checking all four changes on the live beta site:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Live beta still shows the old page (capture present, no new functions) — this is the Pages rebuild lag again. Let me confirm main is correct vs what the live site serves:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5314,4 +5267,52 @@ Verification complete — converging with the honest picture:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp && echo "=== 1. live limits: capture dropped? ===" && curl -s "https://beta.sunmint.truesight.me/limites-da-fazenda/" -o lim_live2.h; cd /tmp && echo "=== register_farm page status ===" && curl -s -o /dev/null -w "HTTP %{http_code} " "https://beta.sunmint.truesight.me/regis; cd /tmp && echo "=== authoritative main (Contents API) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/limi
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: By the way, I was thinking probably one file for plot
+
+Instead of one on file like this
+
+https://github.com/TrueSightDAO/sunmint/tree/main/plots
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+What are your thoughts about by direction for the cation? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me ground this in the actual current structure before giving thoughts:
+
+
+### 🤖 Autopilot
+
+Grounded it first — here's the current reality and my honest take:
+
+**Today:** `plots/` is exactly **one file** — `index.geojson` (8 KB, 5 plots, FeatureCollection). One generator (`build_plots_geojson.py`) reads the SunMint Plots sheet and emits it; the limites app fetches it in one shot (line 306). Media arrays live inside each feature (LD-P1 has 8 items).
+
+**Your direction — one file per plot:** I like it, but I'd do it as **derived artifacts, not a replacement**. My reasoning:
+
+**Pros of per-plot files:**
+- **Retraction recalc gets a natural write target** — invalidate media in plot X → rewrite `plots/<plot_id>.geojson` → regen the aggregate. The hull recompute is already per-plot, so this matches the pipeline we built.
+- **Fine-grained history/audit** — each plot's boundary evolution (and invalidation trail) is trackable per-file — the credentialing-lineage story.
+- **Less diff churn** — one plot changing doesn't rewrite the whole 8 KB collection (matters given the live-edit conflicts we keep hitting).
+
+**Cons / what I'd guard against:**
+- **The app fetches one file** — splitting means N requests for the map (latency) or a manifest + per-plot fetches (complexity). Not worth it for the map.
+- **Don't split before the pipeline actually auto-fires** — the real gap is still the cron/owner-session for GAS processing; file layout won't fix that.
+- **Two sources = drift risk** if the aggregate and per-plot diverge.
+
+**My recommendation — the low-risk middle:**
+Keep **`index.geojson` as the serving artifact** (single fetch, atomic — map + media list unchanged), and have the **same generator emit per-plot files as a derived layer** (`plots/by-plot/<plot_id>.geojson`). One source of truth (the sheet), two derived artifacts. Retraction writes per-plot; rebuild regens the aggregate. Zero app-consumer changes, one small PR to `build_plots_geojson.py`.
+
+That gives you the granularity for the recalc/lineage without breaking the map. Want me to build it — and should per-plot files also carry the **invalidation history** (invalidated media + who/when), so they double as the evidence record?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && echo "=== plots dir ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/plots" | python3 -c "import sys,j
 
