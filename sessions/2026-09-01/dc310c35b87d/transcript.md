@@ -8,73 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-4 farms confirmed: rancho-maranta, santa-anna-fazenda, fazenda-cleide, paulo-la-do-sitio-para. Now building `build_farms_index.py` (mirroring the plots generator) + the seed + a new workflow:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-ruff isn't on PATH in this shell — let me use the venv/python module path used by the hard-rule suite (as in prior turns):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Lint passes; format needs one pass. Let me apply it, re-verify, and build the seed from the live plots data (so the seed matches reality — 4 farms):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Seed built with all 4 farms. Now creating the rebuild workflow (mirroring the plots one) and pushing all three files to `sunmint` via the sanctioned api_only path:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All three PR3 artifacts built and validated. Pushing to `sunmint` (api_only repo → sanctioned Contents-API path):
-[3 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All three PR3 files landed on `sunmint/main` ✅ — **PR3 complete** (via the sanctioned Contents-API path for the api_only data repo, as with PR1).
-
-## What I did this turn
-
-**PR3 — farms seed (`farms/index.json`)** (from SUNMINT_BOUNDARY_SUBMISSION_PLAN §5 PR3). The farmer-app side was already wired in PR2 (`REMOTE_FARMS_URL` fetches `farms/index.json` + unions with device-local IndexedDB); this turn built the **seed side**:
-
-1. **`scripts/build_farms_index.py`** (56 lines, ruff-clean, format-clean, compiles) — mirrors `build_plots_geojson.py` (same SHEET_ID + `SunMint Plots` tab, same SAFETY preserve-on-failure logic) and aggregates per `farm_id`: name (humanized), region, owner, **plot_count, total_hectares, statuses** → emits `farms/index.json`
-2. **`farms/index.json`** — live seed, 4 farms from the plots registry:
-   | farm_id | name | region | plots | ha | status |
-   |---|---|---|---|---|---|
-   | rancho-maranta | Rancho Maranta | Altamira | 2 | 5.4 | planted+proposed |
-   | santa-anna-fazenda | Santa Anna Fazenda | — | 1 | 3 | proposed |
-   | fazenda-cleide | Fazenda Cleide | Altamira, Para | 1 | 114 | proposed |
-   | paulo-la-do-sitio-para | Paulo La Do Sitio Para | Medio Xingu, Para | 1 | 5.56 | proposed |
-3. **`.github/workflows/rebuild-farms-index.yml`** (50 lines, YAML-valid) — daily 06:10 UTC + `repository_dispatch: [farms-index-rebuild]` + manual, same pattern as the plots workflow
-
-**Why api_only path:** `sunmint` is classified machine-owned (data repo) — the PR gate blocks branches; Contents API is the documented path (same as PR1's `extract_plot_gps.py`).
-
-**Governor rules satisfied:** rule 1 now works across *all* devices (remote seed + device-local union) — a farm registered anywhere shows in the dropdown everywhere within one rebuild cycle.
-
-## RESUME HERE → PR4 (next unit, fresh turn)
-
-**Backend farm upsert + `FARM BOUNDARY EVIDENCE EVENT` catalog entry** (plan §5 PR4, rule 4 — new farm name auto-creates record):
-1. `lookup_event_docs("FARM BOUNDARY EVIDENCE EVENT")` to see the catalog + proposal path
-2. Add the event to the catalog (canonical labels: Farm Name, Plot ID, Boundary Type, Media URL(s), Extracted GPS list, Area ha) — likely `dao_protocol` / `tokenomics`
-3. Receiver: boundary event with new farm name → create farm row in Farms sheet, then append plot/media + trigger `farms-index-rebuild` / `plots-index-rebuild`
-4. Open PR, report URL
-
-Plan status: **PR0 ✅ · PR1 ✅ · PR2 ✅ · PR3 ✅ · PR4 next · PR5 = `gate: UAT`**
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×7 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/build_plots_geojson.py" -o build_plots.py && echo "=; cd /tmp && echo "=== build_plots tail (output write) ===" && sed -n '120,244p' build_plots.py && echo "=== rebuild workflow ===" && curl -s ; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geojson" -o plots.geojson && python3 - <<'PYEOF'; …(+4 more)
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
@@ -5126,11 +5059,13 @@ Live beta still shows the old page (capture present, no new functions) — this 
 ### 🤖 Autopilot
 
 Main has the fix (uploadBoundary ×8, register_farm 0) but **`capture="environment"` is still present on main (1)** — my local edit may not have dropped it. Let me check the actual input line on main and the Pages build state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Critical catch:** `main` still has `capture="environment"` — my local "remove capture" edit never actually landed in the pushed file. Let me check my local build and compare:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5315,4 +5250,60 @@ That gives you the granularity for the recalc/lineage without breaking the map. 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && echo "=== plots dir ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/plots" | python3 -c "import sys,j
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Also, what is the URL for me to look at the Manifest JSON that allows you to find quickly all the image files and the YouTube videos that are relevant. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me find what manifest you're referring to — searching context + repos for a media/video manifest:
+
+
+### 🤖 Autopilot
+
+Let me check the farm-media-daemon plan and repos — that's the likely home of a media manifest:
+
+
+### 🤖 Autopilot
+
+The manifest convention is `FARM_MEDIA_MANIFESTS/<farm_id>.json` + `index.json` — let me find exactly where they're committed so I give you the precise URLs:
+
+
+### 🤖 Autopilot
+
+Found it. Here are the URLs you asked for — the media manifests live in **`agentic_ai_context/FARM_MEDIA_MANIFESTS/`**:
+
+## The manifest URLs
+
+**Directory index (all farms):**
+- GitHub browse: `https://github.com/TrueSightDAO/agentic_ai_context/tree/main/FARM_MEDIA_MANIFESTS`
+- Raw JSON: **https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/FARM_MEDIA_MANIFESTS/index.json**
+
+**Per-farm manifests (each has `yt_id` → YouTube watch URLs + plot/coverage info):**
+| Farm | Raw URL |
+|---|---|
+| **La do Sitio (Paulo La Do Sitio Para)** | `…/FARM_MEDIA_MANIFESTS/paulo-la-do-sitio-para.json` |
+| Cleide | `…/FARM_MEDIA_MANIFESTS/cleide.json` |
+| Rancho Maranta | `…/FARM_MEDIA_MANIFESTS/rancho-maranta-para.json` |
+| Santa Anna Fazenda | `…/FARM_MEDIA_MANIFESTS/santa-anna-fazenda-para.json` |
+
+*(full prefix: `https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/FARM_MEDIA_MANIFESTS/`)*
+
+## What they contain (per the daemon plan)
+- **`<farm_id>.json`** — dict: `farm_id`, `plots`, counts, `gps_coverage`, `items[]` — each item = video with its `yt_id` → **watch URL**, so "which videos exist for farm X" is a one-liner
+- **`index.json`** — `{"index": [...]}` — the directory across all farms
+
+## For **photos** (raw images)
+Those live separately in **`farm-media-raw/`**: `https://github.com/TrueSightDAO/farm-media-raw/tree/main/<farm_id>/photos/` (e.g. Cleide's 14 HEIC files, La do Sitio's ~20+ HEICs — I saw them in the tree above).
+
+**One note:** the manifests track **videos** (YouTube) + metadata; the **photos** are in farm-media-raw (no per-photo manifest yet, just the directory tree). If you want a single JSON that also indexes the photos (a "everything for this farm" manifest), I can add that — say the word.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== farm-media-raw tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/farm-media-raw/git/trees/main?recursive=; cd /tmp && echo "=== find FARM_MEDIA_MANIFESTS ===" && for repo in agentic_ai_context farm-media-daemon sunmint; do echo "-- $repo:"; curl -
 
