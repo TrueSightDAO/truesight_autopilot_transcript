@@ -4112,6 +4112,7 @@ All checks pass and the functional smoke test confirms the daemon still works af
 ### 🤖 Autopilot
 
 PR2 opened (PR #3). Merging it — the governor's go authorizes self-merge:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4419,4 +4420,19 @@ Ping me with "go" and I'll wire it.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #4 on farm-media-daemon merged successfully (sha: 9119460b09bc94c2f97c610b0cab4f83623c6ecb). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Turn report — Inbox renamed to MAP-level `media_archive_inbox` ✅
+
+**PR merged:** [#4 — Rename inbox root to media_archive_inbox (MAP terminology)](https://github.com/TrueSightDAO/farm-media-daemon/
+
+
+### 🤖 Autopilot
+
+Go received — wiring the daemon to Cleide's real inbox (PR3/4). First: check the current state — uploader progress, mp4s on disk, and the throttled uploader's manifest (for the yt_ids already earned).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
