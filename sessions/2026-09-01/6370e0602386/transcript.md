@@ -2044,16 +2044,19 @@ Now committing and opening the PR.
 ### 🤖 Autopilot
 
 Wait — I see an untracked `youtube_update_video_descriptions.py` in the clone. That's the PR2 script (merged via #266) which I recreated locally during the #264 recovery; the clone's earlier `git pull` printed "Aborting" — the untracked file may have blocked the pull, leaving my base stale. Let me verify the clone is current with origin/main before pushing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The clone is stale — local HEAD (`c482fbd`) is behind origin/main (`97ca127`, which is PR5's merge). The untracked file is identical to origin's (so it's harmless, just blocking pulls). My base is missing PR5's title changes. I need to rebase my edits onto current origin/main. Let me do that carefully — stash my two modified files, pull, restore.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pull aborted because the untracked `youtube_update_video_descriptions.py` (identical to origin's) blocks the merge — git refuses to overwrite it. Since it's byte-identical, I'll remove it, pull, and it'll be re-created by the pull.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2235,4 +2238,82 @@ No further units — this thread is complete. ✅ (Standing offers, if you ever 
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #883 on agentic_ai_context merged successfully (sha: e33ff95fdff228ad47bfe613e8fae70d65384017). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] Can we make sure to ensure also that the latitude and longitude information that's embedded in the file itself is also made available in the JSON cache. That way in the future LLMs can just do a search of media assets by latitude-longitude. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good idea — GPS in the cache makes the whole archive geo-searchable by LLMs. Let me investigate where the media files live, whether GPS metadata is actually embedded in them, and what extraction tools are available before proposing a plan.
+
+
+### 🤖 Autopilot
+
+Manifest paths point to Gary's Mac (`/Users/garyjob/Downloads/…`) — the source files aren't on this box, and the manifests have no lat/lon fields yet. Let me check where originals actually live (farm-media repos / inventory) and whether the IMG_* entries are photos with EXIF GPS, so the plan targets the right ingress point.
+
+
+### 🤖 Autopilot
+
+Interesting — there are already `/tmp/gps_*.mp4` files on the box and a `MEDIA_ARCHIVE_PIPELINE.md` + `FARM_MEDIA_DAEMON_PLAN.md` in context. Let me check what those GPS files are and read the media archive pipeline doc.
+
+
+### 🤖 Autopilot
+
+The MAP pipeline doc reveals GPS is already extracted for farm media (manifests get `latitude`/`longitude`), but `youtube_videos.json` has no geo, and there are unexplained `/tmp/gps_*.mp4` test files from a prior session. Let me check the actual manifests and the daemon plan to see exactly where GPS is — and where it's missing.
+
+
+### 🤖 Autopilot
+
+GPS is already a first-class field in the **farm-media manifests** (la-do-sitio: 65/72 with lat/lon) and the MAP pipeline extracts it from file metadata — but `youtube_videos.json` (the cache we've been working on) has **no geo fields**. Let me size the backfill coverage: which of the 73 entries are farm videos with GPS already recorded, and what local files carry GPS.
+
+
+### 🤖 Autopilot
+
+GPS is extensively recorded in the **farm manifests** (209/240 with lat/lon) but the `youtube_videos.json` cache has zero geo fields, and the source MOV/MP4s (Gary's Mac paths + farm inboxes) aren't on this box — only test clips. Let me redo the cross-reference robustly and check the farm-manifest item keys.
+
+
+### 🤖 Autopilot
+
+Only 5/73 `youtube_videos.json` entries map to farm manifests, and those show **rounded** GPS (3.0/52.0 — that's "Para, Brazil" precision, not the real -3.2962, -52.583 from the source files). Let me verify the precision in the farm manifests and check for sidecars/inbox files with real GPS on the box.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Let me verify the cleide manifest precision and confirm whether the `/tmp/gps_*` files are the exact source clips for the 5 IMG entries (they're Santa Anna GPS).
+
+
+### 🤖 Autopilot
+
+I have a complete picture now. Let me summarize what I found and lay out a concrete plan.
+
+## What I found
+
+**Good news: GPS is already a first-class concept in the media archive.** The MAP pipeline (`MEDIA_ARCHIVE_PIPELINE.md`) already:
+- Extracts GPS from source files (`exiftool`/QuickTime `GPSCoordinates`, DMS→decimal, S/W negative)
+- Stores `latitude`/`longitude` in the farm manifests (`FARM_MEDIA_MANIFESTS/*.json`) — 209/240 farm entries have GPS
+- Re-injects GPS after MOV→MP4 conversion (ffmpeg drops it)
+- Already uses GPS for plot polygons (`SunMint Plots` / `index.geojson`) and YouTube descriptions ("…(cacao pods, <lat>, <lng>)")
+
+**The gap:** the cache we've been working on — `agroverse_shop_beta/scripts/youtube_videos.json` — has **no geo fields at all** (0/73). The lat/lon lives only in the *farm* manifests, keyed by farm `file` paths that mostly don't match the YouTube cache basenames (only 5/73 matched, and those came through **rounded** to 3.0/52.0 — Para-state precision, not the real ~-3.2962, -52.583 from the source files).
+
+**Precision problem:** the committed farm manifests store **rounded** lat/lon (3.0, 52.0) — the *exact* DMS GPS is in the source MOV metadata (and survives in the `/tmp/gps_*.mp4` test clips on the box, e.g. `3°17'46.32"S, 52°34'58.80"W`). So a backfill from the manifests would give LLMs only "which state", not "which plot of which farm".
+
+## What I'd propose (plan)
+
+1. **Decide the source of truth** — GPS should be read from the **source file metadata** (highest precision), with the farm manifests as fallback (rounded). Since the source files mostly live off-box (Gary's Mac / farm zips), the practical backfill source is the manifests + any local clips.
+2. **Extend the YouTube cache schema** — add `latitude` + `longitude` (+ optional `gps_source`) to `youtube_videos.json` entries, matching the uniform-format principle we just established.
+3. **Write a small backfill script** — `scripts/add_gps_to_youtube_videos_json.py` that: (a) reads source-file GPS via exiftool where files are present, (b) falls back to farm-manifest GPS (normalizing basename matches, and fixing the rounding to store the real decimal), (c) marks `gps_source: file_exif | farm_manifest | null`, leaving null where unknown. PR via `git_push_changes` (beta repo, code class).
+4. **Fix the manifest precision issue** (optional follow-up) — re-extract exact GPS into the farm manifests so the archive itself is precise, not just the YouTube cache.
+5. **SOP note** — add "GPS fields are part of the uniform media cache format" to `DOWNLOADS_MEDIA_TO_AGROVERSE.md` so future ingress (incl. the PR #268 path) writes lat/lon too.
+
+**Reality check on coverage:** of the 73 YouTube entries, only **5 map to farm manifests** (all Santa Anna IMG_*), and they currently carry only rounded GPS. The other 68 (Bean to Bliss episodes, Project clips) are non-farm media — their source MOVs live on Gary's Mac, so GPS for them can only come from the original files when they next sync. So the honest scope is: **wire the schema + backfill what's reachable now (5+), and make future uploads carry GPS automatically.**
+
+Want me to open that as a plan + PR (PR1 = schema + backfill script), or adjust the scope first?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /tmp/agroverse_shop_work && echo "=== manifest sample entries ==="; python3 -c " import json m = json.load(open('docs/incoming_videos_202; echo "=== GPS tools on box ==="; which exiftool ffprobe ffmpeg 2>&1; python3 -c "import exiftool; print('pyexiftool OK')" 2>&1 | head -1; py; cd /tmp/agroverse_shop_work && echo "=== youtube_videos.json entries keys (IMG/santos) ==="; python3 -c " import json d = json.load(open('sc; …(+6 more)
 
