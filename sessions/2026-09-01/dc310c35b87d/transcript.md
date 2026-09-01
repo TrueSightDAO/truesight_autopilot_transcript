@@ -4973,16 +4973,19 @@ The indentation differs from my assumption — the live file likely uses differe
 ### 🤖 Autopilot
 
 The live file matches — so `main` may have moved since my fetch (the live-edit pattern). Let me re-fetch main fresh and check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The block exists verbatim on main at line 313 — my search string should match. The earlier failure was likely because my search had `nameL` defined AFTER (line 323) but my second edit referenced `nameL` before it's defined in the filter — actually no, the filter is after `nameL`. Let me retry the PR with the exact main content:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #67 opened with both edits. Verifying the branch (fix present, JS valid), then merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5205,4 +5208,87 @@ So: **doGet exposure ✅, dispatch trigger ✅, execution still needs the cron (
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== 1. doGet router in GAS project (process_qr_code_updates.js) ===" && grep -n "processFarmBoundaryEvidenceFromTelegramCha; cd /tmp && echo "=== 2. deployed? check remote GAS project via repo main (tokenomics) ===" && curl -s "https://raw.githubusercontent.com/Tru
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+can you help clean up the outdated deployments in that project, then I will sort out the actual deployment that we should allow anonymouse people to execute as me
+
+
+### 🤖 Autopilot
+
+Go — let me first list the deployments in that GAS project to see what's there (and confirm clasp is set up), then clean up the outdated ones:
+
+
+### 🤖 Autopilot
+
+6 deployments found. Before deleting anything, let me verify **which deployment IDs are actually referenced** by the webhook env keys (so I don't break the live chain):
+
+
+### 🤖 Autopilot
+
+Let me verify which deployment IDs are referenced anywhere (repos/config) before deleting anything — especially the versioned ones (@32, @34, @35, @36, @37):
+
+
+### 🤖 Autopilot
+
+Let me map exactly which `.env` keys reference each deployment before deleting anything (so I never break a live webhook):
+
+
+### 🤖 Autopilot
+
+Deployment reference map is now clear:
+
+| Deployment | Label | Referenced by (live) | Status |
+|---|---|---|---|
+| `@HEAD` (`…rcXTZnQ…`) | — | FBE + MEDIA_RETRACTION webhooks (env) | 🔴 **keep** |
+| `@32` (`…Mz8cAkJ…`) | Admin deploy fix | QR_CODE_UPDATE + TREE_PLANTING_LINK (env) | 🔴 **keep** |
+| `@37` (`…oFCTzId…`) | — | TREE_PLANTING_REJECT (env) | 🔴 **keep** |
+| `@36` (`…wm9TZDL…`) | TGM regex fix #446 | TREE_GROWTH_MONITORING (env) | 🔴 **keep** |
+| **`@35`** (`…xpGtwpI…`) | TGM return-object fix (admin, post-#442) | **0 env refs, 0 code refs** | 🟢 **outdated — delete** |
+| **`@34`** (`…zMRrDqB…`) | Tree growth monitoring webhook (admin, post-#441) | **0 env refs, 0 code refs** | 🟢 **outdated — delete** |
+
+Both `@34` and `@35` are superseded by `@36` (the TGM deployment) — nothing points at them. Let me do one final sweep for any other refs (docs, configs), then delete both via clasp:
+
+
+### 🤖 Autopilot
+
+Zero refs anywhere — safe to delete both. Deleting `@34` and `@35` via clasp:
+
+
+### 🤖 Autopilot
+
+Both outdated deployments deleted ✅ — clean.
+
+## What I did
+
+**Deleted 2 outdated GAS deployments** from the SunMint handler project (`1UrBgqLnnQc6PV4-…`):
+
+| Deployment | Why deleted |
+|---|---|
+| **`@34`** (`…zMRrDqB…`, "Tree growth monitoring webhook action, admin post-#441") | 0 refs anywhere — superseded by `@36` |
+| **`@35`** (`…xpGtwpI…`, "TGM handler return-object fix, admin post-#442") | 0 refs anywhere — superseded by `@36` |
+
+**Verified before deleting:** zero references in the dao_protocol `.env`, repos, configs, or app — the 4 remaining deployments are all live and referenced:
+- `@HEAD` — FBE + MEDIA_RETRACTION webhooks
+- `@32` — QR_CODE_UPDATE + TREE_PLANTING_LINK
+- `@36` — TREE_GROWTH_MONITORING
+- `@37` — TREE_PLANTING_REJECT
+
+## On your note re: the "actual deployment anonymous people execute as me"
+
+That's the key architectural point you flagged: the webhook URL (`@HEAD`) is what dispatch calls, but Google serves the **sign-in page to anonymous callers** (200 but no execution) — so right now the webhook path only truly executes under the owner session or the cron. To let anonymous dao_protocol-triggered doGet calls execute **as you**, you'd set that deployment's access to **"Anyone"** in the GAS UI (Deploy → Manage deployments → edit → Web app → **Who has access: Anyone**) — with the caveat that anyone with the URL can then run these handlers (they process Telegram Chat Logs + write the Plots sheet), so it should be the *specific* deployment used by the webhook, and input validation is the guard.
+
+When you're ready, tell me which deployment you want as the anonymous one and I'll note the exact GAS-UI path (or if you prefer, I can double-check the current access settings via the API before you flip it).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → deployment list (6); env+code reference map (verified @35/@34 = 0 refs, 4 others live); final sweep (0 refs); clasp undeploy ×2; post-state verified (4 deployments remain, all referenced)
+• `clasp undeploy` ×2 → Deleted deployment AKfycbxpGtwpI… and AKfycbzMRrDqB…
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v 2>/dev/null && e; cd /tmp && timeout 25 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'grep -h "WEBHOOK" /home/ub; cd /tmp && echo "=== refs in dao_protocol .env for THIS project's deployment IDs ===" && for dep in "AKfycbxMz8cAkJ-MT3FhxRc9SxLZZzm7J83-EZP; …(+3 more)
 
