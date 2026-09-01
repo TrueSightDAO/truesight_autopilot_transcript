@@ -4488,6 +4488,7 @@ Unexpected: it attempted an upload (not sleeping) and failed — the attempt-cou
 ### 🤖 Autopilot
 
 UAT found real issues. Let me read the full `main()` (the earlier read was truncated) to see how the logpath flows, and check whether IMG_4838 actually reached YouTube despite the "failure".
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4653,4 +4654,79 @@ Ping me with "go" and I'll finish the wiring.
 
 Go received — final wiring: install the daemon on the box, systemd service, retire the throttled uploader. Let me deploy the merged code to a stable path first.
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go for it. Is there an agentic_ai_context that other LLMs or instances of Sophia can reference to setup similar pipeline for their own media archive needs?
+
+
+### 🤖 Autopilot
+
+Two things: (1) finish the daemon wiring, (2) answer your question about the setup reference. Let me check what's in agentic_ai_context for other Sophias, and install the daemon on the box.
+
+
+### 🤖 Autopilot
+
+The daemon is installed at `/opt/truesight_autopilot/farm_media_daemon/` ✅.
+
+**And yes — the reference exists.** `agentic_ai_context/FARM_MEDIA_PIPELINE.md` is exactly the setup reference for other LLMs/Sophia instances — it's explicitly written *"so any Sophia instance can process a farm end-to-end or pick up a farm handed off by a governor"*, with the MAP terminology block, where-things-land table, the 10-step pipeline, handoff checklist, and anti-patterns/lessons. Plus `plans/FARM_MEDIA_DAEMON_PLAN.md` and the public daemon repo (DESIGN.md + README) cover the *queue/daemon* setup. Any other instance can read those and stand up their own media archive queue.
+
+Now finishing the wiring: clear IMG_4838's stale error, install systemd, retire the throttled uploader.
+
+
+### 🤖 Autopilot
+
+Throttled uploader retired ✅ (was running 5h05m, 6 uploads done). Sidecar error cleared ✅. Now install the systemd service and verify it's running:
+
+
+### 🤖 Autopilot
+
+The singleton lock did its job — **"another daemon is running (pid 123677)"** — that's the daemon I ran manually during UAT earlier (it's still alive in `--once`... no wait, `--once` exits. Let me check what 123677 is — it's probably the daemon running from the earlier manual test that didn't exit, or a stray). The lockfile is protecting correctly, but I need to resolve the conflict: either kill the stray and let systemd take over, or it's a legitimate run. Let me check:
+
+
+### 🤖 Autopilot
+
+The lockfile did its job — a stray daemon instance (PID 123677, running ~2 min from the old pre-fix code — likely a leftover from the first UAT where the old quota branch slept regardless of `--once`) is holding the singleton lock. The systemd-managed instance is the canonical owner. Let me stop the service, retire the stray, and let systemd take over:
+
+
+### 🤖 Autopilot
+
+## ✅ Daemon LIVE — the shared uploader is running
+
+**The last log line is the money shot:**
+> `2026-09-01 03:45:55 INFO daily budget spent; sleeping 3.3h to 2026-09-01 07:05:00 UTC`
+
+The systemd service is **active (running)**, singleton lock held, and it correctly read the 6 real successes, saw the budget is spent, and will **sleep 3.3h until the 07:05 UTC quota reset** — then resume uploading Cleide's queue (IMG_4838 onward) at 6/day. **No more ad-hoc uploaders — this is now THE shared daemon.**
+
+**Wiring complete:**
+| Piece | State |
+|---|---|
+| Daemon code | `/opt/truesight_autopilot/farm_media_daemon/` (PR #6, fixed) |
+| Config | `media_archive_daemon_config.yaml` (budget 6, cleide priority 2) |
+| Inbox | `/home/ubuntu/media_archive_inbox/farm-media/cleide/` — 71 mp4 symlinks + 71 sidecars (6 w/ yt_id) |
+| Systemd | `farm-media-daemon.service` — enabled, **running**, auto-restart, survives reboots |
+| Old throttled uploader | **retired** (PID 105025 stopped) |
+| Stray UAT daemon | killed (singleton lock proved it works) |
+| IMG_4838 | error cleared — next in queue at reset |
+
+**Answer to your question — yes, the reference exists:** `agentic_ai_context/FARM_MEDIA_PIPELINE.md` is the end-to-end setup reference (written for *any* Sophia instance: 10-step pipeline, handoff checklist, anti-patterns), and the public `farm-media-daemon` repo (DESIGN.md + README + config template) is the queue/daemon reference. Any instance can read both and stand up their own media archive queue — the MAP terminology block ensures everyone uses the same words.
+
+---
+
+**RESUME HERE → next unit (pick one):**
+1. **Live upload proof at reset** — at ~07:05 UTC check the journal: expect IMG_4838 upload + yt_id written to sidecar. I can register a watcher or you ping me after.
+2. **Cleide manifest + index** — build `FARM_MEDIA_MANIFESTS/cleide.json` from sidecars + add to index → PR (the manifest IS the queryable archive layer)
+3. **Farm-page media.json** — wire Cleide's YouTube gallery into agroverse_shop_beta → PR
+4. **Document the daemon setup for other instances** — add a "Standing up your own MAP queue" section to FARM_MEDIA_PIPELINE.md (pointing at the repo + config) so any other Sophia has the exact recipe
+
+Ping me with the unit and I'll run it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → echo "=== install daemon to stable path ===" cd /opt/truesight_autopilot rm -rf farm_media_daemon git clone -q --depth 1 https://github.com/; set -e echo "=== clear stale error on IMG_4838 sidecar ===" python3 - <<'PY' import json p = '/home/ubuntu/media_archive_inbox/farm-media/cl; set -e echo "=== install systemd unit ===" sudo cp /opt/truesight_autopilot/farm_media_daemon/systemd/farm-media-daemon.service /etc/systemd; …(+2 more)
 
