@@ -4720,46 +4720,55 @@ Interesting — the builder **already skips empty Farm ID rows** (`if not fid: c
 ### 🤖 Autopilot
 
 Key finding: **unit 2 is already done in code** — `load_farms()` already has `if not fid: continue` (line ~99), so the empty-Farm-ID skip the model doc required already exists. Let me verify it was always there (git history) and check for a locking test, then move to unit 3 (the UI label PR):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The shallow clone limits history, but the key fact stands: **the empty-skip exists in the current code** (verified in the file read). Unit 2 = already satisfied (no code change needed — I'll note it). **Unit 3 next: the UI label change** (`Farm:` → `Plot:` in the limits app). Let me find all the label instances:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me find the dropdown's "New farm…" option text and all related i18n keys before editing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have all the label instances. The scope of unit 3 (UI label `Farm:` → `Plot:`): the user-facing copy — `farmLabel`, `farmLoading`, `newFarmLabel`, `newFarmPh`, `newFarmOpt`, `emptyFarms`, `noFarm`, `mediaNone`, plus page title/hint mentions of "fazenda". I'll keep the change **user-facing only** (not internal var names like `farmSelect`/`addLocalFarm` — those are code identifiers). Applying the pt+en i18n edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 9 of 10 edits landed; the PT `mediaNone` missed because the file uses **escaped `\u00ed`** (literal backslash-u) not the actual `í` char. Fixing that one with the escaped form, then validating tags + JS:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 10 edits landed (0 leftover "Nova fazenda"/"New farm" user-facing copy). Now validating the page (tags + JS syntax) before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `input` mismatch (3 open, 0 close) is expected — inputs are self-closing by HTML convention (no `</input>` needed), same as before my change. Both scripts pass `node --check`. Now pushing the UI-label PR (placeholder-then-real):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #68 opened. Pushing the real validated file over the placeholder, then verifying + merging:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real file pushed to the branch. Verifying branch state (label change present, mergeable), then merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4986,4 +4995,118 @@ Which next?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp && echo "=== plots geojson feature properties ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/ind; cd /tmp && grep -n "PLOTS_URL\|plots/index.geojson\|renderMediaList\|getPlots\|fetchPlots" limdd.html | head && echo "=== renderMediaList he; cd /tmp && python3 - <<'PYEOF' import io p='limdd.html' s=io.open(p,encoding='utf-8').read() # 1) Add getRemotePlotNames() after getRemoteFa; …(+2 more)
 • `merge pr` → ✅ PR #69 on sunmint_beta merged successfully (sha: c96dbbcfaf22aa3c59c0be6f677663cd064f1c13). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+do an E2E test.
+
+
+### 🤖 Autopilot
+
+Go — running the E2E test of the plot-first flow. **One prerequisite:** the plot-first GAS handler (PR #455) is merged but **not deployed** — the live @39 webhook still runs the old handler. So the E2E requires clasp-pushing it first. As with the earlier UAT, I'm treating "do an E2E test" as your go for that production GAS deploy. Stating that clearly, then executing:
+
+
+### 🤖 Autopilot
+
+Local project is at the plot-first code (5 markers). Now deploying to GAS via clasp:
+
+
+### 🤖 Autopilot
+
+**GAS deployed** — plot-first handler live (deploy ledger `deploy_20260901T224218Z`). Now the E2E: submitting a new plot-first boundary event (new plot name, as a farmer would type):
+
+
+### 🤖 Autopilot
+
+Catalog confirmed (required: Farm Name + Media URLs — in plot-first terms, "Farm Name" carries the farmer's plot text). Submitting the E2E test event — a **new plot** name that has never existed, so the plot-first handler must create a fresh row with auto Plot ID + empty Farm ID:
+
+
+### 🤖 Autopilot
+
+Submitted. Now the decisive check — did the plot-first handler create the Plots row with **auto Plot ID + empty Farm ID**? Checking the SunMint Plots tab:
+
+
+### 🤖 Autopilot
+
+The E2E **failed to land** — my new plot ("Lote Teste E2E Plotfirst") is **not** in the SunMint Plots tab. Only the old test rows are there (TEST-P1, UAT-PLOT-1, TDP1). Let me diagnose where the chain broke — checking the Evidence tab (did the submission even get processed?) and the webhook/dispatch:
+
+
+### 🤖 Autopilot
+
+**Found the break.** The last Evidence row shows my submission WAS processed, but the **Plot ID column contains garbage**: `"- Submission Source: e2e-uat"` — the handler's parser mis-parsed the event text. My `submit_contribution` payload passed `"Plot ID": ""` and the parser evidently picked up the `Submission Source` label as the Plot ID. That corrupted the row — and why the Plots tab got no clean create.
+
+The chain up to the handler works (Evidence row landed via the anonymous webhook — proven again). The fault is in the **handler's parser** for empty Plot ID + the way the tool serializes fields. Let me check the parser logic in the deployed handler:
+
+
+### 🤖 Autopilot
+
+Now I can see the exact bug. Look at the Evidence row again:
+
+```
+Plot ID: "- Submission Source: e2e-uat"
+```
+
+The parser's `grab('Plot ID')` picked up `"- Submission Source: e2e-uat"` — because my submission's **"Plot ID" was empty**, so the parser's regex for Plot ID matched across into the next line's `- Submission Source:` field. The tool serializes fields as `Plot ID: ` (empty) then a newline then `Submission Source: e2e-uat` — and the regex `Plot ID: (.+)` grabbed everything up to the next newline that has a label... actually it grabbed the next bullet. Let me check the `grab()` regex to confirm and fix:
+
+
+### 🤖 Autopilot
+
+The sed ranges missed — let me find the actual function names in the file:
+
+
+### 🤖 Autopilot
+
+The E2E found a **real bug** — the chain works up to the Evidence tab (my submission landed, proving the anonymous webhook + handler execute) but broke in two ways:
+1. **Plot ID parsed as `- Submission Source: e2e-uat`** — the empty `Plot ID` in my submission got glued to the next field and the parser's `grab('Plot ID')` captured the garbage
+2. **No row in SunMint Plots** — the upsert didn't create the plot row
+
+Let me read the full upsert body + the tracking tab to see exactly where it failed:
+
+
+### 🤖 Autopilot
+
+The E2E found a **real bug** — the chain works (Evidence row landed via the anonymous webhook — proving dispatch → @39 → GAS execution again) but **no Plots row was created**, and the Evidence Plot ID is garbage (`- Submission Source: e2e-uat`) from the empty-Plot-ID parse. Let me read the main function body to see exactly where the upsert is (or isn't) reached:
+
+
+### 🤖 Autopilot
+
+E2E verdict is in — **it caught two real bugs.** Let me confirm the key one (deployment version pinning) before reporting:
+
+
+### 🤖 Autopilot
+
+E2E verdict is in — **the test caught a real deployment-pinning bug.** Here's the honest result:
+
+## E2E test results
+
+### What worked ✅ (proven again)
+The **full chain executes**: my submission (22:42:54) → Edgar → dispatch → anonymous @39 webhook → GAS handler ran → **Evidence tracking row landed** in "Farm Boundary Evidence":
+```
+Edgar_20260901224254_010 | Lote Teste E2E Plotfirst | gps_walk | e2e-test-plotfirst-20260901.jpg | TRUE | e2e-uat
+```
+
+### What failed ❌ — and why it matters
+1. **No row created in SunMint Plots** — the plot-first upsert did **not** run. The Evidence tab's Plot ID shows garbage (`- Submission Source: e2e-uat`) from the empty-Plot-ID parse.
+2. **Root cause: @39 is pinned to version 39 — the PRE-plot-first code.** My `clasp push` at 22:41 updated **HEAD only**; `clasp push` does **not** create a new version, and the `AKfycbyoFCTzId…` deployment still executes the **v39 snapshot** (created back when you re-deployed access — *before* PR #455 merged). So the anonymous webhook ran the **old** handler, whose upsert path doesn't create the plot-first row.
+3. Secondary: the empty `Plot ID` field in the tool path serialized such that the parser captured the next bullet — a hardening note for the submit tool, not the app (the real app omits Plot ID entirely and sends the plot text as Farm Name).
+
+### Proof of the pinning diagnosis
+- Under the new plot-first code, `plotId="- Submission Source: e2e-uat"` (truthy) → create branch → a Plots row with that garbage Plot ID would exist. It doesn't → the new code did not execute.
+
+## What's needed to finish the E2E
+
+1. **Bump the GAS version + repoint @39** — `clasp version` (creates v40 with plot-first code) then update the `AKfycbyoFCTzId…` deployment to v40 in the GAS UI (Deploy → Manage deployments → edit → Version 40). This is the piece your "actual deployment anonymous people execute" note was really about — pinning matters.
+2. **Re-run the E2E** — fresh submission → expect Evidence row + **Plots row with auto Plot ID (`PL-001`), empty Farm ID, Plot Name = "Lote Teste E2E Plotfirst"**
+3. (Optional hardening) make `grab()` skip empty-label captures so the tool path can't misparse.
+
+Want me to run `clasp version` now (creates the v40 snapshot — no execution change until you repoint @39 in the UI, or I can attempt the repoint via API if it's scriptable)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /opt/truesight_autopilot/context/tokenomics 2>/dev/null && echo "=== git state ===" && git log --oneline -3 && git pull --ff-only -q 2>&1; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== how; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== gra; …(+4 more)
+• `gas deploy project` → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260901T224218Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md
+• `submit contribution` → Contribution submitted successfully.
 
