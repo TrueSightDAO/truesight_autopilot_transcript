@@ -4058,6 +4058,7 @@ Ping me with "go" and I'll build PR2.
 ### 🤖 Autopilot
 
 Go received — building PR2 (daemon core). First, let me verify the upload script's exact CLI signature so the daemon calls it correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4239,4 +4240,65 @@ So the terminology becomes:
 The one honest wrinkle: the current names are farm-scoped (`farm-media-daemon`, `FARM_MEDIA_MANIFESTS`, `farm-media-raw`). If "Media Archives Pipeline" is the umbrella, the farm-specific names read as the first namespace rather than the whole system — which is fine, but worth documenting deliberately rather than letting it drift.
 
 Want me to write the Terminology section into the plan doc + DESIGN.md locking this in — **MAP (Media Archives Pipeline)** as the umbrella, with queue / daemon / manifests / source-namespaces as the fixed vocabulary, and a note that "farm-media-*" names are the farm namespace under it? Then any Sophia (or future thread) picks up the same words.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] can we make sure that this terminology is propogated across agentic_ai_context?
+
+
+### 🤖 Autopilot
+
+Let me find every reference to the pipeline in agentic_ai_context so the terminology propagates everywhere consistently.
+
+
+### 🤖 Autopilot
+
+Terminology propagation — let me read the exact current text in the key files so the edits are precise.
+
+
+### 🤖 Autopilot
+
+The terminology should propagate through the key reference docs. I'll add a **Terminology (MAP)** block to the pipeline runbook, the daemon plan, the manifests README, and the index note — one PR:
+
+
+### 🤖 Autopilot
+
+PR #872 opened — merging (Gary explicitly asked to propagate this terminology):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — MAP terminology propagated across agentic_ai_context ✅
+
+**PR merged:** [#872 — Propagate Media Archives Pipeline (MAP) terminology across context](https://github.com/TrueSightDAO/agentic_ai_context/pull/872) — sha `c1c57c04`.
+
+**What changed (4 files, now on agentic_ai_context main):**
+
+| File | Change |
+|---|---|
+| `FARM_MEDIA_PIPELINE.md` | New **"Terminology — Media Archives Pipeline (MAP)"** section at top: MAP = umbrella (capture → process → archive → manifest → query for ANY DAO media); source namespaces (farm-media = first, event-media future); queue / daemon / manifests defined; **distribution ≠ archive** (Instagram/shop are consumers, not the pipeline); legacy `farm-media` names = first namespace, no renames |
+| `plans/FARM_MEDIA_DAEMON_PLAN.md` | Purpose block now names the daemon as the **upload stage of MAP** |
+| `FARM_MEDIA_MANIFESTS/README.md` | Framed as MAP's farm-media namespace; manifests = reference layer |
+| `FARM_MEDIA_MANIFESTS/index.json` | Note updated to reference MAP |
+
+**Why this is the settled vocabulary:** "Media Archives Pipeline" vs "media pipeline" — the *archives* framing is what distinguishes it from posting/distribution (Instagram, shop pages), which are consumers of the archive, not the pipeline itself. Now every Sophia reading any of these docs gets the same terms: **MAP (umbrella) → source namespaces → queue → daemon → manifests**.
+
+---
+
+**RESUME HERE → next unit (pick one):**
+1. **PR3 (daemon): wire to Cleide's real inbox (UAT-lite)** — create `/home/ubuntu/farm_media_inbox/cleide/` with sidecars, write `farm_media_daemon_config.yaml`, run `--once` against 1 real pending video, verify yt_id, then install systemd + retire ad-hoc uploader PID 105025
+2. **Media-pipeline dashboard** (the `sophia.truesight.me/media-pipeline` idea) — park as a plan-doc roadmap item or start spec
+3. Anything else on the farm pages / SunMint
+
+Ping me with "go" (PR3) and I'll wire the daemon to Cleide's inbox.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #872 on agentic_ai_context merged successfully (sha: c1c57c04fe25b55ab258494c0e5681c2c4536e4e). Pull Request successfully merged
 
