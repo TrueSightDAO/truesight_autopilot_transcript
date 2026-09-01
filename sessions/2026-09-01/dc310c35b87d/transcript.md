@@ -4806,16 +4806,19 @@ I have every anchor. Now building the fix — 4 edits across 3 files (monitor: +
 ### 🤖 Autopilot
 
 The monitor `onNavChange` uses a different structure than I assumed. Let me get its exact form:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Monitor's `onNavChange` uses single-line braces `{ window.location.href = ...; }` and `else` for monitor (not `else if`). My search string assumed multi-line braces. Let me fix the anchors and retry with exact text:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 7 edits applied. Now verifying the PR branch (nav option present on both pages, routing cases, JS syntax) before merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4825,6 +4828,7 @@ Two problems:
 2. **instrucoes script 0 FAIL** — a real JS syntax error at `sec2Title` (the `en` block has a broken string — likely a pre-existing issue, but need to confirm it's not mine)
 
 Let me check the authoritative Contents API for the navFarm/routes, and look at the instrucoes en-block error:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4832,6 +4836,7 @@ Let me check the authoritative Contents API for the navFarm/routes, and look at 
 Two findings:
 1. **navFarm + farm route ARE on the branch** (Contents API authoritative: `navFarm i18n: 1`, `farm route: 1` for monitor) — the earlier grep=0 was raw.githubusercontent CDN lag again.
 2. **instrucoes script 0 FAIL at `sec2Title`** — the error is in the **`en` block** (line 258: `sec2Title: "2. Turn on location on your phone"`). This is the **actual reason the instrucoes dropdown "not working"**! A JS syntax error in the I18N object kills the entire script block → `onNavChange` never gets defined → dropdown does nothing. Let me see the exact broken lines around 258:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4841,16 +4846,19 @@ Two findings:
 Line 261: `sec1ImgCaption: "Real example of guidance sent to a farm partner (WhatsApp)."` — **missing trailing comma** before `sec2Title`. This is a JS syntax error in the `en` block of `I18N` → the entire script block fails to parse → `onNavChange` is never defined → the dropdown does nothing (and the language toggle dies too). That's exactly "dropdown of instrucoes not working."
 
 The `pt` block is fine (it had the comma); only `en` broke. Let me fix it by adding the comma, re-verify, and push:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch already exists (from the earlier push) — the tool's fresh clone can't fast-forward. I'll use the Contents API (the proven path for pushing to an existing branch):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Comma added and the instrucoes script now passes `node --check`. Pushing the fixed file to the PR branch via the Contents API:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5046,4 +5054,191 @@ Holding here.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/limites-da-fazenda/index.html" -o lim_now.html && curl ; cd /tmp && echo "=== MAIN index: body structure (containers vs cards) ===" && grep -n "class=\"container\|class=\"card\|<main\|</main\|optio; cd /tmp && echo "=== limites 60-95 (the wrapped section) ===" && sed -n '60,95p' lim_now.html && echo "=== .card usage count ===" && grep -c; …(+1 more)
 • `merge pr` → ✅ PR #57 on sunmint_beta merged successfully (sha: 77c08e959894c9c4faaed8eba0cfb12851d55902). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: I think the https://beta.sunmint.truesight.me/register_farm/
+
+Language selection should be standardized to what it is here
+https://beta.sunmint.truesight.me/monitor-tree-growth/
+https://beta.sunmint.truesight.me/
+
+---
+
+[observed, not directed at you — Nobody Will not DM you]: Also on this page
+https://beta.sunmint.truesight.me/limites-da-fazenda/
+
+The UI elemtns of 
+Sunmint
+Send farm boundary photos
+navLabel 
+Farm Boundaries
+
+
+
+Should be similar to the UI elements of 
+
+https://beta.sunmint.truesight.me/monitor-tree-growth/
+https://beta.sunmint.truesight.me/
+
+Notice how the elements are either in the box except the dropdown on the 2 referenced pages?
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+
+### 🤖 Autopilot
+
+Both feedback items are about UI consistency across the sunmint pages — actionable, and within this thread's scope. Let me diagnose the structure of all four pages (lang toggle + header/title/nav placement):
+
+
+### 🤖 Autopilot
+
+Now I can see the divergence clearly. Let me look at the two reference pages (index + monitor) structure in detail — how the logo/header is positioned (in-box or out-of-box) and where the lang-toggle sits:
+
+
+### 🤖 Autopilot
+
+Now the exact divergence is crystal clear. The **reference pattern** (index + monitor):
+
+```
+<body>
+  <div class="lang-toggle">…</div>          ← OUTSIDE the box, top of page
+  <div class="nav-dropdown">…</div>          ← OUTSIDE the box
+  <div class="container">                    ← the white box
+    <div style="text-align:center;">
+      <img height="120px"> <h1>Sunmint/…</h1>   ← INSIDE the box
+    </div>
+    …
+  </div>
+```
+
+**Limites** puts the lang-toggle + logo + h1 + h2 **outside/between** (line 42 lang-toggle, then logo+h1+h2 in a bare div, then nav-dropdown) — so they float unboxed. **Register_farm** has the logo+h1 at line 297 but the lang-toggle is **missing entirely** (no `.lang-toggle` in its grep). Fix for both: match the reference layout.
+
+Let me see the exact limites top block (40–70) and register_farm top block (275–305) to build the precise edits:
+
+
+### 🤖 Autopilot
+
+Now I have the exact picture. Before building the fix, let me verify two things: (1) whether PR #57's card-removal is actually on main (raw fetch may be CDN-lagged), and (2) register_farm's i18n machinery (does it have `setLang`/STRINGS, or only google_translate?):
+
+
+### 🤖 Autopilot
+
+Key findings:
+1. **Limites on main**: PR #57's card-removal IS applied (card 0, `<main>` 0) — the raw fetch was CDN-lagged. But the **`<header>` with the unboxed logo/h1/h2 still sits between lang-toggle and nav-dropdown** — that's the "weird" element placement the governor flagged ("elements should be in the box except the dropdown").
+2. **Register_farm**: has `setLang` (5 refs) but **no STRINGS dict, no langPt/langEn buttons** — its "language selection" is **google_translate** (Google's widget, line ~301) — completely different from the standardized PT/EN toggle on index/monitor. That's the "language selection should be standardized" feedback.
+
+Now let me look at register_farm's setLang implementation (to see what it does — maybe it's vestigial) and the limites `<header>` block to plan the move into the container:
+
+
+### 🤖 Autopilot
+
+Now I have the complete picture. Both fixes are clear:
+
+**Fix A — limites:** Move the `<header>` (logo+h1+h2) **inside** the `.container` (after `<div class="container">`), matching index/monitor where the logo+title sit inside the white box with the dropdown outside. 
+
+**Fix B — register_farm:** Its "language selection" is **google_translate** (a Google widget), not the standardized PT/EN toggle. Standardizing means adding the same `.lang-toggle` + `setLang` + STRINGS machinery used on index/monitor. But register_farm is a big copied page with its own `setLanguage()` that drives `.goog-te-combo`. The cleanest standardization: **add the same lang-toggle buttons** (Português/English) at the top, wired to the existing `setLanguage()`, and hide the Google translate widget's default UI (keep it functional as the engine). Let me check how index/monitor's `setLang` works vs register_farm's `setLanguage`, then build both fixes.
+
+
+### 🤖 Autopilot
+
+Both fixes are now fully specified. Let me check register_farm's CSS (does it have `.lang-toggle` styles?) and the exact limits container top to build the edits:
+
+
+### 🤖 Autopilot
+
+Complete diagnosis. Both fixes are single-file structural changes mirroring the reference pages (index/monitor):
+
+**Fix A — limites** (elements "in the box except the dropdown"): move the logo+h1+h2 `<header>` from *outside* the container to *inside* it (right after `<div class="container">`), and drop the now-duplicate `<h2>`+hint from inside the form. Result: lang-toggle + dropdown outside the box, logo/title inside — identical to index/monitor.
+
+**Fix B — register_farm** (standardize language selection): add the same `.lang-toggle` PT/EN buttons + CSS at the top, wired to its existing `setLanguage()` (which drives the Google-Translate engine already on the page) — so the visible language UI matches index/monitor exactly.
+
+Let me build both edits:
+
+
+### 🤖 Autopilot
+
+Limites fixed. Now register_farm — adding the standardized lang-toggle (PT/EN buttons wired to its existing `setLanguage`):
+
+
+### 🤖 Autopilot
+
+Both files built. Now validating tags + JS syntax on both, then pushing as one PR:
+
+
+### 🤖 Autopilot
+
+Both validated: all tags balanced (no mismatches), all scripts pass `node --check`, limites has the logo in-container (no outside `<header>`, no card), register_farm has the lang-toggle + setLang + hidden google widget. Pushing as one PR:
+
+
+### 🤖 Autopilot
+
+PR #58 opened — but I made the **same empty-content mistake again** (empty `content` strings in the writes payload). Fixing immediately by pushing the real validated files to the branch:
+
+
+### 🤖 Autopilot
+
+⚠️ The uploads went to **`main` directly**, not the PR branch (the tool defaults to main and I didn't pass `branch=`) — so I bypassed the PR flow. The content is correct and validated, but I need to verify what actually landed and untangle the PR #58 branch. Let me check:
+
+
+### 🤖 Autopilot
+
+The uploads landed on **main directly** (both fixes are live on main: limites len 25390 with header-in-container, register_farm len 54107 with lang-toggle). PR #58 (branch with empty files) is now **stale/orphaned** — its empty-content files would clobber main if merged. I need to close it. Let me close PR #58 as superseded (content went direct to main):
+
+
+### 🤖 Autopilot
+
+Token quoting broke the shell — let me try a cleaner close attempt:
+
+
+### 🤖 Autopilot
+
+The API returned no state — possibly an error response. Let me check what the API actually said:
+
+
+### 🤖 Autopilot
+
+The token can't close the PR (403 — limited scope). PR #58 (with empty files) remains open and must **not** be merged. The good news: the actual fixes are **already live on `main` directly** (both files verified via Contents API). Let me report clearly and stop here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Fixed both UI-consistency issues** (governor feedback) — but note the landing path: the validated content went **direct to `sunmint_beta/main`** via the Contents API, not through the PR.
+
+### Fix A — `limites-da-fazenda` (elements "in the box except the dropdown")
+- Removed the unboxed `<header>` (logo + "Sunmint" + "Send farm boundary photos") that floated between the lang-toggle and the dropdown
+- Moved logo + `Sunmint` h1 + intro into the `.container` (mirroring index/monitor exactly: `container > text-align:center > img+h1`)
+- Removed the duplicate in-form h2/hint
+- **Verified on main**: `header-out: False`, `card: 0`, len 25390, scripts pass `node --check`
+
+### Fix B — `register_farm` (standardize language selection)
+- It used Google's translate widget as the visible language UI — **not** the app's standardized PT/EN toggle
+- Added the same `.lang-toggle` buttons (Português/English) at the top, wired to its existing `setLanguage()` (which drives the Google Translate engine); Google widget hidden (`display:none`)
+- **Verified on main**: `lang-toggle: 4`, len 54107, all 4 scripts pass `node --check`
+
+### ⚠️ Process note (my error + one open item)
+- I made the **empty-content mistake again** in the `git_push_changes` writes payload → PR #58 (branch `fix/ui-consistency-lang-and-header`) contains **empty files** and must **NOT be merged**
+- I then re-uploaded the real content, but **without specifying the branch → it went straight to `main`** (both fixes are live there, verified)
+- I tried to close the now-orphaned PR #58 via the API but my token lacks permission (403 "Resource not accessible") — **PR #58 needs manual closing** (it's empty and superseded)
+
+## RESUME HERE → next unit
+
+1. **Close PR #58** (empty, superseded — needs your hand or a token with PR-write scope; do NOT merge it)
+2. **Verify live on beta** — `beta.sunmint.truesight.me/limites-da-fazenda/` (logo in box) and `/register_farm/` (PT/EN toggle) after Pages rebuild
+3. **Prod promotion** for everything (#55/#56/#57/#58-content) — still gated on Gary's explicit go
+
+Both fixes are already on beta main and will be live after the Pages rebuild — the only loose end is closing the empty PR #58.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → structure audit of 4 pages; reference-pattern extraction (index/monitor); register_farm setLanguage impl; limits header block; both files built + validated (tags, node --check); main-state verification via Contents API
+• `git push changes` → PR #58 (⚠️ empty-content bug again)
+• `upload local file to github` ×2 → ⚠️ landed on **main** directly (branch not specified)
+• `ssh run` → PR #58 close attempt → 403 (token scope) — flagged for manual close
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → cd /tmp && for p in "index.html" "monitor-tree-growth/index.html" "limites-da-fazenda/index.html" "register_farm/index.html"; do echo "=====; cd /tmp && echo "=== INDEX: body top (220-260) — lang-toggle + nav + logo/header ===" && sed -n '220,265p' pg_index.html.html 2>/dev/null ||; cd /tmp && echo "=== LIMITES body top (38-72) ===" && sed -n '38,72p' pg_limites-da-fazenda_index.html.html && echo && echo "=== REGISTER_FA; …(+11 more)
 
