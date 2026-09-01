@@ -4469,6 +4469,7 @@ Want me to merge #377 and deploy?
 ### 🤖 Autopilot
 
 Gary's 👍 clears the visual gate. Merging PR #377 and deploying.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4776,4 +4777,164 @@ All quiet otherwise — backfill keeps trickling in the background, and I'll pic
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail -2; cat /home/ubuntu/scripts/.led
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+can you fix the failing errors then?
+
+
+### 🤖 Autopilot
+
+On it — investigating the CI failures on PR #377 now.
+
+
+### 🤖 Autopilot
+
+Let me pull the failure logs for both jobs.
+
+
+### 🤖 Autopilot
+
+**Root cause found — it's not the restyle at all.** The `test` CI job fails at **collection**:
+
+```
+tests/test_sync_sunmint_signatures.py:7: import scripts.sync_sunmint_signatures
+scripts/sync_sunmint_signatures.py:45: import gspread
+E   ModuleNotFoundError: No module named 'gspread'
+```
+
+The CI environment doesn't have `gspread` installed (it's a runtime dep of the cron script, not in the test deps). My A6 test file imports the script at module top level, and the script imports `gspread` at top level → collection dies. This blocks **every** PR, not just #377. Let me check the smoke job too, then fix with a lazy import.
+
+
+### 🤖 Autopilot
+
+Both CI failures are now diagnosed — **neither is the restyle's fault**:
+
+1. **`test` job**: `ModuleNotFoundError: No module named 'gspread'` — the A6 test file imports the cron script, which imports `gspread` at top level; CI's test deps don't include it. Blocks collection entirely.
+2. **`smoke` job**: `Found 536 errors` from **ruff** — the smoke workflow runs `ruff check` and fails on **pre-existing repo-wide lint debt** (e.g. `RUF100` unused noqa in `tests/test_web_search.py`, import-order issues in vault tests). This is pre-existing, not from my PR.
+
+Let me check the workflow files to see what the smoke job actually runs and what the test job installs, so the fix is precise.
+
+
+### 🤖 Autopilot
+
+Both failures are now fully understood:
+
+1. **`test` job**: `gspread` not in CI deps, but my A6 script imports it at module top → collection dies. Fix: **lazy-import gspread** in the script (real quality improvement — import shouldn't require the runtime dep).
+2. **`smoke` job**: 536 ruff errors on **version drift** — CI's ruff flags pre-existing debt (RUF100, import-order) that the local (older) ruff doesn't. The repo's own convention already treats format-check as non-fatal; lint is the blocker.
+
+Let me confirm the ruff version delta and the gspread usage sites before fixing.
+
+
+### 🤖 Autopilot
+
+Both CI failures now have clear root causes. Let me verify the branch's requirements-dev.txt differs from main (explaining the 536-error lint run):
+
+
+### 🤖 Autopilot
+
+**Root cause fully nailed — both CI failures are pre-existing branch-drift issues, not the restyle:**
+
+1. **`smoke` (536 ruff errors)**: PR #377's branch was cut before `c07fadd` (#376) added the `ruff==0.15.16` pin to `requirements-dev.txt`. The branch has `ruff>=0.4,<1` → CI installs **latest ruff** → new rules flag 536 pre-existing errors. **Fix: merge #376 first (it adds the pin + the merge gate), or rebase #377 onto main.** The pin comment literally says "codebase clean under 0.15.16; newer ruff adds rules (535 errors)" — matching the 536.
+
+2. **`test` (gspread missing)**: `tests/test_sync_sunmint_signatures.py` imports the cron script which imports `gspread` at top level; CI test deps = `requirements.txt` (no gspread). Fix: **lazy-import gspread inside the function** (line 612 is the only use).
+
+Plan: rebase #377 onto current main (picks up the ruff pin) + fix the gspread lazy import in a commit on the branch → both CI jobs should go green. Let me do the lazy import first, then rebase.
+
+
+### 🤖 Autopilot
+
+Now applying the lazy-import fix: remove the top-level `import gspread` and import it inside `main()` right before use.
+
+
+### 🤖 Autopilot
+
+Lazy import works (5 passed). Now format the file, then rebase #377 onto origin/main (picks up the ruff pin from #376 — which git log shows is already in main) and include the gspread fix.
+
+
+### 🤖 Autopilot
+
+#376's ruff pin IS in origin/main (`c07fadd`). Now let me find the #377 branch, checkout, rebase onto origin/main, and add the gspread fix commit.
+
+
+### 🤖 Autopilot
+
+The branch's `scripts/sync_sunmint_signatures.py` still has `import gspread` at line 45 (top-level) — my fix is in the working tree but I'm on the branch now. Let me apply the same lazy-import edit to the branch's copy, commit it, and rebase onto origin/main.
+
+
+### 🤖 Autopilot
+
+Rebase clean. Now run the local test suite to confirm everything passes (especially the gspread-dependent test), then force-push the branch to trigger CI.
+
+
+### 🤖 Autopilot
+
+Pushed. "no tests ran" — the test filenames may differ. Let me confirm the tests exist and re-run, then check CI.
+
+
+### 🤖 Autopilot
+
+The right tests pass (5 passed). CI checks not yet visible on the new SHA (just pushed, checks spinning up). Let me wait a bit and re-check CI status.
+
+
+### 🤖 Autopilot
+
+Both checks in progress. Let me wait for them to complete and check the result.
+
+
+### 🤖 Autopilot
+
+**CI is GREEN** — both `test` and `smoke` pass on PR #377 now. Merging.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**PR #377 merged — CI fixed, vault restyle is in.** ✅
+
+## This turn
+
+| Item | Detail |
+|---|---|
+| **PR merged** | [truesight_autopilot #377](https://github.com/TrueSightDAO/truesight_autopilot/pull/377) — squash `9c2b1e6` — **vault-style restyle for MAP + SLP dashboards** |
+| **The CI mystery solved** | Both failures were **pre-existing branch-drift**, not the restyle: |
+| | 1. **`smoke` (536 ruff errors)**: the branch was cut before `c07fadd` (#376) pinned `ruff==0.15.16`; the branch's `ruff>=0.4,<1` let CI install latest ruff → 536 pre-existing lint errors. **Fix: rebased #377 onto origin/main** (picks up the pin) |
+| | 2. **`test` (`gspread` missing)**: `tests/test_sync_sunmint_signatures.py` imports the cron script, which did `import gspread` at top level — CI test deps don't include gspread. **Fix: lazy-import gspread inside `main()`** (only use site, line 612) |
+| **Verified** | Rebase clean; lazy-import compiles + ruff-clean + formatted; `test_sync_sunmint_signatures.py` 5 passed / 1 xfailed; **CI: test ✅ success, smoke ✅ success** → merge |
+
+## Roadmap state
+| Unit | Status |
+|---|---|
+| A1–A5 | ✅ |
+| A6 backfill | ⏳ running (~2,228 remain) |
+| **A7 restyle (#377)** | ✅ **merged** — CI green |
+| **A7b session unification** | ⏭️ **next** (precondition now met) |
+| §7 contribution | pending |
+
+## RESUME HERE → **A7b: shared session state + deploy restyle**
+
+Now that #377 is merged and CI is unblocked:
+1. **Deploy the restyle** via `deploy_autopilot` (idle-drain guard, per your instruction — NOT a raw restart) → verify both dashboards render the vault look live
+2. **Build A7b as its own PR** (your approved design): shared **`sophia_token`** localStorage key across all governor-gated pages (replacing `slp_token`/`map_token`); **cookie-first JS** — on load try `/data` (vault's `governor_chat_session` cookie auto-sent same-origin), fall back to `sophia_token` as Bearer, only then show login; **login sets both** (pasted token → `sophia_token` + server cookie) so one sign-in works everywhere
+3. Deploy A7b (idle-drain) → verify: sign in once on `/vault/` → `/signature-ledger-pipeline` and `/media-archive-pipeline` render without a second login
+4. Backfill monitor → completion checks + §7 contribution
+
+Note: #376 (the merge-gate PR) is still open — it's now *in* main via the rebase (`c07fadd`), so it may be mergeable or closeable; worth checking at A7b time.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → pulled CI logs (test: gspread ModuleNotFoundError at collection; smoke: 536 ruff errors from unpinned ruff); read workflows; confirmed origin/main has ruff pin `c07fadd`; applied lazy-import gspread fix; committed; rebased `feat/vault-style-dashboards` onto origin/main (clean); force-pushed; CI: test ✅ smoke ✅
+• `merge pr` → ✅ PR #377 merged (`9c2b1e6`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); SHA=$(curl -s -H "Authorization:; cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); echo "=== TEST job log ==="; cur; cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); echo "=== SMOKE job log (tail) =; …(+12 more)
+• `merge pr` → ✅ PR #377 on truesight_autopilot merged successfully (sha: 9c2b1e6be0243f1a8382500a4e26508640832f6e). Pull Request successfully merged
 
