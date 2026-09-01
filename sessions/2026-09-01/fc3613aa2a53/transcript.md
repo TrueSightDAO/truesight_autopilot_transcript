@@ -60,11 +60,38 @@ Now I can see it's a GPS coordinates screen. Let me get a cleaner read of the lo
 ### 🤖 Autopilot
 
 Getting clearer — this is the CEROTX Primary Cooperatives & Logistics app (map/coordinates screen). Let me try digit-focused OCR to nail the exact coordinates.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The image is a screenshot of the CEROTX Primary Cooperatives & Logistics app showing coordinates. Let me crop specific regions to nail down the exact numbers.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ocr_image — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: ocr_image, ocr_image — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -94,11 +121,13 @@ Here's what I found in the attached image:
 1. **Look it up** — if this relates to a known farmer/cooperative or a location in the DAO ledger, I can search for "CEROTX" / "CEPROTX" in the context.
 2. **Map it** — confirm whether -25.xx, -53.xx matches a known Agroverse/TrueSight partner site.
 3. Something else (e.g., it's a lead photo, a delivery record, etc.).
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No matches in the DAO context for CEROTX/CEPROTX — this appears to be an external logistics app, not a known DAO partner. Let me persist the attachment to the transcript so it's recallable later, per the attachment workflow.
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -249,11 +278,13 @@ Page 3 of 3
 ### 🤖 Autopilot
 
 This connects directly to the earlier screenshot — let me verify the context links before responding.
+[3 tool result(s) compacted: search_context, search_context, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This ties the earlier screenshot together — that "CEPOTX Central Hub" map I read was Altamira, not southern Brazil. Let me correct my earlier read and log the PDF properly.
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -303,31 +334,37 @@ Want me to:
 ### 🤖 Autopilot
 
 Let me dig into the transcripts to trace the compilation time.
+[3 tool result(s) compacted: search_transcript, search_transcript, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript search only surfaced my own summary notes. Let me read the actual session transcripts to trace the timeline of the PDF compilation.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcripts only show my attachment-processing timestamps. The actual compilation was done by another actor ("Nobody" per the status). Let me check the agents registry and look at the PDF's own metadata for a compilation timestamp.
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me examine the PDF metadata to trace the compilation timeline — I can see the two source PDFs (received 20:38) and the merged file (21:01).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sources arrived at 20:38 and the merged PDF at 21:01 — but I need the full timeline. Let me trace the source PDFs and any handoff notes about the compilation effort.
+[3 tool result(s) compacted: search_transcript, search_transcript, check_handoffs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the transcript repo for all of today's sessions and the agents registry to identify who did the compilation.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -425,4 +462,62 @@ Note: I did **not** find a compile script (the HTML was likely generated ad hoc 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → ls -la /tmp/tg_attachments/ 2>/dev/null | head -40; echo "---"; ls -la /tmp/tg_attachments/*.pdf 2>/dev/null; cd /tmp/tg_attachments && (command -v pdfinfo >/dev/null || sudo apt-get install -y poppler-utils >/dev/null 2>&1); echo "=== MERGED PDF (44; cd /tmp && rm -rf trscr && git clone --depth 1 https://github.com/TrueSightDAO/truesight_autopilot_transcript.git trscr 2>&1 | tail -2; echo; …(+15 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19273] Log your contribution and mine
+
+
+### 🤖 Autopilot
+
+I'll log both contributions. Let me first verify the canonical event format and check how contributions are recorded.
+
+
+### 🤖 Autopilot
+
+Let me check the TDG issuance conventions and how prior contribution events were logged, so I record these accurately.
+
+
+### 🤖 Autopilot
+
+Let me check how previous contribution events were structured in the ledger/transcripts.
+
+
+### 🤖 Autopilot
+
+Let me read the canonical DAO client contribution guide to get the exact submission format.
+
+
+### 🤖 Autopilot
+
+I'll log both our contributions per the DAO convention (Sophia's time split into raw execution + direct time; Gary's as his own event). Here's what I'm submitting — all estimates, TDG left at 0 (you haven't set economics for this):
+
+- **Sophia Truesight / 30 min — Raw machine execution** (OCR + enhancement passes on the screenshot, PDF extraction/logging, ~24 SSH forensics runs, transcript clones, file mtime/md5 checks)
+- **Sophia Truesight / 45 min — Direct time** (image interpretation + OCR correction cycles, PDF synthesis against DAO context, forensic timeline reconstruction)
+- **Gary Teh / 20 min — Direct time** (reviewing both analyses, requesting the compile-time forensics, directing the logging)
+
+
+### 🤖 Autopilot
+
+All three contribution events logged successfully. ✅
+
+## Contributions recorded
+
+| # | Contributor | Type | Amount | Description |
+|---|---|---|---|---|
+| 1 | **Sophia Truesight** | Time (Minutes) | 30 | Raw machine execution — OCR/enhancement on the screenshot, PDF extraction/logging, ~24 SSH forensics ops to reconstruct the compile timeline |
+| 2 | **Sophia Truesight** | Time (Minutes) | 45 | Direct time (engagement/analysis) — OCR correction cycles, PDF synthesis vs DAO context, forensic timeline reconstruction |
+| 3 | **Gary Teh** | Time (Minutes) | 20 | Direct time — reviewing analyses, requesting the compile-time forensics, directing logging |
+
+**Notes:**
+- All are **estimates** per the 2026-08-24 convention (raw execution vs direct time split for Sophia; governor's own event under Gary's name).
+- **TDG Issued: 0** on all three — you haven't set economics for this session; say the word if you want TDG awarded and I'll update or re-file.
+- Event docs confirmed: `Type` + `Amount` are the required fields; canonical labels matched.
+
+Anything to adjust (amounts, attribution, or a TDG award)?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×3 → Contribution submitted successfully.
 
