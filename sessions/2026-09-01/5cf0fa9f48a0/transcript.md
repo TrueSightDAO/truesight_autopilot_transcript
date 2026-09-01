@@ -1293,11 +1293,13 @@ The picture is now complete and important:
 - The daemon's daily budget is **6/day** — cleide's 65 pending would burn several days of budget
 
 Running the global daemon now would upload **other farms' videos before mine** (cleide has priority 2, and it processes in inbox order). The daemon logs show it already ran at 00:30 today (3 videos: IMG_4835-4837) — so it IS installed/running somewhere, or was run manually. Let me check if it's running as a service and confirm my 7848 transcode finished:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Critical finding: the farm-media-daemon is ALREADY RUNNING as a systemd service** (`farm-media-daemon.service`, active/running) — it watches all inboxes and has a 6/day budget. It saw my config edit (the daemon reads config on each pass) and is now aware of jedielcio — but with 65 cleide videos pending at priority 2 and my jedielcio at priority 1, and the daemon looping every 30s, **my videos WILL eventually get uploaded** (priority 1 means 1 video per pass per farm, and cleide's 65 at priority 2 = 2 per pass... actually the priority is the `limit` per pass). Let me check the daemon's log to see what it's doing right now — and whether it already picked up my sidecars:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1352,51 +1354,61 @@ The daemon **will** upload my videos automatically but at **1/day** because of c
 ### 🤖 Autopilot
 
 Good idea — the videos have farmers speaking Portuguese, and the original dossier was built from "transcription + Grok vision." Let me check what transcription tooling exists on this box (whisper etc.) and whether there's an existing pipeline I should reuse.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **faster_whisper is available** and the clips have AAC audio — so transcribing the Portuguese is feasible right on this box. Let me test transcription on the hero clip (IMG_7654, 15s) to prove the pipeline and see what Jedielcio actually says:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Transcription works — but the `base` model is weak ("MOA!" is almost certainly "Olha!" — *look!*). The cache has 680MB already — let me check if a bigger model is cached and use it for better Portuguese fidelity:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The **small model is cached (464MB)** — significantly better for Portuguese. Let me transcribe all 9 clips with `small` now. This is the heavy step — run it detached so it doesn't block the turn, writing transcripts to `/home/ubuntu/cvp/transcripts/`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Transcription launched (PID 137890, detached). While it runs, let me verify the earlier IMG_7848 transcode finished (needed for the daemon), and check the transcribe log:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **IMG_7848.mp4 is done and valid** (71.17s, matching the source — the earlier "moov not found" was just mid-write). All 4 MP4s are now complete and queued. The transcribe log is still empty (model loading takes a bit). Let me wait a moment and check transcription progress:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Transcription is progressing — IMG_7654 done (6 segs, pt), IMG_7830 in progress. Let me look at the better `small`-model transcript of the hero clip to compare with the weak `base` output, and let the batch continue:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Better — the `small` model reads: *"Aqui a verdade é diferente. Diferente. Nome? 651. Conta verde. Ok."* — which matches the dossier's "Ponta Verde" identification. This is usable field audio. Let me wait for the full batch to finish, then read all transcripts. The batch runs 9 clips through CPU whisper — let me give it time:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 8 of 9 done — IMG_7848 (the longest, 71s) is finishing. Let me read the full batch now and dump all transcripts together:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ALL 9 transcripts are done — and this is **gold**. The Portuguese audio confirms "more varieties surfaced today" and gives us direct farmer quotes for the blog. Let me check whether the daemon picked up the jedielcio queue since the 07:05 UTC quota reset:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1550,4 +1562,48 @@ PR #342 (post + 5 images) and PR #343 (index card) are both open. Merging the po
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → echo '=== current config inbox order ==='; python3 -c " import yaml c = yaml.safe_load(open('/opt/truesight_autopilot/media_archive_daemon_c; echo '=== find config ==='; find /opt/truesight_autopilot /home/ubuntu -maxdepth 3 -iname '*media*daemon*config*' -o -maxdepth 3 -iname '*da; for id in jmaZ92yXWM4 HLlM8mcoqaU SHmMBaA22bM VmP8btqNZmQ; do code=$(curl -s -o /dev/null -w '%{http_code}' "https://www.youtube.com/watch?v; …(+1 more)
 • `merge pr` → ✅ PR #342 on truesight_me_beta merged successfully (sha: 7d7b3fb4e0b529725d7060d304a70491a9506335). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] Alright, merge it, and then... [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Merging PR #343 (the index card) now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Merged — FS#9 index card is live
+
+**PR #343 merged** (sha `fd85a3f3`) → https://github.com/TrueSightDAO/truesight_me_beta/pull/343
+
+**What changed:** the blog grid now shows *"What floats is better: a field lesson in cacao fermentation"* (Field Signals · #9, Sept 1) at the top with the hero photo, excerpt, and date — right above FS#8.
+
+**Field Signals #9 is now fully live on beta.truesight.me/blog:**
+- Post → https://beta.truesight.me/blog/posts/what-floats-is-better-a-field-lesson-in-cacao-fermentation.html
+- 5 field photos + 4 YouTube embeds (all confirmed live)
+- Index card in the grid
+
+## RESUME HERE → next steps
+1. **Verify the beta render** — check the post page (images load, embeds play, captions) and the blog grid shows both #9 and #8 cards
+2. **Prod promotion** — on your "promote", I'll run `sync_beta_to_prod(truesight_me_prod)` to push both FS#8 and FS#9 to truesight.me (never without your explicit go)
+3. **Cleanup still open:** close PR #336 (SVG-only, superseded) manually on GitHub; append_to_transcript for the PDF + the 9 transcripts; optionally log a contribution for the media pipeline work (transcription + vision + daemon queue)
+
+**Not done:** beta render verification, prod promotion, transcript append, #336 close.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #343 on truesight_me_beta merged successfully (sha: fd85a3f3b94d060d96203ca69ed269c60d55806d). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #343 on truesight_me_beta merged successfully (sha: fd85a3f3b94d060d96203ca69ed269c60d55806d). Pull Request successfully merged
 
