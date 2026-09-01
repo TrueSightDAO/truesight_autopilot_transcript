@@ -5040,16 +5040,19 @@ All functions landed correctly (my check string was just wrong). Now wiring the 
 ### 🤖 Autopilot
 
 Limites done (all checks True). The other pages failed on missing `import re` — but I also need to remove the **route lines** (`/register_farm/`) from their `onNavChange` too. Redoing all three:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 4 pages cleaned. Now removing the `register_farm/` directory + updating the regression test (remove register_farm page + farm option), then validating everything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 7 tests pass, all pages validate (tags + JS). The `register_farm` string still appears once in the test (the module docstring header mentions all 5 pages). Let me fix that docstring + run the full hard-rule suite (compile/ruff/format) before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5216,4 +5219,113 @@ Merged ✅ — stopping here per the one-PR-per-turn rule (the beta-live verific
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #63 on sunmint_beta merged successfully (sha: fca602d23d4d2a1c581e97f1eb1698e1c85ae52d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — verify beta live.
+
+
+### 🤖 Autopilot
+
+Go — verifying beta live. Checking all four changes on the live beta site:
+
+
+### 🤖 Autopilot
+
+Live beta still shows the old page (capture present, no new functions) — this is the Pages rebuild lag again. Let me confirm main is correct vs what the live site serves:
+
+
+### 🤖 Autopilot
+
+Main has the fix (uploadBoundary ×8, register_farm 0) but **`capture="environment"` is still present on main (1)** — my local edit may not have dropped it. Let me check the actual input line on main and the Pages build state:
+
+
+### 🤖 Autopilot
+
+**Critical catch:** `main` still has `capture="environment"` — my local "remove capture" edit never actually landed in the pushed file. Let me check my local build and compare:
+
+
+### 🤖 Autopilot
+
+**Honest finding:** my "drop `capture="environment"`" edit never made it into the local build either — the file still has it on line 111 in both local `/tmp/sb5` and `main`. So the file-picker task (governor task 1) is **not actually done** — the PRs (#63/#64) shipped the submit fix + register_farm removal, but the capture attribute survived (my earlier edit must have missed it during the line-surgery).
+
+The live beta verification also can't be completed cleanly: the Pages-build API 404s (builds not exposed) and the live page shows old content (lag). Let me fix the capture attribute properly now — one focused edit to `main` (this is the actual governor-requested change, and it's a single-line, low-risk change to the same line):
+
+
+### 🤖 Autopilot
+
+Capture removed locally. Now validating + pushing this fix to main (small single-line change via the Contents API, same pattern as before):
+
+
+### 🤖 Autopilot
+
+All validations green (tags balanced, JS OK, capture gone). Pushing the capture fix to main — this is a genuine governor-requested change (task 1), and it rides on the same content already merged in #63, so I'll open a small PR rather than bypass:
+
+
+### 🤖 Autopilot
+
+PR #65 opened — now pushing the real validated file over the placeholder:
+
+
+### 🤖 Autopilot
+
+Real file on the branch. Verifying it's correct, then merging PR #65:
+
+
+### 🤖 Autopilot
+
+Branch file correct (capture 0, uploadBoundary 3 — hmm, main had 8 refs; let me confirm the file isn't missing the new functions, then merge):
+
+
+### 🤖 Autopilot
+
+Branch matches main except the removed `capture` attribute (22-byte delta = exactly the attribute; all functions identical). Merging PR #65:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Caught and fixed a real miss from PR #63 + verified the beta state.**
+
+### The catch
+The governor's task 1 (local file picker) was **not actually done** by PR #63 — my earlier edit never dropped `capture="environment"` (it survived in both the local build and main). The live-beta verification exposed it: the photo input still forced camera-only.
+
+**PR #65 — https://github.com/TrueSightDAO/sunmint_beta/pull/65** (merged, sha `5f6752b6`): dropped `capture="environment"` from the limits photo input → now `accept="image/*,video/*" multiple` — browsers offer gallery/local files (camera still available on mobile).
+
+### Verified before merge
+- Branch file == main except the 22-byte capture attribute (all functions identical: uploadBoundary 3, flushBoundaryQueue 3, buildBoundaryShareText 2, submitBoundary 2)
+- Tags balanced, both inline scripts pass `node --check`
+- capture refs 0 on branch
+
+### Beta-live verification status (incomplete — Pages lag)
+- Main is **authoritative and correct**: submit-online fix present (uploadBoundary ×3), register_farm nav gone (0 refs), capture now dropped
+- **Live `beta.sunmint.truesight.me/limites-da-fazenda/` still serves the OLD page** (capture present, no uploadBoundary) — Pages rebuild lag; the builds API 404s so I can't watch it directly
+
+## RESUME HERE → next unit (fresh turn)
+
+1. **Re-verify beta live** once Pages rebuilds — limits: capture gone (local files selectable), submit sends immediately online, nav has no "Registrar Fazenda", `/register_farm/` 404s
+2. **Prod promotion** (#55–#65) — gated on Gary's explicit go
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → live vs main comparison (capture survived on main — the catch); local fix applied (capture 1→0); tags + JS validated; branch pushed (PR #65); branch-vs-main function diff (identical minus 22-byte attribute); mergeable checked
+• `git push changes` → PR #65 (placeholder→real flow)
+• `upload local file to github` → real file to branch (sha 284c2c58)
+• `merge pr` → ✅ PR #65 merged (sha 5f6752b6742c4767ec3f4cfc1d3a7cf3d5d39788)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && echo "=== 1. limites file input (capture removed?) ===" && curl -s "https://beta.sunmint.truesight.me/limites-da-fazenda/" -o lim; cd /tmp && echo "=== main (authoritative) limites ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/limites-d; cd /tmp && echo "=== main input line ===" && grep -n 'type="file"' lim_main.html && echo && echo "=== main capture context ===" && grep -n '; …(+5 more)
+• `merge pr` → ✅ PR #65 on sunmint_beta merged successfully (sha: 5f6752b6742c4767ec3f4cfc1d3a7cf3d5d39788). Pull Request successfully merged
 
