@@ -998,6 +998,7 @@ Note: the full 73-pair diff log is at `/tmp/pr2_dryrun2.txt` on the box — read
 ### 🤖 Autopilot
 
 Resuming at PR3 — the hard review gate. Let me re-read the plan's PR3 spec and merge PR2 (#264) in parallel.
+[2 tool result(s) compacted: read_context_file, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1047,16 +1048,19 @@ Merge attempt failed this turn — no PR was actually merged. Stopping here per 
 ### 🤖 Autopilot
 
 Resuming: merge PR #264, then PR3 sample. Let me check PR #264's mergeability and sync the work clone.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 gh view rejected the unknown field. Retrying with only valid fields.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #264 is now **CLOSED** — I need to check whether it was merged or just closed. Let me verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1293,4 +1297,65 @@ All diffs are **live-fetched** (via `videos.list`, not self-reported). NEW text 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp/agroverse_shop_work && ls -la /tmp/pr2_dryrun2.txt 2>&1; echo "=== grep for Fili Marsh in dryrun log ==="; grep -n "Fili" /tmp/pr2_d; cd /tmp/agroverse_shop_work && echo "=== full dryrun log (first 60 lines) ==="; head -60 /tmp/pr2_dryrun2.txt; echo; echo "=== count ==="; g; cd /tmp/agroverse_shop_work && python3 -c " import json d = json.load(open('scripts/youtube_videos.json')) # find witch plume entry and a co; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] [Handoff context — this Telegram topic (thread 18528) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go — proceed to PR3, post the 5 before/after samples here.
+
+
+### 🤖 Autopilot
+
+PR3 sample was posted at the end of last turn, but I'll post it cleanly again here so it's unambiguous in the topic — this is the **hard review gate**; no live push happens until you approve.
+
+## 🛑 PR3 — Review Gate: Before/After Sample (5 pairs)
+
+All diffs are **live-fetched** via the YouTube Data API (`videos.list`), not self-reported. **NEW** = what's in `youtube_videos.json` (PR1, merged) and ready to push via the PR2 script (merged, `youtube_update_video_descriptions.py`). **Nothing has been pushed to YouTube.**
+
+---
+
+**1️⃣ `33nwH67UIag` — Bean to Bliss Episode 12** *(worst offender: garbled ASR intro)*
+| | Title | Description |
+|---|---|---|
+| OLD | `Bean to Bliss episode 12_Full HD 1081 \| Agroverse` | `...being the police, episode 12. Ehh, show! Previously, we explored how...` (1041 ch) |
+| NEW | `Bean to Bliss — Episode 12 (video & transcript) \| Agroverse` | Cleaned: *"Previously, we explored how cacao nibs were created... Today, we'll finally bring the cacao nibs across the U.S. border... We are at U.S. border customs... And we officially cleared customs."* + 📝 full story link `…/post/bean-to-bliss-episode-12` + hashtags (1010 ch) |
+
+**2️⃣ `E_tWVoMJBLw` — Bean to Bliss Ep 10 TikTok** *(the "Fili Marsh" misheard name)*
+| | Title | Description |
+|---|---|---|
+| OLD | `Bean to Bliss episode 10 - TikTok \| Agroverse` | `Oh look at this! Cocoa has to be put in the wooden box. Okay, well. Ferme...` (533 ch) |
+| NEW | `Bean to Bliss — Episode 10 — TikTok (videos & transcript): Export: Full HD 1080p \| Agroverse` | Cleaned, **but still contains "Fili Marsh"** — ⚠️ that phrase exists verbatim in the live blog post (`post/bean-to-bliss-episode-10`); PR1 achieves exact blog-parity so it's preserved. **Your call:** fix the blog too (separate task) or accept parity. (683 ch) |
+
+**3️⃣ `NKiGfjYMiK4` — Witch plume fungus** *(ASR spelling fix)*
+| | Title | Description |
+|---|---|---|
+| OLD | `Project 04-30_Full HD 1081 \| Agroverse` | `Since the 80s, Kakao in Brazil started getting affected by the witch plume fungu...` (502 ch) |
+| NEW | `Since the 80s, cacao in Brazil started getting affected by the witch plume fungus \| Agroverse` | Cleaned: *"...affected by the witches' broom fungus... locals invented the Hossman grafting technique..."* (562 ch) |
+
+**4️⃣ `yyeN2dWv6dU` — B2B ep 10 TikTok part 2** *(typical: raw filename → readable)*
+| | Title | Description |
+|---|---|---|
+| OLD | `B2B ep 10 - tiktok part 2 \| Agroverse` | `Now we head up to the sun drying section. It is on the roof of this building. Bok...` (470 ch) |
+| NEW | `Bean to Bliss — Episode 10 — TikTok (videos & transcript): B2B ep 10 — TikTok part 2 \| Agroverse` | Cleaned: *"Now we head up to the sun-drying section... dried under the sun for seven days to enhance their aroma."* + 📝 `…/post/bean-to-bliss-episode-10` + hashtags (603 ch) |
+
+**5️⃣ `KK5m2n9eQHs` — Jedielcio "Viva!" at Santa Anna** *(typical: thin clip → branded)*
+| | Title | Description |
+|---|---|---|
+| OLD | `Jedielcio shouts "Viva!" with pride...` (live clip caption) | `Jedielcio shouts "Viva!" with pride after discussing reforestation...` (181 ch) |
+| NEW | `Jedielcio Cheers: Viva! at Santa Anna \| Agroverse` | Branded footer: 🌐 agroverse.shop + 📜 transcript note + hashtags (227 ch) |
+
+---
+
+**Facts for your decision:**
+- **73/73** videos get a real diff (0 skips, 0 errors in the dry-run) — every description is cleaned + Grok-polished via the blog pipeline, ≤4900 chars
+- **27 videos** get a **per-episode blog-post link** in the footer; **46** fall back to the homepage (no blog post exists for those clips)
+- PR4 pushes **descriptions only** — titles are a separate later step (PR5), untouched here
+
+**Two decisions needed before I push live:**
+1. **"Fili Marsh" blog-parity** — accept as-is (matches blog), or also schedule a blog fix?
+2. **Homepage fallback for 46 clips** — acceptable, or prefer no link for those?
+
+Say **"go / approved"** (optionally with answers to ① and ②) and I'll proceed to PR4 (live push via the merged script). **Stopping here — nothing live yet.**
 
