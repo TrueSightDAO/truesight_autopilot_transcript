@@ -4931,6 +4931,7 @@ The data shows the key clue: plots have `farm_id` but **`farm: None`**, and LD-P
 ### 🤖 Autopilot
 
 The simulation reveals the bug clearly. For **Paulo La Do Sitio Para**, the filter correctly finds 1 plot with **8 media** — so the page *should* render them. But Gary sees "No boundary media recorded for this farm yet." Let me check the actual live page behavior — maybe the issue is the `plots/index.geojson` in the **sunmint** repo on main vs what the app fetches, or a JS runtime error. Let me test the actual live page's fetch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5075,4 +5076,61 @@ I meant Google Calendar event
 
 Ah, you meant a **Google Calendar event**, not an email — let me find whether there's a calendar mechanism after all (GAS CalendarApp script, or a calendar-scoped credential):
 [2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Ah, you meant a **Google Calendar event**, not an email — let me find whether there's a calendar mechanism after all (GAS CalendarApp script, or a calendar-scoped credential):
+[2 tool result(s) compac
+
+
+### 🤖 Autopilot
+
+Let me actually check what calendar capability exists — GAS CalendarApp scripts or a calendar-scoped credential — before promising anything:
+
+
+### 🤖 Autopilot
+
+`dapp_beta/js/notifications.js` mentions CalendarApp — let me check if that's an actual GAS script with calendar capability:
+
+
+### 🤖 Autopilot
+
+No CalendarApp — that was just a comment. Let me check whether the gary_token (Gmail OAuth) has calendar scopes, or whether I can hit the Google Calendar API directly:
+
+
+### 🤖 Autopilot
+
+The `gary_token.json` has **`https://www.googleapis.com/auth/calendar` scope** — so I can create a real Google Calendar event on Gary's calendar. Creating it now (45 min from now, with all the pending items):
+
+
+### 🤖 Autopilot
+
+**Google Calendar event created** ✅ on your calendar (using the `calendar` scope in your stored `gary_token.json` — so it's on *your* calendar, and it'll pop on your phone + MacBook).
+
+## The event
+- **Summary:** "SunMint: set cron triggers + promote to prod (45-min reminder)"
+- **When:** in **45 minutes** (2026-09-01 15:57 BRT, 15-min duration)
+- **Description contains everything:**
+  1. Set the **2 GAS cron triggers** — exact project id + the two function names (`processFarmBoundaryEvidenceFromTelegramChatLogs`, `processMediaRetractionFromTelegramChatLogs`, hourly)
+  2. **Prod promotion** — sunmint #55–#67 → `sync_beta_to_prod` (needs your go)
+  3. Then the full **device UAT** on `sunmint.truesight.me/limites-da-fazenda/`
+  4. Pointer: details in OPEN_FOLLOWUPS + the reminder email thread
+- **Link:** `https://www.google.com/calendar/event?eid=c25nb29oMDZoMGljM3U5dTZlNW02bXJkdGcgZ2FyeWpvYkBhZ3JvdmVyc2Uuc2hvcA`
+- Default reminders (popup/notification) enabled
+
+So when you're back at the MacBook in ~45 min, it'll be sitting there on the calendar. 
+
+**Note:** this revealed a gap worth filing — there's no dedicated calendar tool in my toolset (I used the raw Calendar API with the stored token), so future "set a reminder" requests will be manual each time. Want me to file that as a tooling-gap follow-up in OPEN_FOLLOWUPS?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → confirmed no CalendarApp GAS; discovered gary_token.json has `calendar` scope; created event via Calendar API (refresh-token auth)
+• Calendar event created: id `sngooh06h0ic3u9u6e5m6mrdtg`, 45-min reminder, all details included
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && echo "=== 1. GAS scripts with CalendarApp? ===" && for repo in tokenomics dapp_beta; do for f in $(curl -s "https://api.github.co; cd /tmp && echo "=== notifications.js (first 60 lines) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/js/not; cd /tmp && echo "=== gary_token scopes ===" && python3 -c " import json d = json.load(open('/opt/truesight_autopilot/config/gmail/gary_token; …(+1 more)
 
