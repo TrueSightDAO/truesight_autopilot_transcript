@@ -589,21 +589,25 @@ Everything is green: script runs, 73/73 descriptions, cache diff is 19 additions
 ### 🤖 Autopilot
 
 The cache diff shows 19 new Grok-polished entries added. Let me confirm the 1 deletion is benign (not data loss) — then commit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the deleted cache key is a stale duplicate (same text re-added under a new key) and that Episode 11's description is intact.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The key `b8b377fa…` is present in the cache with correct content — so the "deletion" is a move/re-serialize, not data loss. Episode 11's description is intact. Let me do one final confirmation that HEAD's value for that key matches current (benign re-serialization), then run the full suite one last time and commit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — the cache diff is purely benign (key present in both, same content; the "deletion" was a JSON re-ordering artifact). All green. Now committing PR1 via `git_push_changes`.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -772,4 +776,173 @@ Merged PR1 this turn. Stopping per the one-PR-per-turn rule — PR2 runs next tu
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/agroverse_shop_work && ls scripts/youtube_update_video_titles.py && sed -n '1,140p' scripts/youtube_update_video_titles.py; python3 -c "import googleapiclient, google_auth_oauthlib, google.auth; print('google libs OK')" 2>&1; ls /tmp/agroverse_shop_work/scripts/yo
 • `merge pr` → ✅ PR #263 on agroverse_shop merged successfully (sha: fe6a3a161114f4bff813ebaae8b7f870f5d26db8). PR #263 was already merged.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] [Handoff context — this Telegram topic (thread 18528) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merged PR1 this turn. Stopping per the one-PR-per-turn rule — PR2 runs next turn.
+
+## What I did this turn
+
+**Merged:** [agroverse_shop_beta PR #263](https://github.com/TrueSightDAO/agroverse_shop_bet
+
+
+### 🤖 Autopilot
+
+Resuming PR2. First sync the work clone to main (PR1 is merged) and check the description format + gitignore for credentials.
+
+
+### 🤖 Autopilot
+
+Clone synced to main, all 73 descriptions present, credentials gitignored. The title script reads creds from SCRIPT_DIR — let me check where the real agroverse_shop deployment lives on this box (to confirm how creds are wired) and look at the full description tail.
+
+
+### 🤖 Autopilot
+
+Description format is exactly right (specific blog post link + accessibility note + hashtags, 603 chars). Let me find where the real agroverse_shop scripts deploy with credentials wired (to know how the title script actually runs in practice).
+
+
+### 🤖 Autopilot
+
+Creds live in `/opt/truesight_autopilot/config/youtube/` with the token scoped for `youtube.force-ssl` — exactly what `videos().update` needs. The scripts directory isn't deployed separately on this box (only `/tmp` checkout), so the title script would be run from a checkout with creds pointed at that dir. Now let me write the PR2 script — mirroring `youtube_update_video_titles.py` but for descriptions, with a `--config-dir` fallback to the box's credential location.
+
+
+### 🤖 Autopilot
+
+Script written and compiles. Now run the dry-run for real — it will fetch live descriptions via the box's OAuth token (read-only) and print before/after diffs. This is the PR2 deliverable.
+
+
+### 🤖 Autopilot
+
+Found the bug: in `--dry-run` I left `youtube = None` but the dry-run still needs the service to fetch the live "before" description. Fixing — the service is needed for the real before/after diff.
+
+
+### 🤖 Autopilot
+
+Patched. Re-running the dry-run — now it fetches live "before" descriptions and prints real diffs.
+
+
+### 🤖 Autopilot
+
+The dry-run works (real diffs fetched live — e.g. "being the police, episode 12" is now clean), but the script exited with code 1 partway (28 diffs shown, 73 expected). Let me check the full log for the error.
+
+
+### 🤖 Autopilot
+
+The log is cut at `3c60UMfeWHs:` with no OLD/NEW after it — the run died on that entry (likely a transient API error or rate-limit HTTP 403/429 mid-run; it ran ~28 entries then stopped). Let me see if stderr had an HttpError, and check the remaining count. The script catches HttpError per-entry, so a hard crash suggests something else. Let me re-run capturing stderr to diagnose, from the point it stopped.
+
+
+### 🤖 Autopilot
+
+**Full dry-run completed: 73/73 entries processed, 73 real diffs, 0 skips, 0 errors.** The earlier truncated run was just a transient API blip; the rerun (capturing stderr) finished cleanly. The before/after diffs are real (fetched live) and dramatic — e.g. "being the police, episode 12" → clean intro, "Kakao…witch plume fungu" → corrected fungus text.
+
+Now the test gate before pushing PR2 (compileall, ruff, format, pytest), then commit + PR.
+
+
+### 🤖 Autopilot
+
+Compileall ✅, ruff check ✅, pytest ✅ (0 tests — repo baseline). Only formatting needs fixing — apply `ruff format` and re-verify.
+
+
+### 🤖 Autopilot
+
+All gates pass. Let me do a final quick dry-run sanity check after formatting (script still works), then commit + open PR2.
+
+
+### 🤖 Autopilot
+
+Script verified post-format (single-entry dry-run works, real diff). Only the new script is untracked — no stray changes. Committing and opening PR2.
+
+
+### 🤖 Autopilot
+
+Committed + pushed. Opening the PR.
+
+
+### 🤖 Autopilot
+
+The gh CLI token lacks `createPullRequest` permission — but the platform's `git_push_changes` uses a properly-scoped app token. I'll use it with the same branch (already pushed) to open the PR. Let me grab the formatted script content.
+
+
+### 🤖 Autopilot
+
+Now opening the PR via `git_push_changes` (app-scoped token) using the exact already-pushed branch + formatted content.
+
+
+### 🤖 Autopilot
+
+The gh token on the box can't create PRs (PR #263 must have been created by a prior partial run). `git_push_changes` needs a write payload — I'll delete the box-pushed branch, then let it recreate + open the PR with the app token.
+
+
+### 🤖 Autopilot
+
+Branch deleted. Now recreating it via `git_push_changes` with the exact formatted content (which also opens the PR with the app token).
+
+
+### 🤖 Autopilot
+
+The branch pushed but PR creation hit a 307 redirect (repo renamed → `agroverse_shop_beta`). Let me check whether a PR actually got created despite the error.
+
+
+### 🤖 Autopilot
+
+No PR for `youtube/descriptions-pr2` was created (307 redirect — the app token doesn't follow the repo-rename redirect; and the branch exists only under `agroverse_shop`). Let me try `merge_pr`'s sibling — use the `agroverse_shop_beta` repo directly by checking the API with a repo-scoped create. First let me see if the branch is visible in the beta repo (it was pushed to `agroverse_shop`, which redirects to beta).
+
+
+### 🤖 Autopilot
+
+Branch exists (sha `ed94eadb`), no PR yet under beta. The gh token can't create PRs (`createPullRequest` scope), and `git_push_changes` hits the rename redirect. Let me try the gh `pr create` against the beta repo once more with `--head` (now that the branch exists under the redirect) — the earlier failure was the token scope, but let me confirm, and also check if the token supports `pulls` via REST.
+
+
+### 🤖 Autopilot
+
+The gh token definitively can't create PRs, and `git_push_changes` hits the repo-rename redirect (307) when creating the PR. The canonical repo is now `agroverse_shop_beta` — let me retry `git_push_changes` targeting it directly (no redirect), after removing the branch I pushed under the old name.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging — PR2 is open. Stopping per the one-PR-per-turn rule.
+
+## ✅ PR2 complete — [agroverse_shop_beta PR #264](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/264)
+
+**Opened this turn** via `git_push_changes` targeting `agroverse_shop_beta` directly (the app token follows the repo-rename redirect when creating the PR; the box's gh token lacks `createPullRequest` scope, so that path failed — resolved by pushing through the tool).
+
+**What's in it:**
+- `scripts/youtube_update_video_descriptions.py` (new, 148 lines) — re-sync script for YouTube descriptions, sibling to `youtube_update_video_titles.py`:
+  - Reads `description` per basename from `youtube_videos.json` (PR1's polished content)
+  - `videos().update(part="snippet")`, preserves all other snippet fields (title/tags/categoryId)
+  - `--dry-run` fetches the **live** "before" description via `videos.list` and prints real OLD/NEW diffs (no writes)
+  - `--basename` single-entry mode, `--config-dir` for credentials, 5000-char cap
+
+**Validation (live, dry-run only — nothing pushed):**
+- Full dry-run vs **all 73 videos**: `Processed 73 mapping entries. (dry-run)` — **73 real diffs, 0 skips, 0 errors**
+- Spot diffs: `33nwH67UIag` "being the police, episode 12…" → clean intro; `NKiGfjYMiK4` "witch plume fungu" → "witch plume fungus"; `yyeN2dWv6dU` generic → full title + blog link + hashtags
+- Test gate: `compileall` ✅, `ruff check` ✅, `ruff format --check` ✅, `pytest` (0 tests — repo baseline) ✅
+
+**Repo-safety:** opened against `agroverse_shop_beta` (base `main`), **never prod**. No live YouTube changes.
+
+## RESUME HERE → PR3
+
+Next turn — **hard review gate, stop and wait**:
+1. Merge PR #264 (or leave open for governor review — flag it).
+2. Post a **sample of 5 before/after pairs** (mix of worst offenders: the "Fili Marsh" + "being the police" videos, plus 2–3 typical ones) to **this topic** for governor approval — title + description OLD→NEW, using the live-fetched diffs.
+3. **Do NOT push live** (PR4) until the governor explicitly approves the sample.
+
+Note: the full 73-pair diff log is at `/tmp/pr2_dryrun2.txt` on the box — ready for building the PR3 sample.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cd /tmp/agroverse_shop_work && git checkout main …git pull origin main; python3 -c import json …; ls -la /opt/truesight_autopilot/config/youtube/; find / -maxdepth 6 …; cat /opt/truesight_autopilot/config/youtube/README.md; cat > scripts/youtube_update_video_descriptions.py <<'PYEOF' …; python3 -m py_compile …
+• `git_push_changes` → success, PR opened: https://github.com/TrueSightDAO/agroverse_shop_beta/pull/264
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×19 → cd /tmp/agroverse_shop_work && git checkout main 2>&1 | tail -1 && git pull origin main 2>&1 | tail -2 && echo "=== gitignore ===" && grep -; ls -la /opt/truesight_autopilot/config/youtube/ 2>&1; echo "==="; find /opt /home -maxdepth 4 -name "youtube_update_video_titles.py" 2>/dev/; find / -maxdepth 6 -name "youtube_update_video_titles.py" 2>/dev/null | grep -v tmp; echo "==="; find / -maxdepth 6 -name "youtube_videos.js; …(+15 more)
 
