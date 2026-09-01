@@ -8,19 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-What does TGM stand for??
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
-
-
 ### 🤖 Autopilot
 
 **TGM = Tree Growth Monitoring** — the existing GAS processor I used as the template for the FBE handler. It's the `[TREE GROWTH MONITORING EVENT]` flow: farmers submit photos of their planted trees' growth, the GAS cron/webhook scans Telegram Chat Logs, mirrors the photos to the sunmint repo, and appends tracking rows to the Trees sheet.
@@ -4937,6 +4924,7 @@ The simulation reveals the bug clearly. For **Paulo La Do Sitio Para**, the filt
 ### 🤖 Autopilot
 
 Live data is correct (LD-P1 has 8 media, matching works in my simulation). The "No boundary media" message only shows when the fetch succeeds but `total === 0`. Let me check the dropdown population — what the option **values** actually are — since the filter matches `farmName` against the option value:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4944,16 +4932,19 @@ Live data is correct (LD-P1 has 8 media, matching works in my simulation). The "
 Found the bug. The dropdown options are **farm names** (strings, e.g. "Paulo La Do Sitio Para") — `renderMediaList(sel.value)` gets the name, looks up `farm_id` from the remote index (match succeeds), then filters plots by `farm_id` (succeeds, LD-P1 has 8 media). So the page *should* work for registered farms...
 
 The **key edge case Gary hit**: he selected "Paulo La Do Sitio Para" but the screenshot showed `Farm: > Some new farm` — wait, that's from the **earlier** screenshot. The current report says "when selecting an existing farm". Let me check the **actual live beta** page — maybe it's serving an older bundle (pre-#61, without renderMediaList):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Live beta has `renderMediaList` (7 refs) — so the code is there. The farm options aren't in the HTML (they load via JS). Let me simulate the **exact runtime path** in a headless way — fetch remote farms + plots exactly as the page does, with the **farm name** as the option value (note: the option value is the **name**, and `renderMediaList` looks up `farm_id` via `REMOTE_FARMS_URL` with `cache: 'no-store'` + cb):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The simulation proves the logic works for the registered name. Let me check the full LD-P1 properties + whether a **slug fallback** would work (the plots have `farm: None`, so if the farms-index fetch fails, NOTHING matches — that's the fragile spot):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4963,6 +4954,7 @@ Two important findings:
 2. **Slug(farm name) == farm_id for all 4 farms** — so the page could fall back to slug-matching the farm name directly against `farm_id`, making it **robust even if the farms-index fetch fails**.
 
 But the actual failure Gary saw is likely simpler. Let me reproduce the **exact live page** in a headless browser context to catch a JS runtime error (the most likely real cause — e.g. `REMOTE_FARMS_URL` fetch failing CORS on the phone, or `farmId` lookup vs name):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5133,4 +5125,57 @@ So when you're back at the MacBook in ~45 min, it'll be sitting there on the cal
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && echo "=== 1. GAS scripts with CalendarApp? ===" && for repo in tokenomics dapp_beta; do for f in $(curl -s "https://api.github.co; cd /tmp && echo "=== notifications.js (first 60 lines) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dapp_beta/main/js/not; cd /tmp && echo "=== gary_token scopes ===" && python3 -c " import json d = json.load(open('/opt/truesight_autopilot/config/gmail/gary_token; …(+1 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: REmind me the URL to the editor to setup the cron for GAS and which method to set it up for
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+
+### 🤖 Autopilot
+
+Let me pull the exact script ID and the trigger setup instructions so I give you the precise editor URL + functions:
+
+
+### 🤖 Autopilot
+
+Let me confirm the exact script ID we deployed to (the one this thread used) and find the trigger doc:
+
+
+### 🤖 Autopilot
+
+Confirmed — here's the exact info:
+
+## GAS Editor URL (the script we deployed the handlers to)
+
+**https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/edit**
+
+(Script ID: `1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v`)
+
+## Setup steps (2 triggers, ~2 min)
+
+1. Open the editor URL above → in the left sidebar click **🕐 Triggers** (clock icon)
+2. **Add trigger** → configure:
+   - **Function:** `processFarmBoundaryEvidenceFromTelegramChatLogs`
+   - **Event source:** *Time-driven*
+   - **Type:** *Minutes timer* → **Every 60 minutes**
+   - **Failure notifications:** *Immediately* (recommended)
+3. **Add trigger** again → same settings for:
+   - **Function:** `processMediaRetractionFromTelegramChatLogs`
+   - **Type:** *Minutes timer* → **Every 60 minutes**
+4. Click **Save** (authorize the Google account that owns the script — that's the same account with access to the Telegram Chat Logs + SunMint Plots sheets)
+
+## Why these two
+- **FBE** (`processFarmBoundaryEvidenceFromTelegramChatLogs`) — processes new boundary photo submissions (the `[FARM BOUNDARY EVIDENCE EVENT]` from the limits app) → creates/updates the farm plot in the SunMint Plots sheet
+- **MR** (`processMediaRetractionFromTelegramChatLogs`) — processes invalidation/retraction events (the "Invalidar" buttons) → soft-invalidates media + flags plot for recalculation
+
+The cron is the **processing engine** for the whole chain — without it, submissions hit Edgar (verified working) but the GAS side never writes to the sheet. Once both are set, the device-flow UAT completes end-to-end. 🎯
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== script id from GAS project dir ===" && ls /opt/truesight_autopilot/context/tokenomics/google_app_scripts/ 2>/dev/null |; cd /tmp && ls -d /opt/truesight_autopilot/context/tokenomics/google_app_scripts/*/ 2>/dev/null | grep -i "1UrBgq" ; echo "---"; grep -rln "S
 
