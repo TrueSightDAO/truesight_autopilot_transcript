@@ -21,12 +21,34 @@
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: search_context, search_context, list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: http_fetch, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me dig into the actual archive contents so I can give a concrete index of cacao images we have on hand.
+[4 tool result(s) compacted: http_fetch, http_fetch, http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the full photo lists and check for the web-optimized JPEGs already used on farm pages (easier to share than raw HEICs).
+[3 tool result(s) compacted: read_tool_result, read_tool_result, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -88,4 +110,56 @@ The La do Sitio manifest tags ~72 videos with object detection — several tagge
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → for farm in cleide la-do-sitio rancho-maranta santa-anna-fazenda-para; do echo "== $farm =="; curl -s "https://api.github.com/repos/TrueSigh; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/git/trees/main?recursive=1" | python3 -c "import json,sys; d=json.loa; echo "== sunmint/images =="; curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recursive=1" | python3 -c "import jso; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19425] Surface 5 of them as attachments here
+
+
+### 🤖 Autopilot
+
+Picking 5 web JPEGs — one from each farm for variety. Downloading them to the box first.
+
+
+### 🤖 Autopilot
+
+Only the first download survived (background jobs raced). Downloading sequentially instead.
+
+
+### 🤖 Autopilot
+
+All 5 downloaded and verified as valid JPEGs. Sending them into the thread as attachments.
+
+
+### 🤖 Autopilot
+
+4 of 5 sent — the first hit Telegram's rate limiter. Retrying it now.
+
+
+### 🤖 Autopilot
+
+All 5 surfaced as attachments in the thread ✅
+
+| # | Farm | File | Original size | Notes |
+|---|---|---|---|---|
+| 1 | La do Sitio (Paulo) | `IMG_3884.jpg` | 516 KB · 960×1280 | msg 19446 |
+| 2 | La do Sitio (Paulo) | `IMG_3929.jpg` | 440 KB · 1280×960 | msg 19442 |
+| 3 | Rancho Maranta (Pará) | `IMG_7625.jpg` | 656 KB · 1600×1200 | msg 19443 |
+| 4 | Santa Anna (Pará) | `IMG_7710.jpg` | 640 KB · 1200×1600 | msg 19444 — EXIF: iPhone 12 Pro Max, 2026-08-30, GPS-tagged |
+| 5 | Fazenda Cleide (Pará) | `fazenda_cleide_1.jpg` | 423 KB · 1600×2133 | msg 19445 — EXIF: iPhone 12 Pro Max, 2024-07-02, GPS-tagged |
+
+All sourced from `agroverse_shop_beta/assets/images/farms/` (web-optimized JPEGs). The two EXIF-tagged ones (Cleide, Santa Anna) even carry provenance metadata — good if this is for marketing provenance storytelling.
+
+**Want more?** I can send:
+- Other farms / specific shots (there are 45 JPEGs total across the 4 farms)
+- A **contact sheet** (montage grid) of all 45 as a single image
+- Raw HEIC originals from `farm-media-raw` (I'd convert to JPEG first)
+- Cacao-pod-tagged video frames (the La do Sitio clips tagged `cacao_pods`)
+
+Just say which.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → mkdir -p /tmp/cacao_selection && cd /tmp/cacao_selection && base="https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/as; cd /tmp/cacao_selection && base="https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/assets/images/farms" && for f in "r
 
