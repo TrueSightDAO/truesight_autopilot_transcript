@@ -10,25 +10,6 @@
 
 ### 🤖 Autopilot
 
-**TGM = Tree Growth Monitoring** — the existing GAS processor I used as the template for the FBE handler. It's the `[TREE GROWTH MONITORING EVENT]` flow: farmers submit photos of their planted trees' growth, the GAS cron/webhook scans Telegram Chat Logs, mirrors the photos to the sunmint repo, and appends tracking rows to the Trees sheet.
-
-Related abbreviations in the same family:
-- **TGM** — Tree Growth Monitoring (the template handler: `process_tree_growth_monitoring.gs`)
-- **FBE** — Farm Boundary Evidence (the new handler I built: `process_farm_boundary_evidence.gs`)
-- **TGP** — Tree Planting (the `process_tree_planting_link.js` action)
-
-So when I said "mirrors the proven TGM pattern," I meant the FBE handler reuses the exact same structure as the existing Tree Growth Monitoring processor (scan chat logs → dedupe → mirror media → append rows) — just for boundary photos instead of tree-growth photos.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-Yeah, I think this abbreviation you should document somewhere right down seems as low you are the only person that knows this abbreviation I wonder if you should have it in the agency AI context somewhere [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
 You're right — let me check whether there's already an abbreviations/glossary file in the context, and if not, create one:
 [2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
@@ -4964,6 +4945,7 @@ CORS is fine (`access-control-allow-origin: *`). The logic, data, CORS all check
 Actually — re-reading Gary's report: he selected an **existing farm** and saw the empty message. The empty message (`mediaNone`) requires `res.ok === true` AND `total === 0`. Since LD-P1 has 8 media, `total===0` for Paulo means **the filter matched 0 plots** — which happens when `farmId` lookup fails (farms-index fetch failed/returned different names) AND the `farm` name-match also fails (because **plots have `farm: None`**!).
 
 **That's the bug:** the page depends on the **farms-index fetch** to resolve `name → farm_id`, and if that fetch fails (or returns names that differ from the option value), the filter finds **nothing** (since `farm` is None on every plot) → shows "No boundary media". The fix: **add a slug fallback** — derive `farm_id` from the farm name via slugify, so it works even without the farms-index fetch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4979,11 +4961,13 @@ Actually — re-reading Gary's report: he selected an **existing farm** and saw 
 2. **`farm` name-match path**: match plot `farm` (when present) OR `name` (plot's own `name` property often equals farm name) against the selected name — so even unknown/local farms can match plots by name.
 
 Let me apply the fix:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The indentation differs from my assumption — the live file likely uses different spacing. Let me get the exact bytes of the farmId block from the file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5178,4 +5162,47 @@ The cron is the **processing engine** for the whole chain — without it, submis
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== script id from GAS project dir ===" && ls /opt/truesight_autopilot/context/tokenomics/google_app_scripts/ 2>/dev/null |; cd /tmp && ls -d /opt/truesight_autopilot/context/tokenomics/google_app_scripts/*/ 2>/dev/null | grep -i "1UrBgq" ; echo "---"; grep -rln "S
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Are these two methods already exposed via doGet?
+
+I think they should be exposed via doGet such that whenever dao_protocol python processes such an event, it should trigger the doGet
+
+
+### 🤖 Autopilot
+
+Good question — let me verify the actual deployed state rather than rely on memory: checking the doGet router for both cases + the deployed GAS version + the dispatch env keys:
+
+
+### 🤖 Autopilot
+
+**Yes — both are already exposed via doGet, and the dispatch wiring is in place.** Verified against both the local GAS project and the deployed repo `main`:
+
+## doGet router (process_qr_code_updates.js)
+- **line 147:** `?action=processFarmBoundaryEvidenceFromTelegramChatLogs` → calls the handler ✓
+- **line 160:** `?action=processMediaRetractionFromTelegramChatLogs` → calls the handler ✓
+- Both are also listed in the no-action fallback message (line 189)
+- Both handlers live in the same GAS project (the one you'll set the cron on): script `1UrBgqLnnQc6PV4-…`
+
+## The dao_protocol → doGet trigger chain (already wired)
+| Piece | State |
+|---|---|
+| dispatch routing rows | ✅ `[FARM BOUNDARY EVIDENCE EVENT]` → `processFarmBoundaryEvidenceFromTelegramChatLogs`; `[MEDIA RETRACTION EVENT]` → `processMediaRetractionFromTelegramChatLogs` |
+| Env webhook URLs | ✅ both keys on the dao_protocol server (`DAO_PROTOCOL_WEBHOOK_FARM_BOUNDARY_EVIDENCE`, `DAO_PROTOCOL_WEBHOOK_MEDIA_RETRACTION`) |
+| doGet GET `?action=` | ✅ router cases match the dispatch actions exactly |
+
+So **whenever dao_protocol processes one of those events, dispatch fires the webhook URL with `?action=<handler>` → doGet runs the handler → GAS processes → sheet updates.** Exactly the design you're describing.
+
+## ⚠️ One honest caveat (the earlier E2E finding)
+The dispatch fires the GET — **but Google serves the sign-in page (HTTP 200) to unauthenticated callers**, so the handler *code* only actually executes when the request carries the GAS owner's session (browser/authenticated fetch) **or via the cron trigger**. That's precisely why the **cron triggers are still the missing piece** — the webhook path is wired, but Google's auth means it needs the cron (or an owner-authenticated session) to truly run the processing. The cron you're about to set **is** the reliable execution engine for both handlers.
+
+So: **doGet exposure ✅, dispatch trigger ✅, execution still needs the cron (your next step)** — once the 2 triggers are set, the chain completes end-to-end. Anything else to verify while you're in there?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== 1. doGet router in GAS project (process_qr_code_updates.js) ===" && grep -n "processFarmBoundaryEvidenceFromTelegramCha; cd /tmp && echo "=== 2. deployed? check remote GAS project via repo main (tokenomics) ===" && curl -s "https://raw.githubusercontent.com/Tru
 
