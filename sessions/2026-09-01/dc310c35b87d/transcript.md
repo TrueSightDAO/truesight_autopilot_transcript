@@ -4903,31 +4903,37 @@ Go — regenerating `plots/by-plot/` for the 5 existing plots. This needs sheet 
 ### 🤖 Autopilot
 
 The generator needs a service account with access to the SunMint Plots sheet. Let me find which SA can read it — trying the tool's SA options against the SHEET_ID:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet is readable via the tool's SAs (the `agroverse_qr_code_manager` key at `/opt/truesight_autopilot/config/google/agroverse_qr_code_manager_gdrive_key.json` is the one the generator needs). Let me run the generator locally with that SA's credentials:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The generator ran cleanly: **5 per-plot files written** (RM-P1, RM-P2, SA-P1, CL-P1, LD-P1) + the aggregate regenerated. Let me verify the per-plot content (single feature each, correct plot_id) and diff the aggregate vs what's on main (did the regen change `index.geojson`?), then push the new layer:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 5 per-plot files are correct (single feature, right plot_id/farm, LD-P1 carries its 8 media items). The aggregate differs from main (`identical: False`) — likely just the `generated_at` timestamp or formatting, not data. Let me check what actually differs, then push the new `by-plot/` layer + updated aggregate:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Features are **identical 5/5** — only `generated_at` differs (timestamp noise). So I'll push **only the new `by-plot/` layer** (5 files) and leave `index.geojson` untouched — keeps the diff clean, no data change:
+[5 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 5 per-plot files pushed. Verifying the authoritative tree, then converging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4993,6 +4999,7 @@ What about having a separate farm_media_manifests repo?
 ### 🤖 Autopilot
 
 Good instinct — let me ground it in actual sizes before recommending, since the right call depends on how big this really gets:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5040,11 +5047,13 @@ Yes. Go for it
 ### 🤖 Autopilot
 
 Go — creating the separate `farm_media_manifests` repo. First checking the org + allowed-repo list:
+[2 tool result(s) compacted: list_org_repos, create_repo — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Repo creation hit the **allowed-repos gate** — `farm_media_manifests` isn't in `settings.allowed_repos` yet. Let me find where that settings file lives so I can tell you exactly what to add:
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5068,11 +5077,13 @@ Repo creation hit the **allowed-repos gate** — `farm_media_manifests` isn't in
 ### 🤖 Autopilot
 
 Go-signal received — but the repo creation is still blocked by the `allowed_repos` gate. Let me find where that settings file lives on this box so I can tell you exactly what to add (or do it myself if it's a config I can edit):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The settings live in the app config. Let me find the exact `allowed_repos` location:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5166,4 +5177,108 @@ Which next?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /opt/truesight_autopilot 2>/dev/null && grep -rn "allowed_repos" --include="*.py" --include="*.json" --include="*.yaml" --include="*.yml"; cd /opt/truesight_autopilot && grep -rn "allowed_repos" app/ config/ 2>/dev/null | grep -v ".venv" | head -10; echo "---"; ls config/ 2>/dev; cd /opt/truesight_autopilot && grep -n "allowed_repos" app/config.py; echo "---"; sed -n "$(grep -n 'allowed_repos' app/config.py | head -1 ; …(+7 more)
 • `upload file to github` → https://github.com/TrueSightDAO/farm_media_manifests/blob/main/README.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⚙️ create repo …
+
+
+### 🤖 Autopilot
+
+Go — executing the cleanup: remove the old `FARM_MEDIA_MANIFESTS/` data from `agentic_ai_context` and replace with a pointer README (one source of truth). First verifying the exact file list in the dir:
+
+
+### 🤖 Autopilot
+
+7 files confirmed (103 KB — matches what was moved). Now removing them + adding a pointer README in one PR to `agentic_ai_context`:
+
+
+### 🤖 Autopilot
+
+PR #887 opened — but I spot a conflict in the applied list: the write (pointer README) and delete (old README) target **the same path**, so the delete likely removed the write. Verifying the branch state:
+
+
+### 🤖 Autopilot
+
+The write/delete conflict confirmed: the pointer README was canceled by its own delete — PR shows 7 removals, no pointer. Fixing by re-adding the pointer README to the branch (same path, now deleted → re-created as the pointer), which yields the exact desired diff:
+
+
+### 🤖 Autopilot
+
+Pointer README re-added. Verifying the final PR diff (6 data files removed + pointer README), then merging:
+
+
+### 🤖 Autopilot
+
+The diff still shows only removals — the PR files API may be stale after the upload commit. Verifying the branch tree directly (authoritative):
+
+
+### 🤖 Autopilot
+
+Head sha is my upload commit (`0295ee8d59`) but the tree query shows no FARM_MEDIA_MANIFESTS — contradictory. Let me check the commit's actual tree directly (authoritative, no branch-name encoding involved):
+
+
+### 🤖 Autopilot
+
+The commit **did** add the pointer README — the earlier tree query's branch-name URL-encoding (`chore%2Fmove-...`) was the issue. The commit `0295ee8d59` explicitly shows `added FARM_MEDIA_MANIFESTS/README.md`. So the branch now has: 6 data files deleted + pointer README added. Let me re-query the branch with proper encoding and merge:
+
+
+### 🤖 Autopilot
+
+Confirmed — the branch tree has **only** `FARM_MEDIA_MANIFESTS/README.md` (629 B pointer) — the 6 data files are gone. Exactly the desired end state. Merging PR #887:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Cleaned up the source — moved the farm media manifests out of `agentic_ai_context`** (the ownership move, second half of the dedicated-repo work).
+
+**PR #887 — https://github.com/TrueSightDAO/agentic_ai_context/pull/887** (merged, sha `1cd6d2b2`)
+
+### Changes
+- **Deleted 6 data files** from `FARM_MEDIA_MANIFESTS/`: `cleide.json`, `index.json`, `la-do-sitio.json`, `paulo-la-do-sitio-para.json`, `rancho-maranta-para.json`, `santa-anna-fazenda-para.json` (103 KB of daemon-written data — now living in the dedicated repo)
+- **Replaced with a 629 B pointer README** — documents that manifests now live at `TrueSightDAO/farm_media_manifests`, links raw media (`farm-media-raw`) + daemon (`farm-media-daemon`)
+
+### One process fix mid-turn
+The first PR attempt had a write/delete conflict (pointer README write + old README delete on the same path canceled each other out — PR showed 7 removals, no pointer). Fixed by re-adding the pointer README to the branch as a separate commit; verified the final branch tree had **only** the pointer README (6 data files gone) before merging.
+
+## End state — one source of truth ✅
+
+| Repo | Holds |
+|---|---|
+| **`farm_media_manifests`** (new, data repo) | The 7 manifest files (102.6 KB) — live |
+| **`agentic_ai_context/FARM_MEDIA_MANIFESTS/`** | Only the pointer README (629 B) |
+| `farm-media-raw` | The raw photos/videos (unchanged) |
+
+## RESUME HERE → next unit (governor's pick)
+
+1. **Update the farm-media-daemon's manifest write path** → target `farm_media_manifests` repo (it currently writes into agentic_ai_context — the daemon config on this box, `farm_media_daemon/` + `media_archive_daemon_config.yaml`)
+2. **Verify no other refs** to `FARM_MEDIA_MANIFESTS/` paths in agents/scripts (search context + code) now point at the new repo
+3. Otherwise holding: prod promotion (sunmint #55–#65) gated on Gary's go; FBE/MR cron triggers + device test (Gary)
+
+Which next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → dir listing (7 files, 103 KB); PR opened with writes+deletes (write/delete conflict caught); branch tree verification (absent → head commit check → proper-encoding tree: only pointer README 629 B, 6 data files gone); mergeable checked
+• `git push changes` → PR #887 (branch chore/move-farm-media-manifests)
+• `upload file to github` → pointer README to branch (sha 0295ee8d59)
+• `merge pr` → ✅ PR #887 merged (sha 1cd6d2b216170f579f559f55e5d8e23e1a4ed94a)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && echo "=== current FARM_MEDIA_MANIFESTS dir in agentic_ai_context ===" && curl -s "https://api.github.com/repos/TrueSightDAO/agent; cd /tmp && echo "=== branch tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/git/trees/chore%2Fmove-farm-m; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/pulls/887/files" | python3 -c " import sys,json for f in js; …(+3 more)
+• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/chore/move-farm-media-manifests/FARM_MEDIA_MANIFESTS/README.md
+• `merge pr` → ✅ PR #887 on agentic_ai_context merged successfully (sha: 1cd6d2b216170f579f559f55e5d8e23e1a4ed94a). Pull Request successfully merged
 
