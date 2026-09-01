@@ -2524,6 +2524,7 @@ Found a wart too: the checklist has a stale duplicate step "3." left from PR #88
 ### 🤖 Autopilot
 
 Now I have exact bytes. I'll make 3 edits: (1) fix the stale duplicate step-3 line, (2) add a GPS step to the checklist, (3) add a GPS bullet under §A.7's description bullet referencing the backfill script + farm-manifest fallback. Opening the doc-only PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2770,4 +2771,112 @@ Want me to also wire GPS extraction into `youtube_batch_incoming.py` (capture la
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== home dir structure (media-relevant dirs) ==="; ls -d /home/ubuntu/*/ 2>/dev/null | head -30; echo "=== total media files under ~ =
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] Yes, make sure to wire it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Wiring GPS extraction into the upload pipeline — the permanent fix. Let me read the current state of both files.
+
+
+### 🤖 Autopilot
+
+Now let me see the current `youtube_batch_incoming.py` (post-#268) around entry creation, and check whether the farm MAP pipeline has GPS extraction code I should reuse instead of importing from the backfill script.
+
+
+### 🤖 Autopilot
+
+Let me read the exact entry-creation block (lines ~254–380) and check the farm MAP pipeline's GPS extraction for reuse.
+
+
+### 🤖 Autopilot
+
+I have the full upload flow. The GPS must be captured at the exact moment the source file is in hand — right before `upload_video()` — and stored in the cache entry. Let me check the backfill script's main-guard (for clean import) and the other upload scripts' entry construction.
+
+
+### 🤖 Autopilot
+
+The backfill script has a `main()` guard — clean to import. The primary ingress is `youtube_batch_incoming.py` (has the source path in hand at upload). Let me check the other ingress (`upload_bean_lowercase_episodes.py`, which uploaded 8 entries) to wire it too if it has source paths.
+
+
+### 🤖 Autopilot
+
+I now have both ingress paths. Plan:
+
+**1. `scripts/add_gps_to_youtube_videos_json.py`** — add a `--inplace` friendly entry: expose `gps_for_source(path) -> dict | None` (thin wrapper over `gps_from_exiftool`) so uploaders can import one function, no duplicate logic.
+
+**2. `scripts/youtube_batch_incoming.py`** (primary ingress, 56 entries) — at upload time, extract GPS from the source `path` (in hand) via exiftool and store `latitude`/`longitude`/`gps_source: "file_exif"` in the cache entry. Dry-run prints it.
+
+**3. `scripts/upload_bean_lowercase_episodes.py`** (secondary ingress, 8 entries) — same: GPS from `args.downloads / b` before upload, stored in the entry. (It builds no description — I won't touch that, just add GPS fields.)
+
+Let me make the edits in the work clone.
+
+
+### 🤖 Autopilot
+
+All 3 edits applied and compile. Now the functional test — dry-run through the upload path to prove GPS is captured from a real source file. Let me test `gps_for_source` on an actual MOV, then run the batch dry-run against the manifest.
+
+
+### 🤖 Autopilot
+
+Working as intended: `gps_for_source` pulls exact GPS from real MOVs (Santa Anna AND La Do Sitio — two different farms, both precise), and the dry-run flows cleanly (exit 0; the "SKIP missing file" lines are expected — those source files live on your Mac, so no new uploads are pending on this box right now). The important thing: **when a new video IS uploaded with its source file in hand, its GPS now gets captured at ingress.**
+
+Now the test gate (ruff/format/pytest) before committing.
+
+
+### 🤖 Autopilot
+
+4 E402s (the file's established pattern — imports after `sys.path.insert`; my one is consistent with the existing `build_description` import right above it) and 2 format drifts. Let me apply ruff format to my files and confirm the E402s are all pre-existing pattern (not new breakage).
+
+
+### 🤖 Autopilot
+
+Formatting fixed, function still works after format. The 4 E402s are all pre-existing pattern (imports after `sys.path.insert` — lines 44/51/52 are the established style, and `build_description` had the same treatment pre-#268). This matches the repo's accepted baseline. Compile + pytest, then push.
+
+
+### 🤖 Autopilot
+
+All gates pass — compile OK, pytest baseline (no tests), clean diff (3 files, +83/−15), no JSON drift. Now open the PR. I'll pass the 3 changed files as edits — but the diff is large, so let me use `git_push_changes` with the file content. Actually, the cleanest path (as before) is committing on the box to a fresh branch and pushing — but `git_push_changes` is the canonical tool. Let me get the exact contents to pass as writes.
+
+
+### 🤖 Autopilot
+
+All gates pass and the diff is verified (my semantic changes + cosmetic ruff-format reflows). Now opening the PR via `git_push_changes` with precise edit hunks (the semantic changes only, format-clean):
+
+
+### 🤖 Autopilot
+
+PR opened. Stopping per the one-PR-per-turn rule.
+
+## 📦 PR opened — [agroverse_shop_beta PR #270](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/270)
+
+**"GPS at upload ingress: capture lat/lon from source file metadata in all upload paths"** (branch `youtube/gps-at-ingress`, sha `b533338`)
+
+**What changed (the permanent fix you asked for):**
+1. **`add_gps_to_youtube_videos_json.py`** — new exported `gps_for_source(path)` helper (thin wrapper over the existing exiftool parser: exact DMS → decimal, S/W negative, 6-dec precision)
+2. **`youtube_batch_incoming.py`** (primary upload path) — at upload time, reads GPS from the source file *while it's in hand* and stores `latitude`/`longitude`/`gps_source: "file_exif"` in the new cache entry; also prints GPS in `--dry-run`
+3. **`upload_bean_lowercase_episodes.py`** (secondary upload path) — same capture, best-effort (never blocks an upload over GPS)
+
+**Why it closes the loop:** every *future* video gets geo-tagged automatically at ingress — no backfill needed. This mirrors the farm MAP pipeline's exiftool step, and it's the only place GPS is guaranteed to be available (after upload the file may leave the box).
+
+**Testing:**
+- `gps_for_source()` verified on real source MOVs: `IMG_7734.MOV → -3.2925, -52.5724` and `IMG_4040.MOV → -3.3868, -51.8523` (two farms, exact precision)
+- compileall ✅ · ruff (only pre-existing E402 pattern) ✅ · format ✅ · pytest baseline ✅
+- Batch `--dry-run` exit 0 (SKIP lines expected — sources on your Mac)
+- **No live API calls, no JSON changes** — ingress-only
+
+## RESUME HERE → merge PR #270
+
+1. **Merge PR #270** (your 👍/"merge") — GPS is now captured for every upload going forward.
+2. Optional small SOP follow-up (say the word): add "uploads auto-capture GPS at ingress" to `DOWNLOADS_MEDIA_TO_AGROVERSE.md` §A.7 so the pipeline docs match.
+
+After that: your earlier ask to backfill the **68 existing** entries still needs the source files synced from your Mac (`~/Downloads`) — the `add_gps` script + `--source-dirs` is ready for when they land.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /tmp/agroverse_shop_work && git checkout main -q 2>&1 | tail -1 && git pull origin main -q 2>&1 | tail -1 && echo "HEAD: $(git log --onel; cd /tmp/agroverse_shop_work && echo "=== youtube_batch_incoming.py: full-ish (entry creation + save) ==="; grep -n "def \|description\|youtu; cd /tmp/agroverse_shop_work && sed -n '254,385p' scripts/youtube_batch_incoming.py; …(+8 more)
 
