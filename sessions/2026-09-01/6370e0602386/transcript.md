@@ -2518,6 +2518,7 @@ The SOP has the description/ingress content. Now let me find the best spots to a
 ### 🤖 Autopilot
 
 Found a wart too: the checklist has a stale duplicate step "3." left from PR #881's renumbering (steps 4 then 3). Since I'm touching this section for GPS, I'll fix that numbering as well. Let me get the exact bytes (trailing spaces matter).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2732,4 +2733,41 @@ Here are the links — the two manifests and the cache (all in the `agroverse_sh
 - https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/docs/incoming_videos_2026-04/manifest.json
 
 To recap the resolution chain so it's clear what you're looking at: the cache (`youtube_videos.json`) has the YouTube video_id + title + polished description per entry; the manifests have the source file's path (`/Users/garyjob/Downloads/…`), basename, and sha256. The two link by basename (63 of 73 match). What's missing is only the GPS — which isn't in either file; it lives in the source files' own metadata on your Mac. Once you point me at those files (or sync them), I can backfill the exact coordinates.
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Are all the files on ~/??
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528]
+
+
+### 🤖 Autopilot
+
+Let me verify precisely what's under `~` on this box and whether any of it matches the manifest source files.
+
+
+### 🤖 Autopilot
+
+Confirmed — here's the definitive answer on `~`:
+
+**No. The source files are NOT on this box — not under `~` or anywhere else.**
+
+- **`~` has 1,704 media files** across farm work dirs (`santa_anna_fazenda/`, `la_do_sitio_work/`, `cleide_media/`, `plot1/`, `plot2/`, `rancho_work/`, etc.) — but these are the **farm-media archives** (IMG_* clips, plot footage), not the YouTube upload sources
+- **Zero matches** for the 63 manifest basenames under `/home/ubuntu` — I walked the whole tree by basename
+- The manifests themselves point to your **Mac**: `input_dir: /Users/garyjob/Downloads`, e.g. `/Users/garyjob/Downloads/B2B ep 10 - tiktok part 2_Full HD 1080p.MP4`
+
+So the farm media (with GPS) that *is* here maps to the **5 IMG_* YouTube entries already backfilled** — that's why those got exact coordinates. The other 63 YouTube upload sources physically live in `~/Downloads` on your Mac, never synced here.
+
+**To unblock the remaining 68:** the fastest path is syncing that folder (or a zip of the videos) to this box — e.g.:
+- `scp -r '~/Downloads/*.MP4' ubuntu@<autopilot-ip>:~/media_archive_inbox/` (or rsync)
+- Once they're in `media_archive_inbox/` (or any dir), I re-run `add_gps_to_youtube_videos_json.py --source-dirs ~/media_archive_inbox --write` and it'll match by basename and pull each file's embedded GPS.
+
+Want me to also wire GPS extraction into `youtube_batch_incoming.py` (capture lat/lon at upload time, so this never needs a backfill again)? That's the permanent fix — say the word and I'll open that PR.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== home dir structure (media-relevant dirs) ==="; ls -d /home/ubuntu/*/ 2>/dev/null | head -30; echo "=== total media files under ~ =
 
