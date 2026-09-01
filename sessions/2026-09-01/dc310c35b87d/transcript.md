@@ -4894,11 +4894,13 @@ Let me find the correct sheet name first:
 ### 🤖 Autopilot
 
 The SA may not have this spreadsheet ID in its allowlist or the ID is different. Let me check the actual SHEET_ID the generator uses (from build_plots_geojson.py — the source of truth I mirrored):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The SHEET_ID is `1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ` (I had a typo earlier). Let me verify the test row never landed in the Plots tab:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4949,26 +4951,31 @@ go — yes, file the cron-trigger item in OPEN_FOLLOWUPS.md. Good, honest E2E re
 ### 🤖 Autopilot
 
 Closing out the thread properly — filing the cron-trigger item in OPEN_FOLLOWUPS.md. Reading the current file first (checking for duplicates + exact format):
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is large — let me check for any existing FBE/cron entry first, then append:
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No existing FBE entry — clean to add. Let me check the file's section structure to place the entry correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Adding the FBE cron-trigger entry to the top of `## Pending`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #877 opened — merging it to land the follow-up entry:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5202,4 +5209,43 @@ Dedup still case-insensitive on the resolved name.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/limites-da-fazenda/index.html" -o limites_main.html && ; cd /tmp && echo "=== lines 195-260 (farm store, remote fetch, merge, render) ===" && sed -n '195,260p' limites_main.html; cd /tmp && echo "=== REMOTE_FARMS_URL in the page ===" && grep -n "REMOTE_FARMS_URL" limites_main.html | head -3; echo; echo "=== live farms; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Merged PR #55 myself (self-merge authority on beta repos). Holding on prod promotion — that still needs Gary's explicit go.
+
+
+### 🤖 Autopilot
+
+Understood — PR #55 merged on your side, and prod promotion stays gated on Gary's explicit go. Let me verify the merge landed on beta main:
+
+
+### 🤖 Autopilot
+
+PR #55 shows merged (13:58:49Z) but the raw `main` file doesn't contain the fix — either CDN cache lag or something's off with the merge. Let me check the authoritative Contents API + the merge commit:
+
+
+### 🤖 Autopilot
+
+Confirmed — the fix **is on main** (authoritative Contents API shows `has fix: True`, size 25,719; merge commit `0d75463a` "#55" at the top of the file history). The earlier raw.githubusercontent `grep = 0` was just **CDN cache lag** (raw.githubusercontent serves from cache and lags ~minutes behind; the Contents API is authoritative). The Pages live site will pick it up on its next build.
+
+## Status ✅
+
+- **PR #55 merged** (13:58:49Z, commit `0d75463a` on main) — fix present in the authoritative beta main
+- **Beta live page** — will show real farm names after the next Pages build (CDN lag noted; earlier grep=0 was cache, not a missing fix)
+- **Prod promotion** — **held, as you said**: gated on Gary's explicit go. I won't touch `sunmint_prod` until he says so.
+
+## RESUME HERE
+- **Gary's go** → `sync_beta_to_prod("sunmint_prod")` → verify `sunmint.truesight.me/limites-da-fazenda/` shows Fazenda Cleide / Rancho Maranta / Santa Anna Fazenda / Paulo La Do Sitio Para
+- Still holding (Gary-dependent): FBE hourly cron trigger + real-device boundary test
+- Parked (your call): chrome audit of other sunmint pages, `sunmint_mobile/www/` sync
+
+Holding here.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== PR #55 state ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/pulls/55" | python3 -c "import sys; cd /tmp && echo "=== authoritative main file (Contents API) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents
 
