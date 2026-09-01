@@ -8,53 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-**A1 landed — the plan is pivoted to the org-wide ledger.** ✅
-
-## This turn
-
-| Item | Detail |
-|---|---|
-| **PR** | [agentic_ai_context #856](https://github.com/TrueSightDAO/agentic_ai_context/pull/856) — merged (squash, `545d901`) |
-| **What changed** | `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md` rewritten from the SunMint-only aggregate-cache design to the **org-wide public RSA signature ledger** |
-
-## What the pivot locks in
-
-| Decision | Before (PR0) | After (A1) |
-|---|---|---|
-| **0.1 Home** | `sunmint/signatures.json` | **`TrueSightDAO/verify_public_signatures`** (empty public repo, purpose-built name) |
-| **0.1b Layout** | one big JSON file | **one immutable JSON per event** in per-event-type folders (`tree_planting/171.json`, …) + `index.json` per folder + root `index.json` — no size ceiling, real per-attestation URLs, append-only emission (matches `lineage-assets` `qrs/<qr-id>.json` convention) |
-| **0.2 Scope** | SunMint events only | **all RSA event types** — contribution reporting, sales, inventory movement land here later |
-| **0.5 Writer** | cron only | **dao_protocol emit hook at verify time** (primary, deploy-gated, A4) + **cron as reconciliation** |
-
-Also captured: the verification algorithm fact (§2.3 — payload = text up to & incl. `--------` separator), EMAIL REGISTERED exclusion pending a redaction-preserving design (§5, OPEN_FOLLOWUPS item), and the full A2–A5 sequencing table with gates.
-
-## State of roadmap
-| Unit | Status |
-|---|---|
-| PR0–PR3 (legacy sunmint path) | ✅ done/live (superseded) |
-| **A1 pivot amendment** | ✅ **merged this turn** |
-| A2 retarget script + migrate 73 events | ⏭️ next |
-| A3 ledger README | not started |
-| A4 dao_protocol emit hook | not started |
-| A5 docs + UAT | not started |
-
-## RESUME HERE → **A2**
-
-`truesight_autopilot` + `verify_public_signatures` (one PR): retarget `scripts/sync_sunmint_signatures.py` from the aggregate sunmint layout to the **per-event layout** — write `verify_public_signatures/tree_planting/<msg_id>.json` etc. + per-folder `index.json` + root `index.json` (sha-aware incremental PUT per file); **one-time migration of the 73 live events** out of `sunmint/signatures.json` into the new folders; local test suite (compileall / ruff check / ruff format / pytest) + `--dry-run`; then **`gate: dry-run diff review with Gary`** (layout + PII scan) before the first real push. Remember: `verify_public_signatures` is API-only → Contents-API single-file writes, never branch-edit PRs.
-
-———
-**✅ Done this turn — actions taken:**
-• `git push changes` → agentic_ai_context #856 opened (`09b063c`)
-• `merge pr` → #856 merged (sha `545d901`)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /home/ubuntu/agentic_ai_context 2>/dev/null && git pull -q origin main 2>/dev/null; sed -n '/| \*\*PR2\*\*/,/^## 7/p' /home/ubuntu/agenti
-• `merge pr` → ✅ PR #856 on agentic_ai_context merged successfully (sha: 545d9014f7ad1320dd4b21972421c1929c3baf0e). Pull Request successfully merged
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
@@ -4566,6 +4519,7 @@ Fresh PR #382. Let me verify its diff is the clean 2-file favicon change.
 ### 🤖 Autopilot
 
 PR #382 is now the clean 2-file favicon change (head `9581adca`, +2/−0). The stale #381 is closed. This is a tiny, low-risk change that Gary explicitly requested ("go with Option A") — I'll merge it per standing authorization, since CI will gate it.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4628,6 +4582,7 @@ do you have your own avatar somewhere in your content? use that one
 ### 🤖 Autopilot
 
 Good idea — let me search the org repos for a Sophia avatar asset.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4791,4 +4746,55 @@ Nothing blocked on you right now. The backfill keeps trickling; I'll run the com
 **✅ Done this turn — actions taken:**
 • `ssh run` → TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); echo "=== CI on af9d39a ==="; curl -s -H "Authorization: token 
 • `merge pr` → ✅ PR #382 on truesight_autopilot merged successfully (sha: d24d545e3f33a4f848754f16516841680e55769d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — deploy via your own deploy_autopilot (idle-drain guard) rather than waiting on me; YouTube Description thread is mid-turn right now so I don't want to force a raw restart.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+So, all the RTA sign events are already back filled onto GitHub as caches. Can you check? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Checking the backfill completion status — whether all RTA sign events are on GitHub.
+
+
+### 🤖 Autopilot
+
+Not complete yet — the backfill is still running. Let me get the full picture of progress (which event types are done, what's left).
+
+
+### 🤖 Autopilot
+
+**Not complete yet — the backfill is still running (~65% done).** Here's the honest status:
+
+## Backfill progress — in flight, not done
+
+| Metric | Value |
+|---|---|
+| **Live on GitHub now** | **2,663 JSON cache files** across 12 folders |
+| **Remaining** | **1,728 files** (~7 more cron passes, ~3.5h) |
+| **Cursor** | `donation_mint_event/Edgar_20260602223941_126.json` (June 2 events, working chronologically) |
+| **Last push** | 15:34:19Z — **actively pushing right now** |
+| **PII exclusion** | Working: **1,650 events excluded** (email-bearing, your option-2 call), scan clean every pass |
+
+**What's live so far:**
+- `contribution_event` 2,168 · `dao_inventory_expense_event` 201 · `credentialing_attestation_event` 109 · `donation_mint_event` 69 · tree_* 80 (all four tree types) · `asset_receipt_event` 14 · `batch_qr_code_request` 13 · `capital_injection_event` 5 · `currency_conversion_event` 2 · `tree_growth_monitoring` 2
+
+**Still to come in the remaining 1,728:** `inventory_movement` (660), `sales_event` (non-email portion), `practice_event` (168), and the other later-alphabet folders.
+
+**So the answer to your question:** the RTA sign events are **being** backfilled onto GitHub as caches — over half are already there — but it's **not fully done yet** (~1,728 files to go, ~3.5h). The 30-min cron is chugging through it with the rate-limit guard, ~250 files per pass.
+
+I'll run the full completion checks (root index, 3-sample openssl re-verify, live PII scan, README/plan update) when the counter hits zero — and I'll flag the moment it completes. Nothing needs you meanwhile.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== backfill log: last remain/complete lines ==="; grep "files remain\|backfill complete\|PII" /home/ubuntu/scripts/sync_sunmint_signa; echo "=== all 'files remain' lines (progress history) ==="; grep "files remain" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null
 
