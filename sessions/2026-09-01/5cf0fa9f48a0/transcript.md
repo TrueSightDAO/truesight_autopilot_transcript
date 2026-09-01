@@ -1881,11 +1881,13 @@ Montage rebuilt with the corrected crimson crop (t11.5, pod ~85% of frame, no to
 ### 🤖 Autopilot
 
 👍 All three approved — pushing to beta now. First, let me check the current post HTML (to see which image paths it references) and locate the approved Ponta Verde yellow pod file on the box:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Approved — pushing to beta. Let me see the full post HTML (all image references) to make precise edits, and verify the yellow-pod file:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2002,4 +2004,87 @@ The post's sentence ("Jedielcio is CEPOTX — the cooperative network that suppl
 (Or lighter: *"Jedielcio works with CEPOTX — the cooperative network that supplies…"*)
 
 Want me to make the edit? I'll open a small beta PR (truesight_me_beta) with that one-line fix — it'll ride along with the image fix when we promote to prod, so both land on truesight.me together. Just say which wording you prefer (or give me yours) and I'll PR it.
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: I am having Enoy take over the drafting of these two blog post instead
+
+---
+
+[observed, not directed at you — Envoy TrueSight]: Update - governor asked me to complete this myself end-to-end rather than handing it to you, including re-analyzing the video frames with Grok vision for an independent cross-check (done - ran all 12 clips x3 timestamps through grok-4-1-fast-non-reasoning on your box, confirms the furrowed/crimson pod is visually distinct but the various smooth yellow-green pods (Ponta Verde/PS1319/C-151) look similar to a camera - matches the farmer's own point that a name needs his records, not just a look). Please stand down on the fs8_fs9_recreation staged files - I'll take it from here and push directly to truesight_me_beta myself. Thanks for the earlier work on these posts, the source material and asset extraction you built was the foundation this used.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17381] I dont think the slug should be so generic as https://beta.agroverse.shop/post/bean-to-bliss-episode-13/
+https://beta.agroverse.shop/post/bean-to-bliss-episode-14/
+
+But should have relevant keywords from the blog post. Thoughts?
+
+
+### 🤖 Autopilot
+
+Good question — and the timing is perfect since these are still pre-publish. Let me check how slugs are actually structured in the agroverse shop blog before answering.
+
+
+### 🤖 Autopilot
+
+The slug search came up empty in code — let me check the actual agroverse_shop_beta repo for the post structure and how those episode slugs are defined.
+
+
+### 🤖 Autopilot
+
+GitHub code search doesn't index it (0 hits for both "bean-to-bliss" and "bean-to-bliss-episode") — the shop's post pages are likely defined in a Google Sheet or GAS project rather than the repo. Let me check the repo structure and look for the post source.
+
+
+### 🤖 Autopilot
+
+Found it — the posts are real HTML dirs in `agroverse_shop_beta/post/`. Episodes 1–14 exist as `bean-to-bliss-episode-N`. Let me see the full list, the sitemap, and one episode's structure + how slugs are referenced internally (blog index, sitemap, og tags) so I can assess the rename impact.
+
+
+### 🤖 Autopilot
+
+Found it — the posts live in `agroverse_shop_beta/post/` as real HTML dirs. Key observations so far:
+- **Episodes 1–14** exist as `bean-to-bliss-episode-N/` — but the repo ALSO has dozens of descriptive keyword slugs (`brazil-cacao-genetics-and-flavor`, `cacao-minerals-benefits-and-bean-uses-a-deep-dive`, `the-magic-of-terroir-how-place-shapes-the-extraordinary-flavors-of-cacao`…)
+- Ep 13 = *"How many varieties, really?"*, Ep 14 = *"What floats is better"*
+
+Let me check cross-references and whether prod already has these, so I can scope the rename properly:
+
+
+### 🤖 Autopilot
+
+Good instinct — and the timing makes this **free to fix right now**. Here's what I found:
+
+## Current state (verified)
+
+| Fact | Evidence |
+|---|---|
+| Ep 13/14 live in **beta only** | `agroverse_shop_beta/post/bean-to-bliss-episode-13/` + `-14/` exist |
+| **Prod 404s** for both | `agroverse_shop_prod` → HTTP 404 for ep13/14 — **not yet promoted** |
+| Not in sitemap.xml yet | no episode-13/14 entries |
+| House style already has keyword slugs | `brazil-cacao-genetics-and-flavor`, `cacao-pod-selection-walk-on-oscar-s-farm`, `cracking-fresh-cacao-pods-in-the-field`… (dozens) |
+
+## My take
+
+**Yes — rename.** And because neither is in prod or the sitemap yet, there's **zero redirect cost, zero SEO loss, no broken links** — this is the cheapest moment in the post's life to get the URL right. (Episodes 1–12 are already live in prod with the generic pattern; migrating those would need 301 redirects — separate decision, don't touch now.)
+
+**Proposed keyword slugs** (from the actual content):
+- **Ep 13** ("How many varieties, really?" — PS1319 / C-151 / hybrid IDs, farmer's records vs looks) → `post/cacao-varieties-identification-para-brazil`
+- **Ep 14** ("What floats is better" — the water-immersion fermentation test) → `post/cacao-fermentation-water-float-test`
+
+## Rename impact (small, fully contained)
+1. **Rename the two dirs** (`git mv` + commit)
+2. **Update internal links:** `blog/index.html` (2 cards + 2 thumb paths), ep-12's "next" link to ep-13, and the ep-13↔ep-14 prev/next cross-links
+3. **Update self-references** inside each post: `canonical`, `og:url`, `twitter:url` (they point at `www.agroverse.shop/post/bean-to-bliss-episode-13` — must match the new slug so the canonical isn't lying)
+4. Keep `bean-to-bliss` in the **page titles** ("Bean to Bliss — Episode 14: What floats is better") — branding stays, only the URL changes
+
+**Two options on format:**
+- **A) Full keyword** (`cacao-fermentation-water-float-test`) — best SEO, matches the non-episode posts
+- **B) Hybrid** (`bean-to-bliss-episode-14-cacao-fermentation-water-float-test`) — keeps series signal in the URL, longer
+
+I lean **A** (cleaner, Google prefers it, and the series identity already lives in the H1 + prev/next nav). Want me to run the rename on beta (PR → merge → you review on beta) with A, or do you prefer B / different keywords?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && rm -rf asb && git clone -q --depth 1 https://github.com/TrueSightDAO/agroverse_shop_beta.git asb 2>&1 | head -2; echo '--- top le; cd /tmp/asb && echo '=== all post dirs ==='; ls post/ | sort -V; echo; echo '=== sitemap post URLs ==='; grep -o 'post/[^<]*' sitemap.xml | ; cd /tmp/asb && echo '=== cross-refs to ep13/14 slugs anywhere ==='; grep -rl 'bean-to-bliss-episode-13\|bean-to-bliss-episode-14' . --includ
 
