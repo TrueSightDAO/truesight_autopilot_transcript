@@ -10,211 +10,6 @@
 
 ### 🧑 Governor
 
-[Telegram context: chat_id=-1003919341801, thread_id=11074] Why not standardize to the same source instead of a separate enum??
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
-
-
-### 🤖 Autopilot
-
-Good architectural critique — the enum is a second source of truth that drifts from `settings.prod_repos`. Let me look at how the tool's schema is actually built to see the right way to standardize on one source.
-[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-You're right — that's a genuine dual-source-of-truth smell. The runtime check uses `settings.prod_repos`, but the LLM-facing schema enum is hardcoded, so the two can drift (a repo added to settings but not the enum won't be callable; a stale enum entry gets runtime-rejected). Let me check how ToolSpec validates enums and what tests exist, then derive the enum from settings:
-[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-You're right — and it's a legit smell. The runtime guard reads `settings.prod_repos`, but the LLM-facing schema enum is hardcoded, so the two can drift (add a prod repo to settings → tool can't be called; forget to remove from enum → runtime-rejected). The fix is to **derive the enum from `settings.prod_repos` at module load**, with a JSON-schema-friendly note that it's the live source of truth. Let me check the tests + ToolSpec shape first so I don't break the registry:
-[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-This is a great catch — and there's already a **regression test** (`tests/test_sync_beta_to_prod_tool.py`) whose docstring literally says: *"the tool's enum (and its human-facing description) must derive from `settings.prod_repos`, never be a hand-maintained duplicate."* But the code still hand-maintains the enum — the test only *catches* drift after someone forgets. The right fix is to actually **derive** both the enum and the description from `settings.prod_repos` at module load, so there's nothing to forget.
-
-Let me make the change:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #351 opened. Per the hard rule, run the local test suite before merging — this changes Python code, so all four checks matter:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The full suite shows **6 failed, 817 passed** — but earlier baseline was "3 pre-existing in test_chat_observe.py". Now there are 3 more failures in `test_events_catalog.py`. My change only touched `sync_beta_to_prod.py` — let me verify these are pre-existing on main (network-dependent tests, most likely) before merging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Key finding: **the `test_events_catalog.py` failures are pre-existing on clean main** — confirmed by stashing my branch (3 failed there too, identical `Attr...` truncation). They're network/attr-dependent (the events catalog tries to fetch a live catalog at test time and fails on this box without network access to it — same class of pre-existing infra-flake as the earlier 3). My branch: 3 sync-tool tests pass + the events-catalog failures are identical before/after my change → **my change introduces zero new failures**.
-
-Let me also confirm the earlier `test_chat_observe.py` trio is still the same 3 pre-existing, then merge:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed: on my branch, the **3 sync-tool tests pass**, the 3 `test_chat_observe.py` failures are the known pre-existing trio, and the 3 `test_events_catalog.py` failures are pre-existing on clean main (network/attr flakes, identical before/after). **My change introduces zero new failures.** Merging PR #351:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**Your critique was right** — the tool hand-maintained a hardcoded enum + repo list in its description, duplicating `settings.prod_repos`. Two sources of truth that drift: add a prod repo to config → tool isn't callable until someone remembers to edit it; leave a stale enum entry → runtime-rejected. Ironically, the repo *already had* a regression test (`test_sync_beta_to_prod_tool.py`) whose docstring says the enum "must derive from settings.prod_repos, never be a hand-maintained duplicate" — but the code never actually derived it; the test only caught drift after the fact.
-
-**PR #351 — https://github.com/TrueSightDAO/truesight_autopilot/pull/351** (merged, sha `0dc390a`)
-- `app/tools/sync_beta_to_prod.py` now computes `_PROD_REPOS = sorted(settings.prod_repos)` once at module load and derives **both** the schema `enum` and the description's "Prod repos:" list from it — self-syncing with config
-- Runtime guard already read `settings.prod_repos` (unchanged) — so now the guard, enum, and description all read the **same single source**
-- Docstring "The three production sites" → "The production sites" (stale count; sunmint made it four)
-- Adding a prod repo to config now requires **zero tool edits**
-
-**Tests** (hard rule): compile ✓ · ruff lint ✓ · format ✓ · the 3 sync-tool regression tests pass · full suite 817 passed / 6 failed — but I verified the 6 are all **pre-existing** on clean main (3 `test_chat_observe.py` known trio + 3 `test_events_catalog.py` network/attr flakes, confirmed identical by stashing my branch). **My change introduces zero new failures.**
-
-## RESUME HERE → next unit
-
-The next open items from this thread (pick one):
-
-1. **Sunmint whitepaper PR #292** (`truesight_me_beta`) — carbon-registry roadmap + Apple/hyperscaler/SBTi buyer content, still unmerged. Needs: merge to beta → promote to prod, possibly after folding in the PDF v4 framing ("trees not ceilings", fluid roadmap, member-registry warm intros).
-2. **Whitepaper PDF v4** — push to a repo for versioning, or add an SBTi V2.0 buyer-alignment section first.
-3. **`SUNMINT_MOBILE_APP_PLAN.md` manifest row is stale** ("new — awaiting kickoff" but 26 PRs done) — small doc fix to reflect actual progress.
-
-Which next?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → cd /opt/truesight_autopilot && echo "=== config.prod_repos ===" && grep -n "prod_repos" app/config.py | head; echo "=== how tool schemas get; cd /opt/truesight_autopilot && echo "=== ToolSpec definition ===" && grep -n "class ToolSpec\|enum" app/tool_registry.py | head -20; echo "=; cd /opt/truesight_autopilot && echo "=== test_sync_beta_to_prod_tool.py ===" && cat tests/test_sync_beta_to_prod_tool.py 2>/dev/null | head ; …(+3 more)
-• `merge pr` → ✅ PR #351 on truesight_autopilot merged successfully (sha: 0dc390a6e948d29c9b2b30af9c254cccf1abab98). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merged ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**Your critique was right** — the tool hand-maintained a hardcoded enum + repo list in its description, duplicating `se
-
-
-### 🤖 Autopilot
-
-Go-signal received — resuming the next open item: **Sunmint whitepaper PR #292** (fold in the v4 framing, then merge to beta). Per the handoff context, let me check the manifest/plan first, plus the current state of PR #292:
-[2 tool result(s) compacted: read_context_file, list_prs — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Manifest checked — no dedicated whitepaper plan row (PR #292 is my work from this thread; the resume pointer governs). PR #292 is still open. Per my flagged resume item, the sequence is: **fold in the PDF v4 framing → merge to beta → promote to prod**. This turn = the content update to PR #292.
-
-Let me fetch the current PR-branch whitepaper to see exactly what's there:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me look at the full structure — the section headings (13, the roadmap) and the key content blocks I want to update with the v4 framing:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #292 has the roadmap table + Apple bullet, but it's missing the v4 framing (fluid roadmap, trees-not-ceilings, member registry warm intros, SBTi V2.0, EU price). Let me check what's in the file re: 10,000 ha, SBTi, EU, member registry, trees:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #292 has the roadmap table + Apple bullet but is missing the v4 framing: fluidity disclaimer, trees-not-ceilings upside, SBTi V2.0 buyer alignment, EU price reference, and member-registry warm intros. Let me read sections 12–13 in full to make precise edits:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #292's content is confirmed: it has the roadmap table + Apple bullet, but is missing the v4 framing (fluidity disclaimer, trees-not-ceilings, SBTi V2.0, EU price, member-registry warm intros) and still carries the hard 10,000 ha ceiling. This turn = fold in the v4 framing. Let me build the updated file with precise edits:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 10 edits applied (24,605 → 28,404 bytes). The only remaining "10,000" is the registry's own microscale threshold (≤10,000 credits/yr) — correct. Let me verify HTML tag balance, then push the update to PR #292's branch:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-HTML is well-formed (no tag mismatches), all heading IDs + TOC links present. Now pushing the updated file to the PR #292 branch (same branch, updates the PR in place):
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Updated the PR branch. Let me verify the live PR-branch file is exactly the v4 content, then report (the merge to beta + promote to prod follows the beta-first review — per the one-PR-per-turn rule, the content update is this turn's PR work; the merge is the next unit):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The API (authoritative) shows 28,404 bytes, balanced tags (div 64/64, table 2/2, p 69/69, h4 15/15) — but raw.githubusercontent shows 0 key markers. That's the same CDN caching I hit before. Let me check the API content directly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The authoritative API content confirms everything landed on PR #292's branch: **all v4 markers present** (FLUID BY DESIGN, SBTi V2.0, member registry, Re.green, €74, 482+), and the hard ceilings are **gone** (10,000+ hectares ABSENT, 2,000–10,000 ha ABSENT). The earlier raw.githubusercontent 0-count was CDN cache lag, exactly as before. PR #292 is now fully updated.
-
-Stopping here per the one-PR-per-turn rule — the content update is this turn's work; the merge/promote is the next unit.
-
-## What I did this turn
-
-**Folded the v4 whitepaper framing into PR #292** (`truesight_me_beta`, branch `sunmint-wp-carbon-registry-roadmap`) — 10 precise edits via a single whole-file push (28,404 bytes, tags balanced div 64/64 · table 2/2 · p 69/69 · h4 15/15):
-
-1. **Fluid roadmap, explicit** — Section 13 now opens with a **"⚠ THIS ROADMAP IS FLUID BY DESIGN"** callout (indicative mappings; flexes with ICVCM/registry rules, buyer standards, price signals, SBCE/Article 6, community uptake); table header → **"Registry (indicative — may change)"**
-2. **No more 10,000 ha ceiling** — Section 12's hard "Expand to 10,000+ hectares" replaced with fluid scaling expressed in **total trees** (500–1,000+ trees/ha → 1,000 ha ≈ 500k–1M trees; 5,000 ha ≈ 2.5–5M; "from hundreds of thousands toward millions and beyond"); table scale cells now trees-based ("Pilot — first tens of thousands" → "Millions of trees and beyond")
-3. **New Section 14 — Target Buyers & Market Context**:
-   - **SBTi V2.0** OER tiers (Engaged/Advanced/Leadership + $20/$80 floors; nature-based removals stay eligible)
-   - **Hyperscalers** + **Re.green precedent** (Microsoft's 3.5M-credit Brazilian restoration deal)
-   - **Member-registry warm intros** (482+ contributors; members employed at target companies)
-   - **EU price reference** (€74–82/t spot, €105.73 ATH, ~€93 forecast; €100 = forward benchmark; ETS ≠ voluntary channel; Leadership $80 ≈ €69 convergence)
-4. **TOC** — added section 14 link
-
-**Verified** via the authoritative GitHub Contents API (raw.githubusercontent was CDN-cached stale, same as before): all markers PRESENT, hard ceilings ABSENT.
-
-## RESUME HERE → next unit
-
-**Merge PR #292 → beta live → promote to prod** (beta-first flow; sunmint prod sync is now supported by the tool I fixed — `sync_beta_to_prod("truesight_me_prod")`). The updated whitepaper goes live on beta.truesight.me → after your review, promote to truesight.me.
-
-Note: the beta deploy may also pick up other open truesight_me_beta PRs (282, 284–289 are unrelated content — I'll check before merging so the promote is clean). Say go and I'll execute.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×8 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/sunmint-wp-carbon-registry-roadmap/sunmint/whitepaper/i; cd /tmp && echo "=== all heading-like anchors ===" && grep -n 'id="[0-9]\|class="whitepaper-heading"' wp_pr.html | head -30; echo "=== secti; cd /tmp && echo "=== 10,000 ha mentions ===" && grep -n "10,000\|10000" wp_pr.html | head -20; echo "=== SBTi / Science Based ===" && grep -; …(+5 more)
-
-
-### 🧑 Governor
-
 [Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
 
 [emoji-go: 👍 from user 2102593402] go for it — original resume text: The authoritative API content confirms everything landed on PR #292's branch: **all v4 markers present** (FLUID BY DESIGN, SBTi V2.0, member registry, Re.green, €74, 482+), and the hard ceilings are *
@@ -4785,6 +4580,7 @@ go
 ### 🤖 Autopilot
 
 Go-signal received — merging PR #876 (the glossary):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4828,26 +4624,31 @@ go — continue with the FBE webhook E2E / hourly cron trigger item
 ### 🤖 Autopilot
 
 Go-signal received — executing the **FBE webhook E2E + cron trigger item**. Per protocol, reading the plan and checking how dispatch actually calls the GAS webhook (URL source) so the E2E traces the real path:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dao_protocol checkout isn't at that path — let me fetch dispatch.py from GitHub directly to see how the GAS webhook URL is constructed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dispatch comment mentions `process_farm_boundary_telegram_logs` — I need to verify the action string the routing row actually sends matches the doGet router case I added (`processFarmBoundaryEvidenceFromTelegramChatLogs`). Let me read the routing row + webhook logic in full:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The routing row sends env key `FARM_BOUNDARY_EVIDENCE` → `DAO_PROTOCOL_WEBHOOK_FARM_BOUNDARY_EVIDENCE` with action `processFarmBoundaryEvidenceFromTelegramChatLogs` — which **matches the doGet router case exactly** ✓. Now the E2E question: is that webhook URL configured on the dao_protocol server? Let me check the server env + service:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Service is active but no webhook env keys surfaced via systemd's Environment (likely loaded via .env file or systemd EnvironmentFile). Let me check how the env is loaded and look for the webhook config:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4855,6 +4656,7 @@ Service is active but no webhook env keys surfaced via systemd's Environment (li
 **Found a real gap**: `DAO_PROTOCOL_WEBHOOK_FARM_BOUNDARY_EVIDENCE` is **NOT in the server's .env** — while all sibling webhooks (TREE_GROWTH_MONITORING, TREE_PLANTING_LINK, QR_CODE_UPDATE, etc.) are configured. So today, an FBE submission would log "no webhook URL for FARM_BOUNDARY_EVIDENCE" and rely on the **cron fallback** (which still needs the hourly trigger set in GAS UI).
 
 Let me see the exact format of a sibling webhook value (e.g. TREE_GROWTH_MONITORING) so I can build the correct FBE URL — and confirm the GAS web-app URL it points to:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4862,6 +4664,7 @@ Let me see the exact format of a sibling webhook value (e.g. TREE_GROWTH_MONITOR
 The webhook URL format is confirmed: `https://script.google.com/macros/s/<deployment-id>/exec` (TGM uses the public form; TREE_PLANTING_LINK uses the `script.google.com/a/macros/agroverse.shop/s/...` internal form). The GAS deployment list showed `@HEAD` = `AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ` (public form) — that's the web-app URL to use.
 
 Now let me check the TREE_PLANTING_LINK env value is a full URL with the action param pattern, then determine the exact FBE webhook value to add. First, let me see the full TGM value (unredacted for the format — but I must not print secrets; I'll construct the FBE line using the same deployment ID and verify the action param shape):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4916,16 +4719,19 @@ go
 ### 🤖 Autopilot
 
 Go-signal received — adding the missing webhook env key and restarting the service (production change, explicitly approved):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Webhook key added + service restarted + active. Let me verify the server is healthy and the env key is actually loaded (healthz + journal):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Webhook path fully configured and live** ✅ — but I must verify one last thing: the GAS web-app URL's **deployment access** (public form works only if the web app is published to "Anyone"). The TGM webhook uses the same shape, but let me confirm the deployment's access mode matches (otherwise the webhook 403s and falls to cron). Since my earlier anonymous probe hit the Google sign-in wall, let me check whether TGM's working webhook behaves the same (i.e. whether the sign-in wall is expected for all of these, or TGM's is truly anonymous):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4982,31 +4788,37 @@ go — run the live E2E test (option 2), it's covered under §5g standing author
 ### 🤖 Autopilot
 
 Go-signal received — running the live E2E test, marked clearly as test data, with cleanup in the same turn. First, the event contract + how the app's submit path works (to know exactly what chain I'm exercising):
+[2 tool result(s) compacted: lookup_event_docs, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Event contract confirmed (required: Farm Name + Media URLs). Let me read the app's `submitBoundary()` to mirror the exact payload shape, then construct the test event:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The app queues to IndexedDB (offline-first) — the flush posts to Edgar's `EDGAR_SUBMIT_URL`. Let me see the flush function and the actual Edgar endpoint it hits, so my test event exercises the real chain:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The flush posts `formData` (multipart with photos) to `edgar.truesight.me/dao/submit_contribution` — same endpoint as the contribution tool. The cleanest E2E that exercises the real chain (Edgar → dispatch → GAS webhook) without fabricating photo uploads is to submit a `[FARM BOUNDARY EVIDENCE EVENT]` via the same signed-submission path with test-data markers. Let me check how the submit_contribution endpoint routes to dispatch (event_name/type mapping) so my payload lands correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No `submit_contribution` in the server routes — the endpoint must be served elsewhere (the Edgar FastAPI root or a proxy). Let me check the main app + dao.py for the route and how it dispatches events to GAS:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The E2E chain is now fully traced: `POST /dao/submit_contribution` → `dispatch_event()` → GAS webhook. The cleanest real-path test: submit a signed test `[FARM BOUNDARY EVIDENCE EVENT]` via the same Edgar submission path the app uses, marked clearly as test data. Per the duplicate-guard, this is the first FBE submission — no prior test event exists. Let me run it with test-data markers and observe the webhook fire:
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5116,4 +4928,82 @@ The E2E item is closed with a clear answer: **pipeline deployed + configured + E
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /tmp && echo "=== how the limites page submits (webhook/Edgar/WhatsApp?) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/; cd /tmp && echo "=== submitBoundary() payload shape (399-470) ===" && sed -n '399,470p' limites_prod.html; echo "=== EDGAR submit endpoint s; cd /tmp && echo "=== queue-flush / EDGAR_SUBMIT_URL usage ===" && grep -n "flush\|EDGAR_SUBMIT_URL\|queueBoundary\|fetch(" limites_prod.html; …(+12 more)
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — yes, file the cron-trigger item in OPEN_FOLLOWUPS.md. Good, honest E2E result — this thread is effectively done from my end until the real device test / Gary sets the cron trigger, both of which need him directly.
+
+
+### 🤖 Autopilot
+
+Closing out the thread properly — filing the cron-trigger item in OPEN_FOLLOWUPS.md. Reading the current file first (checking for duplicates + exact format):
+
+
+### 🤖 Autopilot
+
+The file is large — let me check for any existing FBE/cron entry first, then append:
+
+
+### 🤖 Autopilot
+
+No existing FBE entry — clean to add. Let me check the file's section structure to place the entry correctly:
+
+
+### 🤖 Autopilot
+
+Adding the FBE cron-trigger entry to the top of `## Pending`:
+
+
+### 🤖 Autopilot
+
+PR #877 opened — merging it to land the follow-up entry:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Filed the FBE hourly cron trigger as a tracked follow-up** (the last manual item for the boundary pipeline).
+
+**PR #877 — https://github.com/TrueSightDAO/agentic_ai_context/pull/877** (merged, sha `177e84d6`)
+
+Added to `OPEN_FOLLOWUPS.md` under `## Pending` (checked for duplicates first — none existed):
+- **Owner:** Gary (needs GAS UI access)
+- **What:** set the time-driven trigger in the Apps Script UI → project `1UrBgqLnnQc6PV4…` → Triggers → `processFarmBoundaryEvidenceFromTelegramChatLogs`, every 60 min (per `SCHEDULE_TRIGGERS.md` §6)
+- **Why it matters:** the instant webhook path is live (verified 200), but the E2E test confirmed dispatch only matches the raw `[FARM BOUNDARY EVIDENCE EVENT]` marker in a *real* submission (the app's multipart POST carries it; the structured submit_contribution payload does not) — so the cron is the guaranteed-processing fallback
+- **Verification steps** included: after the trigger is set, do a real-device boundary submission on `sunmint.truesight.me/limites-da-fazenda/` and check the SunMint Plots tab for the new row + impact map polygon
+
+## Thread status
+
+This execution thread is now **effectively complete from my side** (as you noted): all code shipped, deployed, configured, and UAT-tested; the two remaining items (real-device test + cron trigger) both need Gary directly, and the cron trigger is now tracked in the backlog so it won't rot.
+
+## RESUME HERE → next unit (Gary-dependent / parked)
+
+1. **Gary:** set the FBE cron trigger (OPEN_FOLLOWUPS#… entry just filed, PR #877) → then real-device boundary test on `sunmint.truesight.me/limites-da-fazenda/` → verify new row in SunMint Plots tab + polygon on impact map
+2. **Parked (your pick later):** chrome audit of `/monitor-tree-growth/`, `/instrucoes/`, `/register_farm/` (same logo/lang-toggle/email/APK consistency); `sunmint_mobile/www/` sync for the next APK
+3. Nothing else outstanding on the boundary pipeline
+
+Say go whenever one of those needs attention.
+
+———
+**✅ Done this turn — actions taken:**
+• `read context file` → OPEN_FOLLOWUPS.md (structure + duplicate check)
+• `search context` → FARM BOUNDARY EVIDENCE cron trigger (0 hits — clean)
+• `git push changes` → https://github.com/TrueSightDAO/agentic_ai_context/pull/877 (branch followups/fbe-cron-trigger, sha bb8515b4)
+• `merge pr` → ✅ PR #877 merged (sha 177e84d6f47f0fa6fe36a8cb26917445c7ce24f1)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/OPEN_FOLLOWUPS.md" -o ofu.md && echo "=== section
+• `merge pr` → ✅ PR #877 on agentic_ai_context merged successfully (sha: 177e84d6f47f0fa6fe36a8cb26917445c7ce24f1). Pull Request successfully merged
 
