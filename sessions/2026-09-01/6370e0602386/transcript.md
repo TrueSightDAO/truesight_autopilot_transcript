@@ -2406,16 +2406,19 @@ I have everything needed. Opening the PR with the script as a full write + 5 tar
 ### 🤖 Autopilot
 
 PR #269 opened with the script, but I didn't include the 5 JSON edits in the payload. Let me push them to the same branch (updates PR #269 — not a new PR):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The edit anchor didn't match — let me fetch the actual JSON entry bytes from the repo to build the correct anchor.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The JSON uses 4-space indent, not 2. Redoing the edits with correct indentation:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2595,4 +2598,62 @@ No further units — this thread's GPS work is complete. ✅ Standing offer if y
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #885 on agentic_ai_context merged successfully (sha: 86c01259fa26847263805d3edb48f8ae590a7e77). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] Yeah, that would be great. Can you do that? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me check whether the off-box source files have made it to this box yet, and what GPS sources are actually reachable right now — that determines whether the backfill can complete.
+
+
+### 🤖 Autopilot
+
+The box has many more source files than I thought. Let me cross-reference the 68 non-GPS cache entries against all local media files to see if any match by basename.
+
+
+### 🤖 Autopilot
+
+8038 local media files — but the cache keys are **upload filenames** ("Full HD 1080p" suffixed), which mostly won't match the source MOV names. The promising bridge is the **farm manifests** (they store `yt_id` per file, per the MAP pipeline). Let me join the 68 entries' video_ids against all farm manifests, and also check for direct basename hits (santos/oscar files).
+
+
+### 🤖 Autopilot
+
+No matches via manifest yt_id (0) and no source files on-box for the 68 (they live on your Mac per the upload manifests). Let me do one final check — whether the cache entries carry any source-path field that could bridge to local files, and whether the incoming manifests hold GPS.
+
+
+### 🤖 Autopilot
+
+The investigation is complete — and the honest answer is: **no, I can't fully backfill the other 68 right now**. The cache entries carry no source-path field, the incoming manifests are keyed differently (0 items matched, no GPS fields), and none of the 68 source files exist on this box (8038 local media files, zero basename matches). The data simply isn't reachable from here — it lives on your Mac.
+
+Let me make sure I hand you the cleanest possible restart path so this completes the moment the sources are available.
+
+
+### 🤖 Autopilot
+
+Good — the script is already built to do exactly this when sources arrive: it matches by basename across farm manifests + source dirs, dry-run by default, `--write` applies. So the tooling is ready; only the source files are missing.
+
+**Here's the honest answer on the 68:**
+
+**No — I can't complete the backfill from this box right now.** The investigation:
+
+- **Cache has no source-path field** — entries only store `video_id/url/title/description/uploaded_via`; nothing bridges to the originals
+- **Incoming manifests don't match** — the `docs/incoming_videos_*/manifest.json` files key entries differently (0 basename matches, 0 GPS fields)
+- **Source files aren't on this box** — 8,038 local media files scanned (all farm work dirs + tmp), **zero** basename matches for the 68 (they're the Bean-to-Bliss/Project/oscar clips whose upload manifests point at your Mac, e.g. `/Users/garyjob/Downloads/…`)
+
+**What IS ready:** the `add_gps_to_youtube_videos_json.py` script already handles this exact case — basename matching across farm manifests + source dirs, exact-EXIF preferred, farm-manifest fallback, dry-run by default, `--write` applies. It'll backfill the moment sources are reachable.
+
+**To make that happen when you're ready** (choose one):
+1. **Sync the source MOV/MP4s to the box** (scp/rsync from your Mac — e.g. the farm zips or the Downloads folder) — then I re-run the script and the remaining entries auto-fill with their embedded GPS. I can even extend the script to take `--source-dirs /path/to/new/files`.
+2. **Share a path/export on your side** — tell me where the originals live and I'll wire up an rsync.
+3. **Leave as-is** — 5/73 have exact GPS now; the rest honestly show "no source"; schema + SOP are in place so nothing regresses.
+
+Want me to prep anything now (e.g. extend the script's `--source-dirs` and document the sync step in the SOP), or wait until you've got the files somewhere I can reach?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp/agroverse_shop_work 2>/dev/null && git checkout main -q 2>&1 | tail -1 && git pull origin main -q 2>&1 | tail -1 && echo "HEAD: $(gi; cd /tmp/agroverse_shop_work && python3 -c " import json, os d = json.load(open('scripts/youtube_videos.json')) nogps = [(k, v.get('video_id'; cd /tmp/agroverse_shop_work && echo "=== 1) join cache video_ids vs farm manifests (yt_id) ==="; python3 -c " import json, glob d = json.loa; …(+2 more)
 
