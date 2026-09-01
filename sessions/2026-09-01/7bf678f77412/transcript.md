@@ -4882,11 +4882,18 @@ Two things — your quota question and the blocked PR2. Let me resolve the confl
 ### 🤖 Autopilot
 
 Two things: the quota answer (good news — YouTube changed the rules) and unblocking PR2. Let me resolve the conflict first (it's an add/add: my branch is a superset of origin/main — the file I appended the page route to is exactly what PR #363 merged):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Conflict resolved — both routes present, all checks green. Pushing and merging PR #364:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -5103,4 +5110,105 @@ Ping me with "go" (fresh turn) and I'll retry the deploy.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot echo "=== pull latest (nav link + dashboard page) ===" git pull -q origin main 2>&1 | tail -2 echo "=== restart ; cd /opt/truesight_autopilot echo "=== local HEAD vs origin/main ===" git fetch -q origin 2>/dev/null echo "local: $(git rev-parse --short HE
 • `deploy autopilot` → Deploy DEFERRED: 3 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Update: I manually restarted truesight-autopilot.service via SSH already (before your deploy_autopilot kept deferring on the idle-drain guard) — verified live: root 200, /media-archive-pipeline 200, /media-archive-pipeline/data 401 signed-out, nav button present. PR3b deploy is DONE, no need to keep retrying deploy_autopilot for that.
+
+New finding: /opt/truesight_autopilot/media_archive_daemon_config.yaml is completely gone from disk (find turns up nothing, no .bak either) — looks like it was never git-tracked and got wiped by a deploy/clean step at some point during the crash-loop cycles. The running daemon (PID still up) has it in memory so uploads are unaffected right now, but farm-media-daemon.service WILL hard-crash (SystemExit) on its next restart since load_config() requires the file to exist.
+
+Please recreate it with daily_budget: 50 (per Gary's explicit ask) and the inboxes you originally configured — I can see the 4 farm dirs on disk (cleide, jedielcio, paulo-la-do-sitio, santa-anna-fazenda under /home/ubuntu/media_archive_inbox/) but not the priority values you actually used, so I didn't want to guess and silently change upload fairness. Consider committing a non-secret template of it to the repo so this can't happen again. Then go ahead with PR4 UAT — the dashboard itself is fully live.
+
+
+### 🤖 Autopilot
+
+The config is gone but I have its exact original contents from my earlier reads (I set it up this session). Let me recreate it with budget 50, verify the daemon loads it, and commit a template to the repo so this can't recur.
+
+
+### 🤖 Autopilot
+
+Config recreated and the daemon **loaded it fine** — it restarted cleanly and correctly reports `daily budget spent; sleeping 20.6h to 2026-09-02 07:05` (because we already did ~60+ uploads today — budget 50+ consumed). The daemon is healthy with the recreated file (the validation `Permission denied` was just my direct-exec attempt — the systemd service itself loaded it, which is what matters).
+
+Now commit a **non-secret template** to the repo so this can't happen again, per your suggestion:
+
+
+### 🤖 Autopilot
+
+The template committed + PR #368 opened (the first `git commit` before the branch checkout didn't stick, but the branch commit + push worked). One issue: my `.gitignore` append may have landed oddly. Let me verify the PR contains exactly the two intended files, then merge:
+
+
+### 🤖 Autopilot
+
+PR #368 accidentally includes `scripts/sync_sunmint_signatures.py` (a pre-existing local modification got swept into the commit). That's unrelated to the config template — let me fix the branch to contain only the two intended files:
+
+
+### 🤖 Autopilot
+
+The restore didn't work — the `git restore --source=origin/main` left the file's changes in the working tree but the diff still shows it. The stray change came in via commit `91e39cd` (which is on my branch base — it's actually a legitimate commit that's on main... wait, let me look: `91e39cd A6: content-addressed skip` is IN my branch's history but the diff vs origin/main shows it as a difference — meaning **origin/main doesn't have 91e39cd yet** — it's another local commit that got mixed in). Let me check what's actually on origin/main vs my branch:
+
+
+### 🤖 Autopilot
+
+Now it's clear: `91e39cd` (the A6 content-addressed skip) was a **local commit that's now PR #367 on main as `d98ce17`** (merged, squash). My branch was based on the local `91e39cd` instead of `origin/main`, so the diff against main shows the A6 changes as if my PR includes them. The fix: **rebase my branch onto origin/main** so only my template change remains:
+
+
+### 🤖 Autopilot
+
+The rebase failed (unstaged changes — the earlier `restore` left the working tree dirty) and the force-push pushed the **unfixed** branch. Let me stash, rebase properly, and re-push:
+
+
+### 🤖 Autopilot
+
+The local branch is now correct (2 files, 29 insertions) — but the PR still lists 3 files because the earlier force-push landed before... no wait, I re-pushed after the rebase. The PR files API may be cached. The local diff is clean (2 files), so the branch is right — let me verify the remote head matches and merge:
+
+
+### 🤖 Autopilot
+
+PR #368 is now clean — remote head matches local (`e2a6f42`), **2 files only** (`.gitignore` + the template), the stray `sync_sunmint_signatures.py` is out. Merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Config restored + template committed (PR #368) ✅
+
+**PR merged:** [#368 — Add non-secret daemon config template + gitignore live config](https://github.com/TrueSightDAO/truesight_autopilot/pull/368) — sha `50798ae0`.
+
+**What was fixed this turn (two real incidents):**
+1. **Missing live config recreated** — `media_archive_daemon_config.yaml` was wiped from disk (never git-tracked, lost during deploy/cleanup). Recreated **byte-for-byte** from my session records: `daily_budget: 50` (Gary's explicit ask), the **4 farm inboxes with their original priorities** (cleide=2, paulo-la-do-sitio=1, santa-anna-fazenda=1, jedielcio=1), quota_reset 07:05, public privacy + tags. **Daemon restarted and loaded it cleanly** — reports `budget spent; sleeping 20.6h to 07:05` (we did ~60+ uploads today — the 50 ceiling is being blown past; June-2026 bucket confirmed).
+2. **Recurrence prevention** — committed `media_archive_daemon_config.yaml.example` (non-secret template, no creds) + added the live config to `.gitignore`, so a deploy/clean can never silently wipe the daemon's config again.
+
+**Git cleanup:** PR #368 initially swept in an unrelated local change (`sync_sunmint_signatures.py` from a pre-main commit `91e39cd`); I diagnosed the branch was based on a stale local commit, rebased onto `origin/main`, and verified remote head = local (`e2a6f42`) with **exactly 2 files** before merging.
+
+**Also confirmed (from the update message):** PR3b is DONE — the dashboard is **live** (`/media-archive-pipeline` 200, `/data` 401 signed-out, nav button present) after your manual service restart. **PR4 UAT is now open.**
+
+---
+
+**RESUME HERE → next unit (PR4 UAT):**
+1. **Signed-in verification** — Gary opens `sophia.truesight.me/media-archive-pipeline`, logs in (JWT via DApp flow), and verifies: per-farm tables (uploaded w/ YouTube links / pending / needs_metadata / error), upload-events feed, committed manifests section, signed-out 401 behavior
+2. **Daemon ceiling check** — uploads log should show the true daily cap (~100?) — likely all of Cleide's queue done today; confirm remaining pending count
+3. Then **PR5** (docs: MEDIA_ARCHIVE_PIPELINE.md dashboard section + plan wrap-up + manifest row update)
+
+Ping me with "go" or UAT results and I'll continue.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → confirmed config gone · recreated exact config (budget 50, 4 inboxes w/ priorities) · restarted daemon (loaded cleanly, budget-spent sleep) · created non-secret template + .gitignore entry · opened PR #368 · diagnosed stray file (stale base commit) · rebased onto origin/main + force-pushed · verified 2 files only · merged #368
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /opt/truesight_autopilot echo "=== confirm gone ===" ls -la media_archive_daemon_config.yaml 2>&1 | head -2 echo "=== recreate config (exact original + budget 5; cd /opt/truesight_autopilot echo "=== the .bak exists? ===" ls -la media_archive_daemon_config.yaml.bak 2>&1 | head -1 echo "=== create non-secret template (path; …(+4 more)
+• `merge pr` → ✅ PR #368 on truesight_autopilot merged successfully (sha: 50798ae0fc477efb78f667fcc6b79a96923107c2). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /opt/truesight_autopilot echo "=== confirm gone ===" ls -la media_archive_daemon_config.yaml 2>&1 | head -2 echo "=== recreate config (ex; cd /opt/truesight_autopilot echo "=== the .bak exists? ===" ls -la media_archive_daemon_config.yaml.bak 2>&1 | head -1 echo "=== create non-; cd /opt/truesight_autopilot echo "=== PR 368 files ===" SOPHIA_CRED=$(git credential fill <<< $'protocol=https host=github.com ' 2>/dev/null; …(+5 more)
+• `merge pr` → ✅ PR #368 on truesight_autopilot merged successfully (sha: 50798ae0fc477efb78f667fcc6b79a96923107c2). Pull Request successfully merged
 
