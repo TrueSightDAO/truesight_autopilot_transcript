@@ -10,53 +10,6 @@
 
 ### 🤖 Autopilot
 
-Two findings:
-1. **navFarm + farm route ARE on the branch** (Contents API authoritative: `navFarm i18n: 1`, `farm route: 1` for monitor) — the earlier grep=0 was raw.githubusercontent CDN lag again.
-2. **instrucoes script 0 FAIL at `sec2Title`** — the error is in the **`en` block** (line 258: `sec2Title: "2. Turn on location on your phone"`). This is the **actual reason the instrucoes dropdown "not working"**! A JS syntax error in the I18N object kills the entire script block → `onNavChange` never gets defined → dropdown does nothing. Let me see the exact broken lines around 258:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Root cause of the instrucoes dropdown failure found — and it's pre-existing on `main`, not my edit:**
-
-Line 261: `sec1ImgCaption: "Real example of guidance sent to a farm partner (WhatsApp)."` — **missing trailing comma** before `sec2Title`. This is a JS syntax error in the `en` block of `I18N` → the entire script block fails to parse → `onNavChange` is never defined → the dropdown does nothing (and the language toggle dies too). That's exactly "dropdown of instrucoes not working."
-
-The `pt` block is fine (it had the comma); only `en` broke. Let me fix it by adding the comma, re-verify, and push:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The branch already exists (from the earlier push) — the tool's fresh clone can't fast-forward. I'll use the Contents API (the proven path for pushing to an existing branch):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Comma added and the instrucoes script now passes `node --check`. Pushing the fixed file to the PR branch via the Contents API:
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All three files now correct on the branch. Verifying the full PR state (all fixes present + JS clean) before merging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All verified — 3 files, +9/−0, `mergeable: True`, all fixes present on all three pages (farm option, navFarm i18n, farm route, monitor route). Merging PR #56:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
 Merge hit a 409 "Head branch is out of date" (main moved again — likely the live-editor pattern) — stopping here per the one-PR-per-turn rule and reporting.
 
 ## What I did this turn
@@ -4812,11 +4765,13 @@ Service found (`truesight-dao-protocol.service`). Restarting it to load the new 
 ### 🤖 Autopilot
 
 Service restarted, healthy (`active`, healthz ok, version `693f56c` = the catalog-v3 build). Now the **end-to-end verification**: submit a real boundary event through Edgar and confirm dispatch fires the new @39 webhook → anonymous GAS execution returns the handler's output. First checking how to submit a test event via the live API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dispatch simulation confirms the routing path. Now the decisive end-to-end test — submitting a real signed `[FARM BOUNDARY EVIDENCE EVENT]` through the live API and watching whether the webhook fires to the new @39 URL and executes anonymously. Let me use a clean test submission:
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5017,4 +4972,54 @@ That's the gap — want me to close it (the autopilot watcher that regenerates +
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/limites-da-fazenda/index.html" -o lim.html && echo "===
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Is there a documentation somewhere for this in agentic_ai_context?
+
+
+### 🤖 Autopilot
+
+Let me search agentic_ai_context for docs covering this pipeline — the sheet → JSON → app flow, farms index, plots geojson, the boundary submission chain:
+
+
+### 🤖 Autopilot
+
+Let me check the two most relevant docs for a coherent write-up of this pipeline — the boundary submission plan and the plots registry:
+
+
+### 🤖 Autopilot
+
+Yes — there **is** documentation, and it's quite thorough. Here's where the exact flow you asked about is documented:
+
+## The docs (all in `agentic_ai_context/`)
+
+**1. `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`** — the primary doc for the exact question you asked ("what happens when a farmer declares a new farm"). It contains:
+- **Governor design rules** (your rules, confirmed 2026-09-01): rule 4 = "**Backend auto-creates the farm record** — when a boundary event arrives with a new farm name, the backend creates the farm record and associates the boundary submission with it"
+- **Roadmap** with the farms seed (`farms/index.json`) and the backend upsert as explicit deliverables (PR3/PR4)
+- Current-state table (5 plots, generators, source-of-truth sheet, GPS tooling)
+
+**2. `SUNMINT_PLOTS_REGISTRY.md`** — the runbook: registry schema, boundary tiers (approx/gps_walk/car/incra), how to define a new plot step-by-step, media handling, hectares reconciliation. §2 lists where things live (registry, generator, workflow, **source of truth = SunMint Farms sheet tab**).
+
+**3. `MEDIA_ARCHIVE_PIPELINE.md`** — the media pipeline side (line 56 documents the same "sheet → `build_plots_geojson.py` → push `plots/index.geojson`" flow).
+
+**4. `SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`** — downstream display (the impact map; parked until this pipeline landed).
+
+## What's documented vs what's *not* yet
+
+| Aspect | Documented? |
+|---|---|
+| New farm → sheet row (auto-create on boundary event) | ✅ Rule 4 in the plan |
+| Sheet → `plots/index.geojson` → map (generator) | ✅ Registry + plan §2 |
+| Sheet → `farms/index.json` → dropdown (generator) | ✅ PR3 in the plan |
+| **The current gap**: *nothing auto-regenerates the index when a new farm lands — it's a manual generator run* | ⚠️ **Implied but not explicit** — the plan lists the generator as a deliverable but doesn't document that the regenerate+commit step is **manual** today, or that the dropdown (farms index) and the sheet can diverge until someone runs it |
+
+So the **core flow is well documented**, but the "**who regenerates the cache when a new farm is created**" gap isn't spelled out as an open issue. Want me to add that to the plan doc (a short "Current gap" note + pointer to the watcher fix), so future Sophias don't rediscover it?
+
+———
+**✅ Done this turn — actions taken:**
+• `search context` ×2, `read context file` ×2 → located the 4 docs covering the pipeline; mapped what's documented vs the regeneration gap
 
