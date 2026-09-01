@@ -1199,21 +1199,25 @@ go — recreate PR2 fresh and merge, then proceed to PR3's before/after sample.
 ### 🤖 Autopilot
 
 PR2 is already merged (PR #266, last turn) — proceeding to **PR3: the before/after review sample**. Let me gather the live diff data for the 5 pairs (worst offenders + typical).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The log has the diffs but "Fili Marsh" isn't in it — let me examine the full log structure and map basenames → video IDs → titles.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The log is rich with real diffs. Let me extract the full OLD/NEW text for the 5 sample pairs (Fili Marsh, being-the-police, witch-plume, + 2 typical) and map video IDs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The awk pattern didn't match (log lines are indented differently). Let me pull the exact entries with a python script instead.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1522,4 +1526,60 @@ My recommendation: **Option 1** — the brand suffix is redundant (channel name 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp/agroverse_shop_work && set -a && source /opt/truesight_autopilot/.env 2>/dev/null; set +a; echo "GROK key present: $([ -n "$GROK_API; cd /tmp/agroverse_shop_work && echo "=== scope logic ===" && grep -n "scope" scripts/youtube_grok_project_titles.py | head -30 && echo "=== ; cd /tmp/agroverse_shop_work && echo "=== git log for youtube_videos.json (last 8) ===" && git log --oneline -8 -- scripts/youtube_videos.jso; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] go with your recommendation (Option 1 — align JSON to live, no live push needed).
+
+
+### 🤖 Autopilot
+
+Option 1 approved. This is a local JSON edit (code repo → PR flow). Let me check the exact raw format of the 5 title strings in the JSON to build precise edits.
+
+
+### 🤖 Autopilot
+
+Option 1 approved — 5 title edits (drop `| Agroverse` suffix), JSON-only, no live push. Let me run the local test gate first, then open the PR.
+
+
+### 🤖 Autopilot
+
+JSON valid, compileall clean. The 174 ruff errors are pre-existing across the repo (my change is JSON-only — ruff/format don't apply to it; the pipeline rc=0 was from `tail`). Proceeding with the PR: 5 exact title edits via `git_push_changes`.
+
+
+### 🤖 Autopilot
+
+Need the edit hunks — using the 5 unique title lines as exact-substring replacements:
+
+
+### 🤖 Autopilot
+
+PR opened. Per the one-PR-per-turn rule, I'm stopping here — PR #267 is ready for merge review, then PR6.
+
+## 📦 PR5 opened — [agroverse_shop_beta PR #267](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/267)
+
+**What changed:** `scripts/youtube_videos.json` — 5 title strings, `| Agroverse` suffix dropped to match live (Option 1, your call):
+- `Rr0QOztkFSw` → `Cacao Pods on Trunks at Santa Anna Fazenda`
+- `9LeB2PtZ4UE` → `Fermentation at Santa Anna Fazenda`
+- `U7tQ5-4eOEg` → `Cacao Drying Shed at Santa Anna Fazenda`
+- `54qpxpM9urk` → `Jedielcio: US & China Buyers at Santa Anna`
+- `KK5m2n9eQHs` → `Jedielcio Cheers: Viva! at Santa Anna`
+
+**Testing:** JSON valid (73 entries) · compileall clean · live-vs-JSON comparison showed these were the ONLY 5 mismatches · JSON-only (repo lint baseline untouched) · **no live push** (titles already correct on the channel).
+
+## RESUME HERE → merge PR #267, then PR6
+
+1. **Merge PR #267** (your 👍 or "merge" — it's ready)
+2. **PR6:** update `agentic_ai_context/sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md` §A.7 — add "run `youtube_update_video_descriptions.py` (polished transcript, not raw)" to the end-to-end upload checklist alongside the existing title-update step, so descriptions never regress to raw ASR for future videos. Documentation only — pre-authorized, no gate.
+3. **Report DAO contribution** for PR4 + PR5 (the live-impact units) per plan §5 — signed as Sophia Truesight.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → JSON validity + full local test gate (compileall clean; 174 ruff = pre-existing baseline, JSON change unaffected)
+• `git_push_changes` → ✅ PR #267 opened: https://github.com/TrueSightDAO/agroverse_shop_beta/pull/267 (sha 07498c7)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/agroverse_shop_work && grep -n "Agroverse\"" scripts/youtube_videos.json | head -20 && echo "=== raw lines around those entries ==="; cd /tmp/agroverse_shop_work && python3 -c "import json; d=json.load(open('scripts/youtube_videos.json')); print('JSON valid, entries:', len(
 
