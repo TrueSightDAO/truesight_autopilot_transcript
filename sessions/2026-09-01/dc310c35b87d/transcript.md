@@ -4800,6 +4800,7 @@ Confirmed: neither monitor nor instrucoes has `navFarm` in their i18n dicts (0 h
 ### 🤖 Autopilot
 
 I have every anchor. Now building the fix — 4 edits across 3 files (monitor: +farm option/+i18n/+route; instrucoes: +farm option/+i18n/+route; limites: +monitor route). The UI-weirdness on limites I'll address separately after checking the main app structure. Let me apply all edits:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4958,4 +4959,91 @@ Responsive ✅ — holding as before.
 - Parked: limites UI-weirdness restyle (`.card` vs `.container`), chrome audit of remaining pages, `sunmint_mobile/www/` sync
 
 Nothing pending on my side. Say the word when something's needed.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Responsive ✅ — holding as before.
+
+**Status:**
+- PR #56 merged (your side, sha `c9c824d`) — nav fixes + instrucoes comma bug fix on beta main; PR #55 (farm dropdown `[object Object]` fix) also merged
+
+
+### 🤖 Autopilot
+
+Go-signal received — there's actually one **beta-side item I can execute that isn't gated on Gary**: the **limites UI-weirdness restyle** you reported earlier (I diagnosed it but parked it). Let me compare the current limites page styles vs the main app and fix it:
+
+
+### 🤖 Autopilot
+
+The limites page was already restyled in PR #54 (gray #f5f5f5, white container, green buttons) — so the "weird" must be structural. Let me compare how sections are wrapped vs the main app, and where `.card` is used:
+
+
+### 🤖 Autopilot
+
+Found the structural mismatch: the main app uses plain `<div class="container">` blocks (no `<main>`, no `.card`), but limites has `<div class="container"><main><div class="card">` — a card-inside-container double-box that looks "weird." Let me see the exact lines to fix:
+
+
+### 🤖 Autopilot
+
+Now I see the exact problem: the boundary form is wrapped in `<div class="container"><main><div class="card">` — a **double-box** (container + card = nested white boxes with shadows). The main app has no `<main>`/`.card` — sections are plain `.container` blocks. The fix: unwrap the card (remove the `.card` wrapper + `<main>`), leaving the form directly in the `.container` like the other sections. Applying:
+
+
+### 🤖 Autopilot
+
+PR #57 opened. Verifying the branch file (structure fixed, JS intact) before merging:
+
+
+### 🤖 Autopilot
+
+Clean: `.card` removed (0), `<main>` removed (0), container intact, both scripts pass `node --check`, 1 file +0/−4, `mergeable: True`. Merging PR #57:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Fixed the limites-da-fazenda UI mismatch** (the "looks weird" feedback from earlier) — since it was a beta-side item I could execute without Gary.
+
+**PR #57 — https://github.com/TrueSightDAO/sunmint_beta/pull/57** (merged, sha `77c08e95`, 1 file +0/−4, `mergeable: True`)
+
+### Root cause
+The boundary form was wrapped in `<div class="container"><main><div class="card">` — a **card-inside-container double-box** (nested white boxes with shadows). The main app uses plain `.container` blocks with no `<main>` and no `.card`.
+
+### Fix
+Unwrapped the card: removed `<main>` + `<div class="card">` and their closers so the form sits **directly in the container**, matching the main app's structure exactly.
+
+### Verified
+- `.card`: 1 → 0, `<main>`: 1 → 0, container: intact
+- Both inline scripts still pass `node --check`
+- 1 file, +0/−4, merged cleanly
+
+**On beta now** (`beta.sunmint.truesight.me/limites-da-fazenda/`): the boundary form renders as a plain white container matching the rest of the app.
+
+## RESUME HERE → next unit
+
+**Prod promotion for #55 + #56 + #57** — all three are merged on beta and gated on **Gary's explicit go** (`sync_beta_to_prod`). That's the only remaining execution item; everything else is parked (FBE cron trigger, device test — Gary; chrome audit, `sunmint_mobile/www/` sync — your call).
+
+Holding here.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → style-block comparison (limites vs main), body-structure grep (container vs card), exact wrapped-section lines 60–95, .card usage
+• `git push changes` → PR #57 (branch fix/limites-ui-consistency, sha 46abab87)
+• `ssh run` → branch verification via Contents API (card 0, main 0, scripts OK, +0/−4, mergeable)
+• `merge pr` → ✅ PR #57 merged (sha 77c08e959894c9c4faaed8eba0cfb12851d55902)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/limites-da-fazenda/index.html" -o lim_now.html && curl ; cd /tmp && echo "=== MAIN index: body structure (containers vs cards) ===" && grep -n "class=\"container\|class=\"card\|<main\|</main\|optio; cd /tmp && echo "=== limites 60-95 (the wrapped section) ===" && sed -n '60,95p' lim_now.html && echo "=== .card usage count ===" && grep -c; …(+1 more)
+• `merge pr` → ✅ PR #57 on sunmint_beta merged successfully (sha: 77c08e959894c9c4faaed8eba0cfb12851d55902). Pull Request successfully merged
 
