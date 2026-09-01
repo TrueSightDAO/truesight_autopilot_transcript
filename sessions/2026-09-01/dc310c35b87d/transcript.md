@@ -4935,46 +4935,55 @@ Go — deploying the manifest URL fix via the idle-drain guard, then verifying t
 ### 🤖 Autopilot
 
 The idle-drain guard is referenced in context docs — let me read the relevant one to understand the mechanism before deploying:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The idle-drain guard is clear now: deploy = merge → drain (wait for all threads idle, graceful SIGTERM, never SIGKILL) → graceful restart. PR #384 is merged, so the deploy is `main` → box. Let me check the deploy script's guard behavior, then run it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The idle-drain guard is built into `deploy.py` (drain window, defer if busy, graceful SIGTERM). The canonical deploy path is the `deploy_autopilot` tool (which uses this logic). Since PR #384 is merged and the governor explicitly approved the deploy, running it:
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The deploy tool reports **noop — the box is already at commit `08d5a14d`** (PR #384's merge). That's surprising since the merge just landed — let me verify ground truth: is the checkout actually there, did the **process** restart after it (or is it running stale code), and does the MAP dashboard endpoint work:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Box is already at the fix: git HEAD `08d5a14`, main process restarted 17:48:59 (post-merge), running code has the **new URL**. The deploy was effectively a no-op because the merge already triggered it. Now verifying the MAP dashboard endpoint — let me find it and hit it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The router is included at line 517 — let me find the actual route paths inside `media_archive_pipeline.py`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The MAP dashboard endpoint is `/media-archive-pipeline/data` (line 137) — it calls `_fetch_manifest_index()` which uses the new URL. This is the decisive test. Hitting it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The endpoint returns an `error` — let me see what it says (the new URL itself is 200/618 bytes, so the fetch works — the error must be something else in the pipeline):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 "Missing session token" — the endpoint is **auth-gated** (by design, like the auth/challenge at line 1159). That's expected, not a failure: the dashboard UI authenticates first. So the endpoint *is* alive and responding correctly (it rejects unauthenticated requests with a clear error, which is the intended auth behavior). Let me verify the authenticated path works with a challenge/claim flow — checking how the auth works (line 1159 area):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5211,4 +5220,66 @@ So on a successful online upload you saw "queued locally" — the send worked, t
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp && curl -s "https://beta.sunmint.truesight.me/limites-da-fazenda/" -o live2.html && echo "=== submitBoundary (the submit handler) ==; cd /tmp && sed -n '627,725p' live2.html; cd /tmp && sed -n '611,627p' live2.html && echo "=== the two status strings ===" && grep -n "saved:\|queued:" live2.html; …(+2 more)
 • `merge pr` → ✅ PR #66 on sunmint_beta merged successfully (sha: 89519db122603762e3b4920a2a66d3b748c028f9). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Also when selecting an existing farm, I see 
+
+No boundary media recorded for this farm yet.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Hey, set a Google Calendar reminder for 45 minutes later with all the details so that when I get back to my MacBook, I remember to do it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+On it — setting the reminder. First let me find the calendar mechanism available on this box (checking for a calendar GAS script or tooling):
+
+
+### 🤖 Autopilot
+
+No calendar tool in my toolset directly — let me check whether there's a calendar GAS script or a calendar API mechanism available:
+
+
+### 🤖 Autopilot
+
+No direct calendar tool in my set — let me check whether there's a calendar GAS script in the tokenomics project (the usual home for such integrations):
+
+
+### 🤖 Autopilot
+
+Let me do one more focused check for any calendar capability (GAS scripts, autopilot app, service accounts):
+
+
+### 🤖 Autopilot
+
+No calendar tooling exists in my toolset (no CalendarApp GAS script, no SA with calendar scope, no calendar tool exposed) — so I can't create a Google Calendar event directly. But the intent is clear: a reminder that lands in front of you when you're back at your MacBook. The most faithful channel I *do* have is your inbox — sending a reminder email now with all the details (it'll be waiting when you open your MacBook, and it pings your phone as well):
+
+
+### 🤖 Autopilot
+
+Reminder sent ✅ (from the admin mailbox, thread `1a05e24a70e1058f`).
+
+**What I did:** I don't have a Google Calendar tool in my set (no CalendarApp GAS script, no calendar-scoped SA on this box), so instead of a calendar event I sent a **reminder email** to `garyjob@gmail.com` with all the details — it'll be waiting in your inbox when you're back at your MacBook (and it pings your phone now too).
+
+**The email contains everything you need to remember, with exact URLs:**
+1. **Set the 2 GAS cron triggers** (the main blocker) — FBE + Media Retraction, hourly, with the exact GAS project link and function names
+2. **Prod promotion** — sunmint #55–#66 gated on your go (`sync_beta_to_prod`)
+3. **Review the "No boundary media recorded for this farm yet" bug** you just reported — flagged as item 3; I can investigate on your go (LD-P1 *does* have 8 media items in the per-plot geojson, so the empty state is likely a fetch/filter issue in `renderMediaList`)
+4. Done items (no action): MAP dashboard URL fix deployed + farm_media_manifests migration
+
+**Re: the media-list bug** — want me to dig into `renderMediaList` now while the reminder is set? That's a code fix I can do in parallel.
+
+———
+**✅ Done this turn — actions taken:**
+• `search code` ×2, `search context`, `list org repos`, `ssh run` ×2 → confirmed no calendar tooling exists (no CalendarApp GAS, no calendar SA)
+• `gmail send` → reminder email to garyjob@gmail.com (id 1a05e24a70e1058f) with all pending items + URLs
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot/context/tokenomics 2>/dev/null && ls google_app_scripts/ 2>/dev/null | head -20; echo "---"; grep -rln "Calendar; cd /opt/truesight_autopilot/context/tokenomics 2>/dev/null && echo "=== any Calendar/reminder GAS script? ===" && grep -rln "CalendarApp\|cr
 
