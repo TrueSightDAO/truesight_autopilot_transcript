@@ -4198,3 +4198,25 @@ If you want it even shorter in casual chat, **"FMP"** works as shorthand. And th
 
 Want me to standardize this term across the docs — add a one-line "Terminology" section to the plan doc saying *FMP = the pipeline, queue = inbox/sidecars, daemon = uploader, manifests = committed state* — so future Sophias all use the same words?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] but it might also include stuff from community events?? How about media pipeline?
+
+
+### 🤖 Autopilot
+
+Yes — "media pipeline" is the better umbrella. Farm media is just the first namespace; community events, partner visits, beer hall, market trips — anything we shoot or collect becomes the same flow: drop in queue → daemon uploads → manifest → queryable. Same machinery, different source buckets.
+
+So the terminology would be:
+
+- **Media Pipeline** = the whole system (umbrella). Any DAO media, from any source.
+- **Source namespaces** = the inbox folders / manifest prefixes: `farm-media` (farms, CEPOTX etc.), `event-media` (community events, future), maybe `partner-media` — each with its own `<source>/<farm-or-event>` structure.
+- **The queue** = inbox + sidecars (what's waiting)
+- **The daemon** = the shared uploader (`farm-media-daemon` repo — the repo name is farm-scoped, but the *design* is source-agnostic: it just reads sidecars with farm_id/title/GPS; a "source" field generalizes it)
+- **The manifests** = `FARM_MEDIA_MANIFESTS/` — committed state, queryable by any Sophia
+
+One small wrinkle: the repo is literally named `farm-media-daemon`, and the manifests dir says `FARM_MEDIA`. If we're calling the umbrella "media pipeline," we'd either rename the repo/dir (cheap now, before it spreads) or keep the names as the "first namespace" and let future event media get `EVENT_MEDIA_MANIFESTS/`. My lean: keep the farm names for the farm namespace, add a `source` field to sidecars, and rename nothing yet — but document that the pipeline generalizes.
+
+Want me to add a "Terminology" section to the plan doc (and DESIGN.md) locking in: **Media Pipeline (umbrella) → source namespaces (farm-media, event-media…) → queue → daemon → manifests**? That way every Sophia references the same words, and community-event media slots in later without friction.
+
