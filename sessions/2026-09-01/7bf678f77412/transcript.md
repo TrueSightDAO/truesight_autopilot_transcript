@@ -4009,6 +4009,7 @@ DESIGN.md landed (PR #1). Now the config template, README, and .gitignore:
 ### 🤖 Autopilot
 
 PR1 scaffold complete (2 PRs). Merging both — the governor's go authorizes self-merge of feature PRs:
+[2 tool result(s) compacted: merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4173,4 +4174,27 @@ Good instinct — and it fits naturally into the architecture we just built. A f
 **Timing note:** the commit model matters here. If we want the dashboard to reflect reality instantly, we need either the auto-committer we discussed (sidecars → manifests pushed periodically) or a live sidecar read. Otherwise the view lags behind the daemon.
 
 I'd fold this into the daemon plan as a future unit (PR6+ candidate) rather than build it now — the daemon's not even wired to Cleide's real inbox yet. Want me to add it to the plan doc's roadmap as a follow-up, or is this a "park it" idea for now?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] by the way what is a good terminology to use to describe this pipeline that way we can all reference it without confusion in the future?
+
+
+### 🤖 Autopilot
+
+Great question — and we already have most of the naming in place, so the trick is picking one umbrella term that ties it all together. Here's my recommendation:
+
+**"Farm Media Pipeline" (FMP)** — it's the umbrella term, and it already exists in the runbook (`FARM_MEDIA_PIPELINE.md`). It's the whole system: intake → processing → upload → manifest → query.
+
+Under that umbrella, the three named parts are:
+1. **The queue** — the inbox + sidecars (Sophias drop videos in, the daemon picks them up)
+2. **The daemon** — the shared uploader (`farm-media-daemon` repo), which does the dumb fast part
+3. **The manifests** — `FARM_MEDIA_MANIFESTS/` on GitHub, the committed source of truth that any Sophia queries
+
+So the vocabulary is: *"the pipeline is stalled"* = something in the chain is stuck; *"the queue has 65 pending for Cleide"* = what's waiting; *"the manifest is current"* = GitHub reflects reality.
+
+If you want it even shorter in casual chat, **"FMP"** works as shorthand. And the consistency bonus: every existing artifact already uses the "farm media" prefix — `farm-media-raw`, `farm-media-daemon`, `FARM_MEDIA_MANIFESTS` — so "Farm Media Pipeline" is the natural umbrella that names the whole.
+
+Want me to standardize this term across the docs — add a one-line "Terminology" section to the plan doc saying *FMP = the pipeline, queue = inbox/sidecars, daemon = uploader, manifests = committed state* — so future Sophias all use the same words?
 
