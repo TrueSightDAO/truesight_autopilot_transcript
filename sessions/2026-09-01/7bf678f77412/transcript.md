@@ -3529,16 +3529,19 @@ Let me see the exact highlight items (lines 522–560) to place the two new fact
 ### 🤖 Autopilot
 
 Got the exact structure. I'll add **Tree Age** and **Annual Production** items to Paulo's highlights. Opening the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the exact whitespace/encoding around the Location item.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The emoji is encoded as surrogate pairs in my source (🌳 = `\ud83c\udf33`) — in the raw file it's the same UTF-8 tree emoji but my JSON encoding of the search string broke it. Let me use a search string without the emoji — match on the plain text parts instead:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3780,4 +3783,86 @@ Ping me with "promote" or "go".
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #260 on agroverse_shop_beta merged successfully (sha: 3eb6784f45a654e64c10f9dc0d9b3f14ec4d20af). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Turn report — Santa Anna annual production added ✅
+
+**PR merged:** [#260 — Add Santa Anna Fazenda (Pará) annual production (~1.5 tons/yr)](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/2
+
+
+### 🤖 Autopilot
+
+Go received — executing the promote unit so all the farm-page updates go live on prod.
+
+
+### 🤖 Autopilot
+
+Sync succeeded (deploy `deploy_20260901T023914Z`). Let me verify all three farm pages on prod now show the new facts.
+
+
+### 🤖 Autopilot
+
+No matches — could be CDN staleness or HTML entity encoding. Let me check the raw HTML served on prod.
+
+
+### 🤖 Autopilot
+
+Prod pages are 200 but the new facts aren't rendering — likely GitHub Pages CDN staleness (sync merged but Pages rebuild is queued). Let me verify the content is actually in the prod repo (source of truth) and check the Pages deploy status.
+
+
+### 🤖 Autopilot
+
+Content is confirmed on prod's repo (source of truth correct) — the live site just needs the Pages build to finish. The builds API 404'd; let me check the Actions workflow runs instead.
+
+
+### 🤖 Autopilot
+
+The Pages build is **in progress** (triggered at 02:39:15Z by the sync). That's why the live site still serves the old content. Let me watch it and confirm the new facts go live.
+
+
+### 🤖 Autopilot
+
+Watcher needs topic context — I'll poll directly with a bounded loop instead.
+
+
+### 🤖 Autopilot
+
+## ✅ Promote unit complete — all farm facts LIVE on production
+
+**Prod sync** (`deploy_20260901T023914Z`) + **Pages build finished (~60s)**, and all three CEPOTX farm pages now serve the new facts on **agroverse.shop**:
+
+| Farm | Facts now live on prod | Verified |
+|---|---|---|
+| Fazenda Cleide | 📦 Annual Production ~1.5 t/yr | ✅ 1 match |
+| Paulo La do Sitio | 🌳 Tree Age ~40 yrs · 📦 ~1.2 t/yr | ✅ 1 match |
+| Santa Anna Fazenda (Pará) | 🌳 ~30 yrs · 🌾 once/yr · 📦 ~1.5 t/yr | ✅ 1 match |
+
+Deploy ledger: [deploy_20260901T023914Z_agroverse-shop-prod](https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260901T023914Z_agroverse-shop-prod.md)
+
+All three profiles now carry the production/tree facts you provided, publicly live.
+
+---
+
+**RESUME HERE → next unit (pick one):**
+1. **PR1 second half (daemon)** — create public `TrueSightDAO/farm-media-daemon` + scaffold DESIGN.md/config/README (settings PR #359 already merged; may need `deploy_autopilot` first for the tool to see the new repo)
+2. **Cleide uploader status** — check throttled uploader PID 105025 progress (should have a few yt_ids by now)
+
+Ping me with "go" or "status".
+
+———
+**✅ Done this turn — actions taken:**
+• `sync_beta_to_prod` → ✅ merged upstream, deploy ledger `deploy_20260901T023914Z`
+• `ssh run` ×4 → verified prod repo raw content (all facts present), Pages build in_progress → polled until live (~60s), confirmed all 3 pages serve the new facts (1 match each)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo "=== prod repo raw: does cleide have Annual Production? ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_prod/main/farms/fazenda-cleide-para/index.html" | grep -o "Annual Product; echo "=== recent workflow runs on prod ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_prod/actions/runs?per_page=5" | python3 -c "import json,sys; d=json.load; for i in $(seq 1 10); do R=$(curl -sL "https://agroverse.shop/farms/fazenda-cleide-para/" | grep -c "1.5 tons of cacao"); if [ "$R" -gt 0 ]; then echo "LIVE after ~$((i*20))s"; break; fi; echo "wait $((i*20))s"; sleep 20; done
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → echo "=== CLEIDE: 1.5 tons ==="; curl -sL "https://agroverse.shop/farms/fazenda-cleide-para/" | grep -o "1.5 tons[^<]*" | head -2; echo "===; echo "=== CLEIDE page status + highlights ==="; curl -sL -o /tmp/p_cleide.html -w "%{http_code} " "https://agroverse.shop/farms/fazenda-clei; echo "=== prod repo raw: does cleide have Annual Production? ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_pr; …(+2 more)
 
