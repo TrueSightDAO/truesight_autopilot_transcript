@@ -8,13 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — this Telegram topic (thread 11074) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: The authoritative API content confirms everything landed on PR #292's branch: **all v4 markers present** (FLUID BY DESIGN, SBTi V2.0, member registry, Re.green, €74, 482+), and the hard ceilings are *
-
-
 ### 🤖 Autopilot
 
 Go-signal received — executing the next unit: **merge PR #292 → beta live → promote to prod**. Checking the manifest per protocol, then merging:
@@ -4895,6 +4888,11 @@ Let me find the correct sheet name first:
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The SA may not have this spreadsheet ID in its allowlist or the ID is different. Let me check the actual SHEET_ID the generator uses (from build_plots_geojson.py — the source of truth I mirrored):
 
 
@@ -5114,4 +5112,94 @@ Responsive ✅ — alive and holding.
 - Parked options ready on your word: chrome audit of the other sunmint pages, `sunmint_mobile/www/` sync, or anything new
 
 Say the word when there's something to do.
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: https://beta.sunmint.truesight.me/limites-da-fazenda/
+
+Farm:
+
+[object Object]
+
+Basically not displaying properly isnt it?
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+
+### 🤖 Autopilot
+
+Good catch — that's a classic "[object Object]" bug: the farm dropdown is being populated with the raw farm object instead of `farm.name`. Let me diagnose the actual code on the live beta page:
+
+
+### 🤖 Autopilot
+
+Line 246 shows the bug candidate: `farms.forEach(f => html += '<option value="' + esc(f) + '">' + esc(f) + '</option>')` — treats each farm as a string. If `farms` contains objects (from the remote seed `farms/index.json`), `esc(f)` renders `[object Object]`. Let me see how `farms` is built (the merge of remote objects + local names):
+
+
+### 🤖 Autopilot
+
+Found it — the classic object-vs-string bug. Let me confirm the actual shape of the remote seed (`farms/index.json`) to be certain:
+
+
+### 🤖 Autopilot
+
+**Bug confirmed** — you're right, it's the classic "[object Object]" bug:
+
+- `farms/index.json` (remote seed) is an array of **objects** (`{farm_id, name, region, …}`)
+- `getRemoteFarms()` correctly extracts `data.farms`, but `unionFarms()` does `String(n).trim()` on each item — so each **object** becomes `"[object Object]"`
+- `renderFarmSelect()` then renders `esc(f)` → `[object Object]` in the dropdown
+
+Local farms (strings from IndexedDB) work; remote ones (objects) break. Fix: extract `.name` from objects in `unionFarms()`. Building the fix now:
+
+
+### 🤖 Autopilot
+
+Fix applied. Validating the file (tags + JS syntax), then pushing as a PR:
+
+
+### 🤖 Autopilot
+
+All validations pass. Pushing the fix as a PR:
+
+
+### 🤖 Autopilot
+
+PR #55 opened — and per the one-PR-per-turn rule I'll stop here and report. But first let me verify the branch diff is clean (single-file, the one fix):
+
+
+### 🤖 Autopilot
+
+PR verified clean (1 file, +3/−2, `mergeable: True`, fix present). Stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Fixed the "[object Object]" bug in the Farm dropdown** (governor caught it on `beta.sunmint.truesight.me/limites-da-fazenda/`).
+
+**PR #55 — https://github.com/TrueSightDAO/sunmint_beta/pull/55** (branch `fix/farm-select-object-object`, 1 file +3/−2, `mergeable: True`)
+
+### Root cause
+`farms/index.json` (remote seed) is an array of **objects** (`{farm_id, name, region, plot_count, …}` — verified live: 4 farms). `unionFarms()` did `String(n).trim()` on each union item — so every remote object became the literal `"[object Object]"`, and `renderFarmSelect()` rendered that in the dropdown. Local farms (plain strings from IndexedDB) worked; remote seed farms broke.
+
+### Fix
+In `unionFarms()`, resolve objects to their `.name` before dedup/render:
+```js
+const nm = (n && typeof n === 'object' && n.name) ? String(n.name) : String(n);
+```
+Dedup still case-insensitive on the resolved name.
+
+### Verified
+- Live seed shape confirmed (objects with `name`)
+- Tags balanced; both inline scripts pass `node --check`
+- Branch diff clean: 1 file, +3/−2, fix present, `mergeable: True`
+
+## RESUME HERE → next unit
+
+**Merge PR #55 → promote to prod** (`sync_beta_to_prod("sunmint_prod")`) → verify `sunmint.truesight.me/limites-da-fazenda/` shows real farm names (Fazenda Cleide, Rancho Maranta, Santa Anna Fazenda, Paulo La Do Sitio Para). Say go and I'll merge + promote + verify.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/limites-da-fazenda/index.html" -o limites_main.html && ; cd /tmp && echo "=== lines 195-260 (farm store, remote fetch, merge, render) ===" && sed -n '195,260p' limites_main.html; cd /tmp && echo "=== REMOTE_FARMS_URL in the page ===" && grep -n "REMOTE_FARMS_URL" limites_main.html | head -3; echo; echo "=== live farms; …(+3 more)
 
