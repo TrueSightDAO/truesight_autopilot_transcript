@@ -8,193 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-Merged PR #55 myself (self-merge authority on beta repos). Holding on prod promotion — that still needs Gary's explicit go.
-
-
-### 🤖 Autopilot
-
-Understood — PR #55 merged on your side, and prod promotion stays gated on Gary's explicit go. Let me verify the merge landed on beta main:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #55 shows merged (13:58:49Z) but the raw `main` file doesn't contain the fix — either CDN cache lag or something's off with the merge. Let me check the authoritative Contents API + the merge commit:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed — the fix **is on main** (authoritative Contents API shows `has fix: True`, size 25,719; merge commit `0d75463a` "#55" at the top of the file history). The earlier raw.githubusercontent `grep = 0` was just **CDN cache lag** (raw.githubusercontent serves from cache and lags ~minutes behind; the Contents API is authoritative). The Pages live site will pick it up on its next build.
-
-## Status ✅
-
-- **PR #55 merged** (13:58:49Z, commit `0d75463a` on main) — fix present in the authoritative beta main
-- **Beta live page** — will show real farm names after the next Pages build (CDN lag noted; earlier grep=0 was cache, not a missing fix)
-- **Prod promotion** — **held, as you said**: gated on Gary's explicit go. I won't touch `sunmint_prod` until he says so.
-
-## RESUME HERE
-- **Gary's go** → `sync_beta_to_prod("sunmint_prod")` → verify `sunmint.truesight.me/limites-da-fazenda/` shows Fazenda Cleide / Rancho Maranta / Santa Anna Fazenda / Paulo La Do Sitio Para
-- Still holding (Gary-dependent): FBE hourly cron trigger + real-device boundary test
-- Parked (your call): chrome audit of other sunmint pages, `sunmint_mobile/www/` sync
-
-Holding here.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → cd /tmp && echo "=== PR #55 state ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/pulls/55" | python3 -c "import sys; cd /tmp && echo "=== authoritative main file (Contents API) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-go — another redeploy killed the turn (unrelated to your work, nothing pending on your side).
-
-
-### 🤖 Autopilot
-
-Responsive ✅ — holding as before.
-
-**Status unchanged:**
-- PR #55 (farm dropdown fix) — merged to beta main, verified (`0d75463a`); live after Pages build
-- **Prod promotion** — held, gated on Gary's explicit go (I won't touch `sunmint_prod` without it)
-- Gary-dependent items still open: FBE cron trigger + real-device boundary test
-- Parked on your word: chrome audit of other pages, `sunmint_mobile/www/` sync
-
-Nothing pending on my side. Say the word when there's something new.
-
-
-### 🧑 Governor
-
-[observed, not directed at you — Nobody Will not DM you]: https://beta.sunmint.truesight.me/monitor-tree-growth/
-Missing dropdown to these two new pages.
-
-https://beta.sunmint.truesight.me/limites-da-fazenda/
-https://beta.sunmint.truesight.me/instrucoes/
-
-
-Also the UI of the https://beta.sunmint.truesight.me/limites-da-fazenda/ look weird compared to 
-https://beta.sunmint.truesight.me/
-https://beta.sunmint.truesight.me/monitor-tree-growth/
-
-
-Also dropdown of https://beta.sunmint.truesight.me/instrucoes/ not working
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-
-### 🤖 Autopilot
-
-Let me diagnose all three issues across the pages — fetching each page's nav dropdown + routing + styles:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found the first clue: `monitor-tree-growth` and `instrucoes` are **missing the `farm` option** (no "Registrar Fazenda"), and the extra empty `<option value="">` entries suggest broken dropdowns. Let me examine each page's `onNavChange`/routing and styles:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I see the issues clearly:
-
-1. **`monitor-tree-growth` onNavChange (line 1162–1171)**: has `plant`→`/`, `instrucoes`, `limites-da-fazenda`, `monitor` — but **NO `farm` case** → selecting "Registrar Fazenda" does nothing, and the nav **option is missing** entirely (only 4 options).
-2. **`instrucoes` onNavChange (line 298–307)**: same — no `farm` case, and nav option missing.
-3. **`limites-da-fazenda` onNavChange (445–450)**: has `farm` — but **no `monitor` case**! So "Monitorar Árvore" does nothing there. Also line 57 has the `<select id="pageNav">` but I need to check the option list.
-4. **UI "looks weird"** on limites — need to compare styles.
-
-Let me check the full option lists + the limites styling:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now the full picture is emerging. Let me check the instrucoes onNavChange (governor says dropdown not working) and compare the limites page styles vs the main page:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The main branch shows monitor/instrucoes **do** have limites+instrucoes options — so either the live beta is stale (deploy lag) or there's a runtime breakage. Let me check the **live** beta pages directly (what the governor actually sees):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Diagnosis is now complete. Here's what the governor actually sees vs what's needed:
-
-## The three issues — full diagnosis
-
-**1. "Missing dropdown to the two new pages" (monitor + instrucoes missing "Registrar Fazenda")**
-- `monitor-tree-growth` nav: only 4 options (plant/monitor/limites/instrucoes) — **no `farm`** → no way to reach `/register_farm/` from there
-- `instrucoes` nav: same — no `farm`
-- Their `onNavChange` also lacks the `farm` case → even if added, routing wouldn't work
-
-**2. "instrucoes dropdown not working"**
-- `instrucoes.onNavChange` has `plant`, `monitor`, `limites`, `else → /instrucoes/` — that *looks* functional… but the **i18n text is present** (PT/EN) and `setLang(currentLang)` runs. Need to check if there's a JS error breaking it. The `limites` page's onNavChange is missing the `monitor` case (governor: UI weird + dropdown). Actually — the monitor/instrucoes pages might have the `farm` option **hidden** by the i18n dictionary missing `navFarm`… Let me check: the **live** pages show no `farm` option at all, so the pages themselves don't include it.
-
-**3. "limites UI looks weird"**
-- The live limites page uses `.card { background:#fff; border-radius:8px; padding:1rem; margin:14px 0; }` — but the main index uses `<div class="container">` (no `.card` wrapper) with a different structure (`container optional-section`, `container submission-result`). The limites page has a `<main><div class="card">` structure that doesn't match the app's `container`-only pattern → visual mismatch.
-
-## The fix — one PR to `sunmint_beta`
-
-1. **Add `farm` nav option** to monitor + instrucoes (with i18n `navFarm` in their dictionaries)
-2. **Add `farm` routing case** to both `onNavChange`s
-3. **Add `monitor` case** to limites `onNavChange` (it's missing → "Monitorar Árvore" does nothing there)
-4. **Restyle limites** to match the main app structure (use `.container` like the main index, not `.card`)
-
-Let me verify the i18n dictionaries first (do monitor/instrucoes have `navFarm` keys?):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed: neither monitor nor instrucoes has `navFarm` in their i18n dicts (0 hits), so even adding the `<option>` would show English fallback text. Now let me also check the limites page's i18n dict and the en blocks, plus confirm the exact anchors for all edits:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have every anchor. Now building the fix — 4 edits across 3 files (monitor: +farm option/+i18n/+route; instrucoes: +farm option/+i18n/+route; limites: +monitor route). The UI-weirdness on limites I'll address separately after checking the main app structure. Let me apply all edits:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The monitor `onNavChange` uses a different structure than I assumed. Let me get its exact form:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Monitor's `onNavChange` uses single-line braces `{ window.location.href = ...; }` and `else` for monitor (not `else if`). My search string assumed multi-line braces. Let me fix the anchors and retry with exact text:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 7 edits applied. Now verifying the PR branch (nav option present on both pages, routing cases, JS syntax) before merging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Two problems:
-1. **`navFarm i18n: 0` and `farm route: 0`** on all three — the edits reported "applied" but the branch files don't show them?! (raw cache lag again, or the i18n edit search had wrong quote style)
-2. **instrucoes script 0 FAIL** — a real JS syntax error at `sec2Title` (the `en` block has a broken string — likely a pre-existing issue, but need to confirm it's not mine)
-
-Let me check the authoritative Contents API for the navFarm/routes, and look at the instrucoes en-block error:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 Two findings:
@@ -4981,16 +4794,19 @@ You should
 ### 🤖 Autopilot
 
 Go — making the env change: repointing both webhook keys to the @39 anonymous-executable deployment, restarting dao_protocol, and verifying end-to-end. First, the backup + edit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Env updated — both keys now point at the **@39** anonymous-executable deployment. Now restarting dao_protocol and verifying it's healthy:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Service found (`truesight-dao-protocol.service`). Restarting it to load the new env:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5139,4 +4955,66 @@ Want me to implement one of these — my pick would be **(2)** a small autopilot
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== FBE; cd /tmp && echo "=== farms/index.json in sunmint repo (what feeds the dropdown?) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+share with me the URLs of the caches so that I can better understand what you are describing
+
+
+### 🤖 Autopilot
+
+Let me pull the exact URLs from the app code so you have the precise endpoints:
+
+
+### 🤖 Autopilot
+
+Here are the exact URLs — the three data sources that feed the farm selection, plus the submit endpoint:
+
+## The caches / data sources
+
+**1. The farms dropdown cache** (what other farmers see when selecting a farm):
+```
+https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/farms/index.json
+```
+*(this is `REMOTE_FARMS_URL`, line 156 — fetched with `?cb=<timestamp>` cache-buster)*
+
+**2. The plots/boundary cache** (the polygons + media that render the map + media list):
+```
+https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geojson
+```
+*(this is `PLOTS_URL`, line 306)*
+
+**3. Per-plot derived layer** (the new one-file-per-plot we built):
+```
+https://github.com/TrueSightDAO/sunmint/tree/main/plots/by-plot
+```
+
+**4. The submit endpoint** (where the signed boundary event goes):
+```
+https://edgar.truesight.me/dao/submit_contribution
+```
+*(`EDGAR_SUBMIT_URL`, lines 424/455)*
+
+## How they fit together
+
+```
+Farmer submits → Edgar (4) → dispatch → GAS webhook → SunMint Plots sheet
+                                                              ↓ (manual/generated step)
+                                farms/index.json (1) ─────────→ dropdown for other farmers
+                                plots/index.geojson (2) ───────→ map + media list
+                                plots/by-plot/*.geojson (3) ───→ per-plot recalc target
+```
+
+- **(1)** and **(2)** are **committed files** in the `sunmint` repo, regenerated by the generators (`build_farms_index`, `build_plots_geojson.py`) — they only change when someone reruns + commits them.
+- The **sheet** (Google Sheets "SunMint Plots") is the live source of truth that the GAS handler writes — the JSON files (1)+(2) are its **published cache**.
+- So "another farmer can select a new farm" = the new farm row must make it from the **sheet → (1)**. Right now that's a manual regeneration; nothing auto-commits it.
+
+That's the gap — want me to close it (the autopilot watcher that regenerates + commits (1) and (2) after each new farm lands)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/limites-da-fazenda/index.html" -o lim.html && echo "===
 
