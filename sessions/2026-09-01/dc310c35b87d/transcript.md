@@ -4878,11 +4878,13 @@ No dispatch log lines at all after the submission — confirming the background 
 **Honest E2E verdict:** my tool-path test **proved Edgar accepts the event (200)** but did **not** exercise the dispatch→webhook→GAS chain, because `submit_contribution` posts a structured payload whose text doesn't contain the raw `[FARM BOUNDARY EVIDENCE EVENT]` marker the router matches. The true chain requires the **app's actual submit flow** (farmer uploads photos → multipart POST with the marker text → dispatch → GAS doGet). That flow can't be fully simulated from the autopilot box without a real device/browser session.
 
 Let me clean up the test row (check the ledger for it), then report:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No visible ledger row (dispatch never matched → GAS never ran → no sheet row created). Let me confirm the SunMint Plots sheet has no TEST row (the GAS handler would have been the only creator):
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5067,4 +5069,29 @@ Still holding on the two Gary-dependent items (cron trigger + real-device test) 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → timeout 30 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'echo "=== dao_protocol service ===";
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⏸️ Paused before the next unit.
+Gate: turn did not open a PR — halting auto-advance
+Reply 'go' to continue.
+
+
+### 🤖 Autopilot
+
+Go-signal noted — but there's genuinely **no next unit I can execute right now**, and I don't want to manufacture work just to satisfy an auto-advance gate. Honest status:
+
+**Executable units remaining: none.** The boundary pipeline is code-complete, deployed, configured, and verified. The only two open items both require **Gary directly**:
+1. **Hourly cron trigger** — GAS UI, manual (tracked in OPEN_FOLLOWUPS, PR #877)
+2. **Real-device boundary test** — needs a phone on `sunmint.truesight.me/limites-da-fazenda/`
+
+**Parked options I can pick up anytime you say the word** (offered before, not approved yet):
+- Chrome audit + consistency pass on `/monitor-tree-growth/`, `/instrucoes/`, `/register_farm/` (same logo/lang-toggle/email/APK treatment I gave `/limites-da-fazenda/`)
+- `sunmint_mobile/www/` sync for the next APK build
+- Anything new you bring in
+
+So — want me to start one of the parked items, or hold here until Gary does his two manual steps? I'll stay quiet otherwise.
 
