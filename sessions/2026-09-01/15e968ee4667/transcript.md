@@ -8,32 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — this Telegram topic (thread 17194) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: Focus thread: emit all SunMint RSA signatures as a public JSON payload on GitHub (sunmint repo, `signatures.json` keyed by event/message ID) + enable public link-share of the Tree Growth Measurements
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: read_context_file, check_handoffs — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The governor gave the go for a focus thread. Let me read the full manifest to find the matching plan row.
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the rest of the manifest to find the matching plan row for this focus thread.
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 Let me read the rest of the manifest to find the matching plan row.
@@ -4532,6 +4506,7 @@ PR #377 approved — the diff description (pure CSS/template, vault vars, auth/J
 ### 🤖 Autopilot
 
 Gary approved #377 and wants merge + deploy (with deploy_autopilot's idle-drain), plus a follow-up on unifying session state across governor-gated pages. Starting with the merge.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4606,6 +4581,7 @@ go — redeploy killed the turn. Still holding off on the CI investigation per m
 ### 🤖 Autopilot
 
 Quick responsiveness + backfill status check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4654,16 +4630,24 @@ https://sophia.truesight.me/signature-ledger-pipeline
 ### 🤖 Autopilot
 
 Two real issues — let me ground both in code before answering.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Root cause is visible. Let me confirm the two specifics: how the vault cookie is scoped, and how the dashboard data endpoints authenticate.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both issues are now precisely diagnosed. Let me confirm the SLP data endpoint's exact auth call to state the fix correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4708,6 +4692,7 @@ Good diagnosis, approved — build A7b (shared sophia_token key, cookie-first JS
 ### 🤖 Autopilot
 
 Checking PR #376/#377 status and CI state before building A7b.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4757,6 +4742,7 @@ go — redeploy killed the turn, still holding on #376/#377 (neither merged yet)
 ### 🤖 Autopilot
 
 Quick responsiveness + status check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4789,11 +4775,13 @@ can you fix the failing errors then?
 ### 🤖 Autopilot
 
 On it — investigating the CI failures on PR #377 now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the failure logs for both jobs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4807,6 +4795,7 @@ E   ModuleNotFoundError: No module named 'gspread'
 ```
 
 The CI environment doesn't have `gspread` installed (it's a runtime dep of the cron script, not in the test deps). My A6 test file imports the script at module top level, and the script imports `gspread` at top level → collection dies. This blocks **every** PR, not just #377. Let me check the smoke job too, then fix with a lazy import.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4937,4 +4926,49 @@ Note: #376 (the merge-gate PR) is still open — it's now *in* main via the reba
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); SHA=$(curl -s -H "Authorization:; cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); echo "=== TEST job log ==="; cur; cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); echo "=== SMOKE job log (tail) =; …(+12 more)
 • `merge pr` → ✅ PR #377 on truesight_autopilot merged successfully (sha: 9c2b1e6be0243f1a8382500a4e26508640832f6e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+#376 (CI gate) just merged and CI is genuinely green now — go ahead and try merging #377 again.
+
+
+### 🤖 Autopilot
+
+Gary — quick check before anything: **#377 was already merged last turn** (squash `9c2b1e6`). Let me verify its current state and main's status to avoid a no-op or duplicate.
+
+
+### 🤖 Autopilot
+
+Both are already merged — #377 is on main (`9c2b1e6`), #376 (`c07fadd`) too. Nothing to re-merge. The outstanding piece from your earlier instruction is the **deploy** (idle-drain guard, not a raw restart). Executing that now.
+
+
+### 🤖 Autopilot
+
+Deploy is deferred (3 other threads mid-turn — the idle-drain guard doing its job). The restyle + session changes will go live at the next idle window. Reporting.
+
+## Status — nothing to merge, deploy deferred by idle-drain ✅
+
+| Item | Result |
+|---|---|
+| **PR #377 (restyle)** | ✅ **already merged** (`9c2b1e6`, on main) — merged last turn after I fixed CI |
+| **PR #376 (CI gate)** | ✅ **already merged** (`c07fadd`, on main) — confirms CI is genuinely green |
+| **Deploy** | ⏳ **deferred** — `deploy_autopilot` idle-drain guard found **3 threads mid-turn** (this thread included) and refused to restart, so nothing was interrupted. Will go live at the next idle window. |
+
+**Confirmed state of main:** `9c2b1e6` (restyle #377) → `c07fadd` (CI gate #376) → `90d8c1d` (A7 progress-parser fix) → `c94d854` (restore module #374). Everything you expected to merge is already in.
+
+## RESUME HERE → **deploy at next idle window + A7b**
+
+1. **Re-run `deploy_autopilot`** when threads are idle (it drains first) → restyle goes live → verify both dashboards 200 + vault look renders
+2. **Build A7b** (shared `sophia_token` + cookie-first JS — your approved design) as its own PR, deploy, verify one sign-in carries across `/vault/`, `/signature-ledger-pipeline`, `/media-archive-pipeline`
+3. **Backfill monitor** → completion checks + §7 contribution
+
+Nothing blocked on you — I'll pick these up at the next natural turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); echo "=== PR #377 state ==="; cu
+• `deploy autopilot` → Deploy DEFERRED: 3 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
 
