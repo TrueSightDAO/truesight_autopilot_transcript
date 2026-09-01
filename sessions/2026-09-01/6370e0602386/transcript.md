@@ -1389,11 +1389,13 @@ The 👍 emoji-go on the PR3 sample is the explicit approval — proceeding to *
 ### 🤖 Autopilot
 
 Plan confirms PR4: **live push after PR3 approval** (granted via 👍), then verify with a fresh `videos.list`. The script and 73/73 descriptions are in place. Running the live push now — descriptions only, preserving titles/tags:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Live push complete: `Processed 73 mapping entries.`** — all 73 descriptions pushed to YouTube. Now the plan's PR4 verification step: a **fresh `videos.list`** (independent, not self-report) to confirm the live descriptions actually changed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1401,6 +1403,7 @@ Plan confirms PR4: **live push after PR3 approval** (granted via 👍), then ver
 **PR4 verification: 73/73 MATCH** — the fresh `videos.list` (independent of the push) confirms every live description now equals the repo's polished text. Zero mismatches, zero missing.
 
 Let me check PR5's tooling (title proposals — dry-run only, since title diffs are non-trivial and need the same review pattern per the plan).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1462,16 +1465,19 @@ go — proceed to PR5's dry-run, post the title diffs here before any live push.
 ### 🤖 Autopilot
 
 Proceeding to PR5's dry-run. Running the title-proposal script in dry-run mode (no live push) — it needs the Grok key on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dry-run found **0 entries** for `--scope placeholder` — suspicious. Let me inspect the scope logic and the current titles in the JSON to understand why.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `--scope placeholder` returned **0** — the JSON titles already have `(video & transcript)` suffixes (not the generic `Project XX-XX | Agroverse` pattern the scope regex matches). Key question: are the **live** titles still ugly, or did a prior run already push these? Let me compare live vs JSON titles and check git history.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1482,6 +1488,7 @@ Dry-run found **0 entries** for `--scope placeholder` — suspicious. Let me ins
 - The JSON titles were updated but **never pushed live** (live still shows `Project 04-30_Full HD 1081 | Agroverse`)
 
 Let me check the live vs JSON title state for a few.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1658,4 +1665,52 @@ Nothing live left to push — all 73 descriptions are live and verified; PR6 is 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && rm -rf aac_work && git clone --depth 1 https://github.com/TrueSightDAO/agentic_ai_context.git aac_work 2>&1 | tail -1 && cd aac_w; cd /tmp/aac_work && sed -n '/### End-to-end checklist/,/^## B\./p' sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md | cat -A | head -25; cd /tmp/aac_work && echo "=== H1: heading ===" && grep -c '7. \*\*Push title updates to YouTube\*\* (mandatory whenever manifest titles drif; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] go — merge PR #881, doc-only change looks good.
+
+
+### 🤖 Autopilot
+
+Merging PR #881 — the SOP doc update.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged PR #881 this turn. Stopping per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Merged:** [agentic_ai_context PR #881](https://github.com/TrueSightDAO/agentic_ai_context/pull/881) — "PR6: SOP — make polished-description push a permanent pipeline step" (sha `89ac41a`).
+
+- Merged per your approval ("doc-only change looks good").
+- Now on `agentic_ai_context/main`: `sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md` §A.7 requires the description re-sync step (`youtube_update_video_descriptions.py --dry-run` → apply after blog regen), the end-to-end checklist includes it as step 3, and "Do not push raw Whisper ASR text as a YouTube description" is in the future-agents guardrails.
+
+**Plan complete (code/doc side):**
+| Unit | Status |
+|---|---|
+| PR1 description field + generator | ✅ merged (#263) |
+| PR2 description push script | ✅ merged (#266) |
+| PR3 5-pair review sample | ✅ approved (👍) |
+| PR4 live description push | ✅ done + verified 73/73 match |
+| PR5 title alignment | ✅ merged (#267, your merge) |
+| PR6 SOP prevent-recurrence | ✅ **merged (#881, this turn)** |
+
+## RESUME HERE → close-out (2 small items, no PR needed for one)
+
+1. **Update plan resume tracker** — `plans/YOUTUBE_DESCRIPTION_TITLE_CLEANUP_PLAN.md` §4: mark all units built/merged, flip `RESUME HERE →` to "Complete." (small follow-up PR to agentic_ai_context — next turn).
+2. **DAO contribution report** (plan §5) — report the live-impact units PR4 + PR5 as a [CONTRIBUTION EVENT] signed as Sophia Truesight, with PR URLs as evidence (#263/#266/#267/#881 + verification result).
+
+Say "go" and I'll do the tracker PR + contribution in the next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #881 on agentic_ai_context merged successfully (sha: 89ac41a102f14934c142739418dbcc46b18f6b29). Pull Request successfully merged
 
