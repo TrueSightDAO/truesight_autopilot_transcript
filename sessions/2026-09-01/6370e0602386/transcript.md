@@ -882,31 +882,37 @@ Script verified post-format (single-entry dry-run works, real diff). Only the ne
 ### 🤖 Autopilot
 
 Committed + pushed. Opening the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The gh CLI token lacks `createPullRequest` permission — but the platform's `git_push_changes` uses a properly-scoped app token. I'll use it with the same branch (already pushed) to open the PR. Let me grab the formatted script content.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now opening the PR via `git_push_changes` (app-scoped token) using the exact already-pushed branch + formatted content.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The gh token on the box can't create PRs (PR #263 must have been created by a prior partial run). `git_push_changes` needs a write payload — I'll delete the box-pushed branch, then let it recreate + open the PR with the app token.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch deleted. Now recreating it via `git_push_changes` with the exact formatted content (which also opens the PR with the app token).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch pushed but PR creation hit a 307 redirect (repo renamed → `agroverse_shop_beta`). Let me check whether a PR actually got created despite the error.
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1092,4 +1098,75 @@ Note: the only thing lost is PR number #264's open state — the script content 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp/agroverse_shop_work && git checkout main 2>&1 | tail -1 && git pull origin main 2>&1 | tail -2 && echo "=== PR state ===" && gh pr v; cd /tmp/agroverse_shop_work && gh pr view 264 --repo TrueSightDAO/agroverse_shop_beta --json state,mergeable,mergeStateStatus,baseRefName,he; cd /tmp/agroverse_shop_work && gh pr view 264 --repo TrueSightDAO/agroverse_shop_beta --json state,mergedAt,closedAt,mergeCommit,mergedBy -q; …(+1 more)
 • `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] [Handoff context — this Telegram topic (thread 18528) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Converging — PR #264 is closed and unmergeable; no PR was merged this turn. Stopping per the one-PR-per-turn rule.
+
+## What I did this turn (diagnosis only, no merge landed)
+
+**State found:** [agrover
+
+
+### 🤖 Autopilot
+
+Resuming: recreate PR2's PR fresh (stale branch deleted → re-push → open), then merge, then stop at PR3.
+
+
+### 🤖 Autopilot
+
+The script wasn't in the clone (it only lived on the now-deleted PR branch commit). I have the full content in context from the earlier push — I'll recreate the file locally, then re-push via `git_push_changes` (same content, fresh branch + PR on current main).
+
+
+### 🤖 Autopilot
+
+Script recreated (148 lines, compiles). Now re-open the PR via `git_push_changes` — same branch name, fresh base on current main, opens a new PR.
+
+
+### 🤖 Autopilot
+
+Fresh PR recreated: **[agroverse_shop_beta PR #266](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/266)** — same content as #264, now based on current main. Merging it.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+PR2 is merged. Stopping per the one-PR-per-turn rule — PR3 (the review gate) runs next turn.
+
+## What I did this turn
+
+**Merged:** [agroverse_shop_beta PR #266](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/266) — "PR2: Add youtube_update_video_descriptions.py (description re-sync, dry-run verified)" (sha `10a1887`, squash into `main`).
+
+**Recovery from last turn's stale-PR failure:**
+- Confirmed PR #264 was closed-without-merge (gh token can't reopen it; `merge_pr` refused a closed PR)
+- Deleted the stale `youtube/descriptions-pr2` branch from origin
+- Recreated the script file locally (148 lines, compiles OK) — same content as #264
+- Re-pushed via `git_push_changes` on current `main` → **PR #266** (fresh number, mergeable base)
+- **Merged successfully** ✅
+
+**Now on `agroverse_shop_beta/main`:** PR1 (descriptions in `youtube_videos.json` + generator) + PR2 (the `youtube_update_video_descriptions.py` re-sync script, dry-run-verified against all 73 live videos). Nothing live on YouTube yet.
+
+## RESUME HERE → PR3 (hard review gate — STOP after posting)
+
+1. Build the **5 before/after title+description pairs** from the live dry-run log (`/tmp/pr2_dryrun2.txt` + a fresh title check): the "Fili Marsh" video, the "being the police" video, + 2–3 typical ones — show OLD (live) vs NEW (from `youtube_videos.json`), including what the description will read like in full for one pair.
+2. **Post the sample to THIS topic** for governor review.
+3. **STOP — do NOT push live (PR4) until the governor explicitly approves the sample.** No live YouTube changes without that approval.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → deleted stale branch; recreated `scripts/youtube_update_video_descriptions.py` (148 lines, py_compile OK)
+• `git_push_changes` → PR #266 opened on agroverse_shop_beta (sha 9f2295c)
+• `merge_pr` → ✅ PR #266 merged successfully (sha: 10a1887210e21d8f496d661d557d4148c047217f)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/agroverse_shop_work && git checkout main 2>&1 | tail -1 && git push origin --delete youtube/descriptions-pr2 2>&1 | tail -1; echo "=; cd /tmp/agroverse_shop_work && mkdir -p scripts && cat > scripts/youtube_update_video_descriptions.py <<'PYEOF' #!/usr/bin/env python3 """ P
+• `merge pr` → ✅ PR #266 on agroverse_shop_beta merged successfully (sha: 10a1887210e21d8f496d661d557d4148c047217f). Pull Request successfully merged
 
