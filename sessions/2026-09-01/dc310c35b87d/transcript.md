@@ -5071,6 +5071,7 @@ Both en dicts now have `navFarm`. Now updating the test to reflect the true conv
 ### 🤖 Autopilot
 
 Progress — 6/7 pass. The remaining failure is real: **monitor lacks the `.nav-dropdown label` CSS rule** (it has `.nav-dropdown` and `.nav-dropdown select` but no label rule — so the "Página:" label renders bold-default while other pages style it identically). Let me add it to monitor, matching the reference:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5307,4 +5308,125 @@ So the `MEDIA RETRACTION EVENT` becomes three sources (farmer/lead, governor, se
 - PR-B: design doc (3-tier retraction: farmer/lead · governor · Sentinel; soft-invalidate; <3-point fallback) → event + GAS + UI
 
 Say go and I'll start PR-A and draft the PR-B design doc in the same pass.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Love it — that makes the model three-tier and adds the strongest validator:
+
+**Who can invalidate boundary media:**
+1. **The submitting farmer / farm lead** — anyone tied to the submission
+2. **The go
+
+
+### 🤖 Autopilot
+
+Go-signal received — executing PR-A (URL `?farm=` param + media-submissions list) with the PR-B design doc riding in the same PR for review. First, gathering the current page + media data structure:
+
+
+### 🤖 Autopilot
+
+Media structure confirmed (LD-P1 has 8 items; others 0). Let me see the exact `renderFarmSelect`, `onFarmSelectChange`, and init flow to wire the URL param + media list:
+
+
+### 🤖 Autopilot
+
+Structure fully mapped. One more targeted read — the `getRemoteFarms` function (to piggyback the farm_id→name map for deep-linking):
+
+
+### 🤖 Autopilot
+
+Full structure mapped. Now building PR-A — URL param + media submissions list. Applying the edits locally:
+
+
+### 🤖 Autopilot
+
+Edits 1–4 were atomic-rolled-back (the file write happens after all edits; edit 5's anchor failed because the file contains the literal `➕`/`—` characters, not escapes — same char-vs-escape pattern as before). Redoing with robust anchors that avoid the tricky chars:
+
+
+### 🤖 Autopilot
+
+All 6 edits applied. Adding the `.media-grid` CSS + running the full local validation (tags, JS syntax, plus the nav test suite since I touched the page):
+
+
+### 🤖 Autopilot
+
+The CSS block failed its assert (count of `.media-grid` with the dot = 0, since the JS uses `class="media-grid"` without a dot — my assert was wrong), so the CSS wasn't added; the page itself is fine (tags NONE, scripts OK). Adding the CSS correctly:
+
+
+### 🤖 Autopilot
+
+All validations green (tags NONE, both scripts OK, CSS added). Now pushing PR-A as a PR to `sunmint_beta`:
+
+
+### 🤖 Autopilot
+
+I deliberately used a placeholder this time (to avoid the empty-content trap) — now pushing the real validated file over it:
+
+
+### 🤖 Autopilot
+
+Verifying the PR branch matches my validated file, then merging:
+
+
+### 🤖 Autopilot
+
+File matches; mergeability still computing. Merging PR #61 (the branch is one file changed vs main — should merge cleanly):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**PR-A delivered — farm deep-link + boundary media submissions list** (governor's 3-part enhancement, parts 1+2).
+
+**PR #61 — https://github.com/TrueSightDAO/sunmint_beta/pull/61** (merged, sha `aad9db8e`, 1 file: `limites-da-fazenda/index.html`, 29,575 B)
+
+### 1. URL updates on farm selection
+- `onFarmSelectChange()` now does `history.pushState(null, '', '?farm=<name>')` on select; clears to pathname on reset
+- On load, `?farm=` deep-links pre-select the farm (and triggers the media list); unknown names (new/device-local farms) still render the media list
+- **Cross-link ready**: impact-map Farms Registry cards can deep-link here
+
+### 2. Media submissions list (what the boundary is made of)
+- New `renderMediaList(farmName)`: fetches `sunmint/plots/index.geojson`, filters by farm (`farm_id` or name), renders **every media item as a 64px thumbnail grid** grouped by plot with counts — jsDelivr CDN src + raw.githubusercontent onerror fallback, lazy-loaded, XSS-safe
+- Empty state messages; works today for **LD-P1 (8 items)**; others populate as boundary media lands
+- i18n pt+en (`mediaLoading/mediaUnavailable/mediaNone/mediaItems`) + `.media-grid` CSS
+
+### Verified
+- Tags balanced (no mismatches), both inline scripts pass `node --check`
+- Branch file byte-identical to locally-validated build (MATCH via Contents API)
+- Merged cleanly (sha `aad9db8e`)
+
+### Process note
+Learned from the earlier empty-content bug: this time I pushed a **deliberate placeholder** in the PR open, then immediately overwrote with the real validated file — no empty-content risk.
+
+## RESUME HERE → next unit (governor's pick)
+
+1. **PR-B: the invalidation design doc** — the 3-tier retraction model you locked (submitting farmer/farm-lead · governor by default · **Sentinel** automated on satellite-contradiction) + soft-invalidate + <3-point fallback → then the `MEDIA RETRACTION EVENT` + GAS handler + UI
+2. **Prod promotion for #55–#61** — gated on Gary's explicit go
+3. Verify PR-A on beta live (`beta.sunmint.truesight.me/limites-da-fazenda/?farm=...`) after Pages rebuild
+
+Which next — PR-B design doc, or something else?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → clone @ main; media structure audit (LD-P1 8 items); farm-select/init/render reads; 6 edits applied locally (URL pushState, deep-link init, renderMediaList, mediaList div, i18n pt+en) + CSS; validation (tags NONE, scripts OK ×2, .media-grid present)
+• `git push changes` → PR #61 (placeholder→real-content flow)
+• `upload local file to github` → real file to branch (sha e99b32c5)
+• `ssh run` → branch MATCH + mergeable check
+• `merge pr` → ✅ PR #61 merged (sha aad9db8eeeb02699b6f1eb645eb70682daa03542)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && rm -rf sb2 && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint_beta.git sb2 && cd sb2 && echo "=== limites page: fa; cd /tmp/sb2 && echo "=== renderFarmSelect (231-262) ===" && sed -n '231,262p' limites-da-fazenda/index.html && echo "=== onFarmSelectChange ; cd /tmp/sb2 && echo "=== getRemoteFarms + unionFarms (205-231) ===" && sed -n '205,231p' limites-da-fazenda/index.html; …(+5 more)
+• `merge pr` → ✅ PR #61 on sunmint_beta merged successfully (sha: aad9db8eeeb02699b6f1eb645eb70682daa03542). Pull Request successfully merged
 
