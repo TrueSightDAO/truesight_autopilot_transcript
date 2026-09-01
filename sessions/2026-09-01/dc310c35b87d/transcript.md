@@ -4603,16 +4603,19 @@ Local project is at the plot-first code (5 markers). Now deploying to GAS via cl
 ### 🤖 Autopilot
 
 Catalog confirmed (required: Farm Name + Media URLs — in plot-first terms, "Farm Name" carries the farmer's plot text). Submitting the E2E test event — a **new plot** name that has never existed, so the plot-first handler must create a fresh row with auto Plot ID + empty Farm ID:
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Submitted. Now the decisive check — did the plot-first handler create the Plots row with **auto Plot ID + empty Farm ID**? Checking the SunMint Plots tab:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The E2E **failed to land** — my new plot ("Lote Teste E2E Plotfirst") is **not** in the SunMint Plots tab. Only the old test rows are there (TEST-P1, UAT-PLOT-1, TDP1). Let me diagnose where the chain broke — checking the Evidence tab (did the submission even get processed?) and the webhook/dispatch:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4620,6 +4623,7 @@ The E2E **failed to land** — my new plot ("Lote Teste E2E Plotfirst") is **not
 **Found the break.** The last Evidence row shows my submission WAS processed, but the **Plot ID column contains garbage**: `"- Submission Source: e2e-uat"` — the handler's parser mis-parsed the event text. My `submit_contribution` payload passed `"Plot ID": ""` and the parser evidently picked up the `Submission Source` label as the Plot ID. That corrupted the row — and why the Plots tab got no clean create.
 
 The chain up to the handler works (Evidence row landed via the anonymous webhook — proven again). The fault is in the **handler's parser** for empty Plot ID + the way the tool serializes fields. Let me check the parser logic in the deployed handler:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4631,11 +4635,13 @@ Plot ID: "- Submission Source: e2e-uat"
 ```
 
 The parser's `grab('Plot ID')` picked up `"- Submission Source: e2e-uat"` — because my submission's **"Plot ID" was empty**, so the parser's regex for Plot ID matched across into the next line's `- Submission Source:` field. The tool serializes fields as `Plot ID: ` (empty) then a newline then `Submission Source: e2e-uat` — and the regex `Plot ID: (.+)` grabbed everything up to the next newline that has a label... actually it grabbed the next bullet. Let me check the `grab()` regex to confirm and fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sed ranges missed — let me find the actual function names in the file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4645,16 +4651,19 @@ The E2E found a **real bug** — the chain works up to the Evidence tab (my subm
 2. **No row in SunMint Plots** — the upsert didn't create the plot row
 
 Let me read the full upsert body + the tracking tab to see exactly where it failed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The E2E found a **real bug** — the chain works (Evidence row landed via the anonymous webhook — proving dispatch → @39 → GAS execution again) but **no Plots row was created**, and the Evidence Plot ID is garbage (`- Submission Source: e2e-uat`) from the empty-Plot-ID parse. Let me read the main function body to see exactly where the upsert is (or isn't) reached:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 E2E verdict is in — **it caught two real bugs.** Let me confirm the key one (deployment version pinning) before reporting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4855,4 +4864,17 @@ Which next?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && rm -rf sbsw && mkdir sbsw && cd sbsw && echo "=== exact SW cacheKeyFor + URLS_TO_CACHE ===" && curl -s "https://raw.githubusercon; cd /tmp/sbsw && python3 - <<'PYEOF' import io p = 'sw.js' s = io.open(p, encoding='utf-8').read() # Edit 1: strip the cb cache-buster for AL; cd /tmp/sbsw && sed -i "s/sunmint-cache-v1/sunmint-cache-v2/" sw.js && grep -n "CACHE_NAME" sw.js | head -2 && node --check sw.js && echo "O; …(+1 more)
 • `merge pr` → ✅ PR #70 on sunmint_beta merged successfully (sha: 1a3ef5ed88b8e2a475b8ec54a76f84de6568d554). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Bump the GAS version and then re-run E2E once you are done.
+
+
+### 🤖 Autopilot
+
+Go — bumping the GAS version to v40 (plot-first code), repointing @39 to it, then re-running the E2E. First, the version bump + checking how to repoint the deployment:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
