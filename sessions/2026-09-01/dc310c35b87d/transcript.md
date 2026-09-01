@@ -4784,6 +4784,7 @@ Now I have the full schema. The upsert must target the **"SunMint Plots"** tab (
 ### 🤖 Autopilot
 
 The replacement left the old function body dangling. Let me inspect and fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4958,4 +4959,116 @@ Fair challenge — and to be clear, I actually recommended every **5–10 minute
 **My honest recommendation: every 30–60 minutes** (or even a few times a day). The Telegram Chat Logs scan is cheap, and this is a "backup processor" anyway — the primary path is the Edgar→GAS webhook, which fires instantly on submission. The cron is just the safety net for missed webhooks, exactly like the other processors.
 
 So: **60-minute trigger** is plenty for the fallback role. Want me to go with that (and document it as such in the SCHEDULE_TRIGGERS.md update)?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+How about every hour and then the GAS has a doGet which gets triggered when dao_protocol gets such a submission. It is similar to the other patterns
+
+
+### 🤖 Autopilot
+
+Exactly right — that's the standard pattern. **Webhook-first (instant) + hourly cron fallback** mirrors how every other processor in the ecosystem works (sales, inventory, QR updates all do this: Sidekiq webhook on submission + a time-driven backup cron).
+
+Let me verify the handler has the `doGet` entry point for the webhook path (it should, mirroring the other processors):
+
+
+### 🤖 Autopilot
+
+The cron function exists (line 213) and the file correctly avoids a second `doGet` (comment line 21 — it lives in `process_qr_code_updates.js`). Let me confirm the `doGet` action router there actually dispatches the FBE action (that's the instant webhook path from dao_protocol):
+
+
+### 🤖 Autopilot
+
+Found the gap — the doGet router handles QR updates, tree planting, tree growth, and resend — but **NOT the FBE action**. So the instant webhook path (dao_protocol → GAS) is broken even though the cron function exists. Let me confirm what action dao_protocol's dispatch sends, then add the router case:
+
+
+### 🤖 Autopilot
+
+Now I have the exact pattern to mirror. The fix: add a `processFarmBoundaryEvidenceFromTelegramChatLogs` case to the doGet router (matching the dispatch action name), plus update `SCHEDULE_TRIGGERS.md` with the hourly recommendation. Let me build both changes:
+
+
+### 🤖 Autopilot
+
+Now I have the exact anchors. Building the doGet router case + fallback message update + SCHEDULE_TRIGGERS.md entry, then pushing as one PR:
+
+
+### 🤖 Autopilot
+
+I have the exact anchors. Building the PR — insert the FBE doGet case after the TGM block, update the fallback message, and add the SCHEDULE_TRIGGERS.md entry:
+
+
+### 🤖 Autopilot
+
+The second edit's search string didn't match — likely an emoji/byte mismatch on the fallback line. Let me check the exact bytes:
+
+
+### 🤖 Autopilot
+
+Let me verify the exact fallback line content and check if edit 1 applied:
+
+
+### 🤖 Autopilot
+
+Found it — my edit-2 search string dropped the `ℹ️ No valid action specified. ` prefix (capital "Use"). The whole PR failed atomically (git status shows no changes). Redoing with corrected full-line anchors:
+
+
+### 🤖 Autopilot
+
+PR #453 opened. Verifying the router case landed correctly + the trigger doc, then merging:
+
+
+### 🤖 Autopilot
+
+All verified — FBE webhook case ✓, fallback message updated ✓, trigger doc with hourly schedule ✓, `mergeable: True`. Merging PR #453:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Implemented exactly the pattern you described** — webhook-first (instant doGet via dao_protocol) + hourly cron fallback.
+
+**PR #453 — https://github.com/TrueSightDAO/tokenomics/pull/453** (merged, sha `b7794ce5`) — +39/−2
+
+### The gap I found first
+The FBE cron handler was deployed, but the **doGet router** (`process_qr_code_updates.js`) had cases for QR updates / tree planting / tree growth / resend — **but NOT the FBE action**. So the instant webhook path (dao_protocol dispatch → GAS) was broken; only a manual/cron run would process anything.
+
+### Changes
+1. **doGet router case added** — `?action=processFarmBoundaryEvidenceFromTelegramChatLogs` (mirrors the TGM case exactly: try/catch + `processed/skipped/errors` output). This is the **primary path**: dao_protocol dispatch.py routes `[FARM BOUNDARY EVIDENCE EVENT]` → GAS doGet **instantly on submission**.
+2. **Fallback message** updated to list the new action (keeps the "no valid action" hint accurate).
+3. **`SCHEDULE_TRIGGERS.md`** — new §6 entry: FBE function, file, **recommended schedule: every 60 minutes** — documented as the *fallback* for missed webhooks, same as every other processor (sales/inventory/QR all run 5–15 min but only as backup; the webhook is primary).
+
+Verified before merge: FBE case present ✓, fallback lists FBE ✓, trigger doc has §6 + "Every 60 minutes" ✓, `mergeable: True`.
+
+### One deploy note
+The router change is **merged but not yet deployed** to the GAS runtime (the `clasp push` earlier deployed the handler file only). The doGet case needs one more `clasp push` for the webhook path to be live.
+
+## RESUME HERE → next unit (governor's pick)
+
+1. **Deploy the router update** — `clasp push` the project (same deploy tool as before) so the FBE doGet case is live in the GAS runtime. Then the full webhook chain is active end-to-end. *This is a production deploy — needs your go.*
+2. **You set the hourly cron trigger** in GAS UI (manual, per SCHEDULE_TRIGGERS.md §6 — the documented pattern)
+3. Then the pipeline is fully live: capture → Edgar → dispatch → GAS doGet (instant) / cron (hourly fallback) → farm upsert → plot regeneration → impact map
+
+Say go and I'll deploy the router update.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → verified FBE handler file state (cron fn at line 213, no second doGet), doGet router cases (no FBE case — the gap), dispatch row, TGM webhook case (mirror template), exact fallback-line bytes, atomic-fail check (no changes), corrected anchors
+• `git push changes` → https://github.com/TrueSightDAO/tokenomics/pull/453 (first attempt failed on a truncated search string — corrected and re-pushed)
+• `merge pr` → ✅ PR #453 merged (sha b7794ce53e739600ecbd0e6d926a954cf60993c1)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== FBE; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== doG; cd /tmp && echo "=== dispatch row for FARM BOUNDARY ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dao_protocol/main/truesi; …(+5 more)
+• `merge pr` → ✅ PR #453 on tokenomics merged successfully (sha: b7794ce53e739600ecbd0e6d926a954cf60993c1). Pull Request successfully merged
 
