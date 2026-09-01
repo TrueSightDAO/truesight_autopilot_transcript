@@ -2376,26 +2376,31 @@ All 44 Santa Anna manifest entries are rounded (3.0/52.0) — so the manifests c
 ### 🤖 Autopilot
 
 Script works: **5 IMG entries get exact GPS from source-file EXIF** (`-3.292500, -52.572400 [file_exif]` — real farm-plot precision, not rounded). 68 others show "no GPS source found" (their sources are off-box). The farm-manifest fallback didn't fire because those 5 matched EXIF first (correct) and the other 68 aren't farm media. Let me see the remaining lines and run the full local test gate.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dry-run is clean (5 exact EXIF matches, 68 honest "no source"), compile ✅, ruff ✅. Only formatting needs fixing. Let me apply ruff format, then write the changes and validate the result.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 5 IMG entries now carry exact GPS (`file_exif`), no bad entries, gates pass. Now open the PR with the script + JSON change.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `git_push_changes` needs the content passed in the call — it doesn't read my local clone. Let me get the exact file contents (script + JSON) to pass as write payloads.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything needed. Opening the PR with the script as a full write + 5 targeted JSON edits (anchored on unique video_id+title pairs, inserting the GPS fields after the title line):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2545,4 +2550,49 @@ Merge [PR #885](https://github.com/TrueSightDAO/agentic_ai_context/pull/885) (yo
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/aac_work && git pull origin main -q 2>&1 | tail -1 && echo "=== SOP: find GPS/cache/description mentions ===" && grep -n -i "gps\|la; cd /tmp/aac_work && echo "=== SOP checklist section (70-90) ==="; sed -n '70,90p' sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md; echo "=== MAP pipeli; cd /tmp/aac_work && echo "=== checklist exact bytes ==="; sed -n '/### End-to-end checklist/,/### What future agents/p' sops/DOWNLOADS_MEDIA
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] go — merge PR #885, doc-only.
+
+
+### 🤖 Autopilot
+
+Merging PR #885 — the final GPS SOP note.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged PR #885 this turn. Stopping per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Merged:** [agentic_ai_context PR #885](https://github.com/TrueSightDAO/agentic_ai_context/pull/885) — "SOP: GPS is part of the uniform media-cache format (PR #269 follow-up)" (sha `86c0125`).
+
+- Merged per your approval (doc-only).
+- `sops/DOWNLOADS_MEDIA_TO_AGROVERSE.md` on main now documents GPS as part of the uniform media-cache format: `youtube_videos.json` entries carry `latitude`/`longitude`/`gps_source` (exact EXIF from source file, or farm-manifest rounded fallback, marked accordingly), backfill via `add_gps_to_youtube_videos_json.py` (dry-run → `--write`), with the "LLMs can search media assets by latitude/longitude" rationale. The checklist gained step 5 (GPS backfill when fields missing), and a stale duplicate OAuth-recovery step was removed.
+
+## 🏁 GPS enhancement complete
+
+| Piece | Result |
+|---|---|
+| GPS schema + backfill script (PR #269) | ✅ merged (`9a7d585`, your merge) |
+| 5 IMG entries with exact EXIF GPS in cache | ✅ live on main |
+| SOP: GPS = uniform cache format (this turn) | ✅ **#885 merged** |
+
+**Net state:** the media cache now has a geo-searchable schema — `latitude`/`longitude`/`gps_source` on entries, exact EXIF values where the source file is available (5 Santa Anna IMG clips with real plot precision), honest `no GPS source` elsewhere until those source files sync to the box (script auto-fills on re-run), and SOP lock-in so future ingress keeps the field populated.
+
+## RESUME HERE
+
+No further units — this thread's GPS work is complete. ✅ Standing offer if you want it: once the off-box source MOVs (Bean to Bliss, Project clips) sync to the box, re-run `add_gps_to_youtube_videos_json.py` and the remaining 68 entries will auto-fill with their embedded GPS.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #885 on agentic_ai_context merged successfully (sha: 86c01259fa26847263805d3edb48f8ae590a7e77). Pull Request successfully merged
 
