@@ -4106,6 +4106,7 @@ Ruff wants import-splitting + formatting fixes. Let me apply them, re-verify, th
 ### 🤖 Autopilot
 
 All checks pass and the functional smoke test confirms the daemon still works after lint fixes. Pushing PR2 with the three files + systemd unit:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4340,4 +4341,82 @@ The daemon genuinely doesn't care about the folder name — it reads everything 
 And it makes the "source namespace" idea real in the filesystem, not just in the docs — which is exactly what we locked in with the terminology.
 
 Want me to do the rename now — before we wire Cleide's inbox in? That way we build the queue once, at the right name, instead of migrating it later. I'd update the daemon repo (config template, CLI defaults, DESIGN.md) and the box's config, and I'll note the path change in the plan doc too.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] ok
+
+
+### 🤖 Autopilot
+
+Renaming the inbox root to the MAP-level namespace. Let me read the current files so the edits are precise.
+
+
+### 🤖 Autopilot
+
+The daemon reads inbox paths from config (code is path-agnostic — good). Let me check README.md for any path references so the rename is complete.
+
+
+### 🤖 Autopilot
+
+All references mapped — the daemon code is path-agnostic (reads paths from config), so only docs/config need updating. Making the rename in one PR:
+
+
+### 🤖 Autopilot
+
+PR #4 opened. Merging — you explicitly approved the rename:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Inbox renamed to MAP-level `media_archive_inbox` ✅
+
+**PR merged:** [#4 — Rename inbox root to media_archive_inbox (MAP terminology)](https://github.com/TrueSightDAO/farm-media-daemon/pull/4) — sha `9119460b`.
+
+**What changed (3 files, now on farm-media-daemon main):**
+
+| File | Change |
+|---|---|
+| `config.yaml.example` | Inbox paths → `/home/ubuntu/media_archive_inbox/farm-media/<farm_id>` |
+| `DESIGN.md` | Layout + principle 2: queue = `media_archive_inbox/<source>/<farm_id>/`, source namespaces map to MAP terminology |
+| `README.md` | "How farms register" → new path |
+
+**Why it's clean:**
+- **Zero code change** — the daemon reads inbox paths from config (path-agnostic by design), so the rename is purely doc/config
+- **No migration needed** — the box path doesn't exist yet (Cleide wiring is the next unit), so nothing to move
+- **Future-proof** — community events slot in as `event-media/<event-id>/` under the same root, exactly as the MAP terminology we locked in describes
+
+So the MAP layout going forward:
+
+```
+/home/ubuntu/media_archive_inbox/
+  farm-media/cleide/
+  farm-media/paulo-la-do-sitio/
+  event-media/<event-id>/     <- future
+```
+
+---
+
+**RESUME HERE → next unit (PR3/4 — wire the daemon to Cleide's real inbox):**
+1. Create `/home/ubuntu/media_archive_inbox/farm-media/cleide/` with sidecars for the 6 already-uploaded mp4s (yt_ids from the throttled uploader's manifest) + the next pending mp4
+2. Write `/opt/truesight_autopilot/farm_media_daemon_config.yaml` (daily_budget 6, farm-media/cleide priority 2)
+3. Run `farm_media_daemon.py --once` → confirm 1 real upload + yt_id write-back
+4. If good: install systemd service, **retire ad-hoc uploader PID 105025**, daemon takes over
+
+Ping me with "go" and I'll wire it.
+
+———
+**✅ Done this turn — actions taken:**
+• `read repo file` ×4 (daemon .py — confirmed path-agnostic; config.example; DESIGN.md; README.md)
+• `git push changes` → PR #4 (rename in config/DESIGN/README) · `merge pr` → ✅ #4 merged (sha 9119460b)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #4 on farm-media-daemon merged successfully (sha: 9119460b09bc94c2f97c610b0cab4f83623c6ecb). Pull Request successfully merged
 
