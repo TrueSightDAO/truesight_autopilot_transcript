@@ -4094,21 +4094,25 @@ Interesting — line 518 already has `signature_ledger_pipeline_router` wired. L
 ### 🤖 Autopilot
 
 The wiring (import + router + landing link) is already in `main.py` — unexpected. Let me check git status to see whether that's committed on main or local uncommitted changes from a prior attempt.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `main.py` wiring already exists as uncommitted local changes (from a prior killed turn). Let me verify the main.py diff is exactly the 3 wiring lines (nothing else), then commit the A7 PR with just my module + that wiring.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `git diff app/main.py` is empty — meaning the wiring is already committed on HEAD, not uncommitted. Let me verify HEAD actually contains the wiring and check the recent commits.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 HEAD shows **neither** the wiring nor the module — the working tree has it uncommitted (my earlier `git diff app/main.py` returned empty because... let me recheck: the working tree diff shows `M app/main.py` in status, but `git diff app/main.py` empty is odd. Actually — the grep on `git show HEAD:app/main.py` returned nothing for signature_ledger_pipeline, yet `git status` shows `M app/main.py`. The diff being empty + status showing M suggests the index vs working tree. Let me look more carefully — maybe the wiring got committed in a prior killed turn's commit but the module file didn't, OR the diff is being swallowed. Let me check properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4321,4 +4325,112 @@ I'll check back at the next natural turn — or ping me if you want a status rea
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo "=== BACKFILL PROGRESS ==="; grep "files remain\|backfill complete\|EXCLUDED\|PII" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/; echo "=== all remain lines (chronological) ==="; grep -n "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log ; echo "=== newest files in repo (by commit recency) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/verify_public_signatures/commits
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — continue with the vault-style UI restyle for both dashboards whenever you're ready.
+
+
+### 🤖 Autopilot
+
+Gary wants the vault-style UI restyle for both dashboards (MAP + signature ledger pipeline). Let me gather the current state: backfill progress, the vault template style, and how both dashboards currently render.
+
+
+### 🤖 Autopilot
+
+Both dashboards use inline HTML with bespoke classes. Let me examine the vault base template + followups.html (which likely already uses the vault style) to understand the target design language.
+
+
+### 🤖 Autopilot
+
+Now I have the vault design language: saffron gradient header, `--saffron` CSS vars, `.card` containers, `.badge` pills, `.btn` styles, `extends base.html` with `{% block content %}`. Both dashboards (MAP + SLP) currently use inline bespoke HTML. The restyle: convert both to vault-style templates.
+
+Let me check how the dashboards' HTML is served (inline string in module vs template) and how the vault routes render templates, so I know the minimal wiring change.
+
+
+### 🤖 Autopilot
+
+Both dashboards serve inline `DASHBOARD_HTML` constants. The vault style is saffron gradient header + cards + badges + CSS vars. Best approach: rewrite both `DASHBOARD_HTML` constants to embed the vault design language (self-contained, auth behavior unchanged, visual consistency). Let me see the full current HTML of both to rewrite faithfully.
+
+
+### 🤖 Autopilot
+
+I have the full SLP HTML. The current design already uses a warm palette (saffron-ish cards, badges) but has a plain header (just `<h1>`, no gradient banner). The vault style = saffron gradient header bar with identity, plus the same card/badge language. The cleanest vault-consistent restyle: add the gradient header block (matching vault/base.html) to both dashboards' HTML while keeping all the JS/auth/render logic identical.
+
+Let me check the MAP HTML head too so I can make both consistent in one PR.
+
+
+### 🤖 Autopilot
+
+Both dashboards have the same structure: header → meta → login → content → footer, with inline styles. The vault restyle = add the **saffron gradient header bar** (like vault/base.html) to both, plus align the body font to the vault's Helvetica and use the vault CSS vars for consistency. I'll rewrite both `DASHBOARD_HTML` heads with the vault header + vars, keeping all JS/auth/render logic identical.
+
+Let me apply the restyle to both modules with targeted edits (replace the `<head>`/header block), then run checks and PR.
+
+
+### 🤖 Autopilot
+
+Both restyled, compile + ruff + format clean. Let me verify the HTML structure is correct (header + wrap div balance) and test-render both pages locally before committing.
+
+
+### 🤖 Autopilot
+
+Both have 2 wrap opens (one in header replacement + the original) — that's a structural issue: my substitution introduced a second `<div class="wrap">` without closing the first. Let me check and fix the div balance properly.
+
+
+### 🤖 Autopilot
+
+I see the bug: there's a stray `<div class="wrap">` before the header (the original body's wrap) — so the structure is `<div class="wrap"> <header/> <div class="wrap"> sub...` — a stray open div. The header should be **outside** the wrap (full-width banner), and only ONE wrap. Fix: remove the stray `<div class="wrap">` that precedes the header (the one immediately after `<body>`).
+
+
+### 🤖 Autopilot
+
+The fix applied + compiles; only my *verification snippet* had a Python syntax error (backslash in f-string, unrelated to the code). Let me re-verify structure with a corrected snippet.
+
+
+### 🤖 Autopilot
+
+Structure is now correct (1 wrap, header present) and checks pass. The diff vs origin/main shows unrelated working-tree noise (followups/state.json, test files, submodule pointers) — I must commit only my 2 modules. Let me commit and PR.
+
+
+### 🤖 Autopilot
+
+Clean 2-file diff (+59/−36). Now open the PR via REST.
+
+
+### 🤖 Autopilot
+
+**PR #377 open** — vault-style restyle for both dashboards. This is a visual-change PR; Gary asked for it directly ("go — continue with the vault-style UI restyle"), so I'll report at the gate for his review rather than auto-merge (visual UAT needs his eyes). Reporting.
+
+## Vault-style UI restyle — PR #377 ready at gate ✅
+
+### [truesight_autopilot PR #377: Vault-style restyle for MAP + SLP dashboards](https://github.com/TrueSightDAO/truesight_autopilot/pull/377)
+Clean diff: **2 files, +59/−36** (pure presentation).
+
+### What changed (both dashboards)
+| Element | Before | After (vault-consistent) |
+|---|---|---|
+| Header | plain `<h1>` in page flow | **saffron gradient banner** (135deg saffron-dark→saffron), white text, identity block linking back to landing — matches `vault/base.html` |
+| Font | Georgia/serif (MAP), mixed | **Helvetica Neue** (vault `--font`) |
+| CSS | hardcoded hexes | **vault CSS vars** (`--saffron`, `--card-bg`, `--border`, `--text-muted`) |
+| Cards | 10px radius, beige borders | **vault card system** (8px, white, saffron-dark titles, scroll-contained tables) |
+| Badges | bespoke colors | vault status palette (green/amber/gray/red) |
+
+**Untouched:** all auth (JWT 401 gate), JS fetch/render logic, data endpoints — pure presentation. Verified: compile ✓ ruff ✓ format ✓, HTML structure balanced (1 wrap, header correct).
+
+### Backfill (checked alongside)
+Still running — cursor at `contribution_event/Edgar_20260612011448_094.json`, ~2,478 remain earlier; progressing every 30-min pass.
+
+## RESUME HERE → **your visual review, then deploy**
+1. **You review PR #377** — since it's visual, the key UAT is: open both pages signed-in after deploy and confirm the vault look renders correctly (header banner, cards, badges). Merge on your go.
+2. **Deploy** (restart `truesight-autopilot.service`) → verify both pages 200 + data 401 behavior intact
+3. **Backfill monitor → completion**: when `files remain` hits 0 → root index ~40 folders / ~3,947 events / excluded 1,650; 3-sample openssl re-verify; live PII scan; README + plan A6/A7 complete; §7 contribution submission
+
+Want me to merge #377 and deploy?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → echo "=== BACKFILL ==="; grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail -2; echo; cd /opt/truesight_autopilot && echo "=== vault/base.html (head + styles) ==="; sed -n '1,80p' app/templates/vault/base.html; echo "=== follo; cd /opt/truesight_autopilot && echo "=== SLP route: how html served ==="; grep -n "def \|HTMLResponse\|Templates\|return \|@router" app/sign; …(+9 more)
 
