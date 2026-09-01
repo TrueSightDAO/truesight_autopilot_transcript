@@ -4415,11 +4415,13 @@ The fix applied + compiles; only my *verification snippet* had a Python syntax e
 ### 🤖 Autopilot
 
 Structure is now correct (1 wrap, header present) and checks pass. The diff vs origin/main shows unrelated working-tree noise (followups/state.json, test files, submodule pointers) — I must commit only my 2 modules. Let me commit and PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean 2-file diff (+59/−36). Now open the PR via REST.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4730,4 +4732,48 @@ Nothing needs you right now — ping me when CI clears and I'll pick up the merg
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot && TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); for pr in 376 377; do echo "===
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Status check — **A7b correctly not started yet** (its precondition isn't met):
+
+## Current state
+
+| Item | Status |
+|---|---|
+| **PR #376** (`ci: merge_pr refuses to merge when CI is failing/pending`)
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — redeploy killed the turn, still holding on #376/#377 (neither merged yet).
+
+
+### 🤖 Autopilot
+
+Quick responsiveness + status check.
+
+
+### 🤖 Autopilot
+
+I'm here and responsive ✅
+
+**Status:**
+- **Backfill still progressing**: 2,478 → 2,228 files remain; cursor advanced to `contribution_event/Edgar_20260619030312_170.json` (June 19 events — climbing through the historical log). Last pass 14:02 UTC.
+- **#376/#377 still unmerged** (holding as instructed — Cleide's farm on the CI investigation, no action from me there).
+- **A7b still parked** awaiting those merges.
+
+All quiet otherwise — backfill keeps trickling in the background, and I'll pick up the merge → A7b sequence the moment CI clears. Ping me anytime.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail -2; cat /hom
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail -2; cat /home/ubuntu/scripts/.led
 
