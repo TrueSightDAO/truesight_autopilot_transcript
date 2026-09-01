@@ -5125,3 +5125,153 @@ I'm ready — but I don't see the actual feedback text yet in the conversation (
 
 Meanwhile, if the go-signal was meant for the pending deploy: the router update (PR #453) is merged but not yet pushed to the GAS runtime — one `clasp push` makes the FBE doGet webhook path live. Just confirm and I'll do that after your feedback, so I don't collide with anything you're about to correct.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+https://sunmint.truesight.me/limites-da-fazenda/ 
+
+missing the language selection, the logo
+
+the following sections too
+
+Link email (optional)
+Your email identifies you in the TrueSight DAO. This creates (or reuses) your digital signature on this phone/browser.
+
+Email linked: garyjob@gmail.com
+
+Unlink email
+Download the Android app
+Prefer the native app? Works offline and stores records on your phone.
+
+Download APK (Android)
+
+
+### 🤖 Autopilot
+
+Got it — the `/limites-da-fazenda/` page is missing the app's shared chrome: the **logo + language toggle** (header) and the **"Link email" + "Download APK"** sections (footer) that the main page has. Let me confirm what the main page has and what my page lacks:
+
+
+### 🤖 Autopilot
+
+Confirmed — the limites page has **none** of those (grep empty): no logo, no lang toggle, no email section, no APK button. The main page has all four. Let me see the main page's header (logo + language toggle) structure to port them faithfully:
+
+
+### 🤖 Autopilot
+
+The main page's shared chrome is clear: lang-toggle (lines 233–235), logo+Sunmint header (251), email section (287–302), APK button (317), and the `setLang`/`I18N`/`sunmint_lang` i18n machinery. Let me see my limites page's current structure and the main page's email-link JS to port everything:
+
+
+### 🤖 Autopilot
+
+I have the full picture. The port is substantial: lang-toggle + logo + email-link section (with submit/unlink + keypair via Edgar) + APK button + the `setLang`/`I18N` machinery. Let me extract the exact email-link JS block (538–590) and the lang-toggle CSS to port them faithfully:
+
+
+### 🤖 Autopilot
+
+The port is substantial — let me check what the limites page's JS already has (shared helpers like `t()`, I18N dict, keypair) so I only add what's missing:
+
+
+### 🤖 Autopilot
+
+The limites page has only a minimal `setLang` — no I18N dict, no `t()`, no email/keypair machinery. The port is substantial. Let me extract the main page's remaining JS (keypair + submitEmailEvent + I18N dict structure) so I can merge everything faithfully:
+
+
+### 🤖 Autopilot
+
+This is a substantial port. Let me grab the remaining pieces — the email-section HTML, the `submitEmailEvent`/keypair JS, and the download button HTML — then rebuild the limites page with all four features:
+
+
+### 🤖 Autopilot
+
+Let me grab the keypair + submitEmailEvent block (457–540) to port it exactly:
+
+
+### 🤖 Autopilot
+
+I have the full picture now. Let me see the complete current limites page to build the merged version precisely:
+
+
+### 🤖 Autopilot
+
+Let me see the rest of the limites page (body HTML + i18n keys + second script block) to plan the merge precisely:
+
+
+### 🤖 Autopilot
+
+The limites page is missing the shared app chrome: logo+Sunmint header, language toggle, "Link email" section, and APK download — plus its nav is missing the "Registrar Fazenda" option. I'll rebuild the page locally with all four features ported from the main page (bilingual i18n, RSA keypair/email machinery, Edgar submission), validate, then push:
+
+
+### 🤖 Autopilot
+
+New file built (25,557 B). Validating tags, JS syntax, and all features:
+
+
+### 🤖 Autopilot
+
+All validations pass — tags balanced, all features present, JS syntax OK. Pushing the rebuilt page as PR + then merging:
+
+
+### 🤖 Autopilot
+
+The PR only carried one hunk — my other 8 edits (CSS, i18n dict, email JS, nav, etc.) aren't in it. Let me push the full rebuilt file to the branch, which has everything:
+
+
+### 🤖 Autopilot
+
+Full file pushed. Verifying the branch now has all features, then merging:
+
+
+### 🤖 Autopilot
+
+All features verified on the branch. `mergeable` is None (GitHub still computing). Let me check mergeability status and merge:
+
+
+### 🤖 Autopilot
+
+Still computing. Let me wait a moment and try the merge — the PR is a single-file change on the same base as main, so it should merge cleanly:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Fixed the `/limites-da-fazenda/` page to match the rest of the SunMint app** (governor feedback: missing language selection, logo, email section, APK download).
+
+**PR #54 — https://github.com/TrueSightDAO/sunmint_beta/pull/54** (merged, sha `2d866f5c`)
+
+### Ported the shared app chrome onto `limites-da-fazenda/index.html`:
+1. **Logo + Sunmint header** — TrueSight DAO logo (120px, same asset as main) + "Sunmint" h1 + bilingual page heading (replaced the bare "Farm Boundaries" title)
+2. **Language toggle** — Português/English buttons with `.active` styling, `sunmint_lang` localStorage (shared with the rest of the app), `setLang(currentLang)` on load
+3. **"Link email (optional)" section** — full port of the main app's machinery: RSA keypair (ensureKeyPair/signText), `submitEmailEvent` → Edgar (`EMAIL REGISTERED EVENT`), submit/unlink UI with `sunmint_linked_email` persistence, verification-link handling (`?vk=&em=`)
+4. **Download APK CTA** — "Baixe o aplicativo Android" section with the `sunmint-android.apk` link + English/Portuguese copy
+5. **Nav dropdown** — added **"Registrar Fazenda"** option + routing to `/register_farm/` (was missing, matches main)
+6. **Bilingual i18n** — full `STRINGS` dict in pt + en for all new keys
+
+### Verified
+- Tags balanced (div 15/15, select 2/2, button 5/5, all others matched; img void ×1)
+- All 12 feature markers present on the branch via API
+- JS syntax `node --check` OK
+- Merged cleanly (sha `2d866f5c`)
+
+**Live on beta now** (`beta.sunmint.truesight.me/limites-da-fazenda/`): logo, PT/EN toggle, email-link section, APK button, and the full nav (plant/monitor/farm/limites/instrucoes).
+
+## RESUME HERE → next unit (fresh turn)
+
+**Promote to prod** — `sync_beta_to_prod("sunmint_prod")` so `sunmint.truesight.me/limites-da-fazenda/` has the same chrome, then verify live (logo, toggle, email section, APK). **Requires your go** (prod promote = always-stop).
+
+Note: the other sunmint pages (`/monitor-tree-growth/`, `/instrucoes/`, `/register_farm/`) may have the same chrome gap — I can audit + fix them the same way if you want the whole app consistent.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → cd /tmp && echo "=== MAIN index: logo / lang-toggle / email-link / APK sections ===" && curl -s "https://raw.githubusercontent.com/TrueSight; cd /tmp && echo "=== MAIN header region (logo + lang toggle) ===" && sed -n '240,270p' main_idx.html; echo; echo "=== lang toggle / i18n swi; cd /tmp && echo "=== LIMITES page: header + nav region (first 60 lines after body) ===" && grep -n "pageNav\|onNavChange\|<body\|container\|; …(+11 more)
+• `merge pr` → ✅ PR #54 on sunmint_beta merged successfully (sha: 2d866f5c01a0a7cba733b395898cf34b1fbe0180). Pull Request successfully merged
+
