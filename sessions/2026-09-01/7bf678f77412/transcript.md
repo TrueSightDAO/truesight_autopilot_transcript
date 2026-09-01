@@ -8,80 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=17181] Cleide and marcelo are a couple, this is there instagram
-
-https://www.instagram.com/cleidesuk/
-
-Their farm is part of the CEPOTX network. 
-
-I am going to provide you with a zip file of the video recordings and photos of their farm. PErhaps glance through them brieftly to help build a profile of their farm on agroverse.shop as well as generate a plot on sunmint 
-https://truesight.me/sunmint.html
-
-The zip is 3GB large so figure out how to go easy on it
-
-I also have prior documentation for their site visit
-
-
-### 🤖 Autopilot
-
-Let me gather context on CEPOTX, sunmint, and how farm profiles are built on agroverse.shop before the zip arrives.
-[3 tool result(s) compacted: search_context, search_context, check_handoffs — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me look at the site-visit process docs, prior documentation for this farm, and the sunmint plots registry structure.
-[4 tool result(s) compacted: read_context_file, search_context, search_context, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Good — prior docs exist (e.g. `20240702_CEPOTX_site_visit_to_cleide_farm.pdf`). Let me read the plots registry runbook, the site-visit process, and check what's already on file for Cleide's farm in fda_fsvp.
-[3 tool result(s) compacted: read_context_file, read_repo_file, list_org_repos — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have solid context now. Let me check a few more things in parallel: the Instagram public page, whether Cleide's farm already appears in repo content, the prior site-visit PDF's availability, and how farm profiles are structured on agroverse.shop.
-[4 tool result(s) compacted: web_extract, search_code, http_fetch, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Prior site-visit PDF confirmed on file (25MB). Let me pull the prior documentation down to the box, inspect how agroverse.shop structures farm profiles, and check the CEPOTX GACC guide mention of Fazenda Cleide.
-[2 tool result(s) compacted: ssh_run, list_org_repos — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Prior PDF is downloaded (25MB). Let me extract its content and check how agroverse.shop represents farms.
-[2 tool result(s) compacted: extract_pdf_text, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Excellent — the prior site visit gives me strong data: Cleide Maris Suk, site code B-06-108, farm at **-3.3985276, -52.6333394**, fermentation + drying at **-3.4016563, -52.6412826**, organic certified, plus detailed process info. That's a solid foundation.
-
-Let me check how agroverse.shop structures farm/shop pages and what the sunmint plots/farm registry looks like now.
-[3 tool result(s) compacted: list_directory, read_repo_file, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me look at the agroverse.shop farm page structure and the sunmint plots registry data in parallel.
-[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now let me look at the agroverse.shop farm page structure — what a farm profile page looks like.
-[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 Let me see the actual structure of agroverse_shop_beta to find where farm profiles live.
@@ -4459,16 +4385,24 @@ Right — consistent with the MAP rename. Let me find every reference to the con
 ### 🤖 Autopilot
 
 Search index may not cover the new repo — let me search the code directly for the filename reference.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found all references — the config default in the daemon, the systemd unit, and the config template comment. Renaming to `media_archive_daemon_config.yaml` in one PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #5 opened. Merging — you explicitly requested this rename:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4524,26 +4458,31 @@ Ping me with "go" and I'll wire it.
 ### 🤖 Autopilot
 
 Go received — wiring the daemon to Cleide's real inbox. First, the current state check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 State confirmed: uploader 105025 alive (5h), 71 mp4s, **6 yt_ids earned** (IMG_4832–4837), quota presumably spent for today. Now wiring the MAP inbox for Cleide — symlinking mp4s (keeps disk flat), generating sidecars from the manifest, and seeding the daemon's budget log so it respects today's already-used quota.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Inbox wired: **71 mp4 symlinks + 71 sidecars**, 6 with yt_id (IMG_4832–4837), rest pending. Now the config — I'll write the daemon config (daily budget 6, cleide priority 2) and seed the budget log with today's 6 attempts so the daemon correctly waits for the quota reset instead of hammering 429s.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Config written + budget log seeded (6 attempts today = real quota usage). Now the UAT: run the daemon `--once` to verify it behaves correctly — it should see budget spent, NOT upload (avoiding a wasted 429), and correctly skip the 6 uploaded + mark nothing new. This validates the loop against the real inbox.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Unexpected: it attempted an upload (not sleeping) and failed — the attempt-count logic isn't counting my seeded lines (format mismatch) and the upload errored. Two things to check: the seeded log format vs `attempts_today`'s expectations, and the actual upload error. Let me check both, and look at the sidecar — did it write an error?
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4699,4 +4638,19 @@ Ping me with "go" and I'll finish the wiring.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp && rm -rf fmd_budget && mkdir fmd_budget && cd fmd_budget && git clone -q --depth 1 https://github.com/TrueSightDAO/farm-media-daemo; cd /tmp/fmd_budget # Apply the fixes locally for test-first (hard rule) python3 - <<'PY' import re src = open('farm_media_daemon.py').read(); echo "=== exact seeded log bytes ===" cat -A /tmp/farm_media_daemon.log | head -8 echo "=== parse test ===" /opt/truesight_autopilot/.venv/b; …(+4 more)
 • `merge pr` → ✅ PR #6 on farm-media-daemon merged successfully (sha: 0ee4bfc8b224517f56009bda35f8d7b495be6311). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Turn report — Quota-window budget fix merged (UAT-driven) ✅
+
+**PR merged:** [#6 — Fix daily budget to count successes in the YouTube quota window](https://github.com/TrueSightDAO/farm-media-daemon/
+
+
+### 🤖 Autopilot
+
+Go received — final wiring: install the daemon on the box, systemd service, retire the throttled uploader. Let me deploy the merged code to a stable path first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
