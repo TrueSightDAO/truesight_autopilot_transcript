@@ -4634,11 +4634,13 @@ Found it — `deploys/leases/L-20260901-08.json` is the open lease (it was from 
 ### 🤖 Autopilot
 
 The lease is **mine and abandoned**: started 09:55:31Z, TTL 30 min (expired 10:25:31Z), still `open` — a crashed push from this session. The README explicitly sanctions takeover after TTL. Closing it (with a takeover note) and retrying:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Lease closed and pushed. Retrying the GAS deploy with the router update:
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4867,4 +4869,92 @@ Which next?
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #876 on agentic_ai_context merged successfully (sha: 2e74c2267a4e2a7bc416e80f62eb63069b92c784). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — continue with the FBE webhook E2E / hourly cron trigger item
+
+
+### 🤖 Autopilot
+
+Go-signal received — executing the **FBE webhook E2E + cron trigger item**. Per protocol, reading the plan and checking how dispatch actually calls the GAS webhook (URL source) so the E2E traces the real path:
+
+
+### 🤖 Autopilot
+
+The dao_protocol checkout isn't at that path — let me fetch dispatch.py from GitHub directly to see how the GAS webhook URL is constructed:
+
+
+### 🤖 Autopilot
+
+The dispatch comment mentions `process_farm_boundary_telegram_logs` — I need to verify the action string the routing row actually sends matches the doGet router case I added (`processFarmBoundaryEvidenceFromTelegramChatLogs`). Let me read the routing row + webhook logic in full:
+
+
+### 🤖 Autopilot
+
+The routing row sends env key `FARM_BOUNDARY_EVIDENCE` → `DAO_PROTOCOL_WEBHOOK_FARM_BOUNDARY_EVIDENCE` with action `processFarmBoundaryEvidenceFromTelegramChatLogs` — which **matches the doGet router case exactly** ✓. Now the E2E question: is that webhook URL configured on the dao_protocol server? Let me check the server env + service:
+
+
+### 🤖 Autopilot
+
+Service is active but no webhook env keys surfaced via systemd's Environment (likely loaded via .env file or systemd EnvironmentFile). Let me check how the env is loaded and look for the webhook config:
+
+
+### 🤖 Autopilot
+
+**Found a real gap**: `DAO_PROTOCOL_WEBHOOK_FARM_BOUNDARY_EVIDENCE` is **NOT in the server's .env** — while all sibling webhooks (TREE_GROWTH_MONITORING, TREE_PLANTING_LINK, QR_CODE_UPDATE, etc.) are configured. So today, an FBE submission would log "no webhook URL for FARM_BOUNDARY_EVIDENCE" and rely on the **cron fallback** (which still needs the hourly trigger set in GAS UI).
+
+Let me see the exact format of a sibling webhook value (e.g. TREE_GROWTH_MONITORING) so I can build the correct FBE URL — and confirm the GAS web-app URL it points to:
+
+
+### 🤖 Autopilot
+
+The webhook URL format is confirmed: `https://script.google.com/macros/s/<deployment-id>/exec` (TGM uses the public form; TREE_PLANTING_LINK uses the `script.google.com/a/macros/agroverse.shop/s/...` internal form). The GAS deployment list showed `@HEAD` = `AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ` (public form) — that's the web-app URL to use.
+
+Now let me check the TREE_PLANTING_LINK env value is a full URL with the action param pattern, then determine the exact FBE webhook value to add. First, let me see the full TGM value (unredacted for the format — but I must not print secrets; I'll construct the FBE line using the same deployment ID and verify the action param shape):
+
+
+### 🤖 Autopilot
+
+The webhook mechanism is now fully clear: `trigger()` does `GET webhook_url?action=<action>` — the env value is just the base `/exec` URL, and dispatch appends `?action=processFarmBoundaryEvidenceFromTelegramChatLogs`. Since the GAS doGet router case matches that action exactly, adding the env key is all that's missing for the instant webhook path.
+
+This is a **production config change** (adding a webhook URL to the dao_protocol server's .env + restart). Per the always-stop gate, I'll stop here and report — the E2E is blocked on this one config line.
+
+## FBE webhook E2E — status report
+
+### What's verified (the chain is wired end-to-end in code)
+| Link | State |
+|---|---|
+| Farmer app capture (`limites-da-fazenda/`) | ✅ live (prod) |
+| Edgar catalog `FARM BOUNDARY EVIDENCE EVENT` | ✅ v2/38 deployed |
+| dispatch.py routing row | ✅ `FARM_BOUNDARY_EVIDENCE` → `processFarmBoundaryEvidenceFromTelegramChatLogs` (matches GAS doGet case exactly) |
+| GAS doGet router case | ✅ deployed (clasp push 10:26Z) |
+| GAS handler `process_farm_boundary_evidence.gs` | ✅ deployed |
+| `webhook_trigger` GET `?action=` | ✅ (verified impl) |
+| **`DAO_PROTOCOL_WEBHOOK_FARM_BOUNDARY_EVIDENCE` in server .env** | ❌ **MISSING** |
+| Hourly cron trigger (GAS UI) | 🔲 manual |
+
+### The one blocker
+The dao_protocol server's `.env` has **all sibling webhooks configured** (TREE_GROWTH_MONITORING, TREE_PLANTING_LINK, QR_CODE_UPDATE, SALES, etc.) but **NOT `DAO_PROTOCOL_WEBHOOK_FARM_BOUNDARY_EVIDENCE`**. So today an FBE submission logs "no webhook URL … GAS cron will process" and relies on the cron fallback (which itself needs the manual GAS UI trigger).
+
+### The fix (needs your go — production change)
+Add to `/home/ubuntu/dao_protocol/.env`:
+```
+DAO_PROTOCOL_WEBHOOK_FARM_BOUNDARY_EVIDENCE=https://script.google.com/macros/s/AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ/exec
+```
+then restart `truesight-dao-protocol.service`. (Same URL shape as TGM's public-form webhook; deployment ID from `clasp deployments` @HEAD.)
+
+## RESUME HERE → next unit
+1. **Add the .env line + restart** (with your go) → then the instant webhook path is live
+2. **Set the hourly cron trigger** in GAS UI (SCHEDULE_TRIGGERS.md §6)
+3. Then a **real E2E test** (test `[FARM BOUNDARY EVIDENCE EVENT]` → observe webhook hit → GAS processes → sheet row) proves the full chain
+
+Say go and I'll add the .env key + restart the service.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /opt/truesight_autopilot/context/dao_protocol && echo "=== how dispatch posts to GAS webapp (URL source) ===" && grep -rn "script.google\; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dao_protocol/main/truesight_dao_client/server/dispatch.py" -o dispatch.py; cd /tmp && echo "=== ROUTING rows (FARM BOUNDARY + neighbors) ===" && grep -n "FARM BOUNDARY\|TREE GROWTH\|FARM REGISTRATION" dispatch.py; e; …(+4 more)
 
