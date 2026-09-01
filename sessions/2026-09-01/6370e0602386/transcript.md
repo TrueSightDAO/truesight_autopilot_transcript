@@ -545,11 +545,13 @@ Script written and compiles. Now let me run it once to confirm it's idempotent (
 ### 🤖 Autopilot
 
 Root cause found: the current run had **no GROK_API_KEY in env** — `get_api_key()` returns None → `polish_transcript_grok` bails before even reading the cache → falls back to `clean_transcript()` (raw-ish ".." text). The prior run explicitly loaded the key. The committed script correctly delegates key lookup to `get_api_key()` (env or sibling market_research/.env) — I just need to export the key in the shell when running on this box. Let me rerun with the key set.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Ran with key set. Let me verify determinism against the prior good run and confirm the cache didn't need new API calls (should be 41 still — all cached).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -557,26 +559,31 @@ Ran with key set. Let me verify determinism against the prior good run and confi
 Determinism confirmed — **0 diffs** vs the prior good run, cache stayed at 41 (no new API calls; all cache hits). The output is stable and reproducible.
 
 Now the final gate before committing: run the repo's local test suite (the hard rule — compileall, ruff, format, pytest) before any push. Let me check what tooling is available and run it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tooling available. Running the full local test suite on the changed files (compileall, ruff check, ruff format check, pytest).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two lint fixes needed: unused `os` import and formatting. Let me fix both and re-run.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All lint checks pass. Now the final gate: confirm the script still runs identically after the ruff fixes (determinism), and verify the cache diff is just additions.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Everything is green: script runs, 73/73 descriptions, cache diff is 19 additions + 1 deletion (need to verify that 1 deletion isn't destructive — likely a reformat of one key). Let me inspect the cache diff, then commit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -709,4 +716,60 @@ Next turn, write `scripts/youtube_update_video_descriptions.py` (sibling to `you
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp/agroverse_shop_work && git remote -v && echo "=== current branch ===" && git branch --show-current && echo "=== push URL parse ===" ; cd /tmp/agroverse_shop_work && git ls-remote --heads origin youtube/descriptions-pr1 && echo "=== branch exists on origin ===" && gh repo vi; cd /tmp/agroverse_shop_work && cat > /tmp/pr1_body.md <<'EOF' ## What Adds a `description` field to **all 73 entries** in `scripts/youtube_v; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] [Handoff context — this Telegram topic (thread 18528) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: PR #263 is confirmed and open. PR1 is complete. Stopping here per the one-PR-per-turn rule — PR2 runs next turn.
+
+## ✅ PR1 complete — [agroverse_shop_beta PR #263](https://github.com/TrueSightDAO/agro
+
+
+### 🤖 Autopilot
+
+Resuming PR2. Let me re-read the plan's PR2 spec and study the title-update script pattern to mirror.
+
+
+### 🤖 Autopilot
+
+PR2 spec is clear (dry-run only this turn, before/after diff, no live push). The title-script pattern is clean. First: merge PR1 (#263) so PR2 bases on main with descriptions present, and in parallel check the box for Google libs + YouTube creds (needed for the dry-run's read-only live fetch).
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged PR1 this turn. Stopping per the one-PR-per-turn rule — PR2 runs next turn.
+
+## What I did this turn
+
+**Merged:** [agroverse_shop_beta PR #263](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/263) — "PR1: Add polished YouTube descriptions to youtube_videos.json + reproducible generator" (sha `fe6a3a1`, was already-mergeable; the merge landed cleanly).
+
+- **Repo check before/at open (previous turn):** PR targets `TrueSightDAO/agroverse_shop_beta` base `main` — the correct beta base. `agroverse_shop` is a redirect to `agroverse_shop_beta`; never touched `agroverse_shop_prod`.
+- **What's now on main:** `scripts/youtube_videos.json` with a `description` field on all 73 entries (cleaned + Grok-polished transcript via the blog pipeline + per-episode blog post link + hashtag footer, ≤4900 chars), plus `scripts/generate_youtube_descriptions.py` (reproducible generator) and `scripts/transcript_grok_polish_cache.json` (+19 cache entries, 23→41).
+- **PR2 prep done this turn (read-only):**
+  - Re-read plan PR2 spec: script sibling to `youtube_update_video_titles.py`, same `videos().update(part="snippet")` pattern, **dry-run only this turn** (before/after diff, no live push).
+  - Studied `youtube_update_video_titles.py` in full — I'll mirror its structure (service auth, `--dry-run`, `--basename`, sorted iteration, HttpError handling).
+  - Verified box: `googleapiclient`/`google_auth_oauthlib`/`google.auth` import OK; credentials live at `/opt/truesight_autopilot/config/youtube/` (`youtube_credentials.json` + `youtube_token.json`) — not in the repo checkout (good — they're gitignored/secrets, and I'll point the script at them for the dry-run's live `videos.list` fetch of current descriptions).
+
+## RESUME HERE → PR2
+
+1. Write `scripts/youtube_update_video_descriptions.py` mirroring `youtube_update_video_titles.py`: read `youtube_videos.json` `description` per basename, `videos().update(part="snippet")` with `snippet.description = new` (preserve title/tags/categoryId from live fetch, as the title script preserves the snippet), `--dry-run` default-safe, `--basename` filter, cap 5000 chars.
+2. Run `--dry-run` for real (reads current live descriptions via `videos.list` using the box's OAuth token, prints before/after diff for all 73) — **no push live**.
+3. Open PR2 (one PR per turn), report URL + a few sample diff pairs, then stop at **PR3** (5 before/after pairs for governor approval in this topic before any live push — hard gate).
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #263 on agroverse_shop merged successfully (sha: fe6a3a161114f4bff813ebaae8b7f870f5d26db8). PR #263 was already merged.
+• `ssh run` → python3 -c "import googleapiclient, google_auth_oauthlib, google.auth; print('google libs OK')" 2>&1; ls /tmp/agroverse_shop_work/scripts/youtube_credentials.json /tmp/agroverse_shop_work/scripts/youtube_token.json 2>&1; ls /opt/truesight_autopilot/config/youtube/ 2>&1
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/agroverse_shop_work && ls scripts/youtube_update_video_titles.py && sed -n '1,140p' scripts/youtube_update_video_titles.py; python3 -c "import googleapiclient, google_auth_oauthlib, google.auth; print('google libs OK')" 2>&1; ls /tmp/agroverse_shop_work/scripts/yo
+• `merge pr` → ✅ PR #263 on agroverse_shop merged successfully (sha: fe6a3a161114f4bff813ebaae8b7f870f5d26db8). PR #263 was already merged.
 
