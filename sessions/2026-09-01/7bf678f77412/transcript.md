@@ -4265,16 +4265,19 @@ Let me find every reference to the pipeline in agentic_ai_context so the termino
 ### 🤖 Autopilot
 
 Terminology propagation — let me read the exact current text in the key files so the edits are precise.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The terminology should propagate through the key reference docs. I'll add a **Terminology (MAP)** block to the pipeline runbook, the daemon plan, the manifests README, and the index note — one PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #872 opened — merging (Gary explicitly asked to propagate this terminology):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4502,4 +4505,82 @@ Ping me with "go" and I'll wire it.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && rm -rf fmd_config_check && mkdir fmd_config_check && cd fmd_config_check && git clone -q --depth 1 https://github.com/TrueSightDA
 • `merge pr` → ✅ PR #5 on farm-media-daemon merged successfully (sha: c5039535bb89d8493a2f85714bc901be6b72da83). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Turn report — Config renamed to `media_archive_daemon_config.yaml` ✅
+
+**PR merged:** [#5 — Rename config to media_archive_daemon_config.yaml (MAP terminology)](https://github.com/TrueSightDAO/farm-
+
+
+### 🤖 Autopilot
+
+Go received — wiring the daemon to Cleide's real inbox. First, the current state check.
+
+
+### 🤖 Autopilot
+
+State confirmed: uploader 105025 alive (5h), 71 mp4s, **6 yt_ids earned** (IMG_4832–4837), quota presumably spent for today. Now wiring the MAP inbox for Cleide — symlinking mp4s (keeps disk flat), generating sidecars from the manifest, and seeding the daemon's budget log so it respects today's already-used quota.
+
+
+### 🤖 Autopilot
+
+Inbox wired: **71 mp4 symlinks + 71 sidecars**, 6 with yt_id (IMG_4832–4837), rest pending. Now the config — I'll write the daemon config (daily budget 6, cleide priority 2) and seed the budget log with today's 6 attempts so the daemon correctly waits for the quota reset instead of hammering 429s.
+
+
+### 🤖 Autopilot
+
+Config written + budget log seeded (6 attempts today = real quota usage). Now the UAT: run the daemon `--once` to verify it behaves correctly — it should see budget spent, NOT upload (avoiding a wasted 429), and correctly skip the 6 uploaded + mark nothing new. This validates the loop against the real inbox.
+
+
+### 🤖 Autopilot
+
+Unexpected: it attempted an upload (not sleeping) and failed — the attempt-count logic isn't counting my seeded lines (format mismatch) and the upload errored. Two things to check: the seeded log format vs `attempts_today`'s expectations, and the actual upload error. Let me check both, and look at the sidecar — did it write an error?
+
+
+### 🤖 Autopilot
+
+UAT found real issues. Let me read the full `main()` (the earlier read was truncated) to see how the logpath flows, and check whether IMG_4838 actually reached YouTube despite the "failure".
+
+
+### 🤖 Autopilot
+
+Two real findings to pin down: (1) the budget seed didn't throttle the daemon (it attempted an upload), and (2) IMG_4838's upload failed — but note the throttled uploader also logged `IMG_4838.MOV: FAILED rc=1` at 00:30, right after 4835–37 succeeded — meaning **today's 6-upload quota was exhausted at 4838**, and the daemon's error tail shows the google-api FutureWarning masking the real 429. Let me read the rest of `main()` and test `attempts_today` directly.
+
+
+### 🤖 Autopilot
+
+## UAT findings — daemon wired but quota bug exposed
+
+**What's wired (real, on the box):**
+- `/home/ubuntu/media_archive_inbox/farm-media/cleide/` — **71 mp4 symlinks + 71 sidecars** (6 with yt_id: IMG_4832–4837, rest pending) ✅
+- `/opt/truesight_autopilot/media_archive_daemon_config.yaml` — budget 6, cleide priority 2 ✅
+- Daemon ran `--once` against the real inbox ✅
+
+**The hard truth about the upload:** the quota is **genuinely exhausted today** — the throttled uploader also failed on IMG_4838 at 00:30 (after 4835–37 succeeded at 00:30, exactly the 6th). The manual re-test confirms: **`429 Quota exceeded for 'Video Uploads per day'`** for project `323153649224`. No upload can succeed until the reset (~07:05 UTC).
+
+**Real bug found (this is the valuable catch):** the daemon's error output was **masked** — the FutureWarning (Python 3.10 vs google-api-core) pushes the actual `429` message **beyond `tail[-300:]`**, so:
+- The daemon's `"quota" in low or "429" in low` check **missed** the 429 → misclassified it as a generic failure → wrote `error` into IMG_4838's sidecar instead of backing off 600s
+- Same truncation risk applies to `Video ID:` detection on success
+
+**Also:** `attempts_today()` works (returned 7 = 6 seeds + daemon's attempt line), but the daemon attempted instead of sleeping — the seed format likely didn't gate it as intended (the `--once` sleep path also loops forever, so the 30s timeout killed it mid-sleep).
+
+---
+
+## RESUME HERE → next unit (fix + re-arm)
+
+**Fix PR (farm-media-daemon):** harden `upload_one` to scan the **FULL** output for `Video ID:` / `429` / `quota` (not just the tail), and fix the `--once` sleep-path exit (`return` on quota-sleep in once mode). Then:
+1. Re-pull daemon, clear IMG_4838's error field, re-seed the budget log correctly
+2. Run `--once` again → expect **no upload, clean sleep-until-reset** (quota proof)
+3. At ~07:05 UTC, daemon resumes → uploads IMG_4838+ at 6/day
+4. Then install systemd + retire throttled uploader PID 105025
+
+Want me to open the fix PR now, or hold until after the quota reset for a live upload test?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /home/ubuntu/cleide_work 2>/dev/null || { echo "NO cleide_work"; exit 1; } echo "=== date ==="; date -u +"%H:%M:%SZ" echo "=== uploader (; set -e cd /home/ubuntu/cleide_work INBOX=/home/ubuntu/media_archive_inbox/farm-media/cleide mkdir -p "$INBOX" python3 - <<'PY' import json, ; set -e CFG=/opt/truesight_autopilot/media_archive_daemon_config.yaml cat > "$CFG" <<'YAML' # Media Archives Daemon — config (MAP) daily_budg; …(+4 more)
 
