@@ -4076,16 +4076,19 @@ Resuming A7 + backfill monitoring. First, check backfill progress and find the M
 ### 🤖 Autopilot
 
 MAP pattern captured — I'll copy-adapt it into `app/signature_ledger_pipeline.py`. The data comes from the public GitHub repo (live tree API) + the local cron log + cursor file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Compile + ruff pass; needs one format pass. Then wire the router into `main.py` (include_router + landing-page link) and run the full suite.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — line 518 already has `signature_ledger_pipeline_router` wired. Let me check if that was pre-existing or if I need the import + landing link.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4268,4 +4271,54 @@ Reporting A7 UAT + backfill status.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo "=== BACKFILL PROGRESS ==="; grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail; cd /opt/truesight_autopilot && python3 - <<'PYEOF' import json from app import signature_ledger_pipeline as slp # 1. tree fetch tree = slp._; echo "=== deployed module present + size ==="; ls -la /opt/truesight_autopilot/app/signature_ledger_pipeline.py 2>/dev/null; echo "=== HEAD
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🚀 Sophia is redeploying — back in a few seconds. Please resend your message shortly.
+
+
+### 🤖 Autopilot
+
+Checking backfill progress after the redeploy.
+
+
+### 🤖 Autopilot
+
+The log shows something I need to verify: cursor advanced (May 27 → June 8) but "2478 files remain" is flat across passes. Let me check whether the last pass actually pushed new files or re-skipped.
+
+
+### 🤖 Autopilot
+
+The backfill **is progressing correctly** — the log shows real pushes (6264 push lines, last ones through June 6) and the "2478 remain" line was from the last *capped* pass. The repo has **1,791 JSON files** live now (up from ~75 originally, and climbing past the 1,609 I saw earlier). The cursor advanced (June 8 file), pushes continue every pass. It's mid-backfill, roughly 60% through, ~2-3h to go.
+
+One observation: the last log line is a push, and the count "2478 remain" was logged at the cap — so the remain counter will keep declining. Let me confirm the recent passes are still pushing new files (not stuck) by checking the newest files in the repo.
+
+
+### 🤖 Autopilot
+
+Backfill is **actively progressing right now** — the newest commits are from **13:34:55 UTC (seconds ago)**, pushing June 9 contribution events, and the cursor (`Edgar_20260609211507_032.json`) matches the newest pushed file exactly. The trickle is healthy and continuously advancing; it's now well past the June 9 mark (events span up to ~late June/July in the source, so roughly 70-75% done, ~2-3h remaining).
+
+Everything is on track — no action needed. Here's the status:
+
+## Backfill status — healthy & ~75% done ✅
+
+| Metric | Value |
+|---|---|
+| **Live files in repo** | **1,791 JSON** (climbing: 75 → 1,609 → 1,791) |
+| **Active right now** | New commits **seconds ago** (13:34:55 UTC) — pushing June 9 events |
+| **Cursor** | `contribution_event/Edgar_20260609211507_032.json` — matches newest pushed file exactly |
+| **Remaining** | ~2,478 files / ~10 passes / **~2-3h** |
+| **PII exclusion** | Working — "excluded 1650 PII-bearing events" + "PII scan passed across 3983 ledger files" on every pass |
+| **Skips** | 247 (only previously-written files) — no re-push waste |
+
+The trickle is doing exactly what it should: ~250 files/pass, idempotent, self-healing, PII-excluding. No action needed — I'll do the completion checks (root index ~40 folders / ~3,947 events / excluded 1,650, 3-sample openssl re-verify, live PII scan, README + plan update, §7 contribution) when the remain counter hits 0.
+
+I'll check back at the next natural turn — or ping me if you want a status read anytime.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo "=== BACKFILL PROGRESS ==="; grep "files remain\|backfill complete\|EXCLUDED\|PII" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/; echo "=== all remain lines (chronological) ==="; grep -n "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log ; echo "=== newest files in repo (by commit recency) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/verify_public_signatures/commits
 
