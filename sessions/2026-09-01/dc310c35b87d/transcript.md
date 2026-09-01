@@ -8,232 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-Interesting findings:
-- **index, monitor, instrucoes** — en dicts all have the 5 nav keys ✓
-- **limites** — en dict scan found nothing (my awk may have missed it — but earlier grep showed `navLabel: "Page:"` exists). Let me check its en dict directly.
-- **register_farm** — nothing found — likely uses different dict structure (it's the copied dapp page).
-
-Also, note **monitor's en dict is missing `navFarm`** — wait, no: line 331 shows navInstrucoes, 332 navLimites, but I need to check navFarm. Looking at the output: monitor has navPlant, navMonitor, navInstrucoes, navLimites — **no navFarm line visible**! That's a real gap — monitor's en dict lacks `navFarm`. Let me check precisely:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I see the real state:
-- **monitor**: `navFarm: 'Registrar Fazenda'` at line 245 — but is that the **pt or en dict**? Line 245 uses single quotes and says "Registrar Fazenda" (Portuguese!) — so monitor's **en dict may actually contain a Portuguese value for navFarm**, OR line 245 is in the pt dict. Let me check the dict boundaries.
-- **limites en dict**: scan found nothing — but earlier I saw `navLabel: "Page:"` … let me check where limites' en dict is.
-- **register_farm**: no i18n dict keys at all (`data-i18n` attributes only, no JS dict) — it uses a different i18n mechanism.
-
-This is exactly why the governor asked for a test — the convention is inconsistent. Let me dig into each page's dict structure precisely:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The dict shapes differ (monitor uses `I18N` with single quotes; limites uses `STRINGS`; register_farm uses a different scheme) — my count-based assertion was too brittle. Let me verify the real state: monitor's en dict for navFarm, limites' nav keys, and register_farm's mechanism:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now the full picture is clear:
-- **monitor en dict**: has navLabel/navPlant/navMonitor/navInstrucoes/navLimites — **but NO navFarm** in the en dict (pt has it at 245, en stops at navLimites line 332). So switching monitor to English shows "Registrar Fazenda" (pt) for the farm option — a real bug!
-- **limites**: STRINGS pt + en both have all 5 nav keys ✓
-- **register_farm**: uses `setLang` → `setLanguage` (Google Translate engine) — no JS dict keys, so `navFarm` count is 0 there legitimately
-
-So my test found **one real bug**: monitor's en dict is missing `navFarm`. Let me fix that first, then make the test reflect reality (register_farm uses the Google-Translate mechanism, so it's exempt from the JS-dict assertion):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed — a **pattern of real gaps** (this is exactly why the test was worth it):
-- **monitor en dict**: missing `navFarm` (0)
-- **instrucoes en dict**: missing `navFarm` (0)
-- **limites en dict**: my awk found 0 for navFarm — but earlier grep showed `navFarm:'Register Farm'` in the STRINGS en block (line 21 of the pt+en scan)... the awk's `"en"` trigger missed because limites uses `en: {` with single quotes? Let me verify limites directly.
-- **index**: has it (1) ✓
-
-Let me check limites precisely and then fix the missing keys:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed — the real bug pattern:
-- **limites en dict**: `navFarm` present? The block shows farmLabel etc. but **no `navFarm:` line visible in this excerpt** (lines 143-152 cover farmLabel→emailUnlinked, the nav keys must be earlier — line 141-142). Earlier grep showed line 21 of the scan = `navFarm:'Register Farm'` in the en block ✓ (that was from `sed -n '121,160p'` line 21 = actual line 141). So limites **does** have navFarm in en.
-- **instrucoes en dict**: **missing navFarm** (243-250 shows navLabel/navPlant/navMonitor/navInstrucoes/navLimites, no navFarm) — real gap
-- **monitor en dict**: **missing navFarm** (325-332) — real gap
-
-So the real fixes: **add `navFarm` to instrucoes en dict + monitor en dict**. Then the test (adjusted to reality) passes. Let me apply both fixes and adjust the test:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both en dicts now have `navFarm`. Now updating the test to reflect the true convention (register_farm exempt from JS-dict assertion since it uses Google-Translate engine), then running the full suite until green:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Progress — 6/7 pass. The remaining failure is real: **monitor lacks the `.nav-dropdown label` CSS rule** (it has `.nav-dropdown` and `.nav-dropdown select` but no label rule — so the "Página:" label renders bold-default while other pages style it identically). Let me add it to monitor, matching the reference:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All **7 tests pass** ✅. Now running the full local hard-rule suite (compile + ruff + format + pytest) before pushing:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Format needs one pass — applying it, then re-verifying everything green:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All four hard-rule checks green (compile ✓, ruff ✓, format ✓, 7 tests ✓). Now pushing: the test file + the two real fixes it caught (monitor + instrucoes en `navFarm`, monitor `.nav-dropdown label` CSS). Then merging:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-⚠️ The writes payload carried empty content again (my recurring mistake). Fixing immediately — pushing the real validated files to the PR branch:
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Test file corrected. Now pushing the three page fixes (monitor en navFarm, instrucoes en navFarm, monitor label CSS) to the same branch:
-[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All three files + test now on the branch. Verifying the PR is complete and green, then merging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All three files byte-match my locally-validated versions, `mergeable: True`. Merging PR #60:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Stopping here per the one-PR-per-turn rule — merge hit the 409 "head out of date" again (main moved — the live-editor pattern), so the merge retries next turn.
-
-## What I did this turn
-
-**Built the nav-UI convention regression test, ran it locally until green, and opened PR #60 with the fixes it caught.**
-
-**PR #60 — https://github.com/TrueSightDAO/sunmint_beta/pull/60** (branch `fix/nav-ui-regression-test`, 4 files, `mergeable: True`, all files byte-verified) — **merge blocked on 409 "head out of date"** (main moved after branch cut).
-
-### The test — `tests/test_nav_ui_convention.py` (7 tests)
-Locks in the standardized nav-dropdown convention across all 5 pages (index, monitor, instrucoes, limites, register_farm):
-1. Exactly one `.nav-dropdown` + `#pageNav` select per page
-2. Reference CSS rules present (`.nav-dropdown`, `.nav-dropdown select`, `.nav-dropdown label`)
-3. All 5 nav options (plant/monitor/farm/limites/instrucoes) present
-4. Selected option matches the page
-5. `onNavChange` defined + routes every option
-6. pt + en i18n keys for every nav option (register_farm exempt — uses Google-Translate engine)
-7. All inline scripts parse (`node --check`)
-
-### Real bugs the test caught (fixed in the PR)
-1. **monitor en dict missing `navFarm`** — showed "Registrar Fazenda" (pt) in English mode
-2. **instrucoes en dict missing `navFarm`** — same bug
-3. **monitor missing `.nav-dropdown label` CSS** — unstyled "Página:" label vs other pages
-
-### Verification (hard rule, all green locally)
-- `compileall` ✓ · `ruff check` ✓ · `ruff format --check` ✓ · **`pytest` 7/7 ✓**
-- All 4 branch files **byte-identical** to locally-validated versions (Contents API)
-
-## RESUME HERE → next unit (fresh turn)
-
-**Merge PR #60** — retry `merge_pr` (main likely caught up; if still 409, re-verify file state + merge). Then **prod promotion for #55–#60** still gated on Gary's explicit go.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×10 → clean clone @ PR #59; per-page nav audit (selected options, onNavChange form, i18n dict formats pt/en); real-gap verification (monitor/instrucoes en missing navFarm; monitor missing label CSS); fixes applied locally; test written + iterated to green; hard-rule suite green (compile/ruff/format/pytest 7/7)
-• `git push changes` → PR #60 (⚠️ empty writes payload again — fixed via Contents API)
-• `upload local file to github` ×3 → real test + 3 fixed pages to branch (sha ddd798a2 / 373a664f / d29792b8)
-• `ssh run` → PR #60 verified (4 files, byte-match, mergeable True)
-• `merge pr` → ❌ 409 "Head branch is out of date" (blocker — retry next turn)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×15 → cd /tmp && rm -rf sb_test && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint_beta.git sb_test 2>&1 | tail -1; cd sb_test && e; cd /tmp/sb_test && mkdir -p tests && cat > tests/test_nav_ui_convention.py <<'PYEOF' """Regression guard: the sunmint nav-dropdown UI conven; cd /tmp/sb_test && echo "=== index i18n dict format (navPlant) ===" && grep -n 'navPlant\|navLabel' index.html | head -5 && echo && echo "==; …(+12 more)
-• `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: Stopping here per the one-PR-per-turn rule — merge hit the 409 "head out of date" again (main moved — the live-editor pattern), so the merge retries next turn.
-
-## What I did this turn
-
-**Built the na
-
-
-### 🤖 Autopilot
-
-Go-signal received — retrying the merge of PR #60 (main likely caught up):
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**Merged PR #60** (sha `0f26bf8b`) — the nav-UI convention regression test + the 3 real fixes it caught are now on `sunmint_beta/main`:
-- `tests/test_nav_ui_convention.py` — 7-test regression guard locking in the standardized nav dropdown across all 5 pages
-- monitor en `navFarm` + `.nav-dropdown label` CSS
-- instrucoes en `navFarm`
-
-The test will now catch any future nav/i18n regression on every merge in the standard suite.
-
-## Status recap
-
-| Item | State |
-|---|---|
-| PR #60 (test + fixes) | ✅ merged `0f26bf8b` |
-| All nav/UI/i18n standardization | ✅ on beta main (PRs #55–#60) |
-| **Prod promotion (#55–#60)** | 🔲 gated on Gary's explicit go |
-| FBE cron trigger + real-device test | 🔲 Gary |
-| Chrome audit extras / `sunmint_mobile/www/` sync | 🔲 your call |
-
-## RESUME HERE → next unit
-
-**Prod promotion for #55–#60** — `sync_beta_to_prod("sunmint_prod")` once Gary gives the go (always-stop gate). Nothing else pending on my side; holding here.
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #60 merged successfully (sha: 0f26bf8bb7efae7e57767dbc9afcb76f091a9657). Pull Request successfully merged
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #60 on sunmint_beta merged successfully (sha: 0f26bf8bb7efae7e57767dbc9afcb76f091a9657). Pull Request successfully merged
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
@@ -4714,6 +4488,7 @@ CDN lag again on the raw fetch (branch shows 0, main 5). The **Contents API is a
 ### 🤖 Autopilot
 
 Branch file is authoritative-real: 14,893 bytes, markers 3/2, **0 placeholders** — the raw-fetch 0 was CDN lag. Both main and branch carry the real plot-first content. Since main already has it (accidental push) and the branch matches, merging PR #455 is safe (no clobber — branch == main content). Merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4812,46 +4587,55 @@ That way we dont fumble around in the future.
 ### 🤖 Autopilot
 
 Good practice — let me check the conventions in context for recording credential/secrets setup before writing anything:
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The convention exists — **`GAS_SCRIPT_PROPERTIES.md`** is the canonical registry (created 2026-08-31). Let me read it to add `FBE_GH_PAT` in the right format:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The convention is clear: `GAS_SCRIPT_PROPERTIES.md` is the canonical registry, and updating it requires a row in §2 + a one-line entry in `CONTEXT_UPDATES.md`. Let me check the CONTEXT_UPDATES format to match it exactly:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Convention confirmed: update `GAS_SCRIPT_PROPERTIES.md` §2 registry + append one line to `CONTEXT_UPDATES.md`. Making both changes in one PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #892 opened. Now applying the real edits to both files on the branch — fetching current content, adding the FBE_GH_PAT row + context line, and pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now applying both real edits to the local clone, then pushing the real files to the PR branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both edits verified locally. Pushing the real files to the PR branch (overwriting the placeholder), then merging:
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both real files pushed to the branch. Verifying the PR state (both edits present, mergeable), then merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files present on the branch (1× FBE_GH_PAT each), 2 files changed, mergeable. Merging PR #892:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4918,6 +4702,7 @@ continue to 2,3 and 4
 ### 🤖 Autopilot
 
 Go — continuing the plot-first roadmap. Unit 2 first: the `build_farms_index.py` fix (skip empty Farm ID rows). Grounding in the current builder:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5043,4 +4828,56 @@ Which next?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /tmp && rm -rf smu2 && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git smu2 2>/dev/null && cd smu2 && echo "=== find f; cd /tmp/smu2 && sed -n '80,180p' scripts/build_farms_index.py; cd /tmp/smu2 && echo "=== git log for build_farms_index.py ===" && git log --oneline -5 -- scripts/build_farms_index.py 2>/dev/null; echo "=; …(+7 more)
 • `merge pr` → ✅ PR #68 on sunmint_beta merged successfully (sha: d6d149eded1bf5140ca5bf0fd440871677637939). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+if 2. Python builder fix (sunmint PR): build_farms_index.py skip empty Farm ID rows, what that plot still show as an option in the dropdown here under Farm?? 
+
+https://beta.sunmint.truesight.me/limites-da-fazenda/
+
+
+### 🤖 Autopilot
+
+Excellent catch — this is exactly the right question to ask, and the answer has a real design consequence. Let me verify exactly how the dropdown is populated before answering:
+
+
+### 🤖 Autopilot
+
+Good — grounded in the actual code. Here's the precise answer:
+
+## What happens to a new plot in the dropdown
+
+The dropdown (`unionFarms()`) = **local IndexedDB + remote `farms/index.json`**, deduped. The remote index is built by `build_farms_index.py` from the Plots tab — **skipping empty Farm ID rows**.
+
+So a plot-first submission (Farm ID empty) behaves like this:
+
+| Where | Shows in dropdown? | Why |
+|---|---|---|
+| **Creating device** | ✅ **Yes, immediately** | `addLocalFarm(farmName)` runs on submit (line 636) — stored in the device's IndexedDB, so the farmer can re-select it next session |
+| **Other devices / other farmers** | ❌ **No** | Remote index skips empty-Farm-ID rows → the plot isn't in `farms/index.json` → no option |
+| **After governor backfill** | ✅ Yes (as a farm) | Backfill sets Farm ID → regenerated index includes it → appears everywhere |
+
+## So your instinct is right — there's a gap
+
+The plot-first model means **a plot is selectable only by the device that created it** until the governor backfills the Farm ID (the FSVP gate). That's arguably *correct* for the governance story (unverified plots aren't shared entities) — **but** it also means:
+
+- A **second walker** (same family, different phone) can't select the plot by name — they'd have to type it again as "New plot" → duplicate
+- The **map already shows the plot everywhere** (plots geojson includes it with `farm_id: null`) — so the plot is *visible* on the impact map but *not selectable* in the app on other devices — inconsistent
+
+## Options to close it (pick one)
+
+- **A (minimal, fits plot-first):** the dropdown also lists **unlinked plots from `plots/index.geojson`** (it has Plot Name even with empty Farm ID) → every plot ever created is selectable everywhere; farm-linked ones get the farm name, unlinked ones the plot name. No backfill dependency for *selection* (backfill still gates the *farm profile link*).
+- **B (as-is):** keep local-only — accept that unlinked plots are device-local until backfill; document it.
+- **C (bigger):** make the plots geojson the dropdown's primary source (plots are the real entity now), farms index only enriches names.
+
+My recommendation: **A** — it matches the model ("farmers interact with plots"), keeps the FSVP gate intact for the *profile link* (map's `if (fid)` untouched), and prevents duplicate-plot confusion across devices. It's a small change to `unionFarms()`/`getRemoteFarms()` + a fallback fetch of the plots geojson.
+
+Want me to build A?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/limites-da-fazenda/index.html" -o limdd.html && echo "=
 
