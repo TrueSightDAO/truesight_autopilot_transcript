@@ -1496,6 +1496,7 @@ Let me check the live vs JSON title state for a few.
 Excellent finding! **Live titles are already clean** — only **5/73** differ from JSON, and those are merely the ` | Agroverse` suffix (live has the clean title WITHOUT the brand suffix; JSON includes it). So the title cleanup from a **previous run** already happened live. PR5's placeholder pass found 0 because there are no generic `Project MM-DD | Agroverse` titles left.
 
 So PR5's remaining work is tiny: either (a) align the 5 JSON titles to live (drop the suffix) — or (b) push the JSON titles live (add suffix). The suffix decision is a branding call. Let me check what the titles script does and whether "| Agroverse" is desired, then present the finding.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1713,4 +1714,71 @@ Say "go" and I'll do the tracker PR + contribution in the next turn.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #881 on agentic_ai_context merged successfully (sha: 89ac41a102f14934c142739418dbcc46b18f6b29). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] go — finish the close-out: tracker PR + DAO contribution report.
+
+
+### 🤖 Autopilot
+
+Closing out: (1) tracker PR, (2) DAO contribution. Let me first pull the current plan file bytes and check the contribution event docs in parallel.
+
+
+### 🤖 Autopilot
+
+Plan tracker confirmed still all-empty (expected). Building the close-out: tracker PR + contribution in parallel — the tracker edit first, then the contribution submission (not a PR, so no one-PR conflict).
+
+
+### 🤖 Autopilot
+
+The em-dash in "RESUME HERE — PR1" differs from my pattern (probably a UTF-8 em-dash vs my typed one). Let me check the exact bytes.
+
+
+### 🤖 Autopilot
+
+Em-dash is standard UTF-8 `—` — likely my JSON-embedded dash got mangled in transit. Let me retry with dash-free anchors.
+
+
+### 🤖 Autopilot
+
+Tracker PR opened (#882). Now the DAO contribution report (plan §5) — signing as Sophia Truesight with PR evidence:
+
+
+### 🤖 Autopilot
+
+Close-out complete — contribution submitted, tracker PR open. Stopping here per the one-PR-per-turn rule (PR #882 opened this turn).
+
+## ✅ Close-out done — plan fully complete
+
+**1. DAO contribution submitted** ✅ (plan §5)
+- [CONTRIBUTION EVENT] logged: "YouTube Description & Title Cleanup (PR1–PR6): 73/73 live descriptions pushed + verified" — signed as **Sophia Truesight**, 360 min, with all 5 PR URLs as evidence (#263/#266/#267/#881/#882)
+
+**2. Tracker PR opened** — [agentic_ai_context PR #882](https://github.com/TrueSightDAO/agentic_ai_context/pull/882)
+- `plans/YOUTUBE_DESCRIPTION_TITLE_CLEANUP_PLAN.md`: Status → **Complete** · `RESUME HERE` → **STATUS: COMPLETE** · all 6 tracker rows → ✅
+- 8 edits applied (em-dash anchor fixed on retry); doc-only
+
+## Final plan status
+
+| Unit | Result |
+|---|---|
+| PR1 description field + generator | ✅ merged #263 |
+| PR2 description push script | ✅ merged #266 |
+| PR3 5-pair review sample | ✅ governor-approved |
+| PR4 live description push | ✅ done + verified **73/73 MATCH** |
+| PR5 title alignment | ✅ merged #267 |
+| PR6 SOP prevent-recurrence | ✅ merged #881 |
+| Close-out tracker + contribution | 🟡 **PR #882 open** + ✅ submitted |
+
+**Live impact:** all 73 Agroverse YouTube videos now carry cleaned, Grok-polished transcript descriptions with per-episode blog links (27) or homepage fallback (46) — no more raw ASR ("being the police, episode 12", "Fili Marsh", "witch plume fungu" all cleaned except blog-parity phrase flagged earlier).
+
+## RESUME HERE → merge PR #882
+
+Merge [PR #882](https://github.com/TrueSightDAO/agentic_ai_context/pull/882) (your 👍/"merge" — doc-only) to close the loop. After that the entire plan is done; no further units.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/aac_work && git checkout main 2>&1 | tail -1 && git pull origin main 2>&1 | tail -1 && echo "=== status line ===" && sed -n '1,12p' ; cd /tmp/aac_work && sed -n '/## 4\. Resume tracker/,/^$/p' plans/YOUTUBE_DESCRIPTION_TITLE_CLEANUP_PLAN.md | head -3 | cat -A | head -3; ech
+• `create dao submission` → Contribution submitted
 
