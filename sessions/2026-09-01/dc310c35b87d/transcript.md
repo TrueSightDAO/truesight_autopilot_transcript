@@ -8,82 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-Silicon Valley startup Chief sustainability OFFICERS whom we will be selling to. This is the standard https://sciencebasedtargets.org/net-zero
-
-[Attachment auto-processed: **41240186b1454eff9261382d1137db1a.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-Good — that sharpens the buyer profile: **Silicon Valley startup CSOs living under the SBTi Net-Zero Standard**. Let me (1) check the attached image and (2) pull the latest on the SBTi standard, since it dictates exactly what kinds of credits those CSOs can buy.
-[2 tool result(s) compacted: list_directory, web_search — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The attachment list is huge (many .oga voice notes and .jpg images from past sessions). The specific image is `41240186b1454eff9261382d1137db1a.jpg`. Let me look at it directly, and also read the SBTi V2 details from the best source (CEEZER analysis) — since it determines exactly what those CSOs can buy.
-[2 tool result(s) compacted: ocr_image, web_extract — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The image OCR'd empty (poor quality, no readable text — likely a screenshot of the SBTi page you referenced). I went straight to the substantive part: what the **SBTi Net-Zero Standard actually requires** of those CSOs today. This is the single most important buyer-intelligence piece for Sunmint's sales thesis — here's the 2026 state of it.
-
-## SBTi Corporate Net-Zero Standard V2.0 (final, June 11 2026 · effective Feb 1 2027)
-
-### 1. "BVCM" is now **OER** (Ongoing Emissions Responsibility)
-- Voluntary today → **mandatory for large companies (Category A) from 2035**
-- Credits used for OER **cannot** be double-counted toward net-zero target progress (formal separation)
-
-### 2. Three recognition tiers — this is your pricing ladder
-
-| Tier | Coverage | Volume | Price floor |
-|---|---|---|---|
-| **Engaged** | ≥1% of ongoing Scope 1+2+3 | ≥1% | None |
-| **Advanced** | 100% S1+S2 + S3 to reach 10% | full S1+S2 | **$20/tCO₂e** |
-| **Leadership** | 100% of ongoing S1–S3 | 100% | **$80/tCO₂e + verified mitigation outcomes** (both required) |
-
-**The Leadership tier is the premium segment** — $80/tCO₂e floor *and* independently verified credits. That's the price point where nature-based cacao agroforestry credits with community co-benefits compete and win. SV startups chasing "we're a climate leader" status are the buyers here.
-
-### 3. Neutralization rule — nature-based removals stay eligible
-- **Long-lived residual emissions** → must use long-lived removals (DACCS, BECCS, enhanced weathering)
-- **All other residual emissions** → can use **long-lived OR short-lived removals — nature-based solutions remain eligible**
-
-➡️ Cacao agroforestry credits can neutralize the *majority* of residual emissions for a typical tech company (only the long-lived portion is ring-fenced for engineered removal). **Sunmint's credits are not displaced by the DAC wave.**
-
-### 4. NDC double-claiming softened
-- Corresponding adjustments: **recommended, not required** (R46.1); disclosure of whether credits carry them is now mandatory (C46.6)
-- Brazil-issued credits without ITMO adjustments remain sellable — just disclose. Low compliance burden for us.
-
-## What this means for selling to SV startup CSOs
-
-1. **The CSO has a mandate, not just a preference.** SBTi-validated startups must buy verified credits (or fund contributions) — and the 2035 Category-A mandate makes it *forward-contractable* demand. Your pitch: "you need high-integrity verified credits now; we're the verified Brazilian nature-based supply."
-2. **Target the Leadership tier buyers** ($80/t floor) — that's where Sunmint's differentiated story (Amazon cacao agroforestry, community benefit-sharing, on-chain MRV) commands premium pricing. Plan Vivo's mandatory ~60% community revenue share is a *selling point* here, not a cost.
-3. **Registry/standard requirements align with our roadmap:** verified ex-post credits, independently audited → **Verra VCS + CCB (ICVCM-aligned, VM0047)** is the natural SBTi-credible product; Plan Vivo pilot feeds the same buyers at Engaged tier.
-4. **Sell the eligibility explicitly.** CSOs need to know your credits neutralize "all other residual emissions" under V2.0 and carry verified mitigation-outcome status. Put SBTi V2.0 OER-tier eligibility in the one-pager.
-5. **Price signal is real:** $20–$80/tCO₂e floors mean the market can absorb premium nature-based credits — validates the Plan Vivo → Verra premium strategy.
-
-## Suggested next step
-
-Want me to build the **"SBTi V2.0 Buyer Alignment" section** into the whitepaper roadmap (PR #292) — a short table mapping OER tiers → Sunmint stages → registry/product → price positioning? That turns this buyer thesis into the sales-facing artifact your CSO prospects will actually read.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] Consolidate properly into white paper PDF
-
-
-### 🤖 Autopilot
-
-Consolidating everything — registry roadmap, Apple, hyperscalers, SBTi V2.0 OER framework, market context — into one branded whitepaper PDF.
-[1 tool result(s) compacted: generate_pdf — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 PDF generated (4 pages). Sending it to you now:
@@ -4818,36 +4742,43 @@ The TGM handler is the perfect template — it scans Telegram Chat Logs, mirrors
 ### 🤖 Autopilot
 
 The TGM handler is a complete template — cron-scans Telegram Chat Logs, parses the event marker, dedupes via a tracking tab, mirrors media to GitHub, and appends rows. The boundary handler mirrors this + adds the **farm upsert** (rule 4) + **index rebuild triggers**. Let me get the constants block to mirror the pattern faithfully:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the complete template. Now building the boundary-evidence GAS handler — mirroring the TGM pattern (shared constants, FBE_ prefix, farm upsert for rule 4, media mirror, tracking tab):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Node won't check `.gs` directly — let me copy to `.js` and check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GAS handler built + syntax-checked. Let me verify the actual Farms tab name the generator uses (so `FBE_FARMS_TAB` matches reality), then push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The generator reads the **"SunMint Plots"** tab — my handler referenced a non-existent "SunMint Farms" tab. The farm record lives **inside** the SunMint Plots sheet (the generator's source of truth). Let me check the exact column order so the upsert writes to the right cells:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The farm record is a row in the **"SunMint Plots"** tab (the generator's source of truth) — my handler should upsert there, not a separate Farms tab. Let me get the FIELD_COLUMNS column names to write to the correct cells:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full schema. The upsert must target the **"SunMint Plots"** tab (SHEET_ID `1qbZZhf…`, the generator's source of truth) and write by matching the header names — not a separate Farms tab. Let me rewrite the handler's upsert to match reality:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5009,4 +4940,22 @@ Want me to do #2 (the SCHEDULE_TRIGGERS.md PR) now?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → echo "=== tokenomics checkout on host ===" && ls -d ~/tokenomics /opt/tokenomics ~/work/tokenomics 2>/dev/null; find / -maxdepth 3 -name "to; cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main -q && git log --oneline -3 origin/main && echo "=== local HEAD ===" ; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && cat appsscrip; …(+1 more)
 • `gas deploy project` ×2 → ok; https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260901T030129Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Every 2 minutes?? That seems somewhat aggresive isnt it?
+
+
+### 🤖 Autopilot
+
+Fair challenge — and to be clear, I actually recommended every **5–10 minutes**, not 2 (mirroring the sales/inventory processors, which run 5–15 min). But you're right that even that is more aggressive than this workload needs.
+
+**Boundary evidence isn't latency-critical.** A farmer uploads photos; whether the polygon shows up 10 minutes or 2 hours later makes no practical difference. The expensive steps (mirroring media, sheet writes, triggering the plot rebuild) only happen when there's actually a new submission — so the cost of frequent polling is mostly wasted GAS quota checks against an empty chat log.
+
+**My honest recommendation: every 30–60 minutes** (or even a few times a day). The Telegram Chat Logs scan is cheap, and this is a "backup processor" anyway — the primary path is the Edgar→GAS webhook, which fires instantly on submission. The cron is just the safety net for missed webhooks, exactly like the other processors.
+
+So: **60-minute trigger** is plenty for the fallback role. Want me to go with that (and document it as such in the SCHEDULE_TRIGGERS.md update)?
 
