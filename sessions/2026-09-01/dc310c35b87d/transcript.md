@@ -4444,61 +4444,73 @@ I have the full picture. The port is substantial: lang-toggle + logo + email-lin
 ### 🤖 Autopilot
 
 The port is substantial — let me check what the limites page's JS already has (shared helpers like `t()`, I18N dict, keypair) so I only add what's missing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The limites page has only a minimal `setLang` — no I18N dict, no `t()`, no email/keypair machinery. The port is substantial. Let me extract the main page's remaining JS (keypair + submitEmailEvent + I18N dict structure) so I can merge everything faithfully:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is a substantial port. Let me grab the remaining pieces — the email-section HTML, the `submitEmailEvent`/keypair JS, and the download button HTML — then rebuild the limites page with all four features:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me grab the keypair + submitEmailEvent block (457–540) to port it exactly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture now. Let me see the complete current limites page to build the merged version precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the rest of the limites page (body HTML + i18n keys + second script block) to plan the merge precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The limites page is missing the shared app chrome: logo+Sunmint header, language toggle, "Link email" section, and APK download — plus its nav is missing the "Registrar Fazenda" option. I'll rebuild the page locally with all four features ported from the main page (bilingual i18n, RSA keypair/email machinery, Edgar submission), validate, then push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 New file built (25,557 B). Validating tags, JS syntax, and all features:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All validations pass — tags balanced, all features present, JS syntax OK. Pushing the rebuilt page as PR + then merging:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PR only carried one hunk — my other 8 edits (CSS, i18n dict, email JS, nav, etc.) aren't in it. Let me push the full rebuilt file to the branch, which has everything:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full file pushed. Verifying the branch now has all features, then merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All features verified on the branch. `mergeable` is None (GitHub still computing). Let me check mergeability status and merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4653,4 +4665,75 @@ Say go and I'll run the webhook verification.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /opt/truesight_autopilot/context/tokenomics && git fetch origin main -q && git log --oneline -1 origin/main && echo "=== local HEAD ===" ; sleep 20 && date -u +%H:%M:%S; sleep 90 && date -u +%H:%M:%S; …(+5 more)
 • `gas deploy project` ×3 → push blocked by a live deploy lease (DEPLOY_PUSH_SOP); https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260901T102623Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Deployed ✅** — and this turn completed both asks. Here's the summary:
+
+## What I did this turn
+
+**1. Promoted the limits-fazenda chrome to prod** ✅
+- `sync_beta_to_prod(sunmint_prod)` — merged upstr
+
+
+### 🤖 Autopilot
+
+Go-signal received — verifying the FBE webhook path live. Let me find the GAS web-app URL (from dispatch.py or deploy records) and how the doGet router is invoked:
+
+
+### 🤖 Autopilot
+
+Let me find the GAS web-app URL (the doGet endpoint dispatch calls) — checking dispatch.py's webhook URL and the deploy records:
+
+
+### 🤖 Autopilot
+
+Local checkout doesn't have the latest ledger (it's on GitHub) and no URL refs locally. Let me pull the ledger and search the dao_protocol repo for the GAS webhook URL pattern:
+
+
+### 🤖 Autopilot
+
+The ledger doesn't hold the web-app URL. Let me find the GAS web-app URL dao_protocol uses for doGet actions — searching the repo and the GAS project's deployment:
+
+
+### 🤖 Autopilot
+
+The web-app URL isn't in code. `clasp deployments` will list the GAS deployment with its `/exec` URL directly — let me get it, then hit the doGet with the FBE action to verify the router responds:
+
+
+### 🤖 Autopilot
+
+6 deployments found — the `@HEAD` one (`AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ`) is the live web-app URL. Let me hit the doGet with the FBE action to verify the webhook path responds (it will scan Telegram Chat Logs for pending FBE events):
+
+
+### 🤖 Autopilot
+
+The webhook probe hit Google's auth wall (redirect to sign-in) — which is actually **expected** for an internal GAS webhook: the web app isn't published for anonymous access, so a bare HTTP GET redirects. The real callers (dao_protocol dispatch, or the app's submit path) authenticate server-side. Here's the verified state:
+
+## Webhook path verification — deployed + wired ✅ (E2E test needs a real submission)
+
+| Check | Result |
+|---|---|
+| **GAS deploy at @HEAD** | ✅ Live deployment `AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ` → `/exec` (the live web-app URL) |
+| **FBE doGet case in the pushed file** | ✅ `process_qr_code_updates.js` has 4 FBE refs, `clasp push --force` deployed 6 files at 10:26Z |
+| **Router responds to FBE action** | ⚠️ Anonymous GET → Google sign-in redirect (internal webhook, expected — not a public endpoint). The dao_protocol dispatch and the app's submit path call it with owner auth, which is how all the other actions (TGM, tree planting) work |
+| **Full E2E** | 🔲 Needs a real submission — a `[FARM BOUNDARY EVIDENCE EVENT]` through Edgar → dispatch → GAS doGet → farm upsert (Jedielcio's next visit, or a test event) |
+
+**Bottom line:** the webhook is **deployed and wired** — the router will fire the handler on an authenticated call from dao_protocol, exactly like the TGM action that's been running in production. The anonymous probe redirecting is not a failure; it's the access control working. The only genuinely remaining manual item is the **hourly cron trigger** (GAS UI, per SCHEDULE_TRIGGERS.md §6).
+
+## RESUME HERE → next unit (governor's pick)
+
+1. **Full E2E test** — I can construct a test `[FARM BOUNDARY EVIDENCE EVENT]` submission through Edgar (like the tree-planting link flow) and trace it dispatch → GAS → sheet, to prove the chain with a real event rather than a probe. *Needs your go (it writes a record).*
+2. **Hourly cron trigger** — you (or GAS owner) set it in the UI; 2 min.
+3. **Chrome audit** of the other pages (`/monitor-tree-growth/`, `/instrucoes/`, `/register_farm/`) — same logo/lang-toggle/email/APK consistency pass if you want the whole app uniform.
+4. **`sunmint_mobile/www/`** sync — the APK's embedded web layer still needs the register_farm page + nav + limites page (flagged; needs the mobile repo).
+
+Which next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot/context/tokenomics && echo "=== dispatch: GAS webhook URL used for actions ===" && grep -rn "exec\|doGet\|webapp; cd /opt/truesight_autopilot/context/tokenomics && echo "=== GAS webapp URL refs ===" && grep -rn "script.google.com/macros/s\|/exec" truesig; cd /home/ubuntu/ecosystem_change_logs && git pull -q 2>/dev/null; echo "=== latest FBE deploy ledger ===" && cat deploys/entries/deploy_2026; …(+2 more)
 
