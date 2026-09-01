@@ -4064,36 +4064,43 @@ Go received — building PR2 (daemon core). First, let me verify the upload scri
 ### 🤖 Autopilot
 
 CLI confirmed. Now I'll write the daemon core + CLIs, test them locally on the box first (hard rule), then push. Writing the three files to /tmp for local test:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Daemon core written. Now the two CLIs (queue list + manifest commit), then local test:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Compile passes, CLIs work. Now a full functional test — fake inbox + stub upload script, run daemon `--once`, verify the loop (upload → yt_id write-back → budget):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Functional test caught a real bug: with `--once`, only the **first** item per inbox gets processed (fresh generator each iteration → same first item forever → 9003 never flagged). I need to fix the scan to gather all candidates per pass:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the second bug: the `processed >= limit` break fires before IMG_9003 gets its metadata check — needs_metadata items shouldn't count against the per-pass upload cap. Fix: only count actual upload attempts toward `limit`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three cases now pass: pending → uploads + yt_id write-back, already-uploaded → skipped, incomplete → needs_metadata flagged. The daemon core is functionally correct. Let me run ruff + format checks, then push PR2:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Ruff wants import-splitting + formatting fixes. Let me apply them, re-verify, then push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4301,4 +4308,36 @@ Ping me with "go" (PR3) and I'll wire the daemon to Cleide's inbox.
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #872 on agentic_ai_context merged successfully (sha: c1c57c04fe25b55ab258494c0e5681c2c4536e4e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] why is location 
+
+/home/ubuntu/farm_media_inbox/cleide/
+
+Shouldn't it be 
+
+/home/ubuntu/media_archive_inbox?? or something else?
+
+
+### 🤖 Autopilot
+
+You're right — that path predates the MAP terminology. It was named when the pipeline was still farm-scoped (back when it was just "farm media uploads"). Now that the umbrella is the Media Archives Pipeline, the inbox root should be MAP-level, not farm-level.
+
+My proposal:
+
+```
+/home/ubuntu/media_archive_inbox/
+  farm-media/cleide/
+  farm-media/la-do-sitio/
+  event-media/<event-id>/     <- future, community events
+  partner-media/<partner-id>/ <- future
+```
+
+The daemon genuinely doesn't care about the folder name — it reads everything from the sidecar (`farm_id`, `source`, `title`, `yt_id`). So the rename is cheap and safe: it's just updating the config file, the two CLI defaults, and the docs. No behavior change, one small PR.
+
+And it makes the "source namespace" idea real in the filesystem, not just in the docs — which is exactly what we locked in with the terminology.
+
+Want me to do the rename now — before we wire Cleide's inbox in? That way we build the queue once, at the right name, instead of migrating it later. I'd update the daemon repo (config template, CLI defaults, DESIGN.md) and the box's config, and I'll note the path change in the plan doc too.
 
