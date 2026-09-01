@@ -4824,6 +4824,7 @@ No CalendarApp — that was just a comment. Let me check whether the gary_token 
 ### 🤖 Autopilot
 
 The `gary_token.json` has **`https://www.googleapis.com/auth/calendar` scope** — so I can create a real Google Calendar event on Gary's calendar. Creating it now (45 min from now, with all the pending items):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5063,4 +5064,55 @@ If you're deciding which deployment to make anonymous-executable for the SunMint
 **Why @HEAD:** the dao_protocol dispatch for `[FARM BOUNDARY EVIDENCE EVENT]` and `[MEDIA RETRACTION EVENT]` both fire their webhook at `AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ` — so making *that* deployment "Anyone" is what lets anonymous dao_protocol-triggered doGet calls execute the two boundary handlers as you.
 
 **Heads-up:** the three IDs you pasted are identical — if the Telegram UI deduplicated, you may have meant three different ones; if so, share them and I'll map each. Also worth noting: `@HEAD` points at the **latest code** — so whatever is pushed to HEAD is what anonymous callers would execute. If you'd rather pin it, create a versioned deployment (@38) and repoint the two env keys — say the word and I'll set that up.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+these are the ones I see
+
+post-#449/#450 reject col A OR col D + rebuild dispatch
+TGM regex fix #446
+Admin deploy fix
+
+
+### 🤖 Autopilot
+
+Let me re-list the deployments with their current labels so I can reconcile exactly what you're seeing in the UI with the webhook map:
+
+
+### 🤖 Autopilot
+
+Reconciled — here's the mapping between what you see in the UI and what each webhook uses:
+
+## The 3 you see (all labeled in the UI)
+
+| UI label | Deployment ID | Version | Used by (env webhook) |
+|---|---|---|---|
+| **post-#449/#450 reject col A OR col D + rebuild dispatch** | `AKfycbyoFCTzId…` ← **the ID you pasted** | @37 | **TREE_PLANTING_REJECT** (line 43) |
+| **TGM regex fix #446** | `AKfycbwm9TZDL…` | @36 | TREE_GROWTH_MONITORING (line 44) |
+| **Admin deploy fix** | `AKfycbxMz8cAkJ…` | @32 | QR_CODE_UPDATE + TREE_PLANTING_LINK (lines 11, 40) |
+
+## The answer: **none of those 3 is the SunMint boundary one**
+
+The deployment the **boundary chain actually uses** (FBE + MEDIA_RETRACTION webhooks, env lines 45–46) is the **4th, unlabeled one**:
+
+**`AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ`** — version **@HEAD**
+
+That's why it's confusing: the UI shows it as a blank/no-description entry (probably listed above your 3 labeled ones). The ID you pasted (`AKfycbyoFCTzId…`) is @37 — the **reject** deployment, unrelated to boundary processing.
+
+## If your goal is "which do I make anonymous-executable for the boundary chain"
+
+**It's `AKfycbxrcXTZnQxIRKsMW9V9-EwkWVckE3Lk90SZaSIbnPQ` (@HEAD)** — the unlabeled one.
+
+⚠️ **Two caveats:**
+1. **@HEAD runs latest code** — whatever gets pushed to HEAD is what anonymous callers execute. For a hardening pass, pin it: create a versioned deployment (I can do `clasp deploy <version> "Boundary webhook (anonymous)"`) and repoint the two env keys to it.
+2. Heads-up: running `clasp version` just now **created version 38** (side effect of checking HEAD's version) — harmless snapshot, but flagging it since it bumps HEAD's reference.
+
+Want me to create the pinned versioned deployment for the boundary webhook + repoint the two env keys? That gives you a stable anonymous endpoint instead of @HEAD.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && clasp deploym
 
