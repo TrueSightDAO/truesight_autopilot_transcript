@@ -2506,11 +2506,13 @@ Merged PR #269 myself (sha 9a7d585). Go ahead with the SOP note follow-up too.
 ### 🤖 Autopilot
 
 Governor merged PR #269 (sha `9a7d585`). Proceeding with the SOP note follow-up — adding GPS fields to the uniform media-cache format docs. Let me pull the current SOP and check the MAP pipeline doc's GPS section for accurate cross-referencing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The SOP has the description/ingress content. Now let me find the best spots to add the GPS note — the checklist and the uniform-format guidance — and check the MAP pipeline doc's GPS section for accurate cross-reference.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2707,4 +2709,27 @@ That closes the loop properly at both ends — say the word and I'll open that P
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/agroverse_shop_work && echo "=== manifest top-level structure ==="; python3 -c " import json m = json.load(open('docs/incoming_video; cd /tmp/agroverse_shop_work && echo "=== manifest entries: do they have GPS? ==="; python3 -c " import json for mf in ['docs/incoming_videos
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] Maybe you can share me the link to the GitHub location where the JSON manifest is. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Here are the links — the two manifests and the cache (all in the `agroverse_shop_beta` repo):
+
+**The media cache (the JSON with the 73 entries we've been fixing):**
+- https://github.com/TrueSightDAO/agroverse_shop_beta/blob/main/scripts/youtube_videos.json
+
+**The incoming manifests (they map each video to its source path on your Mac):**
+- April batch (67 videos): https://github.com/TrueSightDAO/agroverse_shop_beta/blob/main/docs/incoming_videos_2026-04/manifest.json
+- July batch (2 videos): https://github.com/TrueSightDAO/agroverse_shop_beta/blob/main/docs/incoming_videos_2026-07/manifest.json
+
+**Raw (machine-readable) versions** — handy if you want to script against them:
+- https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/scripts/youtube_videos.json
+- https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/docs/incoming_videos_2026-04/manifest.json
+
+To recap the resolution chain so it's clear what you're looking at: the cache (`youtube_videos.json`) has the YouTube video_id + title + polished description per entry; the manifests have the source file's path (`/Users/garyjob/Downloads/…`), basename, and sha256. The two link by basename (63 of 73 match). What's missing is only the GPS — which isn't in either file; it lives in the source files' own metadata on your Mac. Once you point me at those files (or sync them), I can backfill the exact coordinates.
 
