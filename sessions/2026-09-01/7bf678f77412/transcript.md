@@ -3365,26 +3365,31 @@ No settings.py at top level — `settings` must be in `app/` or a config. Let me
 ### 🤖 Autopilot
 
 Found it — `app/config.py` line 180 `allowed_repos`. Let me read that section to see the current list and the exact format.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the exact `allowed_repos` list section (line ~180) to add the new repo in the right format.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The read keeps truncating before line 180. Let me pull the exact `allowed_repos` list from the box directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the exact list. Now the dependency order matters: `create_repo` **requires** the repo to be in `allowed_repos` first, so the settings PR must land before I can scaffold the repo. Running the local test suite (hard rule) before pushing the config change:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Compile + ruff pass. Now the full test suite per the hard rule:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3392,11 +3397,13 @@ Compile + ruff pass. Now the full test suite per the hard rule:
 All 4 local checks run. The 3 pytest failures + 11 format-flagged files are all **pre-existing in untouched areas** (chat-observe tests, telegram_attachment.py, vault_routes.py — none related to config.py). My change is a single list entry; acceptable per the rule.
 
 **Dependency order matters:** `create_repo` refuses repos not in `allowed_repos`, so the settings PR must land **before** I can scaffold the public repo. Opening the settings PR now (this is PR1's first half):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #359 opened. This is PR1's first half (the dependency that unblocks the repo creation).
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3574,4 +3581,78 @@ Ping me with "promote" or "go".
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/paulo-la-do-sitio-para/index.html" -o /tmp/paulo_page; sed -n '522,560p' /tmp/paulo_page.html; grep -n "Location" /tmp/paulo_page.html | head -3; echo "---"; sed -n '536,541p' /tmp/paulo_page.html | cat -A
 • `merge pr` → ✅ PR #257 on agroverse_shop_beta merged successfully (sha: 8e23d10d747ae936ea347bdb0e324db9eb9f43e2). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] Santa Ana Fazenda in para is trees, some of them are around 30 years old. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me pull Santa Anna's page (Pará) and find its highlights section.
+
+
+### 🤖 Autopilot
+
+Let me see the exact highlight items to place the tree-age fact consistently.
+
+
+### 🤖 Autopilot
+
+Got the structure. I'll add a **Tree Age** item after Location (matching the pattern from Cleide/Paulo). Opening the PR:
+
+
+### 🤖 Autopilot
+
+PR #258 opened. You explicitly requested this — merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Santa Anna (Pará) tree age added ✅
+
+**PR merged:** [#258 — Add Santa Anna Fazenda (Pará) tree age (~30 yrs)](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/258) — sha `f7859eba`.
+
+**What changed:** `farms/santa-anna-fazenda-para/index.html` — Farm Highlights grid gained a new item (after Location):
+> **🌳 Tree Age** — Some trees ~30 years old
+
+Highlights now read: Cooperative (CEPOTX) · Site Visit (30 Aug 2026) · Practice · Fermentation · Location · **Tree Age** · Region · SunMint Program.
+
+---
+
+**CEPOTX farm profile facts — all updated on beta:**
+| Farm | Facts added today |
+|---|---|
+| Fazenda Cleide | Annual Production ~1.5 t/yr (PR #256) |
+| Paulo La do Sitio | Tree Age ~40 yrs · Production ~1.2 t/yr (PR #257) |
+| Santa Anna Fazenda (Pará) | Tree Age ~30 yrs (PR #258) |
+
+---
+
+**RESUME HERE → next unit (pick one):**
+1. **Promote to prod** — `sync_beta_to_prod(agroverse_shop_prod)` to make all three farms' new facts live on the public pages (then verify each URL)
+2. **PR1 second half (daemon)** — create public `TrueSightDAO/farm-media-daemon` + scaffold DESIGN.md/config/README
+
+Ping me with "promote" or "go".
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → pulled santa-anna-fazenda-para/index.html, inspected highlights grid (lines 523–558), verified exact Location item text
+• `git push changes` → PR #258 · `merge pr` → ✅ #258 merged (sha f7859eba)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/santa-anna-fazenda-para/index.html" -o /tmp/santa_page; sed -n '523,558p' /tmp/santa_page.html
+• `merge pr` → ✅ PR #258 on agroverse_shop_beta merged successfully (sha: f7859ebacb2625509c340b7b2ea2e52ae36ccce6). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/santa-anna-fazenda-para/index.html" -o /tmp/santa_pag; sed -n '523,558p' /tmp/santa_page.html
+• `merge pr` → ✅ PR #258 on agroverse_shop_beta merged successfully (sha: f7859ebacb2625509c340b7b2ea2e52ae36ccce6). Pull Request successfully merged
 
