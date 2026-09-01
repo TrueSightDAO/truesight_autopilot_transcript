@@ -4664,11 +4664,13 @@ Throttled uploader retired ✅ (was running 5h05m, 6 uploads done). Sidecar erro
 ### 🤖 Autopilot
 
 The singleton lock did its job — **"another daemon is running (pid 123677)"** — that's the daemon I ran manually during UAT earlier (it's still alive in `--once`... no wait, `--once` exits. Let me check what 123677 is — it's probably the daemon running from the earlier manual test that didn't exit, or a stray). The lockfile is protecting correctly, but I need to resolve the conflict: either kill the stray and let systemd take over, or it's a legitimate run. Let me check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The lockfile did its job — a stray daemon instance (PID 123677, running ~2 min from the old pre-fix code — likely a leftover from the first UAT where the old quota branch slept regardless of `--once`) is holding the singleton lock. The systemd-managed instance is the canonical owner. Let me stop the service, retire the stray, and let systemd take over:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4722,6 +4724,7 @@ perhaps change it to MEDIA_ARCHIVE_PIPELINE.md??
 ### 🤖 Autopilot
 
 Good suggestion in principle — but a filename rename touches references across the whole context, so let me check how widely `FARM_MEDIA_PIPELINE.md` is referenced before recommending it.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4762,31 +4765,37 @@ Say **"go"** and I'll execute the rename PR — or tell me to hold and I'll park
 ### 🤖 Autopilot
 
 Go received — executing the rename. First, checking whether the daemon repo references the old filename (so nothing dangles):
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Daemon repo is clean — no dangling references. Now let me get the full current content of the pipeline doc (only ~159 chars were truncated) so I can rename it faithfully with the "formerly" header note:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have most of the file — let me get the remaining tail so the rename write is complete and faithful:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture — the file is long, so the safest rename is a real `git mv` on the box checkout (preserves content byte-for-byte) plus sed on the reference files. Let me do it in one shot:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The rename committed and pushed — but `gh pr create` failed (token lacks GraphQL permission) and the file's own "READ THIS FILE first" self-reference (line 108) still has the old name. Let me fix the self-reference and open the PR via the GitHub REST API instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #873 opened via REST API (gh GraphQL token lacked permission). This is the rename PR Gary explicitly approved — merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4848,6 +4857,7 @@ Ping me with the unit and I'll run it.
 ### 🤖 Autopilot
 
 Go received — resuming. Checking the daemon's live-upload status (it should have woken at the 07:05 UTC quota reset):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4897,21 +4907,25 @@ https://sophia.truesight.me/media-archive-pipeline displayed here for anyone who
 ### 🤖 Autopilot
 
 Gary wants the implementation plan + roadmap + checklist for a signed-in pipeline dashboard at `sophia.truesight.me/media-archive-pipeline`. Let me ground the plan in how the truesight_me site actually works (routes, auth) before drafting.
+[3 tool result(s) compacted: read_repo_file, search_code, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check how sophia.truesight.me is actually hosted (which repo serves it, and how auth works) — the migration plan should say.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The site is the autopilot box's own nginx + FastAPI app (sophia.truesight.me → the box). Let me check how pages/auth work there so the plan's pre-flight is grounded, not guessed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the ground truth for pre-flight: the app is FastAPI on the box (auth via JWT from `.auth` — the DApp's existing governor auth), `sophia.truesight.me` is nginx→app on this box, and there's already an auth router. Let me check the auth router to confirm the "signed-in governor" gate exists.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4919,6 +4933,7 @@ I have the ground truth for pre-flight: the app is FastAPI on the box (auth via 
 I have solid pre-flight ground truth: the app is FastAPI on this box (nginx → `truesight-autopilot.service`), governor auth already exists (`verify_jwt` raises 401 without a valid token — RSA + JWT via `auth_routes.py`), and the queue data lives on the same box (`media_archive_inbox/` sidecars + `farm_media_uploads.log`). That makes the dashboard cheap: a new route + page in Sophia's own repo, reading local sidecars — no new infra.
 
 Drafting the plan (PR0) now:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5033,4 +5048,110 @@ Ping me with "go" and I'll build PR1.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → echo "=== nginx site for sophia.truesight.me ===" sudo grep -rE "server_name|proxy_pass|root " /etc/nginx/sites-enabled/ 2>/dev/null | grep ; echo "=== auth router ===" cat /opt/truesight_autopilot/app/auth.py 2>/dev/null | head -50 echo "---" echo "=== how /governors or protected ; set -e CTX=/opt/truesight_autopilot/context/agentic_ai_context cd "$CTX" git fetch origin -q git checkout -q plan/media-archive-pipeline-das; …(+8 more)
 • `merge pr` → ✅ PR #874 on agentic_ai_context merged successfully (sha: 8a0a5c42dfe32b2828b1879fb2f8877fbbc2984d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — this Telegram topic (thread 17181) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Status — daemon healthy, correctly waiting for quota reset
+
+| Check | Result |
+|---|---|
+| Service | `active (running)` — PID 125586, 7.1M RSS, auto-restart on |
+| Behavior | `daily budget spent; s
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17181] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17181) is the active handoff for `plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+Go received + auto-start handoff. Reading the dashboard plan to resume from its RESUME HERE marker:
+
+
+### 🤖 Autopilot
+
+Kickoff: executing PR1 (backend data endpoint) from the dashboard plan's RESUME HERE. Let me ground in the actual app structure first.
+
+
+### 🤖 Autopilot
+
+Notable: `main.py` **already imports** `from .media_archive_pipeline import router` — the module may already exist (scaffolded or in progress). Let me check its current state:
+
+
+### 🤖 Autopilot
+
+The module already exists on the box (created 03:58 today, uncommitted — no git history) and is already wired into `main.py`. Let me read it to see what state it's in:
+
+
+### 🤖 Autopilot
+
+The PR1 backend **already exists on the box** — uncommitted (created 03:58 today, likely a prior partial run or another Sophia). It's well-formed and matches the plan exactly (auth-gated, defensive parse, sidecar scan, upload log, manifest index). Let me check whether it's on the GitHub remote yet, and run local checks:
+
+
+### 🤖 Autopilot
+
+The backend file exists locally but **not on GitHub remote** (404). It passes compile + ruff + format. The import in local main.py is uncommitted too. So PR1 = commit both files (the new module + the main.py include_router wiring). Let me run the full test suite (hard rule) before pushing:
+
+
+### 🤖 Autopilot
+
+Same pre-existing failures as before (chat_observe, vault, sync_sunmint — all in untouched files, unrelated to the new module). My new file passes everything. Now committing PR1 — the new module + the main.py wiring:
+
+
+### 🤖 Autopilot
+
+Branch pushed cleanly. Let me open the PR via REST API (gh GraphQL was blocked earlier):
+
+
+### 🤖 Autopilot
+
+PR #363 opened. Merging (go authorizes self-merge of feature PRs):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Turn report — Dashboard PR1: backend data endpoint merged ✅
+
+**PR merged:** [#363 — PR1: Auth-gated Media Archives Pipeline data endpoint](https://github.com/TrueSightDAO/truesight_autopilot/pull/363) — sha `17c4ca00`.
+
+**What changed (now on truesight_autopilot main):**
+1. **`app/media_archive_pipeline.py`** (new) — `GET /media-archive-pipeline/data`:
+   - **Auth-gated**: `verify_jwt(request)` raises 401 without a valid governor token
+   - Scans `/home/ubuntu/media_archive_inbox/<source>/<farm_id>/*.json` sidecars → per-farm counts + items (uploaded / pending / needs_metadata / error)
+   - Tails `/tmp/farm_media_uploads.log` → timestamped upload events
+   - Fetches committed `FARM_MEDIA_MANIFESTS/index.json` from GitHub
+   - **Defensive parse everywhere** — never hard-crashes on schema drift (per plan §5 risk)
+   - Never 500s with raw internals
+2. **`app/main.py`** — 2-line wiring: import + `include_router`
+
+**Notable:** the module already existed on the box (created 03:58 today, uncommitted — a prior partial run). I verified it matched the plan exactly, ran the full local suite (compile ✅ / ruff clean ✅ / format clean ✅ / pytest 828 passed, 5 pre-existing failures in untouched files), then committed + PR'd + merged it.
+
+**Deployment note:** the route is merged but **not live** — it needs a `truesight-autopilot.service` restart (PR3 step, own-service restart, safe). PR2 (the HTML page) comes first.
+
+---
+
+**RESUME HERE → next unit (PR2):**
+**Frontend dashboard page** — `GET /media-archive-pipeline` returning HTML (same pattern as other pages):
+1. Per-farm tables: uploaded (with YouTube links) / pending / needs_metadata / error counts + item lists
+2. Upload-events feed (timestamped) + committed-vs-live indicator
+3. Links to farm pages, farm-media-raw photos, manifests
+4. Same JWT login flow as the DApp chat (401 → login prompt)
+5. Local checks → PR → report
+
+Ping me with "go" and I'll build PR2.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /opt/truesight_autopilot echo "=== app dir ===" ls app/ 2>/dev/null | head -30 echo "=== main.py routes (first 60 lines) ===" sed -n '1,6; cd /opt/truesight_autopilot echo "=== media_archive_pipeline.py exists? ===" ls -la app/media_archive_pipeline.py 2>/dev/null || echo "NOT F; cd /opt/truesight_autopilot echo "=== full media_archive_pipeline.py ===" cat app/media_archive_pipeline.py echo "" echo "=== git status ===; …(+4 more)
+• `merge pr` → ✅ PR #363 on truesight_autopilot merged successfully (sha: 17c4ca00a2487d92ae7d3bf8328b0bfffdf5766e). Pull Request successfully merged
 
