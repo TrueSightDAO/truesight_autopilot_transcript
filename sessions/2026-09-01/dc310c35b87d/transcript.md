@@ -4790,26 +4790,31 @@ The replacement left the old function body dangling. Let me inspect and fix:
 ### 🤖 Autopilot
 
 The old function body dangled after my new function (my replace only hit the header line). Removing the stale block:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean — no stale `FBE_FARMS_TAB` refs, `FBE_PLOTS_TAB` used 3×, node check passes. Now pushing to `tokenomics`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I made the same placeholder mistake as before — the PR has a PLACEHOLDER file. Fixing immediately by pushing the real content to the branch:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real file pushed. Verifying the PR diff is the actual handler (not placeholder) before merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verified — real handler on the branch (12,627 B, marker + upsert present, no placeholder), `mergeable: True`. Merging PR #452:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4877,31 +4882,37 @@ Say go and I'll deploy the GAS handler (or start whichever you pick).
 ### 🤖 Autopilot
 
 Go-signal received — deploying the GAS handler to the production GAS project (explicitly approved as option 1). First, checking the host setup + running a dry-run deploy (no GAS change by default):
+[2 tool result(s) compacted: ssh_run, gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dry-run shows the project folder has **only 3 files** — my new `process_farm_boundary_evidence.gs` isn't in the local checkout yet (it was merged to GitHub but the deploy host's checkout hasn't pulled). Let me pull the tokenomics repo in the context checkout, verify the file lands, then deploy:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Checkout pulled — the handler is now in the project folder (12,645 B). Deploying to the GAS runtime (you approved this):
+[1 tool result(s) compacted: gas_deploy_project — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deployed ✅ — GAS handler pushed to the production project (6 files, deploy ledger `deploy_20260901T030111Z_...`). Final piece: the **cron trigger**. Let me check how the TGM handler is triggered so FBE gets the same:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No trigger setup in the repo — TGM's cron trigger was likely configured manually in the GAS UI. Let me check whether the TGM trigger is documented anywhere (to mirror it for FBE):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the SCHEDULE_TRIGGERS.md to see how TGM's trigger is documented (so FBE gets the same treatment):
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5071,4 +5082,26 @@ Say go and I'll deploy the router update.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== FBE; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== doG; cd /tmp && echo "=== dispatch row for FARM BOUNDARY ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dao_protocol/main/truesi; …(+5 more)
 • `merge pr` → ✅ PR #453 on tokenomics merged successfully (sha: b7794ce53e739600ecbd0e6d926a954cf60993c1). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Implemented exactly the pattern you described** — webhook-first (instant doGet via dao_protocol) + hourly cron fallba
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+some feedback
+
+
+### 🤖 Autopilot
+
+Go ahead — I'm listening. What's the feedback?
 
