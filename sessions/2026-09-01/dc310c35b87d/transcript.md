@@ -10,259 +10,6 @@
 
 ### 🤖 Autopilot
 
-Merge hit a 409 "Head branch is out of date" (main moved again — likely the live-editor pattern) — stopping here per the one-PR-per-turn rule and reporting.
-
-## What I did this turn
-
-**Diagnosed all three governor-reported nav/UI bugs + opened PR #56 with the fixes.**
-
-**PR #56 — https://github.com/TrueSightDAO/sunmint_beta/pull/56** (branch `fix/nav-consistency-farm-option`, 3 files, +9/−0, `mergeable: True` — but merge rejected with 409 "head out of date")
-
-### Root causes found (all three)
-1. **Monitor + instrucoes missing "Registrar Fazenda"** — nav `<option value="farm">` absent + `navFarm` i18n key absent + `farm` routing case absent in `onNavChange` on both pages.
-2. **Instrucoes dropdown "not working"** — **the real bug**: I18N `en` block was **missing the trailing comma** after `sec1ImgCaption` (line 261) → JS syntax error → whole script block fails → `onNavChange` never defined → dropdown dead. Pre-existing on `main`, not my edit.
-3. **Limites "Monitorar Árvore" did nothing** — its `onNavChange` had no `monitor` case (only plant/farm/instrucoes).
-
-### Fixes (7 edits + 1 Contents-API push)
-- monitor + instrucoes: added `farm` nav option, `navFarm` pt+en i18n keys, `farm` routing case
-- limites: added `monitor` routing case (+`limites` for completeness)
-- instrucoes: added the missing comma (via Contents API after the PR-git push got rejected on the shared branch — the proven path)
-- Verified via **authoritative Contents API**: all three pages have farm option / navFarm / farm route / monitor route; instrucoes script now passes `node --check`
-
-### The 409
-"Head branch is out of date" — `main` moved after the branch was cut (same live-edit pattern seen throughout this thread). The fix is a fresh merge attempt now that the PR is up to date, or a rebase.
-
-## RESUME HERE → next unit (fresh turn)
-
-**Merge PR #56** — retry `merge_pr` (main may have caught up; if still 409, fetch latest main, re-verify the file state, and merge). Then **promote to prod** (`sync_beta_to_prod`) — but **only with your explicit go** (prod = always-stop). Verify on beta: nav has "Registrar Fazenda" on all pages, instrucoes dropdown works, limites "Monitorar Árvore" routes.
-
-Also still open from earlier: the **UI-weirdness on limites** (`.card` vs `.container` structure mismatch vs main app) — I noted it but didn't restyle in this PR; that's a follow-up if you want full visual consistency.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×8 → nav option/i18n/route audit across 5 pages; live beta page checks; monitor onNavChange exact bytes; instrucoes en-block comma bug confirmed pre-existing on main; branch file verification via Contents API (authoritative); JS `node --check` on all 3 fixed files
-• `git push changes` → PR #56 opened (7 edits); second push rejected (branch exists — used Contents API instead)
-• `upload local file to github` → instrucoes comma fix to branch (sha 172fafb1)
-• `merge pr` → ❌ 409 "Head branch is out of date" (blocker)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×13 → cd /tmp && for p in "index.html" "monitor-tree-growth/index.html" "instrucoes/index.html" "limites-da-fazenda/index.html" "register_farm/ind; cd /tmp && for f in pg_monitor-tree-growth_index.html.html pg_instrucoes_index.html.html pg_limites-da-fazenda_index.html.html; do echo "===; cd /tmp && echo "=== monitor nav options (full) ===" && sed -n '141,158p' pg_monitor-tree-growth_index.html.html && echo "=== instrucoes nav; …(+10 more)
-• `merge pr` → https://docs.github.com/rest/pulls/pulls#merge-a-pull-request
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: Merge hit a 409 "Head branch is out of date" (main moved again — likely the live-editor pattern) — stopping here per the one-PR-per-turn rule and reporting.
-
-## What I did this turn
-
-**Diagnosed all t
-
-
-### 🤖 Autopilot
-
-Go-signal received — retrying the merge of PR #56 (checking current state first):
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-Merged PR #56 myself (sha c9c824d, mergeable/clean once main caught up). Holding on prod promotion for both #55 and #56 — that's Gary's call.
-
-
-### 🤖 Autopilot
-
-Understood — PR #56 merged on your side (sha `c9c824d`). Prod promotion for both #55 and #56 stays held for Gary. Let me verify the merge landed on beta main and confirm the live beta pages show the fixes:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-go — redeploy killed the turn, nothing pending on your side.
-
-
-### 🤖 Autopilot
-
-Responsive ✅ — holding as before.
-
-**Status:**
-- PR #56 merged (your side, sha `c9c824d`) — nav fixes + instrucoes comma bug fix on beta main; PR #55 (farm dropdown `[object Object]` fix) also merged
-- **Prod promotion for #55 + #56** — held, gated on Gary's explicit go
-- Still open (Gary-dependent): FBE cron trigger, real-device boundary test
-- Parked: limites UI-weirdness restyle (`.card` vs `.container`), chrome audit of remaining pages, `sunmint_mobile/www/` sync
-
-Nothing pending on my side. Say the word when something's needed.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: Responsive ✅ — holding as before.
-
-**Status:**
-- PR #56 merged (your side, sha `c9c824d`) — nav fixes + instrucoes comma bug fix on beta main; PR #55 (farm dropdown `[object Object]` fix) also merged
-
-
-### 🤖 Autopilot
-
-Go-signal received — there's actually one **beta-side item I can execute that isn't gated on Gary**: the **limites UI-weirdness restyle** you reported earlier (I diagnosed it but parked it). Let me compare the current limites page styles vs the main app and fix it:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The limites page was already restyled in PR #54 (gray #f5f5f5, white container, green buttons) — so the "weird" must be structural. Let me compare how sections are wrapped vs the main app, and where `.card` is used:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found the structural mismatch: the main app uses plain `<div class="container">` blocks (no `<main>`, no `.card`), but limites has `<div class="container"><main><div class="card">` — a card-inside-container double-box that looks "weird." Let me see the exact lines to fix:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I see the exact problem: the boundary form is wrapped in `<div class="container"><main><div class="card">` — a **double-box** (container + card = nested white boxes with shadows). The main app has no `<main>`/`.card` — sections are plain `.container` blocks. The fix: unwrap the card (remove the `.card` wrapper + `<main>`), leaving the form directly in the `.container` like the other sections. Applying:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #57 opened. Verifying the branch file (structure fixed, JS intact) before merging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Clean: `.card` removed (0), `<main>` removed (0), container intact, both scripts pass `node --check`, 1 file +0/−4, `mergeable: True`. Merging PR #57:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**Fixed the limites-da-fazenda UI mismatch** (the "looks weird" feedback from earlier) — since it was a beta-side item I could execute without Gary.
-
-**PR #57 — https://github.com/TrueSightDAO/sunmint_beta/pull/57** (merged, sha `77c08e95`, 1 file +0/−4, `mergeable: True`)
-
-### Root cause
-The boundary form was wrapped in `<div class="container"><main><div class="card">` — a **card-inside-container double-box** (nested white boxes with shadows). The main app uses plain `.container` blocks with no `<main>` and no `.card`.
-
-### Fix
-Unwrapped the card: removed `<main>` + `<div class="card">` and their closers so the form sits **directly in the container**, matching the main app's structure exactly.
-
-### Verified
-- `.card`: 1 → 0, `<main>`: 1 → 0, container: intact
-- Both inline scripts still pass `node --check`
-- 1 file, +0/−4, merged cleanly
-
-**On beta now** (`beta.sunmint.truesight.me/limites-da-fazenda/`): the boundary form renders as a plain white container matching the rest of the app.
-
-## RESUME HERE → next unit
-
-**Prod promotion for #55 + #56 + #57** — all three are merged on beta and gated on **Gary's explicit go** (`sync_beta_to_prod`). That's the only remaining execution item; everything else is parked (FBE cron trigger, device test — Gary; chrome audit, `sunmint_mobile/www/` sync — your call).
-
-Holding here.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → style-block comparison (limites vs main), body-structure grep (container vs card), exact wrapped-section lines 60–95, .card usage
-• `git push changes` → PR #57 (branch fix/limites-ui-consistency, sha 46abab87)
-• `ssh run` → branch verification via Contents API (card 0, main 0, scripts OK, +0/−4, mergeable)
-• `merge pr` → ✅ PR #57 merged (sha 77c08e959894c9c4faaed8eba0cfb12851d55902)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/limites-da-fazenda/index.html" -o lim_now.html && curl ; cd /tmp && echo "=== MAIN index: body structure (containers vs cards) ===" && grep -n "class=\"container\|class=\"card\|<main\|</main\|optio; cd /tmp && echo "=== limites 60-95 (the wrapped section) ===" && sed -n '60,95p' lim_now.html && echo "=== .card usage count ===" && grep -c; …(+1 more)
-• `merge pr` → ✅ PR #57 on sunmint_beta merged successfully (sha: 77c08e959894c9c4faaed8eba0cfb12851d55902). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[observed, not directed at you — Nobody Will not DM you]: I think the https://beta.sunmint.truesight.me/register_farm/
-
-Language selection should be standardized to what it is here
-https://beta.sunmint.truesight.me/monitor-tree-growth/
-https://beta.sunmint.truesight.me/
-
----
-
-[observed, not directed at you — Nobody Will not DM you]: Also on this page
-https://beta.sunmint.truesight.me/limites-da-fazenda/
-
-The UI elemtns of 
-Sunmint
-Send farm boundary photos
-navLabel 
-Farm Boundaries
-
-
-
-Should be similar to the UI elements of 
-
-https://beta.sunmint.truesight.me/monitor-tree-growth/
-https://beta.sunmint.truesight.me/
-
-Notice how the elements are either in the box except the dropdown on the 2 referenced pages?
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-
-### 🤖 Autopilot
-
-Both feedback items are about UI consistency across the sunmint pages — actionable, and within this thread's scope. Let me diagnose the structure of all four pages (lang toggle + header/title/nav placement):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I can see the divergence clearly. Let me look at the two reference pages (index + monitor) structure in detail — how the logo/header is positioned (in-box or out-of-box) and where the lang-toggle sits:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now the exact divergence is crystal clear. The **reference pattern** (index + monitor):
-
-```
-<body>
-  <div class="lang-toggle">…</div>          ← OUTSIDE the box, top of page
-  <div class="nav-dropdown">…</div>          ← OUTSIDE the box
-  <div class="container">                    ← the white box
-    <div style="text-align:center;">
-      <img height="120px"> <h1>Sunmint/…</h1>   ← INSIDE the box
-    </div>
-    …
-  </div>
-```
-
-**Limites** puts the lang-toggle + logo + h1 + h2 **outside/between** (line 42 lang-toggle, then logo+h1+h2 in a bare div, then nav-dropdown) — so they float unboxed. **Register_farm** has the logo+h1 at line 297 but the lang-toggle is **missing entirely** (no `.lang-toggle` in its grep). Fix for both: match the reference layout.
-
-Let me see the exact limites top block (40–70) and register_farm top block (275–305) to build the precise edits:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 Now I have the exact picture. Before building the fix, let me verify two things: (1) whether PR #57's card-removal is actually on main (raw fetch may be CDN-lagged), and (2) register_farm's i18n machinery (does it have `setLang`/STRINGS, or only google_translate?):
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
@@ -4777,21 +4524,25 @@ The dispatch simulation confirms the routing path. Now the decisive end-to-end t
 ### 🤖 Autopilot
 
 Catalog confirms the live schema. Now submitting a real, clearly-marked test `[FARM BOUNDARY EVIDENCE EVENT]` through the live API to verify dispatch → new @39 webhook → anonymous GAS execution:
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Submitted. Now checking whether dispatch fired the webhook to the new @39 URL and whether the GAS handler executed (looking at the server journal for the dispatch/webhook logs + the GAS side):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Logs show only the restart (INFO dispatch logs are hidden from journald as we found earlier). Let me verify on the GAS side instead — checking whether the @39 webhook actually executed (the handler scans Telegram Chat Logs; my submission went via the API tool, so let me check both the sheet state and any execution evidence):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The submission landed (`POST /dao/submit_contribution` 200 at 21:40:25) — but I notice the dispatch happens in a **BackgroundTask**, and journald hides INFO-level dispatch logs. Let me confirm the webhook actually fired by checking the GAS side execution (the anonymous @39 endpoint) directly — and check the Plots sheet for any test row:
+[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5022,4 +4773,79 @@ So the **core flow is well documented**, but the "**who regenerates the cache wh
 ———
 **✅ Done this turn — actions taken:**
 • `search context` ×2, `read context file` ×2 → located the 4 docs covering the pipeline; mapped what's documented vs the regeneration gap
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Currently when I look at
+
+https://docs.google.com/spreadsheets/d/1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ/edit?gid=2011737890#gid=2011737890
+
+"Farm Boundary Evidence" where the boundaries are submitted
+"SunMint Plots" where the plots are named
+"SunMint Registered Farms" where the farms are registered
+
+I dont see clearly how the 2 tables are associated with each other.
+
+I think that is the problem
+
+
+### 🤖 Autopilot
+
+Let me actually look at the three tabs' schemas to diagnose the association problem concretely:
+
+
+### 🤖 Autopilot
+
+Now I can see the problem **exactly** — and you're right, the association is broken. Here's the concrete diagnosis:
+
+## The three tabs, as they actually are
+
+**1. `Farm Boundary Evidence`** (8 rows, all TEST/UAT) — the raw submission log. Columns: Farm Name, Plot ID, Boundary Type, Media URLs, Extracted GPS, Is New Farm… The FBE handler writes here.
+
+**2. `SunMint Plots`** (9 rows) — the plot registry. Columns: Plot ID, Farm ID, Plot Name, Hectares, Status… `RM-P1/rancho-maranta`, `LD-P1/paulo-la-do-sitio-para`, plus my test rows (`TEST-P1`, `UAT-PLOT-1`, `TDP1`). The FBE handler upserts rows here (`fbeUpsertFarm_`).
+
+**3. `SunMint Registered Farms`** — **this is the problem.** It has **ZERO rows** and a **completely wrong schema**:
+```
+Telegram Update ID | Telegram Chatroom ID | Telegram Chatroom Name | Telegram Message ID | Contributor Name | Contribution Made | Status date | Telegram File IDs
+```
+That's a **copy of some other system's tab schema** (generic Telegram-based), not a farm registry. Nothing writes to it, nothing reads it.
+
+## Why the association is unclear — the actual chain is only 2 hops, with no farm table
+
+The way it works today:
+```
+Farm Boundary Evidence (submission log)  ──(Plot ID / Farm Name)──►  SunMint Plots (plot rows)
+                                                                          │ Farm ID (slug)
+                                                                          ▼
+                                                    farms/index.json (repo)  ← dropdown for farmers
+```
+- **Boundary → Plot:** joined on **Plot ID** (and farm-name→slug). ✅ works (my TDP1 test proved it).
+- **Plot → Farm:** there is **no farm table**. The "farm registry" is just the dedup'd **Farm ID column in Plots** + the generated `farms/index.json`. `SunMint Registered Farms` is a dead, mis-schema'd tab that *looks* like it should be the join but isn't.
+
+So your confusion is legitimate: the third tab promises a farm registry but has the wrong header and is empty — it's a **leftover from a different sheet layout**, not part of this pipeline.
+
+## The fix I'd propose (makes the association obvious)
+
+Give **`SunMint Registered Farms`** the real farm-registry schema and wire it in:
+
+| Column | Example |
+|---|---|
+| Farm ID (slug) | `rancho-maranta` |
+| Farm Name | Rancho Maranta |
+| Owner | Jedielcio family |
+| Region | Altamira, Para |
+| Status | active / proposed |
+| Created At | 2026-08-30 |
+| Source | boundary-event / manual |
+| Plot Count / Total Hectares | 2 / 5.4 |
+
+Then:
+1. **FBE handler** (`fbeUpsertFarm_`) also upserts the farm row here when `Is New Farm` (rule 4 — "backend auto-creates the farm record" — becomes real)
+2. **Farms index generator** reads from THIS tab (single source of truth for farms) instead of deriving from Plots
+3. The join becomes a clean FK chain: **Evidence.PlotID → Plots.PlotID, Plots.FarmID → RegisteredFarms.FarmID** — three tables, one obvious path
+
+Want me to build it? It's one PR to the FBE GAS handler (farm-row upsert) + a schema reset of the Registered Farms tab + regenerating `farms/index.json` — the generator already exists. And I'd add a short "table association" section to `SUNMINT_PLOTS_REGISTRY.md` so it's documented for future Sophias.
 
