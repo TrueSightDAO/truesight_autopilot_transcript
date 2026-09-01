@@ -4869,21 +4869,25 @@ can you help clean up the outdated deployments in that project, then I will sort
 ### 🤖 Autopilot
 
 Go — let me first list the deployments in that GAS project to see what's there (and confirm clasp is set up), then clean up the outdated ones:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 6 deployments found. Before deleting anything, let me verify **which deployment IDs are actually referenced** by the webhook env keys (so I don't break the live chain):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify which deployment IDs are referenced anywhere (repos/config) before deleting anything — especially the versioned ones (@32, @34, @35, @36, @37):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me map exactly which `.env` keys reference each deployment before deleting anything (so I never break a live webhook):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4900,11 +4904,13 @@ Deployment reference map is now clear:
 | **`@34`** (`…zMRrDqB…`) | Tree growth monitoring webhook (admin, post-#441) | **0 env refs, 0 code refs** | 🟢 **outdated — delete** |
 
 Both `@34` and `@35` are superseded by `@36` (the TGM deployment) — nothing points at them. Let me do one final sweep for any other refs (docs, configs), then delete both via clasp:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Zero refs anywhere — safe to delete both. Deleting `@34` and `@35` via clasp:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5186,4 +5192,54 @@ Want me to do step 1 + verify which snapshot is current, so you can flip access 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp && echo "=== anonymous GET to @37 deployment (no action) ===" && curl -s -m 30 -L -w " FINAL_HTTP:%{http_code} " "https://script.goo; cd /tmp && echo "=== boundary action, 120s timeout ===" && timeout 130 curl -s -m 120 -w " FINAL_HTTP:%{http_code} SIZE:%{size_download} TIM; cd /tmp && echo "=== retry 1: follow redirect for boundary action ===" && curl -s -m 60 -L -w " FINAL_HTTP:%{http_code} SIZE:%{size_download; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+I already did.
+
+
+### 🤖 Autopilot
+
+Let me verify what you did — checking the deployment list, the current env webhook URLs, and probing anonymously:
+
+
+### 🤖 Autopilot
+
+**You redeployed @37 → it's now version @39** (the same deployment ID `AKfycbyoFCTzId…` now points at version 39 — current code with the boundary handlers). That's the fix. Let me confirm the env keys still point at that ID, and probe anonymously to verify execution:
+
+
+### 🤖 Autopilot
+
+Let me verify the env keys' full URLs match the @39 ID (not a different one), and follow the redirect on the probe to see where the 302 goes:
+
+
+### 🤖 Autopilot
+
+Two separate issues are now clear:
+
+**1. The env keys still point at the OLD deployment** (`AKfycbxrcXTZ…` = @HEAD), **not** the @39 one you just fixed (`AKfycbyoFCTzId…`). So dispatch is still firing the auth-walled @HEAD URL.
+
+**2. The @39 probe's 302 → `script.googleusercontent.com/macros/echo`** — that's actually the **normal GAS async-execution redirect** (the deployment DID accept the call and started executing; the `echo` URL is Google's response-relay). But my curl didn't follow it far enough / the relay returned nothing useful. So @39 may actually be **executing fine** — the 302-with-echo is Google's standard pattern, not an auth wall (the earlier sign-in 302 went to `ServiceLogin`, different).
+
+**The fix is clear: repoint the two env keys to the @39 deployment** (which you've made anonymous-executable with the current code). Let me confirm the @39 redirect is the benign echo pattern (vs ServiceLogin), then repoint the env:
+
+
+### 🤖 Autopilot
+
+**Confirmed — @39 executes anonymously and correctly:**
+- No-action probe → **200**, redirected through the benign `macros/echo` relay (standard GAS async pattern), body contains **"No valid action"** (the router's real output) — **0 ServiceLogin** hits
+- So **@39 = anonymous-executable, running current code (v39 includes the boundary handlers)** ✅
+
+**The only remaining gap: the env keys still point at @HEAD (`AKfycbxrcXTZ…`) — not @39 (`AKfycbyoFCTzId…`).** That's why dispatch's webhook still hits the auth wall.
+
+**Recommendation: repoint the two env keys to the @39 URL, then restart dao_protocol.** This is a production config change — stating it plainly: I'd edit `/home/ubuntu/dao_protocol/.env` on the dao_protocol host to set both `DAO_PROTOCOL_WEBHOOK_FARM_BOUNDARY_EVIDENCE` and `DAO_PROTOCOL_WEBHOOK_MEDIA_RETRACTION` to `https://script.google.com/macros/s/AKfycbyoFCTzIdC1g69ZX3AK894h2siQOKoNSEiuyLDtZJTtarQPHHa5Zl8rjot0vPFUquV2/exec`, then restart the service, then re-probe dispatch → webhook → GAS end-to-end.
+
+Say go and I'll make that change (or, if you'd rather keep @HEAD as the boundary deployment, set *its* access to Anyone instead — but @39 is already proven working).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && clasp deploym; timeout 25 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'grep -E "FARM_BOUNDARY_EVIDENCE|MEDIA; cd /tmp && echo "=== env keys ===" && timeout 25 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 ; …(+3 more)
 
