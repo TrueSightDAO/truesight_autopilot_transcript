@@ -4768,3 +4768,56 @@ Related abbreviations in the same family:
 
 So when I said "mirrors the proven TGM pattern," I meant the FBE handler reuses the exact same structure as the existing Tree Growth Monitoring processor (scan chat logs → dedupe → mirror media → append rows) — just for boundary photos instead of tree-growth photos.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Yeah, I think this abbreviation you should document somewhere right down seems as low you are the only person that knows this abbreviation I wonder if you should have it in the agency AI context somewhere [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+You're right — let me check whether there's already an abbreviations/glossary file in the context, and if not, create one:
+
+
+### 🤖 Autopilot
+
+Confirmed — your instinct is right, and it's worse than I thought: **TGM appears in 7+ context files and is never expanded once.** It's used as if everyone knows it. And there's **no glossary/abbreviations file at all** in the context. Let me fix that:
+
+
+### 🤖 Autopilot
+
+**PR #876 opened** — the abbreviations glossary. Stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Added `ABBREVIATIONS.md` — the missing glossary** (governor feedback: "TGM" used everywhere, never expanded, no glossary exists).
+
+**PR #876 — https://github.com/TrueSightDAO/agentic_ai_context/pull/876** (branch `docs/add-abbreviations-glossary`, sha `c6d793b7`)
+
+Your instinct was spot-on — the search confirmed **TGM appears in 7+ context files** (ADVISORY_SNAPSHOT, OPERATING_INSTRUCTIONS, GAS_SCRIPT_PROPERTIES, CONTEXT_UPDATES, HANDOFF_MANIFEST, 2 plans) and is **never expanded once**. There was no glossary file at all (zero hits for glossary/abbreviations/acronyms).
+
+The new `ABBREVIATIONS.md` covers:
+- **SunMint processors**: TGM (Tree Growth Monitoring), FBE (Farm Boundary Evidence), TGP (Tree Planting)
+- **Carbon/registry domain**: MRV, VCS, ICVCM, SBTi, OER, VVB, SBCE, CAR, INCRA, ETS
+- **Infra/tooling**: GAS, SA, TTL, SW, UAT, E2E, APK, QR, PIX
+- **Process**: PR, CI, API
+- Plus a rule of thumb: expand abbreviations at first use in new docs; add any new abbreviation there
+
+## RESUME HERE → next unit
+
+1. **Merge PR #876** (the glossary) — say go and I'll merge it, or it rides along next turn
+2. The open items from before (your pick):
+   - **E2E test** of the FBE chain (test event through Edgar → dispatch → GAS)
+   - **Cron trigger** (you set in GAS UI, per SCHEDULE_TRIGGERS.md §6)
+   - **Chrome audit** of `/monitor-tree-growth/`, `/instrucoes/`, `/register_farm/`
+   - **`sunmint_mobile/www/`** sync
+
+Which next?
+
+———
+**✅ Done this turn — actions taken:**
+• `search context` ×2 → TGM in 7+ files, never expanded; zero glossary hits
+• `git push changes` → https://github.com/TrueSightDAO/agentic_ai_context/pull/876 (branch docs/add-abbreviations-glossary, sha c6d793b7)
+
