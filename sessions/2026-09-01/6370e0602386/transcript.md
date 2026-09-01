@@ -2930,11 +2930,13 @@ Let me clear the blocker and confirm the state cleanly.
 ### 🤖 Autopilot
 
 My working tree still has the local (uncommitted) edits from PR #270's development — that's why pull aborted; it's not a real blocker. The clone is dirty with the same changes that are now in PR #270 (committed remotely). Let me clean it up so the box is in a sane state, and verify the GPS state from the clean main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the clean picture. Let me also confirm PR #270 got merged (HEAD is `04aef42` "Capture GPS at upload ingress (#270)" — looks merged!) and answer your actual question.
+[1 tool result(s) compacted: list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2969,31 +2971,37 @@ Say which and I'll do it.
 ### 🤖 Autopilot
 
 Got it — "geo-tag" = the videos uploaded to YouTube via the media archive pipeline (the farm-media uploads), and you want to know if those are already geo-tagged with their info in the JSON manifests. Let me verify exactly that: farm-manifest entries that were uploaded to YouTube (have `yt_id`) — do they carry lat/lon in their JSON?
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The farm manifests with `yt_id` aren't in this repo — they're elsewhere (I saw earlier the farm manifests live under `FARM_MEDIA_MANIFESTS/` — maybe in a different repo). Let me check the farm-media repos and the MAP pipeline doc for where they live.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The farm manifests live in **`farm-media-raw`** (organized by farm: `cleide`, `la-do-sitio`, `rancho-maranta`, `santa-anna-fazenda-para`). Let me check the manifests inside for GPS + `yt_id` on the uploaded entries.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Just `photos/` dirs — the manifests may be elsewhere or named differently. Let me look deeper and check for manifest JSONs in the daemon repo (the schema/parser) plus the raw repo's tree.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Empty — either the tree API needs a different branch or the repo has no JSONs. Let me check the default branch and the daemon's manifest module (schema), plus look for `yt_id` in the daemon code to find where YouTube IDs get recorded.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the farm daemon's manifest schema — it has `gps`, `yt_id`, and per-farm manifest files. Let me read the daemon manifest module fully to understand where these manifests are written, and check the raw repo's directory tree (the manifests may be in farm subdirs).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3005,26 +3013,31 @@ Now I understand the full architecture:
 - The sidecars + manifests are **local files** (not committed to GitHub) — `--outdir /tmp/farm_media_manifests_out`
 
 So the real question is: **do the local farm-media manifests on THIS box show `gps` populated for the videos that got uploaded (have `yt_id`)?** Let me check the box directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The inbox is empty — no sidecars, no manifests on the box. Let me check whether the manifest outputs were committed somewhere (the daemon's design says "Sophia or the governor runs this, reviews, then pushes via the normal PR flow") and look at the farm-media-daemon README/config for where the manifests get committed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full architecture now, and the design is clear: **the daemon never commits; manifests are committed deliberately via `farm-media-manifest commit` (PR flow)**. The inbox on this box is empty (0 sidecars) — so either the farm media was processed/uploaded elsewhere, or the manifests exist somewhere I haven't checked. Let me check the DESIGN.md sidecar schema (does the sidecar even carry GPS?) and look for committed manifests in agentic_ai_context (where the daemon plan lives).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found them — the **committed farm manifests live in `agentic_ai_context/FARM_MEDIA_MANIFESTS/`** (cleide, la-do-sitio, paulo-la-do-sitio-para, rancho-maranta-para, santa-anna-fazenda-para + index). The sidecar schema carries `gps` ("-3.4146, -52.6285") AND `yt_id`. This is exactly what you asked: **the videos uploaded via the MAP pipeline are geo-tagged, with their info in the JSON**. Let me verify the actual manifests — how many items have both GPS and yt_id.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me quickly size how many of the uploaded farm files are still on the box (so I can promise a real backfill).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3063,11 +3076,13 @@ Say which and I'll proceed.
 ### 🤖 Autopilot
 
 Executing the backfill: extend GPS into the farm manifests (la-do-sitio 71 + rancho 3 + santa-anna 5 = 79 exact EXIF), plus a quick cleide history check. Let me set up and inspect both repos and the on-box source files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two different manifest schemas exist (la-do-sitio uses `videos`, paulo uses `items`). The uploaded farm is **paulo-la-do-sitio-para** (71 uploaded, gps null). The on-box dir has a subfolder "la do sitio". Let me locate the actual files and verify EXIF GPS extraction works on them.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3078,16 +3093,19 @@ Excellent — everything checks out:
 - Sidecars with the same GPS exist in `media_archive_inbox/farm-media/paulo-la-do-sitio/`
 
 Now I'll build the backfill: read exact EXIF GPS per manifest item (file → on-box MOV), update `gps` + add `gps_source` in the 3 farm manifests (paulo 71, rancho 3, santa-anna 5), leaving cleide untouched. Let me write the script and run it in dry-run first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Better than my estimate — **115 GPS updates** found in dry-run (65 paulo + 37 rancho + 13 santa-anna), because the on-box dirs contain more matching MOVs than just the uploaded ones (the rancho/plot dirs have many source files). Let me verify the values are exact (spot-check), then apply with --write.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dry-run **didn't persist** (it only printed counts — the JSON in memory was never written without `--write`, which is correct behavior). The spot-check read the file on disk, which is still the un-updated version. That's expected. Let me apply `--write` now, then re-verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3095,26 +3113,31 @@ The dry-run **didn't persist** (it only printed counts — the JSON in memory wa
 **115 GPS values written** — exact EXIF, and the santa-anna values **cross-validate perfectly** against `youtube_videos.json` (IMG_7705 → -3.2922/-52.5718, IMG_7722 → -3.2925/-52.5721, IMG_7734/7740/7741 identical to cache). The exact same coordinates appear in both — GPS extraction is consistent.
 
 Now let me verify the diff, run the local test gate (doc/lint on the manifests), and open the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The diff is huge (2,273 lines) — my `json.dump(indent=2)` re-serialized the whole file, changing formatting everywhere. That's noisy for review. Let me revert and redo **surgically** — preserve the original file format exactly, only adding `gps`/`gps_source` to the edited items.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The original files use **indent=1** (1-space top-level, 3-space item keys); my `indent=2` dump reformatted everything. Reverting and redoing with matched formatting (indent=1, same key order, trailing newline) so the diff is only the added GPS lines.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All files use indent=1 with no non-ASCII and end with `\n` (the tail shows `}\n`). Now let me write a surgical updater that preserves formatting exactly — it'll do a text-level insertion of `gps`/`gps_source` lines after each item's `"error": null` (or `"yt_id"` line), keeping everything else byte-identical.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Very close — off by exactly 1 byte each (likely a trailing newline difference: original may have 2 newlines, or the dumps add/remove one). Let me find the exact byte difference.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3229,4 +3252,103 @@ Converging — tool budget hit. Here's the state of the farm-manifest GPS backfi
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×21 → cd /tmp && echo "=== aac clone state ==="; cd /tmp/aac_work 2>/dev/null && git checkout main -q 2>&1 | tail -1 && git pull origin main -q 2>; echo "=== find paulo/la-do-sitio MOVs on box ==="; find /home/ubuntu -maxdepth 4 \( -path "*la_do_sitio*" -o -path "*la-do-sitio*" -o -path ; cd /tmp/aac_work && cat > /tmp/backfill_farm_gps.py <<'PYEOF' #!/usr/bin/env python3 """Backfill exact EXIF GPS into committed FARM_MEDIA_MA; …(+18 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] [Handoff context — this Telegram topic (thread 18528) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Created https://github.com/TrueSightDAO/farm_media_manifests (public, matches farm-media-raw) and merged PR #383 registering it in both allowed_repos and api_only_repos. Needs a service restart to take effect (use deploy_autopilot's idle-drain guard) — then go ahead with the manifest migration you proposed.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] By the way, the location of the manifest files has changed. It has been shifted to the new repository. Check what has changed by looking into the day-moons. There's a lot of details. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+The governor moved the manifests to a new repo (`farm_media_manifests`) and wants me to check the daemon's details, then restart so the registration takes effect. Let me gather the state first.
+
+
+### 🤖 Autopilot
+
+The governor moved the manifests to a new public repo (`farm_media_manifests`) and merged the registration PR (#383). Let me check what changed in the daemon and the new repo's structure before deploying.
+
+
+### 🤖 Autopilot
+
+The governor moved the manifests to the new `farm_media_manifests` data repo (Contents-API only, like `farm-media-raw`) and wants me to (a) restart the service via `deploy_autopilot`'s idle-drain guard so the registration takes effect, then (b) migrate the manifests. Let me first check what changed in the daemon and whether the new repo's manifests already carry my GPS backfill.
+
+
+### 🤖 Autopilot
+
+Big finding: the new repo's manifests use a **different schema** — `latitude`/`longitude` numeric fields (populated!) instead of my `gps`/`gps_source` string. The governor already migrated with GPS. Let me check full coverage and the current service state before deploying.
+
+
+### 🤖 Autopilot
+
+Key findings:
+- **New repo already has the manifests migrated** with GPS — but in a **different schema**: numeric `latitude`/`longitude` (not my `gps`/`gps_source` string). Coverage: cleide 63/71, paulo 65/72 (my backfill!), rancho 37/52 (my backfill!), santa-anna **44/45** (more than my 13 — someone filled more), la-do-sitio 0 items (new empty file).
+- **PR #383 is already in the deployed checkout** (`a6c0020`) but the running service needs a restart to pick up settings.
+- The daemon's `farm_media_manifest.py` still writes the **old** location/schema.
+
+Let me deploy (restart with idle-drain) and inspect the daemon's manifest builder + new repo history in parallel.
+
+
+### 🤖 Autopilot
+
+`deploy_autopilot` returned **noop** — but that's actually good news: the running service started at **17:41:15**, *after* the PR #383 commit (`a6c0020`) was fetched (17:40), so **the new `farm_media_manifests` registration is already live** in the running process. No restart needed.
+
+Critical findings so far:
+- **New repo already has all manifests migrated** with a **new schema**: numeric `latitude`/`longitude` (not my `gps`/`gps_source` strings). GPS coverage: cleide 63/71, paulo 65/72, rancho 37/52, santa-anna 44/45, la-do-sitio 0 (empty stub).
+- **My earlier GPS backfill numbers (65/37) exactly match** the new repo's paulo/rancho geo counts — the governor migrated my backfill into the new schema. santa-anna went further (44 vs my 13).
+- **The daemon's `farm_media_manifest.py` still writes the OLD schema** (`gps` string, no lat/lon, no plots/gps_coverage) to `/tmp`, and the daemon README/DESIGN still say manifests live in `agentic_ai_context` — now stale.
+
+Let me verify the new repo's full schema (top-level keys) so I know exactly what the daemon builder must emit, and check whether `agentic_ai_context` still holds the old files.
+
+
+### 🤖 Autopilot
+
+deploy_autopilot returned **noop** — but the evidence says the registration is already live: the running service started at **17:41:15**, *after* the PR #383 commit (`a6c0020`) was in the working tree (fetched 17:40). The new repo is registered in the running process. No restart needed.
+
+Let me confirm the one remaining detail — the old dir's README and the stale doc refs — then I'll report.
+
+
+### 🤖 Autopilot
+
+I now have the complete picture. Let me report the findings and the plan — this turn is mostly investigation (the governor's "look into the day-moons" = check what changed).
+
+## What changed — full picture (verified)
+
+**1. The manifests moved to a new dedicated data repo:** `TrueSightDAO/farm_media_manifests` (public, Contents-API-only — same pattern as `farm-media-raw`, never cloned/branch-edited). It now holds:
+- `index.json` + `cleide.json`, `la-do-sitio.json` (empty stub), `paulo-la-do-sitio-para.json`, `rancho-maranta-para.json`, `santa-anna-fazenda-para.json`
+- **GPS is already in the new repo, in a new schema:** numeric `latitude`/`longitude` fields (not my `gps`/`gps_source` strings). Coverage: cleide **63/71**, paulo **65/72**, rancho **37/52**, santa-anna **44/45** (someone pushed santa-anna further than my 13), la-do-sitio 0 (empty).
+
+**2. My backfill is effectively superseded:** the governor migrated the manifests with the new schema and *my exact numbers* (paulo 65, rancho 37 — the counts match my earlier backfill). My `gps`/`gps_source` string schema and the `backfill_farm_manifest_gps.py` script are now **obsolete** — the new repo uses numeric `latitude`/`longitude` (better for geo-queries) and even dropped my `gps_source` field.
+
+**3. Service registration is ALREADY live:** PR #383 (registering `farm_media_manifests` in `allowed_repos` + `api_only_repos`) is in the working tree (`a6c0020`), and the running service started **17:41:15** — *after* that commit was fetched (17:40). `deploy_autopilot` confirmed "already on latest, no restart needed." **No restart required.**
+
+**4. Stale references remain** (the cleanup work):
+- `farm-media-daemon/farm_media_manifest.py` still writes the **old schema** (`gps` string, no `latitude`/`longitude`, no plots/gps_coverage/counts) to `/tmp`
+- `farm-media-daemon` README/DESIGN + `MEDIA_ARCHIVE_PIPELINE.md` (3 refs) still point manifests at `agentic_ai_context/FARM_MEDIA_MANIFESTS/` (now just a README pointer)
+- My pending `gps/farm-manifest-backfill` branch content is superseded
+
+## Proposal — align the pipeline to the new repo
+
+1. **Update `farm-media-daemon`** (`farm_media_manifest.py` + DESIGN/README): emit the **new schema** (top-level `plots/source_zips/counts/gps_coverage` + item `latitude`/`longitude`) and target `farm_media_manifests` via Contents API — so future `manifest-commit` runs write the correct shape.
+2. **Update `MEDIA_ARCHIVE_PIPELINE.md`** (agentic_ai_context): point the 3 stale refs at the new repo.
+3. **Drop my obsolete GPS backfill branch** (or rework it to the new schema — not needed since the new repo already has the data).
+
+Want me to proceed with 1+2 (and 3 as a branch delete)? I'll start with the daemon alignment PR.
+
+———
+**✅ Done this turn — actions taken:**
+• `deploy autopilot` → noop (already latest, no restart — registration live in running process)
+• `ssh run` ×5 → verified new repo contents/index/schema/commits, daemon manifest builder, old-dir README, stale doc refs, GPS coverage all farms, service start time vs PR #383 fetch
+• `list_org_repos` / `search_context` — confirmed `farm_media_manifests` (public, "Contents-API only, never cloned") + plan/doc refs
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → echo "=== new repo contents ==="; curl -s "https://api.github.com/repos/TrueSightDAO/farm_media_manifests/contents/" | python3 -c "import js; echo "=== farm-media-daemon README ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm-media-daemon/main/README.md" | head -6; echo "=== new repo README ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm_media_manifests/main/README.md" | head -40; ech; …(+8 more)
+• `deploy autopilot` → Already on the latest commit a6c0020a — no deploy needed. Did NOT restart. Do not retry.
 
