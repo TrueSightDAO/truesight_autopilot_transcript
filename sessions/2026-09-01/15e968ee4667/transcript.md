@@ -3705,6 +3705,7 @@ What is the status right now? [System note: the user sent this as a VOICE messag
 ### 🤖 Autopilot
 
 Let me check the actual live state before answering.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3868,4 +3869,49 @@ One honest gap in the docs: the cron's **rate-limit trickle** (250 files/pass, t
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== 1. verify_public_signatures README (cron mentions) ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/verify_public_sign
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+I also wonder if we should have a similar queue display much like this one that I’m seeing
+
+https://sophia.truesight.me/media-archive-pipeline
+
+
+### 🤖 Autopilot
+
+Let me look at what that pipeline page shows so I can speak to the comparison concretely.
+
+
+### 🤖 Autopilot
+
+Great idea — and the comparison is very favorable. Here's my read:
+
+## Yes — the ledger should get a queue display like MAP
+
+The Media Archive Pipeline page you're looking at is exactly the right pattern: **governors-only page** on sophia.truesight.me with live queue state — status badges per item (uploaded / pending / needs_metadata / error), grouped cards, recent events log, and a GitHub "committed manifests" section. It's a live operations view of a background pipeline. The signature backfill is *the same shape*: a background daemon processing thousands of items, where governors want to see progress, errors, and what's left.
+
+## What a "Signature Ledger Pipeline" page would show
+
+| MAP element | Ledger analog |
+|---|---|
+| Farms/cards (grouped by source) | **Event-type folders** (`contribution_event` 2,338 · `inventory_movement` 660 · `sales_event` 451 · …) |
+| Status badges | **per-file state**: `published` / `pending` (not yet pushed) / `excluded_pii` (703) / `test_bucketed` (25) / `error` |
+| Recent upload events | **last N cron passes** with `[push]` vs `[skip]` counts + "files remain" |
+| Committed manifests (GitHub) | **root `index.json` + per-folder indexes**, counts, `generated_at`, live links |
+| Auth | **governors-only JWT** (same as MAP — sign in on sophia.truesight.me) |
+
+The data is *already public* (the ledger is a public repo), so the page is a **convenience/ops layer**, not a permission gate — but keeping it governor-gated for the queue internals (like the `excluded_pii` bucket and the error view) matches MAP.
+
+## Effort & where it plugs in
+
+- **Data source**: the cron could write a `pipeline_state.json` (or the page computes live from the GitHub API + the log) — simplest: the cron already prints counts; add a tiny state file write per pass, then the page reads it (or reads the ledger + log directly).
+- **Home**: `truesight_me` / sophia app — same stack as MAP (HTML page + `/data` endpoint + JWT), so it's a **copy-adapt** of the MAP page, not new infrastructure.
+- **Scope**: one small PR (page + endpoint + cron state-write), then a beta deploy → review → prod.
+
+My recommendation: **yes, build it** — but as a natural **A7** after A6 completes (the backfill needs to be done first so the queue display has real content, and it doubles as the UAT surface for the trickle). It's cheap (MAP already proved the pattern), and it gives governors a live window into the daemon you were just asking about.
+
+Want me to add A7 to the plan and build it after the backfill finishes? Or would you rather I scope it now in parallel?
 
