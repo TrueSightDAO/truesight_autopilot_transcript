@@ -8,27 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_IMPACT_MAP_EXTENSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-What about the submission of images via to plot the boundaries of the farm plots? What is the progress on that?
-
-https://sunmint.truesight.me/
-
-
-### 🤖 Autopilot
-
-Good question — let me check the actual state of the boundary-submission work (it was scoped out of the impact map plan, so I need to verify what exists):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me verify the farmer app (sunmint.truesight.me) and dapp for any boundary-capture UI, plus the plots geojson current state:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 Straight answer: **the boundary-submission pipeline is designed and the data side works, but the farmer-facing capture + GPS automation is NOT built yet.** Here's the honest status:
@@ -4690,26 +4669,31 @@ All 6 edits applied. Adding the `.media-grid` CSS + running the full local valid
 ### 🤖 Autopilot
 
 The CSS block failed its assert (count of `.media-grid` with the dot = 0, since the JS uses `class="media-grid"` without a dot — my assert was wrong), so the CSS wasn't added; the page itself is fine (tags NONE, scripts OK). Adding the CSS correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All validations green (tags NONE, both scripts OK, CSS added). Now pushing PR-A as a PR to `sunmint_beta`:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I deliberately used a placeholder this time (to avoid the empty-content trap) — now pushing the real validated file over it:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verifying the PR branch matches my validated file, then merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 File matches; mergeability still computing. Merging PR #61 (the branch is one file changed vs main — should merge cleanly):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4777,31 +4761,37 @@ go — PR-B, write the invalidation design doc per the 3-tier model you and Gary
 ### 🤖 Autopilot
 
 Go-signal received — writing PR-B: the media-invalidation design doc per the locked 3-tier model. Grounding first (plan conventions + plots registry schema):
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full grounding in hand (plan rules + registry schema + the locked 3-tier model). Writing the PR-B design doc now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No existing doc — clean. Writing the design doc and opening the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #884 opened with a placeholder — now replacing it with the real design doc content:
+[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verifying the PR now carries the real doc (not placeholder), then merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real doc on the branch, all key sections present, placeholder gone, `mergeable: True`. Merging PR #884:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4957,4 +4947,125 @@ Which next?
 • `ssh run` ×6 → cd /tmp && rm -rf dp && git clone -q --depth 1 https://github.com/TrueSightDAO/dao_protocol.git dp && cd dp && echo "=== catalog: FBE entry ; cd /tmp/dp && echo "=== catalog: FBE string + its position ===" && python3 -c " import json c=json.load(open('truesight_dao_client/server/da; cd /tmp/dp && python3 -c " import json c=json.load(open('truesight_dao_client/server/data/events_catalog.json')) print('top-level keys:', li; …(+3 more)
 • `upload file to github` → https://github.com/TrueSightDAO/dao_protocol/blob/feat/media-retraction-event/truesight_dao_client/server/data/events_catalog.json
 • `merge pr` → ✅ PR #153 on dao_protocol merged successfully (sha: 693f56c7467385158c22a56b257c94989519410e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — PR-B3, the GAS handler. Holding options 2 and 3 (prod deploy + prod promotion) for Gary's explicit go.
+
+
+### 🤖 Autopilot
+
+Go-signal received — executing PR-B3: the `processMediaRetractionFromTelegramChatLogs` GAS handler, mirroring the FBE pattern. Grounding first:
+
+
+### 🤖 Autopilot
+
+The FBE handler is a complete template. Let me see the rest of it — the message-scan loop, the doGet-adjacent main function signature, and the tail (parsing + tracking-tab append):
+
+
+### 🤖 Autopilot
+
+Now let me see the head of the FBE file (constants + helpers) so my retraction handler can reuse the exact patterns (SOURCE_SHEET_URL, resolveContributorNameFromPublicSignature_, the tracking-tab header convention):
+
+
+### 🤖 Autopilot
+
+I have the complete template. Writing the retraction handler now — mirroring the FBE pattern with the 3-tier permission gate (sentinel / signed farmer / governor, else PENDING_GOVERNOR):
+
+
+### 🤖 Autopilot
+
+Handler built (262 lines, `node --check` OK, no doGet collision, MR_ prefix clean). Now the doGet router case in `process_qr_code_updates.js` + the SCHEDULE_TRIGGERS entry:
+
+
+### 🤖 Autopilot
+
+Now I have the doGet anchors. Let me see the exact FBE case block (147–155) to mirror it:
+
+
+### 🤖 Autopilot
+
+Now I have every anchor. Building the full PR-B3 — the new handler file + doGet router case + fallback message + SCHEDULE_TRIGGERS §7 entry:
+
+
+### 🤖 Autopilot
+
+doGet case added, `node --check` OK. Now the SCHEDULE_TRIGGERS §7 entry:
+
+
+### 🤖 Autopilot
+
+Adding §7 to SCHEDULE_TRIGGERS.md before the "Related Documentation" section:
+
+
+### 🤖 Autopilot
+
+All three files validated (node --check OK ×2, §7 added). Now pushing PR-B3 — new handler + doGet case + trigger doc, using the placeholder-then-real flow:
+
+
+### 🤖 Autopilot
+
+PR #454 opened. Now pushing the real validated files over the placeholders (3 files — handler, router, trigger doc):
+
+
+### 🤖 Autopilot
+
+Now pushing the SCHEDULE_TRIGGERS.md update to the branch:
+
+
+### 🤖 Autopilot
+
+Verifying all 3 files match my validated local versions, then merging:
+
+
+### 🤖 Autopilot
+
+All 3 files MATCH, `mergeable: True`. Merging PR #454:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**PR-B3 delivered — the MEDIA RETRACTION GAS handler + doGet router case + trigger doc.**
+
+**PR #454 — https://github.com/TrueSightDAO/tokenomics/pull/454** (merged, sha `f69eedf3`, 3 files)
+
+### Changes
+1. **`process_media_retraction.gs` (NEW, 262 lines)** — `processMediaRetractionFromTelegramChatLogs()`:
+   - Cron/webhook processor mirroring the FBE pattern (scan Telegram Chat Logs → parse → dedup via new "Media Retraction" tracking tab → append tracking)
+   - **3-tier permission gate** (your + Gary's lock): sentinel → PROCESSED (automated); resolvable farmer signature → PROCESSED (tier 1); governor email → PROCESSED (tier 2); else **PENDING_GOVERNOR**
+   - **Soft-invalidate**: appends retracted URLs to the plot's "Invalidated Media" column (created by header name if absent), marks `needs_revision` when no valid media remain (v1 heuristic; the <3-point rule lives in the extraction script per the design doc)
+   - All identifiers `MR_`-prefixed; reuses shared constants/helpers; **no doGet collision**
+2. **`process_qr_code_updates.js`** — doGet router case `?action=processMediaRetractionFromTelegramChatLogs` (mirrors FBE case) + fallback message lists the new action
+3. **`SCHEDULE_TRIGGERS.md`** — §7 Media Retraction Processing (hourly recommendation + manual trigger setup)
+
+### Verified
+- `node --check` on both JS files ✓
+- Collision check: no doGet in handler, MR_ prefix unique ✓
+- All 3 branch files **byte-identical** to locally-validated versions (MATCH ×3 via Contents API)
+- Merged cleanly (sha `f69eedf3`)
+
+## RESUME HERE → next unit (governor's pick)
+
+1. **PR-B4** — the app UI: "Invalidar" buttons + reason modal on the media list (`limites-da-fazenda`, from PR-A) + offline-queueable retraction submissions + sentinel badges read-only
+2. **Deploy dao_protocol PR #153 + tokenomics PR #454 to prod** — git pull + restarts + `clasp push` (production — **needs your/Gary's go**)
+3. **Prod promotion for sunmint #55–#61** — gated on Gary's go
+
+Which next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /tmp && rm -rf tk && git clone -q --depth 1 https://github.com/TrueSightDAO/tokenomics.git tk && cd tk && ls google_app_scripts/ | head -; cd /tmp/tk/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && echo "=== line count ===" && wc -l process_farm_b; cd /tmp/tk/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && sed -n '1,59p' process_farm_boundary_evidence.gs ; …(+7 more)
+• `merge pr` → ✅ PR #454 on tokenomics merged successfully (sha: f69eedf39942beadf034b7dd39e9861c329a057a). Pull Request successfully merged
 
