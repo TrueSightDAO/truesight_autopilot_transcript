@@ -2756,6 +2756,7 @@ To recap the resolution chain so it's clear what you're looking at: the cache (`
 ### 🤖 Autopilot
 
 Let me verify precisely what's under `~` on this box and whether any of it matches the manifest source files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2789,21 +2790,25 @@ Want me to also wire GPS extraction into `youtube_batch_incoming.py` (capture la
 ### 🤖 Autopilot
 
 Wiring GPS extraction into the upload pipeline — the permanent fix. Let me read the current state of both files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me see the current `youtube_batch_incoming.py` (post-#268) around entry creation, and check whether the farm MAP pipeline has GPS extraction code I should reuse instead of importing from the backfill script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the exact entry-creation block (lines ~254–380) and check the farm MAP pipeline's GPS extraction for reuse.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full upload flow. The GPS must be captured at the exact moment the source file is in hand — right before `upload_video()` — and stored in the cache entry. Let me check the backfill script's main-guard (for clean import) and the other upload scripts' entry construction.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2943,4 +2948,98 @@ Say which and I'll do it.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → echo "=== media dirs on box now ==="; for d in /home/ubuntu/santa_anna_fazenda /home/ubuntu/santa_anna_new /home/ubuntu/santa_anna_work /hom; cd /tmp/agroverse_shop_work && git checkout main -q 2>&1 | tail -1 && git pull origin main -q 2>&1 | tail -1 && python3 -c " import json, sy; cd /tmp/agroverse_shop_work && git status --short | head -5; echo "---"; git stash list | head -3; echo "=== untracked blockers ==="; git st; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] Hey by the way, when I say Joe Tag I meant all the video files that were uploaded onto YouTube via the media archive pipeline. So if those are already Joe Tag and have their information also in the JSON files, then I'm fine. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — "geo-tag" = the videos uploaded to YouTube via the media archive pipeline (the farm-media uploads), and you want to know if those are already geo-tagged with their info in the JSON manifests. Let me verify exactly that: farm-manifest entries that were uploaded to YouTube (have `yt_id`) — do they carry lat/lon in their JSON?
+
+
+### 🤖 Autopilot
+
+The farm manifests with `yt_id` aren't in this repo — they're elsewhere (I saw earlier the farm manifests live under `FARM_MEDIA_MANIFESTS/` — maybe in a different repo). Let me check the farm-media repos and the MAP pipeline doc for where they live.
+
+
+### 🤖 Autopilot
+
+The farm manifests live in **`farm-media-raw`** (organized by farm: `cleide`, `la-do-sitio`, `rancho-maranta`, `santa-anna-fazenda-para`). Let me check the manifests inside for GPS + `yt_id` on the uploaded entries.
+
+
+### 🤖 Autopilot
+
+Just `photos/` dirs — the manifests may be elsewhere or named differently. Let me look deeper and check for manifest JSONs in the daemon repo (the schema/parser) plus the raw repo's tree.
+
+
+### 🤖 Autopilot
+
+Empty — either the tree API needs a different branch or the repo has no JSONs. Let me check the default branch and the daemon's manifest module (schema), plus look for `yt_id` in the daemon code to find where YouTube IDs get recorded.
+
+
+### 🤖 Autopilot
+
+Now I can see the farm daemon's manifest schema — it has `gps`, `yt_id`, and per-farm manifest files. Let me read the daemon manifest module fully to understand where these manifests are written, and check the raw repo's directory tree (the manifests may be in farm subdirs).
+
+
+### 🤖 Autopilot
+
+Now I understand the full architecture:
+
+- **`farm-media-raw`** holds only **photos** (HEICs) — no videos, no manifests in the repo
+- **`farm-media-daemon`** builds manifests **locally** on the box (`/home/ubuntu/farm_media_inbox/<farm_id>/*.mp4.json` sidecars → `FARM_MEDIA_MANIFESTS/<farm>.json`) — the manifest includes **`gps`** (from the daemon's sidecar) and **`yt_id`** (YouTube ID after upload)
+- The sidecars + manifests are **local files** (not committed to GitHub) — `--outdir /tmp/farm_media_manifests_out`
+
+So the real question is: **do the local farm-media manifests on THIS box show `gps` populated for the videos that got uploaded (have `yt_id`)?** Let me check the box directly.
+
+
+### 🤖 Autopilot
+
+The inbox is empty — no sidecars, no manifests on the box. Let me check whether the manifest outputs were committed somewhere (the daemon's design says "Sophia or the governor runs this, reviews, then pushes via the normal PR flow") and look at the farm-media-daemon README/config for where the manifests get committed.
+
+
+### 🤖 Autopilot
+
+I have the full architecture now, and the design is clear: **the daemon never commits; manifests are committed deliberately via `farm-media-manifest commit` (PR flow)**. The inbox on this box is empty (0 sidecars) — so either the farm media was processed/uploaded elsewhere, or the manifests exist somewhere I haven't checked. Let me check the DESIGN.md sidecar schema (does the sidecar even carry GPS?) and look for committed manifests in agentic_ai_context (where the daemon plan lives).
+
+
+### 🤖 Autopilot
+
+Found them — the **committed farm manifests live in `agentic_ai_context/FARM_MEDIA_MANIFESTS/`** (cleide, la-do-sitio, paulo-la-do-sitio-para, rancho-maranta-para, santa-anna-fazenda-para + index). The sidecar schema carries `gps` ("-3.4146, -52.6285") AND `yt_id`. This is exactly what you asked: **the videos uploaded via the MAP pipeline are geo-tagged, with their info in the JSON**. Let me verify the actual manifests — how many items have both GPS and yt_id.
+
+
+### 🤖 Autopilot
+
+Let me quickly size how many of the uploaded farm files are still on the box (so I can promise a real backfill).
+
+
+### 🤖 Autopilot
+
+I have the complete, precise answer now. Here it is:
+
+**What you asked (videos uploaded to YouTube via the media archive pipeline):** the farm-manifest uploads. Here's the real state, verified against the committed manifests:
+
+| Farm manifest | Uploaded (yt_id) | GPS in manifest | Source files on box |
+|---|---|---|---|
+| **cleide** | 71 | ❌ `gps: null` | ❌ 0/71 |
+| **paulo-la-do-sitio** | 71 | ❌ `gps: null` | ✅ 71/71 |
+| **rancho-maranta** | 3 | ❌ `gps: null` | ✅ 3/3 |
+| **santa-anna-fazenda** | 5 | ❌ `gps: null` | ✅ 5/5 |
+
+**So no — the pipeline-uploaded videos are NOT geo-tagged in the JSON right now.** The manifests carry `yt_id` (so we know which YouTube video each file became) but **every single `gps` field is null** — even though the sidecar schema *has* a `gps` slot ("-3.4146, -52.6285") and the MAP pipeline extracts GPS (that's how we got the 5 in `youtube_videos.json`). The manifests were committed **without** the GPS values.
+
+**But here's the good news:** 79 of the 150 uploaded files' **source files are still on this box** (la-do-sitio 71/71, rancho 3/3, santa-anna 5/5 — cleide's 71 are gone). So I can backfill ~79 of 150 with **exact EXIF GPS** from the files themselves, right now, and fix the manifests (the same way we did for the 5 IMG entries).
+
+**My recommendation:** backfill GPS into the farm manifests (la-do-sitio, rancho, santa-anna = 79 exact; cleide stays null pending its source files), which restores geo-searchability for those farm videos. Want me to:
+- **(a)** open that PR now (extend `add_gps` backfill → farm manifests, exact EXIF, `gps_source: file_exif`), and/or
+- **(b)** also check the sidecars in the git history / any backup for cleide's GPS?
+
+Say which and I'll proceed.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /tmp/agroverse_shop_work && echo "=== find farm manifests ==="; find . -name "*.json" -path "*manifest*" 2>/dev/null | head; find . -type; cd /tmp && echo "=== repos with farm manifests ==="; for r in farm-media-raw farm-media-daemon agroverse-inventory; do echo "-- $r:"; curl -; cd /tmp && echo "=== farm-media-raw structure ==="; curl -s "https://api.github.com/repos/TrueSightDAO/farm-media-raw/contents/la-do-sitio" ; …(+8 more)
 
