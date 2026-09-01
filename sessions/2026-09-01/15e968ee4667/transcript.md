@@ -10,42 +10,6 @@
 
 ### 🤖 Autopilot
 
-Let me read the final tail of the script (the write loop + constants: GH_API, REPO) to plan the retarget.
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The artifact chain is nesting — let me grab the key constants and the write-loop tail directly with a targeted command.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the full write path. Now let me read the top of the script (lines 1–190) — the constants, `parse_event`, `build_signatures` header — before retargeting.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-A2 execution begins. I have the full script map. Now I'll retarget it on the box: change the target repo to `verify_public_signatures`, add per-event folder mapping + index builders, replace the aggregate write loop with a per-event ledger writer, and dedupe the duplicated `_is_test_event`/`_SPKI_PREFIX` blocks.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 6 patches applied cleanly and it compiles. Now the **dry-run** (A2 gate): generate the per-event ledger locally, count files, and run the PII scan.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Dry-run looks exactly right: **74 event files + 5 index files** across the 4 folders (74 = 73 verified + 1 new measurement `Edgar_20260829143953_012` that landed since PR2 — the cron caught it). PII scan passed, layout matches the plan §3.1. Let me inspect a sample per-event file + the root index, and check the measurement record.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 Dry-run is 95% right, but I caught a real inconsistency: the root index shows `tree_growth_monitoring: count 0` while a growth event file **does** exist (`Edgar_20260829143953_012` — it's in chat logs but the measurements tab is still empty, so the events-loop record is what got written, and the measurements block then clobbered the folder index to 0). Also the measurement record lacks `event_type` for schema uniformity. Let me fix `_ledger_files` to compute per-folder counts from the actual files written.
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
@@ -4569,11 +4533,13 @@ Favicon prepared (64×64 PNG, 7.8KB, base64 10,476 chars). Now swap it into both
 ### 🤖 Autopilot
 
 Both modules updated with the Sophia avatar favicon, compile + ruff clean. Commit and push to the branch (PR #382 will update automatically).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two commits now (logo → avatar). Let me squash to one clean commit and force-push, then check CI on the new head.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4807,4 +4773,84 @@ So: nothing to do *this instant* — the daemon is doing its job. I'm standing b
 ———
 **✅ Done this turn — actions taken:**
 • `deploy autopilot` → Already on the latest commit d24d545e — no deploy needed. Did NOT restart. Do not retry.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Hey, what's the status of the two Damon pipe lines? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Checking both pipelines — the signature ledger backfill daemon and the media archive pipeline.
+
+
+### 🤖 Autopilot
+
+Good progress on the backfill. Let me get the MAP's actual scan-inbox state to report both pipelines fully.
+
+
+### 🤖 Autopilot
+
+The inbox scan returned 4 items with unknown status — let me check what the inbox actually contains to report MAP accurately.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture of both daemons. Let me report.
+
+## Two daemons — status report
+
+### 1. Signature Ledger Backfill (the RTA cache daemon) — ⏳ ~80% done, actively running
+| Metric | Value |
+|---|---|
+| **Remaining** | **828 files** (progress: 3477 → 2977 → 2478 → 1728 → 1328 → 1078 → **828**) |
+| **Cursor** | `inventory_movement/Edgar_20260618232058_006.json` (June 18 events) |
+| **Pace** | ~250 files / 30-min cron pass → **~4 passes ≈ 2h to finish** |
+| **PII guard** | Active (1,650 events excluded, scan clean) |
+| **Live so far** | ~3,100+ files across 12+ folders (contribution 2,168, inventory_movement now filling, sales/practice still to come) |
+
+### 2. Media Archive Pipeline (MAP) — ⏳ idle/empty, no active work
+- **Inbox**: empty-ish — `_scan_inbox` found 4 items but all **no-status** (the `MEDIA_ARCHIVE_INBOX` dir `/home/ubuntu/media_archive_inbox` is essentially empty / has no valid source/farm sidecars; manifest index also returned nothing)
+- **It's a pull-on-demand page + inbox scanner**, not an always-on daemon — it renders the dashboard from whatever's in the inbox; with nothing uploaded, it shows "No farms in the inbox yet"
+- **No cron/background loop** for MAP (the only cron is the signature backfill) — MAP "runs" when the page is viewed
+
+So: **the RTA backfill is genuinely chugging along (828 left, ~2h)** and will auto-complete with zero human input; **MAP is quiet because there's no media in the inbox** — it's waiting for uploads (farm media sidecars) to process.
+
+Nothing needs you on either. I'll report when the backfill hits 0 (then: completion checks + §7 contribution). Want me to look into why MAP's inbox has no sidecars, or is it expected to be empty right now?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → backfill: 828 remain, cursor inventory_movement June 18, ~2h ETA; MAP: _scan_inbox → 4 no-status items, inbox root empty, manifest index None, no MAP cron/daemon loop (pull-on-view only); only cron = signature backfill
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → grep remain lines (1328→1078→828); cursor inventory_movement/Edgar_20260618232058_006.json; MAP module scan (inbox, manifest index, cron) — 4 items no status, inbox empty, no daemon loop
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo "=== 1. SIGNATURE LEDGER BACKFILL ==="; grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/null | tail -3; e; cd /opt/truesight_autopilot && python3 - <<'PYEOF' 2>&1 | head -25
+from app import media_archive_pipeline as m
+try:
+    inbox = m._scan_inbox()
+    print("INBOX total:", len(inbox))
+    from collections import Counter
+    st = Counter(i.get('status','?') for i in inbox)
+    print("by status:", dict(st))
+    for i in inbox[:5]:
+        print("  ", i.get('farm') or i.get('name') or i.get('file'), "->", i.get('status'))
+except Exception as e:
+    print("scan error:", type(e).__name__, e)
+try:
+    idx = m._fetch_manifest_index()
+    print("MANIFEST index:", (idx.get('total') if isinstance(idx,dict) else 'n/a'))
+except Exception as e:
+    print("manifest error:", type(e).__name__, e)
+PYEOF
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo "=== 1. SIGNATURE LEDGER BACKFILL ==="; grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/; cd /opt/truesight_autopilot && python3 - <<'PYEOF' 2>&1 | head -25 from app import media_archive_pipeline as m try: inbox = m._scan_inbox() ; cd /opt/truesight_autopilot && echo "=== _scan_inbox source ==="; sed -n '65,101p' app/media_archive_pipeline.py; echo "=== find inbox dir i
 
