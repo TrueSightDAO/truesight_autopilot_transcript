@@ -2867,6 +2867,7 @@ Correct key found. Re-running UAT4 with the real sheet ID.
 ### 🤖 Autopilot
 
 UAT4 flagged a real desync: ledger has 1 growth entry, tab has **0** rows. Let me inspect the growth event's ledger record and its chat-log source row to understand whether the ledger is over-inclusive or the GAS webhook hasn't processed it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2917,16 +2918,19 @@ go for 1 and 2
 ### 🤖 Autopilot
 
 UAT signed off (both decisions). Executing: mark UAT complete, decommission the `sunmint` mirror. First, check the sunmint repo state to plan the decommission precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Authorized to decommission. The sunmint repo still has the two stale ledger files (`signatures.json` 223 KB, `tree_growth_measurements.json` 120 B) — both superseded by `verify_public_signatures`. Deleting them via Contents API with the cron PAT.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 DELETE returned 200 for both, but the listing still shows them (GitHub API contents cache is eventual-consistency). Let me confirm via git history + raw URL status.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3098,4 +3102,128 @@ Everything else is mechanical (extend the parser → new folders → dry-run →
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /home/ubuntu/scripts && GOOGLE_APPLICATION_CREDENTIALS=/home/ubuntu/creds/google_credentials.json python3 - <<'EOF' import gspread, re, c; cd /home/ubuntu/agentic_ai_context && git fetch origin -q && git show origin/main:plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md | grep -n -A6 "| \; cd /home/ubuntu/agentic_ai_context && git show origin/main:plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md | grep -n -B2 -A8 "backfill\|A6" | head -
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+3 then
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+Gary chose **option 3 — publish emails as-is** (full verification integrity, explicit sign-off given after my legal/community caveat). Executing A6 with the full 5,540-event backfill. First, let me see the current script's event-type mapping and PII gate so I can generalize them.
+
+
+### 🤖 Autopilot
+
+Now let me see the PII enforcement point and the `build_signatures` core so I can flip the policy precisely (option 3 = publish, keep the count for the manifest).
+
+
+### 🤖 Autopilot
+
+Option 3 locked: **full 5,540-event backfill, emails included as-is** (Gary's explicit call after the caveat). Now I'll generalize the script: drop the SunMint-only allowlist (folder = slug of the event-type marker, which auto-matches existing folders), flip the PII gate to report-only, and keep test/malformed bucketing. Let me first sync the two script copies, then edit.
+
+
+### 🤖 Autopilot
+
+The two copies differ (deployed cron copy vs. repo copy — I need the repo copy as the base). Let me sync from repo, then apply the A6 generalization edits to the repo copy.
+
+
+### 🤖 Autopilot
+
+The repo copy already has A6 generalization edits in the working tree (docstring flipped to option 3 with `--allow-pii`, SUNMINT_MARKERS removed) — the deployed cron copy is still the old 529-line version. Let me assess how complete the working-tree version is.
+
+
+### 🤖 Autopilot
+
+The working-tree copy is mostly generalized (docstring, parse_event, EVENT_FOLDER, `--allow-pii`). Let me verify the PII enforcement and folder-slug logic are correct, then test the generalization with a dry-run.
+
+
+### 🤖 Autopilot
+
+The working-tree version is complete and correct: generalized `parse_event` (all RSA-signed events), `_folder_for` slug fallback (new types → `contribution`, `sales`, etc.), `--allow-pii` gate (option 3, report-only), fail-closed default. The generalization is done. Now the critical check: a **dry-run** to see the full backfill scope — folder counts, event totals, test bucketing.
+
+
+### 🤖 Autopilot
+
+Backfill is working — new folders appearing (`upc_linking_contribution`, `voting_rights_withdrawal_settlement_event`, `warmup_send_event`). Let me get the aggregate counts (events vs test bucketed, per-folder totals, email hits) to report the full scope.
+
+
+### 🤖 Autopilot
+
+**Backfill scope confirmed: 4,650 event files across 40 folders** (contribution_event 2,338 · inventory_movement 660 · sales_event 451 · dao_inventory_expense_event 200 · practice_event 168 · email_* 290 · + 33 more). Test bucketing = 0 here because test rows were already excluded (the dry-run writes all RSA-signed rows). Now let me push the generalization PR (one PR for the code) — then the A6 gate is the dry-run diff review + push.
+
+
+### 🤖 Autopilot
+
+All checks pass, and I'm already on a `feat/a6-all-events` branch (created earlier). The working tree has unrelated noise (events_catalog_snapshot, sophia.conf, active_tracks, followups/state.json) that must stay out of the PR. Let me verify the branch's committed state and commit only the script.
+
+
+### 🤖 Autopilot
+
+The script change is uncommitted on `feat/a6-all-events` (which is based on `a2836f7`). Let me commit only the script, push, and open the PR (REST API, as established).
+
+
+### 🤖 Autopilot
+
+**PR #360 open** (A6 generalization, one file, +77/−40). Let me verify the diff is clean before reporting at the gate.
+
+
+### 🤖 Autopilot
+
+**A6 code PR ready — at gate ✅**
+
+## [PR #360: A6 — generalize ledger to all RSA-signed events](https://github.com/TrueSightDAO/truesight_autopilot/pull/360)
+Clean diff: **1 file, +77/−40** (no working-tree noise).
+
+### What changed
+| Change | Detail |
+|---|---|
+| **Scope** | SunMint-only → **ALL RSA-signed DAO events** (39 event types) |
+| **Folder mapping** | `_folder_for()` falls back to snake_case slug of the event marker → new folders auto-create (`contribution_event/`, `sales_event/`, `inventory_movement/`, `practice_event/`, `email_registered_event/`, …) |
+| **PII policy** | Governor decision (2026-09-02): **option 3 — publish as-is, emails included** (signature verifies over exact bytes Edgar checked). Build stays **fail-closed by default**; `--allow-pii` publishes as-is; cron will run with `--allow-pii` |
+| **Bucketing kept** | test/malformed events still excluded (SPKI check + test markers) |
+| **Checks** | ruff check ✓ · format ✓ · compile ✓ |
+
+### Dry-run evidence (backfill scope)
+- **4,650 event files across 40 folders** (incl. `contribution_event` 2,338 · `inventory_movement` 660 · `sales_event` 451 · `dao_inventory_expense_event` 200 · `practice_event` 168 · `email_registered_event` 153 · `email_verification_event` 137 · tree_* preserved)
+- Existing tree folders unchanged (25 planting · 41 reject · 10 link · growth) — backward compatible
+- `test_events: 0` (test rows excluded at parse), warnings empty
+
+### Roadmap
+| Unit | Status |
+|---|---|
+| A1–A5 | ✅ |
+| **A6 code** | ⏸️ **PR #360 at gate — your review** |
+
+## RESUME HERE → **A6 gate + push**
+1. **Your review of PR #360** → merge on your go
+2. **Dry-run diff review** (I can attach the root `index.json` preview — 40 folders, 4,650 events)
+3. **First real backfill push** (`--allow-pii`) → ~4,650 files to `verify_public_signatures` (Contents-API, sha-aware — new files only, existing untouched)
+4. **Re-verify 3 samples** from new folders (e.g. `contribution_event/`, `sales_event/`) + confirm indexes
+5. Update cron line (add `--allow-pii`), update README + plan → A6 complete → final §7 contribution
+
+⚠️ **Heads-up:** this makes the ledger's public content materially larger (emails of ~1,700 contributors will be in the public repo) — that's your explicit option-3 call, just restating it once more before the push.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → scoped data (5,540 signed / 1,724 w-email across 39 types); verified working-tree generalization complete + clean (ruff/format/compile); dry-run → **4,650 events / 40 folders**; committed script on `feat/a6-all-events`; opened **PR #360** via REST; verified clean 1-file diff
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cd /home/ubuntu/scripts && echo "=== EVENT_TYPE map ==="; grep -n "EVENT_TYPE\|_FOLDER\|folder\|tree_planting\|EVENT_RE\|_EVENT" sync_sunmin; cd /home/ubuntu/scripts && echo "=== PII enforcement ==="; grep -n -B3 -A8 "EMAIL_RE\|email_re\|is_private\|exclude\|EXCLUDE" sync_sunmint_s; diff /home/ubuntu/scripts/sync_sunmint_signatures.py /opt/truesight_autopilot/scripts/sync_sunmint_signatures.py >/dev/null 2>&1 && echo "IN; …(+9 more)
 
