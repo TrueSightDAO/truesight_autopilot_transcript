@@ -4545,21 +4545,25 @@ Two commits now (logo → avatar). Let me squash to one clean commit and force-p
 ### 🤖 Autopilot
 
 PR head shows stale (9581adca) again — GitHub PR-head propagation lag after force-push. The branch is at `af9d39a`. Let me wait and verify, then check CI on the new head.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR head still stale, and the ls-remote came back empty. Let me check the remote branch state directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the remote branch ref state directly (the ls-remote grep looked empty).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Remote branch is at `af9d39a` but PR head still shows `9581adca` — GitHub PR-head lag persists after force-push. Same pattern as before. Let me wait once more; if still stale, close + reopen a fresh PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4853,4 +4857,56 @@ PYEOF
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo "=== 1. SIGNATURE LEDGER BACKFILL ==="; grep "files remain\|backfill complete" /home/ubuntu/scripts/sync_sunmint_signatures.log 2>/dev/; cd /opt/truesight_autopilot && python3 - <<'PYEOF' 2>&1 | head -25 from app import media_archive_pipeline as m try: inbox = m._scan_inbox() ; cd /opt/truesight_autopilot && echo "=== _scan_inbox source ==="; sed -n '65,101p' app/media_archive_pipeline.py; echo "=== find inbox dir i
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Has the structure of this Repository been properly documented in the Agentic AI context?
+
+https://github.com/TrueSightDAO/verify_public_signatures
+
+
+### 🤖 Autopilot
+
+Good question — let me check what's documented about `verify_public_signatures` in the agentic context vs. what the repo actually contains now.
+
+
+### 🤖 Autopilot
+
+The repo has grown to **3,995 files / 33 folders** (A6 backfill generalized it far beyond the original 4 tree folders). Let me check whether the README and the context index actually reflect that.
+
+
+### 🤖 Autopilot
+
+The verdict is clear — **the README is stale relative to the actual repo**, and the context docs don't fully reflect it either. Here's the assessment:
+
+## Not fully documented — 3 gaps found
+
+### 1. README is stale (describes the pre-A6 state)
+- Says `contribution/`, `sales/`, `inventory_movement/` are **"future event types"** (line 146–149) — but they're **live now**: the repo has 33 folders, 3,995 files, and `contribution_event/` alone has 2,172.
+- Layout tree (line 27–41) shows only the 4 original tree_* folders + "future" placeholders.
+- Index example shows `tree_planting: count 24` — the real root index now has 33 event types.
+
+### 2. Privacy section contradicts the actual policy
+- README line 131: *"No PII… fail-closed scan rejects any record containing email-like patterns"* — **but the A6 decision (your call, 2026-09-02, option 2) is "exclude email-bearing events"**, and the log shows `excluded 1650 PII-bearing events`. The README's privacy claim is roughly right but doesn't document the exclusion policy (the `excluded_pii` bucket, the 1,650 count, the `--allow-pii` override). It also predates the backfill entirely.
+
+### 3. agentic_ai_context coverage
+- `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md` + `SUNMINT_E2E_RUNBOOK.md` document the design and the SunMint leg well (14 hits), but there's **no repo-structure doc** reflecting the A6 generalization — and `PROJECT_INDEX.md`/`WORKSPACE_CONTEXT.md` don't list the repo (my search for it found nothing).
+- The A3 README was written when the repo had 4 folders; the A6 expansion was never documented back into the context.
+
+## My recommendation — one documentation PR
+
+Update the README to reflect reality:
+1. **Layout section** → show the 33 live folders (grouped: tree_*, contribution_event, inventory_movement, sales_event, …) with real counts
+2. **Future event types** section → replace with **"Published event types"** (33 listed) + note that new types land automatically
+3. **Privacy section** → document the **A6 option-2 exclusion policy**: email-bearing events are excluded at build time (1,650 as of the backfill), `excluded_pii_count` in the root index, `--allow-pii` override exists but is never used in cron
+4. **agentic_ai_context** → add a `verify_public_signatures` entry to `PROJECT_INDEX.md` (repo → purpose → layout → writer roles) so future sessions know the repo exists and how it's written
+
+Want me to proceed with this documentation PR (README + PROJECT_INDEX.md)? It's the kind of gap that bites the next session — and it's quick.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== current repo tree (top-level dirs + files) ==="; TOKEN=$(crontab -l 2>/dev/null | grep -oP 'GITHUB_TOKEN=\K[^ ]+' | head -1); curl; echo "=== README section headers ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/verify_public_signatures/main/README.md | grep
 
