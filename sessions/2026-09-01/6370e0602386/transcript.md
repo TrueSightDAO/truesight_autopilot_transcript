@@ -1632,11 +1632,13 @@ Both blocks captured. Let me verify each search-string uniqueness in the clone (
 ### 🤖 Autopilot
 
 H2/H4 mismatched (likely em-dash byte encoding in my pattern). Let me re-verify with simpler substrings.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 5 anchors are unique (H2 "See also" = 1, H4 "dry-run, then apply" = 1). The em-dash is UTF-8 `—` (M-bM-^@M-^T) — I'll match around it with plain ASCII anchors. Now pushing PR6 with 4 edits: §A.7 gets a new "descriptions" bullet + renumbered heading, checklist gains description-sync step, and the not-do section gets a recurrence guard.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1875,4 +1877,55 @@ So: nothing new to file — the contribution is in. If you'd rather I adjust the
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/agroverse_shop_work 2>/dev/null || cd /tmp/aac_work; for p in 263 266 267; do gh pr view $p --repo TrueSightDAO/agroverse_shop_beta ; cd /tmp/aac_work && for p in 880 881 882; do echo "PR $p: $(gh pr view $p --repo TrueSightDAO/agentic_ai_context --json mergedAt -q '.merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=18528] Hey, can we ensure in the future that in the media archive pipeline all the video files are formatted the same way in terms of the description on the JSON caches? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good instinct — that's exactly the regression we fixed, and you're right that SOP documentation alone isn't a guarantee. Let me check how new videos actually enter the JSON cache to find the right enforcement point.
+
+
+### 🤖 Autopilot
+
+The search on `agroverse_shop` returned 0 — the repo was renamed to `agroverse_shop_beta`, and code search only indexes default branches under the new name. Let me search org-wide and check the beta repo.
+
+
+### 🤖 Autopilot
+
+Code search is flaky on the renamed repo, but I know the files exist. Let me check what actually writes new entries into `youtube_videos.json` — that's the enforcement point.
+
+
+### 🤖 Autopilot
+
+Found it. `youtube_batch_incoming.py` is the **ingress point** — new videos get added to `youtube_videos.json` at upload time (line 295 SKIP-if-exists, line 315 writes the raw-ASR description). That's the exact place that would reintroduce raw ASR descriptions on the next batch. Let me confirm the precise write path.
+
+
+### 🤖 Autopilot
+
+The ingress point is confirmed: `youtube_batch_incoming.py` line 315 builds the description from **raw ASR** (`v.get("transcript")`) every time a new video is uploaded — exactly how the 73 got polluted. That's the enforcement point to fix. Let me grab the three remaining pieces: what `description_for_video` does, what fields get saved into the JSON cache, and whether the PR1 generator exports a reusable polished-description builder.
+
+
+### 🤖 Autopilot
+
+Complete picture confirmed. Here's the situation and the fix I'd propose:
+
+**Root cause (confirmed):** `youtube_batch_incoming.py` (the upload script) builds descriptions from **raw ASR** (`transcript` field) at upload time and saves the new entry to `youtube_videos.json` **without a `description` field at all** — so every future batch re-pollutes the cache. That's how all 73 got raw ASR, and our SOP doc + re-sync script only fixes it *after* the fact.
+
+**Proposed fix (small, targeted, in the same repo):** make the upload script itself produce the polished description at ingress, so cache format is uniform going forward:
+
+1. **`youtube_batch_incoming.py`** — replace `description_for_video(title, raw_transcript)` with a call into the same polished-description builder the PR1 generator uses (clean → Grok-polish cache-first → tail with the episode's blog-post link once it exists), and **write the resulting `description` field into the JSON entry** at save time (alongside `title`, `video_id`, etc.). New entries then carry the same shape as the 73 we just fixed.
+2. **`generate_youtube_descriptions.py`** — export its per-entry builder as a reusable function (it currently only has `main()`), so `youtube_batch_incoming.py` imports it instead of duplicating logic. No new cleanup logic — pure reuse, per the plan's rule.
+3. **A tiny validator** (or a check inside the upload script / CI) that asserts every entry in `youtube_videos.json` has a non-empty `description` — so a missing field fails fast instead of silently regressing.
+
+That closes the loop: uniform format enforced at the single point where videos enter the cache, not patched afterward.
+
+**Want me to open that as a PR?** It touches the upload script (runs with YouTube creds at upload time — I'll keep it default-safe/dry-run-compatible and won't run it against live). If you'd rather have a different enforcement (e.g. a separate `validate_mapping` script run in CI), say so and I'll do that instead.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/agroverse_shop_work && git pull origin main -q 2>&1 | tail -1; echo "=== files touching youtube_videos.json ==="; grep -rln "youtube; cd /tmp/agroverse_shop_work && sed -n '285,335p' scripts/youtube_batch_incoming.py; cd /tmp/agroverse_shop_work && echo "=== description_for_video (178-194) ==="; sed -n '178,194p' scripts/youtube_batch_incoming.py; echo "==
 
