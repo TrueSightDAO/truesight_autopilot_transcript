@@ -4608,6 +4608,7 @@ Which means while the "SunMint Plots" Farm ID is left empty, while it might show
 ### 🤖 Autopilot
 
 Let me verify against the actual impact-map code rather than assume — checking how the plot popup decides to show the farm profile link:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4654,6 +4655,7 @@ Which also makes sense, since a Farm needs FDA FSVP inspection before we could l
 ### 🤖 Autopilot
 
 That ties the whole model together — let me check what FSVP context we have, since it's the governance gate that justifies plot-first:
+[1 tool result(s) compacted: search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4704,36 +4706,43 @@ Can we update the agentic_ai_context for this and figure out what are the necess
 ### 🤖 Autopilot
 
 Go — updating agentic_ai_context with the plot-first model and analyzing the GAS + GitHub Actions changes. Grounding first: current workflows in the repos + the FBE handler's upsert logic:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key discovery — the **workflows already exist** (`rebuild-plots-index.yml` runs both builders, with a `repository_dispatch` trigger the GAS handler is *supposed* to ping after events). Let me verify whether the FBE handler actually does the ping, and what `build_farms_index.py` reads:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The handler code confirms the exact change needed. One more check — how the two Python builders tolerate empty Farm ID (the generated files' behavior defines whether GA needs changes):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Complete picture assembled. Now updating the plan doc in agentic_ai_context with the plot-first model + the concrete change analysis. Writing the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me write it as a new focused doc file (cleaner than patching the plan):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #889 opened. Verifying the doc landed correctly, then merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All sections present, `mergeable: True`, state clean. Merging PR #889:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4899,4 +4908,39 @@ Which next?
 • `ssh run` ×8 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v 2>/dev/null && e; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && python3 - <<'; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v && cp process_fa; …(+4 more)
 • `upload file to github` → https://github.com/TrueSightDAO/tokenomics/blob/feat/plot-first-fbe-handler/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_farm_boundary_evidence.gs
 • `merge pr` → ✅ PR #455 on tokenomics merged successfully (sha: 6aecf94368538e441b2f777ae469af2dfc49ba3d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+What is the URL to set FBE_GH_PAT
+
+
+### 🤖 Autopilot
+
+Here's the URL to set the `FBE_GH_PAT` script property:
+
+## Project Settings page (where Script Properties live)
+
+**https://script.google.com/home/projects/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/settings**
+
+1. Open that URL (it's the same project we deployed the handlers to)
+2. Scroll to the **"Script Properties"** section
+3. Click **"Add script property"** → key: `FBE_GH_PAT` → value: the GitHub PAT
+4. Save
+
+*(The editor itself is `…/edit`; the `/settings` path is the Project Settings page with Script Properties.)*
+
+## What the PAT needs to be able to do
+
+The token is used for `POST /repos/TrueSightDAO/sunmint/dispatches` — so it must have **Actions: read/write** on the `sunmint` repo:
+- **Fine-grained PAT** (recommended): repository access = **TrueSightDAO/sunmint**, permissions = **Actions: Read and write**
+- **Classic PAT**: the `repo` scope (broad — fine-grained preferred)
+
+## Alternative (no UI needed)
+
+If you'd rather not paste a PAT into the UI, I can set it **programmatically** on the next `clasp push` run — e.g. a one-liner in the project that writes `PropertiesService.getScriptProperties().setProperty('FBE_GH_PAT', ...)` — but the UI path above is the cleanest and you control the secret directly.
+
+Want me to also verify the `sunmint` repo's `repository_dispatch` workflow accepts the `plots-index-rebuild` event type (so the ping actually triggers a rebuild once the PAT is set)?
 
