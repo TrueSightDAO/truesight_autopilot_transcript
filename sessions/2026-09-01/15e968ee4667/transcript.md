@@ -4028,46 +4028,55 @@ Let me find the actual filename.
 ### 🤖 Autopilot
 
 The convention file is likely in `conventions/` or `contributions/`. Let me check both.
+[2 tool result(s) compacted: list_directory, list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check prior submission conventions for consistency (contributor name format, how PR evidence is listed).
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the plan's §7 in full and the OPERATING_INSTRUCTIONS §7 section to get the exact submission format.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the plan — the §7 and status sections (offloaded).
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the plan's remaining tail — the §7 + status section and the A6/A7 sequencing rows.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full plan context. Let me check the OPERATING_INSTRUCTIONS §7 (contribution submission) and how prior plans closed out, to match the convention for the final submission.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me grep the local OPERATING_INSTRUCTIONS for the §7 contribution-submission format directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the contribution convention file via GitHub (it's referenced but missing locally) and look for how prior contributions were submitted.
+[2 tool result(s) compacted: search_code, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the convention doc lives at `dao/DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md`. Let me read it for the exact submission format.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4219,4 +4228,86 @@ No watcher outside a topic — I'll report status and let the next natural turn 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → echo "=== 1. live root index keys ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/verify_public_signatures/main/index.json | py; cd /opt/truesight_autopilot && echo "=== current branch + log ==="; git branch --show-current; git log --oneline -3 2>/dev/null echo "=== do; cd /opt/truesight_autopilot && git fetch -q origin && git checkout -q main 2>/dev/null || git checkout -q -b main origin/main; git reset --h; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+Confirming the live index now publishes `excluded_pii_count` (the last verification step).
+
+
+### 🤖 Autopilot
+
+The passes are still grinding (4k-file reconciliation is slow), and the live index hasn't updated yet. Two overlapping passes risk stacking with the next cron tick — let me reduce to one and check the GET endpoint for rate-limit exposure.
+
+
+### 🤖 Autopilot
+
+Good — killed one duplicate (Terminated logged), one pass remains, progress continuing (now into March 31 files). Note the skip check uses the **contents API GET** (`api.github.com/.../contents/`) — 4k GETs/pass is heavy on secondary rate limits, but it's been working. Let me wait for the remaining pass to finish and publish the index.
+
+
+### 🤖 Autopilot
+
+Progress is slow but real (now into May 25 files — close to the end of the contribution_event folder, then other folders). The pass will finish and publish the index. The rate of ~2-3 minutes per 10 files suggests this reconciliation pass takes ~30-60 min total for the whole 4k set — it may still be going for a while. Let me check the sync process details to understand the pace better, and whether the 30-min cron will collide with it.
+
+
+### 🤖 Autopilot
+
+Pace is healthy: ~133 files/min, and the pass is deep into the biggest folder (contribution_event, June 14 files — near its end). Full pass ≈ 30 min total. Let me wait for it to complete and publish the index.
+
+
+### 🤖 Autopilot
+
+Progressing well — now into credentialing_attestation_event (May 31), past the giant contribution_event folder. The reconciliation pass is nearing the end of the alphabetically-later folders. Let me wait for completion.
+
+
+### 🤖 Autopilot
+
+Still grinding through inventory_movement (660 files — the second-biggest folder). The pass has been running ~20 min; it should finish within ~10 more. Let me wait once more.
+
+
+### 🤖 Autopilot
+
+**The fix is LIVE — verified end-to-end!** ✅
+
+## Final verification — all green
+
+| Check | Result |
+|---|---|
+| **Live root index** | ✅ **`excluded_pii_count: 1650`** now published (was `None`) — `gen: 2026-09-01T22:30:37Z` (advanced past the stale 21:30:08Z) |
+| **Total** | 3,970 events (6 more picked up during the pass — the reconciliation also captured new events since the backfill) |
+| **Process** | The reconciliation pass is still finishing (practice_event now — the last folders), but the **index already published** with the corrected field |
+| **Cron script** | ✅ IN SYNC with origin/main (the #385 fix deployed) |
+
+## The full picture — what just happened
+
+The plan was "complete," but your verification instinct caught a real gap: the **deployed cron copy was stale** — it lacked the #385 `excluded_pii_count` fix, so the live index never published the field. I synced the cron script to origin/main, kicked the reconciliation, killed a duplicate pass, and confirmed the index now shows **`excluded_pii_count: 1650`** — the exact count of email-bearing events excluded per your option-2 policy, now externally visible exactly as the README documents.
+
+## RESUME HERE → nothing outstanding
+
+The plan is now **fully airtight**: ledger live (3,970 events, 34 types, PII-clean, openssl-verifiable), dashboards live, contributions filed, docs current, and the deployed daemon matches origin/main. The reconciliation pass will finish on its own (idempotent skips), and the 30-min cron continues steady-state.
+
+One optional note: the reconciliation pass takes ~30 min for a full 4k-file sweep (GET per file). If you ever want it faster, the skip-check could use the git-tree API once per folder instead of per-file GETs — but that's a future optimization, not needed now. Anything else you'd like me to pick up?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → confirmed live index now publishes **`excluded_pii_count: 1650`** (gen 22:30:37Z, total 3,970); cron script IN SYNC with origin/main; reconciliation pass finishing (practice_event, idempotent skips); killed duplicate pass earlier
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → live index check: excluded_pii_count STILL None → waited through long reconciliation passes (contribution → credentialing → inventory_movement → practice_event); killed duplicate pass 241690; pace ~133 files/min; finally confirmed index published excluded_pii_count: 1650 (gen 22:30:37Z)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → killed duplicate pass; measured pace (267 lines/2min ≈ 133 files/min); waited 3× through contribution_event → credentialing_attestation → inventory_movement → practice_event folders; live index published **excluded_pii_count: 1650**, gen 22:30:37Z, total 3,970; cron copy IN SYNC with origin/main
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → echo "=== live root index ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/verify_public_signatures/main/index.json | python3 -c; echo "=== which GET URL does _upload use? (rate-limit exposure) ==="; grep -n "api.github.com\|raw.githubusercontent" /home/ubuntu/scripts/s; sleep 180; echo "=== sync processes ==="; pgrep -af "sync_sunmint_signatures.py --push" | grep -v pgrep | wc -l echo "=== last log line ==="; …(+5 more)
 
