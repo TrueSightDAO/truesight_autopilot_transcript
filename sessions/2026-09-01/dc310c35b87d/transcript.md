@@ -8,79 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: Both files landed on `sunmint/main` ✅ — **PR1 complete** (via the sanctioned Contents-API path for api_only data repos, since `sunmint` is classified machine-owned and the PR gate blocks it by design)
-
-
-### 🤖 Autopilot
-
-Resuming PR2 per the plan. Let me read the plan's PR2 spec and the current farmer-app state in parallel:
-[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Plan PR2 spec confirmed. The farmer app has a nav dropdown (plant/monitor/instrucoes). Let me read the `onNavChange` function + section structure to add the "Limites da Fazenda" module:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The nav navigates to separate pages — so the boundary module should be a new page `limites-da-fazenda/index.html` (matching the `monitor-tree-growth/` / `instrucoes/` pattern) + a nav option. Let me check the offline-queue pattern to mirror it, and the instrucoes page structure:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have everything I need. The module is a new page `limites-da-fazenda/index.html` + nav option + SW cache entry. Let me build it — a self-contained page mirroring the app's patterns (IndexedDB queue, i18n, camera, geolocation):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have all the patterns. Now building the `limites-da-fazenda/index.html` page — self-contained, mirroring the app's nav/i18n/IndexedDB-queue/camera patterns:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Input mismatch is expected (void elements — `<input>` has no closing tag). Now updating the nav dropdowns on the other pages + SW cache list, then pushing:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the nav blocks. Let me check the other pages' `onNavChange` functions so the routing edits match exactly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have all the anchors. Now let me apply the nav updates to all 3 existing pages + SW cache list, and prepare the full set of files for the PR. Building all edits:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The monitor/instrucoes edits used wrong quote style. Let me fix with the correct anchors:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Monitor is done; instrucoes failed at the route step (its onNavChange must differ). Let me check instrucoes' exact onNavChange and fix:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The instrucoes nav option edit already applied (route step was the only failure — its `onNavChange` has `monitor` before `instrucoes`, so my `instrucoes … else {` anchor was wrong). Let me fix the route with the correct anchor:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 Instrucoes needs the nav-option + i18n edits (the earlier assert aborted before writing them). Let me apply those now:
@@ -4800,26 +4727,31 @@ The matcher is `text.startswith("[FARM BOUNDARY EVIDENCE EVENT]")` style — fir
 ### 🤖 Autopilot
 
 Let me read the dispatch_event function (line 258+) to see exactly what text shape matches + what it logs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The matcher is substring `tag in text` — my raw text **should** have matched. The question is whether dispatch logs are even reaching journald (logging config) and what `webhook_trigger.trigger` logs. One targeted check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The INFO-level dispatch logs are hidden from journald (only WARNING+ surface), so I can't distinguish "matched and fired ok" from "never dispatched" by logs alone. The decisive test: **call the GAS webhook directly** (as dispatch would) to force-processing, then check the sheet. Doing both:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The direct call from my box hits Google's sign-in wall (unauthenticated curl — the internal web app). The decisive checks: (1) probe the webhook **from the dao_protocol server** (the actual caller) to confirm it returns 200 there, and (2) check the SunMint Plots sheet for any UAT rows the GAS side may have created:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two findings: the server-side probe gets **HTTP 200** (so dispatch's `trigger()` would see success — the sign-in HTML is a 200 page, which is why "webhook ok" logs even though the *processing* needs the authenticated owner session), and **only 1 of the 2 webhook env keys is present** (FARM_BOUNDARY_EVIDENCE present; **MEDIA_RETRACTION missing**). Let me check which key is set and add the missing one (this is the retraction leg of the UAT):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4829,6 +4761,7 @@ Two findings: the server-side probe gets **HTTP 200** (so dispatch's `trigger()`
 So the true E2E has one honest gap: **I can't drive the GAS processing from the autopilot box** — it needs the authenticated GAS owner session or the cron trigger. The **cron trigger is still unset** (that's the Gary item). What I *can* verify end-to-end: Edgar intake (✅ 200, all 5 events accepted) → dispatch (✅ code path present) → webhook (✅ server-side 200). The GAS processing itself requires either the owner session or the cron.
 
 Let me check the sheet state directly for any UAT rows (in case the earlier FBE cron/session already processed some) and confirm the UAT trail:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4896,16 +4829,24 @@ go
 ### 🤖 Autopilot
 
 Go — reading the current OPEN_FOLLOWUPS.md to find the existing FBE entry (from PR #877) and add the Media Retraction one alongside it:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the existing FBE entry (from PR #877). Now adding the **Media Retraction** cron-trigger entry right after it, plus updating the FBE entry with today's UAT findings (webhook key verified, E2E accepted 5 events):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both entries verified on the branch (FBE updated + new Media Retraction entry, with the missing-key finding documented). Merging PR #886:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4989,16 +4930,19 @@ Extracted text:
 ### 🤖 Autopilot
 
 Go — three tasks: (1) allow local file selection (not camera-only), (2) remove `register_farm` fully from Sunmint, (3) fix the submit-just-queues-when-online bug. Let me diagnose all three against the current beta main in one pass:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me read the submit/flush logic in full — the "just queued even though online" bug is the priority:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the submit bug. `submitBoundary()` **always queues locally** (IndexedDB) and never attempts an online send — the status text "saved" literally means "queued locally, will send when online." So the flush must happen elsewhere. Let me find `flushBoundaryQueue` + when it's invoked:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5011,11 +4955,13 @@ Found the submit bug. `submitBoundary()` **always queues locally** (IndexedDB) a
 So the governor's exact symptom: "submit → nothing happens, just queued even though I have Internet" is **by design in code, and broken**: the boundary queue has no sender. The retraction path (correct pattern) checks `navigator.onLine` → sends immediately if online, queues only when offline. The boundary path is missing that.
 
 **The fix:** rewrite `submitBoundary()` to mirror the retraction pattern — **try to send immediately when online** (build the signed `[FARM BOUNDARY EVIDENCE EVENT]` shareText with photos → POST to Edgar), **queue only when offline** (or on failure). Plus add the flush-on-reconnect listener. This is one focused PR. Let me also check the photo-upload mechanism (how media bytes attach — `media` only stores filenames currently, not the bytes!):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the complete picture of all three tasks. The submit bug is confirmed as a **missing flush path** — the boundary queue is never sent. Let me also check how the main app (index.html) sends media — the working pattern for multipart with photos — before writing the fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5028,36 +4974,43 @@ So the fix has **three parts** (all in `limites-da-fazenda/index.html`):
 3. **`register_farm` removal** — remove the page + all nav options/routes/i18n keys across all 4 pages (governor task 2)
 
 Let me check the nav route blocks to build the register_farm removal precisely, then write the full fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full picture for all three tasks. Before building, let me grab the exact route blocks for monitor/instrucoes (different brace styles) and the regression test's assertions (it asserts 5 nav options — must be updated when I remove the farm option):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have every anchor. Let me read the index.html tree-planting send path in full (the working pattern for multipart-with-photos) so the submit fix mirrors it exactly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the complete pattern (the 409-idempotency handling is a key detail). Now building the full fix locally — all three tasks in one PR. Let me first grab the remaining pieces (flush + online listener in index.html) and the limites photoBlob capture to store:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me see the index.html online-listener + init (the flush trigger wiring) to mirror it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the complete working pattern (flush + online listener + 409-idempotent upload + Blob storage in IndexedDB). Building the full three-task fix on the local clone — file-picker, register_farm removal, and the submit-flush fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The anchor failed on the escape mismatch (file has literal `─` box chars, my Python had `\\u2500`). Redoing with regex + character-correct matching:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5144,4 +5097,72 @@ The **`register_farm/index.html` deletion hasn't been pushed to the branch** —
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×21 → cd /tmp && rm -rf sb5 && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint_beta.git sb5 && cd sb5 && echo "=== 1. file input in; cd /tmp/sb5 && echo "=== submitBoundary (585-630) ===" && sed -n '585,630p' limites-da-fazenda/index.html && echo "=== queueBoundary + flush; cd /tmp/sb5 && echo "=== flush logic ===" && grep -n "flushBoundaryQueue\|function flush\|online.addEventListener\|window.addEventListener('; …(+18 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go — finish PR #63 (delete register_farm/index.html via Contents API or git_push_changes deletes), verify, and merge.
+
+
+### 🤖 Autopilot
+
+Go-signal received — finishing PR #63. First, verifying the current branch state (5 files present, register_farm still there):
+
+
+### 🤖 Autopilot
+
+Branch confirmed: 5 updated files + `register_farm/index.html` still present, `mergeable: True`. The Contents-API path can't delete, so I'll remove the page via a small deletion PR (git_push_changes `deletes`), then merge both:
+
+
+### 🤖 Autopilot
+
+PR #64 opened with the deletion. Merging it first (it touches `register_farm/` only — independent of PR #63):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Deleted `register_farm/` from Sunmint** — the last piece of PR #63's governor-requested change.
+
+**PR #64 — https://github.com/TrueSightDAO/sunmint_beta/pull/64** (merged, sha `4d0c574e`, 1 file deleted: `register_farm/index.html`)
+
+### Sequence
+1. Verified PR #63's branch: 5 updated files present, `register_farm/index.html` still there, `mergeable: True`
+2. The Contents-API path can't delete files → opened **PR #64** via `git_push_changes` with `deletes: ["register_farm/index.html"]`
+3. Merged PR #64 — the page is now gone from `sunmint_beta/main`
+
+## Status recap
+
+| Item | State |
+|---|---|
+| PR #64 (register_farm deletion) | ✅ merged `4d0c574e` |
+| PR #63 (file picker + submit-online fix + nav cleanup) | 🔲 **still open**, `mergeable: True`, 5 files — **needs merge** (next turn) |
+| Prod promotion | 🔲 gated on Gary's go |
+
+## RESUME HERE → next unit (fresh turn)
+
+1. **Merge PR #63** — `merge_pr(sunmint_beta, 63)` (5 files: 4 pages + updated regression test; the nav-option/route/i18n cleanup is independent of the now-merged deletion, so it should merge cleanly)
+2. Verify beta live: limites file-picker works, submit sends immediately online, register_farm 404s
+3. **Prod promotion** (#55–#64) — gated on Gary's explicit go
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → branch tree + PR state verified (5 files, register_farm present, mergeable True)
+• `git push changes` → PR #64 (delete register_farm/index.html, sha fd9355e1)
+• `merge pr` → ✅ PR #64 merged (sha 4d0c574e286c336fd31eafc33972c734675ec3e7)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && echo "=== PR #63 branch tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/git/trees/fix%2Fremove-regis
+• `merge pr` → ✅ PR #64 on sunmint_beta merged successfully (sha: 4d0c574e286c336fd31eafc33972c734675ec3e7). Pull Request successfully merged
 
