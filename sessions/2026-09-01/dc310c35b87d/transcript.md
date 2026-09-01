@@ -4608,11 +4608,13 @@ The sleep exceeded the 60s shell cap. The lease is definitely expired now (well 
 ### 🤖 Autopilot
 
 The lease is still blocking even though it's past TTL — it's my own stale lease (agent: sophia). Let me check if there's a lease file/CLI to inspect and release it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the lease store: `/home/ubuntu/ecosystem_change_logs/deploys/leases`. Let me inspect it and check if there's a release mechanism (it's likely a JSON/metadata store I can read to see the lease's expiry state):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4620,11 +4622,13 @@ Found the lease store: `/home/ubuntu/ecosystem_change_logs/deploys/leases`. Let 
 Now I understand the lease system. The local lease store only has an old Aug 26 lease — but the blocker mentioned lease `L-20260901-08` (agent sophia, started 09:55). The **authoritative lease store is in the `ecosystem_change_logs` GitHub repo**, and per the README: a lease **older than TTL is considered abandoned and may be taken over**. L-20260901-08 started 09:55:31Z + 30 min TTL = expired at 10:25:31Z — it's now past that, so it's **abandoned and I may take over**.
 
 The `gas_deploy_project` tool is still refusing based on its (likely stale) lease check. Let me verify the lease state in the repo and retry — the TTL-based takeover is sanctioned by the README:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `deploys/leases/L-20260901-08.json` is the open lease (it was from a **deploy_autopilot** run at 03:23:07Z, not the GAS push). Per the README, an open lease older than its 30-min TTL is **abandoned** and may be taken over. This lease started 09:55:31Z (or the entry is from 03:23Z — either way long past 30 min). Let me read the actual lease file and close it as abandoned (README-sanctioned), then retry the GAS push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4820,4 +4824,47 @@ Which next?
 **✅ Done this turn — actions taken:**
 • `search context` ×2 → TGM in 7+ files, never expanded; zero glossary hits
 • `git push changes` → https://github.com/TrueSightDAO/agentic_ai_context/pull/876 (branch docs/add-abbreviations-glossary, sha c6d793b7)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+go
+
+
+### 🤖 Autopilot
+
+Go-signal received — merging PR #876 (the glossary):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Merged PR #876 — the ABBREVIATIONS.md glossary** (sha `2e74c226`).
+
+`ABBREVIATIONS.md` is now on `agentic_ai_context/main` — the single reference for TGM/FBE/TGP + carbon-domain (MRV, VCS, ICVCM, SBTi, OER, VVB, SBCE, CAR, INCRA, ETS) + infra (GAS, SA, TTL, SW, UAT, E2E, APK, QR, PIX) + process (PR, CI, API) abbreviations, with the rule that new acronyms get added here and expanded at first use. This addresses your feedback that "TGM" was used across 7+ context files without ever being expanded.
+
+## RESUME HERE → next unit (governor's pick)
+
+The boundary pipeline is complete end-to-end (plan marked complete; prod promoted; GAS deployed). Open items:
+
+1. **E2E test of the FBE chain** — a test `[FARM BOUNDARY EVIDENCE EVENT]` through Edgar → dispatch → GAS doGet → sheet upsert (writes a record — needs your go)
+2. **Hourly cron trigger** — you set it in the GAS UI (SCHEDULE_TRIGGERS.md §6; 2 min)
+3. **Chrome audit** of `/monitor-tree-growth/`, `/instrucoes/`, `/register_farm/` — same logo/lang-toggle/email/APK consistency pass
+4. **`sunmint_mobile/www/`** sync — APK web layer still needs register_farm + nav + limites page
+
+Which next?
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #876 on agentic_ai_context merged successfully (sha: 2e74c2267a4e2a7bc416e80f62eb63069b92c784). Pull Request successfully merged
 
