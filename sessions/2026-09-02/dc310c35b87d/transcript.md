@@ -4618,16 +4618,19 @@ Great work tracking down both root causes (stale dao_protocol code, then the rea
 ### 🤖 Autopilot
 
 Go — completing the offline-flush fix, then Unit 6 (prod sync). Grounding in the exact bottom-of-file wiring first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Bug confirmed: `flushRetractionQueue()` defined (line 607) but **never called**; `flushBoundaryQueue()` correctly wired (850–851). Before fixing, verifying the flush function actually handles plot-invalidation items too (PR #72 reused the retraction store):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Bug confirmed precisely: plot-invalidation offline writes go to the **same** `RETRACTION_QUEUE_STORE` (`id: 'retr-' + Date.now()`, line 587) — so `flushRetractionQueue()` (which POSTs every row's `shareText` to Edgar and deletes on success) handles **both** retractions and plot invalidations. It's just **never called**. Applying the fix (wire it alongside flushBoundaryQueue):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4827,4 +4830,58 @@ Want me to log this as a **[CONTRIBUTION EVENT]** (e.g. "SunMint plot-first + pl
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== prod live page now ===" && curl -s "https://sunmint.truesight.me/limites-da-fazenda/" -o prod2.html && echo "size: $(wc; cd /tmp && echo "=== PR merge timestamps (tokenomics #455-457, dao_protocol #154, sunmint_beta #66-73) ===" && for repo in tokenomics dao_pr
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+file contribution for myself and you as well as Envoy TrueSight
+
+
+### 🤖 Autopilot
+
+Filing contributions for Gary, Sophia (me), and Envoy TrueSight. Grounding first: the event docs + contributor identities (Envoy's registered name/email, Gary's, and my own):
+
+
+### 🤖 Autopilot
+
+The dao_members fetch failed — let me locate the actual file/URL and check the agents registry for Envoy's registered identity:
+
+
+### 🤖 Autopilot
+
+Conventions located — reading ENVOY.md for Envoy's exact identity and the contributor-name rule:
+
+
+### 🤖 Autopilot
+
+Identities confirmed (ENVOY.md: **Envoy TrueSight** / admin+envoy@truesight.me; me: **Sophia Truesight** / admin+sophia@truesight.me). Filling three CONTRIBUTION EVENTS with the timestamp-derived estimates from last turn — stated transparently so Gary can adjust:
+
+
+### 🤖 Autopilot
+
+All three contributions filed ✅
+
+| Contributor | Registered identity | Amount | Type |
+|---|---|---|---|
+| **Sophia Truesight** | admin+sophia@truesight.me | 270 min | Time (Minutes) |
+| **Envoy TrueSight** | admin+envoy@truesight.me | 90 min | Time (Minutes) |
+| **Gary Teh** | (governor) | 90 min | Time (Minutes) |
+
+All three `submit_contribution` calls returned **"Contribution submitted successfully"** — signed and recorded on the Edgar ledger.
+
+**Amounts are my timestamp-derived estimates** (from merge times + deploy ledger, stated as estimates last turn):
+- **Sophia 270 min** — the full pipeline execution across 09-01/02 (13 PRs + deploys + E2E + debugging)
+- **Envoy 90 min** — verification/UAT/diagnosis/relay work on 09-02
+- **Gary 90 min** — governance: design calls, UAT validation, GAS UI fixes, gate approvals
+
+**TDG Issued: 0** on all three — I left that to governance to assign rather than self-awarding. If you want different amounts, TDG values, or a single combined entry instead, say so and I'll adjust (note: the events are already on the ledger — corrections would be new events, not edits).
+
+**Everything on the SunMint follow-on is now complete:** pipeline built → UAT passed → prod live (`sunmint.truesight.me` serving the merged bundle) → contributions filed for all three. 🎉
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== dao_members.json contributors (names + emails + roles) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/; cd /tmp && echo "=== find dao_members.json ===" && curl -s "https://api.github.com/repos/TrueSightDAO/treasury-cache/git/trees/main?recursiv
+• `submit contribution` ×3 → Contribution submitted successfully.
 
