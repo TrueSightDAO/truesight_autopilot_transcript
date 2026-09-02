@@ -117,6 +117,7 @@ The media is Bahia-coast (2024-09-10), which matches the Black King site visit t
 ### 🤖 Autopilot
 
 Let me extract the PDFs to identify Fernando & Carla and their farm.
+[2 tool result(s) compacted: extract_pdf_text, extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -127,16 +128,19 @@ Key facts emerging:
 - Our media: 23 HEIC + 1 JPG + 34 MOV, ALL with GPS, 2024-09-10, in Bahia between Ilhéus and Itacaré.
 
 Let me search for Fernando/Carla in chat records (the 20240912_sunmint_chat.txt is dated right after this media) and check for a "Jesus do Deus"/Vivi connection.
+[3 tool result(s) compacted: ssh_run, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check transcripts and chat records for context on Fernando & Carla and any earlier site visit.
+[2 tool result(s) compacted: search_transcript, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the key thread — 2024-09-10 (media date) matches Emelin's payment to **Fernando** (cacao almonds supplier, R$10,000/100kg) and Carla (200kg supplier, Povos da Mata connection). Let me read the full chat context around those dates to nail the farm identity.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -266,4 +270,61 @@ Checked the fda_fsvp repo thoroughly. Here's the compliance answer.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → ls -d /home/ubuntu/fda_fsvp 2>/dev/null && echo "LOCAL CLONE EXISTS" || echo "no local clone"; ls /tmp/fsvp_probe/ 2>/dev/null; cd /tmp && rm -rf fsvp_git && git clone --depth 1 https://github.com/TrueSightDAO/fda_fsvp.git fsvp_git 2>&1 | tail -2 && cd fsvp_git && ech; cd /tmp/fsvp_git && echo "=== text-search fernando/carla/soller (filenames) ==="; find . -path ./.git -prune -o -type f -iname "*fernando*" ; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19911] show me the evidence
+
+
+### 🤖 Autopilot
+
+Pulling the concrete evidence artifacts now — the existing Clara site-visit doc, the CIC report for Fernando, and the media GPS + chat records.
+
+
+### 🤖 Autopilot
+
+Here's the evidence, pulled straight from the records:
+
+## 1. No FSVP site-inspection doc exists for "Fernando & Carla" — only a lab report
+
+`suppliers/black_king/entity.json` → `source_farms` lists: Oscar Martins da Silva Miranda, **Fazenda Clara**, Fazenda Analuana, Vivi/Jesus do Deus (Itacaré), Fazenda São Jorge, Fazenda Capela Velha. **No Fernando, no Carla.** Folder scan for `*fernando*` / `*carla*` finds only one file:
+
+| File | Type |
+|---|---|
+| `20240925_cic_report_fernando.pdf` | **Lab test** (CIC Relatório 1463.2024.B), NOT a site visit |
+| `20240910_Black_King_site_visit_to_Clara_farm.pdf` | Site visit — but to **"Clara"**, not Fernando/Carla |
+
+**Fernando's CIC report (extracted):** *Fernando Soller Gimenez, CPF 780.372.475-20, Itacaré/BA, CEP 45530-000 — Amêndoas de Cacau, sampled 17/09/2024.* Confirms Fernando is a real Black King almond supplier in Itacaré — but the CIC doc is a bean-quality test, **not** an FSVP physical inspection.
+
+## 2. The existing 9/10 site visit is "Clara" — a DIFFERENT location than your media
+
+`20240910_Black_King_site_visit_to_Clara_farm.pdf` (extracted text):
+- Site name: **Clara** · Date: **10th Sept 2024** · **1 cacao farm** (facilities visited)
+- Geo: **Latitude -14.3386226, Longitude -39.2069635** → *Taboquinhas, Itacaré*
+- Observation rows: **only the 3 Farm rows** (microbial contamination / insect infestation / foreign objects) — **no fermentation, no drying sections at all** ✓ consistent with "we only inspected the cacao trees"
+
+## 3. Your media (the zip) is at a DIFFERENT coordinate — ~16 km away
+
+All 58 files cluster at **14°27'40"S → 14°27'49"S, 39°7'51"W → 39°7'56"W** (≈ -14.461, -39.131) — one site ~260 m across, rural Itacaré. That is **~16 km** from Clara's doc coordinate (-14.3386, -39.2069). *(Correcting an error I made earlier: I quoted "790 km" — that was a unit bug in my distance calc, the real separation is ~16 km.)*
+
+| | Existing "Clara" doc | Your media (Fernando/Carla) |
+|---|---|---|
+| Site | Clara (Taboquinhas) | Fernando & Carla (Itacaré rural) |
+| GPS | -14.3386, -39.2069 | -14.4612/-14.4635, -39.131 |
+| Date | 10 Sept 2024 | 2024-09-10 14:14–18:16 ✓ same day |
+| Scope | Trees only | Trees only (no drying/ferm tanks in footage) |
+
+Also note: on **9/11** (the day after), Gary wrote *"For the **upcoming visit** to Clara farm it is important we inspect fermentation, drying facility"* — implying the Clara visit was still **ahead**, which suggests the existing 9/10 "Clara" doc may itself be mismatched.
+
+## So — two possible readings, both need your call (never guess on compliance docs):
+
+- **(A) Clara = Carla** (name variant) and the existing doc *is* the 9/10 trees-only visit, but its GPS looks wrong (Taboquinhas vs your media's Itacaré coords) → then we fix the GPS on the existing doc, or
+- **(B) Clara and Fernando/Carla are different farms** → then we create a **new** doc `20240910_Black_King_site_visit_to_fernando_carla_farm.pdf` dated 2024-09-10 (media date), GPS from the media EXIF, scope = cacao trees only, and add the farm to entity.json.
+
+**Which is it — is "Clara" Carla's farm, or a separate farm?** Once you confirm, I'll generate the doc (PDF with embedded video frames as evidence) and PR it to fda_fsvp.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /home/ubuntu/fernando_carla_work && echo "=== MEDIA GPS SUMMARY (all files w/ coords) ==="; for f in *.HEIC *.JPG *.MOV; do [ -f "$f" ] |
 
