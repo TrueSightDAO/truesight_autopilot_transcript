@@ -847,41 +847,49 @@ PR #387 is open, but I spot a problem: its file diff shows **8 files including t
 ### 🤖 Autopilot
 
 Poll loop timed out at the ssh layer (60s limit). Let me check CI status directly with a single quick call.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 smoke ✅, test still running. Let me wait and re-check the test check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The test check **failed** in CI — but the full suite passed locally (850 passed). Let me pull the CI failure log to see what differs (often a flaky/ordering test like the vault one I saw earlier).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The CI failure is a **workflow infrastructure issue** — `git` failed with exit 128 at workflow line 11 (likely a checkout/merge-base problem, not a test failure). Let me see the full failure log to confirm what git operation failed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No output text in the check-run summary. Let me fetch the raw workflow log via the actions API to see exactly which git command failed at line 11.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No workflow runs found for that head_sha (the run may be tied to a different commit/sha or the query needs the exact run list). Let me query the recent runs and find the failed one.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the failed run (id 33625819639). Let me pull its job log to see the git exit-128 failure at workflow line 11.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real CI failure found: **"1 error during collection"** in the Run tests step (845 items + 1 collection error). The post-checkout git-128 is a harmless submodule warning. Let me see the collection error — it's likely the same `events_catalog_snapshot.json` deletion or an import issue in my new test file.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1048,4 +1056,104 @@ compile ✅ · ruff ✅ · pytest **850 passed** ✅ · CI test + smoke ✅
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /opt/truesight_autopilot && git branch --show-current && grep -n "litellm" requirements.txt && echo "=== full checks ===" && python3 -m c; cd /opt/truesight_autopilot && git add requirements.txt && git commit -m "fix(deps): pin litellm<1.99.0 (py3.10-compatible; newer imports ty; cd /opt/truesight_autopilot && PAT=$(grep -oE "github_pat_[A-Za-z0-9_]+" .env | head -1); for i in 1 2 3 4 5 6; do sleep 20; RES=$(curl -s -; …(+3 more)
 • `merge pr` → ✅ PR #387 on truesight_autopilot merged successfully (sha: 9afc627dbe5ace6246b25ca979388627a637822e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19553] It is already out directly in Onaya box
+
+
+### 🤖 Autopilot
+
+The key file is already on Onaya's box — my earlier search must have missed it (I checked `/home/ubuntu` there, but it may be under a different path/user). Let me re-search her box thoroughly via the jump host.
+
+
+### 🤖 Autopilot
+
+Quote nesting broke. Let me write a small script locally and scp it over via the jump — cleaner than nested quoting.
+
+
+### 🤖 Autopilot
+
+The key lives on THIS box (not the jump host) — the working pattern earlier was ProxyCommand, which tunnels with the local key. Let me run the script via stdin through the proxy:
+
+
+### 🤖 Autopilot
+
+Big discovery: Onaya's `.env` **already has `ANTHROPIC_API_KEY=`** (populated — the key is out directly on her box as the governor said), and there's an existing **NELANCO_CLAUDE_CODE_BOX_PLAN.md** + launch scripts. What's missing is `LLM_PROVIDER=litellm` + `LITELLM_MODEL` (not in her .env key list). Let me verify the key value length (no printing), check the plan/scripts, and see her current LLM default path.
+
+
+### 🤖 Autopilot
+
+Key facts established: Onaya's `.env` **already has `ANTHROPIC_API_KEY`** (108 chars, `sk-a…` — valid format), her systemd service uses `EnvironmentFile=/opt/bionpact_autopilot/.env`, and her code (at #351) already has `llm_provider`/`litellm_model` fields + litellm registry. Missing only: `LLM_PROVIDER=litellm` + `LITELLM_MODEL`. Let me verify her litellm version (needs <1.89 on py3.10), her provider init behavior, and confirm the runtime picks up the env.
+
+
+### 🤖 Autopilot
+
+Onaya's setup is now fully clear — and there's good news:
+- Her **venv Python is 3.11** (not 3.10), litellm 1.97.0 already installed and compatible → no pin issue for her
+- Her `.env` **already has `ANTHROPIC_API_KEY`** (108 chars, valid `sk-a…` format) — as the governor said, it's out directly on her box
+- Her service uses `EnvironmentFile=/opt/bionpact_autopilot/.env` → systemd exports every `.env` var into the process env, so litellm's native `ANTHROPIC_API_KEY` pickup will work even without the code bridge (her copy predates #387)
+- Missing only: `LLM_PROVIDER=litellm` + `LITELLM_MODEL=anthropic/...`
+
+Let me check her service names and current state before making the change:
+
+
+### 🤖 Autopilot
+
+Everything's mapped: both services running, `.env` has `ANTHROPIC_API_KEY` (108 chars), systemd exports it via EnvironmentFile. Only `LLM_PROVIDER=litellm` + `LITELLM_MODEL` are missing. Before flipping the switch, let me check for any `.env` file ownership quirks (whether my `sudo` edit will survive) and confirm the exact service restart command plus that both services share the same `.env`:
+
+
+### 🤖 Autopilot
+
+All prerequisites confirmed. Key insight from the proc-env probe: the running process (started Sep 1) predates the `.env` ANTHROPIC key (added Sep 2 10:49) — so a restart is genuinely required regardless. Her code at #351 doesn't have my #387 bridge, but that's fine: **systemd EnvironmentFile exports every `.env` var into the process env**, and litellm reads `ANTHROPIC_API_KEY` natively from there.
+
+Now the switch — first a **safe probe** (validates the key + model string against the live Anthropic API before touching the service), then `.env` edit, restart, and verify:
+
+
+### 🤖 Autopilot
+
+**Critical catch**: the service restarted cleanly and initialized with `litellm (anthropic/claude-3-5-haiku-20241022)` — provider switch worked — but the **direct API probe FAILED**: `NotFoundError: model: claude-3-5-haiku-20241022`. That 2025-era model ID is no longer available on the account. My earlier research flagged exactly this risk (hardcoded PRICING dict has old IDs). The service is now live but pointed at a dead model string — every chat call would 404.
+
+Let me find the correct current-gen model ID by probing candidates (haiku 4.5 / sonnet 4.6 naming variants):
+
+
+### 🤖 Autopilot
+
+The correct current-gen model IDs are confirmed: **`anthropic/claude-haiku-4-5`** ✅ (resolves to `claude-haiku-4-5-20251001`) and **`anthropic/claude-sonnet-4-6`** ✅ both work. The 2025-era IDs (`claude-3-5-haiku-20241022`, `claude-3-7-sonnet-latest`, `claude-sonnet-latest`) are **all dead** on this account. The service is currently pointed at a **dead model string** (`claude-3-5-haiku-20241022`) — every call 404s. Let me fix the model to `claude-haiku-4-5` and restart:
+
+
+### 🤖 Autopilot
+
+The service is now running with `litellm (anthropic/claude-haiku-4-5)` — the correct model. The live probe's only issue was my test script using `.content` instead of the actual `LLMResponse` attribute (an `AttributeError` in my probe code, not a provider failure). The provider initialized fine. Let me re-probe with the correct response attribute to confirm end-to-end:
+
+
+### 🤖 Autopilot
+
+**✅ Onaya is confirmed LIVE on Claude.** End-to-end through her app's own provider path (`get_provider()` → litellm → Anthropic): reply `'ONAYA_CLAUDE_LIVE_OK'`, model `anthropic/claude-haiku-4-5`. The service restarted cleanly, provider init log shows `litellm (anthropic/claude-haiku-4-5)`.
+
+Full state:
+- **`.env`** (backed up first): `LLM_PROVIDER=litellm`, `LITELLM_MODEL=anthropic/claude-haiku-4-5`, `ANTHROPIC_API_KEY` (was already present, 108 chars, never printed)
+- **Services**: both `bionpact-autopilot` + `-telegram` active, restarted, env exported via EnvironmentFile
+- **Live verification**: chat through the app's own registry → `ONAYA_CLAUDE_LIVE_OK` ✅
+
+**Important discovery for Gary**: the code's hardcoded PRICING dict (and the task's suggested `claude-3-5-haiku-20241022`) contains **deprecated model IDs** — `claude-3-5-haiku-20241022`, `claude-3-7-sonnet-latest`, etc. all 404 on the live account. Current-gen working IDs: **`anthropic/claude-haiku-4-5`** ✅ and **`anthropic/claude-sonnet-4-6`** ✅. So I set Onaya to **haiku-4-5** (the cheaper option per the task flag). If Gary wants **sonnet-4-6** for quality, it's a one-line `.env` change + restart. I should also update the PRICING dict + stale model IDs in the shared codebase (small follow-up PR) — worth flagging.
+
+One residual note: Onaya's code (at #351) predates my #387 bridge — her `.env` key flows through systemd EnvironmentFile → process env → litellm native pickup, which works. Pulling main later (post-#387) keeps her working via the code bridge too.
+
+No billable CVM was created; Tencent migration still parked awaiting Gary's a/b/c answer.
+
+## RESUME HERE → next unit (fresh turn)
+
+1. **Optional quality upgrade**: if Gary prefers sonnet-4-6 over haiku-4-5 for Onaya → `sed -i 's|LITELLM_MODEL=.*|LITELLM_MODEL=anthropic/claude-sonnet-4-6|'` on her `.env` + restart both services (same jump-host path as this turn).
+2. **Follow-up PR (small)**: update `litellm_provider.py` PRICING dict — replace dead IDs (`claude-sonnet-4-20250514`, `claude-3-5-haiku-20241022` — 404 on live account) with current-gen (`claude-sonnet-4-6` $3/$15, `claude-haiku-4-5` $1/$5) + update the stale config.py comment. Full 4 gates → `git_push_changes` → merge (standing authorization).
+3. **Tencent migration**: resume the parked pre-billable step — Onaya's EC2 spec baseline + Gary's a/b/c answer on "clone of Onaya" meaning.
+4. Note for the restart investigation: Onaya's restart went clean; the bionpact_agentic_ai_context git-fetch 128 error is a **missing GitHub credential in that context repo's remote** (unrelated to LLM/restart — separate minor issue, worth logging).
+
+———
+**✅ Done this turn — actions taken:** probed Onaya's box via jump host (`krake_redis` ProxyCommand); confirmed `ANTHROPIC_API_KEY` already in her `.env` (108 chars, `sk-a…`, never printed); tested 8 candidate Claude model IDs against live API — found 2025-era IDs dead, **`claude-haiku-4-5` + `claude-sonnet-4-6` live**; backed up `.env`, appended `LLM_PROVIDER=litellm` + `LITELLM_MODEL=anthropic/claude-haiku-4-5`, restarted both services; verified process env + provider init log + **live end-to-end chat reply `ONAYA_CLAUDE_LIVE_OK`** through her app's own provider registry.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → ssh -o StrictHostKeyChecking=no -o ConnectTimeout=15 -i /home/ubuntu/.ssh/NELANCO_aws_20201122.pem ubuntu@52.1.162.134 "ssh -o StrictHostKey; cat > /tmp/onaya_find_key.sh <<'SCRIPT' #!/bin/bash echo "ONAYA_OK host=$(hostname)" echo "=== /home listing ===" ls -la /home/ 2>/dev/null ; ssh -o StrictHostKeyChecking=no -o ConnectTimeout=20 -o ProxyCommand="ssh -o StrictHostKeyChecking=no -o ConnectTimeout=15 -i /home/ubuntu/.; …(+8 more)
 
