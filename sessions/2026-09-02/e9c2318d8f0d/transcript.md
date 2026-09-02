@@ -1022,6 +1022,7 @@ Re-pinned to `<1.89` and pushed. Polling CI again:
 ### 🤖 Autopilot
 
 Both CI checks **green** (test ✅ + smoke ✅) with litellm 1.88.x. Merging PR #387:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1077,26 +1078,31 @@ compile ✅ · ruff ✅ · pytest **850 passed** ✅ · CI test + smoke ✅
 ### 🤖 Autopilot
 
 The key file is already on Onaya's box — my earlier search must have missed it (I checked `/home/ubuntu` there, but it may be under a different path/user). Let me re-search her box thoroughly via the jump host.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Quote nesting broke. Let me write a small script locally and scp it over via the jump — cleaner than nested quoting.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The key lives on THIS box (not the jump host) — the working pattern earlier was ProxyCommand, which tunnels with the local key. Let me run the script via stdin through the proxy:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Big discovery: Onaya's `.env` **already has `ANTHROPIC_API_KEY=`** (populated — the key is out directly on her box as the governor said), and there's an existing **NELANCO_CLAUDE_CODE_BOX_PLAN.md** + launch scripts. What's missing is `LLM_PROVIDER=litellm` + `LITELLM_MODEL` (not in her .env key list). Let me verify the key value length (no printing), check the plan/scripts, and see her current LLM default path.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key facts established: Onaya's `.env` **already has `ANTHROPIC_API_KEY`** (108 chars, `sk-a…` — valid format), her systemd service uses `EnvironmentFile=/opt/bionpact_autopilot/.env`, and her code (at #351) already has `llm_provider`/`litellm_model` fields + litellm registry. Missing only: `LLM_PROVIDER=litellm` + `LITELLM_MODEL`. Let me verify her litellm version (needs <1.89 on py3.10), her provider init behavior, and confirm the runtime picks up the env.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1108,11 +1114,13 @@ Onaya's setup is now fully clear — and there's good news:
 - Missing only: `LLM_PROVIDER=litellm` + `LITELLM_MODEL=anthropic/...`
 
 Let me check her service names and current state before making the change:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Everything's mapped: both services running, `.env` has `ANTHROPIC_API_KEY` (108 chars), systemd exports it via EnvironmentFile. Only `LLM_PROVIDER=litellm` + `LITELLM_MODEL` are missing. Before flipping the switch, let me check for any `.env` file ownership quirks (whether my `sudo` edit will survive) and confirm the exact service restart command plus that both services share the same `.env`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1120,6 +1128,7 @@ Everything's mapped: both services running, `.env` has `ANTHROPIC_API_KEY` (108 
 All prerequisites confirmed. Key insight from the proc-env probe: the running process (started Sep 1) predates the `.env` ANTHROPIC key (added Sep 2 10:49) — so a restart is genuinely required regardless. Her code at #351 doesn't have my #387 bridge, but that's fine: **systemd EnvironmentFile exports every `.env` var into the process env**, and litellm reads `ANTHROPIC_API_KEY` natively from there.
 
 Now the switch — first a **safe probe** (validates the key + model string against the live Anthropic API before touching the service), then `.env` edit, restart, and verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1127,16 +1136,19 @@ Now the switch — first a **safe probe** (validates the key + model string agai
 **Critical catch**: the service restarted cleanly and initialized with `litellm (anthropic/claude-3-5-haiku-20241022)` — provider switch worked — but the **direct API probe FAILED**: `NotFoundError: model: claude-3-5-haiku-20241022`. That 2025-era model ID is no longer available on the account. My earlier research flagged exactly this risk (hardcoded PRICING dict has old IDs). The service is now live but pointed at a dead model string — every chat call would 404.
 
 Let me find the correct current-gen model ID by probing candidates (haiku 4.5 / sonnet 4.6 naming variants):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The correct current-gen model IDs are confirmed: **`anthropic/claude-haiku-4-5`** ✅ (resolves to `claude-haiku-4-5-20251001`) and **`anthropic/claude-sonnet-4-6`** ✅ both work. The 2025-era IDs (`claude-3-5-haiku-20241022`, `claude-3-7-sonnet-latest`, `claude-sonnet-latest`) are **all dead** on this account. The service is currently pointed at a **dead model string** (`claude-3-5-haiku-20241022`) — every call 404s. Let me fix the model to `claude-haiku-4-5` and restart:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The service is now running with `litellm (anthropic/claude-haiku-4-5)` — the correct model. The live probe's only issue was my test script using `.content` instead of the actual `LLMResponse` attribute (an `AttributeError` in my probe code, not a provider failure). The provider initialized fine. Let me re-probe with the correct response attribute to confirm end-to-end:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1277,4 +1289,110 @@ Local: compile ✅ · ruff ✅ · 6/6 LLM tests ✅. Live: both IDs verified via
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /opt/truesight_autopilot && git branch --show-current && git status --short | head -10 && echo "=== PRICING dict ===" && grep -n "anthrop; cd /opt/truesight_autopilot && echo "=== litellm_provider.py head (1-60) ===" && sed -n '1,60p' app/llm/litellm_provider.py && echo "=== tes; cd /opt/truesight_autopilot && python3 - <<'PYEOF' import re p = 'app/llm/litellm_provider.py' s = open(p).read() # 1) docstring line — mark; …(+9 more)
 • `merge pr` → ✅ PR #388 on truesight_autopilot merged successfully (sha: e22feb8155e19bcfd189315c281d9e32a7522b32). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19553] [Handoff context — this Telegram topic (thread 19553) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ PR #388 merged — Claude model IDs updated to current-gen
+
+**PR: [#388 — fix(llm): retire dead Claude 2025 model IDs — add claude-haiku-4-5 / claude-sonnet-4-6 pricing](https://github.com/TrueSigh
+
+
+### 🤖 Autopilot
+
+Go received. Executing next unit: (1) local git cleanup, then (2) Onaya's codebase sync to inherit #387 + #388. Let me start with local state verification and branch cleanup.
+
+
+### 🤖 Autopilot
+
+Local `origin/main` is stale (at #387 — my last fetch predates the #388 merge). Let me switch to main, fetch, and finish cleanup properly.
+
+
+### 🤖 Autopilot
+
+Local cleanup complete — main is at e22feb8 (#388), stale branches deleted. Now Onaya's codebase sync. Critical: her box runs `feature/bionpact-configurable-repos` — a customization branch that may have commits NOT on main. A blind reset/pull could destroy her config. Let me check her repo's branch topology first.
+
+
+### 🤖 Autopilot
+
+Bug in my copy chain: scp put the script on the **jump host**, but the `cp` ran on **Onaya's box** where it doesn't exist. Fix: scp directly to Onaya's box through the ProxyCommand (the pattern that worked in earlier probes).
+
+
+### 🤖 Autopilot
+
+Her branch has **zero local-only commits** (HEAD == origin/main == #351) and no dirty tracked files — it's a plain branch at old main, so a fast-forward is safe. But I must verify her venv has the tencent deps before pulling main (the tool registry auto-imports `tencent_tools`, and missing `tencentcloud-sdk-python` would crash her app on restart). Let me check her venv state + fetch main.
+
+
+### 🤖 Autopilot
+
+Critical finding: her `.venv` **fails to import** litellm/tencentcloud/qcloud_cos — yet earlier her app responded via litellm. Contradiction means I'm missing context (truncated tracebacks, ownership, or which python the service actually uses). **I must NOT pull main** (registry auto-imports `tencent_tools` → missing dep would crash her app on restart). Let me get ground truth: full tracebacks, venv ownership, service user.
+
+
+### 🤖 Autopilot
+
+Mystery solved: litellm 1.97.0 **is** installed (the `__version__` AttributeError is just litellm 1.97's quirky `__getattr__` — it imports fine). But **tencentcloud is genuinely NOT installed** in her venv. Since main's registry will auto-import `tencent_tools`, I must install the deps in her venv **before** pulling main — otherwise her app could crash on restart. Let me check tencent_tools' import structure (top-level vs lazy) to confirm the risk, then install.
+
+
+### 🤖 Autopilot
+
+The tencent imports are **lazy** (inside functions, lines 101/253) — so pulling main won't crash her app even without the deps. Still, I'll install them so the tools actually work if called. Let me do the full sequence: install deps → pull main → restart → verify.
+
+
+### 🤖 Autopilot
+
+Excellent — Onaya is now on **main at e22feb8 (#388)** — wait, "Already up to date" after checkout is suspicious. Let me re-check: the checkout created local `main` tracking origin/main, but had it fetched e22feb8 first? The HEAD shows e22feb8 so she IS current. But I notice the pip install output was cut off at the top — let me confirm tencentcloud actually installed, then restart both services and verify she still responds on Claude.
+
+
+### 🤖 Autopilot
+
+Services restarted cleanly on main (#388). Now the final live verification — probe her provider path end-to-end to confirm Claude still responds after the code update + restart.
+
+
+### 🤖 Autopilot
+
+Provider resolves correctly (litellm → claude-haiku-4-5) — just my probe used the wrong method name. Let me check the base class API and re-probe:
+
+
+### 🤖 Autopilot
+
+Method is `chat`, not `complete`. Fixing the probe and re-running:
+
+
+### 🤖 Autopilot
+
+`chat()` needs a `system_prompt` arg. Fixing the probe:
+
+
+### 🤖 Autopilot
+
+**✅ Onaya fully verified on main + Claude.** Live end-to-end through her app's own provider path on the updated codebase: `PROVIDER: litellm`, `MODEL: anthropic/claude-haiku-4-5`, reply `ONAYA_MAIN_SYNC_OK` (27 prompt tokens, 5 completion tokens — cost ~$0.000052, negligible).
+
+## What I did this turn
+
+1. **Local cleanup** — deleted merged feature branches (`feat/claude-anthropic-bridge`, `feat/tencent-cloud-tools`, `feat/claude-current-gen-models`); local `main` synced to `origin/main` at e22feb8 (#388). Pre-existing runtime noise (`worktrees/vault`, `tokenomics` submodule, `artifacts/`, `farm_media_daemon/`) left untouched — not mine.
+
+2. **Onaya codebase sync to main (33 commits behind → current)**:
+   - Verified her `feature/bionpact-configurable-repos` had **zero local-only commits** (HEAD == old main #351) → fast-forward was safe
+   - Her `.venv` (Python 3.11) had litellm 1.97.0 but **missing** `tencentcloud-sdk-python` + `cos-python-sdk-v5` → installed both (tencentcloud 3.1.166 now imports OK; imports are lazy anyway so no crash risk)
+   - `git checkout main` + `git pull --ff-only` → **HEAD = e22feb8 (#388)** — she now has #386 (Tencent tools), #387 (ANTHROPIC bridge), #388 (current-gen model IDs)
+   - `.env` intact: `LLM_PROVIDER=litellm`, `LITELLM_MODEL=anthropic/claude-haiku-4-5` (line 25/26)
+   - Compile check clean; restarted both `bionpact-autopilot` + `-telegram` → both **active**
+
+3. **Live verification** — probed through her app's own registry (`get_provider()` → litellm → Anthropic): **`ONAYA_MAIN_SYNC_OK`** on `anthropic/claude-haiku-4-5`. (3 probe iterations needed: `complete`→`chat`→`+system_prompt` — all probe-side API-shape issues, not provider failures.)
+
+## RESUME HERE → next unit (fresh turn)
+
+**Remaining open items:**
+1. **Tencent CVM migration** (parked pre-billable) — needs Onaya's EC2 spec baseline (t3.small, but full disk/OS/storage details for the Tencent equivalent) + **Gary's a/b/c answer** on what "clone of Onaya" means: (a) passive standby/DR, (b) active second instance with own Telegram bot identity, or (c) migration replacing the Nelanco/AWS box. No CVM created until answered.
+2. **Optional**: once Tencent creds are confirmed on her `.env`, the new `tencent_query` tool is live for her — a smoke test (`DescribeZones`) could be a quick pre-flight for the migration.
+3. **Minor logged**: her `bionpact_agentic_ai_context` context repo git fetch fails (exit 128, missing credential) — unrelated to LLM/restart, worth a separate fix pass.
+
+———
+**✅ Done this turn — actions taken:** local branch cleanup + main sync; Onaya box (via krake_redis jump): confirmed zero local-only commits, installed tencentcloud-sdk-python 3.1.166 + cos-python-sdk-v5 into her .venv, checked out + fast-forwarded to main e22feb8 (#388), verified .env LLM config intact, compileall clean, restarted both systemd services (active), live end-to-end probe → `ONAYA_MAIN_SYNC_OK` on `anthropic/claude-haiku-4-5` through her app's own provider registry.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → cd /opt/truesight_autopilot && echo "=== current branch ===" && git branch --show-current && echo "=== status ===" && git status --short | h; cd /opt/truesight_autopilot && git checkout main 2>&1 | tail -1 && git fetch origin main 2>&1 | tail -1 && git log --oneline -1 origin/main ; cd /opt/truesight_autopilot && cat > /tmp/onaya_repo_check.sh <<'SCRIPT' #!/bin/bash set -x cd /opt/bionpact_autopilot || exit 1 echo "=== r; …(+10 more)
 
