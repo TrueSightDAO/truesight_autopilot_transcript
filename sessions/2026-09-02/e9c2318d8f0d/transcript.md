@@ -1191,61 +1191,78 @@ No billable CVM was created; Tencent migration still parked awaiting Gary's a/b/
 ### 🤖 Autopilot
 
 Go received. Next unit: the follow-up PR to update the dead Claude model IDs in the shared codebase (discovered this turn — `claude-3-5-haiku-20241022` / `claude-sonnet-4-20250514` 404 on the live account). Let me inspect the current local state first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Current branch is the already-merged `feat/claude-anthropic-bridge` — I need a fresh branch. Let me view the exact sections to edit (docstring, PRICING, test file).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I'll apply the current-gen model fixes. Let me check exact local pricing values first, then patch locally and run the gates.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Patches applied. Now the hard-rule gates (compile, ruff, format, pytest) before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The checkout aborted (dirty tree), so the commit landed on the old merged branch. Let me create the new branch at this commit and reset the old one — the tree diff vs main is still just this commit (verified pattern last time).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed, but I notice the local `origin/main` ref is stale (at ff2222f #386 — before #387's merge). Let me fetch to get the true remote main and verify the PR's net delta is exactly my change (only the 2 files should differ once diffed against the real main):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch was built on a stale base — the net diff vs true `origin/main` shows duplicated #386/#387 content (tencent files, test file, requirements) because those were squash-merged with different SHAs. I need to rebase my single commit onto the real `origin/main` so the PR diff is clean (only my 2-file model change):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The rebase is picking up the branch's inherited history (the old pin commit already lives in main as a squash). Cleaner: abort, branch fresh from true `origin/main`, cherry-pick only my model commit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean now — the commit landed on `main` (I was on main after reset, branch creation failed since it exists, so the cherry-pick applied to main). The diff `origin/main...HEAD` is exactly my 2-file change but it's on **local main** — I need it on the feature branch. Let me fix the branch pointers: move the branch to this commit, reset main back to origin/main, then force-push the branch (it was already pushed with the messy history):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch now clean — exactly 2 files (+9/−5) vs main. Now open the PR via the API:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **#388** open. Now poll CI until both checks pass, then merge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both CI checks green. Merging PR #388:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1395,4 +1412,179 @@ Method is `chat`, not `complete`. Fixing the probe and re-running:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → cd /opt/truesight_autopilot && echo "=== current branch ===" && git branch --show-current && echo "=== status ===" && git status --short | h; cd /opt/truesight_autopilot && git checkout main 2>&1 | tail -1 && git fetch origin main 2>&1 | tail -1 && git log --oneline -1 origin/main ; cd /opt/truesight_autopilot && cat > /tmp/onaya_repo_check.sh <<'SCRIPT' #!/bin/bash set -x cd /opt/bionpact_autopilot || exit 1 echo "=== r; …(+10 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19553] Go dig 1
+
+
+### 🤖 Autopilot
+
+"Go dig 1" — digging into RESUME item 1: the Tencent CVM migration baseline. First, pull Onaya's full EC2 spec (read-only, no billable action) so we can propose a Tencent equivalent + cost estimate.
+
+
+### 🤖 Autopilot
+
+Onaya's EC2 spec captured. Now let me get the volume details, AMI/OS info, and the current Tencent account setup — all read-only, in parallel:
+
+
+### 🤖 Autopilot
+
+Full EC2 baseline captured. Now let me get the live cost facts for both clouds — current EC2 on-demand pricing for t3.small, Tencent CVM equivalent (S5/S6 small), and check what Tencent account/region state exists (read-only). In parallel:
+
+
+### 🤖 Autopilot
+
+Tencent S5 pricing obtained ($6.02/mo for S5.SMALL1 monthly sub; PAYG ≈ $0.015/vCPU/hr — so a 1vCPU S5 ≈ $0.015/hr ≈ $11/mo equivalent). Now the AWS side — let me get t3.small on-demand price from AWS pricing API (correct operation name) and check Tencent account state (is it configured, what regions) using the new tencent tools pattern — read-only:
+
+
+### 🤖 Autopilot
+
+Tencent tools work — 12 COS buckets visible (account 1322388156, active in ap-guangzhou). Now the AWS price with correct filter syntax, plus Tencent zone/region availability (read-only, validates migration path):
+
+
+### 🤖 Autopilot
+
+Found a real bug in my PR #386 tool: `DescribeZones` fails with `'CvmClient' object has no attribute 'describe_zones'` — wait, that's the reverse: the SDK method IS `describe_zones` (snake_case), so the tool likely tried `getattr(client, "DescribeZones")` without case conversion. Let me inspect the dispatch code.
+
+
+### 🤖 Autopilot
+
+The dispatch looks correct (`DescribeZones` → `describe_zones`, which the SDK client should have). The error means the *running process* has an older or different code/SDK state. Let me empirically check what the live process is actually executing:
+
+
+### 🤖 Autopilot
+
+The tencent_query call I made earlier ran in THIS autopilot's tool runtime (which imports the repo code), and it failed on `DescribeZones`. The dispatch does `getattr(client, "describe_zones")`. Let me directly test whether the installed SDK's CvmClient has that method — this pinpoints whether it's an SDK-version or code-issue:
+
+
+### 🤖 Autopilot
+
+**Root cause found.** In `tencentcloud-sdk-python` **3.1.166** (installed), `CvmClient` methods are **PascalCase** (`DescribeZones`), NOT snake_case (`describe_zones`). The tool's `_camel_to_snake(operation)` produces `describe_zones` → `getattr` fails. The snake_case aliasing was removed in newer SDK versions.
+
+This is a real bug in my merged PR #386 — the tool is broken for every operation. Fix: dispatch should try snake_case **and** PascalCase. Let me check what `cos_list_buckets` still works (it does — 12 buckets listed, since qcloud_cos uses its own API), and confirm the fix pattern, then patch + test + PR.
+
+Let me first confirm the method-name fix precisely:
+
+
+### 🤖 Autopilot
+
+Confirmed: PascalCase works, snake_case doesn't in SDK 3.1.166. This is a **real bug in merged PR #386** (my code, discovered via live use). The dispatch needs to try both case conventions. Let me look at the exact code section to patch, check the existing test expectations, and see if any other tool has a similar case-handling pattern to mirror:
+
+
+### 🤖 Autopilot
+
+Let me see the test stub around line 81 to understand how the dispatch is tested:
+
+
+### 🤖 Autopilot
+
+Let me see how the write-class test stubs the client (that reveals the fake-method pattern used) and where `_client` gets patched:
+
+
+### 🤖 Autopilot
+
+Root cause is fully clear now. The unit tests **mock `_client`** (returning a MagicMock with whatever attribute the code asks for), so they never exercised the **real** SDK — where methods are PascalCase (`DescribeZones`) in tencentcloud-sdk-python 3.1.166, not snake_case (`describe_zones`). My merged PR #386's dispatch is broken against the real SDK for every operation.
+
+The fix: try snake_case first, fall back to PascalCase. Let me patch, add a regression test, and run gates:
+
+
+### 🤖 Autopilot
+
+Now add a regression test that exercises the **PascalCase fallback** against a real-SDK-shaped fake (client exposing `DescribeZones`, not `describe_zones`):
+
+
+### 🤖 Autopilot
+
+9/9 pass (8 original + my new regression). Now the full hard-rule gates before pushing:
+
+
+### 🤖 Autopilot
+
+All gates green on my files. Let me run the full tencent + llm test suites (plus a quick sanity that nothing else broke), then verify the fix against the **live** DescribeZones call:
+
+
+### 🤖 Autopilot
+
+**Fix verified live.** `DescribeZones` now returns 3 available ap-guangzhou zones (5/6/7 — Guangzhou Zone 5/6/7, all AVAILABLE). The tool works end-to-end against the real API now. Let me also do the region query + instance list smoke to fully validate, then commit and PR this hotfix:
+
+
+### 🤖 Autopilot
+
+`DescribeInstances` works (0 CVMs in ap-guangzhou — nothing billable exists yet, good). But `DescribeRegions` on the `region` service errored. Let me see the error detail:
+
+
+### 🤖 Autopilot
+
+Second bug found: the request-class import hardcodes `.v20170312.models` (line ~219: `tencentcloud.{service}.v20170312.models`), but the `region` service is **v20220627** — so `DescribeRegionsRequest` isn't found in the wrong module. (The fallback path only triggers on `(ImportError, AttributeError)` of the *module* import, not the *class* lookup, and the cvm module import succeeds so the fallback never fires.) 
+
+The clean fix: derive the models module from the client's own module (`type(client).__module__.rsplit(".", 1)[0]`), which is always correct regardless of version. Let me patch:
+
+
+### 🤖 Autopilot
+
+The bug: when `service` isn't `cvm` (e.g. `region` → v20220627), the hardcoded `.v20170312.models` module **imports fine** (the package exists at that path) but the **request class isn't in it** → `AttributeError` fires the fallback... wait, actually looking again: the fallback DOES catch `AttributeError`. So why did it fail?
+
+The issue is `type(client).__module__` — for `RegionClient` it'd be `tencentcloud.region.v20220627.region_client`, `.rsplit(".", 1)[0]` → `tencentcloud.region.v20220627.region_client` (only strips one segment, but the module is `...v20220627.region_client` — so `rsplit(".", 1)[0]` gives `tencentcloud.region.v20220627.region_client` minus the last part... wait no. Let me think:
+
+`"tencentcloud.region.v20220627.region_client".rsplit(".", 1)` → `["tencentcloud.region.v20220627", "region_client"]`. So `[0]` = `tencentcloud.region.v20220627`. That's the models' **parent** package, not the `.models` module. `__import__("tencentcloud.region.v20220627")` then `getattr(mod, "DescribeRegionsRequest")` — but the request class lives in `tencentcloud.region.v20220627.models`, NOT the bare `v20220627` package. So the fallback is wrong too — it should append `.models`.
+
+Let me fix both the primary path (derive version-aware models module from the client) and the fallback:
+
+
+### 🤖 Autopilot
+
+Match failed — the em-dash escape didn't match the literal file content. Let me use a line-range targeted rewrite instead:
+
+
+### 🤖 Autopilot
+
+Patched. Now re-run the tests (the existing stubs patch `tencentcloud.cvm.v20170312.models`, which my fallback still honors — but wait: my new primary path derives from `type(client).__module__` — for the test MagicMock, `type(client).__module__` is `unittest.mock`, so `req_module` = `unittest.mock.models` → import fails → falls back to the stub. Good.) Verify + live smoke on region service:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging (tool-round limit reached). Here's where this "dig" landed:
+
+## 🔍 Two real bugs found in merged PR #386 (my code) — via live use
+
+The unit tests mock `_client`, so they never exercised the **real SDK**. Live smoke tests exposed both:
+
+| # | Bug | Root cause | Fix (applied locally, uncommitted) |
+|---|---|---|---|
+| 1 | `DescribeZones` → `'CvmClient' object has no attribute 'describe_zones'` | tencentcloud-sdk-python **3.1.166 removed snake_case aliases** — client methods are PascalCase (`DescribeZones`). Tool dispatched via `_camel_to_snake` only. | Dispatch tries snake_case first, **falls back to PascalCase** operation name |
+| 2 | `DescribeRegions` → module has no `DescribeRegionsRequest` | Request-class import **hardcoded `.v20170312.models`**, but `region` service is **v20220627**; fallback derived the wrong module (missing `.models` suffix) | Derive models module from `type(client).__module__` (always correct), keep hardcoded path only as test fallback |
+
+## ✅ Verified live (real creds, read-only)
+- `DescribeZones` → **ok, 3 zones** (ap-guangzhou-5/6/7, all AVAILABLE)
+- `DescribeInstances` → **ok, 0 CVMs** (nothing billable exists in ap-guangzhou — clean slate)
+- `DescribeRegions` → now passes class lookup; errors `MissingParameter: Product` — that's just the API needing `parameters={"Product": "cvm"}` (usage, not a bug)
+- Tests: **9/9 pass** (8 original + new `test_pascalcase_client_method_fallback`)
+- Gates: compile ✅, ruff ✅, format ✅ on both changed files; full pytest **not yet re-run** after the 2nd patch
+
+## Migration baseline gathered (for Gary's decision)
+- **Onaya EC2**: t3.small (2 vCPU / 2 GiB), 20 GB gp3 encrypted EBS, Ubuntu 22.04 jammy, us-east-1a, tag `bionpact_autopilot`
+- **Tencent equivalent**: S5.SMALL2 (1C/2G) or S5.MEDIUM4 (2C/4G) in ap-guangzhou; monthly sub ≈ **$6.02/mo** (S5.SMALL1), PAYG ≈ $0.015/vCPU/hr; account **1322388156 active** (12 COS buckets), zones 5/6/7 available
+- **Design question still open**: (a) passive standby/DR, (b) active 2nd instance w/ own Telegram identity, or (c) migration replacing Nelanco/AWS box — no CVM will be created until Gary answers
+
+---
+
+## RESUME HERE → next unit (fresh turn)
+
+1. **Finish the hotfix PR**: full gates on the box (`python3 -m compileall -q app scripts tests` → `ruff check` → `ruff format --check` → `pytest -q`, expecting 850+ pass), then commit the 2-file change (`app/tools/tencent_tools.py` + `tests/test_tencent_tools.py`) on a clean branch off `main` (e22feb8) → push → PR (title ~"fix(tools): tencent_query dispatch — PascalCase method + version-aware models module") → CI → self-merge (standing authorization).
+2. **Optional extra regression test**: assert the models-module derivation handles non-v20170312 services (e.g. patch `_client` to return a fake whose `__module__` is `tencentcloud.region.v20220627.region_client`) — would have caught bug #2.
+3. **After merge, sync Onaya again** (her `main` is at e22feb8 #388; the hotfix means her `tencent_query` is currently broken the same way until she pulls): same jump-host fast-forward + service restart — quick, since deps are now installed.
+4. **Re-verify live**: `DescribeRegions` with `parameters={"Product": "cvm"}`, then report to Gary with the full cost table (t3.small vs S5.SMALL2/MEDIUM4 monthly) + the a/b/c design question for the CVM decision. **No billable resource created.**
+
+**✅ Done this turn:** root-caused + fixed 2 real SDK-compat bugs in merged PR #386 (PascalCase dispatch + version-aware request module), added 1 regression test, live-verified DescribeZones/DescribeInstances against real Tencent API, confirmed 0 existing CVMs, gathered full EC2→Tencent migration baseline + pricing.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×18 → cd /opt/truesight_autopilot && sed -n '90,180p' app/tools/tencent_tools.py; cd /opt/truesight_autopilot && sed -n '180,260p' app/tools/tencent_tools.py; cd /opt/truesight_autopilot && echo "=== _camel_to_snake def ===" && grep -n "_camel_to_snake\|def _is_read_only\|_READ_PREFIXES" app/tools/; …(+15 more)
 
