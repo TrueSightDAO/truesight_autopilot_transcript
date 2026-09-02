@@ -31,22 +31,66 @@ oe) atl > <°5) Down with ESG - yeah y (4) Eos Johnny-EEt#ial: is this sold on a
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: web_extract, search_context, list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_code, search_code, list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_context_file, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The whitepaper snapshot is deprecated — the live one is the static page in `truesight_me`. Let me pull the live whitepaper, the implementation codebases, and check what's actually live (farms/trees registries).
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact nesting is unwieldy — let me get a clean text read of the live whitepaper via web_extract, plus scan the actual implementation repos and tree-planting status.
+[3 tool result(s) compacted: web_extract, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the remaining whitepaper tail and check the live registries/impact data and the tree-planting photo repo.
+[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: read_tool_result, read_repo_file, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The web_extract of the whitepaper dropped some nested list content. Let me pull the full sections and the remaining plot registry tail, plus survey the tree-photo evidence in the sunmint repo.
+[3 tool result(s) compacted: web_extract, read_tool_result, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -112,4 +156,37 @@ I have everything needed. What remains is one action: **generate the shareable P
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/git/trees/main?recursive=1" -o sunmint_tree.json && python3 -c " impor; cd /tmp && python3 -c " import json d = json.load(open('sunmint_tree.json')) paths = [t['path'] for t in d['tree']] imgs = [p for p in paths
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19705] Keep going until the PDF is generated. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Generating the PDF now, then sending it into this chat.
+
+
+### 🤖 Autopilot
+
+PDF generated successfully. Sending it into this chat now.
+
+
+### 🤖 Autopilot
+
+Done — the PDF is generated and sent into this chat.
+
+**📄 SunMint — Program Status & Carbon-Market Readiness** (2 Sep 2026, ~3 pages)
+
+Sections:
+1. **What SunMint is** — ReFi cacao-agroforestry under TrueSight DAO's Agroverse; mission tie-back to 10,000 ha of Amazon restoration
+2. **What's already live** — truesight.me/sunmint (incl. Live Impact Map w/ Sentinel-2), sunmint.truesight.me farmer app, native Android app (shipped 08-23), living whitepaper
+3. **Implemented on the ground & in code** — 5 registered farms (Altamira + Medio Xingu), plot polygons (RM-P1 0.4 ha **planted**, CL-P1 114 ha proposed, etc.), first QR-linked tree (FOUNDERHAUS bougainvillea), 62 cached Sentinel-2 scenes, ~3,947 RSA-signed attestation events (27 tree_planting)
+4. **Carbon methodology & status** — Plan Vivo PM002 → Verra VM0047; full CO2e accounting chain; Andean Cacao precedent (56k VCUs); **nothing sold on any market yet**, certification scheduled Q4 2026–Q1 2027
+5. **Milestones M0–M8** — M0/M1/M2 ✅, M3–M8 dated
+6. **Funding flywheel** — grant map + chocolate-sales-funded certification
+7. **How a partner can help** — viability screening (incl. cost review), VVB/registry intros, US/EU credit offtake
+
+The message also delivered the file as a document attachment (message 19716 in this thread). Want me to also push a permanent copy into the sunmint repo (e.g. `docs/`) or tweak the copy (name the helper personally vs. keep generic)?
 
