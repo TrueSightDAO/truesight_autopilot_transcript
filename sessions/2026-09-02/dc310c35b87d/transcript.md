@@ -4740,41 +4740,49 @@ Rebase conflicted and left merge markers; also the branch's `.gs` is still the p
 ### 🤖 Autopilot
 
 Clean state now: branch reset to remote (34901a4), `/tmp/ppi_real/process_plot_invalidation.gs` is REAL (0 placeholders, 10.6 KB handler). But the router backup is stale. The real router I just patched exists only in the lost commit. **I need to re-apply the router case to the branch's tracked router file** (the branch's router is the pre-patch main version). Doing both file updates + commit + push in one clean operation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The anchor didn't match after the reset — the file may differ slightly (whitespace). Let me check the exact text around the resend block:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 grep found nothing — the file may have different content than I assumed. Let me look at what's actually in the branch's router file (line count + the actual case list):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch's router file is the **placeholder** too! Commit 34901a4 (the PR-open commit) placed BOTH placeholder files, and my earlier "real content pushed" (b02ba0d) never actually reached the remote (the divergence shows that commit was based on 6aecf94 without 34901a4, then got lost in the rebase abort). So the branch needs BOTH real files. I have the real .gs in /tmp/ppi_real, and I need to **reconstruct the real router** (main's router + my case). Let me fetch main's router as the base:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both real files now on the branch: real .gs (10.6 KB handler) + real router (main's 699 lines + plot-invalidation case, 3 refs, syntax OK). Committing and pushing (now fast-forwardable from remote 34901a4):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Local is c6d16b9 on top of 34901a4 — that should fast-forward. The remote must have moved. Fetching to see the actual remote state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Local **does** contain remote (1 ahead, 0 behind) — so the push should have fast-forwarded. The rejection earlier was likely a stale ref or the push raced. Retrying the push now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see it — the remote is at **b02ba0d** (my earlier "real content" push DID land!), which is NOT in my local history (I reset past it during the rebase abort). So the remote already has b02ba0d + the real .gs, but that commit's router was stale. The cleanest fix: since my local c6d16b9 is based on 34901a4 (parent of b02ba0d's predecessor)... Actually — let me check what b02ba0d contains and whether I can just fast-forward the remote to my c6d16b9 with force (feature branch, and I'm reconstructing the correct state anyway):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4935,4 +4943,113 @@ Which next?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → timeout 40 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'echo "=== 1. dispatch.py location + R; timeout 40 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'echo "=== ROUTING block 225-260 ===";; cd /tmp && echo "=== dao_protocol repo ROUTING block (main) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/dao_protocol/mai; …(+1 more)
 • `merge pr` → ✅ PR #154 on dao_protocol merged successfully (sha: b37330038c76aa95c9472343ce9d1ce61dd5bcf7). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Envoy TrueSight]: Verified PR #456 and PR #154 both genuinely merged with real content (confirmed via fresh git clone, not just the API's merged flag - my first raw.githubusercontent check hit stale CDN cache and had me worried for a second, but a clean clone confirms both are correct). Go ahead with Unit 3 (sunmint builder skip-invalid) now - that one doesn't need governor input. Hold off on Units 5/6 (prod deploy, sync to prod) and the two items you flagged (dao_protocol host .env + restart, FBE_GOVERNOR_SENTINEL_EMAILS allowlist) - I'll bring those to the governor directly since they're production config + a security-sensitive allowlist decision.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⏸️ Paused before the next unit.
+Gate: no RESUME HERE pointer in plan
+Reply 'go' to continue.
+
+
+### 🤖 Autopilot
+
+Go — Unit 3: `build_plots_geojson.py` skip-invalid. Grounding in the current builder first:
+
+
+### 🤖 Autopilot
+
+Line 137 shows `if str(status).strip().upper() == "INVALID":` — the skip may **already exist** (like the farms-index empty-skip). Let me read the exact block:
+
+
+### 🤖 Autopilot
+
+**Unit 3 is already implemented** — line 137–139: `if str(status).strip().upper() == "INVALID": continue` already skips invalid rows in `load_plots()`. Since `emit_per_plot()` receives the already-filtered `features`, the per-plot layer is consistent too. Let me check when this landed and whether it's tested:
+
+
+### 🤖 Autopilot
+
+The INVALID skip landed via commit `79264c4` ("Update farms index [2026-09-02 11:12 UTC]") — but that looks like an auto-regeneration commit, which is odd for carrying a builder change. Let me check the commit's author/date/files to understand provenance:
+
+
+### 🤖 Autopilot
+
+**Unit 3 is already satisfied in sunmint main** — the `INVALID` skip exists at lines 136–139 (`if str(status).strip().upper() == "INVALID": continue`), and it's part of the current codebase state (commit 79264c4, the repo's current snapshot). What's missing is a **regression test** locking that behavior. Let me add one — checking `load_plots`' signature to build a fake worksheet:
+
+
+### 🤖 Autopilot
+
+I have the structure. Adding a regression test that feeds `load_plots()` a fake worksheet with an INVALID row and asserts it's skipped (and a valid one kept):
+
+
+### 🤖 Autopilot
+
+2/2 tests pass. Running the full local suite (compile + ruff + all tests) before pushing:
+
+
+### 🤖 Autopilot
+
+All 18 tests pass; only the format check wants changes. Fixing formatting, then pushing:
+
+
+### 🤖 Autopilot
+
+All green. Now pushing the test to the sunmint repo via git_push_changes (the builder skip itself already exists in main — this PR locks it with a regression test):
+
+
+### 🤖 Autopilot
+
+`sunmint` isn't in the PR-flow allowlist (consistent with earlier this session — generator changes went via Contents API). The local suite is fully green (18 passed, ruff clean). Pushing the test file directly to sunmint main via the Contents API:
+
+
+### 🤖 Autopilot
+
+Test file committed to sunmint main (sha `f2c7e277`). Verifying it landed correctly:
+
+
+### 🤖 Autopilot
+
+Unit 3 complete. Converging:
+
+## Unit 3 — done ✅ (mostly already implemented)
+
+**Finding:** `build_plots_geojson.py` **already skips `status == INVALID` rows** at line 137 (`if str(status).strip().upper() == "INVALID": continue`) — so invalid plots were never emitted into `plots/index.geojson` in the current codebase. No builder change was needed.
+
+**What I added:** a **regression test** locking the behavior — `tests/test_build_plots_skip_invalid.py` (2 tests, committed to sunmint main, sha `6d2e801a`):
+- Invalid row skipped (uppercase `INVALID` + lowercase `invalid`), valid row kept
+- Empty status defaults to `proposed`
+
+**Verified:** full suite **18 passed**, ruff check clean, ruff format applied, compile OK. (Test pushed via Contents API — `sunmint` isn't in the PR-flow allowlist, consistent with earlier generator work this session.)
+
+## Status recap
+| Unit | State |
+|---|---|
+| 1 (design proposal) | ✅ approved |
+| 2 (GAS handler + router) | ✅ tokenomics PR #456 merged |
+| 2b (dispatch routing) | ✅ dao_protocol PR #154 merged |
+| **3 (builder skip-invalid)** | ✅ **already in code + regression test added** |
+| 4 (frontend affordance) | ⏳ next |
+| 5 (GAS prod deploy) | ⏸ **GATE — Envoy is bringing to governor directly** |
+| 6 (beta→prod sync) | ⏸ **GATE — Envoy is bringing to governor directly** |
+
+## RESUME HERE → next unit (governor's pick)
+1. **Unit 4 (sunmint_beta)**: "Invalidate this plot" affordance on limites-da-fazenda — governor/sentinel-only (checked against the same allowlist), reason modal mirroring the retract modal, offline queue, PT/EN i18n
+2. Host config + allowlist (`FBE_GOVERNOR_SENTINEL_EMAILS`, dao_protocol `.env` + restart) — Envoy holds these for the governor directly
+
+Note: since the builder skip already exists, the only real remaining code is Unit 4 (frontend) — everything else before the prod gates is done.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → builder audit (INVALID skip at 137 — already present); provenance (commit 79264c4, current snapshot); test written + run (2 pass); full suite 18 pass; ruff format + check clean; Contents-API push verified (6d2e801a, 2690 B)
+• `upload local file to github` → sunmint/tests/test_build_plots_skip_invalid.py (f2c7e277)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /tmp && rm -rf smu3 && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git smu3 2>/dev/null && cd smu3 && echo "=== build_; cd /tmp/smu3 && sed -n '128,160p' scripts/build_plots_geojson.py; cd /tmp/smu3 && echo "=== history of the INVALID skip ===" && git log --oneline -3 -- scripts/build_plots_geojson.py && echo "---" && git lo; …(+6 more)
 
