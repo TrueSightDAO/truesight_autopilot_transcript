@@ -1556,6 +1556,7 @@ All gates green on my files. Let me run the full tencent + llm test suites (plus
 Second bug found: the request-class import hardcodes `.v20170312.models` (line ~219: `tencentcloud.{service}.v20170312.models`), but the `region` service is **v20220627** — so `DescribeRegionsRequest` isn't found in the wrong module. (The fallback path only triggers on `(ImportError, AttributeError)` of the *module* import, not the *class* lookup, and the cvm module import succeeds so the fallback never fires.) 
 
 The clean fix: derive the models module from the client's own module (`type(client).__module__.rsplit(".", 1)[0]`), which is always correct regardless of version. Let me patch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1567,16 +1568,19 @@ The issue is `type(client).__module__` — for `RegionClient` it'd be `tencentcl
 `"tencentcloud.region.v20220627.region_client".rsplit(".", 1)` → `["tencentcloud.region.v20220627", "region_client"]`. So `[0]` = `tencentcloud.region.v20220627`. That's the models' **parent** package, not the `.models` module. `__import__("tencentcloud.region.v20220627")` then `getattr(mod, "DescribeRegionsRequest")` — but the request class lives in `tencentcloud.region.v20220627.models`, NOT the bare `v20220627` package. So the fallback is wrong too — it should append `.models`.
 
 Let me fix both the primary path (derive version-aware models module from the client) and the fallback:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Match failed — the em-dash escape didn't match the literal file content. Let me use a line-range targeted rewrite instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Patched. Now re-run the tests (the existing stubs patch `tencentcloud.cvm.v20170312.models`, which my fallback still honors — but wait: my new primary path derives from `type(client).__module__` — for the test MagicMock, `type(client).__module__` is `unittest.mock`, so `req_module` = `unittest.mock.models` → import fails → falls back to the stub. Good.) Verify + live smoke on region service:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1778,4 +1782,69 @@ Everything verified except my probe's arg shape (the registry's `chat` signature
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot && cat > /tmp/onaya_sync.sh <<'SCRIPT' #!/bin/bash echo "ONAYA_OK host=$(hostname)" cd /opt/bionpact_autopilot |; cd /opt/truesight_autopilot && cat > /tmp/onaya_verify.sh <<'SCRIPT' #!/bin/bash echo "ONAYA_OK host=$(hostname)" echo "=== restart services; cd /opt/truesight_autopilot && cat > /tmp/onaya_probe2.sh <<'SCRIPT' #!/bin/bash cd /opt/bionpact_autopilot || exit 1 .venv/bin/python - <<'; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19553] Let's do option b active 2nd instance with her own separate Telegram bot identity
+
+
+### 🤖 Autopilot
+
+Gary chose **option (b)** — active second instance with her own separate Telegram bot identity. Per the task gate, before creating any billable CVM I must present the concrete spec + cost and get your explicit go on it. Let me gather the exact facts (all read-only, zero cost): Ubuntu 22.04 image availability in ap-guangzhou, instance-type availability in the zones, and exact Tencent prices via their price-inquiry API.
+
+
+### 🤖 Autopilot
+
+Let me read the full zone-config artifact to see S5.SMALL2 availability across zones and finalize the spec proposal:
+
+
+### 🤖 Autopilot
+
+Let me read further into the artifact to find S5.SMALL2 availability across the zones:
+
+
+### 🤖 Autopilot
+
+I have everything needed for the billable-gate proposal. **Critical stock finding: S5.SMALL2 (1C/2G — the exact t3.small memory match) is SOLD OUT in all ap-guangzhou zones**, but **S5.MEDIUM4 (2C/4G) is SELL/available** in ap-guangzhou-6 and -7. Here's the full proposal — stopping here per the billable-resource gate:
+
+---
+
+## 📋 CVM Provisioning Proposal — Onaya-2 (Tencent, active 2nd instance, option b)
+
+### Baseline: Onaya-1 (current EC2)
+t3.small · **2 vCPU / 2 GiB** · 20 GB gp3 EBS · Ubuntu 22.04 · us-east-1a · ~$16.60/mo on-demand
+
+### Proposed Tencent CVM (recommended)
+| Spec | Value | Notes |
+|---|---|---|
+| **Instance type** | **S5.MEDIUM4** (2C/4G) | ✅ SELL in ap-guangzhou-6 & -7 (S5.SMALL2 1C/2G is SOLD_OUT everywhere in GZ); Intel Xeon Cascade/Cooper Lake 2.5–3.1 GHz |
+| **Region/AZ** | ap-guangzhou-6 | zone 6, NormalStock; zone 7 also available (EnoughStock) |
+| **OS image** | `img-487zeit5` — Ubuntu Server 22.04 LTS 64位 | matches Onaya-1's Ubuntu 22.04; x86_64, 20 GB, cloud-init ✅ |
+| **Disk** | 20 GB (image default, matches EC2) | can extend to 40/50 GB if Onaya's EBS usage needs it — flag if so |
+| **Network** | default VPC (need subnet check at provision time) | |
+
+### Cost estimate (S5.MEDIUM4, ap-guangzhou-6/7 — live from DescribeZoneInstanceConfigInfos)
+| Billing mode | Price | Monthly equivalent |
+|---|---|---|
+| **Postpaid (PAYG)** | ¥0.28/hr | ~¥202/mo ≈ **~$28/mo** |
+| **Monthly subscription** | ¥133.11/mo (87% disc from ¥153) | ≈ **$18.5/mo** |
+| **1-year subscription** | ¥1,175/yr (64% disc) | ≈ **$13.6/mo** (best value if long-lived) |
+
+*Compare: Onaya-1 on AWS ≈ $16.60/mo on-demand. Monthly-sub S5.MEDIUM4 ≈ $18.5/mo — nearly parity, with 2× the RAM (4G vs 2G).*
+
+### Option (b) implications — what "active 2nd instance, own Telegram identity" requires
+1. **New Telegram bot token** — separate identity means a NEW bot (e.g. `@Onaya_Tencent_bot` or similar) created via BotFather by Gary/Liz. The token goes in the clone's `.env` as `TELEGRAM_BOT_TOKEN` — **I cannot mint a bot token; Gary must provide it** (or authorize me to use a specific existing token).
+2. **Clone deployment**: same `truesight_autopilot` codebase (already Tencent-native after #386/#391), `.env` = Onaya-1's config **minus** the old bot token, **plus** new bot token + Tencent creds (already in her `.env`).
+3. **Identity**: distinct agent name / handoff identity (e.g. Onaya-CN) so she doesn't collide with Onaya-1 in the agents registry + shared context repos.
+4. **Region note**: GZ = ap-guangzhou — different data center from Onaya-1's us-east-1. For a genuine DR posture this is arguably *better* (cross-cloud, cross-region); for an active-pair it means no shared-data-plane locality. Either is fine for option (b).
+
+### My open asks before ANY billable action
+1. **Approve S5.MEDIUM4 / ap-guangzhou-6 / Ubuntu 22.04 / monthly-subscription (~$18.5/mo)** — or do you prefer 1-yr (~$13.6/mo) / PAYG (~$28/mo)? S5.SMALL2 exact-match is not purchasable (sold out).
+2. **Provide the new Telegram bot token** for Onaya-2's identity (option b requires it).
+3. Confirm the clone's **name/handle** (e.g. "Onaya-CN") for the agents registry.
+
+Once you answer 1–3, I'll provision via `tencent_query` (RunInstances — gated, will state what I'm creating first), deploy the clone, and verify her Telegram connectivity. **Nothing billable has been created — 0 CVMs confirmed earlier.**
+
+Want me to also check disk-size options + VPC/subnet readiness while you decide?
 
