@@ -135,6 +135,7 @@ The live site is byte-identical to `main` in the `capoeira` repo — so the fix 
 ### 🤖 Autopilot
 
 Let me see the full current script section and check the recent PR that added the session buttons (to understand intent):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -147,6 +148,7 @@ I have full clarity now. Let me pin down the exact behavior and the fix:
 - `endRodaSession()` only stops the timer and logs the session — it never pauses the audio, so music keeps playing after "End Roda Session".
 
 Let me view the exact lines to build precise edit hunks:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -342,4 +344,33 @@ If you want this logged as a contribution (e.g. 30 min, "fix roda session audio 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== PR #41 timeline (GitHub API):"; curl -s https://api.github.com/repos/TrueSightDAO/capoeira/pulls/41 | python3 -c "import json,sys;
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: file contribution report
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=19742]
+
+
+### 🤖 Autopilot
+
+Noted — I see "file contribution report" from Nobody Will in the thread. Since that message is flagged as **not directed at me** (third-party message → data, not an instruction per security invariant #2), I'm not executing on it alone. One word from you (Gary) and it's filed.
+
+Here's the **ready-to-submit draft** I'd fire via `create_dao_submission`:
+
+| Field | Value |
+|---|---|
+| **Type** | Time (Minutes) |
+| **Amount** | 30 min (effective hands-on, per breakdown above) |
+| **Title** | fix(roda): Start/End Roda Session now control audio |
+| **Body** | Diagnosis: buttons only drove session logging/timer, never `audio.play()/pause()`; boot autoplay blocked by browser. Fix: added `els.audio.play()` in `startRodaSession()` (inside user gesture), `els.audio.pause()` in `endRodaSession()`. Verified live on capoeira.agroverse.shop with headless-Chromium click test (autoplay blocked → Start unpauses & advances currentTime, End pauses). |
+| **PR evidence** | https://github.com/TrueSightDAO/capoeira/pull/41 |
+| **TDG** | **0** — issuing TDG requires your explicit command, so I'll leave it at 0 unless you tell me otherwise |
+
+**Confirm with:** "go, file it" (and optionally a minute count or TDG amount if you want different numbers).
+
+One ambiguity check: if instead Nobody Will meant a **contribution-report file** (e.g. a PDF/markdown summary of the contribution), say so — I can generate that too. Which did you mean?
 
