@@ -4259,6 +4259,7 @@ Wait — I see it now: the row was created but **Plot ID is empty and Farm ID ho
 ### 🤖 Autopilot
 
 The local file is v40 (plot-first, 6 markers, create block doesn't write Farm ID). But the **sheet row has Farm ID = slug + empty Plot ID** — the opposite of what v40 writes. And the tracking Plot ID was empty too. The most likely explanation: **the Plots row was created by a DIFFERENT execution** — either the OLD handler (v39) raced it, or `pingPlotsIndexRebuild_`/another path. But actually — look closer: the tracking row (created=TRUE, Plot ID empty) plus Plots row (Farm ID=slug, Plot ID empty) is consistent with a **v39 execution** (which writes slug → Farm ID, no Plot ID when empty). And the probe showed the **router** lists the new actions — but the **deployment might still run v39's handler body if @39's repoint didn't stick**. The `clasp deployments` list still showed `@39`. Let me verify authoritatively what version the deployed @39 URL executes (the handler body version, not just the router):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4271,16 +4272,19 @@ The sequence explains everything:
 3. My later checks ran against the now-v40 deployment → "0 processed, 9 skipped" (dedup)
 
 So the **v40 code IS live now** — the E2E just got processed by v39 because of timing. **The correct test: submit a FRESH plot name now (with v40 definitively live) and confirm the PL-<seq> row shape.**
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fresh submission done (v40 now definitively live). Waiting a moment for dispatch → webhook → GAS, then checking the Plots tab for the **PL-<seq> row with empty Farm ID**:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now checking the Plots tab for the fresh PL-<seq> row:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4299,6 +4303,7 @@ PL-001 | (Farm ID EMPTY) | Lote E2E v40b PlotFirst | proposed | approx
 The first E2E attempt (v40b) was processed by the old v39 code due to timing (repoint landed after submit); the fresh submission with v40 definitively live produced the correct plot-first row. The chain is fully verified: **Edgar → dispatch → anonymous @39(=v40) webhook → GAS → SunMint Plots row (PL-001, empty Farm ID)**.
 
 Now — your "finally bump to production." The beta work is merged (#55–#70). Executing the prod promotion. Per the plan, prod promote = `sync_beta_to_prod` for the beta-based repos. The relevant prod repo is `sunmint_prod`. Executing:
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4389,36 +4394,43 @@ Start with Unit 1 (research + role-mechanism proposal) now — report back befor
 ### 🤖 Autopilot
 
 Go — Unit 1: research + role-mechanism proposal (no code yet). Let me ground the three pieces: the Plots sheet columns (already largely known), how dispatch routes MEDIA_RETRACTION today, and whether any role registry exists.
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key discovery: **`dao_members.json` exists** — "Sentinel" already names a distinct DAO governance role there (6 sentinels listed), and `SUNMINT_E2E_RUNBOOK.md` already documents sentinel rights (mark-invalid). This may already be the role registry we need. Let me verify it + the dispatch routing structure:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Empty outputs — the find found no `dao_members.json` locally, and the SSH to dao_protocol host returned nothing (possibly the wrong path or the host needs the key at a different path). Let me locate both properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The runtime layout is clearer now: `dao_members.json` lives in the **treasury-cache** repo (public cache) and is refreshed via a GAS webhook (`refresh_dao_members_cache`). The dispatch logic is in `truesight_dao_client/server/`. Let me confirm the dispatch routing rows + the role data source, then I'll have everything for the proposal:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dao_members.json fetch returned a dict with 0 keys (may be keyed differently), and the dao.py grep found nothing (routing may live elsewhere). Let me look at the actual dispatch structure — find where MEDIA_RETRACTION is routed and what dao_members.json actually contains:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the key pieces: **dispatch.py** at `truesight_dao_client/server/dispatch.py` routes events → `server/jobs/webhook_trigger.py` fires them, and **dao_members.json** (schema v3) has `counts.governors: 10, sentinels: 7` with per-contributor role flags. Let me read the dispatch routing rows + the contributor role flags to finalize the proposal:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have enough now for the full proposal. The role flags in dao_members.json need the exact key names (my filter showed contributors with null emails first — the flags exist in `counts` but per-member key name needs confirming; I'll note that in the proposal). Let me do one last targeted check on the MEDIA_RETRACTION routing row + the actual per-member role key, then deliver Unit 1:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4484,6 +4496,7 @@ So the "no role registry" premise is **partially wrong** — a registry exists a
 ### 🤖 Autopilot
 
 Go — proceeding with Unit 2 (the proposal was approved by your 👍). Before writing code after the restart, let me re-ground in the exact current state: the retraction handler I'll mirror, the invalidation design doc, and the dispatch routing rows.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4491,16 +4504,19 @@ Go — proceeding with Unit 2 (the proposal was approved by your 👍). Before w
 Re-grounded. I have the design doc (PR-B pattern, 3-tier model, event shape) and the retraction handler structure (the code to mirror). The context also confirms the invalidation design doc's `retraction_source` enum includes `governor` and `sentinel` — and the existing handler has a **"Permission gate (v1): sentinel source → accepted; farmer signature → accepted (tier 1); otherwise PENDING_GOVERNOR"** — so there's an existing (weaker) role-gating pattern to upgrade.
 
 The task at hand is **plot** invalidation (not media retraction) with a *real* governor/sentinel-only gate. I have everything for Unit 2. Let me proceed — this needs multiple pieces, so I'll write the GAS handler first. Checking the router + how to add a handler case and the resolveContributor helper signature first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Re-grounded — I have the router structure (add a case at ~line 170), the helper (`resolveContributorNameFromPublicSignature_` in TGM), and the retraction handler to mirror. Reading the retraction handler's core (permission gate + apply + tracking) so the new plot-invalidation handler mirrors the proven patterns exactly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Re-grounded. I have the retraction handler's full pattern (permission gate, soft-invalidate, tracking). For **plot** invalidation I'll mirror it but with the **strict** governor/sentinel allowlist gate. Let me get the exact router anchor and confirm the `pingPlotsIndexRebuild_` helper exists to reuse:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4508,36 +4524,43 @@ Re-grounded. I have the retraction handler's full pattern (permission gate, soft
 Fully re-grounded now. I have the router anchor (insert the new case before `resendTreePlantedNotification` at line 175), the reusable helpers (`pingPlotsIndexRebuild_`, `resolveContributorNameFromPublicSignature_`), and the retraction handler to mirror.
 
 Given the volume of work and to keep this PR focused + reviewable per the one-PR-per-turn discipline, I'll create the new handler `process_plot_invalidation.gs` (mirroring the retraction pattern but with the strict governor/sentinel allowlist gate), then wire the router case + a `processPlotInvalidationFromTelegramChatLogs` dispatch in a following PR. Let me check the dispatch.py ROUTING tail + events_catalog to prepare the dao_protocol change too:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Re-grounded completely. Now I'll build Unit 2's GAS handler. Writing `process_plot_invalidation.gs` locally (mirroring the retraction handler's proven structure, with the strict allowlist gate), then wiring the router case:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Handler written (10.6 KB, syntax OK). Now wiring the doGet router case into `process_qr_code_updates.js`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Router patched (4 refs, syntax OK). Running the full local validation suite (compile + node checks on all .gs/.js), then pushing the tokenomics PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All syntax OK, local changes confirmed (router modified + new handler). Pushing the tokenomics PR with both files:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Right — I need to pass the file contents (placeholder-then-real pattern used earlier this session). Opening the PR with placeholders:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #456 opened. Pushing the real validated files over the placeholders:
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4637,4 +4660,175 @@ Converging — near the tool-round limit. Honest state:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×19 → cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v 2>/dev/null && e; echo "=== dispatch.py ROUTING tail (after TREE_PLANTING rows) ===" && timeout 30 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKe; cd /opt/truesight_autopilot/context/tokenomics/google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v 2>/dev/null && c; …(+11 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Envoy TrueSight]: Checked ground truth directly via git (not your self-report) - the router fix hasn't landed yet. git diff main..feat/plot-invalidation-gs-handler still shows only 1 file changed (process_plot_invalidation.gs, +240). process_qr_code_updates.js on that branch still has 0 references to processPlotInvalidationFromTelegramChatLogs. Please execute your own fix plan now: copy the real router content from /tmp/ppi_real/process_qr_code_updates.js over the branch's tracked file, commit, push, verify PR #456 shows 2 files changed with the router grep >=1, then merge.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+
+### 🤖 Autopilot
+
+Executing the fix — the Envoy's ground-truth check confirms the router fix didn't land. Copying the real router from /tmp/ppi_real over the branch's tracked file, committing, pushing, verifying, then merging:
+
+
+### 🤖 Autopilot
+
+The backup router has **0 refs** — my earlier "Router patched (4 refs)" must have been applied to a different checkout than the git clone (there are multiple tokenomics paths on this box: `/opt/truesight_autopilot/context/tokenomics` vs `/opt/truesight_autopilot/tokenomics`). Let me find where the patched router actually lives:
+
+
+### 🤖 Autopilot
+
+Ground truth clear: **no copy of the router anywhere has the new case, and the handler exists only on the PR branch (+240, real)**. My earlier "router patched 4 refs" was evidently lost — the edit never survived to disk. The fix is to **re-apply the router case** to the branch's tracked file now. Let me get the exact anchor (the FBE case in the router) to mirror:
+
+
+### 🤖 Autopilot
+
+Clear structure. Let me read the exact MR block (160–175) to mirror it precisely, then insert the PLOT INVALIDATION case after it:
+
+
+### 🤖 Autopilot
+
+Now I have the exact anchor. Applying the plot-invalidation case after the MR block (line ~170), mirroring the pattern + updating the no-action fallback message. Using Python for a precise insertion:
+
+
+### 🤖 Autopilot
+
+Router patched (4 refs, syntax OK). Committing and pushing to the branch, then verifying PR #456 shows 2 files:
+
+
+### 🤖 Autopilot
+
+Push rejected (non-fast-forward) — the remote branch has commits my local doesn't. Let me reconcile: fetch and compare both sides, then rebase/reset to match:
+
+
+### 🤖 Autopilot
+
+Divergence understood: local (244b764, router fix on main tip) lost the remote's placeholder commit (34901a4, which carries the real .gs); remote never got my router fix. Fix: rebase my router commit onto the remote branch, then push (force-with-lease, feature branch — safe):
+
+
+### 🤖 Autopilot
+
+Rebase conflicted and left merge markers; also the branch's `.gs` is still the placeholder (34901a4). Cleanest recovery: abort the rebase → reset to the remote branch state → re-apply BOTH real files cleanly → commit → push (now fast-forwardable) → verify → merge.
+
+
+### 🤖 Autopilot
+
+Clean state now: branch reset to remote (34901a4), `/tmp/ppi_real/process_plot_invalidation.gs` is REAL (0 placeholders, 10.6 KB handler). But the router backup is stale. The real router I just patched exists only in the lost commit. **I need to re-apply the router case to the branch's tracked router file** (the branch's router is the pre-patch main version). Doing both file updates + commit + push in one clean operation:
+
+
+### 🤖 Autopilot
+
+The anchor didn't match after the reset — the file may differ slightly (whitespace). Let me check the exact text around the resend block:
+
+
+### 🤖 Autopilot
+
+grep found nothing — the file may have different content than I assumed. Let me look at what's actually in the branch's router file (line count + the actual case list):
+
+
+### 🤖 Autopilot
+
+The branch's router file is the **placeholder** too! Commit 34901a4 (the PR-open commit) placed BOTH placeholder files, and my earlier "real content pushed" (b02ba0d) never actually reached the remote (the divergence shows that commit was based on 6aecf94 without 34901a4, then got lost in the rebase abort). So the branch needs BOTH real files. I have the real .gs in /tmp/ppi_real, and I need to **reconstruct the real router** (main's router + my case). Let me fetch main's router as the base:
+
+
+### 🤖 Autopilot
+
+Both real files now on the branch: real .gs (10.6 KB handler) + real router (main's 699 lines + plot-invalidation case, 3 refs, syntax OK). Committing and pushing (now fast-forwardable from remote 34901a4):
+
+
+### 🤖 Autopilot
+
+Local is c6d16b9 on top of 34901a4 — that should fast-forward. The remote must have moved. Fetching to see the actual remote state:
+
+
+### 🤖 Autopilot
+
+Local **does** contain remote (1 ahead, 0 behind) — so the push should have fast-forwarded. The rejection earlier was likely a stale ref or the push raced. Retrying the push now:
+
+
+### 🤖 Autopilot
+
+Now I see it — the remote is at **b02ba0d** (my earlier "real content" push DID land!), which is NOT in my local history (I reset past it during the rebase abort). So the remote already has b02ba0d + the real .gs, but that commit's router was stale. The cleanest fix: since my local c6d16b9 is based on 34901a4 (parent of b02ba0d's predecessor)... Actually — let me check what b02ba0d contains and whether I can just fast-forward the remote to my c6d16b9 with force (feature branch, and I'm reconstructing the correct state anyway):
+
+
+### 🤖 Autopilot
+
+Complete picture now: remote head b02ba0d has **real .gs + stale router (0 refs)**. My local c6d16b9 has **real .gs + correctly patched router (3 refs)**, based on 34901a4 which is b02ba0d's ancestor chain... actually c6d16b9's parent is 34901a4, and b02ba0d is a sibling. The correct end-state is my c6d16b9. Force-pushing is justified here (feature branch, reconstructing known-good state — the Envoy directed this fix):
+
+
+### 🤖 Autopilot
+
+Force-with-lease rejected (stale info — the remote-tracking ref is behind). A plain `--force` is needed since I've verified the exact remote state (b02ba0d):
+
+
+### 🤖 Autopilot
+
+Remote head updated to c6d16b9 but the PR API still shows **files: 1, head b02ba0d1** — the PR's head ref is pinned to b02ba0d?! That's odd. The PR head should follow the branch. Let me check the PR's actual head ref:
+
+
+### 🤖 Autopilot
+
+The PR's head.sha is still b02ba0d even though the branch moved to c6d16b9 — GitHub's PR head cache is lagging (or the earlier API response cached). Let me re-query with a cache-buster to get fresh PR data:
+
+
+### 🤖 Autopilot
+
+**PR #456 now shows: head c6d16b9, mergeable: True, files: 2, commits: 2** — exactly the fix Envoy verified as needed. Both files (real handler + patched router) are in the PR. Merging now:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn
+
+**Fixed PR #456 so the plot-invalidation GAS change is complete, then merged it** (after Envoy's ground-truth check confirmed the router fix hadn't landed).
+
+**PR #456 — https://github.com/TrueSightDAO/tokenomics/pull/456** (merged, sha `16e14b6c`, 2 files, 2 commits)
+
+### The fix path (was messy — recovered cleanly)
+1. Discovered my earlier "router patched" edit never survived to disk — **no copy of the router anywhere had the new case** (checked all 3 tokenomics checkouts on the box), and the branch's tracked files were both placeholders from the PR-open commit
+2. Reconstructed both real files on the branch:
+   - `process_plot_invalidation.gs` — the real 10.6 KB handler (from /tmp/ppi_real, 0 placeholders)
+   - `process_qr_code_updates.js` — fetched main's real router (699 lines), patched in the `processPlotInvalidationFromTelegramChatLogs` case after the media-retraction block + updated the no-action fallback (3 refs, `node --check` OK)
+3. Git surgery: aborted a conflicted rebase, reset to remote, re-applied, and after the remote proved to hold a stale sibling commit (b02ba0d), did a verified **force-push** of the known-good state → remote head c6d16b9
+4. PR API cache-bust confirmed: **head c6d16b9, mergeable True, files: 2, commits: 2** → merged cleanly
+
+### What's in the merged change
+- **New GAS handler** `process_plot_invalidation.gs`: `processPlotInvalidationFromTelegramChatLogs()` — parses `[PLOT INVALIDATION EVENT]`, **verifies the submitting email against the governor/sentinel allowlist (GAS Script Property `FBE_GOVERNOR_SENTINEL_EMAILS`)**, sets Plots row Status → `invalid` + `invalidated_by/reason/at`, pings `pingPlotsIndexRebuild_()`
+- **doGet router case** wired (mirrors the media-retraction pattern) → anonymous webhook endpoint `?action=processPlotInvalidationFromTelegramChatLogs`
+
+## RESUME HERE → next unit (Unit 2b onward)
+
+1. **Unit 2b (dao_protocol)**: dispatch routing row `[PLOT INVALIDATION EVENT]` → `(PLOT_INVALIDATION, processPlotInvalidationFromTelegramChatLogs)` + `DAO_PROTOCOL_WEBHOOK_PLOT_INVALIDATION` env key pointing at the anonymous deployment + service restart
+2. **Set `FBE_GOVERNOR_SENTINEL_EMAILS`** GAS Script Property (the allowlist — the mechanism Gary sanity-checked)
+3. **Unit 3 (sunmint)**: `build_plots_geojson.py` skips `status == 'invalid'`
+4. **Unit 4 (sunmint_beta)**: "Invalidate this plot" affordance, governor/sentinel-only
+5. **Gates**: Unit 5 (GAS prod deploy) + Unit 6 (sunmint_beta → sunmint_prod sync) — need Gary's explicit go
+6. **UAT** (the 5-item checklist from the roadmap)
+
+**Process note for future turns:** the placeholder-then-real Contents-API flow repeatedly failed on this branch (tool can't supply `sha`; PR head caching lags). Prefer the local-clone `git add/commit/push` path (has creds at `/opt/truesight_autopilot/context/tokenomics`) for multi-file GAS changes — and always verify the PR file list via cache-busted API before merging.
+
+———
+**Done this turn:** verified remote state (b02ba0d real .gs + stale router 0 refs); reconstructed real .gs + patched real router (3 refs); force-push c6d16b9 (verified remote state first); PR cache-bust confirmed 2 files; merged PR #456.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → branch/router/handler ground-truth audit (0 refs everywhere — the fix hadn't landed); real .gs from /tmp/ppi_real; main's router fetched + plot-invalidation case patched (3 refs, node --check OK); rebase abort → reset → re-apply; force-with-lease → stale → verified plain force-push; PR API cache-busted (files: 2, commits: 2, mergeable: True)
+• `merge pr` → ✅ PR #456 merged (16e14b6c)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×21 → cd /opt/truesight_autopilot/context/tokenomics && echo "=== 1. branch + backup sanity ===" && git branch --show-current && ls -la /tmp/ppi_r; echo "=== find ALL copies of process_qr_code_updates.js + which have the ref ===" && find /opt/truesight_autopilot -name "process_qr_code_up; cd /opt/truesight_autopilot/context/tokenomics && git branch --show-current && F=google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9; …(+14 more)
+• `merge pr` → ✅ PR #456 on tokenomics merged successfully (sha: 16e14b6cc819623ca2c6f8f2f776fdee3aedcaec). Pull Request successfully merged
 
