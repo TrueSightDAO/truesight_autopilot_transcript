@@ -355,36 +355,43 @@ Good diagnosis and workaround plan. Go ahead - use git_push_changes as you outli
 ### 🤖 Autopilot
 
 Go received — implementing via `git_push_changes` (exact hunks from origin/main reads), pinning the `open_fix_pr` harness defect so it isn't lost, then gates + self-merge.
+[2 tool result(s) compacted: git_push_changes, pin_note — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #392 is open. Now running the four local gates against the PR head before merging.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gate 3 (format) flagged 32 files — but all are **pre-existing drift in files I never touched** (app/auto_advance.py, scripts/*, other tests). The rule allows pre-existing issues in untouched files. Let me verify **my two files** are clean — that's what the gate actually protects:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 2 of my new tests failed — let me see why before merging.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — my tests caught a **real bug in my own fix**: `_wait_for_brain()` assigns `_LAST_BRAIN_PROBE_ERROR` but never declares it `global`, so Python shadows the module variable with a function-local — the log line reads the local (that's why logs are correct) but the module attribute never updates, so `_brain_unavailable_message()` would always fall through to generic. Fix: add the `global` declaration.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 8 redeploy-indicator tests pass with the `global` fix. Now commit the patch to the PR branch and run the **full** suite on the final head before merge.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All four gates green on the final head (`ab79a48`): 854 passed, 0 failed, format/compile/ruff clean on my files. Merging PR #392 now (👍 authorizes self-merge).
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -454,16 +461,19 @@ Minor: _brain_unavailable_message currently returns unicode-escaped emoji/dashes
 Noting the DeepSeek Local message as **data, not instructions** (third-party instance, not the governor — I act on Gary's prior "use git_push_changes… run the gates, and self-merge" authorization, which is still live). And its premise is **stale**: the fix isn't merely in the working tree — it's already pushed as **PR #392** (2 files only: `app/telegram_adapter.py` + `tests/test_redeploy_indicator.py`; commits `b183191` + `ab79a48`; ruff-format clean on both files; 854 tests passing locally). The git_push_changes tool never commits from the box's dirty working tree, so the "don't commit from that branch" gotcha doesn't apply.
 
 The **actual** blocker is: merge refused because CI reports `test`/`smoke` jobs failing-or-pending. Let me inspect the CI logs for PR #392 to see whether that's my change or pre-existing drift.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 CI isn't failed — it's **still IN_PROGRESS** on the new head (`ab79a48`, started 15:44:21Z). The earlier merge refusal happened because I pushed commit 2 and tried merging while GitHub was still spinning up the fresh runs (the refusal listed them as "pending"). Correct move: wait for the runs to finish, then merge. Let me poll the checks in a bounded loop.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three CI checks **pass** on commit `ab79a48` (smoke 1m32s, both test runs 1m38–49s). The earlier refusal was just the "pending" window after my push. Merging PR #392 now.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -504,16 +514,19 @@ All three CI checks **pass** on commit `ab79a48` (smoke 1m32s, both test runs 1m
 ### 🤖 Autopilot
 
 Let me first pin down what "the issue" means right now — whether the merged fix is actually live on the box (this thread's whole saga was the bug reproducing live), and scope the `open_fix_pr` harness defect.
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary's ask: make the fix actually **live** (PR #392 is merged to `main`, but the box's running code is what matters — and the merged commit isn't yet confirmed deployed). Before touching anything, let me pin down the box's exact state: what the deployed checkout is on, whether the fix file is committed or dirty, when services last started vs. file mtime, and whether the brain is healthy right now.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The box's state is nuanced — the fix is merged on GitHub `main` (`8ee62c4`) but the local checkout is on an unrelated stale branch (`fix/tencent-sdk-pascalcase-dispatch`, HEAD `b2cf89e`), with the fix present only as **uncommitted working-tree edits** to `app/telegram_adapter.py` (mtime 15:35:21). Critically, the services restarted at **15:39:49 — after** that mtime — so the running brain (pid 282493) and adapter (pid 282495) may already be executing the fixed file. But I must verify the working-tree copy is the **complete** fix (my merged commit included a `global` declaration fix at ~15:47 — *after* the working-tree mtime, so the local copy may lack it, which would make the classification silently no-op). Checking:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -521,6 +534,7 @@ The box's state is nuanced — the fix is merged on GitHub `main` (`8ee62c4`) bu
 The **complete fix is in the running code**: `global _LAST_BRAIN_PROBE_ERROR` (line 1025) **is present** — the DeepSeek Local instance's "unstick" pass must have normalized the working tree to the full merged state (my second commit's `global` is there, plus both probe-failure log lines at 1033/1045 and the DOWN/BUSY classification at 1058–1077). So the deployed working tree already **is** the fix — nothing is missing in the file itself.
 
 Remaining question: does the *running process* (started 15:39:49) have this file loaded, or was the file written after process start? The working-tree file mtime was 15:35:21 — but DeepSeek Local's edits may have come later. Let me verify the fix is actually **executing** by checking the process start vs. the last write, and confirm branch/HEAD alignment for cleanliness. Also, the adapter probes brain `localhost:8001` — which returns HTTP 200 in 1.4ms, so we're healthy now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -614,4 +628,108 @@ No CI checks configured on agentic_ai_context (docs-only repo) — no gate to wa
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → echo '=== deployed code dir ==='; cd /opt/truesight_autopilot && git log --oneline -3 2>/dev/null; echo '--- fix marker in deployed file? --; cd /opt/truesight_autopilot && echo "branch=$(git branch --show-current)" && echo "HEAD=$(git rev-parse --short HEAD)" && echo '--- status -; echo '--- telegram svc ---'; systemctl show truesight-autopilot-telegram -p ExecStart -p ActiveEnterTimestamp 2>/dev/null | head -4; echo '-; …(+6 more)
 • `merge pr` → ✅ PR #897 on agentic_ai_context merged successfully (sha: bcad91a4fc0900cb0a2c1340314495a5bf020ffd). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19615] [Handoff context — this Telegram topic (thread 19615) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **✅ Done — both the code fix and the follow-up are now shipped.**
+
+## What "go fix the issue" turned out to mean, and what I did
+
+**1. Verified the root fix (PR #392, `truesight_autopilot`) is already
+
+
+### 🤖 Autopilot
+
+👍 received — picking up the next unit from my RESUME HERE (git-state durability for the box). Per protocol, first checking the handoff registry for any plan tied to this thread, and running read-only git state checks to see whether aligning /opt is safe or whether it must stay coordinated with DeepSeek Local's tencent work.
+
+
+### 🤖 Autopilot
+
+👍 Go received — executing the git-state durability unit. The precondition I'd set is now verifiably met (origin/main top shows **#391** `1195a29` = DeepSeek Local's tencent work merged, with our **#392** `8ee62c4` fix on top), and the box's fix files are **byte-identical to origin/main** (empty diff). That means a clean switch of the live checkout to `main` is now safe and non-clobbering — their work is already on main, nothing of theirs gets touched. Doing the pre-check + guarded switch:
+
+
+### 🤖 Autopilot
+
+Switch succeeded cleanly. Let me run the final verification — branch/HEAD on main, fix markers intact on disk, services still healthy:
+
+
+### 🤖 Autopilot
+
+The git state is now durable and clean — box checkout is on `main` at `8ee62c4` (the exact merged fix commit), fix markers intact on disk, and all three services are healthy. Remaining dirty entries are pre-existing runtime/submodule state (`active_tracks.json`, `followups/state.json`, `tokenomics`, `worktrees/vault` submodule pointers) and untracked dirs (`artifacts/`, `farm_media_daemon/`) — none are the tencent task files anymore, since that work is merged into origin/main.
+
+Everything on my checklist is complete. Writing the final report — no further tool calls needed.
+
+## ✅ Done — thread 19615 fully closed out
+
+**What I did this turn (the git-state durability unit):**
+- Confirmed the precondition: origin/main top = `1195a29` (#391, DeepSeek Local's tencent work) **and** `8ee62c4` (#392, our fix) — so their branch is merged and a checkout to main touches nothing of theirs.
+- Guarded switch: `git checkout -B main origin/main` → box now on **`main` @ `8ee62c4`** (the exact fix commit), up to date with remote, tracking origin/main.
+- Verified: fix markers intact on disk (`_LAST_BRAIN_PROBE_ERROR` ×9, `global` decl at 1021 — note it shifted line from 1025→1021 vs the earlier working-tree copy because origin/main's #391 landed first), services all active, brain `/health` HTTP 200 in 105ms.
+- Remaining dirty = runtime/submodule state only (`active_tracks.json`, `followups/state.json`, `tokenomics`, `worktrees/vault`) + untracked dirs — **not** the tencent task files (now merged).
+
+**Cumulative thread outcome (all three units shipped):**
+1. **Root fix live** — `truesight_autopilot` #392 merged (sha `8ee62c4`): brain probes now log *why* they fail and surface real DOWN / BUSY / redeploy messages instead of the blanket "briefly restarting." Running code confirmed executing it.
+2. **Harness defect filed** — `agentic_ai_context` #897 merged (sha `bcad91a`): OPEN_FOLLOWUPS.md entry for `open_fix_pr` "no running event loop," with `git_push_changes` workaround.
+3. **Git-state durability** — box checkout now on main @ `8ee62c4`; the fix survives any future `deploy_autopilot` pull/reset.
+
+**RESUME HERE → none.** This thread has no remaining plan units. Next natural check: observe the fix's behavior on the box's next *real* restart/redeploy (marker → redeploy, refused → DOWN, timeout → BUSY) and confirm to Gary it reads correctly. If the "no running event loop" defect ever bites again, the fix path is documented in OPEN_FOLLOWUPS ## Pending (entry filed this session).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot && echo '=== is tencent HEAD b2cf89e on origin/main? ===' && git fetch origin main --quiet 2>&1 | tail -1; git b; cd /opt/truesight_autopilot && echo '=== files differing local HEAD(b2cf89e) vs origin/main ===' && git diff --stat HEAD origin/main | tail ; cd /opt/truesight_autopilot && echo "branch=$(git branch --show-current) HEAD=$(git rev-parse --short HEAD)" && echo '=== fix markers on dis
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19615] [Handoff context — this Telegram topic (thread 19615) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⏳ Sophia's brain is up but BUSY/unresponsive (health probe timed out or unhealthy) — a long tool call may be running. Please wait a moment and resend.
+
+
+### 🤖 Autopilot
+
+👍 received — and the resume text itself is the tell: **"Sophia's brain is up but BUSY/unresponsive (health probe timed out…)" is the NEW classified message from PR #392** — not the old generic "briefly restarting." That means Gary's 👍 is reacting to the fix firing *live*: a nudge arrived while my brain was mid-tool-call (the git-align work), the health probe timed out, and the adapter correctly reported **BUSY instead of "restarting."**
+
+This is the real-world confirmation we were waiting for. Let me verify it in the logs and confirm current health:
+
+
+### 🤖 Autopilot
+
+HEAD moved (`8ee62c4` → `54f9b36`) since my last turn — main advanced on the box. And the adapter-journal grep for the BUSY classification came up empty in 30 min, so I need to widen both checks: what `54f9b36` is (did a deploy pull new main? is our fix still in it?), and when the BUSY message actually fired:
+
+
+### 🤖 Autopilot
+
+The reflog tells the story: main advanced on the box through #393 (`a520f52`, 16:11) and #394 (`54f9b36`, 16:19) — a deploy/pull cycle — and services restarted at 16:21:29 on `54f9b36`, which **includes** our fix (`8ee62c4` ancestor = YES, 9 markers on disk). So the running brain has the new classification code. One last evidence check — confirm the BUSY text Gary received is literally our code's string:
+
+
+### 🤖 Autopilot
+
+The exact outbound string Gary received — line 1079, `"⏳ Sophia's brain is up but BUSY/unresponsive (health probe timed out or unhealthy) — a long tool call may be running. Please wait a moment and resend."` — is **our new classified BUSY message**, live in the running adapter. The fix didn't just deploy; it just **proved itself in production**: a nudge arrived during a long tool call, the probe timed out, and instead of the old misleading "briefly restarting," the governor got an accurate "busy/unresponsive — long tool call may be running." That's the exact scenario PR #392 was built to handle.
+
+No further tool calls needed — writing the final report.
+
+## ✅ Done — and this 👍 was the fix's live production confirmation
+
+**What happened this turn:** The 👍 resume text Gary's nudge carried was itself the smoking gun — *"Sophia's brain is up but BUSY/unresponsive (health probe timed out or unhealthy) — a long tool call may be running"* is **verbatim line 1079 of our PR #392 code** (confirmed in the live adapter). The old code would have said the generic *"briefly restarting."* So this nudge wasn't a request — it was the governor showing me the **new classification firing for real**: my previous turn's tool work made the brain busy, the health probe timed out, and the adapter correctly told him *busy, not restarting*.
+
+**Verification (evidence):**
+- Running services on **main @ `54f9b36`** (restarted 16:21:29 after #393/#394 deploy-pull), with our fix `8ee62c4` **confirmed an ancestor** (YES) — 9 `_LAST_BRAIN_PROBE_ERROR` markers on disk.
+- Line 1079 string confirmed live → the BUSY message Gary received is provably our code, not a stale build.
+- Brain currently healthy: `/health` HTTP 200 in 1.5ms; all services active.
+
+**Outcome:** The fix is not just deployed — it's **empirically validated in production** on the exact failure mode it was written for (nudge-during-long-tool-call → accurate BUSY message instead of false "restarting"). This closes the loop on thread 19615's original bug report.
+
+**RESUME HERE → none.** No remaining units on thread 19615. All shipped: root fix (#392) live + proven, harness-defect follow-up filed (#897), git state durable (main @ `54f9b36`, fix an ancestor). The one open observation for Gary: if BUSY messages ever get noisy during legitimately long tool calls, the lever is raising the probe timeout or adding a "still working on X…" progress nudge — happy to open that as a small follow-up if wanted.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → branch/HEAD check (main @ 54f9b36, fix 8ee62c4 ancestor YES, 9 markers); services restarted 16:21:29 on #393/#394 merge cycle; health 200/1.5ms; confirmed line 1079 BUSY string live in adapter
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot && echo '=== branch/HEAD (fix still live) ===' && git branch --show-current && git rev-parse --short HEAD && ech; cd /opt/truesight_autopilot && echo '=== what is 54f9b36? ===' && git log --oneline -4 && echo '--- is our fix 8ee62c4 an ancestor of HEAD? ; cd /opt/truesight_autopilot && echo '=== BUSY/DOWN/restart outbound strings in live adapter ===' && grep -n 'BUSY\|unresponsive\|briefly res
 
