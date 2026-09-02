@@ -51,3 +51,53 @@ Here's what I found — treating this as observed ambient chatter (noted "Nobody
 
 **Suggested next step (needs a governor's go):** if Gary/Nobody wants, I can (a) pull the top 2–3 full product pages (specs: capacity kg/h, SS grade, motor, voltage for Brazil 220V/60Hz) and paste them here, (b) open an Alibaba RFQ draft, or (c) log "cacao cracking/winnowing machine sourcing" as a Pending item in OPEN_FOLLOWUPS.md so it isn't lost. Which one — or leave it for whoever raised it?
 
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: https://www.amazon.com/dp/B0CZ3LT543?ref=ppx_pop_mob_ap_share
+
+This is for roasting
+
+---
+
+[observed, not directed at you — Nobody Will not DM you]: Also need a melanger. Could you find one on Alibaba
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=19718]
+
+
+### 🤖 Autopilot
+
+Two more observed research items in the thread — the roaster (Amazon ASIN) and a melanger sourcing ask on Alibaba. Let me pull both before answering.
+
+
+### 🤖 Autopilot
+
+Both observed items pulled. Here's the research digest:
+
+## 1. Roaster — Amazon ASIN B0CZ3LT543 (reality-check)
+
+| Field | Value |
+|---|---|
+| Product | **ATOLOMOTOR 110V-240V Electric Coffee Roaster** — roller-type drum, stainless steel |
+| Capacity | **250 g** |
+| Power | **14 W** (very low — this is a rotating-drum warmer, not a true convection roaster) |
+| Rating | 3.5★ with only **2 reviews**; BSR #4.2M in Home & Kitchen |
+| Manufacturer | "KathyLiely" (generic marketplace seller brand) |
+
+**Flags for cacao use:** 250 g/batch is hobby-scale — for context, our *smallest* outsourced processing runs (Wesley–CIC) were 160 kg of nibs; Santos works per-kg. Cacao roasting also wants 120–150 °C with airflow + chaff management; a 14 W roller drum at 250 g won't match craft batch volumes. If this is for **recipe/experiment development** at home scale it's fine-ish, but if it's meant as production roasting for Agroverse, I'd treat it as a sampler, not the real unit. (Also: it's spec'd for coffee/peanuts — no cacao endorsement in the listing.)
+
+## 2. Melanger — Alibaba candidates
+
+| Supplier / listing | Capacity | Price | Notes |
+|---|---|---|---|
+| [Chocolate Melanger — Cocoa Nibs Grinder Refiner, Stone Mill](https://www.alibaba.com/countrysearch/CN/chocolate-melanger.html) | 4L / 10L | **$1,600–1,800** /set | 12-yr CN supplier, MOQ 1 set |
+| [Chocolate Melanger Machine Twin Stone Grinder](https://www.alibaba.com/product-detail/Chocolate-Melanger-Machine-Twin-Stone-Grinder_1601718355139.html) | twin-stone, nib refining + conching | **$3,340** (1 pc) | Larger commercial class |
+| Chocolate Stone Grinder Melanger (French Alibaba listing) | 350×450×600 mm (40 kg) up to 1160×800×1290 mm (280 kg) | — | 220V 50Hz, **550 W → 2.2 kW**, SS — note 50 Hz matters for Brazil (60 Hz) |
+| Chocolate Melanger (chocomachines.com) | 7L / 25L / 60L per batch | — | Bean-to-bar line reference |
+
+**DAO tie-in:** the melanger is the nibs→mass/bar step currently outsourced — Santos charges R$40/kg (nibs→bars) and Wesley–CIC R$48.5/kg; Dennis Lim's Shiok Kitchen does it at **US$10/kg** in Menlo Park. A 4–10L melanger ($1.6–1.8k) is the craft-tier match if in-house refining is ever on the table — and it would need **220V/60Hz** confirmation for Brazil (several listings are 50 Hz, which would need a converter or a 60 Hz variant).
+
+Still all ambient chatter on my side — no outreach, no actions taken. Want me to (a) pull full specs on the 4–10L melanger listing, (b) check whether this Amazon roaster has any cacao-specific reviews via a deeper search, or (c) leave it here for whoever's driving that conversation?
+
