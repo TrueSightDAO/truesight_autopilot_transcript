@@ -21,6 +21,21 @@
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: search_context, search_context, list_org_repos — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: read_context_file, read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: read_repo_file, read_repo_file, read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me look at an actual per-farm manifest to see the current schema fields, and check the farm-media-raw structure.
 
 
@@ -136,4 +151,95 @@ One more thing: **status note on your earlier question** — I found no evidence
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → systemctl is-active farm-media-daemon 2>/dev/null; echo "---inbox---"; ls -R /home/ubuntu/farm_media_inbox/ 2>/dev/null | head -40; echo "--; cat /home/ubuntu/media_archive_inbox/farm-media/cleide/IMG_4832.mp4.json 2>/dev/null; echo "===jedielcio==="; ls /home/ubuntu/media_archive_; cd /tmp && rm -rf shop_probe && git clone --depth 1 -q https://github.com/TrueSightDAO/agroverse_shop_beta.git shop_probe 2>&1 | tail -1; ec; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] Do further investigation.
+
+
+### 🤖 Autopilot
+
+Gary said "do further investigation" — so I'll dig into each flag I raised: the santa-anna manifest collapse, the paulo-la-do-sitio yt_id mismatch/collision, jedielcio's missing manifest, thumbnail/liveness feasibility, and whether capture-time backfill is even possible from surviving originals.
+
+
+### 🤖 Autopilot
+
+Key findings so far — and they reframe the earlier flags. Running deeper probes to nail root causes:
+
+
+### 🤖 Autopilot
+
+Excellent — the picture is crystallizing and it's worse/more specific than the first pass. The cleide shop gallery has 2 **wrong** entries, paulo's manifest is riddled with **23 stale IDs**, and disk is at 98%. Digging for root causes + what's actually queued:
+
+
+### 🤖 Autopilot
+
+Root causes are emerging — the paulo manifest has 23 stale IDs (the exact failure MEDIA_ARCHIVE_PIPELINE §7 warns about), cleide's shop gallery embeds 2 wrong videos, santa's manifest wasn't updated after uploads, and jedielcio is orphaned entirely. Final probes to date the corruption and check remaining unknowns:
+
+
+### 🤖 Autopilot
+
+Gary, I now have a full root-cause picture. Here's the investigation report.
+
+---
+
+## 🧾 Status (the short answer)
+The daemon (`farm-media-daemon`) is **active** and the queue is **drained** — every sidecar in the inbox has a live `yt_id`. Nothing is stuck waiting. But the *manifests* and the *shop galleries* that sit on top have real integrity problems. Full picture below.
+
+## 🔍 What the investigation found
+
+### 1. The manifests were committed from a **stale-ID recovery map** — 23 dead YouTube IDs in paulo, 2 wrong videos in the Cleide shop gallery
+
+I live-swept **all 176 distinct `yt_id`s** across manifests + inbox sidecars + shop galleries via YouTube oEmbed:
+
+| Farm | Videos | Live | Dead | Notes |
+|---|---|---|---|---|
+| paulo-la-do-sitio-para.json | 72 | **49** | **23** | IMG_3908–4040 mostly dead |
+| cleide.json | 71 | 71 | 0 | ✅ clean |
+| cleide **shop gallery** | ~8 | 6 | **2 wrong** | IMG_4838→dead `6H7W2Q3kLpM`, IMG_4839→**La do Sitio's** `dTcdegmZFm0` |
+| rancho-maranta-para.json | 52 | 3 with IDs | 0 | 49 items **never had** yt_id (videos not yet uploaded) |
+| santa-anna-fazenda-para.json | 45 | 5 with IDs | 0 | **40 items never had** yt_id |
+| oscar-bahia.json | 50 | 0 | 0 | **50 items all null** — added 09-02, nothing uploaded |
+| jedielcio (inbox only) | 4 | 4 | 0 | ✅ live, but **no committed manifest, no shop page** |
+| la-do-sitio.json | 72 | legacy | — | tombstone (0 items, `la-do-sitio` vs canonical `paulo-…`) |
+
+**Root cause, exactly as MEDIA_ARCHIVE_PIPELINE §7 warns:** the committed `paulo-la-do-sitio-para.json` and the Cleide shop `media.json` were built from a *title→ID recovery map against the shared channel's uploads playlist*, which **captured stale/deleted IDs**. The daemon's *actual* upload log (`/tmp/farm_media_uploads.log`, 09-01) shows **real, live IDs** (e.g. cleide IMG_4864→`KV_rmEKk6Wk`) — those are fine. The corruption is in the **committed manifests + shop gallery**, not in the upload path.
+
+Two smoking guns proving the mismatch:
+- `IMG_4037.MOV` → manifest says `vnai_a_nZhg` (**dead**); inbox sidecar says `d_OCkr4owTs` (**live**, "La do Sitio — IMG_4037"). Same for `IMG_4040` → `Lw5Ydf7uqDs` (dead) vs `dTcdegmZFm0` (live).
+- Cleide gallery IMG_4839 is showing **a La do Sitio video** — cross-farm ID bleed. Manifest has the correct `O2NJB6D69-o`.
+
+### 2. santa-anna / rancho / oscar: "collapsed" = **videos never uploaded**, not a manifest bug
+- santa-anna committed manifest has 45 items (13 MOV + 31 HEIC + 1?) but only **5 MOVs have yt_ids**. The 8 inbox sidecars (IMG_7704/06/07/13/14/16/21/26) are **all LIVE on YouTube** ("Santa Anna Fazenda — Grove Walk", "Cacao Scene"…) but were **never folded into the committed manifest**. So: 8 live uploads exist + 5 older committed = 13 MOVs — consistent with `counts.MOV:13`. The manifest is just **stale** (committed 09-01 17:42, before these 8 landed in inbox).
+- Same for **rancho** (3 videos have IDs — all LIVE; 49 null = the rest of the archive hasn't been uploaded yet) and **oscar-bahia** (50 items, all null — manifest registered 09-02 but **nothing uploaded**; transcode dir has 15 mp4 of 45 raw MOVs).
+
+### 3. jedielcio — orphaned but fully uploaded
+4 rich, curated videos (titles: "Harvesting Cacao in Para…", "Post-Harvest Bean Sorting…", "Opening Fresh Cacao Pods…", "Cacao Pod Anatomy…") all LIVE, but: **no `jedielcio.json` manifest, no `index.json` row, no shop farm page** (`/tmp/shop_probe/farms/` has no jedielcio). Also — telling — two of santa-anna's committed video *titles* are "Jedielcio: US & China Buyers at Santa Anna" / "Jedielcio Cheers: Viva!" — **Jedielcio is a person/visitor**, and the santa-anna 5 committed ids are actually from his Santa Anna visit. So "jedielcio" as a *farm* slug may be a **mislabel** — these 4 videos may belong under santa-anna or as a "visitors" set, not a new farm. Needs your read on identity before I build a farm page.
+
+### 4. No capture time is being recorded anywhere — and it's recoverable
+Sidecars have `generated` (pipeline time) but **no `captured_at`**. Original MOVs hold it (`MediaCreateDate` in QuickTime, e.g. La do Sitio `2024-06-25 18:27:09`). The **ffmpeg transcode drops it** (inbox mp4s have no `creation_time`) — so it must be harvested **at intake from the MOV/HEIC**, before transcode, exactly like GPS (§6). Recovery is feasible for farms whose **zips still exist on the box**: cleide zip (142 MOVs), la do sitio zip (72), santa_anna zip (88), oscar.zip (45), rancho zips, fernando_carla, sao_jorge — all still present. Only need a one-pass `exiftool` sweep on the zips to backfill.
+
+### 5. Disk at 98% — real operational risk
+`/` is 76G/78G used (**2.3G free**). Top junk: cleide zip 3.7G, `.cache/huggingface` 2.1G, la do sitio zip 2.3G, sao_jorge zip+extract 3G, oscar.zip 1.4G. We still need the zips for the capture-time backfill, but **after** backfill they can be moved to cold storage / S3 glacier, and `.cache` can be pruned now.
+
+## ✅ What's actually OK
+- Daemon healthy, config clean (4 inboxes, priorities, shared quota 500/day with 07:05 UTC reset noted).
+- Cleide: 71/71 uploaded, manifest clean, all live. (Only its shop gallery has the 2 wrong entries.)
+- Rancho's 3 committed video IDs live; santa's 5 live; jedielcio 4 live.
+- The dashboard plan (`MEDIA_ARCHIVE_PIPELINE_DASHBOARD_PLAN.md`) exists — it reads *sidecars* for the live queue and separately shows committed-vs-live, which is exactly why the sidecar truth matters.
+
+## 💡 Recommended remediation (order matters)
+1. **Clean the dead IDs from `paulo-la-do-sitio-para.json`** — replace the 23 stale ids with the live ids from inbox sidecars (IMG_4037→`d_OCkr4owTs`, IMG_4040→`dTcdegmZFm0`, etc.) where sidecars exist; for MOVs **not** in the inbox, the videos need re-upload (dead id = gone from YT). 
+2. **Fix the Cleide shop gallery** — IMG_4838 → `Qkcuc_zk694`, IMG_4839 → `O2NJB6D69-o` (beta-first, then prod on your go).
+3. **Reconcile santa-anna manifest** — fold the 8 live inbox ids in, so committed = live.
+4. **Register jedielcio properly** — but only after you tell me what it is (separate farm vs. santa-anna visitor footage).
+5. **Schema add `captured_at`** (intake, from MOV/HEIC QuickTime) + one-pass backfill from the zips → then archive zips off the 98%-full disk.
+6. **Thumbnails**: decided earlier — pull `i.ytimg.com/vi/<id>/hqdefault.jpg` (200 OK tested, ~20KB each — works), store in repo `farm_media_manifests/<farm>/thumbs/` — but only **after** manifest IDs are clean, or we'd thumbnail dead/wrong videos.
+
+Your call on scope + the jedielcio identity question, then I'll execute. Want me to start with the **data-integrity pass (1–3)** and the **captured_at schema + backfill**, since those unblock everything else?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → python3 - <<'EOF' import json,urllib.request,glob,os def get(url): req=urllib.request.Request(url,headers={'User-Agent':'sophia'}) with urll; python3 - <<'EOF' import json,urllib.request,glob,os,concurrent.futures as cf ids=set() src={} base='https://raw.githubusercontent.com/TrueS; echo "===systemd unit==="; systemctl cat farm-media-daemon 2>/dev/null | head -30; echo; echo "===recent daemon log tail==="; journalctl -u ; …(+7 more)
 
