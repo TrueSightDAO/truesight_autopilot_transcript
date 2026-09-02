@@ -101,3 +101,117 @@ Both observed items pulled. Here's the research digest:
 
 Still all ambient chatter on my side — no outreach, no actions taken. Want me to (a) pull full specs on the 4–10L melanger listing, (b) check whether this Amazon roaster has any cacao-specific reviews via a deeper search, or (c) leave it here for whoever's driving that conversation?
 
+
+### 🧑 Governor
+
+The winnowing and cracker
+
+[Attachment auto-processed: **db3c2ca646f042ec87e1269896362744.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Gary's pointing me at the winnowing/cracker machine in the attached photo. OCR found no text, so let me inspect the image directly — check for QR codes and try harder OCR preprocessing on the box.
+
+
+### 🤖 Autopilot
+
+No QR code in the image and OCR came back empty at poor quality. Let me preprocess and retry OCR harder — I have shell on this box.
+
+
+### 🤖 Autopilot
+
+OCR is getting nothing readable — likely a photo of the machine itself (little legible text). The workflow mentions Grok vision for complex images; let me check if a grok client exists on this box.
+
+
+### 🤖 Autopilot
+
+There's a Grok debug script at `/home/ubuntu/cleide_media/debug_grok.py` — let me see how it calls Grok vision so I can use the same credential path for this machine photo.
+
+
+### 🤖 Autopilot
+
+I found the Grok vision pattern. Let me run it against the machine photo to describe what's in it.
+
+
+### 🤖 Autopilot
+
+The machine is branded **FATOMA** — a small blue table-top cracker-winnower. Let me find the supplier.
+
+
+### 🤖 Autopilot
+
+The first pass didn't pin FATOMA down as a supplier — it looks like a Brazilian/regional machine brand. Let me dig specifically.
+
+
+### 🤖 Autopilot
+
+Let me search for FATOMA specifically as a Brazilian machine maker and check the Brazilian cacao equipment suppliers.
+
+
+### 🤖 Autopilot
+
+The image shows a **FATOMA**-branded machine — but no trace of "FATOMA" as a supplier has surfaced in searches yet (it's likely a local/regional brand). Let me search a bit more before concluding.
+
+
+### 🤖 Autopilot
+
+Searches for "FATOMA" as a supplier keep coming up empty. Before concluding it's untraceable, let me double-check the brand spelling from the photo (crop-level) and search Brazilian marketplaces.
+
+
+### 🤖 Autopilot
+
+Grok now reads **F-A-T-O-M-A-Q** — the first pass likely truncated the last letter. Let me crop and zoom on the nameplate area to confirm, and search "FATOMAQ".
+
+
+### 🤖 Autopilot
+
+Found it: the brand is **FATOMAQ** (the "Q" is a stylized logo mark — Fatomaq Máquinas Agrícolas, Brazil), not "FATOMA." Let me pull the details from MF Rural + Instagram.
+
+
+### 🤖 Autopilot
+
+Found the supplier. Let me pull the two product detail pages for full specs and contact info.
+
+
+### 🤖 Autopilot
+
+I have the key data. Let me confirm the second (used unit, Florianópolis) detail and the fatomaq linktree for direct contact info.
+
+
+### 🤖 Autopilot
+
+Identified. That's not an Alibaba machine — it's a **Brazilian-made FATOMAQ** "Beneficiadora de Cacau Nibs" (cacao nib cracker-winnower). I read the branding off the photo (F-A-T-O-M-A + stylized Q logo on the blue cabinet) and matched it to the maker.
+
+## Supplier: **Fatomaq Máquinas** — Espírito Santo do Pinhal/SP, Brazil
+
+| Spec | Detail |
+|---|---|
+| Machine | **Beneficiadora de Cacau Nibs** (cracker + winnower, separates husk from nibs) |
+| Throughput | **17–23 kg/h** (depends on roast & fermentation) |
+| Motor | WEG, continuous rotation — **110V or 220V** (new); used unit was 1/4 hp 220V mono (not bivolt) |
+| Blades | 2 blade options |
+| Weight / shipping | ~45 kg, boxed 98×45×45 cm |
+| **New price** | **R$ 7.470** (MF Rural listing 351487) |
+| Used option | R$ 4.500, Florianópolis/SC (listing 658580, ~6 months use, 17–21 kg/h) |
+
+**Contact / channels:**
+- Instagram: **@fatomaqmaquinasagricolas** (bio: "Máquinas para café e cacau… Vendas pelo Mercado Livre ou WhatsApp") — has a **"Cacau Nibs" highlight reel** showing the machine
+- Linktree: **linktr.ee/fatomaq** (WhatsApp + Mercado Livre links)
+- MF Rural shop: **mfrural.com.br/fatomaq** (also sells a 4 kg coffee roaster R$ 7.570)
+
+**Notes for the conversation:**
+- It matches the photo exactly — blue painted cabinet, SS conical hopper on top, toggle switch, collection bag under the outlet, bench-top craft scale.
+- Brazil-built means 220V/60Hz native, local warranty/parts (WEG motor is very serviceable in Bahia), and no import duty/freight-from-China — relevant since our processing partners are in Ilhéus. The USED unit at R$4.5k is in Florianópolis (freight by buyer); the new one ships from São Paulo state.
+- Price is in **BRL** — at ~R$5.3/USD that's roughly US$1,400 new / US$850 used, i.e. the same craft tier as the Alibaba QDMECH units I listed earlier, but domestic.
+
+I logged the photo + specs to the session transcript. Since this thread is marked as observed/not directed at me, I've taken no outreach action — but if Gary wants, I can (a) draft a WhatsApp inquiry message in Portuguese to Fatomaq asking for current price/freight to Ilhéus, or (b) file this supplier into the Processing Cost sheet / context as a machinery sourcing reference. Say the word.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp/tg_attachments && ls -la db3c2ca646f042ec87e1269896362744.jpg && file db3c2ca646f042ec87e1269896362744.jpg && identify db3c2ca646f04; cd /tmp/tg_attachments && convert db3c2ca646f042ec87e1269896362744.jpg -colorspace Gray -resize 300% -sharpen 0x1 -contrast-stretch 2%x2% db; cd /tmp/tg_attachments && python3 -c " from PIL import Image, ImageOps, ImageEnhance im = Image.open('db3c2ca646f042ec87e1269896362744.jpg'); …(+5 more)
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-09-02/799dc6a895ca/transcript.md
+
