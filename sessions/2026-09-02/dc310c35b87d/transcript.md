@@ -8,112 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-Go — executing the cleanup: remove the old `FARM_MEDIA_MANIFESTS/` data from `agentic_ai_context` and replace with a pointer README (one source of truth). First verifying the exact file list in the dir:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-7 files confirmed (103 KB — matches what was moved). Now removing them + adding a pointer README in one PR to `agentic_ai_context`:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #887 opened — but I spot a conflict in the applied list: the write (pointer README) and delete (old README) target **the same path**, so the delete likely removed the write. Verifying the branch state:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The write/delete conflict confirmed: the pointer README was canceled by its own delete — PR shows 7 removals, no pointer. Fixing by re-adding the pointer README to the branch (same path, now deleted → re-created as the pointer), which yields the exact desired diff:
-[1 tool result(s) compacted: upload_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Pointer README re-added. Verifying the final PR diff (6 data files removed + pointer README), then merging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The diff still shows only removals — the PR files API may be stale after the upload commit. Verifying the branch tree directly (authoritative):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Head sha is my upload commit (`0295ee8d59`) but the tree query shows no FARM_MEDIA_MANIFESTS — contradictory. Let me check the commit's actual tree directly (authoritative, no branch-name encoding involved):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The commit **did** add the pointer README — the earlier tree query's branch-name URL-encoding (`chore%2Fmove-...`) was the issue. The commit `0295ee8d59` explicitly shows `added FARM_MEDIA_MANIFESTS/README.md`. So the branch now has: 6 data files deleted + pointer README added. Let me re-query the branch with proper encoding and merge:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed — the branch tree has **only** `FARM_MEDIA_MANIFESTS/README.md` (629 B pointer) — the 6 data files are gone. Exactly the desired end state. Merging PR #887:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**Cleaned up the source — moved the farm media manifests out of `agentic_ai_context`** (the ownership move, second half of the dedicated-repo work).
-
-**PR #887 — https://github.com/TrueSightDAO/agentic_ai_context/pull/887** (merged, sha `1cd6d2b2`)
-
-### Changes
-- **Deleted 6 data files** from `FARM_MEDIA_MANIFESTS/`: `cleide.json`, `index.json`, `la-do-sitio.json`, `paulo-la-do-sitio-para.json`, `rancho-maranta-para.json`, `santa-anna-fazenda-para.json` (103 KB of daemon-written data — now living in the dedicated repo)
-- **Replaced with a 629 B pointer README** — documents that manifests now live at `TrueSightDAO/farm_media_manifests`, links raw media (`farm-media-raw`) + daemon (`farm-media-daemon`)
-
-### One process fix mid-turn
-The first PR attempt had a write/delete conflict (pointer README write + old README delete on the same path canceled each other out — PR showed 7 removals, no pointer). Fixed by re-adding the pointer README to the branch as a separate commit; verified the final branch tree had **only** the pointer README (6 data files gone) before merging.
-
-## End state — one source of truth ✅
-
-| Repo | Holds |
-|---|---|
-| **`farm_media_manifests`** (new, data repo) | The 7 manifest files (102.6 KB) — live |
-| **`agentic_ai_context/FARM_MEDIA_MANIFESTS/`** | Only the pointer README (629 B) |
-| `farm-media-raw` | The raw photos/videos (unchanged) |
-
-## RESUME HERE → next unit (governor's pick)
-
-1. **Update the farm-media-daemon's manifest write path** → target `farm_media_manifests` repo (it currently writes into agentic_ai_context — the daemon config on this box, `farm_media_daemon/` + `media_archive_daemon_config.yaml`)
-2. **Verify no other refs** to `FARM_MEDIA_MANIFESTS/` paths in agents/scripts (search context + code) now point at the new repo
-3. Otherwise holding: prod promotion (sunmint #55–#65) gated on Gary's go; FBE/MR cron triggers + device test (Gary)
-
-Which next?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → dir listing (7 files, 103 KB); PR opened with writes+deletes (write/delete conflict caught); branch tree verification (absent → head commit check → proper-encoding tree: only pointer README 629 B, 6 data files gone); mergeable checked
-• `git push changes` → PR #887 (branch chore/move-farm-media-manifests)
-• `upload file to github` → pointer README to branch (sha 0295ee8d59)
-• `merge pr` → ✅ PR #887 merged (sha 1cd6d2b216170f579f559f55e5d8e23e1a4ed94a)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → cd /tmp && echo "=== current FARM_MEDIA_MANIFESTS dir in agentic_ai_context ===" && curl -s "https://api.github.com/repos/TrueSightDAO/agent; cd /tmp && echo "=== branch tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/git/trees/chore%2Fmove-farm-m; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/pulls/887/files" | python3 -c " import sys,json for f in js; …(+3 more)
-• `upload file to github` → https://github.com/TrueSightDAO/agentic_ai_context/blob/chore/move-farm-media-manifests/FARM_MEDIA_MANIFESTS/README.md
-• `merge pr` → ✅ PR #887 on agentic_ai_context merged successfully (sha: 1cd6d2b216170f579f559f55e5d8e23e1a4ed94a). Pull Request successfully merged
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
@@ -4378,6 +4272,7 @@ Pushed (5174f30, real content: 2× helper refs, 280 lines). Verifying the PR sho
 ### 🤖 Autopilot
 
 PR head updated to 5174f307 (real content), 1 file, mergeable still computing (None = background check). Single-file change on current main — merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4584,4 +4479,44 @@ Holding here — **no further action until your UAT confirmation** (or a stop/ad
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && curl -s "https://beta.sunmint.truesight.me/limites-da-fazenda/" -o beta_live.html && echo "=== live beta: Unit 4 markers present?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Status: I submitted the real signed UAT test event ([PLOT INVALIDATION EVENT] for disposable test plot TEST-P1, admin+claude@truesight.me as retractor) - Edgar confirmed HTTP 200, signature_verification: success. But it never propagated: TEST-P1 still shows status=proposed in the live plots/index.geojson 15+ min later, and dao_protocol's logs show zero dispatch activity after the intake POST.
+
+Root cause found: the code on dao_protocol's live host (git log on /home/ubuntu/dao_protocol) is still at 693f56c (PR #153, MEDIA RETRACTION) - PR #154 (the PLOT_INVALIDATION routing row) was never actually pulled to disk. 'git log HEAD..origin/main' shows exactly 1 commit behind: b373300 (#154). You restarted the service (confirmed active/healthz ok earlier) but that only picked up the .env var, not the missing code - restarting without pulling first doesn't help. Please git pull on dao_protocol's host, restart the service again, and confirm the routing table now includes PLOT_INVALIDATION before I resubmit the test.
+
+
+### 🤖 Autopilot
+
+Go — fixing the deployment gap. Pulling PR #154 on the dao_protocol host, restarting, and verifying the routing table includes PLOT_INVALIDATION:
+
+
+### 🤖 Autopilot
+
+Pull landed (HEAD now b373300, routing row at line 259). Restarting the service and confirming health + the routing table:
+
+
+### 🤖 Autopilot
+
+Fixed and verified — ready for your resubmission.
+
+## What I did
+
+1. **Pulled PR #154 on the dao_protocol host** — `git pull --ff-only` advanced `693f56c` → **`b373300`** (the `[PLOT INVALIDATION EVENT]` routing row, +14 lines in `dispatch.py`)
+2. **Restarted the service** → **active**, healthz reports **version `b373300`** (was `693f56c`)
+3. **Confirmed the routing table** now has the full row: `[PLOT INVALIDATION EVENT]` → `("PLOT_INVALIDATION", "processPlotInvalidationFromTelegramChatLogs")` at line 259, with the comment noting it "pings plots-index rebuild so the plot vanishes from plots/index.geojson + dropdown"
+
+## Your resubmission should now flow
+
+`[PLOT INVALIDATION EVENT]` → intake POST (Edgar 200 + signature verified, as you saw) → **dispatch now matches the new routing row** → fires `DAO_PROTOCOL_WEBHOOK_PLOT_INVALIDATION` (the env var I added earlier — same anonymous deployment URL) → GAS `processPlotInvalidationFromTelegramChatLogs` (auto-derive governor/sentinel gate → sets TEST-P1 status → invalid + invalidated_by/reason/at → `pingPlotsIndexRebuild_`) → index rebuild → TEST-P1 vanishes from `plots/index.geojson`.
+
+**One heads-up on the remaining live-code gap (Unit 5):** the GAS handler code itself (PRs #456/#457) is still **not deployed** to the anonymous @39 deployment — it runs the older version. So the dispatch will fire the webhook, but the handler that executes may be the previous snapshot until Unit 5's clasp push + version bump + repoint. Your UAT resubmission may therefore still not mark TEST-P1 invalid until Unit 5 lands. **My recommendation:** run your resubmission now to confirm **dispatch fires** (dao_protocol logs will show the webhook attempt), and I'll stand ready to execute Unit 5 (GAS prod deploy) the moment you give the word — that's the piece that makes the end-to-end actually complete.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → timeout 60 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'set -e; cd /home/ubuntu/dao_protocol
 
