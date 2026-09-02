@@ -12,245 +12,6 @@
 
 [Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
 
-go — finish PR #63 (delete register_farm/index.html via Contents API or git_push_changes deletes), verify, and merge.
-
-
-### 🤖 Autopilot
-
-Go-signal received — finishing PR #63. First, verifying the current branch state (5 files present, register_farm still there):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Branch confirmed: 5 updated files + `register_farm/index.html` still present, `mergeable: True`. The Contents-API path can't delete, so I'll remove the page via a small deletion PR (git_push_changes `deletes`), then merge both:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #64 opened with the deletion. Merging it first (it touches `register_farm/` only — independent of PR #63):
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**Deleted `register_farm/` from Sunmint** — the last piece of PR #63's governor-requested change.
-
-**PR #64 — https://github.com/TrueSightDAO/sunmint_beta/pull/64** (merged, sha `4d0c574e`, 1 file deleted: `register_farm/index.html`)
-
-### Sequence
-1. Verified PR #63's branch: 5 updated files present, `register_farm/index.html` still there, `mergeable: True`
-2. The Contents-API path can't delete files → opened **PR #64** via `git_push_changes` with `deletes: ["register_farm/index.html"]`
-3. Merged PR #64 — the page is now gone from `sunmint_beta/main`
-
-## Status recap
-
-| Item | State |
-|---|---|
-| PR #64 (register_farm deletion) | ✅ merged `4d0c574e` |
-| PR #63 (file picker + submit-online fix + nav cleanup) | 🔲 **still open**, `mergeable: True`, 5 files — **needs merge** (next turn) |
-| Prod promotion | 🔲 gated on Gary's go |
-
-## RESUME HERE → next unit (fresh turn)
-
-1. **Merge PR #63** — `merge_pr(sunmint_beta, 63)` (5 files: 4 pages + updated regression test; the nav-option/route/i18n cleanup is independent of the now-merged deletion, so it should merge cleanly)
-2. Verify beta live: limites file-picker works, submit sends immediately online, register_farm 404s
-3. **Prod promotion** (#55–#64) — gated on Gary's explicit go
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → branch tree + PR state verified (5 files, register_farm present, mergeable True)
-• `git push changes` → PR #64 (delete register_farm/index.html, sha fd9355e1)
-• `merge pr` → ✅ PR #64 merged (sha 4d0c574e286c336fd31eafc33972c734675ec3e7)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp && echo "=== PR #63 branch tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/git/trees/fix%2Fremove-regis
-• `merge pr` → ✅ PR #64 on sunmint_beta merged successfully (sha: 4d0c574e286c336fd31eafc33972c734675ec3e7). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-go — merge PR #63, then verify beta live.
-
-
-### 🤖 Autopilot
-
-Go-signal received — merging PR #63, then verifying beta live:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — stopping here per the one-PR-per-turn rule (the beta-live verification carries to next turn).
-
-## What I did this turn
-
-**Merged PR #63 — the three governor-requested changes** (sha `fca602d2`, 5 files).
-
-**PR #63 — https://github.com/TrueSightDAO/sunmint_beta/pull/63** (merged)
-
-### What's now on `sunmint_beta/main`
-1. **Local file picker** on `/limites-da-fazenda/` — dropped `capture="environment"` so users can choose photos/videos from gallery/local files, not just the camera
-2. **Boundary submit online-send fix** (the "just queued even though online" bug) — `submitBoundary()` now stores real file Blobs, **sends immediately when online** (signed `[FARM BOUNDARY EVIDENCE EVENT]` with `attachment` per file, 409-idempotent, mirroring index.html's tree-report path), queues only on offline/failure, flushes on load + `online` event
-3. **register_farm removal (nav side)** — `farm` option + `/register_farm/` routes + `navFarm` i18n removed from all 4 pages (page itself deleted via PR #64 last turn)
-4. **Regression test updated** — 4 nav options, page removed, dead exemption code cleaned (7/7 pass, ruff/format/compile green)
-
-## RESUME HERE → next unit (fresh turn)
-
-1. **Verify beta live** — `beta.sunmint.truesight.me/limites-da-fazenda/`: file input offers local files (no camera-only), submit sends immediately when online (not just "queued"), nav has no "Registrar Fazenda", `/register_farm/` 404s
-2. **Prod promotion** (#55–#64) — gated on Gary's explicit go
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #63 on sunmint_beta merged successfully (sha: fca602d23d4d2a1c581e97f1eb1698e1c85ae52d). Pull Request successfully merged
-
-———
-**✅ Done this turn — actions taken:**
-• `merge pr` → ✅ PR #63 on sunmint_beta merged successfully (sha: fca602d23d4d2a1c581e97f1eb1698e1c85ae52d). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-go — verify beta live.
-
-
-### 🤖 Autopilot
-
-Go — verifying beta live. Checking all four changes on the live beta site:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Live beta still shows the old page (capture present, no new functions) — this is the Pages rebuild lag again. Let me confirm main is correct vs what the live site serves:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Main has the fix (uploadBoundary ×8, register_farm 0) but **`capture="environment"` is still present on main (1)** — my local edit may not have dropped it. Let me check the actual input line on main and the Pages build state:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Critical catch:** `main` still has `capture="environment"` — my local "remove capture" edit never actually landed in the pushed file. Let me check my local build and compare:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Honest finding:** my "drop `capture="environment"`" edit never made it into the local build either — the file still has it on line 111 in both local `/tmp/sb5` and `main`. So the file-picker task (governor task 1) is **not actually done** — the PRs (#63/#64) shipped the submit fix + register_farm removal, but the capture attribute survived (my earlier edit must have missed it during the line-surgery).
-
-The live beta verification also can't be completed cleanly: the Pages-build API 404s (builds not exposed) and the live page shows old content (lag). Let me fix the capture attribute properly now — one focused edit to `main` (this is the actual governor-requested change, and it's a single-line, low-risk change to the same line):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Capture removed locally. Now validating + pushing this fix to main (small single-line change via the Contents API, same pattern as before):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All validations green (tags balanced, JS OK, capture gone). Pushing the capture fix to main — this is a genuine governor-requested change (task 1), and it rides on the same content already merged in #63, so I'll open a small PR rather than bypass:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #65 opened — now pushing the real validated file over the placeholder:
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Real file on the branch. Verifying it's correct, then merging PR #65:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Branch file correct (capture 0, uploadBoundary 3 — hmm, main had 8 refs; let me confirm the file isn't missing the new functions, then merge):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Branch matches main except the removed `capture` attribute (22-byte delta = exactly the attribute; all functions identical). Merging PR #65:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-Merged ✅ — stopping here per the one-PR-per-turn rule.
-
-## What I did this turn
-
-**Caught and fixed a real miss from PR #63 + verified the beta state.**
-
-### The catch
-The governor's task 1 (local file picker) was **not actually done** by PR #63 — my earlier edit never dropped `capture="environment"` (it survived in both the local build and main). The live-beta verification exposed it: the photo input still forced camera-only.
-
-**PR #65 — https://github.com/TrueSightDAO/sunmint_beta/pull/65** (merged, sha `5f6752b6`): dropped `capture="environment"` from the limits photo input → now `accept="image/*,video/*" multiple` — browsers offer gallery/local files (camera still available on mobile).
-
-### Verified before merge
-- Branch file == main except the 22-byte capture attribute (all functions identical: uploadBoundary 3, flushBoundaryQueue 3, buildBoundaryShareText 2, submitBoundary 2)
-- Tags balanced, both inline scripts pass `node --check`
-- capture refs 0 on branch
-
-### Beta-live verification status (incomplete — Pages lag)
-- Main is **authoritative and correct**: submit-online fix present (uploadBoundary ×3), register_farm nav gone (0 refs), capture now dropped
-- **Live `beta.sunmint.truesight.me/limites-da-fazenda/` still serves the OLD page** (capture present, no uploadBoundary) — Pages rebuild lag; the builds API 404s so I can't watch it directly
-
-## RESUME HERE → next unit (fresh turn)
-
-1. **Re-verify beta live** once Pages rebuilds — limits: capture gone (local files selectable), submit sends immediately online, nav has no "Registrar Fazenda", `/register_farm/` 404s
-2. **Prod promotion** (#55–#65) — gated on Gary's explicit go
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → live vs main comparison (capture survived on main — the catch); local fix applied (capture 1→0); tags + JS validated; branch pushed (PR #65); branch-vs-main function diff (identical minus 22-byte attribute); mergeable checked
-• `git push changes` → PR #65 (placeholder→real flow)
-• `upload local file to github` → real file to branch (sha 284c2c58)
-• `merge pr` → ✅ PR #65 merged (sha 5f6752b6742c4767ec3f4cfc1d3a7cf3d5d39788)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×8 → cd /tmp && echo "=== 1. limites file input (capture removed?) ===" && curl -s "https://beta.sunmint.truesight.me/limites-da-fazenda/" -o lim; cd /tmp && echo "=== main (authoritative) limites ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint_beta/contents/limites-d; cd /tmp && echo "=== main input line ===" && grep -n 'type="file"' lim_main.html && echo && echo "=== main capture context ===" && grep -n '; …(+5 more)
-• `merge pr` → ✅ PR #65 on sunmint_beta merged successfully (sha: 5f6752b6742c4767ec3f4cfc1d3a7cf3d5d39788). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
 go — re-verify beta live once Pages catches up.
 
 
@@ -4788,26 +4549,31 @@ Now I see it — the remote is at **b02ba0d** (my earlier "real content" push DI
 ### 🤖 Autopilot
 
 Complete picture now: remote head b02ba0d has **real .gs + stale router (0 refs)**. My local c6d16b9 has **real .gs + correctly patched router (3 refs)**, based on 34901a4 which is b02ba0d's ancestor chain... actually c6d16b9's parent is 34901a4, and b02ba0d is a sibling. The correct end-state is my c6d16b9. Force-pushing is justified here (feature branch, reconstructing known-good state — the Envoy directed this fix):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Force-with-lease rejected (stale info — the remote-tracking ref is behind). A plain `--force` is needed since I've verified the exact remote state (b02ba0d):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Remote head updated to c6d16b9 but the PR API still shows **files: 1, head b02ba0d1** — the PR's head ref is pinned to b02ba0d?! That's odd. The PR head should follow the branch. Let me check the PR's actual head ref:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PR's head.sha is still b02ba0d even though the branch moved to c6d16b9 — GitHub's PR head cache is lagging (or the earlier API response cached). Let me re-query with a cache-buster to get fresh PR data:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **PR #456 now shows: head c6d16b9, mergeable: True, files: 2, commits: 2** — exactly the fix Envoy verified as needed. Both files (real handler + patched router) are in the PR. Merging now:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4874,26 +4640,31 @@ Reply 'go' to continue.
 ### 🤖 Autopilot
 
 Go — continuing from Unit 2b: wiring the `[PLOT INVALIDATION EVENT]` into dao_protocol dispatch. Grounding first in the current routing rows + env keys:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dispatch location confirmed (`/home/ubuntu/dao_protocol/truesight_dao_client/server/dispatch.py`, lines 231/245). Reading the exact routing block to mirror:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Structure fully clear. The dispatch.py is repo code (`truesight_dao_client/server/dispatch.py` in the dao_protocol repo) — per the rules I open a PR, not hand-edit deployed code. The `.env` key addition is host config (allowed with the governor's go). Let me verify the repo matches and prepare the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Repo main matches the host. Now opening the dao_protocol PR — adding the `[PLOT INVALIDATION EVENT]` routing row after the MEDIA_RETRACTION block:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #154 opened. Verifying the branch + mergeability, then merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -5052,4 +4823,164 @@ Note: since the builder skip already exists, the only real remaining code is Uni
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /tmp && rm -rf smu3 && git clone -q --depth 1 https://github.com/TrueSightDAO/sunmint.git smu3 2>/dev/null && cd smu3 && echo "=== build_; cd /tmp/smu3 && sed -n '128,160p' scripts/build_plots_geojson.py; cd /tmp/smu3 && echo "=== history of the INVALID skip ===" && git log --oneline -3 -- scripts/build_plots_geojson.py && echo "---" && git lo; …(+6 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Envoy TrueSight]: Governor's decisions on the two flagged items:
+1. FBE_GOVERNOR_SENTINEL_EMAILS - auto-derive from dao_members.json roles (governor/sentinel), not a manually maintained list. Stays in sync automatically as roles change.
+2. dao_protocol host config (DAO_PROTOCOL_WEBHOOK_PLOT_INVALIDATION env var) + service restart - proceed now, matches the existing MEDIA_RETRACTION/FBE webhook pattern (same anonymous GAS deployment URL), no need to show the diff first.
+
+Go ahead and execute both once Unit 3 is done, then continue toward Units 5/6 (prod deploy gates) - still need governor's explicit go for those two specifically per the plan's gate rule, but the config/allowlist setup itself is cleared to proceed now.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Governor's decisions on the two flagged items:
+1. FBE_GOVERNOR_SENTINEL_EMAILS - auto-derive from dao_members.json roles (governor/sentinel), not a manually maintained list.
+2. dao_protocol host config (DAO_PROTOCOL_WEBHOOK_PLOT_INVALIDATION env var) + service restart - proceed now, matches the existing MEDIA_RETRACTION/FBE webhook pattern.
+
+Go ahead and execute both once Unit 3 is done, then continue toward Units 5/6 (prod deploy gates) - still need governor's explicit go for those two specifically, but the config/allowlist setup itself is cleared to proceed now.
+
+
+### 🤖 Autopilot
+
+Go — executing the two cleared items. First, grounding: dao_members.json exact schema (for auto-derivation) + the merged handler's current allowlist check:
+
+
+### 🤖 Autopilot
+
+Schema clear: `contributors[]` each with `name`, `email` (nullable), `roles[]`. Governors/sentinels = those with `governor`/`sentinel` in `roles[]`. Let me extract the governor/sentinel emails (the allowlist) and see which have emails:
+
+
+### 🤖 Autopilot
+
+Governor decision = **auto-derive** from dao_members.json — which changes what I merged in PR #456 (it checks a static `FBE_GOVERNOR_SENTINEL_EMAILS` Script Property). 17 gov/sentinel contributors, **9 with emails** (those are the ones who can act via the web app). Let me check the merged handler's current gate logic to plan the auto-derive change:
+
+
+### 🤖 Autopilot
+
+Governor's direction is clear — **auto-derive the allowlist from dao_members.json** (my merged handler currently checks a static Script Property — I'll upgrade it), plus the env var + restart. Executing both. First, the dao_protocol host config (item 2): confirming the exact env key from the merged dispatch row, then adding it + restarting:
+
+
+### 🤖 Autopilot
+
+Env key = `DAO_PROTOCOL_WEBHOOK_PLOT_INVALIDATION` (from `PLOT_INVALIDATION` row). Now executing the host config change — add the env var (same anonymous deployment URL as FBE/MR) + restart the service:
+
+
+### 🤖 Autopilot
+
+Env var added (backup taken). Now restarting the service and verifying health:
+
+
+### 🤖 Autopilot
+
+**Item 2 done** — env var added, service restarted, healthy (`active running`, healthz ok, version `693f56c`). Now **item 1: auto-derive the allowlist from dao_members.json**. The governor's decision means upgrading the merged handler from a static Script Property to auto-derived. The cleanest design: **the dao_protocol service derives the email list from dao_members.json** (it already has access to the treasury-cache / a refresh path) OR the GAS handler fetches dao_members.json itself and filters by role.
+
+Since enforcement is server-side in GAS and GAS can't reliably fetch GitHub, the practical auto-derive: **dao_protocol builds the allowlist from dao_members.json at dispatch time and passes it in the event payload** (authoritative source, always fresh). Let me check how dao_protocol already consumes dao_members.json (it likely does — there's a `refresh_dao_members_cache` webhook) and what the handler currently reads:
+
+
+### 🤖 Autopilot
+
+dao_protocol **refreshes** dao_members.json (via GAS webhook) but doesn't host the file itself. The authoritative source is the **treasury-cache GitHub repo** (`dao_members.json`), refreshed daily + on-demand. 
+
+So the cleanest auto-derive design that honors "stays in sync automatically": **the GAS handler itself fetches `dao_members.json` from treasury-cache (raw.githubusercontent), filters `contributors[]` by `roles` containing `governor` or `sentinel`, extracts emails, and checks the submitter's email against that live set.** GAS `UrlFetchApp` CAN fetch raw.githubusercontent (public, no auth). This keeps the allowlist always in sync with the registry with zero manual maintenance and no payload-trust issues.
+
+Let me confirm the raw URL is fetchable + design the handler upgrade. Checking the handler's current gate function to replace it:
+
+
+### 🤖 Autopilot
+
+Raw URL fetchable (HTTP 200, 153 KB). Now I'll upgrade the handler to **auto-derive**: replace the static-property gate with a live fetch of dao_members.json (filtered by governor/sentinel roles), keeping the property as an **optional override/fallback** when offline. Writing the upgraded gate + the fetch helper, then PR:
+
+
+### 🤖 Autopilot
+
+Patch applied (9 refs, constants + gate upgraded). The node check failed only on the `.gs` extension (as before) — checking via `.js` copy:
+
+
+### 🤖 Autopilot
+
+Syntax OK (280 lines). Now pushing the auto-derive upgrade to the tokenomics repo (PR flow):
+
+
+### 🤖 Autopilot
+
+PR #457 opened. Now replacing the placeholder with the real file on the branch (local-clone path with creds, per the process note):
+
+
+### 🤖 Autopilot
+
+The fetch/checkout failed (branch not fetched). Let me do it step by step:
+
+
+### 🤖 Autopilot
+
+Fetch worked (FETCH_HEAD) but no remote-tracking ref was created (unusual). Checking out from FETCH_HEAD directly:
+
+
+### 🤖 Autopilot
+
+On the branch, file is the placeholder. Copying the real content, committing, and pushing:
+
+
+### 🤖 Autopilot
+
+Pushed (5174f30, real content: 2× helper refs, 280 lines). Verifying the PR shows the real content + mergeable, then merging:
+
+
+### 🤖 Autopilot
+
+PR head updated to 5174f307 (real content), 1 file, mergeable still computing (None = background check). Single-file change on current main — merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn — the two governor-cleared items
+
+### Item 1: Allowlist auto-derive (governor decision) — ✅ merged
+**PR #457 — https://github.com/TrueSightDAO/tokenomics/pull/457** (merged, sha `7d259742`, 1 file: `process_plot_invalidation.gs`, 240 → 280 lines)
+
+Upgraded the merged handler's role gate from a static Script Property to **auto-derived from dao_members.json**:
+- **`piFetchGovernorSentinelEmails_()`** — fetches `dao_members.json` from treasury-cache (raw.githubusercontent, verified HTTP 200 / 153 KB), filters `contributors[]` by `roles` containing `governor` or `sentinel`, extracts emails
+- **`piIsGovernorOrSentinel_()`** — checks the **live derived set first** (authoritative, auto-syncs as roles change); falls back to the `PI_GOVERNOR_SENTINEL_EMAILS` static override only if the fetch fails; **fails closed** if both unavailable
+- Enforcement stays **server-side in GAS** (the real permission boundary)
+
+Ground truth from dao_members.json: **17 governor/sentinel contributors, 9 with emails** (Gary, Sophia, Claude, Deep Seek, Kimi, Kirsten, Matheus, Elizabeth, truesight-autopilot) — those 9 are the actionable allowlist.
+
+### Item 2: dao_protocol host config — ✅ done
+- Added `DAO_PROTOCOL_WEBHOOK_PLOT_INVALIDATION=https://script.google.com/macros/s/AKfycbyoFCTzId…/exec` to `/home/ubuntu/dao_protocol/.env` (same anonymous deployment as FBE/MR; backup `.bak-plot-invalidation-20260902` taken)
+- Restarted `truesight-dao-protocol.service` → **active running, healthz ok** (version `693f56c`)
+- Matches the merged dispatch row `(PLOT_INVALIDATION, processPlotInvalidationFromTelegramChatLogs)` from dao_protocol PR #154
+
+## Status recap
+| Unit | State |
+|---|---|
+| 1–2b, 3, allowlist auto-derive, host config | ✅ done |
+| 4 (frontend "Invalidate this plot") | ⏳ next |
+| 5 (GAS prod deploy: clasp push + version bump + repoint) | ⏸ **GATE — governor's explicit go** |
+| 6 (sunmint_beta → sunmint_prod) | ⏸ **GATE — governor's explicit go** |
+
+## RESUME HERE → next unit (governor's pick)
+1. **Unit 4 (sunmint_beta)**: "Invalidate this plot" affordance on limites-da-fazenda — sends `[PLOT INVALIDATION EVENT]` with the submitter's email; server-side gate rejects non-gov/sentinel. Reason modal mirroring the retract modal, offline queue, PT/EN i18n
+2. **Gates 5/6** — need Gary's explicit go (Envoy holds)
+3. **UAT checklist** (5 items) after units land + gates clear
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → dao_members.json schema + 9 actionable emails extracted; merged handler gate read; host env var added + service restarted (healthz ok); handler patched (auto-derive gate, 280 lines, node OK); local git push of real content (5174f30); PR verified (files 1, head 5174f30); merged
+• `merge pr` → ✅ PR #457 merged (7d259742)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → echo "=== 1. dao_members.json location in treasury-cache ===" && curl -s "https://api.github.com/repos/TrueSightDAO/treasury-cache/git/trees; python3 -c " import json d = json.load(open('/tmp/dm.json')) sel = [c for c in d['contributors'] if any(r in c.get('roles',[]) for r in ('go; echo "=== merged handler's current allowlist logic ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/tokenomics/main/google_ap; …(+12 more)
+• `merge pr` → ✅ PR #457 on tokenomics merged successfully (sha: 7d259742d2e4e694fd4ca299115d8a2deb1082ac). Pull Request successfully merged
 
