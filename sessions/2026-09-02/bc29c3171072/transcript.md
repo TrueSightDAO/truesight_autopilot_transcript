@@ -99,31 +99,37 @@ The artifact nesting is recursive and hard to page through. Let me clone the rep
 ### 🤖 Autopilot
 
 Good — local clone works. Let me see the rest of the script (audio handling, loadCurrent, next/prev logic).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have the full JS logic. Let me check how the `capoeira` site is deployed (GitHub Pages?) so I know the right flow for the fix.
+[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo is a GitHub Pages static site (`capoeira.agroverse.shop` via CNAME), and I can see the bug already in the JS. Let me check the test conventions before editing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo is `TrueSightDAO/capoeira`, a static GitHub Pages site where `main` = the live deploy (`capoeira.agroverse.shop`). I've found the exact bug in the inline JS of `roda.html`. Let me check the tests to follow conventions, then fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me confirm the live site matches repo `main`, and verify the exact audio behavior in the code (the suspected bug):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live site is byte-identical to `main` in the `capoeira` repo — so the fix flows through that repo (branch → PR → merge → Pages deploys). Let me see the rest of the integration test to know what's covered, and check the PR style:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -293,4 +299,47 @@ Want me to hand this verification off to Nobody Will (or anyone else) as a done 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → curl -s https://capoeira.agroverse.shop/roda.html | grep -n "els.audio.play\|els.audio.pause\|Start the berimbau\|Stop the music" ; echo "--; ls /tmp/capoeira_inspect/node_modules 2>/dev/null | head -3; echo "---chromium candidates:"; ls ~/.cache/puppeteer 2>/dev/null; which chromi; mkdir -p /tmp/rodatest && cd /tmp/rodatest && npm init -y >/dev/null 2>&1 && npm install puppeteer-core@24 --no-audit --no-fund 2>&1 | tail ; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19742] figure out how much time spent on this.
+
+
+### 🤖 Autopilot
+
+Let me pull factual time anchors — the PR timeline from GitHub and file timestamps on the box — so the estimate is grounded, not vibes:
+
+
+### 🤖 Autopilot
+
+Time anchors gathered. Here's the grounded breakdown:
+
+## Time spent on this (2026-09-02)
+
+**Hard anchors from GitHub + box timestamps:**
+- Clone/inspection start (`/tmp/capoeira_inspect`): **14:50:58 UTC**
+- PR #41 created: **15:25:47 UTC** · merged: **15:26:01 UTC**
+- Final verification run (`test.js` last edit): **15:31:18 UTC** · now: **15:32:45 UTC**
+
+### Total wall-clock: ~42 minutes (14:51 → 15:32)
+
+| Phase | Est. time | Basis |
+|---|---|---|
+| **Diagnosis** — clone repo, read roda.html JS, confirm bug (Start/End only control session logging, never audio), confirm live == main | ~20 min | clone at 14:51 → first full diagnosis message |
+| **Fix** — write hunks, open PR #41 | ~4 min | PR opened 15:25:47 |
+| **Merge** | ~1 min | merged 15:26:01 (14s after open) |
+| **Verification** — install puppeteer-core, write test.js, 2 headless runs (with & without autoplay-block) | ~5–6 min | test.js last edit 15:31:18, runs after |
+| **Reporting + time breakdown** | ~3–4 min | → 15:32 |
+
+### Effective hands-on work: ~25–30 min
+(rest is setup/waiting — npm install ~6s, page loads, the turn-compaction gaps between messages, which were several minutes each)
+
+**Note:** the wall-clock span also includes idle gaps between turns (turn-directive pauses, your messages between my diagnosis and the "go"). Actual engaged work ≈ **25–30 minutes**.
+
+If you want this logged as a contribution (e.g. 30 min, "fix roda session audio start/stop — PR #41"), say the word and I'll submit it via `create_dao_submission` with the PR URL as evidence.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== PR #41 timeline (GitHub API):"; curl -s https://api.github.com/repos/TrueSightDAO/capoeira/pulls/41 | python3 -c "import json,sys;
 
