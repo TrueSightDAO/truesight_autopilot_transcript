@@ -146,11 +146,13 @@ Found the key thread — 2024-09-10 (media date) matches Emelin's payment to **F
 ### 🤖 Autopilot
 
 This confirms the thread. Let me pull more chat context around Carla, Fernando, and Povos da Mata to nail the farm identity and location.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The thread confirms: **2024-09-10** — Gary + Emelin spent the day collecting/delivering cacao (Gary 8.5h, "from forest to CIC"), and **Fernando** (cacao almonds supplier) was paid R$10,000 for 100kg that day; **Carla** was a 200kg supplier; both tied to **Povos da Mata** (Raimundo) certification network. The FSVP site-visit PDF "Clara" is a different coordinate, so I need to identify the actual farm(s) in this media. Let me inspect the imagery and get more chat context.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -327,4 +329,51 @@ Also note: on **9/11** (the day after), Gary wrote *"For the **upcoming visit** 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /home/ubuntu/fernando_carla_work && echo "=== MEDIA GPS SUMMARY (all files w/ coords) ==="; for f in *.HEIC *.JPG *.MOV; do [ -f "$f" ] |
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19911] Clara is Fernando's wife
+
+
+### 🤖 Autopilot
+
+Clara = Fernando's wife — that changes the reading completely. Let me re-examine against that fact:
+
+## What this means: the inspection doc ALREADY EXISTS
+
+`20240910_Black_King_site_visit_to_Clara_farm.pdf` **is** the FSVP site-inspection document for **Fernando & Carla's farm** ("Clara" = Carla = Fernando's wife). Cross-checking your original requirements:
+
+| Requirement | Status in existing doc |
+|---|---|
+| Located under **black king** | ✓ `suppliers/black_king/20240910_Black_King_site_visit_to_Clara_farm.pdf` |
+| Date of inspection = **date of video creation** | ✓ Dated **10th Sept 2024** — media CreateDate is 2024-09-10 |
+| **Trees only**, not drying/fermentation tanks | ✓ Facilities visited: "1 cacao farm" — only the 3 farm observation rows (microbial / insect / foreign objects). **No fermentation, no drying sections** — exactly matches your "we only inspected the cacao trees" |
+| Signed record | ✓ Zhiwen Teh, President, TrueTech Inc (EIN 88-3411514) |
+
+So **no new doc needs to be created** — the record is on file, under Black King, same date, trees-only scope. 
+
+## One discrepancy that must be reconciled (compliance doc — never guess)
+
+The doc's **GPS does not match your media's GPS**:
+
+- Doc says: **-14.3386226, -39.2069635** → geocodes to **Taboquinhas, Itacaré** (a district ~16 km from town center)
+- Media EXIF says: **-14.4612 → -14.4635, -39.131** → rural **Itacaré** — a single ~300 m site
+- Separation: **~16 km** (verified with haversine this turn; my earlier "790 km" was a unit bug — corrected)
+
+Both are within Itacaré municipality (consistent with Fernando's CIC report: Itacaré/BA, CEP 45530-000), so the farm identity holds. But **which coordinate is the actual tree site?** Possibilities: two parcels (trees at one, processing at the other — plausible since the day was a forest→CIC delivery + almond purchase day), or a GPS typo in the doc.
+
+## Proposed next steps (your call on the one open item)
+
+1. **Confirm the tree-inspection location** — is the farm/trees at the doc's Taboquinhas coordinate (-14.3386,-39.2069), or at your media site (-14.461,-39.131)? 
+   - If the doc GPS is wrong → I fix the existing PDF's geo fields to the media EXIF coords (with a Google Map link) + re-PR.
+   - If both are right (two parcels) → doc stays, but I add a note/entry so the record is complete.
+2. **Housekeeping on entity.json** (optional): `source_farms` currently says "Fazenda Clara" — I can annotate it to **"Fazenda Clara — Fernando Soller Gimenez & Clara (Carla), Itacaré/BA"** so the couple's identity is machine-readable for future agents, and note the site-visit doc covers trees-only.
+3. Then continue the **original pipeline** (farm plot/profile + two-way linking + media gallery + manifest with lat/lon, creation date, transcription) from the prior turn — that work is unaffected by this FSVP confirmation.
+
+**RESUME HERE** → reply: **(1)** tree-site GPS — Taboquinhas or your media site (or both parcels)? **(2)** ok to annotate entity.json with the Fernando & Clara identity? Then I execute.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → python3 -c " from math import radians, sin, cos, asin, sqrt def hav(lat1,lon1,lat2,lon2): R=6371.0 la1,lo1,la2,lo2=map(radians,[lat1,lon1,la
 
