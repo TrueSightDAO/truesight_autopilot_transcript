@@ -1673,21 +1673,25 @@ Both failures are unrelated to my change: `test_redeploy_indicator.py` is the **
 ### 🤖 Autopilot
 
 Clean branch off true origin/main, single commit b2cf89e with exactly 2 files. Push + open PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Backtick inside single-quoted JSON broke the shell. Let me write the PR body to a temp file and use `--data @file` — cleaner:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR **#391** created. Now poll CI until both checks pass:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All CI checks green (test ✅ + smoke ✅). Merging PR #391:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1741,21 +1745,25 @@ All CI checks green (test ✅ + smoke ✅). Merging PR #391:
 ### 🤖 Autopilot
 
 Go received. Next unit: re-sync Onaya to pick up the #391 hotfix (her `tencent_query` is broken until she pulls), restart, and smoke-verify. Starting with the sync:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Onaya synced past the hotfix — now at **8ee62c4** (#391 + the other thread's #392). Fix present (line 227), .env intact. Now restart both services and live-smoke the fixed tencent_query on her box:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Everything verified except my probe's arg shape (the registry's `chat` signature differs from the base — the same probe-shape issue as before, and the earlier live proof already confirmed Claude works through her app path). Let me fix the probe to match her code's actual signature:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `chat(system_prompt, messages, ...)` — positional, no keyword `system_prompt`. Fixing the probe with the correct signature:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1796,11 +1804,13 @@ Everything verified except my probe's arg shape (the registry's `chat` signature
 ### 🤖 Autopilot
 
 Gary chose **option (b)** — active second instance with her own separate Telegram bot identity. Per the task gate, before creating any billable CVM I must present the concrete spec + cost and get your explicit go on it. Let me gather the exact facts (all read-only, zero cost): Ubuntu 22.04 image availability in ap-guangzhou, instance-type availability in the zones, and exact Tencent prices via their price-inquiry API.
+[2 tool result(s) compacted: tencent_query, tencent_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full zone-config artifact to see S5.SMALL2 availability across zones and finalize the spec proposal:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1936,4 +1946,30 @@ Note: if you'd prefer to avoid prepaid entirely, I can switch to **postpaid (PAY
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → mkdir -p /home/ubuntu/.ssh && cat > /home/ubuntu/.ssh/onaya_cn_tencent.pem <<'KEYEOF' -----BEGIN RSA PRIVATE KEY----- MIIEogIBAAKCAQEAn+GZri
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19553] Hey, can you generate a PDF instruction for this so that the partners in China know about this issue with their account? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+PDF generated — sending it to you now:
+
+
+### 🤖 Autopilot
+
+Done ✅ — the PDF is sent above.
+
+**What it contains** (bilingual 中/EN, since it's for the China partners):
+- **The issue**: Tencent Cloud returned `InvalidAccount.InsufficientBalance` (账户余额不足) when deploying the Onaya-CN instance — no prepaid balance on the account
+- **Account**: ID 1322388156, ap-guangzhou region
+- **Key reassurance**: nothing billable was created, zero charges incurred, all technical prep is done (keypair created, spec DryRun-validated)
+- **What's needed**: ≈¥183 (~$25) recharge for month 1 of the S5.MEDIUM4 + 50GB SSD
+- **Cost breakdown** table (¥133/mo instance, ¥0.8/GB bandwidth)
+- **Step-by-step recharge instructions** with the console link
+- **Contact info** for Gary + me
+
+Once the partners top up the balance and you give the word, I'll fire the identical RunInstances call (the ClientToken is idempotent, so no double-charge risk) and the Onaya-CN deployment proceeds automatically.
 
