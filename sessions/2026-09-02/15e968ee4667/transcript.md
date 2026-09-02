@@ -10,104 +10,6 @@
 
 ### 🤖 Autopilot
 
-Resuming at A4.1: the PEM normalization fix for `ledger_emit.py`. Let me first confirm exactly how the cron writes `public_key` (PEM?) vs. what `verify.verify()` returns, so the fix matches precisely.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Critical re-examination needed: the live smoke file shows `source_tab: "SunMint Tree Planting"` + date-only `submitted_at` — that's the **cron's** signature, not the emit hook's (`Telegram Chat Logs` + full ISO). So the file I found was **cron-reconciled**, meaning the emit may have fired OR not. Also `verify.verify()` line 76-77 already returns **PEM** — so my "key format mismatch" may be a false alarm too. Let me check the emit-written SMOKE-REPRO file and where the route's `verification_result` comes from.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The "key format mismatch" was a **false alarm** — SMOKE-REPRO-0002.json (definitely emit-written) has `public_key` as **proper PEM** (BEGIN header, 452 chars), `source_tab: Telegram Chat Logs`, full ISO `submitted_at` — exactly the emit signature. `verify.verify()` already returns PEM (line 76–77). So A4.1's premise is wrong; **no fix needed on the key format.**
-
-The remaining wrinkle: the live smoke file `Edgar_20260831195934_005.json` was **cron-written** (source_tab: SunMint Tree Planting, date-only) — meaning the live POST's emit didn't produce a distinct file, OR the cron wrote over it. But the SMOKE-REPRO test **proves the emit path works**. The difference: my live POST's emit may have written the file, then the cron's reconciliation (which skips existing files? or rewrites?) — let me check whether the emit actually fired on the live POST by comparing the cron's idempotency behavior. Actually — simpler: check if there are TWO entries or if the cron overwrote.
-
-Actually the cleanest check: the ledger file's `submitted_at` is date-only `2026-08-31` = cron format. If the emit had written it first (full ISO), the cron would have seen the file exist (GET-before-PUT) and **skipped** it. Since the file is cron-format, the cron wrote it — meaning the live POST's emit either returned False or wrote then got overwritten. Let me check the git history of that specific file.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Smoke test FULLY CONFIRMED ✅** — the git history proves it:
-
-```
-fddfeb4f  19:59:36  Emit tree_planting/Edgar_20260831195934_005.json (verified signature)   ← EMIT HOOK fired
-98eee220  20:00:32  cache(scripts): refresh ... (s…                                       ← 30-min cron reconciled
-f310fe83  20:30:32  cache(scripts): refresh ... (s…                                       ← next cron pass
-```
-
-The **emit hook wrote the file 2 seconds after my POST** (19:59:36, commit message "Emit ... (verified signature)"), and the cron **overwrote** it in later passes (that's why the current content is cron-formatted — the cron rewrites rather than skips). **Emit-at-verify works in production, end-to-end.**
-
-So: no A4.1 fix needed (key format is already PEM everywhere — my earlier alarm was a false read). The one real improvement worth noting: the cron **overwrites** emit-written files rather than skipping them (losing the emit's richer `submitted_at` ISO + `Telegram Chat Logs` source), but the content is equivalent and schema-identical. I could make the cron skip-if-present (true idempotency) as a tiny polish, but it's not blocking.
-
-Let me clean up my debug artifact (SMOKE-REPRO-0002.json) since it's a false-positive test file I created — you said "leave it" for the live smoke row, but this second artifact was my debug byproduct. I'll leave it too unless you say otherwise (it's harmless, clearly test-marked).
-
-Reporting A4b as complete.
-
-## A4b complete ✅ — live emit verified in production
-
-| Evidence | Result |
-|---|---|
-| **Emit hook fired** | ✅ Commit `fddfeb4f` @ **19:59:36** — 2s after the live POST: `Emit tree_planting/Edgar_20260831195934_005.json (verified signature)` |
-| **Cron reconciliation** | ✅ `98eee220` @ 20:00:32 + `f310fe83` @ 20:30:32 — cron passes overwrite the file (idempotent, same content) |
-| **End-to-end proof** | Verify → emit (instant) → ledger public → cron reconcile: all working live |
-| **Key format** | No fix needed — `verify.verify()` returns PEM; emit-written files carry proper PEM (`SMOKE-REPRO-0002.json` confirmed) |
-
-### Roadmap
-| Unit | Status |
-|---|---|
-| A1–A3 | ✅ |
-| A4 emit hook code | ✅ |
-| **A4b deploy + smoke** | ✅ **verified live** |
-| A5 docs + UAT | ⏭️ next |
-| A6 backfill | not started |
-
-## RESUME HERE → **A5: docs + UAT**
-1. Update `SUNMINT_E2E_RUNBOOK.md` §2 (pipeline map: add the ledger leg — emit hook at verify + 30-min cron reconciliation → `verify_public_signatures/`) + §6 (runbook updates)
-2. Update `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md` A4 → complete, A4.1 dropped (false alarm)
-3. Run the plan §6 **UAT checklist** and report results → **`gate: UAT`** (Gary signs off)
-4. Then **A6 backfill** (all historical RSA event types — contribution/sales/inventory folders, EMAIL VERIFICATION redaction design pending)
-
-One tiny optional polish I can fold into A5 if you want: make the cron **skip-if-present** (don't overwrite emit-written files) so the emit's richer timestamp/source survives — say the word.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → checked cron-written 171.json (PEM 451) vs verify.py (returns PEM, line 76-77); checked SMOKE-REPRO-0002.json (emit-written: PEM 452, source Telegram Chat Logs, ISO timestamp) — key format identical, false alarm; checked route verification_result source (verify.verify at line 377); git history of live smoke file proved emit at 19:59:36 + cron overwrites at 20:00/20:30; service log checked (no emit errors)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → echo "=== how does the CRON write public_key? (check a cron-written file) ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/verif; echo "=== SMOKE-REPRO-0002.json (definitely emit-written) key format ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/verify_pub; echo "=== git history of the live smoke file (who wrote it, when) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/verify_public_sig
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Smoke test FULLY CONFIRMED ✅** — the git history proves it:
-
-```
-fddfeb4f  19:59:36  Emit tree_planting/Edgar_20260831195934_005.json (verified signature)   ← EMIT HOOK fired
-98eee220  20:00:32  cac
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⚙️ ssh run …
-
-
-### 🤖 Autopilot
-
-Resuming at A5: docs + UAT. Let me first read the current plan's A5 section + §6 UAT checklist, and the runbook's current §2/§6, so I update them accurately.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 I have the UAT checklist (8 items) and runbook map. Let me read the current §2 and §6 of the runbook to draft precise edits, then make one docs PR.
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
@@ -4323,66 +4225,79 @@ Confirmed: `truesight_autopilot/.env` has both Tencent keys (gitignored, untrack
 ### 🤖 Autopilot
 
 Perfect — `SETUP_REQUIREMENTS.md` has a **`## truesight_autopilot (deployed)`** section (line 147) with a credential list including AWS. Let me read that section fully — that's exactly where Tencent belongs, mirroring the AWS entry.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have both docs fully mapped. The plan: (1) add a Tencent block to SETUP_REQUIREMENTS.md's truesight_autopilot section (mirroring the AWS .env block + a prerequisites row), and (2) add a "10.7 Tencent Cloud Credentials" table to API_CREDENTIALS_DOCUMENTATION.md mirroring §10.3 AWS exactly (Source | Status | Details + Verdict). Let me make both edits via a PR.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #893 opened. But I need to check the ordering — my edit placed §10.7 *before* §10.6 in the credentials doc. Let me verify and fix the ordering.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The branch fetch name is wrong — let me fetch the PR's head properly and check the section ordering on the branch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — my edit placed §10.7 **before** §10.6 (wrong order: 10.7 at line 235, 10.6 at 244). The doc reads 10.1→10.5→**10.7**→10.6, which is awkward. Let me fix the ordering so 10.6 comes before 10.7 — swap the two sections in the branch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I'll fix the ordering — swap the two sections so 10.6 comes before 10.7, using a python edit (cleaner than sed for section reordering).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Ordering fixed (10.6 at 235, 10.7 at 251). Now verify both docs' diffs are clean and the content is correct, then commit + push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both edits are in place and correct (SETUP_REQUIREMENTS +20/−11, credentials doc +9). Note: the SETUP_REQUIREMENTS shows "20 ++++----" — my full-file write may have reformatted content vs the original (e.g. whitespace). Let me check the SETUP_REQUIREMENTS diff isn't dropping anything important (it shouldn't — I preserved all sections, but let me verify the diff is only additions/whitespace).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My full-file write of SETUP_REQUIREMENTS.md **dropped content**: the "Related Documentation" bullet list at the end (agroverse_shop/docs/SECURITY.md, market_research README/SECURITY, WORKSPACE_CONTEXT §3c, agentic_ai_api_credentials refs) and trimmed the General Principles list (dropped item 5 "Use environment variables"). That's a regression I must fix — I need to restore those in the branch before merging. Let me patch the branch to restore the dropped lines.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Restored — SETUP_REQUIREMENTS diff is now only +7/−1 (the GITHUB_PAT "with PRs" typo I introduced in the full write + the tencent additions). Let me check that -1 — it's the GITHUB_PAT line where I changed "for PRs" → "with PRs". I should revert that to keep the diff purely additive. Let me fix it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SETUP_REQUIREMENTS is now **purely additive** (+6 lines, zero deletions — only the Tencent block + prerequisites row). The credentials doc is +9 (the 10.7 section). The full-file write regression is fully repaired. Let me verify the credentials doc diff is clean too, then commit + push + merge.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both diffs are now **clean and purely additive**: +15 lines total, zero deletions. SETUP_REQUIREMENTS (Tencent prerequisites row + .env block), credentials doc (§10.7 table mirroring §10.3 AWS). The PR #893 needs its branch updated with the swap + restore fixes. Let me commit the fixes and force-push to update the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed (branch head now `16fc315`, PR #893 updated). The diff is now clean: +15/−0 across the two docs. Merging the PR (docs-only, additive, verified).
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4438,41 +4353,49 @@ Go ahead and start on the codebase extension (items 1-3) now.
 ### 🤖 Autopilot
 
 New task: extend truesight_autopilot with native Tencent Cloud support. Let me first understand the codebase structure — dependency management, config.py patterns, and the tool registry.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the key patterns: config.py's AWS settings block, how aws_tools.py is built + registered, and how the git/PR tools gate with allowlisting (the pattern to mirror for costly actions).
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The patterns are clear. Let me look at how main.py registers the tool (the handler around line 2409) and how AWS tools degrade when unconfigured.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me see the tool registry (the ~30 wrappers the model sees), the aws_monitor account-spec mechanism for graceful degradation, and the pyproject for dependency conventions.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me examine the tool_registry (the modern dispatch path) and the aws_tools test pattern to mirror.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I need to find where aws_query's TOOL_SPEC lives (the registry file didn't show it — it may be in aws_tools.py itself or tool_specs). Let me check.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have the complete pattern. Let me check the tencentcloud-sdk-python package availability/name and look at how `_is_read_only` handles Tencent's `Describe` prefixes, then build the module. Let me also check the settings fields convention more precisely (aws_region etc. for the `not configured` response).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pip version flood confirms `tencentcloud-sdk-python` is real (latest ~3.0.1210). Let me check local install state and how tools access settings.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4486,11 +4409,13 @@ Clear picture now. `tencentcloud-sdk-python` isn't installed locally; `settings 
 5. Local checks → PR → CI → merge
 
 Let me check how the SDK's client init works for CVM + COS, and confirm the auth pattern.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The COS module is separate (`tencentcloud-sdk-python-cos`). The core CVM/regions/zones module installed fine. Let me verify the exact package split and CVM client signature.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4606,4 +4531,32 @@ fake_req_mod.RunInstancesRequest = type("RunInstancesRequest", (), {
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×27 → cd /opt/truesight_autopilot && echo "=== deps file ==="; ls requirements*.txt pyproject.toml setup.py 2>/dev/null; echo "=== requirements.tx; cd /opt/truesight_autopilot && echo "=== tool registry / tools dir ==="; ls app/tools/ 2>/dev/null | head -30; echo "=== how tools register ; cd /opt/truesight_autopilot && echo "=== config.py around AWS settings ==="; sed -n '370,420p' app/config.py; echo "=== config.py: other set; …(+23 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Hold on — stop the Tencent task here. Gary wants a dedicated thread for this instead of using this (already-wrapped) RSA-sig thread. Please stop what you just started; I've opened a new thread 'Exec: Tencent Cloud integration' and will send you the full instructions there. This RSA-sig thread is done — no more action needed here.
+
+
+### 🤖 Autopilot
+
+Understood — **stopping the Tencent task here.** No more action on this thread.
+
+## Handoff state for the new thread ('Exec: Tencent Cloud integration')
+
+The work-in-progress lives **uncommitted in `/opt/truesight_autopilot`** (working tree) — nothing pushed, no PR opened, no billable resources touched:
+
+| Artifact | State |
+|---|---|
+| `app/tools/tencent_tools.py` (new) | built, compiles clean — `tencent_query` (read-free / write-gated / denylist / not_configured) + `cos_list_buckets` + `TOOL_SPEC` |
+| `app/config.py` | + `tencent_secret_id` / `tencent_secret_key` / `tencent_region` (env-based, graceful-unset) |
+| `requirements.txt` + `pyproject.toml` | + `tencentcloud-sdk-python` + `cos-python-sdk-v5` |
+| `tests/test_tencent_tools.py` (new) | **7/8 pass** — 1 blocker: the dispatch-test stub's `RunInstancesRequest` lacks `from_json_string` (one-line fix, noted in the prior message) |
+| SDKs | installed locally on this box (CVM + COS verified) |
+
+**RESUME THERE:** fix the test stub → 8/8 → full checks → PR → CI-gated merge → live `DescribeZones` smoke (creds are in `.env`) → **STOP before any billable CVM create** and report spec + cost + the Onaya-clone design question (passive DR standby / active second identity / migration).
+
+RSA-sig plan: fully wrapped — ledger live (3,970 events, PII-clean, openssl-verifiable), dashboards live, contributions filed, docs current. Nothing pending here. I'll take the new thread's instructions when they arrive.
 
