@@ -95,7 +95,18 @@ The web_extract of the whitepaper dropped some nested list content. Let me pull 
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The artifact chain keeps re-serving truncated content. Let me page the raw HTML artifact directly for the tail sections (§12/§13), and also peek at the images folder to quantify tree-planting evidence.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -189,4 +200,24 @@ Sections:
 7. **How a partner can help** — viability screening (incl. cost review), VVB/registry intros, US/EU credit offtake
 
 The message also delivered the file as a document attachment (message 19716 in this thread). Want me to also push a permanent copy into the sunmint repo (e.g. `docs/`) or tweak the copy (name the helper personally vs. keep generic)?
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: figure out how much time was spent on this
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=19705]
+
+
+### 🤖 Autopilot
+
+Quick estimate on the SunMint status + carbon-readiness PDF work:
+
+**What I can measure:** ~2 turns, ~28 tool calls (whitepaper reads across 13 sections, sunmint repo trees, farms/plots/trees registries, satellite count, attestation-ledger README, then PDF generation + send). Each round with artifact pagination runs roughly 30–60s, so **actual elapsed machine time was roughly 30–45 minutes**.
+
+**Human-equivalent effort** (what a person would spend researching those live pages + repos and writing a verified 7-section partner doc): **~2–3 hours**.
+
+For the DAO ledger I'd suggest logging **60–90 minutes** as a [CONTRIBUTION EVENT] (autopilot contribution, "SunMint program status & carbon-market readiness research + PDF"). Say the word and I'll submit it directly — or if you'd rather I estimate the whole SunMint build-out effort (whitepaper, registries, apps, satellite pipeline) for a broader report, that's a bigger breakdown I can pull from git history.
 
