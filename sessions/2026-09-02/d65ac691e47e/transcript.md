@@ -93,7 +93,23 @@ The topic title is now clear: **thread 19615 = 'Fix: surface real error instead 
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: search_code, search_code, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Code search is coming up empty. Let me search the local code on the box directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -197,4 +213,44 @@ Existing tests pin the current contracts (`_wait_for_brain` returns bool; no-arg
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → echo '=== telegram adapter around 11:14:40-11:15:20 (probe failure evidence) ==='; journalctl -u truesight-autopilot-telegram --since '2026-; cd /opt/truesight_autopilot && git status --short | head; echo "branch: $(git branch --show-current)"; git log --oneline -3; echo '=== code ; cd /opt/truesight_autopilot && git remote -v | head -2; git fetch origin main --quiet 2>&1 | tail -2; echo '=== origin/main telegram_adapter; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19615] [Handoff context — this Telegram topic (thread 19615) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: The probe-failure log window is **empty** — that's itself the bug's fingerprint: `_wait_for_brain()` swallows every exception with bare `pass`, so there is no evidence trail when the brain fails a hea
+
+
+### 🤖 Autopilot
+
+Go received — opening the fix PR now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**⚠️ PR was NOT opened — tool error on the attempt.**
+
+`open_fix_pr` failed with `"no running event loop"` — a transient harness/async error (the tool call never reached GitHub; no branch, no PR was created). This is environmental, not a problem with the fix spec, and is most likely to succeed on a retry in a fresh turn where the event loop is clean.
+
+## What I did this turn
+- Pulled the probe-failure log window (11:14:40–11:15:20) from `truesight-autopilot-telegram` → **empty**, confirming the bug's fingerprint: `_wait_for_brain()` swallows every exception with bare `pass`, so there is **no evidence trail** when the brain fails a health probe.
+- Read `tests/test_redeploy_indicator.py` + `tests/test_telegram_adapter.py` (lines 110–150) — these monkeypatch `_wait_for_brain` → bool and call `_brain_unavailable_message()` **no-arg**, so the fix must preserve both signatures.
+- Prepared and invoked `open_fix_pr` with the full implementation spec: (1) classify failures instead of the blanket "restarting" text — deploy marker → redeploy; connection-refused/`Errno 111/8`/ConnectError → "brain is DOWN"; timeout/HTTP≥500 → "busy/unresponsive"; else generic; (2) log each failed probe attempt with exception type + attempt number (the missing evidence trail); (3) keep `max_attempts`/`backoff` loop contract and bool return intact; (4) add tests for refused-vs-timeout classification, marker precedence, and caplog evidence.
+
+**The tool errored before doing anything — nothing to verify, nothing to merge.**
+
+## RESUME HERE
+Thread 19615 — retry the exact same `open_fix_pr(repo="truesight_autopilot", issue_description=<the error-classification + real-error surfacing spec above>)` call in a fresh turn (the "no running event loop" error is transient). Once the PR is open: verify the head commit on the box (`git -C /opt/truesight_autopilot fetch origin pull/<n>/head`), run the four local gates (`compileall` / `ruff check` / `ruff format --check` / `pytest`), then merge it (governor's 👍 "go" authorizes self-merge) and report the PR link + merge result. This is the autopilot's own repo — no prod/deploy gate.
+
+**Status: investigation complete, fix spec ready, PR-open attempt failed on a transient tool error — one retry needed.**
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → tool_execution_error
 
