@@ -895,11 +895,13 @@ Real CI failure found: **"1 error during collection"** in the Run tests step (84
 ### 🤖 Autopilot
 
 The log file has a different name in the extracted dir. Let me list what was extracted and find the Run tests log.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The filename has a space — my earlier grep used an underscore. Let me read the Run tests log properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -907,16 +909,19 @@ The filename has a space — my earlier grep used an underscore. Let me read the
 Root cause found: **CI runs Python 3.10**, but the installed `litellm` version imports `NotRequired` from `typing` — which only exists in **Python 3.11+**. My new test file imports `app.llm.litellm_provider` at module level → `import litellm` crashes during collection on CI's 3.10. It passed locally because this box runs a newer Python.
 
 Let me check the workflow's python-version pin and the litellm requirement pin to pick the minimal fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key insight: **this box also runs Python 3.10.12** — yet `import litellm` works here (1.86.2 installed) while CI's fresh install pulls the **latest** litellm, which now imports `NotRequired` (Python 3.11+ only) at module load → collection crash. The unpinned `litellm>=1.75.0` bound let a new broken-on-3.10 release through. Let me confirm local version and what CI installed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: local box has **litellm 1.88.1** (imports fine on 3.10), CI pulled **litellm 1.99.0** which broke on 3.10 (`NotRequired`). This is an upstream regression in newer litellm vs Python 3.10 — the fix is to **pin `litellm>=1.75.0,<1.99`** (or a tighter upper bound) in requirements.txt so CI installs a 3.10-compatible version. Let me apply the pin and update the PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -981,31 +986,37 @@ Nice work on PR #387 - continue: run checks, merge, then proceed with the Onaya 
 ### 🤖 Autopilot
 
 Resuming: checks → commit pin → push → CI → merge, then Onaya wiring. Starting with local gates + verifying state.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All gates green (format diff is pre-existing, not my files). Committing the pin and pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pushed. Now poll CI until both checks pass:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Test failed again despite the pin. Let me pull the new CI log to see whether the pin took effect (version installed) and what the error is now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pin worked (CI installed 1.98.0, not 1.99.0) but the error **persists** — so the `NotRequired` regression landed earlier, somewhere between 1.88.1 (local, works) and 1.98.0. Tightening the pin to `<1.89` (the proven-working 1.88.x line):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Re-pinned to `<1.89` and pushed. Polling CI again:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1156,4 +1167,114 @@ No billable CVM was created; Tencent migration still parked awaiting Gary's a/b/
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → ssh -o StrictHostKeyChecking=no -o ConnectTimeout=15 -i /home/ubuntu/.ssh/NELANCO_aws_20201122.pem ubuntu@52.1.162.134 "ssh -o StrictHostKey; cat > /tmp/onaya_find_key.sh <<'SCRIPT' #!/bin/bash echo "ONAYA_OK host=$(hostname)" echo "=== /home listing ===" ls -la /home/ 2>/dev/null ; ssh -o StrictHostKeyChecking=no -o ConnectTimeout=20 -o ProxyCommand="ssh -o StrictHostKeyChecking=no -o ConnectTimeout=15 -i /home/ubuntu/.; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19553] [Handoff context — this Telegram topic (thread 19553) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **✅ Onaya is confirmed LIVE on Claude.** End-to-end through her app's own provider path (`get_provider()` → litellm → Anthropic): reply `'ONAYA_CLAUDE_LIVE_OK'`, model `anthropic/claude-haiku-4-5`. Th
+
+
+### 🤖 Autopilot
+
+Go received. Next unit: the follow-up PR to update the dead Claude model IDs in the shared codebase (discovered this turn — `claude-3-5-haiku-20241022` / `claude-sonnet-4-20250514` 404 on the live account). Let me inspect the current local state first.
+
+
+### 🤖 Autopilot
+
+Current branch is the already-merged `feat/claude-anthropic-bridge` — I need a fresh branch. Let me view the exact sections to edit (docstring, PRICING, test file).
+
+
+### 🤖 Autopilot
+
+Now I'll apply the current-gen model fixes. Let me check exact local pricing values first, then patch locally and run the gates.
+
+
+### 🤖 Autopilot
+
+Patches applied. Now the hard-rule gates (compile, ruff, format, pytest) before pushing:
+
+
+### 🤖 Autopilot
+
+The checkout aborted (dirty tree), so the commit landed on the old merged branch. Let me create the new branch at this commit and reset the old one — the tree diff vs main is still just this commit (verified pattern last time).
+
+
+### 🤖 Autopilot
+
+Branch pushed, but I notice the local `origin/main` ref is stale (at ff2222f #386 — before #387's merge). Let me fetch to get the true remote main and verify the PR's net delta is exactly my change (only the 2 files should differ once diffed against the real main):
+
+
+### 🤖 Autopilot
+
+The branch was built on a stale base — the net diff vs true `origin/main` shows duplicated #386/#387 content (tencent files, test file, requirements) because those were squash-merged with different SHAs. I need to rebase my single commit onto the real `origin/main` so the PR diff is clean (only my 2-file model change):
+
+
+### 🤖 Autopilot
+
+The rebase is picking up the branch's inherited history (the old pin commit already lives in main as a squash). Cleaner: abort, branch fresh from true `origin/main`, cherry-pick only my model commit:
+
+
+### 🤖 Autopilot
+
+Clean now — the commit landed on `main` (I was on main after reset, branch creation failed since it exists, so the cherry-pick applied to main). The diff `origin/main...HEAD` is exactly my 2-file change but it's on **local main** — I need it on the feature branch. Let me fix the branch pointers: move the branch to this commit, reset main back to origin/main, then force-push the branch (it was already pushed with the messy history):
+
+
+### 🤖 Autopilot
+
+Branch now clean — exactly 2 files (+9/−5) vs main. Now open the PR via the API:
+
+
+### 🤖 Autopilot
+
+PR **#388** open. Now poll CI until both checks pass, then merge:
+
+
+### 🤖 Autopilot
+
+Both CI checks green. Merging PR #388:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ PR #388 merged — Claude model IDs updated to current-gen
+
+**PR: [#388 — fix(llm): retire dead Claude 2025 model IDs — add claude-haiku-4-5 / claude-sonnet-4-6 pricing](https://github.com/TrueSightDAO/truesight_autopilot/pull/388)** — merged, sha `e22feb8`, CI green (test ✅ + smoke ✅).
+
+### What changed (2 files, +9/−5)
+| File | Change |
+|---|---|
+| `app/llm/litellm_provider.py` | PRICING dict: **removed** dead `anthropic/claude-sonnet-4-20250514` ($3/$15) + `anthropic/claude-3-5-haiku-20241022` ($0.80/$4) → **added** current-gen `anthropic/claude-haiku-4-5` ($1/$5) + `anthropic/claude-sonnet-4-6` ($3/$15), with a comment documenting the live-API verification; docstring annotates the retired ID |
+| `tests/llm/test_litellm_provider.py` | Pricing assertion updated to the current-gen IDs |
+
+### Why
+Direct live probe on 2026-09-02 (during Onaya's Claude wiring) proved the 2025-era IDs return `NotFoundError: model: ...` on the real API. The codebase's hardcoded pricing was stale — anyone pointing `LITELLM_MODEL` at those strings (including the task's own suggested `claude-3-5-haiku-20241022`) would 404 on every call.
+
+### Gates
+Local: compile ✅ · ruff ✅ · 6/6 LLM tests ✅. Live: both IDs verified via `litellm.completion` probe. CI: test + smoke ✅. (Branch history was cleaned via cherry-pick + force-push so the PR diff was exactly the 2-file change.)
+
+---
+
+## RESUME HERE → next unit (fresh turn)
+
+**Remaining open work, in order:**
+
+1. **Cleanup after the branch dance** — local `main` was reset to `origin/main`; verify `git status` on the box is sane (the noise files — `worktrees/vault`, `data/active_tracks.json`, `followups/state.json`, `artifacts/`, `farm_media_daemon/` — are pre-existing local-runtime state, not mine; the `feat/claude-anthropic-bridge` and `feat/tencent-cloud-tools` local branches can be deleted since both PRs #387/#386 merged).
+2. **Onaya's codebase sync** — her box (`i-0ebddf52cd92d0841` via `krake_redis` jump) is on `feature/bionpact-configurable-repos` (~#351), still behind main. Now that #387 (bridge) + #388 (model IDs) are merged, pull main so she inherits both. Her `.env` is already correct (`LLM_PROVIDER=litellm`, `LITELLM_MODEL=anthropic/claude-haiku-4-5`) and she's verified live on Claude — the pull just keeps her code current. Note: her current copy works via systemd EnvironmentFile → env → litellm native pickup; the #387 bridge is belt-and-braces.
+3. **Tencent migration (parked pre-billable)** — needs Onaya's EC2 spec baseline + Gary's a/b/c answer on what "clone of Onaya" means: (a) passive standby/DR copy, (b) active second instance with her own separate Telegram bot identity, or (c) migration replacing the current Nelanco/AWS box. No CVM will be created until that's answered.
+4. **Minor logged issue** — Onaya's `bionpact_agentic_ai_context` context-repo git fetch fails with exit 128 ("could not read Username for github.com") — a missing credential for that context repo, unrelated to LLM/restart; worth a fix pass later.
+
+———
+**✅ Done this turn — actions taken:** inspected local repo state; patched `litellm_provider.py` (docstring + PRICING: dead 2025 IDs → `claude-haiku-4-5` $1/$5 + `claude-sonnet-4-6` $3/$15) + test file; gates green (compile, ruff, 6 LLM tests); committed `b88023c`; cleaned branch history via cherry-pick onto true `origin/main` + force-push (net diff = exactly 2 files); opened PR #388 via API; polled CI to green (test+smoke ✅); merged via `merge_pr` (sha `e22feb8`).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cd /opt/truesight_autopilot && git branch --show-current && git status --short | head -10 && echo "=== PRICING dict ===" && grep -n "anthrop; cd /opt/truesight_autopilot && echo "=== litellm_provider.py head (1-60) ===" && sed -n '1,60p' app/llm/litellm_provider.py && echo "=== tes; cd /opt/truesight_autopilot && python3 - <<'PYEOF' import re p = 'app/llm/litellm_provider.py' s = open(p).read() # 1) docstring line — mark; …(+9 more)
+• `merge pr` → ✅ PR #388 on truesight_autopilot merged successfully (sha: e22feb8155e19bcfd189315c281d9e32a7522b32). Pull Request successfully merged
 
