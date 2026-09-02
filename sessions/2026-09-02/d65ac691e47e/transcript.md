@@ -567,11 +567,13 @@ The org search shows `open_fix_pr` appears in several files but I need to confir
 ### 🤖 Autopilot
 
 No existing entry for the `open_fix_pr` "no running event loop" harness defect (only tangential mentions at lines 514, 592, 1601 — none about this bug). I'll add a concise entry under `## Pending` in OPEN_FOLLOWUPS.md and open the PR. Let me grab the exact text around line 42 (the first Pending entry) to anchor my insertion.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No existing entry for this defect — adding it under `## Pending` (right before the Agroverse SEO entry) and opening the PR via `git_push_changes` (the workaround path, since `open_fix_pr` is the broken tool this entry documents).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -757,4 +759,68 @@ So: the fix paid for itself in one afternoon. That's the figure worth rememberin
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo '=== thread 19615 turns in adapter log ==='; journalctl -u truesight-autopilot-telegram --since '2026-09-02 10:50' --no-pager 2>/dev/nu
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19615] File contribution report for yourself and me
+
+
+### 🤖 Autopilot
+
+Let me pull the canonical CONTRIBUTION EVENT format and tokenomics conventions before filing, so the reports match the ledger.
+
+
+### 🤖 Autopilot
+
+Let me check the TDG issuance convention and find the tokenomics notes (local path miss).
+
+
+### 🤖 Autopilot
+
+Let me find how TDG issuance is normally computed for contribution reports.
+
+
+### 🤖 Autopilot
+
+Let me read the DAO contribution-reporting conventions doc to file correctly.
+
+
+### 🤖 Autopilot
+
+I have the full convention. Filing **three separate CONTRIBUTION EVENTs** per the 2026-08-24 split rule (raw execution / direct time for Sophia, direct time for Gary), with merged PR #392 + #897 as evidence, `TDG Issued: 0` unless Gary sets economics:
+
+
+### 🤖 Autopilot
+
+Now the second Sophia event — direct time (engagement/analysis):
+
+
+### 🤖 Autopilot
+
+And Gary's direct-time event (his nudges, reviews, direction, the 👍 goes, the live-test catch):
+
+
+### 🤖 Autopilot
+
+All three contribution events filed and accepted by Edgar.
+
+## ✅ Contribution report filed — 3 events, thread 19615 ("surface real error instead of generic restart msg")
+
+| # | Contributor | Type | Minutes | Description | Evidence |
+|---|---|---|---|---|---|
+| 1 | Sophia Truesight | Time (Minutes) | **75** | **Raw machine execution** — ~50 tool ops across 2026-09-02: log forensics across 6 brain restarts, worktree gate runs, 2 open_fix_pr harness failures + git_push_changes workaround, both merges, live-deploy verification | PR #392 + #897 |
+| 2 | Sophia Truesight | Time (Minutes) | **45** | **Direct time (engagement/analysis)** — root-cause diagnosis (bare-`pass` blind swallow), classification design, self-review caught the missing `global`, CI-pending diagnosis, production validation (BUSY message fired live) | PR #392 |
+| 3 | Gary Teh | Time (Minutes) | **30** | **Gary Teh direct time** — reported the bug live ×2, 6 nudges/👍s, spec review, workaround direction + self-merge go, caught the live BUSY confirmation | PR #392 + #897 |
+
+**Conventions applied** (per `dao/DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md`):
+- Sophia's time split into **raw execution + direct time** as separate events (Gary's 2026-08-24 rule), never merged
+- Gary's direct time filed **separately under his own name**
+- `TDG Issued: 0` on all three — amounts are informational until you set real economics for the session. If you want to award TDG (e.g. per your scoring rubric), say the word and I'll amend or you can set it in the DApp.
+
+**Totals:** 150 minutes across the three events — matching the ~2h of *real* work + light governor time I estimated earlier (the restart tax isn't counted as billable machine time, correctly).
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×3 → Contribution submitted successfully.
 
