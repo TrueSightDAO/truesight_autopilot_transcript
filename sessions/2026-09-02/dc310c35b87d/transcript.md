@@ -8,50 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-Stopping here per the one-PR-per-turn rule — merge blocked by CI.
-
-## What I did this turn
-
-**Both follow-ups executed, with one merge blocked on CI.**
-
-### 1. Cleanup — ✅ already done (last turn's PR #887)
-Verified `agentic_ai_context/FARM_MEDIA_MANIFESTS/` now holds **only the pointer README** (629 B) — confirmed via Contents API.
-
-### 2. Daemon write path — ✅ repo fix PR'd, ⚠️ CI-blocked; local docs updated
-
-**Key finding:** the daemon's manifest writer (`farm_media_manifest.py`) is **local-only tooling** on this box — the commit step is deliberately human/Sophia ("The daemon itself never touches GitHub"), and the `farm_media_daemon/` directory **is not committed** to the truesight_autopilot repo (404 on GitHub). So:
-- **Repo change (1 file)**: `app/media_archive_pipeline.py:34` — `MANIFEST_INDEX_URL` still pointed at the old (now-deleted) `agentic_ai_context/FARM_MEDIA_MANIFESTS/index.json` — **real break risk** (old URL returns 200 only via stale CDN; Contents API confirms 404). **PR #384** opened, fix verified on branch (`farm_media_manifests/main/index.json`), `mergeable: True`.
-  - **Merge blocked:** "CI not green (failing-or-pending: test, smoke, test)" — the standard suite needs to run/pass before merge.
-
-## RESUME HERE → next unit (fresh turn)
-
-1. **Re-run the local hard-rule suite** for truesight_autopilot (compileall, ruff check, ruff format, pytest) — my change is a one-line constant URL swap, so the suite should pass; if CI is just pending/slow, retry `merge_pr` after it reports green
-2. **Merge PR #384** once CI passes
-3. **Local-only updates (no PR)** — `farm_media_daemon/README.md`, `DESIGN.md`, `farm_media_manifest.py` docstring still reference `FARM_MEDIA_MANIFESTS/` (old path); update in place on the box to `farm_media_manifests` (dedicated repo)
-4. Also consider: `agentic_ai_context/MEDIA_ARCHIVE_PIPELINE.md` + `HANDOFF_MANIFEST.md` still reference the old path (context docs — a small pointer-update PR there when convenient)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×7 → cleanup verified (pointer README only); daemon repo tree scan; manifest writer + config read (local-only tooling finding); old URL 200-stale/Contents-API-404 confirmed; refs audit (pipeline.py:34 the live break; README/DESIGN local-only); GitHub-vs-local repo check (farm_media_daemon not committed → local-only)
-• `git push changes` → PR #384 (fix/repoint-manifest-index-url, 1 edit, sha 5c3cb28d)
-• `merge pr` → ❌ CI not green (test, smoke, test) — blocked
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → cd /tmp && echo "=== 1. verify cleanup: FARM_MEDIA_MANIFESTS dir in agentic_ai_context (should be pointer README only) ===" && curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/contents/FARM_MEDIA_MANIFESTS" | python3 -c "
-import sys,json
-d = json.load(sys.stdin)
-for f in d: print(f\"  {f['name']}  {f.get('size',0)} B\")
-" 2>/dev/null; echo; echo "=== 2. find daemon config on box ===" && ls /opt/truesight_autopilot/context/farm_media_daemon 2>/dev/null | head; find / -maxdepth 4 -name "*media_archive*" -o -maxdepth 4 -name "*farm_media*" 2>/dev/null | grep -v proc | grep -v sys | head -10
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×12 → cd /tmp && echo "=== 1. verify cleanup: FARM_MEDIA_MANIFESTS dir in agentic_ai_context (should be pointer README only) ===" && curl -s "http; cd /tmp && echo "=== farm-media-daemon repo tree ===" && curl -s "https://api.github.com/repos/TrueSightDAO/farm-media-daemon/git/trees/main; cd /tmp && echo "=== farm_media_manifest.py (writer) ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm-media-daemon/main/; …(+9 more)
-• `merge pr` → ❌ Failed to merge PR #384 on truesight_autopilot: Refusing to merge PR #384 on truesight_autopilot: CI not green (failing-or-pending: test,
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
@@ -4581,11 +4537,13 @@ Now checking whether TEST-P1 actually flipped to invalid — the sheet + the pub
 **TEST-P1 now shows `Status: invalid`** ✅ — the UAT resubmission (via my dispatch probe, which mirrored exactly what the live service does) propagated end-to-end: dispatch → anonymous webhook @41 → GAS plot-invalidation handler (auto-derive gate passed for `admin+claude@truesight.me` → governor role) → Plots row flipped to `invalid`.
 
 Now verifying it's gone from the published `plots/index.geojson` (the builder skip + rebuild ping), and confirming the invalidated_by/columns landed. Checking the index + remaining rows:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Status flipped to `invalid` in the sheet ✅ but TEST-P1 is **still in the published index** (10 features) — the **rebuild ping didn't fire or didn't complete**. Two possibilities: (a) the handler's `pingPlotsIndexRebuild_` fired but the GitHub Action didn't run (PAT issue), or (b) the builder skip didn't take effect. Given the sheet says `invalid` and the builder **does** skip INVALID (verified in Unit 3), the index must be **stale** — the rebuild didn't happen. Checking whether the rebuild workflow ran + the handler's ping code:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4816,4 +4774,57 @@ Everything else is green. The SunMint boundary + invalidation pipeline is now co
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && echo "=== sunmint.truesight.me live page ===" && curl -s "https://sunmint.truesight.me/limites-da-fazenda/" -o prod_live.html && ; cd /tmp && echo "=== sunmint_prod repo main: does it have the merged content? ===" && curl -s "https://raw.githubusercontent.com/TrueSightDA
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Looking good. Promote to production if havent already. Also figure out how much time was spent on this
+
+
+### 🤖 Autopilot
+
+Go — verifying prod is fully live (the sync landed last turn; checking the live page has caught up), and working out time spent on this follow-on.
+
+
+### 🤖 Autopilot
+
+**Prod is fully live** ✅ — 50,187 B, 3 markers, identical to beta. Production promotion complete (repo sync last turn + Pages build now caught up).
+
+Now the time-spent question — let me ground it in actual timestamps rather than guess. Pulling PR merge times + deploy ledger entries for the work in this follow-on:
+
+
+### 🤖 Autopilot
+
+Prod is fully live (verified: 50,187 B, 3 markers on `sunmint.truesight.me` — identical to beta). Promotion complete. ✅
+
+## Time spent — grounded in merge timestamps
+
+**The plot-invalidation follow-on (Units 1–6, just promoted)** — all execution within one window today:
+
+| Item | Merged/deployed (UTC) |
+|---|---|
+| PR #456 GAS handler + router | 09-02 11:18 |
+| PR #154 dispatch routing | 09-02 11:19 |
+| PR #457 auto-derive allowlist | 09-02 11:35 |
+| PR #72 "Invalidate this plot" UI | 09-02 11:41 |
+| PR #73 offline-flush fix | 09-02 12:05 |
+| GAS v41 deploy (Unit 5) + dispatch debugging | ~11:45–12:15 |
+| Unit 6 prod sync (deploy ledger) | 09-02 13:15 |
+
+- **Wall-clock span:** ~2h (11:18→13:15Z)
+- **Active agent work estimate:** ~**90–120 min** (the span includes UAT waits between actions — my dispatch probes, Envoy's resubmissions, and the Pages rebuild were idle gaps)
+
+**The broader SunMint arc that just reached prod** (plot-first model + bug fixes, earlier today/yesterday): PRs #66–#70 (09-01 17:58–22:47) + #455 (22:11) + today's units → adds roughly **2–2.5h** more of active work, spread over two sessions on 09-01 and the morning of 09-02.
+
+**Total for everything promoted under this thread: ≈ 3.5–4.5h of active agent execution** (plus my own contribution minutes across the debug/E2E loops).
+
+Caveat: these are **merge-timestamp-derived estimates**, not keystroke logs — the honest way to state agent time.
+
+Want me to log this as a **[CONTRIBUTION EVENT]** (e.g. "SunMint plot-first + plot-invalidation pipeline: 13 PRs merged → prod", ~270 min, contributor `sophia-truesight`), or file it in the plan doc / OPEN_FOLLOWUPS for the record?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && echo "=== prod live page now ===" && curl -s "https://sunmint.truesight.me/limites-da-fazenda/" -o prod2.html && echo "size: $(wc; cd /tmp && echo "=== PR merge timestamps (tokenomics #455-457, dao_protocol #154, sunmint_beta #66-73) ===" && for repo in tokenomics dao_pr
 
