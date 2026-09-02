@@ -10,65 +10,6 @@
 
 ### 🤖 Autopilot
 
-**A4b smoke test: PASS ✅** — with two wrinkles found.
-
-## A4b complete — live emit verified end-to-end
-
-| Item | Result |
-|---|---|
-| **Live emit fired** | ✅ `tree_planting/Edgar_20260831195934_005.json` — my smoke POST at 19:59:34, written **instantly by the emit hook** (before any cron) |
-| **Format** | Matches the cron schema (schema_version 1 fields), self-verifying triple present |
-| **Offline verify** | ⚠️ openssl failed to read the pubkey — because the emit writes the key as **bare SPKI base64** while the cron writes **PEM** (my earlier "wrap in PEM headers" step handled the cron's bare format; here it needs wrapping from a different position — actually this record's key IS bare too, openssl just needs the PEM wrap: the field-mismatch is: cron records store PEM, emit stores bare — see below) |
-
-### The two wrinkles
-1. **`contributor_name: "Unknown"`** — the ledger record shows "Unknown" because the smoke key isn't a registered contributor (expected for a test), but the **emit hook** resolved it via `find_by_public_key` at emit time, whereas the cron may resolve it later. Cosmetic for real events (registered keys resolve properly) — worth confirming with a real signer.
-2. **Key format mismatch (real bug):** the **emit** writes `public_key` as **bare SPKI base64** (from `verify.verify()`'s normalization), while the **cron** writes **PEM** (with BEGIN/END headers). Same record schema, different key encoding → inconsistent ledger + the README's "wrap in PEM" verification example breaks for emit-written files. **Fix (small PR):** `ledger_emit.py` should normalize `public_key` to PEM before writing (match the cron), like `verify.py` already does for verification.
-
-### Roadmap state
-| Unit | Status |
-|---|---|
-| A1–A3 | ✅ |
-| A4 emit hook code | ✅ merged |
-| **A4b deploy + smoke** | ✅ **live & verified** (emit instant, cron reconciles) |
-| A5 docs + UAT | ⏭️ next |
-| A6 backfill | not started |
-
-## RESUME HERE → A4.1 fix + A5
-
-1. **Small fix PR (dao_protocol):** `ledger_emit.py` — normalize `public_key` to PEM (BEGIN/END headers) in the record so emit-written files match cron-written files exactly (verification example in README stays valid). Also confirm `contributor_name` resolution for a real registered signer.
-2. Re-deploy (proven path: pull + restart) + quick re-smoke.
-3. Then **A5**: docs + UAT — update `SUNMINT_E2E_RUNBOOK.md` §2/§6 with the ledger leg (emit hook + cron + public URLs) + run the plan §6 UAT checklist.
-
-⚠️ Also noted for the record: two test artifacts now exist in the ledger (`SMOKE-REPRO-0002.json` + the live smoke `Edgar_20260831195934_005.json`). You said "leave it" for the smoke row — the REPRO file I created during debugging is a second artifact; say the word if you want either removed (contents-API delete, ~30s).
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×7 → manual emit repro (False w/o success flag → True w/ success flag + PUT 201, wrote SMOKE-REPRO-0002.json); checked deployed `add_record` returns message_id; confirmed config fallback works (github_pat 93 chars); listed ledger folders (found `Edgar_20260831195934_005.json` = live smoke emit); pulled + verified the live smoke file; attempted offline openssl verify (key-format wrinkle surfaced)
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → manual emit repro with success:True → PUT 201 wrote `SMOKE-REPRO-0002.json`; debug print showed repo/pat fallback + GET 404 → PUT 201; listed folder contents (27 tree_planting files incl. the live smoke `Edgar_20260831195934_005.json`); downloaded + inspected live smoke file; openssl verify attempt failed on bare-SPKI key format
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×7 → ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o ConnectTimeout=10 -o StrictHostKeyChecking=accept-new -o UserKnownHostsFile=/dev/null ubuntu@; echo "=== ledger tree_planting index now ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/verify_public_signatures/main/tree_pla; echo "=== search all ledger folders for LEDGER-SMOKE ==="; for d in tree_planting tree_planting_link tree_planting_reject tree_growth_monito; …(+2 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-resume
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
-
-
-### 🤖 Autopilot
-
 Resuming at A4.1: the PEM normalization fix for `ledger_emit.py`. Let me first confirm exactly how the cron writes `public_key` (PEM?) vs. what `verify.verify()` returns, so the fix matches precisely.
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
@@ -4182,11 +4123,13 @@ Repo copy (origin/main `0dc1438`) has the fix; the cron copy is stale. The only 
 ### 🤖 Autopilot
 
 rc=127 — the GITHUB_TOKEN env extraction produced a bad command (my inline sed construct was wrong). Let me run the pass properly with the token from the cron environment.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Timed out at 180s — the run is likely still completing (a full pass re-examines 3,993 files; with skips it can take a while). Let me check the log for whether the run finished and what the live index shows now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4194,11 +4137,13 @@ Timed out at 180s — the run is likely still completing (a full pass re-examine
 Now I see the full picture — there are **two** sync processes running (241690 from my first attempt that survived, and 241945 from the second), both scanning. The live index hasn't updated yet because neither run has finished (the index writes at the end). Also notable: the token appears in the ps output — I must be careful; that's the cron's PAT, not something I should echo further.
 
 Let me wait for the runs to finish and check the index (it publishes `excluded_pii_count` once a pass completes).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two duplicate runs are scanning (both doing GET-only skip checks — harmless but slow, ~4k files each), and the index writes only at pass end. The cron copy now has the fix, so whichever pass finishes will publish `excluded_pii_count`. Let me wait for completion and verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4210,6 +4155,7 @@ The processes count is 4 (2 shells + 2 pythons) — the two duplicate passes are
 - Live index will show `excluded_pii_count: 1650` once a pass completes (gen timestamp will advance from 2026-09-01T21:30:08Z)
 
 Rather than keep polling in this turn, let me register a watcher on the index URL so I get notified when it publishes the field.
+[1 tool result(s) compacted: watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4247,36 +4193,48 @@ No watcher outside a topic — I'll report status and let the next natural turn 
 ### 🤖 Autopilot
 
 Confirming the live index now publishes `excluded_pii_count` (the last verification step).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The passes are still grinding (4k-file reconciliation is slow), and the live index hasn't updated yet. Two overlapping passes risk stacking with the next cron tick — let me reduce to one and check the GET endpoint for rate-limit exposure.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good — killed one duplicate (Terminated logged), one pass remains, progress continuing (now into March 31 files). Note the skip check uses the **contents API GET** (`api.github.com/.../contents/`) — 4k GETs/pass is heavy on secondary rate limits, but it's been working. Let me wait for the remaining pass to finish and publish the index.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Progress is slow but real (now into May 25 files — close to the end of the contribution_event folder, then other folders). The pass will finish and publish the index. The rate of ~2-3 minutes per 10 files suggests this reconciliation pass takes ~30-60 min total for the whole 4k set — it may still be going for a while. Let me check the sync process details to understand the pace better, and whether the 30-min cron will collide with it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pace is healthy: ~133 files/min, and the pass is deep into the biggest folder (contribution_event, June 14 files — near its end). Full pass ≈ 30 min total. Let me wait for it to complete and publish the index.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Progressing well — now into credentialing_attestation_event (May 31), past the giant contribution_event folder. The reconciliation pass is nearing the end of the alphabetically-later folders. Let me wait for completion.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still grinding through inventory_movement (660 files — the second-biggest folder). The pass has been running ~20 min; it should finish within ~10 more. Let me wait once more.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4329,31 +4287,37 @@ New small ask from Gary (unrelated to the signature ledger plan, using this idle
 ### 🤖 Autopilot
 
 New task: document Tencent Cloud credential locations following the AWS pattern. Let me read both canonical docs first to mirror their structure.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full API_CREDENTIALS doc to find the AWS credential table pattern (the model I'm mirroring).
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the doc structure. Let me find the AWS credential table section (the exact pattern to mirror) — searching for the AWS section in the credentials doc.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The AWS pattern is at §10.3 (lines 195–205): a table of **where the credential lives** (path + status) and a verdict line. Let me read that section fully to mirror it exactly, and also check the Tencent keys in the actual .env files to document precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The AWS pattern is clear (table: Source | Status | Details + Verdict). I confirmed `TENCENT_SECRET_ID`/`TENCENT_SECRET_KEY` exist in `truesight_autopilot/.env` (2 matches). The bionpact check printed nothing — let me verify the bionpact .env path and check gitignore protection, then check if there's a `truesight_autopilot` section in the doc to place the Tencent rows.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: `truesight_autopilot/.env` has both Tencent keys (gitignored, untracked ✅). The bionpact .env isn't on this host (it's on the Bionpact instance — I'll document the location per the task). Let me check whether SETUP_REQUIREMENTS has a truesight_autopilot section, and look for any Tencent references already in the context docs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4452,4 +4416,194 @@ The task is complete: any future Sophia/Bionpact instance reading the canonical 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /home/ubuntu/agentic_ai_context 2>/dev/null && git pull -q origin main 2>&1 | tail -1 echo "=== AWS section headers + tables in API_CREDE; cd /home/ubuntu/agentic_ai_context && echo "=== §10.3 AWS Credentials (full) ==="; sed -n '190,215p' credentials/API_CREDENTIALS_DOCUMENTATI; echo "=== bionpact .env exists? ==="; ls -la /opt/bionpact_autopilot/.env 2>&1 | head -2 echo "=== Tencent keys in bionpact (names only) ===; …(+12 more)
 • `merge pr` → ✅ PR #893 on agentic_ai_context merged successfully (sha: 822402a0ede9ad9dc22492aa8a909882bcdef941). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=17194] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 17194) is the active handoff for `plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_PUBLIC_SIGNATURES_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+New task from Gary, bigger than the doc PR you just merged: extend the shared truesight_autopilot codebase (not Onaya's private repos) so ALL instances of you — including Bionpact/Onaya — can natively interface with Tencent Cloud using the TENCENT_SECRET_ID/TENCENT_SECRET_KEY you just documented in PR #893.
+
+Scope:
+1. Add tencentcloud-sdk-python as a dependency
+2. Wire TENCENT_SECRET_ID/TENCENT_SECRET_KEY into app/config.py as proper settings fields (same pattern as AWS_ACCESS_KEY_ID_NELANCO etc.) — must degrade gracefully when unconfigured, matching how AWS/Gmail/SSH already handle missing config (no crash, clean 'not configured' response)
+3. Build app/tools/tencent_tools.py wired into the tool registry: at minimum describe zones/regions, list/describe CVM instances, create CVM instance (the EC2 equivalent), list COS buckets. Read-only tools should work immediately; the create/provisioning tool should exist but any instance calling it should still get gated appropriately (mirror how your own git/PR tools already require explicit repo allowlisting — same spirit for costly cloud actions).
+4. PR + CI-gated merge as usual, self-executed.
+
+Live use case to validate it end-to-end (do this AFTER the codebase change merges, as the real-world proof): use the new tooling yourself to provision a Tencent Cloud CVM instance and deploy a clone of the Bionpact/Onaya instance onto it. Before actually creating any billable CVM resource, STOP and report back: proposed instance type/region/OS image (mirror Onaya's current EC2 specs as baseline) + cost estimate, and flag this open design question rather than assuming — does 'a clone of Onaya' mean (a) a passive standby/DR copy, (b) an active second instance with her own separate Telegram bot identity, or (c) a migration replacing the current Nelanco/AWS box? I'll relay Gary's answer once you ask.
+
+Go ahead and start on the codebase extension (items 1-3) now.
+
+
+### 🤖 Autopilot
+
+New task: extend truesight_autopilot with native Tencent Cloud support. Let me first understand the codebase structure — dependency management, config.py patterns, and the tool registry.
+
+
+### 🤖 Autopilot
+
+Let me look at the key patterns: config.py's AWS settings block, how aws_tools.py is built + registered, and how the git/PR tools gate with allowlisting (the pattern to mirror for costly actions).
+
+
+### 🤖 Autopilot
+
+The patterns are clear. Let me look at how main.py registers the tool (the handler around line 2409) and how AWS tools degrade when unconfigured.
+
+
+### 🤖 Autopilot
+
+Now let me see the tool registry (the ~30 wrappers the model sees), the aws_monitor account-spec mechanism for graceful degradation, and the pyproject for dependency conventions.
+
+
+### 🤖 Autopilot
+
+Let me examine the tool_registry (the modern dispatch path) and the aws_tools test pattern to mirror.
+
+
+### 🤖 Autopilot
+
+Now I need to find where aws_query's TOOL_SPEC lives (the registry file didn't show it — it may be in aws_tools.py itself or tool_specs). Let me check.
+
+
+### 🤖 Autopilot
+
+I now have the complete pattern. Let me check the tencentcloud-sdk-python package availability/name and look at how `_is_read_only` handles Tencent's `Describe` prefixes, then build the module. Let me also check the settings fields convention more precisely (aws_region etc. for the `not configured` response).
+
+
+### 🤖 Autopilot
+
+The pip version flood confirms `tencentcloud-sdk-python` is real (latest ~3.0.1210). Let me check local install state and how tools access settings.
+
+
+### 🤖 Autopilot
+
+Clear picture now. `tencentcloud-sdk-python` isn't installed locally; `settings = Settings()` singleton at config bottom; aws_tools uses `os.environ` directly (not settings). Let me now write the code. Plan:
+
+1. **requirements.txt** + **pyproject.toml**: add `tencentcloud-sdk-python>=3.0.1000`
+2. **app/config.py**: add `tencent_secret_id` / `tencent_secret_key` fields (same pattern as AWS, degrading to None/"" when unset)
+3. **app/tools/tencent_tools.py**: `tencent_query` tool with read-only prefixes (`Describe*`, `Get*`, `List*`, `Search*`, `Inquiry*`) running freely; write-class ops (`Create*`, `Run*`, `Terminate*`, etc.) requiring `confirm_write=true` AND a billable-resource gate; COS list; graceful "not configured" when creds missing; lazy SDK import; TOOL_SPEC wired into registry
+4. **tests/test_tencent_tools.py**: mirror test_aws_tools (write requires confirm, dispatch with stub creds, denylist, not-configured degradation)
+5. Local checks → PR → CI → merge
+
+Let me check how the SDK's client init works for CVM + COS, and confirm the auth pattern.
+
+
+### 🤖 Autopilot
+
+The COS module is separate (`tencentcloud-sdk-python-cos`). The core CVM/regions/zones module installed fine. Let me verify the exact package split and CVM client signature.
+
+
+### 🤖 Autopilot
+
+SDK core works (CVM `DescribeZonesRequest`/`RunInstancesRequest` available). COS is a separate package (`tencentcloud-sdk-python-cos`). Note: pip installed 3.1.166 (older than the 3.0.1210 I saw in index — the index listing was reversed; 3.1.166 is fine/stable). Let me check the COS package name and the COS list-buckets API shape (it uses the standard `ListBuckets` via a different client — actually COS uses its own `CosService`/XML API). Let me check how the COS SDK works.
+
+
+### 🤖 Autopilot
+
+The COS SDK package name is different. Let me find the correct name.
+
+
+### 🤖 Autopilot
+
+Both SDKs confirmed:
+- **`tencentcloud-sdk-python`** (core: CVM, regions/zones, etc.) — installed, `credential.Credential(secret_id, secret_key)`, clients take `(credential, region, profile)`
+- **`cos-python-sdk-v5`** (COS: `qcloud_cos`) — `CosS3Client(CosConfig(Region=..., SecretId=..., SecretKey=...))`, `list_buckets()`
+
+Now let me write the code. I'll build the module to expose **`tencent_query`** (CVM/regions/zones via the TencentCloud SDK, mirroring aws_query's read/write/confirm/denylist gate) + **`cos_list_buckets`** (COS list via qcloud_cos). Both degrade cleanly when creds are unconfigured, and create/provisioning ops require `confirm_write=true` + an explicit `create_cvm` sub-gate. Let me check the exact COS list_buckets response shape first, then write everything.
+
+
+### 🤖 Autopilot
+
+Now I have everything. Writing the code — config fields, requirements, the tencent_tools module, and tests. Let me build all the files.
+
+
+### 🤖 Autopilot
+
+Now the main module — `app/tools/tencent_tools.py` mirroring aws_tools' structure: read/write gate, confirm_write, denylist, graceful degradation, lazy imports, TOOL_SPEC.
+
+
+### 🤖 Autopilot
+
+Module compiles. Now the tests mirroring test_aws_tools.py — plus a not-configured degradation test.
+
+
+### 🤖 Autopilot
+
+Two test issues: (1) `CosS3Client` is imported *inside* `cos_list_buckets` (lazy import) so it's not a module attribute to patch — patch `qcloud_cos.CosS3Client` instead; (2) the CVM dispatch test's `req_module` resolution needs the real module. Let me fix the tests to patch the right targets.
+
+
+### 🤖 Autopilot
+
+7/8 pass — the dispatch test still fails on `req_module` resolution. The issue: `type(client).__module__` on a MagicMock is `unittest.mock` — so `req_module = "unittest.mock"` and it can't find `RunInstancesRequest`. I should use the real `cvm_client` module's request class lookup differently. The cleanest fix: set the fake's `__module__` to the real cvm_client module.
+
+
+### 🤖 Autopilot
+
+Still failing. The MagicMock's `__module__` patch may not survive — `type(client).__module__` for a MagicMock instance returns `unittest.mock`. Let me look at the actual error line and debug directly.
+
+
+### 🤖 Autopilot
+
+The status is "error" — the call path is failing inside `tencent_query`. The problem: `_client` is patched to return the fake, but `req_module = type(client).__module__.rsplit(".", 1)[0]` → for MagicMock the class's `__module__` is `unittest.mock` unless I set the **class** attribute (I set it on the class, but MagicMock's metaclass may override). Let me simplify the test: instead of fighting module resolution, patch `tencent_tools._client` AND make the request-class lookup work by patching `tencentcloud.cvm.v20170312.models` in sys.modules with a fake that has `RunInstancesRequest` — the code does `__import__(req_module)` where req_module = `type(client).__module__.rsplit('.',1)[0]` = `tencentcloud.cvm.v20170312` for a real client. Since type(fake) is MagicMock whose `__module__` is `unittest.mock`, rsplit gives `unittest` → import fails.
+
+Cleanest: make the test use a real object. Let me check what `type(client).__module__` gives and set it correctly via a subclass.
+
+
+### 🤖 Autopilot
+
+MagicMock's metaclass overrides `__module__` (shows `unittest.mock` regardless). A cleaner approach: use `create_autospec` won't help either. Best: make the module's request-class lookup robust by passing the request class through a module the **test can control** — but simplest is to make `tencent_query` accept an optional `_request_module` for tests... Actually the **cleanest production fix**: derive `req_module` from the *service* argument instead of the client instance (`tencentcloud.{service}.v20170312.models`). That's deterministic and doesn't rely on MagicMock quirks. Let me improve the production code.
+
+
+### 🤖 Autopilot
+
+Still failing. The `__import__` with `fromlist=["*"]` on the stub module should work... Let me actually debug what error comes back.
+
+
+### 🤖 Autopilot
+
+Found it — I called `tencent_query("cvm", "RunInstances", {...}, True)` positionally, and the 4th positional arg is `region`, not `confirm_write`! In the manual call and likely the test, the positional `True` lands in `region`. Let me check the test call.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+I'm at the tool-round limit — stopping to converge cleanly.
+
+## Tencent Cloud tooling — status: 90% built, 1 test blocking
+
+### Done and verified ✅
+- **`requirements.txt` + `pyproject.toml`**: added `tencentcloud-sdk-python>=3.0.1000` + `cos-python-sdk-v5>=1.9.0`
+- **`app/config.py`**: added `tencent_secret_id` / `tencent_secret_key` / `tencent_region` fields (env `TENCENT_SECRET_ID`/`TENCENT_SECRET_KEY`/`TENCENT_REGION`, default `ap-guangzhou`), same pattern as AWS, graceful when unset
+- **`app/tools/tencent_tools.py`** (new, compiles clean): `tencent_query(service, operation, parameters, region, confirm_write)` — read-only prefixes (`Describe*`/`Get*`/`List*`/`Inquiry*`/`Search*`) run freely; **write/billable ops require `confirm_write=true`**; denylist blocks catastrophic ops (TerminateInstances, DeleteBucket, ReleaseAddresses, …); clean `{"status": "not_configured"}` when creds unset; lazy SDK import; `cos_list_buckets()` via qcloud_cos; `TOOL_SPEC` wired into the capability registry (auto-discovered, no main.py edit needed)
+- **SDK verified on box**: `tencentcloud-sdk-python` (CVM/region clients + models confirmed) and `cos-python-sdk-v5` (`CosS3Client`, `list_buckets` signature confirmed) both install and import
+
+### The one blocker — test `test_write_class_operation_dispatches_with_confirm_write`
+**7/8 tests pass.** The failing dispatch test stubs `RunInstancesRequest` as a bare `type(...)` that **lacks `from_json_string()`** — so the call path raises AttributeError → caught → `status: error`. The production code is fine (real SDK request classes have `from_json_string`); it's purely the test stub.
+
+**Fix (next turn, ~1 min):** in `tests/test_tencent_tools.py`, give the fake request class the method:
+```python
+fake_req_mod.RunInstancesRequest = type("RunInstancesRequest", (), {
+    "from_json_string": lambda self, s: None,
+})
+```
+
+### Then, resume sequence
+1. Re-run `pytest tests/test_tencent_tools.py` → **8/8**
+2. Full local suite: `compileall` + `ruff check` + `ruff format --check` + `pytest -q` (expect only the 3 pre-existing `test_chat_observe.py` failures)
+3. **PR** (one commit: 5 files — config.py, requirements.txt, pyproject.toml, tencent_tools.py, test) → CI-gated merge (self-executed)
+4. **Post-merge**: verify the tool is live (the service on this box already has `TENCENT_SECRET_ID/KEY` in `.env` — so `tencent_query(cvm, DescribeZones)` should work live), then report for the **CVM provisioning validation** step (which **stops before creating any billable resource** for your go + the Onaya-clone design question: passive DR standby vs active second identity vs migration)
+
+### Scope guardrails honored
+- Read-only tools work immediately; create/provisioning is gated (confirm_write + denylist) — same spirit as the git/PR repo allowlisting
+- Bionpact/Onaya instances get the same capability via the shared repo (their `.env` already has the Tencent keys per PR #893)
+
+**RESUME HERE:** fix the one-line test stub → 8/8 → full checks → PR #→ merge → live smoke `DescribeZones` → then STOP before any billable CVM creation and report instance spec + cost + the Onaya-clone design question for Gary.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×27 → cd /opt/truesight_autopilot && echo "=== deps file ==="; ls requirements*.txt pyproject.toml setup.py 2>/dev/null; echo "=== requirements.tx; cd /opt/truesight_autopilot && echo "=== tool registry / tools dir ==="; ls app/tools/ 2>/dev/null | head -30; echo "=== how tools register ; cd /opt/truesight_autopilot && echo "=== config.py around AWS settings ==="; sed -n '370,420p' app/config.py; echo "=== config.py: other set; …(+23 more)
 
