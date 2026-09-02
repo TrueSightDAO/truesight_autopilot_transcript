@@ -1498,16 +1498,19 @@ Let me first confirm the method-name fix precisely:
 ### 🤖 Autopilot
 
 Confirmed: PascalCase works, snake_case doesn't in SDK 3.1.166. This is a **real bug in merged PR #386** (my code, discovered via live use). The dispatch needs to try both case conventions. Let me look at the exact code section to patch, check the existing test expectations, and see if any other tool has a similar case-handling pattern to mirror:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the test stub around line 81 to understand how the dispatch is tested:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see how the write-class test stubs the client (that reveals the fake-method pattern used) and where `_client` gets patched:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1515,31 +1518,37 @@ Let me see how the write-class test stubs the client (that reveals the fake-meth
 Root cause is fully clear now. The unit tests **mock `_client`** (returning a MagicMock with whatever attribute the code asks for), so they never exercised the **real** SDK — where methods are PascalCase (`DescribeZones`) in tencentcloud-sdk-python 3.1.166, not snake_case (`describe_zones`). My merged PR #386's dispatch is broken against the real SDK for every operation.
 
 The fix: try snake_case first, fall back to PascalCase. Let me patch, add a regression test, and run gates:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now add a regression test that exercises the **PascalCase fallback** against a real-SDK-shaped fake (client exposing `DescribeZones`, not `describe_zones`):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 9/9 pass (8 original + my new regression). Now the full hard-rule gates before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All gates green on my files. Let me run the full tencent + llm test suites (plus a quick sanity that nothing else broke), then verify the fix against the **live** DescribeZones call:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Fix verified live.** `DescribeZones` now returns 3 available ap-guangzhou zones (5/6/7 — Guangzhou Zone 5/6/7, all AVAILABLE). The tool works end-to-end against the real API now. Let me also do the region query + instance list smoke to fully validate, then commit and PR this hotfix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `DescribeInstances` works (0 CVMs in ap-guangzhou — nothing billable exists yet, good). But `DescribeRegions` on the `region` service errored. Let me see the error detail:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1710,4 +1719,63 @@ All CI checks green (test ✅ + smoke ✅). Merging PR #391:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /opt/truesight_autopilot && git branch --show-current && git status --short | head -15 && echo "=== diff stat vs main ===" && git diff --; cd /opt/truesight_autopilot && echo "=== compileall ===" && python3 -m compileall -q app scripts tests 2>&1 | tail -2; echo "rc=$?" && echo ; cd /opt/truesight_autopilot && echo "=== do my files appear in the failures? ===" && python3 -m pytest tests/test_redeploy_indicator.py::tes; …(+4 more)
 • `merge pr` → ✅ PR #391 on truesight_autopilot merged successfully (sha: 1195a294793ca16aac796107b0e96f7107dc2626). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19553] [Handoff context — this Telegram topic (thread 19553) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ PR #391 merged — tencent_query SDK-compat hotfix
+
+**PR: [#391 — fix(tools): tencent_query dispatch vs real SDK — PascalCase methods + version-aware models module](https://github.com/TrueSightDAO/
+
+
+### 🤖 Autopilot
+
+Go received. Next unit: re-sync Onaya to pick up the #391 hotfix (her `tencent_query` is broken until she pulls), restart, and smoke-verify. Starting with the sync:
+
+
+### 🤖 Autopilot
+
+Onaya synced past the hotfix — now at **8ee62c4** (#391 + the other thread's #392). Fix present (line 227), .env intact. Now restart both services and live-smoke the fixed tencent_query on her box:
+
+
+### 🤖 Autopilot
+
+Everything verified except my probe's arg shape (the registry's `chat` signature differs from the base — the same probe-shape issue as before, and the earlier live proof already confirmed Claude works through her app path). Let me fix the probe to match her code's actual signature:
+
+
+### 🤖 Autopilot
+
+`chat(system_prompt, messages, ...)` — positional, no keyword `system_prompt`. Fixing the probe with the correct signature:
+
+
+### 🤖 Autopilot
+
+**✅ Onaya fully verified post-sync.** Complete end-to-end confirmation on her box:
+
+- **Code**: `e22feb8` (#388) → **`8ee62c4`** (now includes #391 hotfix + #392)
+- **tencent fix live**: `DescribeZones` → **ok, 3 zones** (ap-guangzhou-5/6/7 AVAILABLE) · `DescribeInstances` → **ok, 0 CVMs** — her `tencent_query` tool now works against the real SDK (was broken before the pull)
+- **Services**: both `active`, provider init log: `litellm (anthropic/claude-haiku-4-5)`
+- **Claude still live**: real chat through her app's own provider path → **`ONAYA_SYNC_391_OK`**
+- **.env intact**: `LLM_PROVIDER=litellm` · `LITELLM_MODEL=anthropic/claude-haiku-4-5`
+
+## RESUME HERE → next unit (fresh turn)
+
+1. **Report the migration package to Gary** (no billable action yet):
+   - Onaya's EC2 baseline: **t3.small** (2 vCPU / 2 GiB), 20 GB gp3 encrypted EBS, Ubuntu 22.04, us-east-1a
+   - Tencent equivalent proposal: **S5.SMALL2** (1C/2G, ~$8–11/mo sub) or **S5.MEDIUM4** (2C/4G, ~$17–22/mo sub) in ap-guangzhou (zones 5/6/7 AVAILABLE, account 1322388156 active, 0 CVMs — clean slate)
+   - Cost estimate vs current AWS t3.small (~$16.60/mo on-demand)
+   - **The a/b/c design question still awaiting Gary's answer**: (a) passive standby/DR copy, (b) active 2nd instance with her own separate Telegram bot identity, or (c) migration replacing the Nelanco/AWS box. **No CVM created until answered.**
+2. Once Gary answers: provision via the new `tencent_query` (create CVM is already gated + denylist-aware in the merged tooling), then deploy the Onaya clone per the chosen design.
+
+**✅ Done this turn — actions taken:** Onaya re-synced to main `8ee62c4` (fast-forward e22feb8→8ee62c4 via jump host); confirmed #391 fix present (line 227, `rsplit`); compile OK; restarted both services (active); live smoke: `DescribeZones` 3 zones + `DescribeInstances` 0 CVMs **ok** through her app's tencent_tools; Claude probe via her app's provider registry → **`ONAYA_SYNC_391_OK`** (3 probe iterations were my arg-shape misses — `chat(system_prompt, messages)` is positional-first; the final call used the correct signature).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /opt/truesight_autopilot && cat > /tmp/onaya_sync.sh <<'SCRIPT' …; ssh -o StrictHostKeyChecking=no -o ConnectTimeout=20 -o ProxyCommand="ssh -o StrictHostKeyChecking=no -o ConnectTimeout=15 -i /home/ubuntu/.ssh/NELANCO_aws_20201122.pem; …(+3 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /opt/truesight_autopilot && cat > /tmp/onaya_sync.sh <<'SCRIPT' #!/bin/bash echo "ONAYA_OK host=$(hostname)" cd /opt/bionpact_autopilot |; cd /opt/truesight_autopilot && cat > /tmp/onaya_verify.sh <<'SCRIPT' #!/bin/bash echo "ONAYA_OK host=$(hostname)" echo "=== restart services; cd /opt/truesight_autopilot && cat > /tmp/onaya_probe2.sh <<'SCRIPT' #!/bin/bash cd /opt/bionpact_autopilot || exit 1 .venv/bin/python - <<'; …(+1 more)
 
