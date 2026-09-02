@@ -111,6 +111,11 @@ The artifact chain keeps re-serving truncated content. Let me page the raw HTML 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me pull the live registry numbers and planting-photo evidence to ground the shareable PDF with real metrics.
 
 
@@ -220,4 +225,35 @@ Quick estimate on the SunMint status + carbon-readiness PDF work:
 **Human-equivalent effort** (what a person would spend researching those live pages + repos and writing a verified 7-section partner doc): **~2–3 hours**.
 
 For the DAO ledger I'd suggest logging **60–90 minutes** as a [CONTRIBUTION EVENT] (autopilot contribution, "SunMint program status & carbon-market readiness research + PDF"). Say the word and I'll submit it directly — or if you'd rather I estimate the whole SunMint build-out effort (whitepaper, registries, apps, satellite pipeline) for a broader report, that's a bigger breakdown I can pull from git history.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19705] file contribution report for yourself. and for me. I didnt do anything much, I just provided you with the query
+
+
+### 🤖 Autopilot
+
+I'll verify the contribution event format first, then file both reports.
+
+
+### 🤖 Autopilot
+
+Filing two contributions — one for me (research + PDF) and one for you (query + direction).
+
+
+### 🤖 Autopilot
+
+Both contribution reports are filed ✅
+
+| Contributor | Type | Amount | Description |
+|---|---|---|---|
+| **Sophia Truesight** | Time (Minutes) | 90 | SunMint program-status research (live sites, whitepaper, registries, attestation ledger) + partner PDF |
+| **Gary Teh** | Time (Minutes) | 15 | Query + direction for the SunMint status research & PDF |
+
+Both submitted as [CONTRIBUTION EVENT]s and confirmed by Edgar. If you want TDG issued on either, let me know the rate and I'll adjust.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` ×2 → Contribution submitted successfully.
 
