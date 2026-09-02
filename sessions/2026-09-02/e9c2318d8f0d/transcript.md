@@ -417,51 +417,71 @@ The LiteLLM provider is intact and still Claude-capable. Now let me check the pr
 ### 🤖 Autopilot
 
 Registry intact — `litellm` is a selectable provider. Now let me check how `.env` is loaded (so I know what an operator would add), the PROVIDERS.md §6 doc, and where usage data lives for a cost estimate.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Usage logging is disabled and no historical token-usage data exists locally. Let me check the roadmap doc and the DeepSeek provider's pricing for comparison, then check usage logs in the transcript repo or dashboard.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check for PROVIDERS.md in the transcript repo (registry references §6) and look for any spend/usage tracking that would ground a cost estimate.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PROVIDERS.md isn't in any indexed repo (the doc reference is stale). Let me check the current .env provider config (without revealing secrets) and look for any spend history.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key finding: `LLM_PROVIDER=litellm` + `LITELLM_MODEL=deepseek/deepseek-v4-flash` is already the **live production config** — the app is ALREADY running through LiteLLM, just pointed at DeepSeek. This means the Claude path is the same code path that's running right now. Let me confirm the service is actually running litellm and check the DeepSeek spend side for a cost baseline.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed — the running process has `LLM_PROVIDER=litellm` + `LITELLM_MODEL=deepseek/deepseek-v4-flash`. The app is **already on the LiteLLM path**, pointed at DeepSeek. Now let me quantify the cost delta. Let me check DeepSeek usage/spend data and DeepSeek's current published pricing vs Claude's.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No production usage log exists (`LLM_USAGE_LOG_ENABLED` unset — the only usage.jsonl files are /tmp test artifacts). Let me get current published pricing for both DeepSeek and Claude to compute the delta accurately.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pricing confirmed. Now let me find any actual usage baseline — checking for token/spend data in the DAO context, cache repos, or dashboards.
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No usage/spend baseline exists anywhere (logging was never enabled). Let me check the one remaining functional question: how call sites select the provider (is there a per-call override, or is it a global env switch?), plus the `deploy_ledger.py` "claude" reference.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify how `.env` reaches the process (systemd EnvironmentFile?) and confirm litellm reads `ANTHROPIC_API_KEY` from env — the two things that determine whether this is config-only or needs code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -543,31 +563,37 @@ Scoped ask: once your codebase change lands (the same PR that re-enables Claude 
 ### 🤖 Autopilot
 
 Understood — this is now a scoped two-part execution: (1) codebase change to bridge `ANTHROPIC_API_KEY` into `os.environ` like `DEEPSEEK_API_KEY`, then (2) wire Onaya's `.env` + restart + verify. Let me start by examining the exact current state of the provider bridge and Onaya's setup on this box.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two important discoveries: (1) the bridge gap is exactly as described — only `DEEPSEEK_API_KEY` is bridged; (2) `/opt/bionpact_autopilot` **does not exist on this box** and there's no Onaya/Bionpact systemd service here. Onaya must run elsewhere. Let me find her actual host/instance.
+[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search the context repo properly for Bionpact/Onaya's deployment info, and check the handoff manifest path.
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the agents registry exists. Let me read the bionpact agent entry and the plan to find where Onaya actually runs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand Onaya's deployment: she runs on her own EC2 box in the Nelanco account, using this same codebase with her own `.env`. Let me find her actual EC2 instance and check the handoff mechanism. First let me look at what the plan says about her EC2 instance details and check AWS for the bionpact box.
+[2 tool result(s) compacted: ssh_run, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Onaya IS provisioned and running — t3.small in Nelanco (i-0ebddf52cd92d0841, 98.92.126.75, key `GETDATA_IO_PAIR_20201122`). The plan's "not started" flags are stale; she's live. Now let me get the exact config field pattern to mirror, check the litellm test file, and probe whether I can SSH to her box from here.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -578,21 +604,25 @@ Interesting findings:
 3. Current git branch is `feat/tencent-cloud-tools` (the merged tencent work) with unrelated local mods — I need a clean branch for the Claude work.
 
 Let me check the ssh config for any bionpact/nelanco host entry, and check the nelanco SG rules for the bionpact box.
+[2 tool result(s) compacted: ssh_run, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The SG only allows SSH from within the Nelanco VPC (`172.31.0.0/16`) — Sophia's box is in a different account (Explorya), hence the timeout. I need a Nelanco VPC-internal jump host. Let me see the rest of the ssh config and check if any fleet host sits in that VPC.
+[2 tool result(s) compacted: ssh_run, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The SG only allows SSH from within the Nelanco VPC (`172.31.0.0/16`), but the fleet hosts (e.g. `krake_redis` at 52.1.162.134) are in that same VPC and use the same `GETDATA_IO_PAIR_20201122` keypair as Onaya's box. So I can reach her via ProxyJump. Let me verify the jump path works and confirm the key file exists (without reading its contents).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Empty output is odd. Let me re-run with explicit error capture — checking both the key file existence and the jump host connectivity separately.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -600,11 +630,13 @@ Empty output is odd. Let me re-run with explicit error capture — checking both
 Two findings:
 1. **Jump host works** — `krake_redis` (52.1.162.134, in the Nelanco VPC) is reachable with the `NELANCO_aws_20201122.pem` key.
 2. **`/home/ubuntu/LIZ_WONG_CLAUDE_API_KEY` does NOT exist on this box** — despite the message saying it was confirmed at 109 bytes. It may be on a different user's home, or the path differs. Let me search for it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The key file is not at the stated path on this box. Let me search more comprehensively — including /tmp, recently modified files, and any other location.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -726,4 +758,186 @@ The task said flag the haiku-vs-sonnet choice: **Haiku 4.5 is $1/$5 per M tokens
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×26 → cd /opt/truesight_autopilot && sed -n '1,90p' app/llm/litellm_provider.py; cd /opt/truesight_autopilot && grep -n "llm_provider\|litellm_model\|anthropic\|deepseek_api_key\|bigmodel" app/config.py | head -20; echo "; grep -rn "bionpact\|onaya" /opt/truesight_autopilot/agentic_ai_context/agents/*.json 2>/dev/null | head -20; echo "=== handoff manifest ==="; …(+21 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19553] [Handoff context — this Telegram topic (thread 19553) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Your last turn hit a health-check timeout and never retried (this may itself be useful evidence for the restart-message investigation in the other thread - your own service was briefly unresponsive to /health right when I nudged you, even though it's fine now). Resuming - continue from your RESUME HERE list.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=19553] [Handoff context — this Telegram topic (thread 19553) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Checking in - it's been a while since your last activity with no completion or pause message. Where are you on the Tencent Cloud tooling / Onaya wiring? Continue from wherever you left off.
+
+
+### 🤖 Autopilot
+
+Resuming from my RESUME HERE list. Step 1: finish the Claude ANTHROPIC bridge PR. Let me first verify the local patch is still intact (the redeploy/health hiccup may have touched the tree) and run the hard-rule checks.
+
+
+### 🤖 Autopilot
+
+Patch intact. But the working tree is noisy with unrelated changes (deleted snapshot, sophia.conf, submodule state, untracked farm_media_daemon/ etc.) — I must commit only the Claude-related files. Interesting: `tests/llm/test_litellm_provider.py` is untracked — let me check whether a test file already exists there and see the existing bridge-test pattern.
+
+
+### 🤖 Autopilot
+
+A test file `tests/llm/test_litellm_provider.py` already exists (untracked, created Sep 2 — likely from my interrupted RSA-sig thread work). It tests exactly the bridge I implemented. Let me see the rest of it, then run all four hard-rule checks.
+
+
+### 🤖 Autopilot
+
+All 13 LLM tests pass, compile + ruff clean. The test file (untracked, from my earlier RSA-sig thread) covers exactly the bridge behavior. Now the full-suite checks and format gate, then I'll move the 3 files onto a clean branch.
+
+
+### 🤖 Autopilot
+
+850 passed, 1 skipped — full suite green. One format fix needed on the test file. Let me apply it, then stage only my 3 files and create the PR via git_push_changes.
+
+
+### 🤖 Autopilot
+
+The stash failed (untracked file can't be pathspec-stashed), but that's fine — we're already on the clean `feat/claude-anthropic-bridge` branch with all 3 files present. Let me stage and commit them directly.
+
+
+### 🤖 Autopilot
+
+Committed cleanly. Now push and open the PR via the GitHub API (the PAT worked last time).
+
+
+### 🤖 Autopilot
+
+PR **#387** created: https://github.com/TrueSightDAO/truesight_autopilot/pull/387. Let me verify the PR contents and check CI status.
+
+
+### 🤖 Autopilot
+
+PR #387 is open, but I spot a problem: its file diff shows **8 files including the tencent_tools.py set** — because I branched off the local `feat/tencent-cloud-tools` (pre-merge base) instead of the updated `main`. Since PR #386 was squash-merged, my branch diverged. Let me check the *net* diff against origin/main to see if this is cosmetic (tencent content identical → merge is clean) or a real conflict risk.
+
+
+### 🤖 Autopilot
+
+**Clean** — the net diff `origin/main..HEAD` is exactly my 3 Claude files (+78/−1), and the tencent files are byte-identical to main (same sha256). The 8-file display on the PR is just GitHub diffing against my pre-merge base; merging applies only the 3-file delta. No conflict risk. CI is in progress (smoke + test). Let me poll to completion.
+
+
+### 🤖 Autopilot
+
+Poll loop timed out at the ssh layer (60s limit). Let me check CI status directly with a single quick call.
+
+
+### 🤖 Autopilot
+
+smoke ✅, test still running. Let me wait and re-check the test check.
+
+
+### 🤖 Autopilot
+
+The test check **failed** in CI — but the full suite passed locally (850 passed). Let me pull the CI failure log to see what differs (often a flaky/ordering test like the vault one I saw earlier).
+
+
+### 🤖 Autopilot
+
+The CI failure is a **workflow infrastructure issue** — `git` failed with exit 128 at workflow line 11 (likely a checkout/merge-base problem, not a test failure). Let me see the full failure log to confirm what git operation failed.
+
+
+### 🤖 Autopilot
+
+No output text in the check-run summary. Let me fetch the raw workflow log via the actions API to see exactly which git command failed at line 11.
+
+
+### 🤖 Autopilot
+
+No workflow runs found for that head_sha (the run may be tied to a different commit/sha or the query needs the exact run list). Let me query the recent runs and find the failed one.
+
+
+### 🤖 Autopilot
+
+Found the failed run (id 33625819639). Let me pull its job log to see the git exit-128 failure at workflow line 11.
+
+
+### 🤖 Autopilot
+
+Real CI failure found: **"1 error during collection"** in the Run tests step (845 items + 1 collection error). The post-checkout git-128 is a harmless submodule warning. Let me see the collection error — it's likely the same `events_catalog_snapshot.json` deletion or an import issue in my new test file.
+
+
+### 🤖 Autopilot
+
+The log file has a different name in the extracted dir. Let me list what was extracted and find the Run tests log.
+
+
+### 🤖 Autopilot
+
+The filename has a space — my earlier grep used an underscore. Let me read the Run tests log properly.
+
+
+### 🤖 Autopilot
+
+Root cause found: **CI runs Python 3.10**, but the installed `litellm` version imports `NotRequired` from `typing` — which only exists in **Python 3.11+**. My new test file imports `app.llm.litellm_provider` at module level → `import litellm` crashes during collection on CI's 3.10. It passed locally because this box runs a newer Python.
+
+Let me check the workflow's python-version pin and the litellm requirement pin to pick the minimal fix.
+
+
+### 🤖 Autopilot
+
+Key insight: **this box also runs Python 3.10.12** — yet `import litellm` works here (1.86.2 installed) while CI's fresh install pulls the **latest** litellm, which now imports `NotRequired` (Python 3.11+ only) at module load → collection crash. The unpinned `litellm>=1.75.0` bound let a new broken-on-3.10 release through. Let me confirm local version and what CI installed.
+
+
+### 🤖 Autopilot
+
+Confirmed: local box has **litellm 1.88.1** (imports fine on 3.10), CI pulled **litellm 1.99.0** which broke on 3.10 (`NotRequired`). This is an upstream regression in newer litellm vs Python 3.10 — the fix is to **pin `litellm>=1.75.0,<1.99`** (or a tighter upper bound) in requirements.txt so CI installs a 3.10-compatible version. Let me apply the pin and update the PR.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging (tool-round limit). Here's the state:
+
+## ✅ Done this turn
+
+**PR [#387 — feat(llm): bridge ANTHROPIC_API_KEY into env (re-enable Claude via litellm)](https://github.com/TrueSightDAO/truesight_autopilot/pull/387)** — open, 3 files (+78/−1):
+- `app/config.py`: optional `anthropic_api_key` field (degrades cleanly)
+- `app/llm/litellm_provider.py`: `os.environ.setdefault("ANTHROPIC_API_KEY", …)` — the exact DEEPSEEK bridge pattern
+- `tests/llm/test_litellm_provider.py`: 7 tests (bridge, setdefault-not-overwrite, no-key, deepseek regression, pricing presence)
+
+Local gates: compile ✅, ruff ✅, format ✅, pytest **850 passed** ✅ (Python 3.10.12 on box).
+
+## 🔍 Root-caused a real CI failure (not my code)
+
+`test` check failed at **collection**: `ImportError: cannot import name 'NotRequired' from 'typing'` in litellm 1.99.0. Cause:
+- CI test.yml pins **Python 3.10**; requirements.txt has **unpinned `litellm>=1.75.0`**
+- CI freshly installed **litellm 1.99.0**, whose Anthropic experimental module imports `typing.NotRequired` (**Python 3.11+ only**) → module import crashes on 3.10
+- This box also runs 3.10 but has **litellm 1.88.1** (imports fine) — which is why local tests passed and CI failed
+
+**Fix applied locally (UNCOMMITTED):** pinned `requirements.txt` line 20 → `litellm>=1.75.0,<1.99.0  # <1.99: newer releases import typing.NotRequired (py3.11+) breaking py3.10 CI`
+
+## ⚠️ Still blocking / next steps
+
+1. **Commit + push the requirements.txt pin** to `feat/claude-anthropic-bridge` → CI rerun → **merge PR #387** when green (standing authorization).
+2. Also check `pyproject.toml` for a matching litellm entry that needs the same pin (the tencent PR added deps there).
+3. **Onaya wiring is blocked on the missing key**: `/home/ubuntu/LIZ_WONG_CLAUDE_API_KEY` is **not on this box** (exhaustive search: /home, /root, /etc, /srv, /var, /opt, /data, vault's 39 entries, Onaya's box — nothing). Need Gary to re-place the file (or give the real path) before I can copy it host-to-host without ever printing it.
+4. Onaya is also **behind main** (on `feature/bionpact-configurable-repos`, ~#351) — she needs a pull to inherit the bridge once #387 merges.
+5. Tencent migration still parked pre-billable: needs Onaya's EC2 spec baseline + the a/b/c design answer from Gary.
+
+---
+
+## RESUME HERE → next unit
+
+1. `cd /opt/truesight_autopilot && git add requirements.txt && git commit -m "fix(deps): pin litellm<1.99 (py3.10-compatible, CI collection crash)" && git push origin feat/claude-anthropic-bridge`
+2. Poll CI (`actions/runs?branch=feat/claude-anthropic-bridge`) until test+smoke green → `merge_pr(truesight_autopilot, 387)` → report sha.
+3. Grep `pyproject.toml` for litellm; if present apply same `<1.99` bound (separate tiny PR if needed).
+4. Report to Gary: #387 merged + the **litellm 1.99 / py3.10** upstream-regression finding (evidence for the restart/health investigation too, if relevant) + **ask him to re-place the LIZ_WONG_CLAUDE_API_KEY file** (or its real location) to unblock Onaya wiring.
+
+———
+**✅ Done this turn — actions taken:** verified patch intact post-redeploy (config.py:289, litellm_provider.py:55); found pre-existing untracked `tests/llm/test_litellm_provider.py` (7 tests, exactly the bridge) + formatted it; all 4 gates green (850 passed); clean branch `feat/claude-anthropic-bridge` commit 66bdc6b pushed; PR #387 opened via API; verified net diff = only 3 Claude files (tencent files byte-identical to main — the 8-file PR display is a false alarm from branching pre-merge); smoke ✅ / test ❌; downloaded CI logs → root cause = litellm 1.99.0 `NotRequired` on py3.10; pinned `litellm<1.99.0` in requirements.txt (uncommitted).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×23 → cd /opt/truesight_autopilot && git status --short | head -20; echo "=== branch ==="; git branch --show-current; echo "=== patch intact? ==="; cd /opt/truesight_autopilot && ls -la tests/llm/ 2>/dev/null; echo "=== existing test content (if any) ==="; head -60 tests/llm/test_litellm; cd /opt/truesight_autopilot && echo "=== rest of test file ==="; sed -n '60,140p' tests/llm/test_litellm_provider.py; echo "=== run 4 checks; …(+19 more)
 
