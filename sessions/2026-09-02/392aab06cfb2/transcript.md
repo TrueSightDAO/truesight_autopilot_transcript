@@ -83,6 +83,7 @@ The PDF is the key document — a **MAPA establishment registration certificate*
 ### 🤖 Autopilot
 
 Let me try to locate the current session id for transcript persistence and check what reference materials exist on this box.
+[2 tool result(s) compacted: ssh_run, check_handoffs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -403,4 +404,70 @@ This is the **Coopercabruca Product Portfolio** DOCX — document #3 of the batc
 ———
 **✅ Done this turn — actions taken:**
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-09-02/d9c9636988a8/transcript.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20000] Hey, based on your understanding of the way we operate, how do you propose that we file this two documents or process it? My sense is probably the MAPA registration should be not authorized and then also added to the FSVP FDA repository because I think the GAACC Chinese system registration is also referencing that. Then perhaps we should also update the JSON for all until this Copa Cabroca with the MAPA registration ID. Regarding the provision of the prices, I wonder if we should have them added to the the, let's see, the contribution ledger under the Agroverse Copa processing cost. Yeah, that means have the product list uploaded somewhere and then we reference the individual line items in the ledger. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Gary's voice note is garbled in a few spots ("not authorized" = likely "now authorized"; "GAACC" = GACC; "Copa Cabroca" = Coopercabruca). Before I propose concrete filing, let me check the actual JSON structures and any existing price/cost ledger conventions so the proposal matches how we already operate.
+
+
+### 🤖 Autopilot
+
+Good grounding. Let me read the GACC guide section for Coopercabruca (MAPA number role, lock-in rule), the supply-chain doc's "Agroverse Cacao Processing Cost" sheet description, and the exact OPEN_FOLLOWUPS entry.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the SUPPLY_CHAIN doc (§4.2 onwards — the Agroverse Cacao Processing Cost sheet conventions) and the Coopercabruca GACC guide's MAPA section if present in learnings.
+
+
+### 🤖 Autopilot
+
+Let me read the tail of that doc (the §4.2 Agroverse Cacao Processing Cost update procedure) plus the processing-costs INSERT_PROCEDURE reference.
+
+
+### 🤖 Autopilot
+
+The artifact nesting is getting unwieldy — let me read the local copies directly to get §4.2 and the processing-cost conventions cleanly.
+
+
+### 🤖 Autopilot
+
+Now let me read the current Agroverse Cacao Processing Cost sheet (Coopercabruca existing rows + columns/format) so my proposal matches the actual sheet shape.
+
+
+### 🤖 Autopilot
+
+Let me pull the exact OPEN_FOLLOWUPS entry and the sourcing-network row so my proposal names the precise files/lines to touch.
+
+
+### 🤖 Autopilot
+
+Here's how I'd process it, based on how we actually keep these records. Quick translation of your voice note first: MAPA is **now authorized** (not "not authorized" — the cert *is* the authorization), the system is **GACC**, and the entity is **Coopercabruca**. Your instinct matches the structure — here's the concrete filing plan in three buckets.
+
+**1. Compliance archive → `fda_fsvp` supplier dossier**
+Upload all three files into `fda_fsvp/suppliers/coopercabruca/` (that folder already holds the FDA letters, CNPJ records, POs, invoices — this is the home for per-supplier evidence):
+- `20260902_Coopercabruca_MAPA_certificado_registro_BA002467-8.pdf` (the cert)
+- `20260902_SIPEAGRO_registro_BA002467_ativo.jpg` (live-status proof)
+- `20260902_Coopercabruca_product_portfolio_EXW.docx` (price list)
+Filing the cert there is right — GACC/CIFER asks for the MAPA production number, and the FDA FSVP dossier is our per-supplier evidence cabinet, so both compliance trails point at the same file.
+
+**2. JSON + lane-doc refresh**
+- `suppliers/coopercabruca/entity.json` → add a `mapa` block under identifiers/registration: **BA 002467-8**, atividade BENEFICIADOR DE AMÊNDOA DE CACAU, granted 2026-08-28, valid to 2031-08-28, status ATIVO, plus the two new docs in `source_documents`.
+- `entities.index.json` → same MAPA ID on the Coopercabruca entry.
+- Then update the working docs so nothing claims MAPA is still pending: `BRAZIL_EXPORT_LANE_LEARNINGS.md` (row currently says "being set up" → granted), `CACAO_SOURCING_NETWORK_OVERVIEW.md` status cross-check, the Coopercabruca GACC guide (add MAPA: OBTAINED), and `OPEN_FOLLOWUPS.md` #orlantildes-coopercabruca → move the MAPA half to Recently shipped. **GACC stays the open gate** — BA 002467-8 is the number that gets entered and locked at first CIFER login, so we're now unblocked to submit the GACC application.
+
+**3. Price list → Agroverse Cacao Processing Cost sheet**
+Upload the DOCX somewhere referenceable (same dossier folder works — other rows already embed GitHub URLs), then append **one row per priced product** to the **Agroverse Cacao Processing Cost** tab in the Main Ledger, matching existing conventions: Facility `Orlantidles - COOPERCABRUCA / Povo Da Mata` (that's the existing spelling), Currency USD, Status Date `20260902`, Contact +55 73 99978 8453, and the Process name stating product + "EXW Itabuna list price (per ton)" + the URL to the archived portfolio. That's ~14 priced rows (fine/type-1/organic almonds, nibs, paste, blocks, powder, butter, cupuaçu butter). One caveat: the sheet has mostly R$/kg processing fees; this is USD/ton list pricing — semantically different but precedent exists (the "100 R$ Bahia Cacao Almonds" reference row and the Dennis Lim USD row), so I'd keep the unit explicit in the Process text. And it expires 09/18/2026 — treat as a dated snapshot, per the existing "add new row when refreshed" rule.
+
+Want me to proceed with all three? I'd do bucket 1 + the JSON edits first, then the lane docs + backlog, and the price rows last so you can review the sheet rows before they land.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /home/ubuntu/agentic_ai_context && echo '===== SUPPLY_CHAIN 4.2 onwards =====' && sed -n '140,215p' brazil/SUPPLY_CHAIN_AND_FREIGHTING.md; cd /home/ubuntu/agentic_ai_context && echo '=== OPEN_FOLLOWUPS around orlantildes ===' && grep -n -A 6 -B 2 'orlantildes\|Orlantildes\|Coope
 
