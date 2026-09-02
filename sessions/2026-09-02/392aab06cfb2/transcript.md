@@ -29,37 +29,49 @@ Y B11 MS mmen-minn x & 2025-Goos X | Ge Pania.con x | Ge 2026-Prego: x | Vi Aeai
 
 ### 🤖 Autopilot
 
+[5 tool result(s) compacted: list_directory, search_context, search_context, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I see a JPG (already OCR'd — SIPEAGRO screen) and there's also a PDF in the attachments folder. Let me inspect both files and pull the relevant backlog context.
+[3 tool result(s) compacted: extract_pdf_text, ocr_image, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I've got the OCR text and found the PDF companion in the attachments folder. Now let me ground this against the existing lane docs and the exact backlog entry this relates to.
+[4 tool result(s) compacted: read_context_file, read_context_file, read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF text extracted cleanly — this is the actual MAPA registration certificate. Let me read the exact backlog entry (#orlantildes-coopercabruca) and check what's currently on record, so I can assess this against the open chase.
+[2 tool result(s) compacted: read_local_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me locate the exact backlog entry for the MAPA chase in the follow-ups file.
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local agentic_ai_context checkout is at /home/ubuntu/agentic_ai_context. Let me read the exact backlog entry and check whether the supplier profile / fda_fsvp doc folders exist.
+[3 tool result(s) compacted: ssh_run, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The picture is now clear. Let me confirm the archive location conventions (fda_fsvp supplier profile) and locate the session id for the transcript append.
+[3 tool result(s) compacted: http_fetch, search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The two files are now clear. Let me check what's inside the existing fda_fsvp coopercabruca supplier folder, and find the session id for transcript persistence.
+[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -168,4 +180,92 @@ Want me to proceed with the archive + doc updates?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → ls -la /tmp/ 2>/dev/null | head -40; echo ---; find /tmp -maxdepth 2 -iname '*session*' -o -maxdepth 2 -iname '*context*.json' 2>/dev/null |; grep -rn "orlantildes-coopercabruca\|MAPA status\|5 kg cacao butter\|MAPA chase" /tmp/ 2>/dev/null | grep -v Binary | head -20; echo ---; ls; cd /home/ubuntu/agentic_ai_context && sed -n '290,340p' OPEN_FOLLOWUPS.md; …(+5 more)
 • `append to transcript` ×3 → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-09-02/292da05ac2a4/transcript.md
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **dc7baf95954849cf9bad33ca9c0806e4.pdf**]
+- Type: PDF (1 page, 1676 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+MINISTÉRIO DA AGRICULTURA E PECUÁRIA
+CERTIFICADO DE REGISTRO DE ESTABELECIMENTO
+SUPERINTENDÊNCIA FEDERAL DE AGRICULTURA - SFA/BA
+SECRETARIA DE DEFESA AGROPECUÁRIA
+CERTIFICAMOS que de acordo com a Lei nº 9.972, de 25/05/2000, regulamentada pelo Decreto nº 6.268 de 22/11/2007
+o estabelecimento acima identificado encontra-se habilitado por este Ministério para exercer a(s) seguinte(s) atividade(s):
+Localizado a:
+CNPJ/CPF Nº:
+Nome/Nome Empresarial:
+Concedido em:
+Válido até:
+Renovado em:
+Alterado em:
+COOPERATIVA DOS CACAUICULTORES DO SUL DA BAHIA COOPERCABRUCA
+31.948.811/0001-42
+Travessa Belo Horizonte, Nº 166, 166, Pontalzinho,CEP: 45603-070, Itabuna/BA
+28/08/2031
+28/08/2026
+Registro MAPA:
+BA 002467-8
+Atividades
+Habilitações
+Área de Interesse:
+QUALIDADE VEGETAL
+BENEFICIADOR
+BENEFICIADOR DE AMÊNDOA DE CACAU
+A autenticidade deste documento pode ser conferida no site http://www.agricultura.gov.br, informando o código:  II36-SWCT-SHBR-X33H
+Data de expedição: 31 de Agosto de 2026. Este documento é válido por 45 (Quarenta e Cinco) dias após a data de sua expedição.
+Documento gerado pelo deferimento automático no sistema Sipeagro, em 28/08/2026, conforme
+disposto na Instrução Normativa MAPA nº 9/2019. Sujeito ao cancelamento caso não atendidos os
+dispositivos regulamentares em vigor.
+Declaramos que o referido estabelecimento está devidamente registrado no Cadastro Geral de Classificação deste
+Ministério – CGC/MAPA, sob o número acima identificado, devendo a renovação ser solicitada com antecedência de  90
+(noventa) dias da data de validade. Este certificado deverá estar prontamente disponível e ser apresentado de imediato
+quando solicitado pela fiscalização.
+```
+
+
+### 🤖 Autopilot
+
+This is the MAPA certificate PDF — the same file (`dc7baf95954849cf9bad33ca9c0806e4.pdf`) that arrived in the batch moments ago. I've parsed it; let me persist the raw page text under its actual filename to the session transcript for exact recall.
+
+
+### 🤖 Autopilot
+
+This PDF is the **MAPA Certificado de Registro de Estabelecimento** — document #1 of the batch Orlantildes sent, and the same file I parsed a few moments ago. Confirmed, clean extraction (Portuguese OCR not needed — native PDF text layer):
+
+## What it certifies
+
+| Field | Value |
+|---|---|
+| Document | Certificado de Registro de Estabelecimento (SFA/BA — Secretaria de Defesa Agropecuária) |
+| Legal basis | Lei 9.972/2000 + Decreto 6.268/2007 |
+| Establishment | COOPERATIVA DOS CACAUICULTORES DO SUL DA BAHIA — **COOPERCABRUCA** |
+| CNPJ | 31.948.811/0001-42 |
+| Address | Travessa Belo Horizonte 166, Pontalzinho, CEP 45603-070, Itabuna/BA |
+| **Registro MAPA** | **BA 002467-8** |
+| Concedido / Renovado | 28/08/2026 · **Válido até 28/08/2031** |
+| Área | QUALIDADE VEGETAL |
+| Habilitação | **BENEFICIADOR — BENEFICIADOR DE AMÊNDOA DE CACAU** |
+| Generation | Auto-deferimento no SIPEAGRO, 28/08/2026 (IN MAPA 9/2019) |
+| Auth code | II36-SWCT-SHBR-X33H (verify: agricultura.gov.br) |
+| Issued | 31 Aug 2026 · printed cert valid 45 days; renewal due 90 days before 2031 validity end |
+
+## Notes
+- **Consistent with the SIPEAGRO screenshot** (BA 002467, concessão 28/08/2026, situação ATIVO) — cert + live portal status agree.
+- Text now persisted to transcript under its real filename (`dc7baf95…pdf`, session `292da05ac2a4`).
+- No new information beyond my earlier analysis — this is the same certificate PDF.
+
+**Assessment unchanged:** this closes the *MAPA facility registration* half of `OPEN_FOLLOWUPS.md` #orlantildes-coopercabruca (China-gate compliance). **GACC registration remains the open next dependency** — BA 002467-8 is now available to enter at first GACC login, and per lane learnings §4 the MAPA number locks once entered, so the GACC application should be the immediate next step.
+
+Ready to archive all three files to `fda_fsvp/suppliers/coopercabruca/` and update the lane docs + backlog whenever you give the go.
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-09-02/d9c9636988a8/transcript.md
 
