@@ -77,6 +77,7 @@ The two files are now clear. Let me check what's inside the existing fda_fsvp co
 ### 🤖 Autopilot
 
 The PDF is the key document — a **MAPA establishment registration certificate** for Coopercabruca. Let me verify the JPG with Portuguese OCR (the English OCR was only ~50% confident on this SIPEAGRO screen), find the session id for transcript persistence, and check whether an older MAPA file already exists in the fda_fsvp dossier.
+[3 tool result(s) compacted: ocr_image, ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -264,6 +265,140 @@ This PDF is the **MAPA Certificado de Registro de Estabelecimento** — document
 **Assessment unchanged:** this closes the *MAPA facility registration* half of `OPEN_FOLLOWUPS.md` #orlantildes-coopercabruca (China-gate compliance). **GACC registration remains the open next dependency** — BA 002467-8 is now available to enter at first GACC login, and per lane learnings §4 the MAPA number locks once entered, so the GACC application should be the immediate next step.
 
 Ready to archive all three files to `fda_fsvp/suppliers/coopercabruca/` and update the lane docs + backlog whenever you give the go.
+
+———
+**✅ Done this turn — actions taken:**
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-09-02/d9c9636988a8/transcript.md
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **a216d0cc871643c5a9f50b38424ab58d.docx**]
+- Type: Word document (15 paragraphs, 1 table)
+
+Extracted content:
+```
+PRODUCT PORTFOLIO 
+
+ (*) Check availability
+
+Note:  
+
+1- The monthly production shown may vary due to demand
+
+All products, when applicable, have a certificate of origin and a phytosanitary certificate
+
+3 - Chocolate formulation is flexible to buyer’s needs without compromising the quality of the raw 
+
+material.
+
+   4 - The cocoa mass block is the chocolate block itself weighing 2 kilograms, ready for
+
+       consumption. Ideal for toppings, bombons, etc.
+
+5 - Consider that most products have off-season limitations that may impact delivery times.
+
+    6 - Bearing in mind the diversity of agricultural products cultivated in the region, consult us about any product 
+
+           of your interest that is not included in the list above, such as guarana, annatto, black pepper, cloves, baru 
+
+           nuts.
+
+Travessa Belo Horizonte, 166, Pontalzinho – Itabuna – Ba | CEP: 45603070 |  
+
+TEL: (73) 99138-8884 / 99978-8453 
+
+PRICES IN DOLLARS (U$) / INCONTERM: EXW | PRICES IN DOLLARS (U$) / INCONTERM: EXW | PRICES IN DOLLARS (U$) / INCONTERM: EXW | PRICES IN DOLLARS (U$) / INCONTERM: EXW | PRICES IN DOLLARS (U$) / INCONTERM: EXW
+ |  |  |  | 
+LARGE BULK | LARGE BULK | LARGE BULK | LARGE BULK | LARGE BULK
+ |  |  |  | 
+TYPES | PRODUCTS | PRICES (tons) | Monthly production(tons) | NCM
+Conventional Fine Cocoa | Dry almonds | 9,365.00 | 10 | 1801.00.00
+Conventional Fine Cocoa | Nibs (toasted almonds and peeled) | 17,786.00 | 10 | 1801.00.00
+Conventional Fine Cocoa | Cocoa paste | 23,437.00 | 10 | 1803.10.00
+Conventional Fine Cocoa | Chocolate in 1kg blocks | 23,065.00 | 10 | 1806.20.00
+ |  |  |  | 
+Conventional Cocoa  Type 1 | Dry almonds | 7,897.00 | 100 | 1801.00.00
+Conventional Cocoa  Type 1 | Nibs (toasted almonds and peeled) | 15,241.00 | 80 | 1801.00.00
+Conventional Cocoa  Type 1 | Cocoa paste | 19,216.00 | 80 | 1803.10.00
+Conventional Cocoa  Type 1 | Chocolate in 1kg blocks | 19,456.00 | 20 | 1806.20.00
+ |  |  |  | 
+Organic  Fine Cocoa | Dry almonds | 9,988.00 | 7 | 1801.00.00
+Organic  Fine Cocoa | Nibs (toasted almonds and peeled) | 19,155.00 | 5 | 1801.00.00
+Organic  Fine Cocoa | Cocoa paste | 23,436.00 | 5 | 1803.10.00
+Organic  Fine Cocoa |  |  |  | 
+ |  |  |  | 
+ | Cocoa powder | 10,500,00 | 20 | 1805.00.00
+ | Cocoa butter | 14,195.00 | 20 | 1804.00.00
+ | Chocolate cover | Check availability | 24 | 1806.32.10
+ | Cupuaçu(Theobroma grandiflorum) butter | 12,000.00 | 12 | 1515.90.90
+ |  |  |  | 
+Other products (*) | Toasted cashew nut |  | 24 | 0801.32.00
+Other products (*) | Toasted gourmet coffee |  | 12 | 0901.21.00
+Other products (*) | Toasted premium coffee |  | 50 | 0901.21.00
+ | Roasted peanuts |  | 25 | 2008.11.00
+ | Brazil nuts |  | 50 | 0801.22.00
+ | Passion fruit oil |  | 10 | 1515.90.90
+ |  |  |  | 
+ |  |  |  | 
+Expiration date: 09/18/2026 |  |  |  | Continue on the next page
+ |  |  |  | 
+ |  |  |  | 
+```
+
+
+### 🤖 Autopilot
+
+This is the **product portfolio DOCX** — document #3 of the Orlantildes batch, and the same file I extracted when it first landed in the attachments folder. Let me persist it under its real filename for exact recall, like I did for the PDF.
+
+
+### 🤖 Autopilot
+
+This is the **Coopercabruca Product Portfolio** DOCX — document #3 of the batch, and the same file I extracted when it first arrived. Persisted to transcript under its real filename. Full breakdown:
+
+## What it contains — price list (USD/ton, EXW Itabuna, large bulk)
+
+**Expires 09/18/2026** · Contact: Travessa Belo Horizonte 166, Pontalzinho, Itabuna/BA · (73) 99138-8884 / 99978-8453
+
+| Type | Product | USD/ton | t/mo | NCM |
+|---|---|---|---|---|
+| Conventional Fine | Dry almonds | 9,365 | 10 | 1801.00.00 |
+| Conventional Fine | Nibs (toasted, peeled) | 17,786 | 10 | 1801.00.00 |
+| Conventional Fine | Cocoa paste | 23,437 | 10 | 1803.10.00 |
+| Conventional Fine | Chocolate 1kg blocks | 23,065 | 10 | 1806.20.00 |
+| Conventional Type 1 | Dry almonds | **7,897** | **100** | 1801.00.00 |
+| Conventional Type 1 | Nibs | 15,241 | 80 | 1801.00.00 |
+| Conventional Type 1 | Cocoa paste | 19,216 | 80 | 1803.10.00 |
+| Conventional Type 1 | Chocolate 1kg blocks | 19,456 | 20 | 1806.20.00 |
+| Organic Fine | Dry almonds | 9,988 | 7 | 1801.00.00 |
+| Organic Fine | Nibs | 19,155 | 5 | 1801.00.00 |
+| Organic Fine | Cocoa paste | 23,436 | 5 | 1803.10.00 |
+| — | Cocoa powder | 10,500 | 20 | 1805.00.00 |
+| — | **Cocoa butter** | **14,195** | 20 | 1804.00.00 |
+| — | Chocolate cover | check avail | 24 | 1806.32.10 |
+| — | Cupuaçu butter | 12,000 | 12 | 1515.90.90 |
+| Other (*) | Cashew / coffees / peanuts / Brazil nuts / passion fruit oil | — | 10–50 | varied |
+
+## Notes
+- **Cocoa butter $14,195/t → 5 kg ≈ $71** at list — useful anchor for the **open 5 kg cacao-butter receipt** question in #orlantildes-coopercabruca.
+- Conventional Type 1 almonds at **$7,897/t × 100 t/mo** is the volume line; fine/organic command the premium.
+- All products carry cert of origin + phytosanitary cert when applicable; cocoa mass block = the 2 kg chocolate block ready for consumption.
+- **Expiry 09/18/2026 (~2 weeks)** — if this pricing is still needed past then, ask Orlantildes for a refresh.
+
+---
+
+**Batch now fully processed** — all three files (MAPA cert PDF, SIPEAGRO JPG, portfolio DOCX) extracted and persisted to transcript.
+
+**Summary of what you have on hand (all consistent):**
+- ✅ **MAPA registration GRANTED** — BA 002467-8, BENEFICIADOR DE AMÊNDOA DE CACAU, valid 28/08/2026 → 28/08/2031, ATIVO in SIPEAGRO.
+- ✅ Product portfolio valid to 09/18/2026 (cocoa butter 14,195/t relevant to the 5 kg receipt).
+
+**Open next steps (awaiting your go):**
+1. Archive the 3 files → `fda_fsvp/suppliers/coopercabruca/`
+2. Update `OPEN_FOLLOWUPS.md` #orlantildes-coopercabruca (MAPA confirmed → recently shipped; keep 5 kg receipt + GACC follow-on)
+3. Refresh lane docs (`BRAZIL_EXPORT_LANE_LEARNINGS.md`, `CACAO_SOURCING_NETWORK_OVERVIEW.md`) — MAPA done; next = **GACC first-login with BA 002467-8 locked in**
 
 ———
 **✅ Done this turn — actions taken:**
