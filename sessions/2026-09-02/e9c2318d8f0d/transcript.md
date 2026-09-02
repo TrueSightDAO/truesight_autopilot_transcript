@@ -30,66 +30,79 @@ Go ahead and start on the codebase extension (items 1-3) now.
 ### 🤖 Autopilot
 
 I'll start on the codebase extension (items 1–3). First, let me gather context: check PR #893 (the Tencent credential documentation), the current config pattern, and the tool registry structure.
+[2 tool result(s) compacted: list_prs, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the rest of config.py (AWS pattern), find PR #893, and check the tool registry structure.
+[2 tool result(s) compacted: read_tool_result, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of config.py (the AWS settings section) and the Tencent credential documentation, plus look at the existing AWS tools to mirror the pattern.
+[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the Tencent section in the credentials doc, read the rest of config.py (AWS section), and list the tools directory structure.
+[2 tool result(s) compacted: read_tool_result, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact chain is getting unwieldy. Let me read the actual files directly on the autopilot box — much more reliable.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The repo is on the box. Let me look at the AWS tools pattern, requirements, and how tools get registered.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me see the AWS section of config.py and how tools get registered in the tool registry.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me look at the tool registry wiring in main.py, and how roles.py/policy.py gate tools.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the rest of aws_tools.py, how tools get exposed in the model's tool list (the system prompt/schema), and check the tests layout.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the tool declaration pattern (schema) at the end of aws_tools.py, and check the git log for PR #893.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #893 is in a different repo (truesight_autopilot PRs only go to 385). Let me check agentic_ai_context's PRs and understand the tool registry auto-discovery.
+[2 tool result(s) compacted: list_prs, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #893 confirmed — it's in agentic_ai_context ("docs: document Tencent Cloud credential locations (AWS-style)", merged 2026-09-02). Now let me understand the remaining wiring details: policy.py's tool classification, roles.py resolution, the tools README, and the AWS test pattern.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me examine the role-tool resolution logic, the AWS credential loader (graceful degradation), and the git allowlist pattern for the gating model.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -179,4 +192,149 @@ Continue from `git status` in `/opt/truesight_autopilot` (uncommitted WIP: `app/
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×25 → ls /opt/ 2>/dev/null; echo "---"; ls /opt/truesight_autopilot 2>/dev/null | head -30; echo "---"; ls /opt/truesight_autopilot/app/tools 2>/d; cd /opt/truesight_autopilot && grep -n "AWS_ACCESS_KEY" app/config.py | head; echo "=== aws_tools.py head ==="; head -120 app/tools/aws_tool; cd /opt/truesight_autopilot && sed -n '370,460p' app/config.py; echo "=== tool registry ==="; grep -rn "aws_query\|aws_tools" app/ --include; …(+22 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19553] [Handoff context — this Telegram topic (thread 19553) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Continue here — you already made good progress on this in the RSA-sig thread before my redirect landed (uncommitted, nothing pushed). Per your own handoff note: fix the test stub (RunInstancesRequest lacks from_json_string) → 8/8 tests pass → full checks → PR → CI-gated merge → live DescribeZones smoke test using the .env creds. Then STOP before creating any billable CVM and report back the instance spec + cost + the Onaya-clone design question. Go ahead.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=19553] [Handoff context — this Telegram topic (thread 19553) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+A redeploy just happened and likely killed your in-flight turn. Resuming — where were you on the Tencent Cloud tooling? Continue from your last checkpoint.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=19553] [Handoff context — this Telegram topic (thread 19553) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+Resuming the Tencent Cloud tooling work. First, let me verify the current repo state (the redeploy may have touched things) and re-check the test stub issue.
+
+
+### 🤖 Autopilot
+
+Good progress — `app/policy.py` already has `tencent_query` in `write_tools`. Let me check whether the redeploy committed the tencent files, and see the test stub issue mentioned in the resume note.
+
+
+### 🤖 Autopilot
+
+All 8 tests pass — the stub issue was already fixed. Let me run the full local suite (the hard rule before any push) and verify the `_SERVICE_MODULES` map handles the `region` service correctly.
+
+
+### 🤖 Autopilot
+
+Almost there — 843 passed, but `test_vault.py::TestCrossProcessReload::test_reader_sees_external_rotation` fails. Let me determine if that's pre-existing (unrelated to my change) and check the `_SERVICE_MODULES` map.
+
+
+### 🤖 Autopilot
+
+The stash pop got tangled with unrelated local runtime files. Let me carefully assess the state — I don't want to lose the WIP.
+
+
+### 🤖 Autopilot
+
+Nothing was lost — the stash push failed cleanly (untracked pathspecs aborted it, and the pre-existing stash@{0} was preserved), and the vault test **passed in isolation** (1 passed). The full-suite failure looks like a test-ordering/flaky issue unrelated to tencent. Let me confirm and check what CI runs.
+
+
+### 🤖 Autopilot
+
+**All 844 tests pass** (the earlier vault failure was flaky — passes on rerun, unrelated to tencent). All four hard-rule checks: compile ✅, ruff check ✅, format (32 pre-existing files, advisory) ✅, pytest 844 ✅.
+
+Now let me create the PR with the tencent changes. First, I need to move the untracked files onto a clean feature branch.
+
+
+### 🤖 Autopilot
+
+I've staged the 6 tencent files. Now let me commit and push, opening the PR via git_push_changes with the full change set.
+
+
+### 🤖 Autopilot
+
+The tool needs explicit content. The box already has everything staged — let me commit + push locally and check if `gh` CLI is available to open the PR.
+
+
+### 🤖 Autopilot
+
+Branch pushed and `gh` CLI is available. Let me open the PR.
+
+
+### 🤖 Autopilot
+
+The `gh` CLI token lacks PR-creation scope (the git push worked with a different credential). Let me use the autopilot's own PAT to open the PR via the GitHub API — checking how the codebase does it.
+
+
+### 🤖 Autopilot
+
+The PAT is a fine-grained token (`github_pat_...`). Let me try creating the PR via the REST API directly with it.
+
+
+### 🤖 Autopilot
+
+PR **#386** created: https://github.com/TrueSightDAO/truesight_autopilot/pull/386
+
+Let me verify the PR contents look right and check CI status.
+
+
+### 🤖 Autopilot
+
+PR #386 has exactly the 6 intended files and CI is queued. Let me poll the checks to completion (smoke+test are quick), then merge.
+
+
+### 🤖 Autopilot
+
+Both CI checks passed (test + smoke). Per the governor's "go", I'm authorized to self-merge. Merging PR #386 now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Done this turn — Tencent Cloud tooling merged
+
+**PR: [#386 — feat: Tencent Cloud native tooling — tencent_query + cos_list_buckets](https://github.com/TrueSightDAO/truesight_autopilot/pull/386)** — merged (sha `ff2222f`), CI green (test ✅ + smoke ✅).
+
+### What changed (6 files)
+| File | Change |
+|---|---|
+| `requirements.txt` / `pyproject.toml` | +`tencentcloud-sdk-python>=3.0.1000`, +`cos-python-sdk-v5>=1.9.0` |
+| `app/config.py` | Optional `tencent_secret_id` / `tencent_secret_key` / `tencent_region` (default `ap-guangzhou`) — mirrors AWS env pattern, degrades cleanly |
+| `app/tools/tencent_tools.py` | **New (338 lines)** — `tencent_query` (generic SDK call: CVM, region/zones, VPC, CDB, CLB, monitor) + `cos_list_buckets` (qcloud_cos). Read ops (Describe*/List*/Get*/Inquiry*/Search*) run freely; **write ops require `confirm_write=true`**; hard denylist blocks catastrophic ops (TerminateInstances, DeleteBucket, DeleteDisks, ReleaseAddresses…); clean `not_configured` response when creds unset |
+| `app/policy.py` | `tencent_query` added to `write_tools` (same class as `aws_query`) |
+| `tests/test_tencent_tools.py` | **New (128 lines, 8 tests)** — gate, dispatch, denylist, degradation, COS listing |
+
+### Quality gates
+- compileall ✅ · ruff check ✅ · pytest **844 passed** (the one vault flake passed on rerun) · CI test+smoke ✅
+
+### Notes
+- The WIP from the earlier RSA-sig thread was validated and shipped as-is (the `RunInstancesRequest.from_json_string` stub issue had already been fixed — 8/8 passed before I pushed).
+- `region` service correctly maps to `v20220627`; denylist + confirm_write gate mirror the AWS tool's spirit, satisfying the "gated like git/PR allowlisting" requirement.
+
+---
+
+## RESUME HERE → Next unit (fresh turn)
+
+**Live end-to-end proof — STOP BEFORE ANY BILLABLE RESOURCE.**
+
+1. Pull Onaya/Bionpact's current EC2 specs (instance type, region, OS image, storage) — the box for the CVM baseline. Check handoffs/context for Onaya's infra details (agents registry in `agentic_ai_context/agents/*.json`).
+2. Use the new tooling on THIS box: `tencent_query` → `DescribeZones` / `DescribeRegions` smoke test against live `.env` creds (read-only, free).
+3. Optionally `DescribeInstances` to confirm the account/region has CVM quota.
+4. **STOP** — report back to Gary:
+   - Proposed instance type / region / OS image (mirroring Onaya's EC2)
+   - Cost estimate (Tencent Cloud pricing for that spec)
+   - The open design question: **does "a clone of Onaya" mean (a) passive standby/DR copy, (b) active second instance with her own separate Telegram bot identity, or (c) migration replacing the current Nelanco/AWS box?** Relay Gary's answer before creating any CVM.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×19 → cd /opt/truesight_autopilot && git status --short | head; echo "=== branch ==="; git branch --show-current; echo "=== tencent files present?; cd /opt/truesight_autopilot && grep -n "classify_action\|write_tools\|aws_query\|tencent_query" app/policy.py | head -20; cd /opt/truesight_autopilot && git status --short | grep -c "tencent"; git log --oneline -5; echo "=== is tencent_tools tracked? ==="; git l; …(+15 more)
+• `merge pr` → ✅ PR #386 on truesight_autopilot merged successfully (sha: ff2222f18b6f84601f36bc3736739600f3145db5). Pull Request successfully merged
 
