@@ -4503,6 +4503,7 @@ So the real question: does the **service** see the env var? Let me check how the
 ### 🤖 Autopilot
 
 Process **does** see the env var (1 in /proc environ). And the probe's "no webhook URL" was just because the standalone probe doesn't load `.env`. So dispatch *should* have fired on the resubmission — but recall the earlier finding: **`dao_protocol.dispatch`/`webhook` INFO logs don't propagate to journald** (noted earlier this session). So "zero log lines" doesn't prove dispatch didn't fire — it likely **did** fire the webhook, but the anonymous deployment runs **old code without the plot-invalidation handler** (Unit 5 not yet done) → router falls through → nothing happens. Testing that hypothesis directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4632,4 +4633,107 @@ Fix: add flushRetractionQueue(); and window.addEventListener('online', flushRetr
 
 Go — fixing the never-flushed retraction/plot-invalidation queue. Grounding first: the bottom-of-file wiring block + the flush function signature:
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+UAT PASSED - all 3 criteria verified against ground truth (git, not cached CDN copies which had me confused for a minute):
+1. dao_protocol routing - webhook fires correctly post-fix (confirmed in your report + my resubmission)
+2. GAS handler sheet update - TEST-P1 flipped to Status: invalid in the SunMint Plots sheet
+3. Plot removed from generated index - confirmed via direct git log/show: commit 76428e2 'Update plots and farms indexes [2026-09-02 11:59 UTC]' genuinely excludes TEST-P1 (generated_at 11:59:52Z, 9 features, TEST-P1 not present)
+
+Great work tracking down both root causes (stale dao_protocol code, then the real one - stale GAS deployment @40). Once the offline-flush fix I flagged lands, go ahead and proceed with Unit 6 (sunmint_beta -> sunmint_prod sync) - that completes the governor's prod-promotion request for this whole follow-on.
+
+
+### 🤖 Autopilot
+
+Go — completing the offline-flush fix, then Unit 6 (prod sync). Grounding in the exact bottom-of-file wiring first:
+
+
+### 🤖 Autopilot
+
+Bug confirmed: `flushRetractionQueue()` defined (line 607) but **never called**; `flushBoundaryQueue()` correctly wired (850–851). Before fixing, verifying the flush function actually handles plot-invalidation items too (PR #72 reused the retraction store):
+
+
+### 🤖 Autopilot
+
+Bug confirmed precisely: plot-invalidation offline writes go to the **same** `RETRACTION_QUEUE_STORE` (`id: 'retr-' + Date.now()`, line 587) — so `flushRetractionQueue()` (which POSTs every row's `shareText` to Edgar and deletes on success) handles **both** retractions and plot invalidations. It's just **never called**. Applying the fix (wire it alongside flushBoundaryQueue):
+
+
+### 🤖 Autopilot
+
+Edit applied (lines 852–853). Validating JS syntax + tags, then pushing the PR:
+
+
+### 🤖 Autopilot
+
+Both scripts pass `node --check` (the tag-balance python errored on a missing `re` import — rerunning it properly):
+
+
+### 🤖 Autopilot
+
+PR #73 opened. Now replacing the placeholder with the real validated file on the branch:
+
+
+### 🤖 Autopilot
+
+Real content pushed (50,187 B — wait, that's larger than the 50,095 I validated; let me verify the pushed file matches my validated one, then check the PR and merge):
+
+
+### 🤖 Autopilot
+
+Identical (both 50,187 B, empty diff — the earlier 50,095 was the pre-`wc` byte count vs the git clone's copy; same content). Wiring present on branch (1× flushRetractionQueue, 1× flushBoundaryQueue), PR head cbfaaa99, 1 file. Mergeability still computing — single-file change on current main, merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merged ✅ — stopping here per the one-PR-per-turn rule.
+
+## What I did this turn — offline-flush fix (pre-UAT-blocker)
+
+**PR #73 — https://github.com/TrueSightDAO/sunmint_beta/pull/73** (merged, sha `80efcca8`, 1 file: `limites-da-fazenda/index.html`, +92 B)
+
+### The bug (governor-flagged, confirmed against the file)
+`flushRetractionQueue()` was **defined (line 607) but never called** — while `flushBoundaryQueue()` was correctly wired at page init + `online` event (lines 850–851). Since PR #72's plot-invalidation offline writes reuse the **same** `RETRACTION_QUEUE_STORE` (`id: 'retr-' + Date.now()`, line 587), queued media retractions AND plot invalidations sat in IndexedDB forever once offline — nothing ever auto-sent them.
+
+### The fix
+Wired `flushRetractionQueue()` alongside the boundary queue at the bottom of the script:
+```js
+flushBoundaryQueue();
+window.addEventListener('online', flushBoundaryQueue);
+flushRetractionQueue();
+window.addEventListener('online', flushRetractionQueue);
+```
+Verified the flush function handles both types (it POSTs every row's `shareText` to Edgar and deletes on success — no type discrimination needed).
+
+### Verified
+- Bug confirmed via grep (defined 607, 0 call sites) before fixing
+- Both inline scripts pass `node --check`; tags balanced; branch file identical to validated file (empty diff, 50,187 B); wiring 1× each on branch
+- Merged cleanly (head cbfaaa99)
+
+## RESUME HERE → next unit
+
+1. **Unit 6 — sunmint_beta → sunmint_prod sync** (governor cleared: "Once the offline-flush fix lands, go ahead and proceed with Unit 6"): `sync_beta_to_prod(sunmint_prod)` — this completes the governor's prod-promotion request for the whole follow-on. UAT already passed (3/3: routing, sheet flip, index exclusion — commit 76428e2, 9 features, TEST-P1 gone)
+2. Optionally: verify the merged fix is live on beta after Pages rebuild
+3. Full post-promotion check on `sunmint.truesight.me/limites-da-fazenda/` (prod page serving the merged bundle)
+
+———
+**Done this turn:** read bottom wiring + flush body (bug confirmed: 0 call sites); applied 2-line wiring fix; validated (node --check ×2, tags balanced); PR #73 opened (placeholder 8989084 → real cbfaaa9) + verified identical; merged.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → tail wiring block + grep (flushRetractionQueue 607 defined / 0 calls; flushBoundaryQueue 850–851 wired); flush body + plot-invalidation queue write (same store, id 'retr-…'); 2-line edit applied; node --check ×2 OK; tag balance OK; local clone branch push (cbfaaa9); diff-empty verification; PR API check (files 1, head cbfaaa99)
+• `merge pr` → ✅ PR #73 merged (80efcca8)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/limites-da-fazenda/index.html" -o lim_offfix.html && ec; cd /tmp && echo "=== flushRetractionQueue body (607-660) ===" && sed -n '607,665p' lim_offfix.html && echo "=== plot-invalidation offline wr; cd /tmp && python3 - <<'PYEOF' import io p = 'lim_offfix.html' s = io.open(p, encoding='utf-8').read() old = """ flushBoundaryQueue(); windo; …(+4 more)
+• `merge pr` → ✅ PR #73 on sunmint_beta merged successfully (sha: 80efcca8ec1fc2d530d67a0eec590129d5c582c1). Pull Request successfully merged
 
