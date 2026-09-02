@@ -53,3 +53,43 @@ Coopercabruca (Orlantildes) delivered 3 documents on 2026-09-02. Summary:
 ## Significance
 This resolves the OPEN_FOLLOWUPS.md #orlantildes-coopercabruca (2026-08-16) MAPA chase: Coopercabruca now HAS its MAPA establishment registration (BA 002467-8, granted 2026-08-28, ATIVO) — the China-gate compliance item is satisfied at the facility-registration level. Status change vs BRAZIL_EXPORT_LANE_LEARNINGS.md (23 Aug 2026: "MAPA being set up") and CACAO_SOURCING_NETWORK_OVERVIEW.md (29 Aug 2026: still listed as no confirmation). GACC remains NOT YET OBTAINED (separate China-side application — MAPA number now available to enter at first GACC login; per §4 GACC rules the MAPA number is locked once entered).
 ```
+
+
+---
+
+## Attachment: coopercabruca_docs_2026-09-02_mapa_portfolio
+
+| Field | Value |
+|-------|-------|
+| **Type** | PDF |
+| **Filename** | coopercabruca_docs_2026-09-02_mapa_portfolio |
+| **Received** | 2026-09-02T18:41:25Z |
+
+### Extracted Text
+
+```
+Coopercabruca (Orlantildes) delivered 3 documents on 2026-09-02. Summary:
+
+## 1. PDF — MAPA Certificado de Registro de Estabelecimento
+- Registro MAPA: **BA 002467-8**; CNPJ 31.948.811/0001-42
+- Establishment: COOPERATIVA DOS CACAUICULTORES DO SUL DA BAHIA — COOPERCABRUCA
+- Address: Travessa Belo Horizonte 166, Pontalzinho, CEP 45603-070, Itabuna/BA
+- Área: QUALIDADE VEGETAL; Habilitação: **BENEFICIADOR DE AMÊNDOA DE CACAU**
+- Granted 28/08/2026 (SIPEAGRO auto-deferimento, IN MAPA 9/2019); valid until **28/08/2031**
+- Issued 31 Aug 2026 by SFA/BA; auth code II36-SWCT-SHBR-X33H; CGC/MAPA registration; renewal 90 days before expiry
+- Legal basis: Lei 9.972/2000 + Decreto 6.268/2007
+
+## 2. JPG — SIPEAGRO screenshot (acompanharSolicitacao)
+- Registro BA 002467, concessão 28/08/2026, situação **ATIVO**; no cancellation request pending
+
+## 3. DOCX — Product portfolio (USD/ton EXW Itabuna, valid to 09/18/2026)
+- Conventional Fine Cocoa: almonds 9,365 (10t/mo); nibs 17,786; paste 23,437; chocolate 1kg blocks 23,065
+- Conventional Cocoa Type 1: almonds 7,897 (100t/mo); nibs 15,241; paste 19,216; blocks 19,456
+- Organic Fine Cocoa: almonds 9,988 (7); nibs 19,155 (5); paste 23,436 (5)
+- Cocoa powder 10,500 (20) NCM 1805.00.00; **Cocoa butter 14,195 (20) NCM 1804.00.00**; chocolate cover check avail (24) 1806.32.10; cupuaçu butter 12,000 (12) 1515.90.90
+- Others: cashew, coffees, peanuts, Brazil nuts, passion fruit oil
+- Contact: (73) 99138-8884 / 99978-8453
+
+## Significance
+Resolves OPEN_FOLLOWUPS #orlantildes-coopercabruca (2026-08-16) MAPA chase: MAPA establishment registration GRANTED (BA 002467-8, 28/08/2026, ATIVO). GACC still NOT obtained (MAPA number now available for GACC first-login lock-in). Cocoa butter price 14,195/t relevant to the 5kg receipt decision.
+```
