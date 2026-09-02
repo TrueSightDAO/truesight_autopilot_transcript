@@ -126,12 +126,19 @@ This is coming together. The topic is **thread 19615 = 'Fix: surface real error 
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 That was thread 11074 traffic. Let me refocus on this thread's topic code — the comments in main.py referencing the misreport.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key evidence emerging: the brain process PID changed from 252230 → 263227 between ~11:14:31 and ~11:16:33 — i.e. **the brain restarted right in the window Gary nudged**. Let me find why and what the adapter told Gary.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -308,4 +315,106 @@ Retrying the fix PR now — fresh turn, clean event loop.
 ———
 **✅ Done this turn — actions taken:**
 • `open fix pr` → tool_execution_error
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19615] [Handoff context — this Telegram topic (thread 19615) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **⚠️ PR still NOT opened — second identical tool failure.**
+
+`open_fix_pr` failed again with the exact same `"no running event loop"` — reproduced twice in a row on a fresh turn. That pattern says thi
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=19615] [Handoff context — this Telegram topic (thread 19615) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 📥 Got it — I'm still finishing the previous task in this topic. I've added this to the queue and will get to it right after.
+
+Right now: "[Telegram context: chat_id=-1003919341801, thread_id=19615] [H
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=19615] [Handoff context — this Telegram topic (thread 19615) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Good diagnosis and workaround plan. Go ahead - use git_push_changes as you outlined, run the gates, and self-merge. Also make a mental note (or a quick follow-up item) to file that open_fix_pr harness defect separately later - not blocking, just don't want it lost.
+
+
+### 🤖 Autopilot
+
+Go received — implementing via `git_push_changes` (exact hunks from origin/main reads), pinning the `open_fix_pr` harness defect so it isn't lost, then gates + self-merge.
+
+
+### 🤖 Autopilot
+
+PR #392 is open. Now running the four local gates against the PR head before merging.
+
+
+### 🤖 Autopilot
+
+Gate 3 (format) flagged 32 files — but all are **pre-existing drift in files I never touched** (app/auto_advance.py, scripts/*, other tests). The rule allows pre-existing issues in untouched files. Let me verify **my two files** are clean — that's what the gate actually protects:
+
+
+### 🤖 Autopilot
+
+2 of my new tests failed — let me see why before merging.
+
+
+### 🤖 Autopilot
+
+Found it — my tests caught a **real bug in my own fix**: `_wait_for_brain()` assigns `_LAST_BRAIN_PROBE_ERROR` but never declares it `global`, so Python shadows the module variable with a function-local — the log line reads the local (that's why logs are correct) but the module attribute never updates, so `_brain_unavailable_message()` would always fall through to generic. Fix: add the `global` declaration.
+
+
+### 🤖 Autopilot
+
+All 8 redeploy-indicator tests pass with the `global` fix. Now commit the patch to the PR branch and run the **full** suite on the final head before merge.
+
+
+### 🤖 Autopilot
+
+All four gates green on the final head (`ab79a48`): 854 passed, 0 failed, format/compile/ruff clean on my files. Merging PR #392 now (👍 authorizes self-merge).
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**Merged blocked by CI — PR #392 is open and green locally, but the merge gate refused.**
+
+## What I did this turn
+1. **Opened PR #392** (`fix/surface-real-brain-error`) via `git_push_changes` — the approved error-classification + real-error surfacing fix. My new tests immediately caught a **real bug in my own fix**: `_wait_for_brain()` assigned `_LAST_BRAIN_PROBE_ERROR` without a `global` declaration, so the module attribute never updated (Python shadowed it with a function-local — the log line read the local, which is why logs looked right). Added the `global` declaration as a second commit.
+2. **Ran all four gates on the final head `ab79a48`** (fresh worktree from `pull/392/head`, not my dirty local checkout):
+   - compileall ✅ · ruff check ✅ · ruff format on my 2 files ✅ (32 pre-existing unformatted files are in untouched code — rule permits)
+   - **Full pytest: 854 passed, 0 failed** (+1 skip, xfails)
+3. **Merge attempt → refused**: "CI not green (failing-or-pending: test, smoke, test)."
+
+## What changed (2 commits, +103/−5)
+- `app/telegram_adapter.py`: new module-level `_LAST_BRAIN_PROBE_ERROR`; `_wait_for_brain()` now **logs every failed health probe** (attempt #, reason, URL) and records/clears the reason; `_brain_unavailable_message()` classifies → **DOWN** (connection refused/Errno 111/ConnectError) · **BUSY** (timeout/5xx) · redeploy (marker) · generic fallback — instead of the blanket "briefly restarting" text.
+- `tests/test_redeploy_indicator.py`: +4 tests (record+log failure, clear on success, DOWN message, BUSY message).
+
+## Why CI is likely red (hypothesis, unverified — I'm at turn stop)
+The 32 pre-existing unformatted files (`auto_advance.py`, scripts, other tests) would fail an org-wide `ruff format --check` in CI — **not caused by my change**. But the failing checks are named `test` and `smoke`, so it could also be something else (env, flake, or genuinely my change under CI conditions). I did not get to inspect CI logs before the turn-limit stop.
+
+## RESUME HERE → thread 19615
+PR **https://github.com/TrueSightDAO/truesight_autopilot/pull/392** is open with 2 commits. Next turn:
+1. Inspect CI failure: `gh pr checks 392` or fetch the GitHub Actions logs for the `test`/`smoke` jobs on commit `ab79a48` — determine if the failure is (a) pre-existing org-wide format drift, (b) a flake, or (c) genuinely my change under CI.
+2. If mine → fix on the branch, re-push, re-run gates. If pre-existing/flaky → report to governor that the merge gate needs a pass, or trigger CI re-run.
+3. Once CI is green → `merge_pr(#392)`, then report merge + deploy status (autopilot's own repo; next deploy picks it up).
+
+**Status: fix implemented + tests green locally (854 pass); PR open; merge blocked by CI — needs a CI-log look before merge.**
+
+———
+**✅ Done this turn — actions taken:**
+• `git push changes` → PR https://github.com/TrueSightDAO/truesight_autopilot/pull/392 (commit b183191)
+• `pin note` → open_fix_pr harness defect pinned
+• `ssh run` ×4 → gates on pull/392 head: format drift 32 pre-existing files; pytest 852 pass/2 fail (my tests caught missing `global`); patched + `global` commit pushed (ab79a48); full suite 854 passed
+• `merge pr` → refused: CI not green (test, smoke, test)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /opt/truesight_autopilot && git fetch origin pull/392/head:pr392 --quiet 2>&1 | tail -1; git worktree add /tmp/pr392-check pr392 2>&1 | t; cd /tmp/pr392-check && echo '=== format check: my files only ===' && python3 -m ruff format --check app/telegram_adapter.py tests/test_redep; cd /tmp/pr392-check && python3 -m pytest tests/test_redeploy_indicator.py -q 2>&1 | tail -50; …(+2 more)
+• `merge pr` → ❌ Failed to merge PR #392 on truesight_autopilot: Refusing to merge PR #392 on truesight_autopilot: CI not green (failing-or-pending: test,
 
