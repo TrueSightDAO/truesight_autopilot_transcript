@@ -8,114 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
-
-go — both follow-ups: cleanup the old FARM_MEDIA_MANIFESTS/ dir in agentic_ai_context (pointer README) and update the daemon's write path to the new repo.
-
-
-### 🤖 Autopilot
-
-Go — executing both follow-ups. The cleanup was merged last turn (PR #887), so let me verify it's in place and then update the daemon's write path. Grounding first:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Cleanup verified (pointer README only ✓). Now let me find where the daemon's manifest write path is configured — checking the repo + config:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the daemon's manifest writer + config to see how the target repo/path is determined:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Important finding: the daemon's `farm_media_manifest.py` is a **local aggregator** — it writes manifests to a **local `--outdir`** (`/tmp/farm_media_manifests_out`) and the **commit step is deliberately human/Sophia** ("The daemon itself never touches GitHub"). So there's no daemon-side GitHub write path to repoint — the "manifest repo" write is a human/Sophia step.
-
-That changes the picture: the manifests I moved came from **manual commits**, not daemon automation. So the actual fix is:
-1. **Document the new target** — the manifest repo for the commit step (the docstring says "FARM_MEDIA_MANIFESTS/<farm>.json" — update to the new repo name)
-2. **Update any local tools/scripts** that reference the old `agentic_ai_context/FARM_MEDIA_MANIFESTS/` path
-
-Let me check what actually references the old path on this box (and in the daemon repo), then make the minimal updates:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have the full picture — and there's an **urgent live-code break**: `app/media_archive_pipeline.py:34` points `MANIFEST_INDEX_URL` at the OLD location — which I just emptied. That URL now **404s**, breaking the media-archive dashboard's committed-manifest state. Let me confirm and fix that first (highest severity):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Old URL returns 200 — but that's suspicious (index.json was deleted). Likely raw.githubusercontent serving the pointer README content (directory-README fallback). Let me check what it actually returns:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Key finding: the old URL still returns 200 with **stale CDN content** (raw.githubusercontent cache), but the **authoritative Contents API says index.json is GONE** (404). So `MANIFEST_INDEX_URL` in `media_archive_pipeline.py` **will break** once the CDN cache expires — the live dashboard's committed-manifest state is on borrowed time. Fixing it now (highest priority), together with the daemon tooling refs in the same repo:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Now I have the complete scope. The changes are all in the **truesight_autopilot repo** (Sophia's own code): 1 code fix (pipeline URL) + 4 doc/CLI updates (manifest path). Let me apply them all in one PR — using precise edits:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The README/DESIGN.md edits use unicode arrows that don't match byte-for-byte. Let me check the exact bytes of those lines:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The arrow is `\342\206\222` = UTF-8 "→" (3 bytes). My search used "→" which should match... the earlier failure was actually on `farm_media_manifest.py` (path #2) — the docstring edit — not README. Let me check the exact docstring line:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The local file may differ from what's on GitHub (the tool clones fresh). Let me check the GitHub version of the docstring:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The GitHub **truesight_autopilot repo doesn't have `farm_media_daemon/` at that path** (404) — it's **local-only** (on this box, not committed). So the manifest tooling is local tooling, not repo code. That means the only **repo** change needed is the `app/media_archive_pipeline.py` URL fix. The daemon tooling refs are local-only — I'll update those locally (not a PR). Let me verify the pipeline file's GitHub path and apply the URL fix:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`app/media_archive_pipeline.py` exists in the repo (and locally). The daemon tooling (`farm_media_daemon/`) is local-only. So the repo PR = the pipeline URL fix; the daemon docs/CLI = local updates. Let me open the PR for the pipeline fix:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #384 opened. Verifying the branch has the fix, then merging — and meanwhile updating the local-only daemon docs in place:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Fix confirmed on branch, `mergeable: True`. Merging PR #384, then updating the local daemon docs:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
 ### 🤖 Autopilot
 
 Stopping here per the one-PR-per-turn rule — merge blocked by CI.
@@ -4355,41 +4247,49 @@ Let me read the exact renderMediaList + retract functions to design the invalida
 ### 🤖 Autopilot
 
 Now I need the handler's exact parse labels to align the frontend event format, plus the DOM anchor for the media-list header. One combined fetch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the complete picture. Handler expects `[PLOT INVALIDATION EVENT]` with `Plot ID`, `Reason`, `Retractor Email` — and the frontend needs a **client-side role check** (fetch dao_members.json, match linked email roles) to show the button, while the **server-side gate remains authoritative**. Building the changes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Edits 1–5 in. Now the plot-invalidation modal + confirm function (mirroring the retract modal, sending `[PLOT INVALIDATION EVENT]` with the signed-share format + offline queue). Adding the modal HTML + JS:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All edits applied (13 refs). Validating the page (tag balance + JS syntax) before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All validations green (tags balanced, both scripts pass `node --check`). Pushing Unit 4 via git_push_changes (placeholder-then-real):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #72 opened. Now replacing the placeholder with the real validated file on the branch (local git, creds already set up for this repo flow):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real content pushed (a84a520, 50,098 B, 11 markers). Verifying the PR (files, head, mergeable) then merging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR head updated (a84a520f), 1 file, mergeable still computing. Single-file change on current main — merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4451,6 +4351,7 @@ Governor's explicit go for Units 5/6 (GAS prod deploy + sunmint_beta -> sunmint_
 ### 🤖 Autopilot
 
 Acknowledged — conditional go logged. Unit 4 **has landed** (PR #72 merged); per your condition I'll hold Units 5/6 until your UAT confirmation arrives here. Let me verify Unit 4 is actually live on beta (Pages rebuild) so everything is ready the moment you clear it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4496,11 +4397,13 @@ Root cause found: the code on dao_protocol's live host (git log on /home/ubuntu/
 ### 🤖 Autopilot
 
 Go — fixing the deployment gap. Pulling PR #154 on the dao_protocol host, restarting, and verifying the routing table includes PLOT_INVALIDATION:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pull landed (HEAD now b373300, routing row at line 259). Restarting the service and confirming health + the routing table:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4536,46 +4439,55 @@ Also: once you've confirmed dispatch genuinely fires end-to-end (TEST-P1 actuall
 ### 🤖 Autopilot
 
 Go — live debugging on the box. First: inspect the service logs around the resubmission window, the dispatch code path, and the logging config:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Logs confirm: intake POST 200 at 11:51:06, **zero dispatch/webhook log lines** after — the background task is silent. Tracing the code path to find the failure:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me see where the background task is added (the `background.add_task` call) and the full dispatch_event body (how it fires the webhook):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the dispatch_event function body (after ROUTING) and the exact guard at dao.py:507:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `dispatch_event` body is at line 272 (the shell quoting mangled the sed jump). Reading it directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dispatch code looks correct (first-match-wins over ROUTING, fires `webhook_trigger.trigger`). The silence points to either a logging-config issue (the `dao_protocol.dispatch` logger output going nowhere) or the background task raising silently. Let me reproduce dispatch directly on the host with the actual event text, and check the logger/webhook plumbing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `$(...)` command substitution is breaking under the SSH quoting. Using a fixed line range instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Loggers exist (`dao_protocol.webhook` info/warning). The journal shows **none** of those lines → likely a logging-config gap (loggers not propagating to stdout) **or** the background task silently failing. Decisive test: run `dispatch_event` directly on the host with a synthetic event text and watch whether the webhook actually fires:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Quoting broke the inline Python (the f-string/print comma). Using a heredoc file approach instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4585,6 +4497,7 @@ Quoting broke the inline Python (the f-string/print comma). Using a heredoc file
 2. **The `.env` var name doesn't match what `_webhook_url` reads** — `_webhook_url(env_key)` reads `DAO_PROTOCOL_WEBHOOK_<env_key>` = `DAO_PROTOCOL_WEBHOOK_PLOT_INVALIDATION` — that matches. But the probe (run via `.venv/bin/python` directly, NOT through the systemd service) doesn't load `.env` — so the probe sees no env var. **That's expected** for the probe.
 
 So the real question: does the **service** see the env var? Let me check how the service loads env (systemd EnvironmentFile vs python-dotenv at startup) and whether the var is in the right place:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4702,4 +4615,21 @@ So the rebuild ping IS working — the index just hasn't been republished yet (r
 **✅ Done this turn — actions taken:**
 • `ssh run` ×21 → timeout 60 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'set -e; cd /home/ubuntu/dao_protocol ; timeout 90 ssh -i ~/.ssh/sophia_infra -o BatchMode=yes -o StrictHostKeyChecking=no ubuntu@98.93.94.86 'set -e; cd /home/ubuntu/dao_protocol ; cd /tmp && echo "=== 1. anonymous webhook with plot-invalidation action (what dispatch fires) ===" && curl -s -m 40 -L "https://script.googl; …(+7 more)
 • `gas deploy project` → https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260902T115827Z_1urbgqlnnqc6pv4-gmidh2sywwu62wtdsrv30xk9.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=11074] [Handoff context — auto-injected from HANDOFF_MANIFEST.md: this Telegram topic (thread 11074) is the active handoff for `plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md`, marked **Auto-start: yes**. Before responding, read it with read_context_file("plans/SUNMINT_BOUNDARY_SUBMISSION_PLAN.md"). You are PRE-AUTHORIZED to execute from its RESUME HERE marker immediately — do NOT wait for a governor go-signal before starting. Post a short kickoff into this topic, then begin executing, reporting progress here as you go. This does NOT relax any §5c always-stop gate or a `gate:` marker on a later unit — still stop and wait at those.]
+
+Governor's requirement: plot-invalidation submission must queue when offline and auto-flush as soon as connectivity returns - same as tree reports. I checked limites-da-fazenda/index.html and found a real bug: flushRetractionQueue() (line 607, operates on RETRACTION_QUEUE_STORE - the same IndexedDB store your new plot-invalidation queue write in PR #72 reuses) is DEFINED but NEVER CALLED anywhere - no window.addEventListener('online', ...), no page-load call. Compare to flushBoundaryQueue() which IS correctly wired at the bottom of the file: flushBoundaryQueue(); window.addEventListener('online', flushBoundaryQueue);
+
+This means queued retractions AND now queued plot invalidations write to IndexedDB fine when offline, but nothing ever sends them once back online - they'd sit there forever unless a human manually triggers something. This looks like a pre-existing gap in the retraction feature that PR #72 just inherited by reusing the same store.
+
+Fix: add flushRetractionQueue(); and window.addEventListener('online', flushRetractionQueue); alongside the existing flushBoundaryQueue() wiring at the bottom of the script. Please fix this before Unit 6 (prod sync) - this is a real functional gap, not just a nice-to-have.
+
+
+### 🤖 Autopilot
+
+Go — fixing the never-flushed retraction/plot-invalidation queue. Grounding first: the bottom-of-file wiring block + the flush function signature:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
