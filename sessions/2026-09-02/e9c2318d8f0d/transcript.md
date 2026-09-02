@@ -1320,66 +1320,79 @@ Local: compile ✅ · ruff ✅ · 6/6 LLM tests ✅. Live: both IDs verified via
 ### 🤖 Autopilot
 
 Go received. Executing next unit: (1) local git cleanup, then (2) Onaya's codebase sync to inherit #387 + #388. Let me start with local state verification and branch cleanup.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Local `origin/main` is stale (at #387 — my last fetch predates the #388 merge). Let me switch to main, fetch, and finish cleanup properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Local cleanup complete — main is at e22feb8 (#388), stale branches deleted. Now Onaya's codebase sync. Critical: her box runs `feature/bionpact-configurable-repos` — a customization branch that may have commits NOT on main. A blind reset/pull could destroy her config. Let me check her repo's branch topology first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Bug in my copy chain: scp put the script on the **jump host**, but the `cp` ran on **Onaya's box** where it doesn't exist. Fix: scp directly to Onaya's box through the ProxyCommand (the pattern that worked in earlier probes).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Her branch has **zero local-only commits** (HEAD == origin/main == #351) and no dirty tracked files — it's a plain branch at old main, so a fast-forward is safe. But I must verify her venv has the tencent deps before pulling main (the tool registry auto-imports `tencent_tools`, and missing `tencentcloud-sdk-python` would crash her app on restart). Let me check her venv state + fetch main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Critical finding: her `.venv` **fails to import** litellm/tencentcloud/qcloud_cos — yet earlier her app responded via litellm. Contradiction means I'm missing context (truncated tracebacks, ownership, or which python the service actually uses). **I must NOT pull main** (registry auto-imports `tencent_tools` → missing dep would crash her app on restart). Let me get ground truth: full tracebacks, venv ownership, service user.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Mystery solved: litellm 1.97.0 **is** installed (the `__version__` AttributeError is just litellm 1.97's quirky `__getattr__` — it imports fine). But **tencentcloud is genuinely NOT installed** in her venv. Since main's registry will auto-import `tencent_tools`, I must install the deps in her venv **before** pulling main — otherwise her app could crash on restart. Let me check tencent_tools' import structure (top-level vs lazy) to confirm the risk, then install.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tencent imports are **lazy** (inside functions, lines 101/253) — so pulling main won't crash her app even without the deps. Still, I'll install them so the tools actually work if called. Let me do the full sequence: install deps → pull main → restart → verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent — Onaya is now on **main at e22feb8 (#388)** — wait, "Already up to date" after checkout is suspicious. Let me re-check: the checkout created local `main` tracking origin/main, but had it fetched e22feb8 first? The HEAD shows e22feb8 so she IS current. But I notice the pip install output was cut off at the top — let me confirm tencentcloud actually installed, then restart both services and verify she still responds on Claude.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Services restarted cleanly on main (#388). Now the final live verification — probe her provider path end-to-end to confirm Claude still responds after the code update + restart.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Provider resolves correctly (litellm → claude-haiku-4-5) — just my probe used the wrong method name. Let me check the base class API and re-probe:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Method is `chat`, not `complete`. Fixing the probe and re-running:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `chat()` needs a `system_prompt` arg. Fixing the probe:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1422,41 +1435,54 @@ Method is `chat`, not `complete`. Fixing the probe and re-running:
 ### 🤖 Autopilot
 
 "Go dig 1" — digging into RESUME item 1: the Tencent CVM migration baseline. First, pull Onaya's full EC2 spec (read-only, no billable action) so we can propose a Tencent equivalent + cost estimate.
+[1 tool result(s) compacted: aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Onaya's EC2 spec captured. Now let me get the volume details, AMI/OS info, and the current Tencent account setup — all read-only, in parallel:
+[2 tool result(s) compacted: aws_query, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full EC2 baseline captured. Now let me get the live cost facts for both clouds — current EC2 on-demand pricing for t3.small, Tencent CVM equivalent (S5/S6 small), and check what Tencent account/region state exists (read-only). In parallel:
+[2 tool result(s) compacted: web_search, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tencent S5 pricing obtained ($6.02/mo for S5.SMALL1 monthly sub; PAYG ≈ $0.015/vCPU/hr — so a 1vCPU S5 ≈ $0.015/hr ≈ $11/mo equivalent). Now the AWS side — let me get t3.small on-demand price from AWS pricing API (correct operation name) and check Tencent account state (is it configured, what regions) using the new tencent tools pattern — read-only:
+[2 tool result(s) compacted: aws_query, tencent_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tencent tools work — 12 COS buckets visible (account 1322388156, active in ap-guangzhou). Now the AWS price with correct filter syntax, plus Tencent zone/region availability (read-only, validates migration path):
+[2 tool result(s) compacted: aws_query, tencent_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found a real bug in my PR #386 tool: `DescribeZones` fails with `'CvmClient' object has no attribute 'describe_zones'` — wait, that's the reverse: the SDK method IS `describe_zones` (snake_case), so the tool likely tried `getattr(client, "DescribeZones")` without case conversion. Let me inspect the dispatch code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dispatch looks correct (`DescribeZones` → `describe_zones`, which the SDK client should have). The error means the *running process* has an older or different code/SDK state. Let me empirically check what the live process is actually executing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tencent_query call I made earlier ran in THIS autopilot's tool runtime (which imports the repo code), and it failed on `DescribeZones`. The dispatch does `getattr(client, "describe_zones")`. Let me directly test whether the installed SDK's CvmClient has that method — this pinpoints whether it's an SDK-version or code-issue:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1466,6 +1492,7 @@ The tencent_query call I made earlier ran in THIS autopilot's tool runtime (whic
 This is a real bug in my merged PR #386 — the tool is broken for every operation. Fix: dispatch should try snake_case **and** PascalCase. Let me check what `cos_list_buckets` still works (it does — 12 buckets listed, since qcloud_cos uses its own API), and confirm the fix pattern, then patch + test + PR.
 
 Let me first confirm the method-name fix precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1587,4 +1614,100 @@ The unit tests mock `_client`, so they never exercised the **real SDK**. Live sm
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → cd /opt/truesight_autopilot && sed -n '90,180p' app/tools/tencent_tools.py; cd /opt/truesight_autopilot && sed -n '180,260p' app/tools/tencent_tools.py; cd /opt/truesight_autopilot && echo "=== _camel_to_snake def ===" && grep -n "_camel_to_snake\|def _is_read_only\|_READ_PREFIXES" app/tools/; …(+15 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19553] [Handoff context — this Telegram topic (thread 19553) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Converging (tool-round limit reached). Here's where this "dig" landed:
+
+## 🔍 Two real bugs found in merged PR #386 (my code) — via live use
+
+The unit tests mock `_client`, so they never exercised the 
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=19553] [Handoff context — this Telegram topic (thread 19553) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Great catch on those 2 SDK bugs. Continue - finish the hotfix PR (gates, commit, push, PR, CI, self-merge), then re-sync Onaya since her tencent_query is currently broken the same way until she pulls the fix. Still holding on any CVM creation until I relay Gary's answer on the clone design question.
+
+
+### 🤖 Autopilot
+
+Go received. Executing: full gates → hotfix PR → merge → Onaya re-sync. Starting with state verification + full test suite:
+
+
+### 🤖 Autopilot
+
+Working tree is noisy with unrelated local work (redeploy investigation files, config, submodules — not mine). My change is only `app/tools/tencent_tools.py` + `tests/test_tencent_tools.py`. Running full gates first:
+
+
+### 🤖 Autopilot
+
+853 passed; 2 failures — but both are in **pre-existing files I didn't touch** (`test_redeploy_indicator.py` — the other thread's redeploy investigation, and `test_vault.py` — the known flaky cross-process test seen earlier that passes in isolation). My tencent tests all pass (9/9 confirmed earlier). Let me verify both failures are pre-existing/unrelated by checking they fail on clean main too — quick targeted check:
+
+
+### 🤖 Autopilot
+
+Both failures are unrelated to my change: `test_redeploy_indicator.py` is the **other thread's** redeploy-investigation work (modified in working tree, 72 lines added — not mine), and `test_vault.py` is the known-flaky cross-process test. My tencent files pass 9/9. I'll commit **only my 2 files** on a clean branch:
+
+
+### 🤖 Autopilot
+
+Clean branch off true origin/main, single commit b2cf89e with exactly 2 files. Push + open PR:
+
+
+### 🤖 Autopilot
+
+Backtick inside single-quoted JSON broke the shell. Let me write the PR body to a temp file and use `--data @file` — cleaner:
+
+
+### 🤖 Autopilot
+
+PR **#391** created. Now poll CI until both checks pass:
+
+
+### 🤖 Autopilot
+
+All CI checks green (test ✅ + smoke ✅). Merging PR #391:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ PR #391 merged — tencent_query SDK-compat hotfix
+
+**PR: [#391 — fix(tools): tencent_query dispatch vs real SDK — PascalCase methods + version-aware models module](https://github.com/TrueSightDAO/truesight_autopilot/pull/391)** — merged, sha `1195a29`, CI green (test ✅ + smoke ✅).
+
+### What changed (2 files, +57/−7)
+| File | Change |
+|---|---|
+| `app/tools/tencent_tools.py` | **Fix 1**: dispatch now tries snake_case first, falls back to **PascalCase** operation name (SDK ≥3.1.x removed snake aliases — every call previously failed with `object has no attribute`). **Fix 2**: request-models module now **derived from the client's own module path** (region service = v20220627 ≠ hardcoded v20170312); hardcoded path kept only as test-stub fallback |
+| `tests/test_tencent_tools.py` | New regression test `test_pascalcase_client_method_fallback` (real-SDK-shaped fake exposing only `DescribeZones`) |
+
+### Verification
+- **Live**: `DescribeZones` → 3 ap-guangzhou zones AVAILABLE · `DescribeInstances` → 0 CVMs (clean slate) · `DescribeRegions` → now passes class lookup (needs `Product` param — usage, not a bug)
+- Gates: compile ✅ · ruff ✅ · format ✅ · 9/9 tencent tests ✅
+- Full suite: 853 passed; the 2 failures are **pre-existing/unrelated** (`test_redeploy_indicator.py` = the other thread's redeploy WIP in the working tree; `test_vault.py` = known-flaky cross-process test)
+
+---
+
+## RESUME HERE → next unit (fresh turn)
+
+1. **Re-sync Onaya** (her `tencent_query` is broken the same way until she pulls): jump host `krake_redis` → her box (`i-0ebddf52cd92d0841`) → `cd /opt/bionpact_autopilot && git fetch origin main && git checkout main && git pull --ff-only` (should fast-forward e22feb8 → **1195a29**) → restart both services → quick smoke of her `tencent_query DescribeZones` to confirm the fix is live on her box.
+2. **Report to Gary** with the full migration package: Onaya's EC2 baseline (t3.small / 2vCPU-2GiB / 20GB gp3 / Ubuntu 22.04 / us-east-1a) → Tencent equivalent proposal (S5.SMALL2 or S5.MEDIUM4, ap-guangzhou, ~$6.02–12/mo monthly-sub pricing; PAYG ~$0.015/vCPU/hr) → the **a/b/c clone-design question** still awaiting his answer (a=passive standby/DR, b=active 2nd instance w/ own Telegram identity, c=migration replacing Nelanco/AWS). **No billable CVM created until he answers.**
+3. Optional follow-up: the `region` service needs `parameters={"Product": "cvm"}` — could add that hint to the tool's docstring/README in a tiny later PR, and add the version-aware-models regression test for non-cvm services.
+
+———
+**✅ Done this turn — actions taken:** verified tree state (my change isolated to 2 files; unrelated redeploy/vault noise confirmed pre-existing); full gates (compile ✅, ruff ✅, format ✅, pytest 853 passed / 2 pre-existing unrelated failures); clean branch `fix/tencent-sdk-pascalcase-dispatch` off origin/main; commit b2cf89e pushed; PR #391 opened via API; CI polled to green; merged via `merge_pr` (sha `1195a29`).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /opt/truesight_autopilot && git branch --show-current && git status --short | head -15 && echo "=== diff stat vs main ===" && git diff --; cd /opt/truesight_autopilot && echo "=== compileall ===" && python3 -m compileall -q app scripts tests 2>&1 | tail -2; echo "rc=$?" && echo ; cd /opt/truesight_autopilot && echo "=== do my files appear in the failures? ===" && python3 -m pytest tests/test_redeploy_indicator.py::tes; …(+4 more)
+• `merge pr` → ✅ PR #391 on truesight_autopilot merged successfully (sha: 1195a294793ca16aac796107b0e96f7107dc2626). Pull Request successfully merged
 
