@@ -115,11 +115,13 @@ Code search is coming up empty. Let me search the local code on the box directly
 ### 🤖 Autopilot
 
 Found it. The restart message lives in `telegram_adapter.py` around line 969-1031. Let me read the relevant code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is coming together. The topic is **thread 19615 = 'Fix: surface real error instead of generic restart msg'** — a truesight_autopilot bug. Let me trace this thread's earlier turns to see exactly where the timeout occurred.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -249,6 +251,59 @@ Go received — opening the fix PR now.
 Thread 19615 — retry the exact same `open_fix_pr(repo="truesight_autopilot", issue_description=<the error-classification + real-error surfacing spec above>)` call in a fresh turn (the "no running event loop" error is transient). Once the PR is open: verify the head commit on the box (`git -C /opt/truesight_autopilot fetch origin pull/<n>/head`), run the four local gates (`compileall` / `ruff check` / `ruff format --check` / `pytest`), then merge it (governor's 👍 "go" authorizes self-merge) and report the PR link + merge result. This is the autopilot's own repo — no prod/deploy gate.
 
 **Status: investigation complete, fix spec ready, PR-open attempt failed on a transient tool error — one retry needed.**
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → tool_execution_error
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19615] [Handoff context — this Telegram topic (thread 19615) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **⚠️ PR was NOT opened — tool error on the attempt.**
+
+`open_fix_pr` failed with `"no running event loop"` — a transient harness/async error (the tool call never reached GitHub; no branch, no PR was c
+
+
+### 🤖 Autopilot
+
+Retrying the fix PR now — fresh turn, clean event loop.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**⚠️ PR still NOT opened — second identical tool failure.**
+
+`open_fix_pr` failed again with the exact same `"no running event loop"` — reproduced twice in a row on a fresh turn. That pattern says this is **not a transient hiccup**: it's a defect in the `open_fix_pr` tool path itself (its agentic loop needs a running asyncio event loop that isn't available in this execution context). Nothing reached GitHub — no branch, no PR, no commit.
+
+## What I did this turn
+- Retried `open_fix_pr` with the full implementation spec (unchanged from the approved plan): classify failures via a `_LAST_BRAIN_PROBE_ERROR` module var + `logger.warning` per failed probe (the missing evidence trail), map reason → specific message (down / busy / redeploy / generic), preserve `_wait_for_brain`'s bool return + `max_attempts`/`backoff` kwargs and `_brain_unavailable_message()`'s no-arg signature, update `tests/test_redeploy_indicator.py` with refused-vs-timeout classification tests + caplog evidence.
+- Result: `tool_execution_error: no running event loop` — **no PR opened, nothing to merge.**
+
+## Recommendation for next turn — switch tool, don't retry the same one
+`open_fix_pr`'s agentic loop is broken in this environment. The equivalent, reliable path is **`git_push_changes` directly** — I already hold the exact `origin/main` hunks from my earlier reads (`app/telegram_adapter.py` lines 1002–1096: `_deploy_in_progress`, `_wait_for_brain`, `_brain_unavailable_message`, both call sites + `call_chat_with_progress` flow), so no diagnosis loop is needed:
+
+**RESUME HERE** → thread 19615:
+1. `git_push_changes(repo="truesight_autopilot", branch="fix/surface-real-brain-error", ...)` with `edits` (exact search/replace hunks):
+   - `_wait_for_brain`: replace bare `pass` with `_LAST_BRAIN_PROBE_ERROR = f"{type(e).__name__}: {e}"` + `logger.warning("brain health probe attempt %d/%d failed: %s against %s", ...)`; add `_LAST_BRAIN_PROBE_ERROR: str = ""` module-level (next to `_DEPLOY_MARKER`).
+   - `_brain_unavailable_message`: read `_LAST_BRAIN_PROBE_ERROR`; refused/`Errno 111`/`Errno 8`/ConnectError → "⚠️ brain is DOWN (connection refused on :8001)…"; timeout/HTTP≥500 → "⏳ brain is up but BUSY/unresponsive…"; marker → redeploy; else generic.
+   - `tests/test_redeploy_indicator.py`: add the 4 new tests.
+2. Run the four gates on the box: `python3 -m compileall -q app scripts tests && python3 -m ruff check app scripts tests && python3 -m ruff format --check app scripts tests && python3 -m pytest -q`.
+3. Merge the PR (👍 go authorizes self-merge), then report link + result.
+
+(Also worth filing later, separate PR: `open_fix_pr` throwing "no running event loop" is a harness bug in `truesight_autopilot` itself — the tool should fall back to the non-async `git_push_changes` path or run a fresh loop.)
+
+**Status: fix spec fully approved & ready; two `open_fix_pr` attempts failed with a reproducible tool defect — switch to `git_push_changes` next turn.**
+
+———
+**✅ Done this turn — actions taken:**
+• `open fix pr` → tool_execution_error (reproducible harness defect, no PR opened)
 
 ———
 **✅ Done this turn — actions taken:**
