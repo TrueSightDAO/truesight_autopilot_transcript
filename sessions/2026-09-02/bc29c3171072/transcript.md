@@ -151,6 +151,11 @@ Let me view the exact lines to build precise edit hunks:
 [1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
 ### 🧑 Governor
 
 [TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
@@ -373,4 +378,37 @@ Here's the **ready-to-submit draft** I'd fire via `create_dao_submission`:
 **Confirm with:** "go, file it" (and optionally a minute count or TDG amount if you want different numbers).
 
 One ambiguity check: if instead Nobody Will meant a **contribution-report file** (e.g. a PDF/markdown summary of the contribution), say so — I can generate that too. Which did you mean?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19742] Submit
+
+
+### 🤖 Autopilot
+
+Submitting the contribution report now:
+
+
+### 🤖 Autopilot
+
+✅ **Contribution report submitted** to Edgar:
+
+| Field | Value |
+|---|---|
+| **Type** | Time (Minutes) |
+| **Amount** | 30 min |
+| **Contributor** | Sophia Truesight |
+| **Title** | fix(roda): Start/End Roda Session now control audio |
+| **PR evidence** | [PR #41](https://github.com/TrueSightDAO/capoeira/pull/41) |
+| **TDG** | 0 (per rule — only issued on explicit governor command) |
+| **Status** | `success` — Contribution submitted |
+
+That closes the loop on this one: diagnosed → fixed (PR #41 merged) → verified live → filed as a contribution.
+
+If you'd like TDG issued for this (or a different amount/contributor name), just say so and I'll adjust. Anything else on the roda, or elsewhere?
+
+———
+**✅ Done this turn — actions taken:**
+• `create dao submission` → Contribution submitted
 
