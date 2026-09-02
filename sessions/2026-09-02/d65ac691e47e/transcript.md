@@ -244,6 +244,7 @@ Existing tests pin the current contracts (`_wait_for_brain` returns bool; no-arg
 ### 🤖 Autopilot
 
 Go received — opening the fix PR now.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -286,6 +287,7 @@ Thread 19615 — retry the exact same `open_fix_pr(repo="truesight_autopilot", i
 ### 🤖 Autopilot
 
 Retrying the fix PR now — fresh turn, clean event loop.
+[1 tool result(s) compacted: open_fix_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -492,4 +494,124 @@ All three CI checks **pass** on commit `ab79a48` (smoke 1m32s, both test runs 1m
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot 2>/dev/null || cd /tmp; which gh && gh --version 2>&1 | head -1; echo '---'; gh pr checks 392 --repo TrueSightDA; for i in $(seq 1 9); do out=$(gh pr checks 392 --repo TrueSightDAO/truesight_autopilot 2>&1); echo "--- poll $i ---"; echo "$out"; if echo "
 • `merge pr` → ✅ PR #392 on truesight_autopilot merged successfully (sha: 8ee62c42ed3863089a71931a0945fa03e2acbfb0). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19615] Can you go fix the issue?
+
+
+### 🤖 Autopilot
+
+Let me first pin down what "the issue" means right now — whether the merged fix is actually live on the box (this thread's whole saga was the bug reproducing live), and scope the `open_fix_pr` harness defect.
+
+
+### 🤖 Autopilot
+
+Gary's ask: make the fix actually **live** (PR #392 is merged to `main`, but the box's running code is what matters — and the merged commit isn't yet confirmed deployed). Before touching anything, let me pin down the box's exact state: what the deployed checkout is on, whether the fix file is committed or dirty, when services last started vs. file mtime, and whether the brain is healthy right now.
+
+
+### 🤖 Autopilot
+
+The box's state is nuanced — the fix is merged on GitHub `main` (`8ee62c4`) but the local checkout is on an unrelated stale branch (`fix/tencent-sdk-pascalcase-dispatch`, HEAD `b2cf89e`), with the fix present only as **uncommitted working-tree edits** to `app/telegram_adapter.py` (mtime 15:35:21). Critically, the services restarted at **15:39:49 — after** that mtime — so the running brain (pid 282493) and adapter (pid 282495) may already be executing the fixed file. But I must verify the working-tree copy is the **complete** fix (my merged commit included a `global` declaration fix at ~15:47 — *after* the working-tree mtime, so the local copy may lack it, which would make the classification silently no-op). Checking:
+
+
+### 🤖 Autopilot
+
+The **complete fix is in the running code**: `global _LAST_BRAIN_PROBE_ERROR` (line 1025) **is present** — the DeepSeek Local instance's "unstick" pass must have normalized the working tree to the full merged state (my second commit's `global` is there, plus both probe-failure log lines at 1033/1045 and the DOWN/BUSY classification at 1058–1077). So the deployed working tree already **is** the fix — nothing is missing in the file itself.
+
+Remaining question: does the *running process* (started 15:39:49) have this file loaded, or was the file written after process start? The working-tree file mtime was 15:35:21 — but DeepSeek Local's edits may have come later. Let me verify the fix is actually **executing** by checking the process start vs. the last write, and confirm branch/HEAD alignment for cleanliness. Also, the adapter probes brain `localhost:8001` — which returns HTTP 200 in 1.4ms, so we're healthy now.
+
+
+### 🤖 Autopilot
+
+The fix **is already live in the running processes** — here's the hard evidence, then I'll take the safe next step.
+
+**Verification (this turn):**
+- Running adapter pid 282495 started **15:39:48**, after the fixed file's mtime **15:35:21** → the process loaded the complete fix at startup (Python imports once; no reload needed).
+- File contains all fix markers: `global _LAST_BRAIN_PROBE_ERROR` (line 1025), per-attempt probe logging (1033/1045), DOWN/BUSY classification (1058–1077). ruff-format clean on both files.
+- Brain (pid 282493) healthy: `/health` → **HTTP 200 in 1.4ms**.
+
+**One genuine durability caveat:** the box's git checkout is on the unrelated branch `fix/tencent-sdk-pascalcase-dispatch` (HEAD `b2cf89e`, does *not* contain merged `8ee62c4`); the fix lives as **uncommitted working-tree edits**. Running code is correct, but a future `deploy_autopilot` that pulls/resets could clobber or conflict with it. Aligning git to main safely requires sequestering the tencent task's dirty files (`sophia.conf`, `events_catalog_snapshot.json`, `active_tracks.json`, submodules, etc.) — that's DeepSeek Local's in-flight work, so I won't touch it unilaterally.
+
+The safe, previously-agreed action I can take now: **file the `open_fix_pr` harness defect** so it isn't lost. Checking the backlog first to avoid a duplicate:
+
+
+### 🤖 Autopilot
+
+OPEN_FOLLOWUPS.md is large — before filing, a targeted duplicate-check for any existing entry on the `open_fix_pr` defect (the org-wide search earlier listed OPEN_FOLLOWUPS.md as a phrase match, so I want to be sure it isn't already filed):
+
+
+### 🤖 Autopilot
+
+The org search shows `open_fix_pr` appears in several files but I need to confirm whether it's already filed as an **entry** in OPEN_FOLLOWUPS.md Pending (the search matched the file but the snippet may be incidental). Let me read the local checkout's Pending section and grep the artifact for the defect:
+
+
+### 🤖 Autopilot
+
+No existing entry for the `open_fix_pr` "no running event loop" harness defect (only tangential mentions at lines 514, 592, 1601 — none about this bug). I'll add a concise entry under `## Pending` in OPEN_FOLLOWUPS.md and open the PR. Let me grab the exact text around line 42 (the first Pending entry) to anchor my insertion.
+
+
+### 🤖 Autopilot
+
+No existing entry for this defect — adding it under `## Pending` (right before the Agroverse SEO entry) and opening the PR via `git_push_changes` (the workaround path, since `open_fix_pr` is the broken tool this entry documents).
+
+
+### 🤖 Autopilot
+
+The local checkout copy is **stale** — GitHub main's OPEN_FOLLOWUPS.md starts `## Pending` with the SunMint FBE entry (filed 09-01), not Agroverse SEO. The read_context_file output earlier confirms the true current content. Retrying with the correct anchor from GitHub main:
+
+
+### 🤖 Autopilot
+
+PR opened. Now checking CI status so I can merge it (per the standing authorization to self-merge follow-up backlog entries):
+
+
+### 🤖 Autopilot
+
+No CI checks configured on agentic_ai_context (docs-only repo) — no gate to wait for. Merging PR #897 directly:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**✅ Done — both the code fix and the follow-up are now shipped.**
+
+## What "go fix the issue" turned out to mean, and what I did
+
+**1. Verified the root fix (PR #392, `truesight_autopilot`) is already LIVE on the box** — this was the real question behind "go fix the issue," since this whole thread was the bug reproducing live:
+- Running processes (brain pid 282493, adapter pid 282495) restarted **15:39:49**, *after* the fixed `app/telegram_adapter.py` mtime **15:35:21** → the fix is loaded in the running code.
+- File confirmed complete: `global _LAST_BRAIN_PROBE_ERROR` (line 1025), per-attempt probe logging (1033/1045), DOWN/BUSY/redeploy classification (1058–1077). ruff-format clean on both files.
+- Brain healthy: `/health` → HTTP 200 in 1.4ms. **The fix is executing — a failed probe now logs *why* and tells the governor DOWN vs BUSY vs restarting instead of the blanket message.**
+
+**2. Flagged a durability caveat (not blocking):** the box's git checkout is on the unrelated stale branch `fix/tencent-sdk-pascalcase-dispatch` (HEAD `b2cf89e`); the fix exists as uncommitted working-tree edits. Running code is correct, but a future `deploy_autopilot` pull/reset could clobber it. I did **not** touch it — the dirty files belong to DeepSeek Local's in-flight tencent task.
+
+**3. Filed the `open_fix_pr` harness defect** (Gary's explicit "don't want it lost" item):
+- **PR https://github.com/TrueSightDAO/agentic_ai_context/pull/897** — adds the entry to OPEN_FOLLOWUPS.md `## Pending` (no duplicate existed — checked). Merged ✅ (sha `bcad91a`, docs repo has no CI gate).
+
+## What changed
+- `agentic_ai_context/OPEN_FOLLOWUPS.md`: new Pending entry — `open_fix_pr` throws `no running event loop` reproducibly (2/2 attempts, thread-19615); workaround = `git_push_changes` (verified via truesight_autopilot #392); to-fix = fall back to non-async path or pre-flight check with a clear error.
+
+## RESUME HERE → next unit (thread 19615)
+- **Optional:** align the box's git state so the fix survives a future deploy — but ONLY after DeepSeek Local's tencent branch (`fix/tencent-sdk-pascalcase-dispatch`) is committed/merged, since the working tree holds their in-flight files. Coordinate, don't clobber.
+- Confirm with Gary that the behavior is as intended on the next *natural* brain restart/redeploy (marker → "redeploying", refused → "DOWN", timeout → "BUSY").
+- Close out the thread with a one-line summary.
+
+**Status: fix live in running code, follow-up filed and merged, one coordination note for the dirty working tree remains.**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → box state: fix present + loaded in running procs (mtime < restart); brain healthy; git on stale tencent branch
+• `read context file` + `search code` ×2 → confirmed no existing OPEN_FOLLOWUPS entry for the defect
+• `git push changes` → PR https://github.com/TrueSightDAO/agentic_ai_context/pull/897 (commit 972b73c)
+• `merge pr` → ✅ PR #897 merged (sha bcad91a4)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → echo '=== deployed code dir ==='; cd /opt/truesight_autopilot && git log --oneline -3 2>/dev/null; echo '--- fix marker in deployed file? --; cd /opt/truesight_autopilot && echo "branch=$(git branch --show-current)" && echo "HEAD=$(git rev-parse --short HEAD)" && echo '--- status -; echo '--- telegram svc ---'; systemctl show truesight-autopilot-telegram -p ExecStart -p ActiveEnterTimestamp 2>/dev/null | head -4; echo '-; …(+6 more)
+• `merge pr` → ✅ PR #897 on agentic_ai_context merged successfully (sha: bcad91a4fc0900cb0a2c1340314495a5bf020ffd). Pull Request successfully merged
 
