@@ -1975,11 +1975,13 @@ Gary wants the clean re-submit (option 1) now, parser-bug fix after. Let me get 
 Confirmed the contract and the already-mirrored media URLs. The earlier parse broke because my submission carried an **empty `- Plot ID:` line** (parser's `\s*` swallowed the next line). The live UI omits Plot ID entirely — so I'll re-submit the same way: **no Plot ID field**, farm name + boundary + media URLs + GPS + area, `Is New Farm: true`.
 
 Submitting the clean boundary event for **Fazenda Bom Sucesso** (no empty Plot ID this time — auto-generates `PL-###`):
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean submission accepted. Let me verify it landed in the plots/tracking sheets (propagation is async — GAS processes Telegram Chat Logs on a schedule):
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2020,6 +2022,7 @@ Converging — I'm at the tool-round cap for this turn.
 ### 🤖 Autopilot
 
 👍 Go received. Resuming: verify the clean plot row landed, then open the parser-bug fix PR.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2027,11 +2030,13 @@ Converging — I'm at the tool-round cap for this turn.
 Clean re-submission **landed**: `SunMint Plots` now shows **PL-002 — "Fazenda Bom Sucesso"** (proposed, approx) ✅ — the well-formed row from my UI-format re-submission. The old mangled row (`- Boundary Type: approx` as Plot ID) is still there from the first attempt.
 
 Now part 2: **fix the parser bug**. Let me read the exact `grab()` implementation in the GAS script to craft the fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `grab` function definition is at line 93 but the body is elsewhere (probably a shared helper). Let me find the actual regex and the text source it parses:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2043,26 +2048,31 @@ var re = new RegExp('-\\s+' + escapeRe(label) + ':\\s*([^\\n]+)', 'i');
 ```
 
 `\s*` after the colon matches **newlines**, so an empty `- Plot ID:` swallows the line break and `([^\n]+)` captures the **next line** (`- Boundary Type: approx`). Let me confirm the repo + test a fix locally:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed the bug at line 94: `\s*` after the colon eats newlines, so an empty `- Plot ID:` lets `([^\n]+)` capture the next line (`- Boundary Type: approx`). Let me prove it with a node repro and validate the fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My repro message lacked the empty `- Plot ID:` line — need to include it to trigger the bleed. Re-running with the actual mangling case:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Bug reproduced and fix proven.** The OLD regex gives `plotId: "- Boundary Type: approx"` (exactly the corruption in the sheets); the FIXED regex `[ \t]*` gives `plotId: ""` — clean. Now let me apply the fix via a PR to tokenomics:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Need to pass the actual file edit. Let me apply the fix with the edits parameter:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2187,4 +2197,100 @@ Go ahead and attach them — I'll handle the dedup and smiley-priority selection
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/tok_r 2>/dev/null && F=google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_plot_invalidation.gs && ; curl -s https://raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/dao_members.json | python3 -c " import json,sys d=json.load(sys.s
 • `submit contribution` ×2 → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/46d7e4d8a6744d0982f54774abe8428a.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+A new HEIC arrived — this looks like one of the tree photos from the batch Gary said he'd send. Let me extract its GPS and check whether it's a new file or a duplicate of something already on disk:
+
+
+### 🤖 Autopilot
+
+A **new distinct photo** just arrived — new md5 (`e1ee6e75…`), not a duplicate of anything in the earlier set. Let me see the current state of the folder to track this new batch:
+
+
+### 🤖 Autopilot
+
+A large new batch has landed (59 HEIC total now — the tree photos Gary said he'd send). Let me take a complete inventory: dedupe by md5, extract GPS + timestamps for every unique file, and cluster them into distinct trees:
+
+
+### 🤖 Autopilot
+
+24 unique HEIC files, all GPS-bearing — this is the full set. The 4 earliest (18:18–18:31) are the **corner photos**; the 20 from 18:42–19:31 are **tree photos** — with multiple shots of several trees (that's why you said "pick which 10"). Let me cluster them into distinct trees using GPS proximity + your dig-time heuristic, with correct S/W signs:
+
+
+### 🤖 Autopilot
+
+The full set is 24 unique photos (20 tree + 4 corner). The tree photos form **time-burst clusters** — several trees have 2–3 shots each (that's exactly why you said "pick one per tree, prefer smiley ones"). Now let me run **smile/face detection** over the candidates so I can apply your smiley-preference rule with evidence, not guessing:
+
+
+### 🤖 Autopilot
+
+cv2 5.0.0 and pillow_heif are available, but no haarcascade files in the default location. Let me find the cascade XMLs and set up smile detection over the candidate photos:
+
+
+### 🤖 Autopilot
+
+The cv2 data dir is missing the cascade XMLs. Let me download the standard OpenCV haarcascades (face + smile) so I can run detection:
+
+
+### 🤖 Autopilot
+
+Cascades downloaded but cv2 5.0.0 lacks `CascadeClassifier` (removed in OpenCV 5). Alternative: use **face detection via a different method**. Let me check what face/smile tooling is available (dlib, mediapipe, or pip-installable options):
+
+
+### 🤖 Autopilot
+
+Converging on this turn — I've hit the practical limits of what I can determine without more tooling, so here's a clean status + decision point.
+
+## What the full photo set shows
+
+**24 unique photos** (deduped by md5): **4 corner photos** (18:18–18:31) + **20 tree photos** (18:42–19:31), all GPS-bearing.
+
+**Clustering the 20 tree photos** by GPS + your dig-time heuristic → **14 photo-burst clusters**:
+
+| Cluster | Time | # shots | Files |
+|---|---|---|---|
+| 1 | 18:42:13 | 1 | 23768d7c |
+| 2 | 18:47:03–14 | **3** | 193eca20 · 0d3610b1 · 1d6a3a4c |
+| 3 | 18:52:14 | 1 | 35a3744d |
+| 4 | 18:53:03–11 | **2** | 26e99cd0 · 46d7e4d8 |
+| 5 | 18:57:04 | 1 | 17016c60 |
+| 6 | 19:02:37 | 1 | 0a1ea70b |
+| 7 | 19:09:55 | 1 | 1ae19a42 |
+| 8 | 19:10:01 | 1 | 22f0236e |
+| 9 | 19:16:07 | 1 | 22cf3ff2 |
+| 10 | 19:16:15 | 1 | 32f2030d |
+| 11 | 19:21:10 | 1 | 3ca82aea |
+| 12 | 19:21:15–22 | **2** | 04eff3a1 · 95dd596c |
+| 13 | 19:26:23–28 | **2** | 8ecc12ab · 2c6b2aac |
+| 14 | 19:31:12–21 | **2** | 9e4ce380 · 0b7f549e |
+
+Consecutive cluster gaps: 4–32 m (main run) then 84–97 m jumps to the last two (19:26, 19:31) — the two far-west trees.
+
+## The gap blocking the final pick
+
+You asked me to prefer **photos with smiley faces** among multi-shot trees. I tried to run OpenCV smile detection, but this box has **cv2 5.0.0, which dropped `CascadeClassifier`**, and no face/smile library is installed (no dlib/mediapipe/face_recognition). So I can't yet *automatically* tell which shots contain smiling faces.
+
+## What I need from you (one of):
+
+1. **Quickest:** tell me which of the multi-shot trees have people smiling — e.g. "Tree 2: use 0d3610b1; Tree 4: use 46d7e4d8; Tree 12: use 95dd596c; Tree 13: use 8ecc12ab; Tree 14: use 9e4ce380" — or just "each cluster's last shot has the smiley."
+2. **Let me install a detector:** I can `pip install mediapipe` (or pin an OpenCV 4.x in a venv) and auto-score smiles across all 20 — takes a few minutes, gives evidence-based picks.
+
+**Also confirm the count question:** clustering says **14 distinct tree locations**, but you asked for **10**. Do you want:
+- (a) **one photo per cluster** for the 14 → then pick which **10** to *register* (drop 4 — which? the far-west 19:26/19:31 pair + two others?),
+- or (b) are some of the 14 clusters actually the same tree (e.g. 19:09/19:10, 19:16 pairs, 19:21 pairs are 4–5 m apart and seconds apart — walking between two saplings)?
+
+Tell me **10 from my 14 clusters** (or the rule to drop 4), plus how you want smiley picks made, and I'll lock the selection and register.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp/tg_attachments && ls -la 46d7e4d8a6744d0982f54774abe8428a.HEIC && md5sum 46d7e4d8a6744d0982f54774abe8428a.HEIC && echo "---GPS---" &; cd /tmp/tg_attachments && echo "=== HEIC files sorted by mtime (newest last 8) ===" && ls -lat *.HEIC 2>/dev/null | head -8 && echo "=== tot; cd /tmp/tg_attachments && python3 << 'EOF' import subprocess, re, glob, hashlib, json files = sorted(glob.glob('*.HEIC')) print(f"Total HEIC; …(+5 more)
 
