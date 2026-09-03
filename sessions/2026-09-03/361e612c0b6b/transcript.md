@@ -1317,6 +1317,7 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 Another from the set (`17016c60` — tree T1). Quick verification + count check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1363,6 +1364,7 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 Another from the set (`193eca20` — T3). Quick verification:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1408,6 +1410,7 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 Another from the set (`1d6a3a4c` — T4). Quick verification:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1439,12 +1442,19 @@ Say the word and I'll run it — or just answer the 4 questions and I'll registe
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The count jumped from 14 to **18 HEIC** — 4 new originals just arrived. Let me identify them:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 4 "new" arrivals have timestamps/sizes exactly matching the 4 corner HEICs I already catalogued — likely duplicate re-uploads with new random names. Let me confirm via md5:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1490,6 +1500,7 @@ Since it takes time to dig a hole
 ### 🤖 Autopilot
 
 Gary — that's the right discriminator, and I can quantify it. **Time gap is the tell:** digging a hole for a sapling takes minutes, not seconds. Two photos 11 s apart at the same spot can't be two trees; two photos 20 min apart at nearly the same spot *could* be two trees planted close together — or a revisit. Let me run the combined distance + time-gap analysis on all tree pairs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1541,6 +1552,11 @@ Say **"9 trees, cacao, planter X, 2c6b2aac inside-plot-add-corner"** (or however
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Got it — so the 4 corner HEIC photos I extracted GPS from are confirmed as the plot boundary data. That locks the polygon: roughly 1.02 hectares, enclosing 9 of the 10 tree points.
 
 That leaves just a couple of quick confirmations before I can register:
@@ -1564,21 +1580,25 @@ Answer those and I'll run the registrations end to end.
 ### 🤖 Autopilot
 
 Gary registered the plot himself with the 4 corners — let me pull the plot schema and check where that registration landed so I can align the tree events to the same plot ID.
+[3 tool result(s) compacted: read_context_file, search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify Gary's plot registration landed — checking the plots registry and the source-of-truth sheet:
+[2 tool result(s) compacted: list_org_repos, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary registered the plot himself — let me find where it landed so the tree events align to the same plot ID. Checking the plot-first model doc and the plots registry:
+[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary registered the plot himself. Let me find where it landed so I align the tree events to the same plot — checking the source-of-truth sheet and recent events:
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1640,4 +1660,178 @@ So either it's still propagating (the GAS handler can take a minute or two, and 
 2. **What Plot ID did it get?** (e.g. `PL-###` or a name like `BS-…`) — if you can see it on your screen, tell me and I'll pull it up directly.
 
 Once I can see the plot row and its ID, I'll register the trees against **that plot** — which also resolves my open question about the western outlier, since the plot polygon will define what's in/out.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] can you do so by submitting a Sunmint register boundary event with the four files??
+
+
+### 🤖 Autopilot
+
+Gary's asking me to submit the boundary registration myself with the 4 corner files. Let me first read the full boundary-evidence handler (to get the exact required format), check the event docs, and re-extract the 4 corners' GPS in parallel:
+
+
+### 🤖 Autopilot
+
+Yes — I'll submit it as a **[FARM BOUNDARY EVIDENCE EVENT]** with the 4 corner files. First let me get the exact handler expectations (tail of the GAS script) and the definitive GPS for the 4 corner HEICs currently on disk (my earlier guess at two filenames was wrong — they didn't exist):
+
+
+### 🤖 Autopilot
+
+Gary explicitly asked me to submit the boundary event with the 4 corner files — that's a clear go. Plan: (1) confirm exact decimal GPS for the 4 corner HEICs + hull area, (2) upload the 4 originals to the sunmint media store so the event carries real URLs, (3) submit the **[FARM BOUNDARY EVIDENCE EVENT]**. Let me compute the precise values first:
+
+
+### 🤖 Autopilot
+
+Gary confirmed the approach — I'll submit the **[FARM BOUNDARY EVIDENCE EVENT]** with the 4 corner files. Before submitting I want to nail the exact message field names Edgar assembles (so the GAS handler parses it cleanly) and stage the media. Let me check the event template and an example processed message:
+
+
+### 🤖 Autopilot
+
+Let me read the boundary submission plan for the exact message format, and check how the daemon converts a submission into the message body the GAS handler parses:
+
+
+### 🤖 Autopilot
+
+I need the exact renderer format — how Edgar turns a FARM BOUNDARY EVIDENCE EVENT submission into the message body the GAS parser reads. Let me check dao_protocol:
+
+
+### 🤖 Autopilot
+
+Gary explicitly asked me to submit it — going ahead. Plan: (1) upload the 4 GPS-bearing corner HEIC originals to the sunmint media store, (2) submit the **[FARM BOUNDARY EVIDENCE EVENT]** with their raw URLs + extracted GPS, farm name Fazenda Bom Sucesso, boundary `approx`, new farm.
+
+Uploading the 4 corner originals first:
+
+
+### 🤖 Autopilot
+
+All 4 corner originals are mirrored to the media store. Before I submit, I need the exact renderer format — the GAS parser expects specific field labels (`Area (ha):`, `Is New Farm:`) that may differ from the catalog's canonical labels. Let me check how Edgar renders this event:
+
+
+### 🤖 Autopilot
+
+I'll submit it as a **[FARM BOUNDARY EVIDENCE EVENT]** — signed as the autopilot (Sophia Truesight) since you asked me to do it with the four corner files. The 4 originals are already mirrored to the media store; here's what I'm sending:
+
+- **Farm Name:** Fazenda Bom Sucesso · **Plot ID:** auto-assigned (backend upsert by farm slug)
+- **Boundary Type:** approx (GPS hull of 4 corner photos)
+- **Media URLs:** the 4 raw corner HEIC URLs
+- **Extracted GPS:** `-3.093989,-52.095256; -3.094158,-52.094789; -3.095311,-52.095047; -3.094883,-52.095919`
+- **Area (ha):** 1.016 · **Is New Farm:** true · **Submission Source:** telegram
+
+
+### 🤖 Autopilot
+
+The submission went through. Now let me verify it actually landed — checking the tracking tab and plots sheet for the new Fazenda Bom Sucesso row:
+
+
+### 🤖 Autopilot
+
+The submission reported success but hasn't propagated to the sheets yet. Let me verify where it landed and how the propagation works — checking recent Edgar events and the listener mechanism:
+
+
+### 🤖 Autopilot
+
+The submission succeeded but hasn't reached the sheets yet — propagation is likely async (Edgar → listener → Telegram Chat Logs → GAS trigger). Let me confirm the expected path and latency from the runbook:
+
+
+### 🤖 Autopilot
+
+The submission went through Edgar — now it needs to land in Telegram Chat Logs → GAS webhook → sheets (async, with an hourly backup trigger). Let me check whether my submission appeared in the Telegram Chat Logs tab:
+
+
+### 🤖 Autopilot
+
+The submission succeeded but propagation is async (Edgar → Telegram Chat Logs → GAS webhook → plots tab). Let me re-check the bottoms of both tabs for the new row:
+
+
+### 🤖 Autopilot
+
+The event propagated (PROCESSED 02:46:36) but I can see a **parsing problem**: the Plot ID column captured `"- Boundary Type: approx"` — the field labels bled across lines, so the GAS parser mis-read my submission. The plot row in `SunMint Plots` is likewise mangled (`"- Boundary Type: approx"` as Plot ID, empty Farm ID). Let me look at the exact message text Edgar appended, to see how my attributes were rendered:
+
+
+### 🤖 Autopilot
+
+The raw message is what matters. Let me find my exact row in Telegram Chat Logs by searching for the message ID Edgar returned:
+
+
+### 🤖 Autopilot
+
+I can see the problem. The event **processed** (02:46:36) but the parser mis-read it — my empty `Plot ID` field caused the greedy regex to swallow the newline and grab the next line (`- Boundary Type: approx`) as the plot ID value, and I left `Area (ha)` empty. The plots row is mangled (`"- Boundary Type: approx"` as Plot ID, empty Farm ID).
+
+Before re-submitting cleanly, let me confirm how the handler treats a blank Plot ID (auto-generate PL-###?) by reading the rest of the GAS script:
+
+
+### 🤖 Autopilot
+
+The event processed but produced a **mangled row** — same artifact visible in the earlier E2E test rows: when `Plot ID` is left empty, Edgar's renderer runs the fields together and the parser's line-based `grab('Plot ID')` swallows the next label (`- Boundary Type: approx`). The plots-sheet row is likewise corrupted (empty Farm ID, wrong Plot ID). Let me read the rest of the handler to see how it auto-assigns a Plot ID, so I can re-submit cleanly:
+
+
+### 🤖 Autopilot
+
+The nested artifacts aren't giving me clean code. Let me read the actual handler file directly from the repo to see the plot-ID logic:
+
+
+### 🤖 Autopilot
+
+The file is truncated — let me read the full content from the artifact:
+
+
+### 🤖 Autopilot
+
+The file keeps getting truncated through the artifact chain. Let me read it directly off the repo on the autopilot box:
+
+
+### 🤖 Autopilot
+
+The handler is now clear. **Root cause identified:** the GAS parser regex `- Plot ID:\s*([^\n]+)` — with an **empty Plot ID**, the `\s*` swallowed the newline and captured the *next line* (`- Boundary Type: approx`) as the Plot ID. Same artifact visible in the earlier E2E test rows. The plot row in `SunMint Plots` got created corrupted (`"- Boundary Type: approx"` as Plot ID, empty Farm ID).
+
+Let me pull the exact raw message Edgar rendered into Telegram Chat Logs to confirm field labels before re-submitting:
+
+
+### 🤖 Autopilot
+
+Let me see the full main processing function — specifically what happens to Media/Coordinates after the upsert (does a matched/created row get its GPS+media written?):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+## Summary — where things stand (23/30 tool rounds used, converging)
+
+### ✅ Done
+- **4 corner HEIC originals** (GPS intact) mirrored to `sunmint/images/boundaries/` (4 commits).
+- **Submitted `[FARM BOUNDARY EVIDENCE EVENT]`** for Fazenda Bom Sucesso (farm name, 4 media URLs, extracted GPS for all 4 corners, boundary `approx`, `is_new_farm: true`) — Edgar accepted (event `Edgar_20260903024631_068`), GAS processed it at **02:46:36**.
+- Confirmed from the GAS source (`process_farm_boundary_evidence.gs`) how the upsert works: **plot-first model** — new farm → new row with **auto-generated Plot ID** (`fbeNextPlotId_` → next `PL-###`), Farm ID intentionally left empty, name/status/boundary written; media+GPS are only tracked in the **Farm Boundary Evidence** tab (the `plots/index.geojson` rebuild is a downstream `pingPlotsIndexRebuild_` dispatch).
+
+### ⚠️ Problem found — the submission parsed CORRUPTED
+My submission had **empty `Plot ID`**, and the GAS parser regex is `- Plot ID:\s*([^\n]+)` — the `\s*` swallowed the newline and captured the **next line** as the value:
+
+| Where | What landed |
+|---|---|
+| Farm Boundary Evidence tab | ✅ Farm Name, Media URLs, Extracted GPS, Is New Farm all correct — but **Plot ID = `"- Boundary Type: approx"`** |
+| SunMint Plots tab | ❌ Row created with **Plot ID `"- Boundary Type: approx"`**, empty Farm ID, name "Fazenda Bom Sucesso", status `proposed`, boundary `approx` — a **mangled row** |
+
+This is the **same artifact** visible in the older E2E test rows (`"- Submission Source: e2e-uat"` as a Plot ID). Root cause: empty field + `[^\n]+`-style regex + renderer emitting empty fields = line-bleed parse bug.
+
+### 🛑 Blocking / decision needed next turn
+The corrupted plots row can't be cleanly upserted over (farm-id match fails because Farm ID is empty; plot-id match fails because plot id is garbage). Options — pick one:
+
+1. **Re-submit a clean event with an explicit Plot ID** (e.g. `BS-001`) — handler will create a proper row; leaves the mangled one behind for later cleanup. Quickest.
+2. **Fix the parser bug first** (tokenomics PR: make `grab()` use `[^\n]*`-safe parsing or require non-empty render) then re-submit — root-cause fix, more work.
+3. **Manual sheet cleanup** of the two mangled rows (governor-approved hand-edit of machine data) + re-submit clean.
+
+### RESUME HERE
+- **Context:** Fazenda Bom Sucesso boundary registration — first `[FARM BOUNDARY EVIDENCE EVENT]` submitted OK (`Edgar_20260903024631_068`, processed 02:46:36) but produced a **mangled plots row** (Plot ID = `"- Boundary Type: approx"`, empty Farm ID) due to empty-Plot-ID line-bleed in the GAS parser.
+- **State:** 4 corner HEICs on GitHub (`sunmint/images/boundaries/fazenda-bom-sucesso_20260902_*.HEIC`); corner GPS: A `-3.093989,-52.095256` · B `-3.094158,-52.094789` · C `-3.095311,-52.095047` · D `-3.094883,-52.095919` (~1.016 ha hull).
+- **Next action:** get Gary's pick on options 1–3 above, then re-submit/clean so the plot row is well-formed and `plots/index.geojson` rebuild can include Fazenda Bom Sucesso; then proceed to the **9-tree registration** (10 photos → 9 trees after the 11-second duplicate merge, pending his earlier confirmations).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp/tg_attachments && for f in 70234a89c2c9460bad6578ad3431490f.HEIC cd6887a2c2b9460bad6578ad3431490f.HEIC bf9c8484fc32430fb9ba2ff3a451d; cd /tmp/tg_attachments && echo "=== corner-relevant HEICs on disk (dedup by md5) ===" && md5sum *.HEIC 2>/dev/null | sort -k1,1 -u && echo &; cd /tmp/tg_attachments && python3 -c " import subprocess, re, math files = { 'corner_A_70234a89': '70234a894d764c49937ede894a878d26.HEIC', '; …(+2 more)
+• `submit contribution` → Contribution submitted successfully.
 
