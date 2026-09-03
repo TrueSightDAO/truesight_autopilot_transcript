@@ -833,6 +833,7 @@ Gary reports a UAT failure: uploading a photo to the beta tree-planting page did
 ### 🤖 Autopilot
 
 The file is a 960×1280 progressive JPEG — but note it came to me **via Telegram**, which often strips EXIF. Let me check what GPS metadata this copy has, then look at how the browser's EXIF path differs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -840,31 +841,37 @@ The file is a 960×1280 progressive JPEG — but note it came to me **via Telegr
 Critical finding: **the Telegram-delivered copy of the photo has NO EXIF at all** — only 23 basic JFIF tags, no GPS, no Make/Model, no DateTime. This is exactly what Telegram does: **it strips EXIF metadata** when compressing/serving images.
 
 But that raises the key question: did Gary upload **this exact Telegram-compressed file** to the beta page, or the original from his camera? If he uploaded the original (with EXIF GPS), my parser should have found it. Let me verify my parser actually works on a real EXIF-GPS JPEG — and check whether the progressive-JPEG format or something in my marker-walking logic could fail on real files. First, let me build a JPEG with known EXIF GPS and test `readExifGps` end-to-end:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Telegram-delivered copy has **no EXIF at all** (Telegram strips it), but that alone doesn't explain the failure — Gary may have uploaded the original. Let me test my `readExifGps` parser against a JPEG **with real EXIF GPS** written in, and inspect the upload handler flow:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The earlier `ls` showed the file listing but the path may differ. Let me find the exact path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The attachment was re-delivered (now 59903 bytes). Telegram strips EXIF on delivery, so I'll synthesize a GPS-tagged JPEG from this photo and test the live parser against it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Real bug found in the live parser.** My `readExifGps` returned `null` even on a JPEG that exiftool confirms has GPS. This explains Gary's UAT failure perfectly — the parser itself is broken on real EXIF-GPS images. Let me debug exactly why:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 APP1 Exif header is found but result is still null — the failure is downstream. My debug replacements didn't match indentation for the later stages. Let me instrument every `resolve(null)` exit point properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -880,6 +887,7 @@ const d = readRat(e+8), m = readRat(e+12), s = readRat(e+16);
 Per the EXIF spec, GPS latitude/longitude entries (type 5 RATIONAL, count 3) store an **offset pointer** in the 4-byte value field (bytes 8–11), not the value itself — RATIONALs are 8 bytes each and never fit inline. The code reads `e+8` as if it were the numerator, which grabs the offset bytes + the next entry's bytes → garbage/denominator-zero → null. The fix is to dereference: `readRat(tiff + u32(e+8))`, `+8`, `+16`.
 
 Let me verify this hypothesis by printing the raw GPS IFD entry and testing a corrected parser against the GPS-tagged JPEG:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -890,11 +898,13 @@ Let me verify this hypothesis by printing the raw GPS IFD entry and testing a co
 - **Corrected:** `const base = tiff + u32(e+8); readRat(base), readRat(base+8), readRat(base+16)` → **lat 22.5, lng -43.2 — PASS**
 
 Now let me fix the actual beta source file. Let me check current main's `readExifGps` and prepare the fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both buggy lines found in current main (lines 45 and 49 — identical, both need the same fix). Let me verify the upload-handler wiring uses the EXIF result, then apply the fix locally and re-test with the corrected parser:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -902,16 +912,19 @@ Both buggy lines found in current main (lines 45 and 49 — identical, both need
 **Fix verified end-to-end.** The corrected parser now extracts `{lat: 22.5, lng: -43.2}` from the GPS-tagged JPEG, and the upload handler wiring (`await readExifGps(file)` → uses result for coordinates) is confirmed present. The upload flow calls `readExifGps` correctly — the bug was purely in the parser's RATIONAL dereferencing.
 
 Let me run the local pre-push test suite (node --check on the fixed file) and confirm only the intended hunks changed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean: both scripts pass `node --check`, and the diff is exactly the two corrected lines (the two buggy `readRat(e+8/e+12/e+16)` lines replaced with proper TIFF-offset dereferencing). Pushing the fix:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #78 opened. Merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -984,6 +997,7 @@ It did not pickup the lat and long in the browser
 ### 🤖 Autopilot
 
 Gary — let me check two things right away: whether the beta site has actually picked up the fix yet, and what GPS data the photo you're testing with actually carries.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -994,6 +1008,7 @@ Two important findings already:
 2. **Gary's new test photo is a `.HEIC` file** (iPhone format) — and my parser has a **JPEG-only guard** (`file.type.indexOf('image/jpeg') === -1 → null`), which would reject HEIC outright.
 
 Let me confirm what the live page actually serves and check whether the HEIC carries GPS:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1009,6 +1024,7 @@ So there are **two fixes needed**, not one:
 - **Fix B (new):** accept **HEIC/HEIF** photos (iPhone default format) and parse their GPS. Browsers can't natively decode HEIC to a DataView with Exif the way they can JPEG — HEIC GPS lives in an Exif blob inside the HEIC container (different structure than JPEG APP1).
 
 Let me check the beta deployment situation and understand the HEIC structure better:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1037,11 +1053,13 @@ Let me also reconsider the immediate issue: **the beta site isn't even running P
 2. HEIC needs its own parser (new PR)
 
 Let me first check if beta deploy is manual or auto, and whether main has #78 (it does — merged). Let me check how beta gets deployed.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confusing state — the git log shows #78 IS merged into main (1abea27b), but raw main's grep for the fix marker returns 0, and the beta HEAD now shows content-length 48578 (up from 48474 — likely the deploy DID land). My earlier beta fetch may have hit a stale cache. Let me look at the ACTUAL current content of both main and beta:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1052,6 +1070,7 @@ Confusing state — the git log shows #78 IS merged into main (1abea27b), but ra
 2. **But Gary's new test photo is an iPhone HEIC** (`67b8bc6b.HEIC`, 2.8 MB, from an iPhone 12 Pro Max) — with real GPS: **3°5'43.12" S, 52°5'42.17" W**. And the current parser has a **JPEG-only guard**: `file.type.indexOf('image/jpeg') === -1 → null` → **HEIC is rejected outright before any parsing**.
 
 So the remaining failure is **HEIC support**. Let me inspect the upload/downscale/submit flow to see what HEIC handling requires end-to-end:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1074,6 +1093,7 @@ So for Gary testing on an iPhone (he's clearly on iOS — HEIC, front camera, "a
 This is doable in JS but ~80-120 lines and only matters for Apple devices (Safari). Let me verify the box structure of this HEIC to write a correct parser.
 
 Let me dump the box structure:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1205,4 +1225,60 @@ Gary re-tested and it still failed. I found **two separate causes**:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → cd /tmp && curl -sL -o beta_root_now.html https://beta.sunmint.truesight.me/ && echo "size: $(wc -c < beta_root_now.html)" && echo "=== fix ; cd /tmp && echo "=== extract readExifGps from LIVE beta page ===" && python3 - <<'EOF' import re s = open('beta_root_now.html', encoding='ut; cd /tmp && echo "=== HEIC structure - where is Exif? ===" && exiftool -G1 -s /tmp/tg_attachments/67b8bc6bb0cb4fb582109172b4e1af17.HEIC 2>/de; …(+15 more)
 • `merge pr` → ✅ PR #79 on sunmint_beta merged successfully (sha: d829145155aff85b0f8e4c429312a402a2b8ec7d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/67b8bc6bb0cb4fb582109172b4e1af17.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+Inspecting the attached HEIC — checking its format, whether this copy retains EXIF GPS, and confirming the GPS coordinates.
+
+
+### 🤖 Autopilot
+
+This is the **original HEIC** (2.86 MB, full EXIF intact — not a Telegram-stripped copy). It carries complete GPS metadata:
+- **Lat: 3°5'43.12" S** → **-3.095311**
+- **Lng: 52°5'42.17" W** → **-52.095047**
+- iPhone 12 Pro Max (front camera), GPS accuracy ~3.4 m, taken 2026-09-02 18:27:41 (-03:00)
+
+Let me verify my deployed HEIC parser (PR #79) extracts exactly these coordinates from this original file:
+
+
+### 🤖 Autopilot
+
+Verified — the deployed parser (PR #79, now in main) extracts **exactly** the exiftool-confirmed coordinates from this original HEIC: `{lat: -3.095311, lng: -52.095047}`. Persisting this to the transcript for future reference:
+
+
+### 🤖 Autopilot
+
+## Attached file inspected — HEIC with full GPS metadata
+
+**File:** `67b8bc6bb0cb4fb582109172b4e1af17.HEIC` (2.86 MB, iPhone HEIC, **original — EXIF intact**)
+
+**GPS coordinates embedded (exiftool-confirmed):**
+
+| Field | Value | Decimal |
+|---|---|---|
+| Latitude | 3° 5' 43.12" **S** | **-3.095311** |
+| Longitude | 52° 5' 42.17" **W** | **-52.095047** |
+| Altitude | 141.4 m ASL | — |
+| GPS accuracy | ±3.38 m | — |
+| Timestamp | 2026-09-02 18:27:41 (-03:00) | — |
+| Camera | iPhone 12 Pro Max, front 2.71mm f/2.2 | — |
+
+**Parser check (PASS):** I ran the deployed `readExifGps` (sunmint_beta main — PR #79 HEIC support) against this exact file — it extracts **`{lat: -3.095311111111111, lng: -52.09504722222223}`**, matching exiftool to the decimal.
+
+**Why this matters for your UAT:** this is the *original* file (the earlier Telegram-delivered copy of the JPEG had EXIF stripped; this HEIC came through intact). If you upload **this file** to `beta.sunmint.truesight.me`, the page should now show **lat -3.095311 / lng -52.095047** pulled from the photo — assuming the beta deploy has picked up PR #79 (worth a cache-refresh / hard reload before testing).
+
+Content persisted to the session transcript for cross-session recall.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/tg_attachments && ls -la 67b8bc6bb0cb4fb582109172b4e1af17.HEIC && file 67b8bc6bb0cb4fb582109172b4e1af17.HEIC && echo "=== exiftool G; cd /tmp && python3 - <<'PYEOF' import re, subprocess, urllib.request # pull readExifGps from true main (has #78 + #79) s = urllib.request.ur
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-09-03/89333eec9a08/transcript.md
 
