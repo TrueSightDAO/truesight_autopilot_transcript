@@ -1468,41 +1468,49 @@ Go signal received — executing the two deploy gates (dao_protocol v4 catalog d
 ### 🤖 Autopilot
 
 Go received — executing the approved deploys (dao_protocol v4 + sunmint beta→prod) plus the ready `lookup_event_docs` PR. Starting with the frontend promotion and scouting the dao_protocol deploy path in parallel.
+[2 tool result(s) compacted: sync_beta_to_prod, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SunMint prod synced successfully (deploy ledger recorded). Now verifying prod serves the new code and connecting to the dao_protocol box with the correct identity key for the v4 catalog deploy.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod now serves all new features (byte-identical to beta). Connected to the dao_protocol box. Let me locate the dao_protocol deployment and its git state before pulling v4.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key finding: the dao_protocol box is **already at v4 commit 8265be2 (#155)** — the pull happened. The question is whether the service was **restarted** to load v4. Let me check the live catalog version and service start time.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Live catalog now shows **v4** and disk is v4 — but the service process started **before** the v4 commits landed (2026-09-02 11:49 UTC vs commit 08:16 UTC 09-03). The catalog endpoint evidently reads from disk per-request, but the **route dispatch code** (#154 PLOT INVALIDATION routing) was imported at process start. Gary's 👍 authorized the full deploy gate including restart. Restarting to guarantee all v4 code paths are live:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 dao_protocol restarted cleanly, now running the full v4 code (started 08:27 UTC, after all commits). Now verifying the public endpoint and completing the `lookup_event_docs` PR (the other Sophia's ready work).
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both deploys verified. Now pushing the ready `lookup_event_docs` PR (the other Sophia's tested work) with explicit edit hunks from the diff:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hunk 1 search failed — the file on main may differ from my assumption, and my third hunk was malformed (leftover placeholder). Let me fetch the actual current file from main to craft exact hunks.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1665,4 +1673,94 @@ So after upload the user now sees e.g.: *"Photo loaded from gallery. Photo GPS u
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && curl -sL --max-time 20 "https://sunmint.truesight.me/" -o plant_prod.html && wc -c plant_prod.html && echo "=== message strings =; cd /tmp && echo "=== lines 880-960 (gallery upload handler) ===" && sed -n '880,960p' plant_prod.html && echo "=== location fields / lat-lng; cd /tmp && echo "=== pt strings 355-375 ===" && sed -n '355,375p' plant_prod.html && echo "=== en strings 412-432 ===" && sed -n '412,432p' ; …(+3 more)
 • `merge pr` → ✅ PR #80 on sunmint_beta merged successfully (sha: 70cfd1640848bd78a0e40a243c09af267ad12318). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20044] [Handoff context — this Telegram topic (thread 20044) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Turn complete ✅ — Photo GPS coordinates now shown explicitly**
+
+## What I did this turn
+Gary asked: when attaching a photo where the page says "GPS location of the photo used", can we also clearly i
+
+
+### 🤖 Autopilot
+
+Go received — executing the sync: verify beta has the coords change → promote to prod → verify prod serves it.
+
+
+### 🤖 Autopilot
+
+Live beta (49765 bytes) already has the coords change (3 hits), but raw.githubusercontent CDN is lagging (shows pre-#80 content — known issue from earlier). Let me confirm main HEAD via the API, then promote:
+
+
+### 🤖 Autopilot
+
+Main HEAD = 70cfd16408 (#80 merged), and live beta already serves it (49765 bytes, 3 hits of `photoGpsCoords`). Beta is confirmed good. Promoting to prod:
+
+
+### 🤖 Autopilot
+
+Prod synced (ledger: `deploy_20260903T090628Z_sunmint-prod`). Now verifying live prod serves the coords feature:
+
+
+### 🤖 Autopilot
+
+Prod live page still serves the old content (49464 bytes, 0 hits) — but that could be CDN cache lag. Let me check whether the sunmint_prod **repo** actually has the update (vs. the live site cache):
+
+
+### 🤖 Autopilot
+
+Diagnosis clear: the **sunmint_prod repo has the update** (HEAD 93241a6b, raw grep = 3 hits of `photoGpsCoords`) — but the **live GitHub Pages site is serving a cached copy** (etag `6a992f33-c138`, `cache-control: max-age=600`, `x-cache: HIT`, `age: 249`). GitHub Pages caches up to 10 minutes. The sync only landed moments ago, so the edge cache hasn't expired yet.
+
+Let me confirm by comparing against the beta URL's headers (beta showed the change immediately because it had been serving it longer), and wait for cache expiry with a watcher:
+
+
+### 🤖 Autopilot
+
+The watcher needs a topic context. I'll poll manually with a bounded wait loop instead, checking for cache expiry:
+
+
+### 🤖 Autopilot
+
+Prod is now live with the coords feature. Let me do the final byte-verification and report to the thread:
+
+
+### 🤖 Autopilot
+
+Prod now serves the coords feature — **byte-identical to beta** (md5 match `391328ee`), 3 hits of `photoGpsCoords`. Reporting to the thread:
+
+
+### 🤖 Autopilot
+
+**Turn complete ✅ — Photo GPS coordinates live on production**
+
+## What I did this turn (executing the 👍 go)
+1. **Verified beta** had the coords change live (49,765 bytes, 3 hits of `photoGpsCoords`); confirmed main HEAD = #80 via GitHub API (raw CDN was lagging, as usual)
+2. **Promoted to prod** — `sync_beta_to_prod('sunmint_prod')` succeeded (deploy ledger: `deploy_20260903T090628Z_sunmint-prod`)
+3. **Cache hiccup diagnosed:** prod repo had the update (HEAD 93241a6b, raw grep 3 hits) but the live site served a cached copy (GitHub Pages `max-age=600`, `x-cache: HIT`) — polled until expiry
+4. **Verified live:** prod now **byte-identical to beta** (md5 `391328ee`, 49,765 bytes), `photoGpsCoords` present ×3
+5. **Reported to thread 20044** (https://t.me/c/3919341801/20044)
+
+## Final state
+- ✅ **Production live:** uploading a gallery photo with GPS now shows the actual coordinates in the status line, e.g. *"Photo loaded from gallery. Photo GPS used for location. Photo GPS coordinates — Latitude: -3.095311, Longitude: -52.095047."*
+- ✅ All previous work live on prod: gallery upload + EXIF-GPS + HEIC (tree planting), gallery upload (monitor), deselect ✕ (limites), dao_protocol v4 catalog
+- ⏸️ **10-tree batch (Cacau – Hybrid): still paused** per your instruction — no entries fired
+
+---
+
+## RESUME HERE
+Gary to **test on production** (`sunmint.truesight.me`) by uploading the HEIC photo — expect the lat/lng text to appear. If it passes:
+- Say the word to resume the 10-tree batch (Trees 2–10, Cacau – Hybrid) against the v4 contract, and I'll run + verify the ledger rows.
+- Or flag any further UI tweaks (e.g. same coords display on the monitor/limites pages, or a dedicated location readout field rather than the status line).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → verified beta live (49765B, 3× photoGpsCoords) + main HEAD 70cfd164 (#80); sync_beta_to_prod succeeded (deploy_20260903T090628Z_sunmint-prod); detected GitHub Pages 10-min cache (etag 6a992f33, x-cache HIT); polled until live (3 hits); final md5 MATCH beta (391328ee)
+• `post to telegram topic` → https://t.me/c/3919341801/20044
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && echo "=== beta current ===" && curl -sL --max-time 20 "https://beta.sunmint.truesight.me/" -o plant_beta_live.html && wc -c plant; cd /tmp && echo "=== main HEAD via API ===" && curl -sL --max-time 20 "https://api.github.com/repos/TrueSightDAO/sunmint_beta/commits/main" ; cd /tmp && echo "=== PROD live after sync ===" && curl -sL --max-time 20 "https://sunmint.truesight.me/" -o plant_prod2.html && wc -c plant_; …(+3 more)
 
