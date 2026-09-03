@@ -1151,11 +1151,13 @@ Another file from the set (`2c6b2aac` — T7). Quick verification and count chec
 ### 🤖 Autopilot
 
 `2c6b2aac` verified (T7, unchanged) — and another new arrival (`cd6887a2`) pushed the count to **13**. Let me get its GPS and re-run the consolidated analysis:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Another new arrival (`cd6887a2`, 18:19:24, southernmost point yet) — count is now **13 HEIC**. Three of these (18:18, 18:19, 18:31) sit *outside* the 18:42–19:26 tree-walk timeline. Let me render the 13 points as a relative map so we can see the geometry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1421,4 +1423,52 @@ Say the word and I'll run it — or just answer the 4 questions and I'll registe
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && ls -la 1d6a3a4ce1ea407ebde3f61954735284.HEIC && md5sum 1d6a3a4ce1ea407ebde3f61954735284.HEIC && exiftool -s -GPSLa
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] status
+
+
+### 🤖 Autopilot
+
+The count jumped from 14 to **18 HEIC** — 4 new originals just arrived. Let me identify them:
+
+
+### 🤖 Autopilot
+
+The 4 "new" arrivals have timestamps/sizes exactly matching the 4 corner HEICs I already catalogued — likely duplicate re-uploads with new random names. Let me confirm via md5:
+
+
+### 🤖 Autopilot
+
+Confirmed — all 4 "new" arrivals are **byte-identical duplicates** (same md5) of the 4 corner HEICs I already catalogued, just re-uploaded with random names. No new content. (That's why the folder keeps growing: 18 HEIC files on disk = 14 unique + 4 dupes.)
+
+## 📊 STATUS — Fazenda Bom Sucesso registration
+
+### ✅ Complete
+| Step | Result |
+|---|---|
+| 14 unique originals received | 10 tree HEICs + 4 corner HEICs (all GPS intact) |
+| GPS extraction | ✅ all 14 have lat/lng (iPhone 12 Pro Max, 2026-09-02) |
+| Duplicate re-uploads identified | ✅ 5+ re-uploads confirmed byte-identical (md5 match) |
+| Plot polygon built (4 corners) | ✅ ~1.02 ha |
+| Tree spacing check (haversine) | ✅ 9/10 ≥ 7 m apart; **3 tight pairs <3 m flagged** |
+| Containment check (10 trees in plot) | ✅ **9/10 inside; `2c6b2aac` OUTSIDE** by ~48 m |
+| Map delivered | ✅ `bom_sucesso_map.png` posted to this thread |
+
+### ⏳ Blocked on your 4 decisions
+1. **Tight pairs** — 193eca20↔1d6a3a4c (1.4 m/11 s — likely same tree), 95dd596c↔a9cf65d0 (2.0 m), 2c364eb3↔b08309c1 (2.2 m) → **dedupe or keep all?**
+2. **`2c6b2aac` outside polygon** → adjust corners or register outside plot?
+3. **Species + planter** names for events (default guess: Cacao, planter?)
+4. **Pledge QR linkage** — yes/no?
+
+### 🔜 Ready to execute once answered
+Register trees (TREE PLANTING events with lat/lng + photo evidence) → register plot with 4 GPS corners → containment documented → map/geojson update → ledger rows reported.
+
+**Fastest path:** reply "register all 10 as-is, cacao, planter [name]" and I'll go, flagging the tight pairs + the outside-tree in the ledger. Or answer the 4 questions individually. Which way?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/tg_attachments && echo "HEIC count: $(ls *.HEIC 2>/dev/null | wc -l)"; echo "JPG count: $(ls *.jpg 2>/dev/null | wc -l)"; echo "---m; cd /tmp/tg_attachments && ls -lat *.HEIC | head -8; echo "---new files GPS---"; for f in $(ls -t *.HEIC | head -4); do echo "== $f"; exiftoo; cd /tmp/tg_attachments && echo "=== new arrivals vs known corners ==="; md5sum 5b199d8b26684165ac748e4f95ab57cd.HEIC 70f17ae18dca47b282704bd
 
