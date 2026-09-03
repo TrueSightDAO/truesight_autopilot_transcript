@@ -1828,6 +1828,7 @@ Let me pull the exact raw message Edgar rendered into Telegram Chat Logs to conf
 ### 🤖 Autopilot
 
 Let me see the full main processing function — specifically what happens to Media/Coordinates after the upsert (does a matched/created row get its GPS+media written?):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1882,31 +1883,37 @@ https://sunmint.truesight.me/limites-da-fazenda/
 ### 🤖 Autopilot
 
 Let me look at that page's underlying contract — checking what `limites-da-fazenda` is and how it submits boundary registrations:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a `SUNMINT_BOUNDARY_SUBMISSION_PLAN.md` — let me read it to understand the exact intended submission contract:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary's pointing me at the actual farmer UI — `limites-da-fazenda` — so I should drive the **same contract that page uses**, not a hand-rolled submission. Let me fetch the page and find its source:
+[2 tool result(s) compacted: http_fetch, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The page is the live farmer UI. Let me read the rest of its HTML/JS to extract the exact submission contract it uses (field labels + event text):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the page's actual submission JS — the part that constructs the boundary event — so I match its exact contract:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the full submission contract — the exact text format the live page uses:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1960,6 +1967,7 @@ Want me to go ahead with that re-submission (UI-format, 4 HEICs attached) next t
 ### 🤖 Autopilot
 
 Gary wants the clean re-submit (option 1) now, parser-bug fix after. Let me get the exact field contract and the already-mirrored media URLs in parallel:
+[2 tool result(s) compacted: lookup_event_docs, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2089,4 +2097,94 @@ The UI-format re-submission propagated: **`SunMint Plots` tab now has PL-002 —
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp/tok_r 2>/dev/null && find . -name "process_farm_boundary_evidence.gs" 2>/dev/null | head -3; echo "---"; grep -n "function grab\|gra; cd /tmp/tok_r && F=google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_farm_boundary_evidence.gs && echo "=; cd /tmp/tok_r && echo "=== remote ===" && git remote -v | head -2 && echo "=== node? ===" && which node || echo "no node" && F=google_app_sc; …(+2 more)
 • `merge pr` → ✅ PR #458 on tokenomics merged successfully (sha: 7f767af9d30cea481a38e84cd5fa6fb89575e726). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] Sure. Go clean up the two mangled rows 
+
+I will attach all the photos of the trees I took.
+
+Figure out which 10 to use where each represent a distinct tree
+
+
+If there are multiple photos for the same tree pick the ones where there are smiley faces in it
+
+
+### 🤖 Autopilot
+
+Go received — two tasks: (1) clean up the two mangled plot rows, (2) prepare to select 10 distinct-tree photos (preferring smiley-face shots) once you attach them.
+
+First, let me find the established mechanism for cleaning/invalidating mangled plot rows (TEST-P1 was invalidated via an "Invalidated By" field — I want to use the same sanctioned path, not a raw hand-edit):
+
+
+### 🤖 Autopilot
+
+There's a sanctioned invalidation handler — `process_plot_invalidation.gs`. Let me read it to understand the exact event format to invalidate the two mangled rows (rather than raw hand-editing):
+
+
+### 🤖 Autopilot
+
+Gary authorized cleanup of the two mangled rows, and there's a **sanctioned path**: `[PLOT INVALIDATION EVENT]` (soft-invalidate, never delete, server-side governor/sentinel gate). Let me read the rest of that handler to get the exact submission format, and check whether my identity (Sophia) clears the governor/sentinel allowlist via dao_members.json:
+
+
+### 🤖 Autopilot
+
+The invalidation path requires the retractor email to be an **auto-derived governor/sentinel** (from dao_members.json). Let me check which emails have governor/sentinel roles, so I submit with a retractor email that clears the gate (Gary authorized this, so his governor email is the natural retractor):
+
+
+### 🤖 Autopilot
+
+The invalidation gate clears for **sentinels** — and Sophia (admin+sophia@truesight.me) is a sentinel. Gary (governor) explicitly authorized this cleanup, so a sentinel acting on his instruction is within the design. Let me verify the event format before submitting:
+
+
+### 🤖 Autopilot
+
+The invalidation handler isn't in Edgar's event catalog, but my earlier FBE submission proved Edgar renders submissions into the Telegram Chat Logs that the GAS handlers scan. I'll submit the `[PLOT INVALIDATION EVENT]`s the same way — with **Sophia (sentinel)** as retractor email (clears the server-side governor/sentinel gate), targeting the two mangled rows Gary flagged:
+
+
+### 🤖 Autopilot
+
+Both invalidation events submitted. Propagation to the sheets is async (Edgar → Telegram Chat Logs → GAS `processPlotInvalidationFromTelegramChatLogs` cron). Let me verify they landed — checking the invalidation tracking tab and whether the plots rows flipped to `invalid`:
+
+
+### 🤖 Autopilot
+
+First invalidation **confirmed processed** — the `- Boundary Type: approx` row is now `invalid` (Invalidated By: admin+sophia@truesight.me, 03:02:10). The second (`- Submission Source: e2e-uat`) is still propagating (async cron — tracking shows only the first). Let me re-check whether it landed:
+
+
+### 🤖 Autopilot
+
+Both invalidation events **PROCESSED** in the tracking tab. Final confirmation that both mangled plots rows now show `invalid` in the source-of-truth sheet:
+
+
+### 🤖 Autopilot
+
+## ✅ Both mangled rows cleaned up — via the sanctioned invalidation path
+
+I used the official `[PLOT INVALIDATION EVENT]` flow (server-side governor/sentinel-gated, soft-invalidate — never delete) rather than raw hand-editing. Both events processed and confirmed in the source-of-truth sheet:
+
+| Plot ID (mangled) | Plot Name | Status now | Invalidated By |
+|---|---|---|---|
+| `- Boundary Type: approx` | Fazenda Bom Sucesso (bad row) | **`invalid`** ✅ | admin+sophia@truesight.me (sentinel) |
+| `- Submission Source: e2e-uat` | Lote Teste E2E Plotfirst | **`invalid`** ✅ | admin+sophia@truesight.me (sentinel) |
+
+**The authoritative row stands:** `PL-002` — Fazenda Bom Sucesso — `proposed`, boundary `approx` — untouched and clean. Both invalidated rows now drop out of the farm dropdown and the impact map (`build_plots_geojson.py` skips `invalid`), so the plot registry is tidy.
+
+Tracking logged in the `Plot Invalidation` tab with full reasons (both cite the empty-`Plot ID` line-bleed, superseded by PL-002, parser fixed in PR #458). The plots-index rebuild ping fired on invalidation.
+
+---
+**Now ready for the tree photos.** 📸
+
+Send me all the tree photos you took. When they arrive I will:
+1. **Group them by tree** — using GPS proximity (same-tree clusters at the ~1.4–2.2 m / near-identical-coords level) **+** capture-time gaps (your digging-time heuristic).
+2. **Pick the 10 photos, one per distinct tree** — and where a tree has multiple photos, **prefer the ones with smiley faces** (I'll run smile detection over the candidates and choose accordingly).
+3. Present my selection table (file → tree → why chosen) for your confirmation before registering.
+
+Go ahead and attach them — I'll handle the dedup and smiley-priority selection.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/tok_r 2>/dev/null && F=google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_plot_invalidation.gs && ; curl -s https://raw.githubusercontent.com/TrueSightDAO/treasury-cache/main/dao_members.json | python3 -c " import json,sys d=json.load(sys.s
+• `submit contribution` ×2 → Contribution submitted successfully.
 
