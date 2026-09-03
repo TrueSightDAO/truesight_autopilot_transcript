@@ -1145,6 +1145,7 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 Another file from the set (`2c6b2aac` — T7). Quick verification and count check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1386,4 +1387,38 @@ Meanwhile — is there anything else in the 14 files you want me to look at (e.g
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && ls -la 193eca20029547e8b7e7d6cffd8a2167.HEIC && md5sum 193eca20029547e8b7e7d6cffd8a2167.HEIC && exiftool -s -GPSLa
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/1d6a3a4ce1ea407ebde3f61954735284.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+Another from the set (`1d6a3a4c` — T4). Quick verification:
+
+
+### 🤖 Autopilot
+
+`1d6a3a4c` verified (T4, unchanged). Count steady at **14 HEIC**, no new arrivals. Nothing new to extract.
+
+## Still waiting on 4 registration decisions
+
+All **14 originals** catalogued with GPS. The ball's in your court on:
+
+1. **Tight pairs** → dedupe or keep all 10? (193eca20↔1d6a3a4c 1.4 m / 11 s apart is the strongest duplicate candidate)
+2. **`2c6b2aac` outside polygon** → adjust corner boundary or register outside the plot?
+3. **Species + planter** names
+4. **Pledge QR linkage?**
+
+**One quick observation** to help with #1 — I now have the *photo pair* in hand (193eca20 = T3 and 1d6a3a4c = T4). Their GPS is 1.4 m apart, timestamps 11 s apart (18:47:03 → 18:47:14), same walk. Want me to do a pixel-level comparison of these two HEICs (like I did to match the corners) to confirm whether they show the **same tree from two angles** or **two different saplings**? That would give us evidence-based dedupe instead of guessing.
+
+Say the word and I'll run it — or just answer the 4 questions and I'll register as instructed.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && ls -la 1d6a3a4ce1ea407ebde3f61954735284.HEIC && md5sum 1d6a3a4ce1ea407ebde3f61954735284.HEIC && exiftool -s -GPSLa
 
