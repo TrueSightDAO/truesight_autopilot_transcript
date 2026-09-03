@@ -1516,16 +1516,19 @@ Hunk 1 search failed — the file on main may differ from my assumption, and my 
 ### 🤖 Autopilot
 
 Interesting — the file on **main already contains all the SunMint changes** (intent guidance, important fields, fallback docs all present). The local `/tmp/tsap` clone is stale (cloned 08:18 before the go). Let me check whether the PR was already merged by another instance or if I need to reconcile.
+[2 tool result(s) compacted: list_prs, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `lookup_event_docs` PR was **already merged** — #397 at 08:23 UTC by the other instance (my local clone was simply stale). All three units are complete. Let me do a final end-to-end verification sweep.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three workstreams are complete and verified. Writing the final summary to the thread:
+[1 tool result(s) compacted: post_to_telegram_topic — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1592,21 +1595,25 @@ Want me to kick off the tree batch now, or are you testing the photo flow first?
 ### 🤖 Autopilot
 
 Gary — no more entries will be fired; that batch is paused. Let me look at the current tree planting page code to see where that "GPS location of the photo used" message is set and how to add the explicit lat/lng display.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the full upload handler around line 917 and the location fields to understand where lat/lng get set and displayed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the exact i18n strings (photoGpsFound etc.) and how lat/lng are shown elsewhere on the page:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clear picture. When a gallery photo with GPS is uploaded, the code sets `latitude`/`longitude` from the photo (line 914) but only shows the generic message "Photo GPS used for location." — the actual coordinates never appear to the user. Let me check the `t()` helper and the device-GPS fallback path so I add the coordinate display cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1614,6 +1621,7 @@ Clear picture. When a gallery photo with GPS is uploaded, the code sets `latitud
 Prod and beta are identical (same md5), so I'll make this change beta-first. Clear diagnosis: when a gallery photo with GPS is used (line 914), the code stores the coords but only shows the generic "Photo GPS used for location." — the actual latitude/longitude never display. I'll add them.
 
 Let me apply the edit locally, verify, and push (one PR):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1763,4 +1771,109 @@ Gary to **test on production** (`sunmint.truesight.me`) by uploading the HEIC ph
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp && echo "=== beta current ===" && curl -sL --max-time 20 "https://beta.sunmint.truesight.me/" -o plant_beta_live.html && wc -c plant; cd /tmp && echo "=== main HEAD via API ===" && curl -sL --max-time 20 "https://api.github.com/repos/TrueSightDAO/sunmint_beta/commits/main" ; cd /tmp && echo "=== PROD live after sync ===" && curl -sL --max-time 20 "https://sunmint.truesight.me/" -o plant_prod2.html && wc -c plant_; …(+3 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: https://sunmint.truesight.me/
+
+The tree registration date should be the date the photo is created. This should also be indicated
+
+For
+https://sunmint.truesight.me/monitor-tree-growth/
+
+We should also allow selection of photos from gallery as well as when it is attached use. the photo creation date if that route is used.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=20044]
+
+
+### 🤖 Autopilot
+
+Let me analyze these two new requirements (tree registration date = photo creation date; monitor page gallery + photo date). I'll investigate the current date handling on both pages first — read-only.
+
+
+### 🤖 Autopilot
+
+Key finding: the plant page sets `plantingTime = new Date().toISOString()` at **submit time** (line 1042) — not from the photo. Let me examine both pages' date flows in detail:
+
+
+### 🤖 Autopilot
+
+The regex didn't match (maybe different formatting). Let me search for the function and EXIF/DateTime handling more directly:
+
+
+### 🤖 Autopilot
+
+Let me read the full `readExifGps` function (lines 794–890) and the upload handler (lines 890–960):
+
+
+### 🤖 Autopilot
+
+Let me see the rest of `handleTreePhotoFile` (900–980) and the submit function date flow (1040–1070), plus the monitor page's capture/date handling:
+
+
+### 🤖 Autopilot
+
+Now the monitor page. Let me examine its current gallery/capture/date flow:
+
+
+### 🤖 Autopilot
+
+Clear requirements. Let me nail down the design decisions before building:
+
+**Plant page (`/`):** today `plantingTime = new Date().toISOString()` at submit (line 1042) — always "now", never the photo's date. The EXIF parser only reads GPS, not the photo creation date (EXIF `DateTimeOriginal`, tag 0x9003). So: **extend the parser to also return the photo's creation date, use it as the Planting Time when a gallery photo is used, and show it in the status message.**
+
+**Monitor page:** gallery upload already exists on prod (PR #76, verified synced). New ask: when that route is used, the measurement date should come from the photo. That page has no EXIF date reader yet.
+
+Let me fetch the true current main files (API — raw CDN lags) and map exact anchor regions:
+
+
+### 🤖 Autopilot
+
+Let me map the remaining regions on both pages (state vars, EXIF end, monitor gallery handler + date) to design precise edits:
+
+
+### 🤖 Autopilot
+
+Now I have the plant page mapped. This turn is already deep — let me design the plan and start with the **plant page** change (date = photo creation date), since it's the clearest requirement, then handle monitor next turn.
+
+**Design for plant page:**
+1. Extend `readExifGps` → return `{ lat, lng, takenAt }` where `takenAt` = EXIF `DateTimeOriginal` (tag 0x9003 in IFD0/SubIFD) parsed to ISO, or the file's `lastModified` as fallback, or null.
+2. Store `photoTakenAt` in state when a gallery photo is used.
+3. In submit: `plantingTime = photoTakenAt || new Date().toISOString()`.
+4. Show the date in the status message (i18n) so the farmer sees "Planting date used: …".
+
+Let me verify what EXIF DateTimeOriginal looks like in this HEIC and a typical JPEG, and check whether tag 0x9003 sits in IFD0 or the SubIFD (0x8769):
+
+
+### 🤖 Autopilot
+
+Let me finish mapping the monitor page's gallery handler and date submission, then I'll present the plan:
+
+
+### 🤖 Autopilot
+
+I have both pages mapped. Now the design is clear. Rather than over-engineer, let me confirm the exact scope with the plan before building (this turn is deep; the changes span both pages and need care):
+
+## Plan for both requirements
+
+**Plant page (`/`)** — currently `plantingTime = new Date().toISOString()` at submit (always "now"). Change to:
+1. Extend `readExifGps` → also return `takenAt` (photo creation date): parse EXIF `DateTimeOriginal` (tag 0x9003 in the Exif SubIFD, 0x8769) → ISO string, combining with GPS date if separate; fallback to `file.lastModified`; null if unavailable.
+2. Store `photoTakenAt` when a gallery photo is used; when set, `plantingTime = photoTakenAt` instead of now.
+3. **Show the date**: extend the success line — *"Photo GPS coordinates — Latitude…, Longitude…."* + *"Planting date from photo: 2026-09-02 18:27:41"* so the farmer sees what date got registered.
+
+**Monitor page** — same principle:
+1. Add an EXIF date reader (reuse the parser pattern) for gallery files in `handleGalleryFile`
+2. When a gallery photo is used, `measuredAt = photoTakenAt || new Date().toISOString()`
+3. Indicate the date used in the status
+
+**One design question for you, Gary:** for the **monitor** page there are **two** photos (close-up + context) that can each come from the gallery — if they have *different* creation dates, which one should be the measurement date? Options: (a) the close-up photo's date (primary evidence), (b) the earlier/later of the two, (c) show both and let you pick. My suggestion: **(a) close-up photo date** (it's the tree-specific measurement evidence), context photo is supplementary.
+
+I'll build both changes beta-first (PR each), verify against the HEIC + a GPS JPEG with `node --check`, then sync to prod after your review. Want me to proceed with close-up-date-priority on the monitor page, or a different rule?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /tmp && curl -sL --max-time 20 "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/index.html" -o plant_now2.html 2>/dev/nu; cd /tmp && echo "=== PLANT: readExifGps full + does it read DateTime? ===" && python3 - <<'EOF' import re s = open('plant_now2.html', encodi; cd /tmp && echo "=== find readExifGps ===" && grep -n "readExifGps\|Exif\|exif\|DateTime\|EXIF" plant_now2.html | head -30; …(+7 more)
 
