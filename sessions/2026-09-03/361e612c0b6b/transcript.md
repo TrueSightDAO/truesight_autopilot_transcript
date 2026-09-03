@@ -946,6 +946,7 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 This is one of the 9 HEIC originals already processed (`b08309c1` — GPS extracted earlier). Let me verify it's unchanged and check whether the 10th HEIC arrived meanwhile:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -985,21 +986,25 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 Duplicate re-upload of `35a3744d` — already in my processing set. Quick verification:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **The 10th HEIC has arrived** — count is now 10. Let me find the new file and extract its GPS:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **All 10 HEIC files are now on disk.** Let me run the complete pairwise-spacing analysis on the full set:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **All 11 HEIC files now on disk** (the 10 you sent plus one earlier straggler, `70234a89` from 18:18). But that last file makes the count question sharper — let me list what's actually here and present the full picture:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1064,6 +1069,7 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 Duplicate re-upload of `a9cf65d0` (T10) — already in my processing set. Quick verification:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1287,4 +1293,50 @@ Give me those four answers and I'll execute end-to-end. If you'd rather I just p
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → cd /tmp/tg_attachments && ls -la 6c9b7665e24c43348008d71bd8f303c6.HEIC && md5sum 6c9b7665e24c43348008d71bd8f303c6.HEIC && exiftool -s -GPSLa; cd /tmp/tg_attachments && exiftool -s -GPSLatitude -GPSLongitude -DateTimeOriginal -Make -Model bf9c8484fc32430fb9ba2ff3a451de4c.HEIC 2>/dev; cd /tmp/tg_attachments && python3 -c "import pillow_heif; print('pillow_heif OK')" 2>/dev/null || echo "no pillow_heif"; which heif-convert ; …(+3 more)
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/17016c6014254867b3a74fbd0145911e.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+Another from the set (`17016c60` — tree T1). Quick verification + count check:
+
+
+### 🤖 Autopilot
+
+`17016c60` verified (T1, unchanged). Count steady at **14 HEIC** — no new arrivals. The set is complete and fully catalogued:
+
+## Full inventory — 14 HEIC, all GPS-bearing, iPhone 12 Pro Max, 2026-09-02 evening
+
+**10 tree photos** (all inside or near plot):
+193eca20 · 1d6a3a4c · 2c364eb3 · b08309c1 · 35a3744d · 17016c60 · 6c9b7665 · 95dd596c · a9cf65d0 · 2c6b2aac
+
+**4 corner photos** (= the GPS-less JPGs you sent first, matched pixel-identically):
+- 70234a89 (= 2ca18c0e) · cd6887a2 (= 2b3a0fb1) · bf9c8484 (= eb5ec7ef) · 7f77424b (= 303b5b8d)
+
+## ✅ Analysis complete (map sent in previous message)
+
+- **Plot polygon**: ~1.02 ha from 4 corners
+- **9/10 trees inside** the plot; **2c6b2aac outside** (~48 m west)
+- **3 tight pairs** < 3 m flagged (193eca20↔1d6a3a4c at 1.4 m most likely a duplicate)
+
+## ⏳ Waiting on your 4 decisions to register
+
+1. **Tight pairs** — duplicates to dedupe, or all distinct?
+2. **2c6b2aac** — outside polygon: adjust corners, or register outside plot?
+3. **Species + planter** for the events
+4. **Pledge QR linkage** — yes/no?
+
+Once you answer (or say "register with defaults"), I execute end-to-end: TREE PLANTING events per tree with lat/lng + photo evidence, plot registration with the 4 GPS corners, containment documented in the ledger, and map/geojson updates.
+
+I'll pause here rather than re-scan the same verified file — nothing new to extract from `17016c60`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && ls -la 17016c6014254867b3a74fbd0145911e.HEIC && md5sum 17016c6014254867b3a74fbd0145911e.HEIC && exiftool -s -GPSLa
 
