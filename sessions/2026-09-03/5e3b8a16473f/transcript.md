@@ -114,3 +114,54 @@ So far both photos look like distinct trees. Running manifest saved at `/tmp/tg_
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/tg_attachments && exiftool -c '%.6f' -DateTimeOriginal -OffsetTimeOriginal -GPSLatitude -GPSLongitude -GPSAltitude -GPSPosition -GPS; cd /tmp/tg_attachments && cat > tree_photos_manifest.json << 'EOF' { "job": "10 trees photo dedup - Gary Teh", "site_hint": "Altamira, Para,
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/3ca82aea03f546de8d72f10382727e17.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+Photo #3 in. This one is interesting — captured **5 seconds** before photo #1. Let me add it to the manifest and recompute clustering:
+
+
+### 🤖 Autopilot
+
+**Photo #3 processed** — `3ca82aea03f546de8d72f10382727e17.HEIC`
+
+| Field | Value |
+|---|---|
+| Device | iPhone 12 Pro Max |
+| Captured | 2026-09-02 19:21:10 (UTC−03:00) |
+| Latitude | 3.094178° S |
+| Longitude | 52.095142° W |
+| Altitude | 129.8 m ASL |
+| GPS accuracy | ±14 m ⚠️ (poor) |
+| Heading | 235.6° (SW) |
+
+**Cluster analysis (3 photos so far):**
+
+| Pair | Distance | Time gap | Verdict |
+|---|---|---|---|
+| #1 ↔ #3 | **5.0 m** | **5 s** | **Likely SAME tree** — near-identical time, same heading (~233° vs 236°) |
+| #1 ↔ #2 | 39.3 m | 9:57 | Different tree |
+| #3 ↔ #2 | 43.4 m | 10:02 | Different tree |
+
+**Interpretation:**
+- **#1 (19:21:15) + #3 (19:21:10)** = two shots of the **same tree**, 5 seconds apart. Note #3's GPS is only ±14 m accurate, so its 5 m offset from #1 is well within noise. Same camera heading, same second — treat as one tree → pick **one** representative (either; I'd keep #1 for its tighter GPS lock, unless #3 is sharper — I can compare visually at the end).
+- **#2 (19:31:12)** = a **different tree**, ~40 m away, taken ~10 min later.
+
+Running tally: 3 photos → **2 distinct trees so far**. Manifest updated at `/tmp/tg_attachments/tree_photos_manifest.json`.
+
+Keep sending the rest — once the batch is complete I'll finalize clusters and hand you exactly one distinct photo per tree.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/tg_attachments && exiftool -c '%.6f' -DateTimeOriginal -OffsetTimeOriginal -GPSLatitude -GPSLongitude -GPSAltitude -GPSPosition -GPS; cd /tmp/tg_attachments && python3 - << 'PY' (append photo #3 + pairwise distance/time table)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/tg_attachments && exiftool -c '%.6f' -DateTimeOriginal -OffsetTimeOriginal -GPSLatitude -GPSLongitude -GPSAltitude -GPSPosition -GPS; cd /tmp/tg_attachments && python3 - << 'PY' import json, math, datetime m = json.load(open('tree_photos_manifest.json')) new = { "file": "3c
+
