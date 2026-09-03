@@ -3362,6 +3362,7 @@ Let me read the deploy script to understand the deployment flow (this tells me w
 ### 🤖 Autopilot
 
 Deployment is a git pull + restart on the `dao_protocol_nelanco` box (98.93.94.86) via SSH from a machine with the right key. The `ssh_run` dao_protocol host had a key issue from this shell context. Let me check whether deploy.sh is runnable from the autopilot box (does it have the SSH key/alias?) — testing the ssh alias used by the script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3369,16 +3370,19 @@ Deployment is a git pull + restart on the `dao_protocol_nelanco` box (98.93.94.8
 The autopilot box **can** reach `dao_protocol_nelanco` (hostname `ip-172-31-23-207` responded) — that's the deploy target. The dao_protocol deploy is a standard `git pull` + restart, which is a **production deploy** — per my hard rule I must NOT deploy to production without an explicit governor command. My 👍 go covers the catalog PR + autopilot code PRs (plan units), not a production service restart.
 
 Let me scope this correctly: the tool-layer PR is still valid and needed (intent guidance + important fields + fallback docs are code in the autopilot repo, independent of the live catalog). Let me finish that PR, then flag the deploy as the explicit-gate step. First, local-test the autopilot repo, then make the edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify whether autopilot tests pass on pristine main (baseline) before my change:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **855 passed** on pristine main — clean baseline. Now let me apply the tool-layer edits to `lookup_event_docs.py`: add the three events to `_IMPORTANT_FIELDS`, `_INTENT_GUIDANCE`, and `_FALLBACK_DOCS`. Let me capture exact anchor text first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3528,4 +3532,73 @@ PR opened. Merging per the 👍 go:
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tsap && git diff app/tools/lookup_event_docs.py | head -120
 • `merge pr` → ❌ Failed to merge PR #397 on truesight_autopilot: Refusing to merge PR #397 on truesight_autopilot: CI not green (failing-or-pending: smoke,
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] [Handoff context — this Telegram topic (thread 20065) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ⚠️ Turn complete — PR opened, but merge blocked by CI
+
+**PR: [truesight_autopilot #397](https://github.com/TrueSightDAO/truesight_autopilot/pull/397)** — `feat(lookup_event_docs): add SunMint bound
+
+
+### 🤖 Autopilot
+
+👍 Go received — resuming: diagnose the CI failure on PR #397, fix if needed, and merge.
+
+
+### 🤖 Autopilot
+
+Both CI checks are now **green** (smoke: success, test: success) — the earlier refusal was transient (checks were still pending). Merging now:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn complete — PR #397 merged
+
+**PR: [truesight_autopilot #397](https://github.com/TrueSightDAO/truesight_autopilot/pull/397)** — **merged** (sha `cc821bd2`).
+
+**What happened this turn:**
+- Diagnosed the CI refusal from last turn: both checks (`smoke`, `test`) are actually **green** (success) — the earlier "CI not green" was **transient** (checks were still pending when I attempted the merge).
+- Re-attempted the merge → **succeeded**.
+
+**Full change now live in truesight_autopilot main** (`app/tools/lookup_event_docs.py`):
+1. `_INTENT_GUIDANCE` — +10 intent phrases routing to `FARM BOUNDARY EVIDENCE EVENT` / `TREE PLANTING EVENT` / `PLOT INVALIDATION EVENT`
+2. `_IMPORTANT_FIELDS` — +3 event entries (including TREE PLANTING's **Latitude/Longitude** dual-contract fields)
+3. `_FALLBACK_DOCS` — +3 offline fallbacks with the contract caveats
+
+This completes the **autopilot code surface** of the interface hardening. Combined with dao_protocol #155 (catalog v4) and agentic_ai_context #904 (runbook), all three surfaces now agree on the SunMint submission contracts.
+
+---
+
+**RESUME HERE → next unit (fresh turn):**
+
+**Deploy dao_protocol v4 catalog to the NELANCO box — ⚠️ REQUIRES GARY'S EXPLICIT DEPLOY-GO (production restart, irreversible gate).** Steps when authorized:
+1. SSH to `dao_protocol_nelanco` (98.93.94.86, service `truesight-dao-protocol` :8010) via `ssh_run host='dao_protocol'`: `cd dao_protocol && git pull --ff-only && pip install -e . && sudo systemctl restart truesight-dao-protocol`
+2. Verify: `curl edgar.truesight.me/events-catalog` returns **version 4** with PLOT INVALIDATION present + FBE/TPE synced
+3. Then `deploy_autopilot` so the autopilot box serves the updated `lookup_event_docs` code
+
+**Then the 10-tree registration (final pending unit):**
+- Canary Tree 1 already accepted (species **Cacau - Hybrid**, planter Gary Teh, photo `sunmint/images/20260902_bomsucesso_tree01.jpg`, Location + Lat/Lng)
+- Verify the rendered row landed in `SunMint Tree Planting` tab with lat/lng populated (the earlier submissions were before the catalog/format fixes — check if re-submission is needed for the canary to parse cleanly)
+- Fire **Trees 2–10** in identical format, confirm each "submitted successfully," then verify all 10 rows (lat/lng/species/photo) + report the table
+
+———
+**Done this turn:** checked CI check-runs on commit `5d7833f9` (smoke ✅ + test ✅ — earlier refusal was pending-state transient), merged PR #397 (sha `cc821bd2`).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → curl check-runs on 5d7833f9 → smoke success, test success
+• `merge pr` → ✅ PR #397 on truesight_autopilot merged (sha cc821bd2)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s -H "Accept: application/vnd.github+json" "https://api.github.com/repos/TrueSightDAO/truesight_autopilot/commits/5d7833f9b
+• `merge pr` → ✅ PR #397 on truesight_autopilot merged successfully (sha: cc821bd2009dd517b7bb85db35c05a20aadb3d46). Pull Request successfully merged
 
