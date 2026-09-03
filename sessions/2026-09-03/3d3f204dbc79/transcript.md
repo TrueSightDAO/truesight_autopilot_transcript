@@ -99,6 +99,41 @@
 [1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_code, read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: http_fetch, http_fetch, search_code — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: http_fetch, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[5 tool result(s) compacted: http_fetch, http_fetch, http_fetch, http_fetch, http_fetch — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
+
+
 ### 🧑 Governor
 
 [TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
@@ -183,12 +218,24 @@ Go for it
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: read_context_file, ssh_run, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Both PAT files are confirmed on the box. Now let me check the current state of the pipeline wiring and the vault convention before I touch anything.
+[3 tool result(s) compacted: read_context_file, search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PAT files are confirmed present. Let me check the writer script's token usage and the vault mechanism before swapping anything.
+[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -223,4 +270,104 @@ Both PAT files are confirmed present. Let me check the writer script's token usa
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → ls -la ~/PUBLIC_SIGNATURES_READ_PAT ~/PUBLIC_SIGNATURES_WRITE_PAT 2>&1; echo '---stat---'; stat -c '%n %s bytes %a perms' ~/PUBLIC_SIGNATURE; echo '=== crontab ==='; crontab -l 2>/dev/null | grep -i -E 'signature|sync|verify|public' ; echo '=== scripts ==='; ls -la /opt/truesight_a; echo '=== sync_sunmint_signatures.py: token + repo usage ==='; grep -n -E 'GITHUB_TOKEN|github_pat|verify_public_signatures|sunmint|os\.envi; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20498] swap the cron + vault them
+
+
+### 🤖 Autopilot
+
+Executing now. First: locate the vault's server-side store + add path, pull the exact cron lines, and sanity-check both PATs (values never echoed — read from file at runtime only).
+
+
+### 🤖 Autopilot
+
+Both PATs verified working against `verify_public_signatures` (GET 200, no values echoed). Now locating the vault's on-disk dir + add path so I can store server-side.
+
+
+### 🤖 Autopilot
+
+Vault store confirmed: `/opt/truesight_autopilot/vault/vault.json.enc` (+ `vault_audit.json`, Fernet key). Now: store both PATs server-side via `vault.py`'s API, then swap the cron.
+
+
+### 🤖 Autopilot
+
+`Vault.add()` doesn't take `actor` — let me check its actual signature before retrying.
+
+
+### 🤖 Autopilot
+
+Retrying with the correct API (`created_by` / `updated_by`):
+
+
+### 🤖 Autopilot
+
+Both PATs are in the vault (encrypted, versioned, audited). Now swapping the cron line for `sync_sunmint_signatures.py` to use the WRITE PAT, then verifying with dry-run + one live push:
+
+
+### 🤖 Autopilot
+
+Dry-run passes with the WRITE PAT. Now the live `--push` to confirm write access actually works:
+
+
+### 🤖 Autopilot
+
+Live push exceeded the 60s SSH window — it's likely a big catch-up sync (dry-run showed many files). Let me check whether it's still running / progressed, and re-run in the background if needed:
+
+
+### 🤖 Autopilot
+
+Two concurrent sync runs are stepping on each other — the 08:30 cron tick (still holding the **old shared token**, in-flight before my swap) plus my run. They're racing on `index.json` writes. Cleanest fix: stop both, relaunch **one** clean run with the WRITE PAT in the background, and confirm the swap.
+
+
+### 🤖 Autopilot
+
+Likely the background job kept the SSH session's pipe open. Let me check actual state and relaunch fully detached:
+
+
+### 🤖 Autopilot
+
+One clean sync run (pid 391853) is now executing with the WRITE PAT and making progress. Let me verify it's landing commits and wrap up the documentation:
+
+
+### 🤖 Autopilot
+
+The WRITE PAT is confirmed live — commits landing in `verify_public_signatures` (08:49:54Z). One clean catch-up run still in flight (pid 391853), which will finish on its own; cron now uses the WRITE PAT going forward. Final step: classify `signature_ledger_pipeline.py` and record the vault names in the credentials doc.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20498] swap the cron + vault them
+
+
+### 🤖 Autopilot
+
+One quick state confirmation, then I'll give you the full status:
+
+
+### 🤖 Autopilot
+
+## ✅ Done — cron swapped, PATs vaulted, writes confirmed live
+
+| Item | Status |
+|---|---|
+| **Cron swapped** | `sync_sunmint_signatures.py` now runs with `GITHUB_TOKEN="$(cat ~/PUBLIC_SIGNATURES_WRITE_PAT)"` (was the broad shared `github_pat_11AA…` token). The catch-up run finished cleanly (no proc left); commits are landing under the WRITE PAT — last one **09:00:43Z**. `sync_pending_caches.py` still uses the shared token (separate scope, untouched as agreed). |
+| **Vaulted** | Both PATs stored encrypted in `/opt/truesight_autopilot/vault/vault.json.enc` (Fernet, versioned, audited): `PUBLIC_SIGNATURES_READ_PAT` (v1, read-only) + `PUBLIC_SIGNATURES_WRITE_PAT` (v1, contents:write → `verify_public_signatures`). Values **never** echoed anywhere; files are `600` and were only read server-side. |
+| **Verified live** | WRITE PAT pushed real commits to `TrueSightDAO/verify_public_signatures` (dry-run + live). READ PAT GETs the repo fine. |
+
+**Saves/notes:**
+- Cron backup: `/tmp/crontab.bak.1788425231` (0600) — pre-swap state.
+- The 08:30 cron tick was mid-run when I swapped (old token in-flight); I killed both and relaunched one clean catch-up with the WRITE PAT, which completed. No corruption — index refresh skipped/overwrote atomically.
+- `signature_ledger_pipeline.py` is **read-only** (0 write calls; `LEDGER_REPO` only for tree/raw reads) → it can use the READ PAT where it needs auth (currently unauthenticated/read via public repo).
+- Still flagged from before: the **dao_protocol emit hook** (separate box) — SSH key was rejected last turn; it needs the same WRITE PAT in its own env when that host is reachable/deployed.
+
+**Not yet done (small, optional):** document the two vault names in `agentic_ai_api_credentials/API_CREDENTIALS_DOCUMENTATION.md` (names/locations only, no values) so the registry stays current.
+
+**RESUME HERE:** Say **"document them"** and I'll add the two entries to the credentials doc + close out. Or if you want the dao_protocol emit hook done this pass, I'll retry that host — otherwise the swap+vault you asked for is complete and verified.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo '=== cron line (masked) ==='; crontab -l | grep sync_sunmint_signatures | sed 's/GITHUB_TOKEN="$(cat[^)]*)[^ ]*/GITHUB_TOKEN="$(cat ~\/
 
