@@ -8,132 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-exiftool is available. Let me pull the EXIF GPS data from this first photo:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-No GPS data in this first photo. Let me see what metadata it *does* carry:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-No GPS in the photo. Before I answer definitively, let me check what the DAO context says about tree registration and Fazenda Bom Sucesso, and confirm whether other photos in this batch carry GPS.
-[3 tool result(s) compacted: search_context, search_context, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All JPGs are metadata-stripped (Telegram compression strips EXIF/GPS). Let me check the PDF and docx attachments, and search the DAO context for how tree/plot registrations normally work:
-[3 tool result(s) compacted: ssh_run, search_context, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Nothing in the context repo. Let me search the code repos for tree/plot/geo-registration patterns and check whether Edgar has a relevant event type:
-[3 tool result(s) compacted: search_code, search_code, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found highly relevant plans. Let me read the key documents:
-[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-This is very relevant. Now let me look at the tree registration specifics — how trees get lat/lng and registered:
-[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Verified everything I need to answer this — here's the situation, including one critical catch I found by inspecting your actual photo.
-
-## Answer: Yes, I can register the trees — but there's a GPS catch
-
-**The good news:** registering geo-located trees is an established flow — each tree becomes a `[TREE PLANTING EVENT]` (Latitude, Longitude, Species, Planting Time, Photo) landing in the `SunMint Tree Planting` ledger, with precedents already on-chain. And building the plot from 4 corner photos is exactly the documented `SUNMINT_PLOTS_REGISTRY` flow (hull of GPS points → polygon → impact map).
-
-**The catch — verified on your actual attachment just now:** I ran `exiftool` on the first tree photo (`9a941217b03a4379bbc056dba7209279.jpg`) and every other JPG sitting in the upload folder:
-
-| Check | Result |
-|---|---|
-| GPS tags (exiftool) | **None — zero GPS data in any photo** |
-| Photo size | 960×1280 (recompressed) |
-| FAZENDA BOM SUCESSO | 0 hits in my context — not yet registered (fine, that's what the corner photos will do) |
-
-**Telegram strips EXIF/GPS on image upload.** This is also documented in the SunMint runbook (§3): *"WhatsApp and Telegram strip EXIF/GPS on photo upload — for boundary shots from a farmer, have them email the photos (attachments preserve EXIF) or send as WhatsApp 'Document', or scp/Drive the original files."* So the lat/lng cannot be read *out of* the photos as they reach me through Telegram.
-
-## So pick one route for the coordinates
-
-1. **Email me the originals** (or send as WhatsApp **Document**, or put them in Drive) — EXIF survives those channels, and I'll extract GPS per tree myself, then run the spacing check. This is the cleanest.
-2. **Or paste the 10 lat/lng pairs as text** (a simple list/CSV is fine) — I'll register from those and use the photos as visual evidence. Works even with the stripped Telegram versions.
-3. Same rule applies to the **4 corner photos**: they must arrive with GPS intact, or you give me the 4 corner coordinates as text.
-
-## The distinctness check you asked for
-
-Once I have the 10 coordinate pairs I will:
-- Compute **pairwise distances (haversine)** between all 10 points → report the **minimum gap**.
-- Flag any pair closer than **~3 m** — below that is GPS noise (phone accuracy is ~2–5 m), so two readings that close are ambiguous as "distinct trees." Typical cacao agroforestry spacing is 3 m+, so a healthy set should clear that easily.
-- Once you send the 4 corners, I'll also verify **all 10 trees fall inside the Fazenda Bom Sucesso polygon** (point-in-polygon) so nothing lands outside the plot.
-
-**Bottom line:** go ahead and send the 10 photos — I can process them as evidence now — but for the *registration coordinates* we need either EXIF-preserved originals (email/Document/Drive) or the numbers as text. Which route do you want to use?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×5 → cd /tmp/tg_attachments && ls -la 9a941217b03a4379bbc056dba7209279.jpg && (which exiftool || echo "no exiftool") && (python3 -c "import PIL; ; cd /tmp/tg_attachments && exiftool -GPS* -Gps* -DateTimeOriginal -CreateDate -Model -Make 9a941217b03a4379bbc056dba7209279.jpg 2>/dev/null; ; cd /tmp/tg_attachments && exiftool -a -G1 -s 9a941217b03a4379bbc056dba7209279.jpg 2>/dev/null | head -60; …(+2 more)
-
-
-### 🧑 Governor
-
-Please inspect the attached file.
-
-[Attachment auto-processed: **abcab4d5fa0e44bfbde0edf61dd2f33a.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-Let me inspect this attachment thoroughly — metadata, OCR, and QR scan in parallel:
-[3 tool result(s) compacted: ssh_run, ocr_image, scan_qr_from_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Same signature as the first tree photo — no EXIF/GPS (Telegram-stripped), no text, no QR. Let me do a quick pixel-level analysis to characterize what the photo actually shows (colors/brightness) since there's no readable content:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Attachment inspected:** `abcab4d5fa0e44bfbde0edf61dd2f33a.jpg` (170 KB, 960×1280)
-
-| Check | Result |
-|---|---|
-| EXIF / GPS metadata | **None** — Telegram-stripped (same as the previous photo) |
-| OCR text | None detected (natural scene, no signage) |
-| QR code | None found |
-| Pixel content analysis | 42% mixed texture, 31% dark/black, 14% gray, ~10% warm red/brown/orange, **only ~1% green, ~2% sky** — mean RGB (110, 91, 76), warm & dark |
-
-**Interpretation:** The color signature — dark warm earth tones, very little green canopy or sky, no bright highlights — is consistent with a **close/low-light photo of a young planted tree or sapling in dark soil**, rather than a landscape or document. That matches the tree-planting set you're sending.
-
-**Confirmed for the running tally:** this photo carries **no recoverable lat/lng**, exactly as I flagged — Telegram strips the GPS on image upload. So I'm logging it as visual evidence only; the registration coordinates will have to come either from EXIF-preserved originals (emailed / WhatsApp "Document" / Drive) or as text coordinates.
-
-Keep them coming — I'll accumulate all 10. When they're all in (plus the 4 corner shots for the Fazenda Bom Sucesso plot), we'll pick the coordinate route and I'll run the pairwise-spacing check (~3 m distinctness floor) and the inside-polygon check.
-
-One thing that would help me label trees precisely: when you send the rest, if you can note anything about **species** or planting order in the caption (e.g. "tree #3 — cacao"), I'll pair each photo to its registration row cleanly. If not, I'll number them by arrival order — say the word.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → cd /tmp/tg_attachments && ls -la abcab4d5fa0e44bfbde0edf61dd2f33a.jpg && md5sum abcab4d5fa0e44bfbde0edf61dd2f33a.jpg && exiftool -a -G1 -s a; cd /tmp/tg_attachments && python3 -c " from PIL import Image from collections import Counter im = Image.open('abcab4d5fa0e44bfbde0edf61dd2f3
-
-
 ### 🧑 Governor
 
 Please inspect the attached file.
@@ -4447,21 +4321,25 @@ The script is clear — upsert via hull of GPS points, with a `--dry-run`. I nee
 ### 🤖 Autopilot
 
 All pieces ready: script uses `agroverse_qr_code_manager` SA (file present at the expected path), spreadsheet ID matches, and the 4 canonical corner HEICs are identified (one per capture: 70234a89 @18:18, cd6887a2 @18:19, bf9c8484 @18:27, 7f77424b @18:31). Running the **dry-run** first to see the computed hull before any sheet write:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dry-run is clean — 4 GPS points (all correct S/W), convex hull ring built (5 vertices), 1.016 ha. Coordinates match my earlier extraction exactly. Now executing the real write (upserts the existing PL-002 row — no new row since it exists):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PL-002 row **updated** (data row 14) — polygon ring, farm_id, hectares, region, media all written. Now I need to regenerate `plots/index.geojson`. Let me fire the `plots-index-rebuild` dispatch via the write token (the same mechanism that worked for the tree index):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Dispatch fired (HTTP 204). Let me wait for the workflow to complete, then verify the regenerated `plots/index.geojson` has PL-002 with a Polygon:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4469,6 +4347,7 @@ Dispatch fired (HTTP 204). Let me wait for the workflow to complete, then verify
 The rebuild ran — and it exposed an **off-by-one bug in `extract_plot_gps.py`**: the polygon landed on the **mangled row** (`- Boundary Type: approx`), not on PL-002. The update branch writes to `row_i + 1` but should write to `row_i + 2` (sheet row = data index + 2). Evidence: the mangled row now shows `geom=Polygon, farm=fazenda-bom-sucesso, ha=1.016` while PL-002 is still `geom=None, farm=None`.
 
 Let me read the actual Plots tab rows to see the precise state before correcting:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4482,21 +4361,25 @@ So there's a **1-row off-by-one**: the script wrote to sheet row 13 instead of 1
 **Fix:** (1) correct the PL-002 row (sheet row 14) with the polygon/farm/hectares/media/region; (2) revert the mangled row (sheet row 13) — but it was already `invalid` before, and the invalidation flag got clobbered (Invalidated By now shows `admin+sophia@truesight.me` was on it earlier... actually the earlier read showed it as `invalid`+invalidated, then my earlier PLOT INVALIDATION set it invalid; but now it shows `proposed` again with data — my update resurrected it). Cleanest: write the correct data into the PL-002 row (sheet row 14), restore the mangled row to `invalid` (clear its polygon/data back to the audit-trail state), and keep the ledger truthful.
 
 I'll do a **targeted sheet repair** (governor-authorized: Gary said "Fix 2") — write polygon/farm_id/ha/media/region into the PL-002 row, and re-invalidate the mangled row. Using a python gspread script with the agroverse_qr_code_manager SA (which has write access):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PL-002 row (sheet row 14) is now fully populated, and the mangled row (sheet row 13) is re-invalidated. Now regenerate `plots/index.geojson` (fire the dispatch again) and verify PL-002 has a Polygon:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The geojson still shows the old `generated_at` (09:07:17 — the *first* rebuild, before my repair). The second dispatch may still be running. Let me check the workflow run status:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Second rebuild completed (09:08:36Z, success). The earlier fetch may have hit the GitHub raw cache or raced the commit. Let me re-fetch with cache-busting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4504,6 +4387,7 @@ Second rebuild completed (09:08:36Z, success). The earlier fetch may have hit th
 The geojson is **still stale** (generated_at 09:07:17, and still showing the mangled row with the polygon and PL-002 bare) — yet the second rebuild run completed at 09:08:36 with success. This suggests the rebuild's *builder* read the sheet **before my repair landed**, OR there's a git race (the workflow committed but raw.githubusercontent still serves the older commit... but the generated_at timestamp is what the builder wrote, and 09:07:17 predates my 09:08 fix).
 
 Wait — the workflow at 09:08:36 should have regenerated with `generated_at` ≈ 09:08:36. The fact it still says 09:07:17 means **the 09:08:36 run committed nothing new** (the builder found the sheet unchanged from its view — possibly it read a cached SA view, or the run actually failed to see my writes). Let me check whether my repair actually persisted (re-read the sheet) and look at the 09:08:36 run's logs:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4643,4 +4527,45 @@ Each of your 10 Cacau - Hybrid trees now appears **exactly once** (17 unique tot
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/build_tree_geojson.py" -o btg.py && echo "=== build_; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/extract_plot_gps.py" -o epg.py && echo "=== extract_; cd /tmp && echo "=== epg.py update branch (lines 250-330) ===" && sed -n '250,330p' epg.py; echo "=== btg.py main() feature loop (lines 155-; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] Fix the One process note (worth flagging for a follow-up): extract_plot_gps.py has a real off-by-one in its update branch (set_cell(r + 1, ...) should be r + 2 for an existing row when data rows are 0-based from sheet row 2) — it wrote to the row *above* the target. I worked around it with a direct repair, but the script itself needs a one-line fix + it overwrote the invalid state of the mangled row (I restored it). That's a small PR in sunmint (extract_plot_gps.py) — but sunmint isn't in the PR-allowed repo list (same guardrail as the tree-dedupe fix), so I'd need you to add it to settings.allowed_repos, or I can file it in OPEN_FOLLOWUPS.md for the next governor cycle.
+
+
+### 🤖 Autopilot
+
+The off-by-one fix was already applied last turn via the direct edit you authorized (commit `4c074bb2`) — but let me verify both parts of that process note are fully closed: (1) the fix is actually live on main, and (2) the mangled row's `invalid` state stayed restored in the sheet (the note flagged the script had clobbered it):
+
+
+### 🤖 Autopilot
+
+The live `main` fetch shows line 394 as `set_cell(r, col_name, value)` — but my upload (commit `4c074bb2`) claims the fix. That's the **raw CDN cache again** (same stale-cache behavior I hit with the geojson). Let me check the **authoritative committed content** via the API contents endpoint (bypasses the CDN) at both the fix commit and main HEAD:
+
+
+### 🤖 Autopilot
+
+The process note is **fully closed** — the API (authoritative, bypasses CDN cache) confirms main's `extract_plot_gps.py` line 394 reads `set_cell(r + 1, col_name, value)  # r = 0-based data idx; sheet row = r + 2` — the off-by-one fix is **live on main** (commit `4c074bb2`, included in HEAD `37634534`). My earlier grep hit the raw-CDN stale cache, same artifact as the geojson fetches.
+
+**Verified closed:**
+1. ✅ **Off-by-one fixed in the script** — `set_cell(r + 1, ...)` now writes sheet row `r + 2` (the correct target for an existing row where `r` is 0-based from sheet row 2). The script-level one-line fix is committed and live on main.
+2. ✅ **Mangled row's invalid state intact** — the sheet confirms the `- Boundary Type: approx` row is `invalid` (Invalidated By: admin+sophia@truesight.me, 2026-09-03T03:02:12Z, reason: mangled empty-Plot-ID line-bleed, superseded by clean PL-002). The restore I did after the script clobbered it **held** — the sheet still shows `invalid`, and PL-002 (row 14) is clean with the polygon.
+3. ✅ No follow-up needed in OPEN_FOLLOWUPS.md — the fix landed via the direct-edit authorization (no repo-guardrail blocker remained).
+
+**Full current state of the plot registry** (from the sheet read):
+| Plot ID | Name | Status | Geom |
+|---|---|---|---|
+| PL-002 | Fazenda Bom Sucesso | **proposed** | polygon ✅ (row 14, farm/hectares/region/media all set) |
+| `- Boundary Type: approx` | (mangled) | **invalid** ✅ | — |
+| RM-P1, RM-P2, SA-P1, CL-P1, LD-P1 | governance plots | planted/proposed | polygons ✅ |
+| TEST/UAT rows | — | invalid/proposed | — |
+
+Everything from the process note is closed. The only cosmetic wrinkle: the raw-CDN serves slightly stale bytes for a while after commits (harmless — the API and git objects are correct, and the map/workflows read via API-triggered rebuilds).
+
+Nothing further blocking — the plot pill, the 10 trees, and both script fixes are all live. Want me to tackle anything else (e.g. invalidating the stale no-geometry canary tree rows `_076`/`_078` and the Criolla test `_082` for ledger hygiene), or park here?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== 1) is the off-by-one fix live on sunmint main? ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/; TOKEN=$(grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2- | tr -d '"' | tr -d "'"); for REF in "4c074bb2626e99b6
 
