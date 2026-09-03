@@ -3984,11 +3984,13 @@ Found the smoking gun. Let me confirm two things — PL-002's full evidence row 
 ### 🤖 Autopilot
 
 The geojson (generated 03:02:27, after PL-002 existed) contains only RM-P1, RM-P2, SA-P1, CL-P1, LD-P1 — **no PL-002 / Bom Sucesso**. Let me find the geojson builder to see exactly what it requires from a plot row:
+[2 tool result(s) compacted: search_code, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PL-002 **is** in the geojson — but with **`geometry: null`** (the tail of the artifact shows it). That's the answer: the map can't draw a plot with no polygon, so Bom Sucesso never appears. Let me confirm what the public page actually lists and PL-002's full geojson properties:
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4158,4 +4160,63 @@ Want to extend it now and tell me to retry?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && TOKEN=""; for cand in "$GITHUB_TOKEN" "$GH_TOKEN" "$PAT" "$TGM_GITHUB_TOKEN"; do [ -n "$cand" ] && TOKEN="$cand" && break; done; ; echo "=== token sources on box ==="; echo "1) gh hosts.yml:"; [ -f ~/.config/gh/hosts.yml ] && echo " EXISTS ($(wc -l < ~/.config/gh/hosts.y
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] The one you have has actions and workflow scopes write and read permissions
+
+
+### 🤖 Autopilot
+
+Good — if it has actions+workflow write, the 403 may have been transient or scope-application related. Let me retry the dispatch and capture the **actual error body** this time (the 403 message will say exactly what's missing):
+
+
+### 🤖 Autopilot
+
+The error is explicit now: **"Resource not accessible by personal access token"** — this is GitHub's token-permission refusal, not a transient blip. Since you believe the token has actions+workflow write, the likely cause is one of two things: (a) the token on the box is a **different** token than the one you extended, or (b) it needs **SSO authorization** for the TrueSightDAO org (classic-PAT case). Let me diagnose which:
+
+
+### 🤖 Autopilot
+
+The missing `x-oauth-scopes` header is the tell — this is a **fine-grained PAT** (classic PATs always return that header). And fine-grained tokens 403 even on *reading* Actions permissions when they lack the Actions permission. Let me get the token's type + fingerprint so you can match it in your settings:
+
+
+### 🤖 Autopilot
+
+Now I have the definitive answer. Here's what's going on:
+
+## The token is a **fine-grained PAT** — and it's missing the **Actions permission**
+
+| Detail | Value |
+|---|---|
+| **Type** | Fine-grained PAT (`github_pat_…`) |
+| **Owner** | `garyjob` (you) |
+| **Fingerprint** | ends in **`…FM4I`** — match it in your GitHub settings |
+| **Stored at** | `/home/ubuntu/.config/gh/hosts.yml` on the autopilot box |
+| **Reads repos** | ✅ works (contents, org, repo metadata all 200) |
+| **Actions permission** | ❌ **missing** — GitHub returns *"Resource not accessible by personal access token"* on **both** dispatch endpoints AND even on reading `/actions/permissions` |
+
+**Why your "write" belief doesn't match:** fine-grained PAT permissions are *per-repo*. The token clearly has **Contents read/write** (it pushes PRs — that's how #155/#397/#904 merged), but it must not have **Actions: Read and write** granted on the `sunmint` repo — or it lacks it on **all** repos. GitHub treats Actions as a separate permission axis from Contents; you can have full Contents write and zero Actions access.
+
+## How to fix (2 minutes)
+
+1. Go to **https://github.com/settings/personal-access-tokens**
+2. Find the fine-grained token ending in **`…FM4I`** (the one stored in `~/.config/gh/hosts.yml` — likely named "autopilot" or similar)
+3. Under **Repository access** → confirm it covers **TrueSightDAO/sunmint** (ideally all TrueSightDAO repos)
+4. Under **Permissions → Repository permissions**, find **Actions** → change to **Read and write**
+5. Also worth ticking if not already: **Contents: Read and write** (has it), **Workflows: Read and write** (separate from Actions — needed only for editing `.github/workflows/*`)
+6. **Save**
+
+Fine-grained PATs apply permission changes **immediately** — no re-paste needed on the box; the existing token just starts working.
+
+## After you save
+
+Say **"try again"** and I'll re-fire the `tree-index-rebuild` dispatch (expect HTTP 204) → the workflow regenerates `trees/index.geojson` → your **10 Cacau - Hybrid trees** appear on sunmint.html within a couple minutes.
+
+**Heads-up on the other token:** the GAS side uses a *separate* secret (`TGM_GITHUB_TOKEN`, in the tokenomics GAS project properties) for its automated dispatch on the LINK/reject path — that one is likely a fine-grained or classic PAT with its own scope limits. If the root-fix PR (parser fires dispatch on new rows) is to work end-to-end, that secret may need the same **Actions: Read and write** treatment. I can check its scope limits too if you want — but it's a repo secret, so I'd need to test it from the GAS context rather than read it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && TOKEN=""; for cand in "$GITHUB_TOKEN" "$GH_TOKEN" "$PAT" "$TGM_GITHUB_TOKEN"; do [ -n "$cand" ] && TOKEN="$cand" && break; done;
 
