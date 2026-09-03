@@ -3904,6 +3904,7 @@ All 10 trees confirmed. Firing **Trees 2–10** in parallel with the verified te
 ### 🤖 Autopilot
 
 All 9 remaining submissions accepted — **10/10 trees now submitted successfully**. Let me do a final verification pass on the ledger (async propagation — checking the tail):
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3958,6 +3959,7 @@ https://truesight.me/sunmint.html
 ### 🤖 Autopilot
 
 Gary's asking why Fazenda Bom Sucesso isn't on the public sunmint.html map. Let me diagnose — first, what the page loads and the state of the PL-002 row + geojson:
+[2 tool result(s) compacted: http_fetch, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3970,11 +3972,13 @@ The plots sheet shows the smoking gun — **Fazenda Bom Sucesso is split across 
 | **PL-002** | *(empty)* | *(empty)* | *(empty)* | proposed |
 
 Let me check the Farm Boundary Evidence tab (where the GPS lives) and the geojson the public page actually loads:
+[2 tool result(s) compacted: read_google_sheet, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the smoking gun. Let me confirm two things — PL-002's full evidence row (does it carry GPS + area?) and how the geojson builder selects plots:
+[2 tool result(s) compacted: read_google_sheet, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4100,4 +4104,58 @@ Want me to (a) open the PR fixing the parser to fire the dispatch (root fix), an
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp/tok_r 2>/dev/null || cd ~/dao_protocol 2>/dev/null; find /tmp/tok_r -name "*.gs" 2>/dev/null | xargs grep -ln "trees/index.geojson\|; cd /tmp/tok_r && echo "=== process_tree_planting_link.js trigger logic ===" && sed -n '500,560p' google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SY; cd /tmp && echo "=== sunmint workflows ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/.github/workflows" 2>/dev; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] What is the name of the token  you using? Can I extend the permission of that token?
+
+
+### 🤖 Autopilot
+
+Let me identify which credential the box uses for GitHub calls (without exposing the token itself) and what scopes it currently has:
+
+
+### 🤖 Autopilot
+
+The token is **yours, Gary** — it authenticates as `garyjob` (93-char PAT, found via the box's `~/.config/gh/hosts.yml` or env). Let me pin down exactly where it lives so you know what to extend:
+
+
+### 🤖 Autopilot
+
+Now I have a clear picture of the credential. Here's the answer:
+
+## The token: it's **your personal GitHub PAT** (`garyjob`)
+
+- **Name/identity:** authenticates as **`garyjob`** (your GitHub account, Gary)
+- **Where it lives on the box:** `~/.config/gh/hosts.yml` (the GitHub CLI config) — a 93-char classic PAT. It's the same one the autopilot's git/API operations use.
+- **Current scopes:** the response shows `allows_permissionless_access=true` and the `x-oauth-scopes` header isn't listing scopes explicitly — but the practical evidence is: **it can read repos + push to TrueSightDAO repos** (PRs #155, #397, #904 all went through it), yet **cannot trigger Actions** (`repository_dispatch` → HTTP 403).
+
+## Can you extend it? **Yes — and here's exactly how**
+
+The 403 on `POST /repos/.../dispatches` means the PAT lacks the **`workflow`** scope (classic PAT) — *or* it's a fine-grained token missing **"Actions" repository permission with Write** access on the `sunmint` repo.
+
+**If it's a classic PAT (most likely, 93 chars, `gh`-style):**
+1. Go to **github.com/settings/tokens**
+2. Find the token (the one stored in `~/.config/gh/hosts.yml` — likely named something like "TrueSightDAO autopilot" / "gh")
+3. **Edit scopes** → tick **`workflow`** (this is the scope that allows triggering Actions/workflow dispatches)
+4. Save — the existing token keeps working, no re-paste needed on the box
+
+**If it's a fine-grained token:**
+1. github.com/settings/tokens?type=beta → the token
+2. Under **Repository access** → TrueSightDAO/sunmint (or "All repositories")
+3. Under **Permissions → Repository permissions** → set **Actions: Read and write**
+4. Save
+
+**What `workflow` scope unlocks (beyond the dispatch):** pushing changes to any `.github/workflows/*` file (PRs that touch workflows currently get blocked without it) — which is relevant if we do the root-fix PR that edits the GAS-trigger workflow.
+
+**⚠️ One security note (my standing rule):** I won't print or handle the raw token value — you manage it in GitHub's UI. After you extend it, just say "try again" and I'll re-fire the `tree-index-rebuild` dispatch (and verify with an HTTP 204).
+
+**Also worth knowing:** the *GAS side* uses a **separate** `TGM_GITHUB_TOKEN` (a repo secret in the tokenomics GAS project) for its dispatch calls — if that one also lacks `workflow`/Actions scope, the root-fix dispatch will 403 too. You may need to extend **both** (the box PAT for my manual triggers, and the GAS `TGM_GITHUB_TOKEN` secret for automated ones).
+
+Want to extend it now and tell me to retry?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && TOKEN=""; for cand in "$GITHUB_TOKEN" "$GH_TOKEN" "$PAT" "$TGM_GITHUB_TOKEN"; do [ -n "$cand" ] && TOKEN="$cand" && break; done; ; echo "=== token sources on box ==="; echo "1) gh hosts.yml:"; [ -f ~/.config/gh/hosts.yml ] && echo " EXISTS ($(wc -l < ~/.config/gh/hosts.y
 
