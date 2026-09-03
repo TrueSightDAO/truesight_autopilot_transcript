@@ -2858,41 +2858,49 @@ My resubmission of Tree 1 now carries exactly those keys (**Latitude, Longitude,
 ### 🤖 Autopilot
 
 Good idea — this session surfaced exactly the kind of tribal knowledge that should be codified (the dig-time heuristic, the exiftool hemisphere gotcha, the no-empty-fields rule, the dual validator/parser field requirement). Let me check what's already documented so I extend rather than duplicate:
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Nothing documented — this is net-new tribal knowledge. Let me check what SunMint/boundary docs exist so I extend the right files:
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two docs already exist that should anchor this — let me read the boundary submission plan (it's the natural home for the FBE contract) and check the plots registry structure so I extend rather than sprawl:
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is a valuable codification task. Two clear deliverables, and I'll do the agentic_ai_context documentation first (one PR this turn), then propose the dao_protocol interface update as the follow-on. Let me first gather the exact current definitions so the doc and interface proposal are precise:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the actual dao_protocol event definitions to ground the interface proposal — checking the event catalog and tree-planting handling:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the event catalog location in dao_protocol's repo layout and how lookup_event_docs resolves these events:
+[2 tool result(s) compacted: list_org_repos, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good instinct from Gary — this session produced hard-won tribal knowledge (dig-time heuristic, exiftool hemisphere gotcha, empty-field line-bleed, dual validator/parser requirement) that no doc captures yet (searches returned 0 hits). Two natural anchors exist: `SUNMINT_PLOTS_REGISTRY.md` (boundary) and the FBE plan. Let me check whether a tree-planting runbook exists before deciding placement:
+[2 tool result(s) compacted: search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plots runbook already covers plot definition well but has **no** tree-photo heuristics or submission contracts — those searches returned zero. Let me check the E2E runbook so I place this correctly (extend vs. new file):
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2900,11 +2908,13 @@ The plots runbook already covers plot definition well but has **no** tree-photo 
 I have the full picture now — this session produced genuinely new tribal knowledge (searches for these heuristics return **zero hits** in context). The right move: **one new runbook doc** in agentic_ai_context that defines (1) the unique-tree heuristics, (2) the 4-corner identification, and (3) both submission contracts — then a follow-on proposal for the dao_protocol interface.
 
 Let me write the runbook and open the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #904 opened. Per your request (the go for the doc update), I'll merge it now:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2956,51 +2966,61 @@ The runbook (#904) is the documentation half; the dao_protocol catalog/validator
 ### 🤖 Autopilot
 
 👍 Go received — resuming with the next unit: **dao_protocol interface hardening**. Let me first understand the repo structure — where the event catalog, validation, and `lookup_event_docs` resolution live:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The client library structure is visible. Let me find where the event catalog, validators, and event-type definitions live:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The architecture is clear — `events_catalog.json` is what `lookup_event_docs` resolves against. Let me read both catalog entries (FARM BOUNDARY EVIDENCE at line 275, TREE PLANTING at line 641) and the tree-planting module:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Catalog is nested under `events`. Let me dump both entries properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the actual catalog structure. Let me check whether any events carry `intent_guidance`/`important_fields` keys (the shape `lookup_event_docs` returns), and see how the catalog is loaded/served:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No events carry extra keys, and **PLOT INVALIDATION EVENT isn't in the catalog** (explains why `lookup_event_docs` didn't know it — I submitted those blind earlier and the GAS handler caught them by text marker). Let me examine the validation path (the "Missing required fields" error) and the dispatch routing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the server-side validation that raised "Missing required fields" and see how it reads required_fields from the catalog:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the routes (the submit_contribution endpoint) and how the catalog drives validation:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the submit_contribution handler to see the exact validation logic and where required_fields gets enforced:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key finding: the `submit_contribution` server route I read doesn't enforce "Missing required fields" — that error came from the **tool layer** (my `submit_contribution` tool validates against the catalog's `required_fields` before calling Edgar, echoing canonical labels). So the interface to harden = the **catalog** + what `lookup_event_docs` serves. Let me check the catalog route:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3125,4 +3145,121 @@ The catalog transform is **applied and JSON-validates** in `/tmp/dao_p` (version
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×23 → cd /tmp && rm -rf dao_p && git clone --depth 1 https://github.com/TrueSightDAO/dao_protocol.git dao_p 2>&1 | tail -2 && echo "=== TOP LEVEL ; cd /tmp/dao_p && echo "=== grep TREE PLANTING ===" && grep -rn "TREE PLANTING" --include="*.py" --include="*.json" --include="*.md" . | grep; cd /tmp/dao_p && echo "=== FARM BOUNDARY EVIDENCE EVENT catalog entry ===" && python3 -c " import json cat = json.load(open('truesight_dao_c; …(+18 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] [Handoff context — this Telegram topic (thread 20065) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Convergence — dao_protocol catalog hardening (in progress)
+
+### What I found (full architecture mapped)
+The interface Gary asked about hardens across **one canonical file + two autopilot surfaces**
+
+
+### 🤖 Autopilot
+
+👍 Go received — resuming the dao_protocol catalog hardening. First, find the test runner and run the suite:
+
+
+### 🤖 Autopilot
+
+The venv has `python3.11` under `.venv-test/bin/python` — my earlier glob just failed. Let me run the test suite properly:
+
+
+### 🤖 Autopilot
+
+Odd — `ls` showed `python` in `.venv-test/bin` but direct exec fails. Let me check the actual symlink target:
+
+
+### 🤖 Autopilot
+
+The venv was created on Gary's **Mac** (`/Users/garyjob/...`) — broken symlinks on this Linux box. Let me use system python3 + pip-installed deps, or check if there's a working autopilot venv with dao_client deps:
+
+
+### 🤖 Autopilot
+
+The venv is Mac-built (broken on this Linux box) and collection fails on a pre-existing `dedup` import error — unrelated to my JSON-only change. Let me confirm these failures exist **without** my change (pristine) and check whether the `dedup` module genuinely exists:
+
+
+### 🤖 Autopilot
+
+Pre-existing failure confirmed on pristine main (Mac-built venv + missing `dedup` module on this Linux box — unrelated to my JSON-only change; note the tip commit `b373300` just added PLOT INVALIDATION EVENT routing, so the catalog addition is timely). JSON validates clean; compileall/ruff don't apply to JSON.
+
+Let me grab the exact insertion anchor text for the new PLOT INVALIDATION EVENT entry:
+
+
+### 🤖 Autopilot
+
+Interesting — my earlier transform inserted PLOT INVALIDATION before PRACTICE EVENT alphabetically, but the file layout shows PARTNER CHECK-IN at 382 → PRACTICE at 420, so "PLOT INVALIDATION EVENT" (P-L-O) sorts between them correctly. Let me verify the current file state after my transform (the insertion should be around line ~415):
+
+
+### 🤖 Autopilot
+
+The catalog is in the desired state (version 4, PI event inserted at line 404 alphabetically between PARTNER CHECK-IN and PRACTICE). Now let me run the full local test set per the hard rule (compileall + ruff for the repo, even though my change is JSON-only) and then push the PR:
+
+
+### 🤖 Autopilot
+
+Pre-existing lint debt confirmed (30 errors / 78 unformatted files across untouched code — my change is JSON-only, so compileall + JSON validation are the applicable checks and both pass). Pushing the PR now:
+
+
+### 🤖 Autopilot
+
+The tool needs file edits passed explicitly. Let me provide the full JSON file content via `writes`:
+
+
+### 🤖 Autopilot
+
+The PR tool needs explicit edits. Let me capture the precise diff hunks to construct search/replace edits:
+
+
+### 🤖 Autopilot
+
+I have the complete diff. Now let me push the PR with the explicit edits:
+
+
+### 🤖 Autopilot
+
+PR opened. Merging now per your 👍 go (authorizes merging my own PRs):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn complete — dao_protocol event catalog hardened (v4)
+
+**PR: [dao_protocol #155](https://github.com/TrueSightDAO/dao_protocol/pull/155)** — `chore(catalog): v4 — sync FBE + TREE PLANTING contracts, add PLOT INVALIDATION EVENT` — **merged** (sha `8265be2f`).
+
+**What changed** (`events_catalog.json`, version 3 → 4, 39 → 40 events) — the canonical file served at `edgar.truesight.me/events-catalog` that drives both `lookup_event_docs` and my submission tool's validation:
+
+1. **FARM BOUNDARY EVIDENCE EVENT** — removed `Plot ID` from canonical labels (live UI never sends it; backend auto-assigns `PL-###`); synced labels to the real contract (`Is New Farm`, `Media Count`, `Captured At`, `Device GPS`, `Extracted GPS`, `Area Hectares`); description now warns **never send an empty `- Plot ID:` line** (the line-bleed bug from tokenomics #458) + `; ` media join rule.
+2. **TREE PLANTING EVENT** — canonical labels + required fields now include **Latitude, Longitude** (plus `Planting Time`, `Photo URL`); description documents the dual contract: **both** canonical `Location` (satisfies validator) **and** `Latitude`/`Longitude` lines (satisfy the GAS parser) — the exact gap that rejected then risked my canary.
+3. **PLOT INVALIDATION EVENT** — **added** (was missing entirely; I'd submitted those blind earlier): labels `Plot ID, Reason, Retractor Email, Submission Source`, required `Plot ID/Reason/Retractor Email`, sentinel-gate note. Sits between PARTNER CHECK-IN and PRACTICE (line 404). Timely — tip commit `b373300` already routes this event to the GAS handler.
+
+**Testing:** JSON valid (`json.tool`), compileall OK. Full pytest blocked by a **pre-existing** `dedup` import error (Mac-built `.venv-test` on this Linux box) — reproduced on pristine main, unrelated to this JSON-only change; ruff/format debt (30 errs / 78 files) also pre-existing in untouched files.
+
+---
+**RESUME HERE → next unit (fresh turn):**
+
+**Sync the two autopilot surfaces + verify + tree registration.** The catalog is now canonical, but `lookup_event_docs` still surfaces stale hints until two follow-up PRs (separate, one per turn):
+1. **autopilot PR A** — update `app/data/events_catalog_snapshot.json` to match catalog v4 (it's stale/different shape), AND `app/tools/lookup_event_docs.py` `_IMPORTANT_FIELDS` + `_INTENT_GUIDANCE`: add `TREE PLANTING EVENT` (Latitude/Longitude/Species/Planting Time/Photo URL), `FARM BOUNDARY EVIDENCE EVENT` (Farm Name/Media URLs/Is New Farm), `PLOT INVALIDATION EVENT`; add intent phrases "register boundary"/"tree planting"/"invalidate plot". Consider passing through extra catalog keys in `_build_result` (hints/notes) so future catalog edits propagate automatically.
+2. **autopilot PR B (after A)** — deploy (`deploy_autopilot`) so the live tool refreshes the catalog (main.py already re-fetches on startup/refresh).
+3. **Verify** — `lookup_event_docs("TREE PLANTING EVENT")` now returns Latitude/Longitude in required fields + important fields.
+4. **Then the pending tree registration** — re-run the canary Tree 1 with the now-documented correct format (both `Location` + `Latitude`/`Longitude`, species **Cacau - Hybrid**, planter Gary Teh, photo URL `sunmint/images/20260902_bomsucesso_tree01.jpg`), confirm the rendered chat-log text + `SunMint Tree Planting` tab row (lat/lng populated), then fire Trees 2–10 and verify all land.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cloned dao_protocol; mapped venv (Mac-built → broken symlinks); confirmed pytest collection failure is pre-existing on pristine main (missing `dedup`); captured exact diff; validated JSON v4
+• `git push changes` → dao_protocol PR #155 opened (sha f2db3dce)
+• `merge pr` → ✅ PR #155 merged (sha 8265be2f)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /tmp/dao_p && echo "=== venv layout ===" && ls .venv-test/ 2>/dev/null | head; find . -maxdepth 2 -name "pyvenv.cfg" 2>/dev/null | head -; cd /tmp/dao_p && .venv-test/bin/python -m pytest tests/ -q 2>&1 | tail -20; cd /tmp/dao_p && ls -la .venv-test/bin/python* 2>/dev/null; echo "=== try full path ===" && ./.venv-test/bin/python -c "import sys; print(sy; …(+7 more)
+• `merge pr` → ✅ PR #155 on dao_protocol merged successfully (sha: 8265be2f32787c379a2e91aaffe33fe519d6f4ef). Pull Request successfully merged
 
