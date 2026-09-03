@@ -1131,6 +1131,7 @@ Let me extract the Exif TIFF and validate GPS parsing at this offset:
 The GPS IFD is fully there with the same structure as JPEG (tags 2/4 = type 5 RATIONAL × 3 with valfield = TIFF offsets 2480/2504). So the **same corrected RATIONAL-dereference parser** works on the HEIC Exif blob — I just need to extract the Exif payload from the ISO-BMFF container first.
 
 Now I need to write a robust in-browser **HEIC Exif extractor**. The cleanest approach: walk ISO-BMFF boxes, find `meta`, parse `iinf`+`iloc` to locate the Exif item extents, then read it. But my earlier iinf parse failed on version 1/2 subtleties. Given this specific file's Exif blob sits at a predictable offset, let me find the **simplest robust heuristic** that works across typical iPhone HEICs. Let me check the actual box structure around the Exif blob to pick the right approach:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1138,6 +1139,7 @@ Now I need to write a robust in-browser **HEIC Exif extractor**. The cleanest ap
 The Exif payload is a real TIFF at offset 5675 (`MM 00 2A`, big-endian) — GPS IFD present with the same RATIONAL structure. This HEIC was delivered by Telegram **with EXIF intact** (unlike the JPEG earlier), so if Gary uploaded the original, the GPS is in the file — my code just can't read HEIC yet.
 
 Let me verify a robust signature-scan approach works in node (find `Exif\0\0` + TIFF magic anywhere in the buffer), which avoids fragile full ISO-BMFF parsing in the browser:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1145,11 +1147,13 @@ Let me verify a robust signature-scan approach works in node (find `Exif\0\0` + 
 **HEIC GPS extraction works** — signature-scan finds the Exif blob at 5669 and the corrected TIFF parser yields **lat -3.0953, lng -52.0950** (matches exiftool's 3°5'43.12"S / 52°5'42.17"W exactly).
 
 So the complete fix for this UAT round: make `readExifGps` accept **HEIC/HEIF** (not just JPEG) by signature-scanning for the `Exif\0\0` + TIFF blob when the file isn't a JPEG. Let me build this against current main:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I'll build the HEIC-capable parser, verify against both a GPS JPEG and the GPS HEIC, and syntax-check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1159,26 +1163,31 @@ Now I'll build the HEIC-capable parser, verify against both a GPS JPEG and the G
 - **HEIC with GPS** (Gary's iPhone photo): `{lat: -3.0953, lng: -52.0950}` ✅
 
 Both scripts pass `node --check`. Let me verify the diff is limited to the `readExifGps` function and then push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The diff reveals something important: my local base was **stale** — raw.githubusercontent's CDN lags one commit behind (the git log shows main HEAD = #78, but raw still serves pre-#78 content). If I push my local file as-is, I'd **revert #78**. I must build against the true main at commit SHA 1abea27b:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 True main (at commit 1abea27b) has #78's fix (2 occurrences of `tiff + u32(e+8)`, both `readRat(base...)` lines) but still has the JPEG-only guard at line 2. Now I'll build the HEIC extension on **this** base and verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both formats verified against true main (with #78's fix): **JPEG PASS, HEIC PASS**, scripts OK, diff is 27 adds / 12 dels confined to the parser function. Pushing:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #79 opened. Merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1241,6 +1250,7 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 Inspecting the attached HEIC — checking its format, whether this copy retains EXIF GPS, and confirming the GPS coordinates.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1251,11 +1261,13 @@ This is the **original HEIC** (2.86 MB, full EXIF intact — not a Telegram-stri
 - iPhone 12 Pro Max (front camera), GPS accuracy ~3.4 m, taken 2026-09-02 18:27:41 (-03:00)
 
 Let me verify my deployed HEIC parser (PR #79) extracts exactly these coordinates from this original file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Verified — the deployed parser (PR #79, now in main) extracts **exactly** the exiftool-confirmed coordinates from this original HEIC: `{lat: -3.095311, lng: -52.095047}`. Persisting this to the transcript for future reference:
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1325,6 +1337,7 @@ Done this turn: baseline tests (855 pass); applied + formatted + tested the 3-ma
 ### 🤖 Autopilot
 
 Gary's asking whether the **current production sunmint.truesight.me interface** properly syncs with the other Sophia's dao_protocol work (new SunMint event types in the Edgar catalog). Let me check the handoff mailbox and investigate the integration points.
+[3 tool result(s) compacted: check_handoffs, ssh_run, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1422,4 +1435,109 @@ Related pending item from the other Sophia's handoff: the `lookup_event_docs` au
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → echo "=== LIVE EDGAR CATALOG version + SunMint event types ===" && curl -sL --max-time 20 https://edgar.truesight.me/events-catalog -o /tmp/; cd /tmp && echo "=== LIVE v3 catalog: all event names ===" && python3 - <<'EOF' import json d = json.load(open('/tmp/events_catalog.json')) ; cd /tmp && echo "=== What endpoint do SunMint pages POST to? (live prod) ===" && curl -sL --max-time 20 https://sunmint.truesight.me/ -o sun; …(+11 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20044] [Handoff context — this Telegram topic (thread 20044) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Answering Gary's question directly — here's what I found across the four layers involved.
+
+## Short answer: **No — not fully synced. Two layers are stale.**
+
+### 1. Frontend: prod `sunmint.truesight.m
+
+
+### 🤖 Autopilot
+
+Go signal received — executing the two deploy gates (dao_protocol v4 catalog deploy + sunmint beta→prod sync) plus the ready `lookup_event_docs` PR. First, let me check the handoff manifest/plan and verify current state before any irreversible step.
+
+
+### 🤖 Autopilot
+
+Go received — executing the approved deploys (dao_protocol v4 + sunmint beta→prod) plus the ready `lookup_event_docs` PR. Starting with the frontend promotion and scouting the dao_protocol deploy path in parallel.
+
+
+### 🤖 Autopilot
+
+SunMint prod synced successfully (deploy ledger recorded). Now verifying prod serves the new code and connecting to the dao_protocol box with the correct identity key for the v4 catalog deploy.
+
+
+### 🤖 Autopilot
+
+Prod now serves all new features (byte-identical to beta). Connected to the dao_protocol box. Let me locate the dao_protocol deployment and its git state before pulling v4.
+
+
+### 🤖 Autopilot
+
+Key finding: the dao_protocol box is **already at v4 commit 8265be2 (#155)** — the pull happened. The question is whether the service was **restarted** to load v4. Let me check the live catalog version and service start time.
+
+
+### 🤖 Autopilot
+
+Live catalog now shows **v4** and disk is v4 — but the service process started **before** the v4 commits landed (2026-09-02 11:49 UTC vs commit 08:16 UTC 09-03). The catalog endpoint evidently reads from disk per-request, but the **route dispatch code** (#154 PLOT INVALIDATION routing) was imported at process start. Gary's 👍 authorized the full deploy gate including restart. Restarting to guarantee all v4 code paths are live:
+
+
+### 🤖 Autopilot
+
+dao_protocol restarted cleanly, now running the full v4 code (started 08:27 UTC, after all commits). Now verifying the public endpoint and completing the `lookup_event_docs` PR (the other Sophia's ready work).
+
+
+### 🤖 Autopilot
+
+Both deploys verified. Now pushing the ready `lookup_event_docs` PR (the other Sophia's tested work) with explicit edit hunks from the diff:
+
+
+### 🤖 Autopilot
+
+Hunk 1 search failed — the file on main may differ from my assumption, and my third hunk was malformed (leftover placeholder). Let me fetch the actual current file from main to craft exact hunks.
+
+
+### 🤖 Autopilot
+
+Interesting — the file on **main already contains all the SunMint changes** (intent guidance, important fields, fallback docs all present). The local `/tmp/tsap` clone is stale (cloned 08:18 before the go). Let me check whether the PR was already merged by another instance or if I need to reconcile.
+
+
+### 🤖 Autopilot
+
+The `lookup_event_docs` PR was **already merged** — #397 at 08:23 UTC by the other instance (my local clone was simply stale). All three units are complete. Let me do a final end-to-end verification sweep.
+
+
+### 🤖 Autopilot
+
+All three workstreams are complete and verified. Writing the final summary to the thread:
+
+
+### 🤖 Autopilot
+
+**Turn complete ✅ — all three workstreams deployed and verified**
+
+## What I did this turn (executing the 👍 go)
+
+### 1. SunMint prod sync — DONE
+`sync_beta_to_prod('sunmint_prod')` succeeded (deploy ledger: `deploy_20260903T082549Z_sunmint-prod`). Verified **prod is now byte-identical to beta** on all three pages:
+- `/` tree planting: 49,464 bytes — gallery upload + EXIF-GPS + HEIC support live
+- `/monitor-tree-growth/`: 67,038 bytes — gallery upload live
+- `/limites-da-fazenda/`: 51,391 bytes — photo deselect live
+
+### 2. dao_protocol v4 deploy — DONE
+Found the NELANCO box was **already at v4 commit** (8265be2) but the service had started *before* the code landed, so v4 route handlers weren't loaded. Restarted `truesight-dao-protocol` (via the fleet key — direct SSH needed `-i ~/.ssh/id_ed25519_truesight_autopilot`).
+- Service active, restarted 08:27 UTC
+- Live `edgar.truesight.me/events-catalog` now reports **version: 4, 40 events**
+- PLOT INVALIDATION EVENT present; TREE PLANTING now requires Latitude/Longitude
+
+### 3. lookup_event_docs PR — already merged
+Discovered PR **#397** (the other Sophia's companion work) was **already merged at 08:23 UTC** — my local `/tmp/tsap` clone was stale. Confirmed on autopilot main (7 matches). No action needed.
+
+## Final state — everything now syncs
+Prod interface ↔ v4 Edgar catalog ↔ autopilot tool layer are all aligned. Summary posted to thread 20044 (https://t.me/c/3919341801/20044).
+
+---
+
+## RESUME HERE
+The remaining item from the handoff context: **the pending tree registration (10 trees, species Cacau - Hybrid)** — canary Tree 1 was already accepted. Per the other Sophia's notes: verify the rendered row in the SunMint Tree Planting tab has lat/lng populated, then fire Trees 2–10 and report. That's a submit-side action — say the word (or 👍) and I'll run it, checking each submission against the now-live v4 contract (Tree Count + Location + Latitude + Longitude required) and verifying ledger rows.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → echo "=== deploy.sh locations ===" && find / -maxdepth 4 -name "deploy.sh" -not -path "*/node_modules/*" -not -path "*/.venv*" 2>/dev/null |; cd /tmp && echo "=== PROD after sync — feature check ===" && for p in "" "monitor-tree-growth/" "limites-da-fazenda/"; do f="prod2_${p//\//_; echo "=== connect via ssh config identity ===" && ssh -i ~/.ssh/id_ed25519_truesight_autopilot -o StrictHostKeyChecking=no -o ConnectTimeout; …(+7 more)
 
