@@ -516,27 +516,37 @@ My sed for retake bodies landed on the submit function instead. Let me locate an
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 I have everything needed for the monitor page. Note: for growth monitoring I'll **keep device GPS** as the source for the 200 m proximity gate (a gallery photo's old EXIF GPS could wrongly gate which tree is selected) — the ask there is simply "allow uploading photos instead of only live camera." Building + verifying locally:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both scripts pass, HTML balanced. Let me do a focused diff review, then push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff is clean: 60 additions, 0 removals — retake functions gained file-input clearing, gallery buttons/inputs added per tab, helpers + handlers inserted, strings added. Both scripts pass `node --check`, HTML balanced (25/25 divs, 2 file inputs). Pushing:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The two string-anchor hunks contain non-ASCII chars (`â`, `…`) that don't round-trip through the JSON escaping — the hunk search failed. The operation is atomic (nothing pushed), so I'll resend with ASCII-only anchors (`retakeButton2:` lines):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #76 opened. Merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -616,11 +626,13 @@ Please add the missing comma, re-verify with node --check against the live beta 
 ### 🤖 Autopilot
 
 Let me verify the envoy's claim against both the live beta HTML and current main before fixing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Envoy is correct — line 423 (`en` block) lacks the trailing comma after `photoGpsMissing` before `treeButton` (the `pt` block at 364 has it). Since this is the first statement in the inline script, it's a whole-page SyntaxError. Let me confirm with `node --check` against the live beta HTML, then fix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -784,4 +796,165 @@ On your explicit "promote / go to prod" command I will run:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /tmp && for p in "" "monitor-tree-growth/" "limites-da-fazenda/"; do curl -sL -o "uat_${p//\//_}.html" "https://beta.sunmint.truesight.me; cd /tmp && python3 - <<'EOF' import re, subprocess pages = { 'root (/)': 'uat_root.html', 'monitor': 'uat_monitor-tree-growth_.html', 'limit; cd /tmp && python3 - <<'EOF' import re, subprocess pages = {'root': 'uat_root.html', 'monitor': 'uat_monitor-tree-growth_.html', 'limites': ; …(+4 more)
+
+
+### 🧑 Governor
+
+Did not pass. I attached this to 
+
+https://beta.sunmint.truesight.me/
+
+It did not pickup the lat and long in the browser
+
+[Attachment auto-processed: **c0d4045225884a978535b4ac11c7a8e8.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Gary reports a UAT failure: uploading a photo to the beta tree-planting page did **not** pick up lat/long in the browser. Let me first inspect the actual attached image — its format and whether it even contains EXIF GPS — to diagnose why `readExifGps` returned nothing.
+
+
+### 🤖 Autopilot
+
+The file is a 960×1280 progressive JPEG — but note it came to me **via Telegram**, which often strips EXIF. Let me check what GPS metadata this copy has, then look at how the browser's EXIF path differs:
+
+
+### 🤖 Autopilot
+
+Critical finding: **the Telegram-delivered copy of the photo has NO EXIF at all** — only 23 basic JFIF tags, no GPS, no Make/Model, no DateTime. This is exactly what Telegram does: **it strips EXIF metadata** when compressing/serving images.
+
+But that raises the key question: did Gary upload **this exact Telegram-compressed file** to the beta page, or the original from his camera? If he uploaded the original (with EXIF GPS), my parser should have found it. Let me verify my parser actually works on a real EXIF-GPS JPEG — and check whether the progressive-JPEG format or something in my marker-walking logic could fail on real files. First, let me build a JPEG with known EXIF GPS and test `readExifGps` end-to-end:
+
+
+### 🤖 Autopilot
+
+The Telegram-delivered copy has **no EXIF at all** (Telegram strips it), but that alone doesn't explain the failure — Gary may have uploaded the original. Let me test my `readExifGps` parser against a JPEG **with real EXIF GPS** written in, and inspect the upload handler flow:
+
+
+### 🤖 Autopilot
+
+The earlier `ls` showed the file listing but the path may differ. Let me find the exact path:
+
+
+### 🤖 Autopilot
+
+The attachment was re-delivered (now 59903 bytes). Telegram strips EXIF on delivery, so I'll synthesize a GPS-tagged JPEG from this photo and test the live parser against it:
+
+
+### 🤖 Autopilot
+
+**Real bug found in the live parser.** My `readExifGps` returned `null` even on a JPEG that exiftool confirms has GPS. This explains Gary's UAT failure perfectly — the parser itself is broken on real EXIF-GPS images. Let me debug exactly why:
+
+
+### 🤖 Autopilot
+
+APP1 Exif header is found but result is still null — the failure is downstream. My debug replacements didn't match indentation for the later stages. Let me instrument every `resolve(null)` exit point properly:
+
+
+### 🤖 Autopilot
+
+**Root cause found.** All six debug exits fired in sequence, meaning execution flowed past every guard except the last — exit 5 is the `if (gps.lat === null || gps.lng === null)` check, which **returned null because lat/lng were never read**. The GPS IFD is found, but the rational values aren't.
+
+Looking at the parser code, this is the bug:
+
+```js
+const d = readRat(e+8), m = readRat(e+12), s = readRat(e+16);
+```
+
+Per the EXIF spec, GPS latitude/longitude entries (type 5 RATIONAL, count 3) store an **offset pointer** in the 4-byte value field (bytes 8–11), not the value itself — RATIONALs are 8 bytes each and never fit inline. The code reads `e+8` as if it were the numerator, which grabs the offset bytes + the next entry's bytes → garbage/denominator-zero → null. The fix is to dereference: `readRat(tiff + u32(e+8))`, `+8`, `+16`.
+
+Let me verify this hypothesis by printing the raw GPS IFD entry and testing a corrected parser against the GPS-tagged JPEG:
+
+
+### 🤖 Autopilot
+
+**Root cause confirmed and fix verified.** The GPS IFD entries for tags 2 and 4 (latitude/longitude) are `type 5 RATIONAL, count 3` with a value field of **156** and **180** — those are **offsets into the TIFF data area**, not inline values. The live parser wrongly read `readRat(e+8)` (the offset bytes as numerator) instead of dereferencing `tiff + u32(e+8)`.
+
+- **Buggy (live):** `readRat(e+8)` → garbage/null → `resolve(null)` → no GPS → Gary's failure
+- **Corrected:** `const base = tiff + u32(e+8); readRat(base), readRat(base+8), readRat(base+16)` → **lat 22.5, lng -43.2 — PASS**
+
+Now let me fix the actual beta source file. Let me check current main's `readExifGps` and prepare the fix:
+
+
+### 🤖 Autopilot
+
+Both buggy lines found in current main (lines 45 and 49 — identical, both need the same fix). Let me verify the upload-handler wiring uses the EXIF result, then apply the fix locally and re-test with the corrected parser:
+
+
+### 🤖 Autopilot
+
+**Fix verified end-to-end.** The corrected parser now extracts `{lat: 22.5, lng: -43.2}` from the GPS-tagged JPEG, and the upload handler wiring (`await readExifGps(file)` → uses result for coordinates) is confirmed present. The upload flow calls `readExifGps` correctly — the bug was purely in the parser's RATIONAL dereferencing.
+
+Let me run the local pre-push test suite (node --check on the fixed file) and confirm only the intended hunks changed:
+
+
+### 🤖 Autopilot
+
+Clean: both scripts pass `node --check`, and the diff is exactly the two corrected lines (the two buggy `readRat(e+8/e+12/e+16)` lines replaced with proper TIFF-offset dereferencing). Pushing the fix:
+
+
+### 🤖 Autopilot
+
+PR #78 opened. Merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**Turn complete ✅ — EXIF GPS parser bug fixed (the actual UAT failure)**
+
+## What I did this turn
+Gary's UAT failed because uploading a GPS-tagged photo to the beta tree-planting page did **not** pick up lat/long. I found the real bug in `readExifGps`.
+
+**PR:** https://github.com/TrueSightDAO/sunmint_beta/pull/78 — merged ✅ (sha `1abea27b`)
+
+**Root cause — EXIF RATIONAL offset dereference missing:**
+Per the EXIF spec, GPS latitude/longitude entries (tags 2/4) are `type 5 RATIONAL, count 3` — each RATIONAL is 8 bytes, so the 4-byte value field holds a **TIFF offset pointer**, not the value. The parser read them inline:
+```js
+// BUGGY — read offset bytes as if they were the value → garbage → null
+const d = readRat(e+8), m = readRat(e+12), s = readRat(e+16);
+```
+GPS entries 2/4 in the test file had value fields `156` and `180` — those are offsets into the TIFF data area.
+
+**Fix:**
+```js
+// CORRECT — dereference the offset into the TIFF data area
+const base = tiff + u32(e+8);
+const d = readRat(base), m = readRat(base+8), s = readRat(base+16);
+```
+
+**Verification (proved the bug, then proved the fix):**
+1. Built a JPEG with real EXIF GPS via exiftool (`GPSLatitude 22.5, GPSLongitude -43.2`) from the photo Gary attached
+2. **Live parser returned `null`** on it (bug reproduced — this is exactly what Gary hit)
+3. Instrumented parser showed it flowed past all guards except `lat===null || lng===null` — GPS IFD found, values never read
+4. Corrected parser returned **`{lat: 22.5, lng: -43.2}` — PASS**
+5. Both inline scripts pass `node --check`; diff = exactly the 2 buggy lines fixed
+
+⚠️ Note: the photo Gary attached via **Telegram had no EXIF at all** (Telegram strips it — only 23 JFIF tags, no GPS/Make/Model). So there are two separate things going on: (a) the parser bug (now fixed) that would fail even on real EXIF photos, and (b) if he tests by uploading a Telegram-forwarded copy, that copy has no GPS to find — he must upload the **original** from his phone's camera roll.
+
+---
+
+## RESUME HERE → next unit: Re-verify on beta + re-run UAT
+1. Confirm beta re-deployed from main (fetch `https://beta.sunmint.truesight.me/`, grep for `tiff + u32(e+8)` in served HTML)
+2. `node --check` the live served root page
+3. Report to thread 20044 — including the **Telegram-strips-EXIF caveat** so Gary knows to test with the original photo file
+4. Await his go → `sync_beta_to_prod('sunmint_prod')`
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → located attachment, confirmed Telegram-delivered copy has NO EXIF (23 JFIF tags only), extracted live `readExifGps`, built GPS-tagged JPEG via exiftool, reproduced null (bug), instrumented parser → found values never read (RATIONAL offsets), verified corrected parser returns {lat:22.5, lng:-43.2}, node --check all scripts OK, diff = 2 lines
+• `git_push_changes` → PR #78 opened
+• `merge pr` → ✅ PR #78 merged (sha `1abea27b`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → ls -la /tmp/tg_attachments/ | tail -5; echo "---"; F=$(ls -t /tmp/tg_attachments/*.jpg 2>/dev/null | head -1); echo "FILE: $F"; file "$F"; e; exiftool /tmp/tg_attachments/c0d4045225884a978535b4ac11c7a8e8.jpg | grep -iE "gps|latitude|longitude|exif|make|model|datetime" ; echo "=== f; cd /tmp && echo "=== check parse path in readExifGps — does it handle progressive? ===" && python3 - <<'EOF' import re s = open('uat_root.ht; …(+9 more)
+• `merge pr` → ✅ PR #78 on sunmint_beta merged successfully (sha: 1abea27bac79a6b1702876e89f6cc659a68c0890). Pull Request successfully merged
 
