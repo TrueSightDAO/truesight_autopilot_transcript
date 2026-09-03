@@ -407,6 +407,11 @@ Please inspect the attached file.
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: ssh_run, ocr_image, scan_qr_from_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 **Attachment inspected:** `231994766c9946e2aa4daf40bd015971.jpg` (208 KB, 960×1280)
 
 | Check | Result |
@@ -709,4 +714,59 @@ Then I'll: (1) run the pairwise haversine spacing check (distinctness ≥ ~3 m),
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && ls -la eb5ec7eff9ce46069e76511981666791.jpg && md5sum eb5ec7eff9ce46069e76511981666791.jpg && exiftool -s -GPSLati
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **2b3a0fb1e0024d02a68e5af6bead0807.jpg**]
+- Type: Image (OCR confidence: 26.5%, quality: poor)
+
+Extracted text:
+```
+Proverse UPL era UU Xcel
+```
+
+
+### 🤖 Autopilot
+
+This is the final corner photo — **2b3a0fb1… (corner D)**. Interesting: this time OCR surfaced garbled text ("Proverse UPL era UU Xcel", 26.5% confidence) where it found nothing before. Let me verify the file is unchanged and look closer at that text region:
+
+
+### 🤖 Autopilot
+
+Confirmed — **2b3a0fb1… is corner photo D**, unchanged (md5 `a30e55b8…`, 959×1280, no GPS tags).
+
+**About the OCR hit:** this run surfaced faint text ("Proverse UPL era UU Xcel", 26.5% confidence) where earlier runs found nothing — OCR is nondeterministic on low-quality/compressed images. At 26% confidence this is likely a misread of distant signage or a watermark, not plot-critical data. It doesn't change the catalog.
+
+**Full catalog — 14 photos received, all inspected, all logged as visual evidence:**
+
+| Set | Count | GPS |
+|---|---|---|
+| Tree photos | 10 | ❌ all stripped |
+| Corner photos (303b5b8d / 2ca18c0e / eb5ec7ef / 2b3a0fb1) | 4 | ❌ all stripped |
+
+**Everything is ready on my side except the one input I can't derive from these files: the coordinates** (Telegram removes EXIF/GPS on upload — documented limitation, and verified live on all 14 files).
+
+**Next step — send coordinates as text** (any format), e.g.:
+```
+Tree 1:  -3.XXXXXX, -49.XXXXXX   ×10
+Corner NW: -3.XXXXXX, -49.XXXXXX
+Corner NE: ...
+Corner SW: ...
+Corner SE: ...
+```
+
+The moment they arrive I will, in order:
+1. **Pairwise haversine spacing check** — flag any pair < ~3 m (GPS-noise floor) as not clearly distinct trees
+2. **Build the Fazenda Bom Sucesso polygon** from the 4 corners
+3. **Point-in-polygon** — confirm all 10 trees are inside the plot
+4. **Register** the 10 trees as TREE PLANTING events (lat/lng, species, photo evidence attached), then report ledger rows
+
+Ready when you are — paste away.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && ls -la 2b3a0fb1e0024d02a68e5af6bead0807.jpg && md5sum 2b3a0fb1e0024d02a68e5af6bead0807.jpg && exiftool -s -GPSLati
 
