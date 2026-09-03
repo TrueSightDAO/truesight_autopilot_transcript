@@ -12,257 +12,6 @@
 
 Please inspect the attached file.
 
-[Attachment auto-processed: **1a1919bd8f6b410385d7b4f5ef84ab08.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-[3 tool result(s) compacted: ssh_run, ocr_image, scan_qr_from_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Attachment inspected:** `1a1919bd8f6b410385d7b4f5ef84ab08.jpg` (263 KB, 960×1280)
-
-| Check | Result |
-|---|---|
-| EXIF / GPS metadata | **None** — Telegram-stripped |
-| OCR text | None |
-| QR code | None |
-| Pixel content | 33% gray, 30% mixed, 12% dark, 11% white/bright, 11% warm brown — mean RGB (122,112,104). Notably **brighter & grayer** than the last one (more overcast-light / less dark soil) |
-
-**Interpretation:** Different lighting character from the previous shot (more diffuse/bright, grayer — possibly overcast sky or shade), still an outdoor scene. No readable content. Consistent with the tree-planting photo set.
-
-**Running tally — tree photos received so far:**
-
-| # | Filename | GPS | OCR/QR | Notes |
-|---|---|---|---|---|
-| 1 | 9a941217… | ❌ stripped | none | dark warm scene |
-| 2 | abcab4d5… | ❌ stripped | none | dark warm, low light |
-| 3 | 1a1919bd… | ❌ stripped | none | brighter/grayer, overcast |
-
-All three are **visual evidence only** — no recoverable coordinates. As established, once all 10 are in we'll need either EXIF-preserved originals or text coords for registration, then I'll run the spacing + inside-plot checks. Keep sending; I'll log them as they arrive.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la 1a1919bd8f6b410385d7b4f5ef84ab08.jpg && md5sum 1a1919bd8f6b410385d7b4f5ef84ab08.jpg && exiftool -s -GPSLati
-
-
-### 🧑 Governor
-
-Please inspect the attached file.
-
-[Attachment auto-processed: **ae40fa48cdb147acb5a0bbe4300a9bd0.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-[3 tool result(s) compacted: ssh_run, ocr_image, scan_qr_from_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Attachment inspected:** `ae40fa48cdb147acb5a0bbe4300a9bd0.jpg` (190 KB, 960×1280)
-
-| Check | Result |
-|---|---|
-| EXIF / GPS metadata | **None** — Telegram-stripped |
-| OCR text | None |
-| QR code | None |
-| Pixel content | 25% gray, 24% dark, **21% warm red/brown/orange**, 20% mixed, **8% green** — mean RGB (94,84,75). Darker again, and this one shows the most **earth-tone + green** mix so far |
-
-**Interpretation:** Darker warm scene with the highest green content of the set so far — consistent with a young tree/sapling against soil, possibly with some foliage in frame. Still no readable content.
-
-**Running tally — tree photos received so far:**
-
-| # | Filename | GPS | OCR/QR | Pixel signature |
-|---|---|---|---|---|
-| 1 | 9a941217… | ❌ | none | dark warm |
-| 2 | abcab4d5… | ❌ | none | dark warm, low light |
-| 3 | 1a1919bd… | ❌ | none | brighter/gray, overcast |
-| 4 | ae40fa48… | ❌ | none | dark, earth + green |
-
-All four remain **visual evidence only**. Keep them coming — I'll log all 10, then we settle the coordinate route (EXIF-preserved originals or text coords) and I'll run the spacing + inside-plot checks for Fazenda Bom Sucesso.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la ae40fa48cdb147acb5a0bbe4300a9bd0.jpg && md5sum ae40fa48cdb147acb5a0bbe4300a9bd0.jpg && exiftool -s -GPSLatitude -GPSL
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la ae40fa48cdb147acb5a0bbe4300a9bd0.jpg && md5sum ae40fa48cdb147acb5a0bbe4300a9bd0.jpg && exiftool -s -GPSLati
-
-
-### 🧑 Governor
-
-Please inspect the attached file.
-
-[Attachment auto-processed: **8b9d322ac982404c8c8e37111a5a2c2a.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-[3 tool result(s) compacted: ssh_run, ocr_image, scan_qr_from_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Attachment inspected:** `8b9d322ac982404c8c8e37111a5a2c2a.jpg` (166 KB, 960×1280)
-
-| Check | Result |
-|---|---|
-| EXIF / GPS metadata | **None** — Telegram-stripped |
-| OCR text | None |
-| QR code | None |
-| Pixel content | **43% dark/black** (darkest yet), 39% mixed, 7% blue/sky, mean RGB (81,71,62) |
-
-**Interpretation:** Darkest image of the set so far with a notable 7% sky — could be a shaded/under-canopy shot or a dusk/low-light photo with some sky visible. Still no readable content.
-
-**Running tally — tree photos received so far:**
-
-| # | Filename | GPS | OCR/QR | Pixel signature |
-|---|---|---|---|---|
-| 1 | 9a941217… | ❌ | none | dark warm |
-| 2 | abcab4d5… | ❌ | none | dark warm, low light |
-| 3 | 1a1919bd… | ❌ | none | brighter/gray, overcast |
-| 4 | ae40fa48… | ❌ | none | dark, earth + green |
-| 5 | 8b9d322a… | ❌ | none | darkest, some sky |
-
-Five down, five to go — all still **visual evidence only** (no recoverable coords). Keep sending, and when all 10 are in we'll pick the coordinate route (EXIF originals vs. text) and run the spacing + Fazenda Bom Sucesso inside-plot checks.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la 8b9d322ac982404c8c8e37111a5a2c2a.jpg && md5sum 8b9d322ac982404c8c8e37111a5a2c2a.jpg && exiftool -s -GPSLatitude -GPSLongitude -DateTimeOriginal -Make -Model 8b9d322ac982404c8c8e37111a5a2c2a.jpg 2>/dev/null; echo "---pixels---"; python3 -c "…(+1 more)"</｜｜DSML｜｜parameter>
-</｜｜DSML｜｜invoke>
-</｜｜DSML｜｜tool_calls>
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la 8b9d322ac982404c8c8e37111a5a2c2a.jpg && md5sum 8b9d322ac982404c8c8e37111a5a2c2a.jpg && exiftool -s -GPSLati
-
-
-### 🧑 Governor
-
-Please inspect the attached file.
-
-[Attachment auto-processed: **c61e85e89e1a41a889b694b5dc676b47.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-[3 tool result(s) compacted: ssh_run, ocr_image, scan_qr_from_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Attachment inspected:** `c61e85e89e1a41a889b694b5dc676b47.jpg` (203 KB, 960×1280)
-
-| Check | Result |
-|---|---|
-| EXIF / GPS metadata | **None** — Telegram-stripped |
-| OCR text | None |
-| QR code | None |
-| Pixel content | 28% mixed, **26% warm red/brown/orange** (highest warm content of the set), 20% gray, 13% dark, 7% bright — mean RGB (122,108,95). Brightest, warmest image so far |
-
-**Interpretation:** Warm, brighter scene with strong earth/brown tones — consistent with soil, mulch, or bark in better light. Still no readable content.
-
-**Running tally — tree photos received so far:**
-
-| # | Filename | GPS | OCR/QR | Pixel signature |
-|---|---|---|---|---|
-| 1 | 9a941217… | ❌ | none | dark warm |
-| 2 | abcab4d5… | ❌ | none | dark warm, low light |
-| 3 | 1a1919bd… | ❌ | none | brighter/gray, overcast |
-| 4 | ae40fa48… | ❌ | none | dark, earth + green |
-| 5 | 8b9d322a… | ❌ | none | darkest, some sky |
-| 6 | c61e85e8… | ❌ | none | warm/bright, earth tones |
-
-Six down, four to go — all still **visual evidence only**. When all 10 are in: coordinate route decision (EXIF originals vs text) → pairwise spacing check → Fazenda Bom Sucesso inside-plot check.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la c61e85e89e1a41a889b694b5dc676b47.jpg && md5sum c61e85e89e1a41a889b694b5dc676b47.jpg && exiftool -s -GPSLatitude -GPSLongitude -DateTimeOriginal -Make -Model c61e85e89e1a41a889b694b5dc676b47.jpg 2>/dev/null; echo "---pixels---"; python3 -c "…(+1 more)"</｜｜DSML｜｜parameter>
-</｜｜DSML｜｜invoke>
-</｜｜DSML｜｜tool_calls>
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la c61e85e89e1a41a889b694b5dc676b47.jpg && md5sum c61e85e89e1a41a889b694b5dc676b47.jpg && exiftool -s -GPSLati
-
-
-### 🧑 Governor
-
-Please inspect the attached file.
-
-[Attachment auto-processed: **231994766c9946e2aa4daf40bd015971.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-[3 tool result(s) compacted: ssh_run, ocr_image, scan_qr_from_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Attachment inspected:** `231994766c9946e2aa4daf40bd015971.jpg` (208 KB, 960×1280)
-
-| Check | Result |
-|---|---|
-| EXIF / GPS metadata | **None** — Telegram-stripped |
-| OCR text | None |
-| QR code | None |
-| Pixel content | **53% mixed** (highest texture of the set), 30% dark, 7% gray, 5% green, no bright — mean RGB (110,96,76) |
-
-**Interpretation:** Dense, textured, darkish warm scene — consistent with vegetation/foliage against darker soil or shadow. No readable content.
-
-**Running tally — tree photos received so far:**
-
-| # | Filename | GPS | OCR/QR | Pixel signature |
-|---|---|---|---|---|
-| 1 | 9a941217… | ❌ | none | dark warm |
-| 2 | abcab4d5… | ❌ | none | dark warm, low light |
-| 3 | 1a1919bd… | ❌ | none | brighter/gray, overcast |
-| 4 | ae40fa48… | ❌ | none | dark, earth + green |
-| 5 | 8b9d322a… | ❌ | none | darkest, some sky |
-| 6 | c61e85e8… | ❌ | none | warm/bright, earth tones |
-| 7 | 23199476… | ❌ | none | dense texture, foliage |
-
-Seven down, three to go. All remain **visual evidence only** — no recoverable GPS. When the set is complete we'll settle the coordinate route and I'll run the spacing + inside-plot checks.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la 231994766c9946e2aa4daf40bd015971.jpg && md5sum 231994766c9946e2aa4daf40bd015971.jpg && exiftool -s -GPSLatitude -GPSLongitude -DateTimeOriginal -Make -Model 231994766c9946e2aa4daf40bd015971.jpg 2>/dev/null; echo "---pixels---"; python3 -c "…(+1 more)"</｜｜DSML｜｜parameter>
-</｜｜DSML｜｜invoke>
-</｜｜DSML｜｜tool_calls>
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la 231994766c9946e2aa4daf40bd015971.jpg && md5sum 231994766c9946e2aa4daf40bd015971.jpg && exiftool -s -GPSLati
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la 231994766c9946e2aa4daf40bd015971.jpg && md5sum 231994766c9946e2aa4daf40bd015971.jpg && exiftool -s -GPSLati
-
-
-### 🧑 Governor
-
-Please inspect the attached file.
-
 [Attachment auto-processed: **f81209ca543b48a892458c60dfa4540b.jpg**]
 - Type: Image (OCR confidence: 0.0%, quality: poor)
 
@@ -4393,6 +4142,7 @@ Wait — the workflow at 09:08:36 should have regenerated with `generated_at` �
 ### 🤖 Autopilot
 
 The repair persisted (PL-002 row 14 fully populated; mangled row 13 re-invalidated) and the second rebuild committed at **09:08:50Z** (`7842c235` — after my repair). My earlier fetches raced the commit. Re-fetching now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4400,6 +4150,7 @@ The repair persisted (PL-002 row 14 fully populated; mangled row 13 re-invalidat
 The geojson STILL shows generated_at 09:07:17 with the old data — even though commit `7842c235` landed at 09:08:50Z. That's contradictory. Possibility: the `- Boundary Type: approx` row is being read by the builder with status `proposed` (not `invalid`), and PL-002 bare — meaning **the workflow's SA read a *different/cached* spreadsheet state** OR the builder ran against a stale export. But wait — commit `7842c235` says "Update plots and farms indexes [2026-09-03 09:08 UTC]" — if it committed, the committed file should reflect my repair. Unless the raw fetch is served from a CDN cache keyed on the file path that ignores `?cb=`.
 
 Let me check the **actual committed file content at commit `7842c235`** (by SHA, bypassing the main-branch cache):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4407,6 +4158,7 @@ Let me check the **actual committed file content at commit `7842c235`** (by SHA,
 **The fix is confirmed at the commit level** — commit `7842c235` (09:08:49Z) has **PL-002 with `geom=Polygon`, status=proposed**, and the mangled row gone from the Bom Sucesso entries. The `main` branch raw fetch was just serving a **stale CDN cache** (the `?cb=` param doesn't bust GitHub's raw CDN). The committed artifact is correct — sunmint.html fetches via the same raw URL but the page itself appends `?cb=Date.now()`, and GitHub's raw CDN usually honors cache-busting on subsequent requests; if Gary still sees the old file, a hard refresh will get commit `7842c235`.
 
 Let me do a final confirmation that main's HEAD == 7842c235 (so the committed fix is what the page will eventually serve) and verify the polygon coordinates are correct:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4568,4 +4320,103 @@ Nothing further blocking — the plot pill, the 10 trees, and both script fixes 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== 1) is the off-by-one fix live on sunmint main? ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/; TOKEN=$(grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2- | tr -d '"' | tr -d "'"); for REF in "4c074bb2626e99b6
+
+
+### 🧑 Governor
+
+NOticing there are duplicates... How do we remove them?
+
+https://sunmint.truesight.me/monitor-tree-growth/
+
+[Attachment auto-processed: **c13b48827101464488d68fb167eaa1c1.jpg**]
+- Type: Image (OCR confidence: 80.8%, quality: good)
+
+Extracted text:
+```
+v Select a tree from the list above or enter a Tree ID. ™ Edgar_20260903083551_018 — 18,8 km Edgar_20260903083551_018 — 18,8 km Edgar_20260903083555_020 — 18,9 km Edgar_20260903083555_020 — 18,9 km Edgar_20260903083536_010 — 18,9 km Edgar_20260903083536_010 — 18,9 km Edgar_20260903083411_002 — 18,9 km Edgar_20260903083523_004 — 18,9 km Edgar_20260903083523_004 — 18,9 km Edgar_20260903083532_008 — 18,9 km Edgar_20260903083532_008 — 18,9 km Edgar_20260903083528_006 — 18,9 km Edgar_20260903083528_006 — 18,9 km Edgar_20260903083528 _006 — 18,9 km Edgar_20260903083548 016 — 18,9 km Edgar_20260903083548_016 — 18,9 km Edgar_20260903083548 016 — 18,9 km Edgar_20260903083540_012 — 18,9 km Edgar_20260903083540_012 — 18,9 km Edgar_20260903083540_012 — 18,9 km Edgar_20260903083544_014 — 18,9 km 4 TN Tal TaN al ~ mal TaN ry TN Tat 7 rN rN lal rN a Tt ry Ty a
+```
+
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] Status on this
+
+
+### 🤖 Autopilot
+
+Gary's showing the monitor page listing each tree 2–3× (every Edgar ID `_002`…`_020` appears 2–3 times) — so the map dedupe worked but the **monitor page reads a different source that still has the duplicate ledger rows**. Let me diagnose in parallel: what the monitor page loads, and how many rows per event ID exist in the ledger:
+
+
+### 🤖 Autopilot
+
+The monitor page loads `trees/index.geojson` (lines 442–446), and the dropdown lists each Edgar event ID 2–3×. My dedupe fix keyed on the ledger's **Telegram Update ID** column — but I need to see whether my 10 trees actually have duplicate **rows** in the ledger and what the monitor uses as the tree label. Let me read the artifact tail (the bottom rows where my submissions are):
+
+
+### 🤖 Autopilot
+
+Now I can see the true picture. The ledger **genuinely has duplicate rows** — the same Edgar event (e.g. `Edgar_20260903083551_018`, Message ID `_017`) appears **2–3× as byte-identical rows**. My geojson-builder dedupe fixed the map data, but let me verify what the monitor currently fetches (is the screenshot stale, or is the geojson still serving dupes?) and quantify the ledger dupes:
+
+
+### 🤖 Autopilot
+
+The current geojson (10:28:55Z rebuild) is **clean — 12 unique trees, zero duplicates**. So the screenshot showing dupes is either **stale** (pre-fix) or the monitor reads a **different/stale source**. And the **ledger itself has real duplicate rows** (the same Edgar event `_016`/`_018` appears 2× byte-identical). Let me check what URL the monitor actually fetches, and quantify the ledger dupes precisely:
+
+
+### 🤖 Autopilot
+
+The current geojson is clean (12 unique, no dupes) but the screenshot shows dupes — likely stale cache, yet the ledger itself genuinely holds duplicate rows. Let me get the definitive state: full ledger inventory (rows per Edgar ID + statuses) and what the monitor's first-priority URL would serve right now:
+
+
+### 🤖 Autopilot
+
+The live geojson is **clean** — 12 unique features, zero dupes. So Gary's screenshot showing each tree 2–3× must be **stale** (from before the dedupe fix + rebuild at 10:28:55Z) **or** the page is serving a cached copy. But there's a real second issue visible: **`_078` (the pre-format canary) is in the index with NO-GEO** — a row that shouldn't be there.
+
+Let me also note: the **ledger itself holds byte-identical duplicate rows** (the raw sheet shows `_016`, `_018` etc. appearing 2–3× — my builder dedupes them for the geojson, but they're still in the source). Gary asked "how do we remove them" — the answer depends on *where*: (a) the monitor list (geojson) — already clean, needs a hard refresh; (b) the **ledger source rows** — real dupes need actual removal.
+
+Let me quantify the ledger dupes precisely to give an exact answer:
+
+
+### 🤖 Autopilot
+
+I'm at the tool-round cap — converging with the status and the exact answer to Gary's question.
+
+## Status — duplicates diagnosis (converged)
+
+### What the monitor shows vs. reality
+
+| Source | State |
+|---|---|
+| **Live `trees/index.geojson`** (what the monitor fetches, with `?cb=Date.now()` cache-bust) | ✅ **CLEAN — 12 unique features, ZERO duplicate tree_ids** (rebuild 10:28:55Z, after my dedupe fix landed) |
+| **Gary's screenshot** | ⚠️ **Stale** — shows the pre-dedupe list (each `_002`…`_020` 2–3×). That was the state *before* the 10:28:55 rebuild. |
+
+**So: the monitor list duplicates are already removed in the data.** The fix (builder dedupe by tree_id, commit `64ae6921`) + rebuild (10:28:55Z) means the page now gets one feature per tree. **Gary should hard-refresh** (Cmd/Ctrl-Shift-R) — and because the page appends `?cb=Date.now()` with `cache:'no-store'`, any fresh load should show the clean 12.
+
+### But there ARE two genuine remaining issues to fix
+
+1. **`Edgar_20260903072613_078` (stale pre-format canary) is in the index with NO-GEO** — it slipped into the 12 (the dedupe preferred "has coords", but `_078` was *alone* — its earlier duplicate `_076` wasn't in the same ledger). It renders in the monitor list but has no point. It's a **real stale row** that should be invalidated/removed from the ledger.
+
+2. **The ledger sheet itself still holds byte-identical duplicate rows** (I confirmed `_016`, `_018`, `_020` etc. appear 2–3× as identical rows in `SunMint Tree Planting`). The geojson builder dedupes them, so they don't affect the map — but the **source of truth is dirty**, and anything reading the ledger directly (or a future rebuild path change) would see dupes again.
+
+### How to remove the duplicates (the answer)
+
+- **Where they came from:** each tree submission produced ONE Edgar event, but the parser (`process_tree_planting_telegram_logs.js`) appended a ledger row **per Telegram-chat-log message** — and Edgar mirrors each submission into multiple chat-log rows (the `_015`/`_017`/"Edgar Direct" rows), so the same event got captured 2–3×. The parser's dedupe (by Message ID) missed same-event rows.
+- **Root fix (recommended):** make the **parser dedupe on the Edgar event ID** (col A `Edgar_…_NNN`) — skip a chat-log row whose event ID already has a ledger row. That stops future dupes at the source.
+- **Ledger cleanup (removes existing dupes):** delete the duplicate rows (keep one per event ID) — a targeted sheet edit. Since this is machine-owned data, I'd do it via a gspread script with the SA (authorized by you), keeping the first row per event ID and removing the 2nd/3rd copies.
+
+**RESUME HERE → next unit (fresh turn):**
+1. Confirm the monitor page shows clean data after hard-refresh (if Gary still sees dupes, I'll dig into whether the page caches via `localStorage` — it does `localStorage.setItem(TREE_INDEX_CACHE_KEY, …)`, so a **stale localStorage cache could be the culprit**; the fix would be clearing it, and the page only falls back to it if all URLs fail, so hard-refresh should suffice).
+2. Open the **parser dedupe PR** (tokenomics `process_tree_planting_telegram_logs.js`: dedupe on col-A event ID) — root fix.
+3. With Gary's go, run the **ledger dedupe script** (keep one row per `Edgar_…_NNN`, remove byte-identical extras, ~10–15 rows affected) + **invalidate the stale `_078` canary** row.
+4. Rebuild the tree index afterward so `_078` (NO-GEO) drops out → 11 clean features.
+
+**Done this turn:** fetched monitor.html (confirmed it loads `trees/index.geojson` with `?cb` cache-bust + localStorage fallback), read the ledger tail (confirmed byte-identical dup rows per event ID), verified live geojson = 12 unique / 0 dupes.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && curl -sL "https://sunmint.truesight.me/monitor-tree-growth/" -o monitor.html && echo "monitor.html: $(wc -c < monitor.html) bytes" && echo; cd /tmp && grep -n "TREE_INDEX_URLS" monitor.html | head -3; sed -n "$(grep -n 'TREE_INDEX_URLS =' monitor.html | head -1 | cut -d: -f1),+8p" monitor.html; TOKEN=$(grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2- | tr -d '"' | tr -d "'"); curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/$SHA/trees/index.geojson" | python3 -c "…(+1 more)
+• `read google sheet` ×2 → SunMint Tree Planting ledger tail (duplicate rows per event ID confirmed)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp && curl -sL "https://sunmint.truesight.me/monitor-tree-growth/" -o monitor.html && echo "monitor.html: $(wc -c < monitor.html) bytes; TOKEN=$(grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2- | tr -d '"' | tr -d "'"); echo "=== current main trees; cd /tmp && echo "=== TREE_INDEX_URLS in monitor ==="; grep -n "TREE_INDEX_URLS" monitor.html | head -3; grep -n "const TREE_INDEX_URLS\|TREE; …(+2 more)
 
