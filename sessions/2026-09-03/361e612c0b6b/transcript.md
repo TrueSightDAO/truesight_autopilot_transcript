@@ -3033,31 +3033,37 @@ Now I understand the full picture. The catalog at `/events-catalog` is the singl
 4. Catalog entries have **no `intent_guidance` or `important_fields`/`hints`** keys — nothing tells an LLM "when the farmer means X, use event Y, and don't forget Z."
 
 This is the dao_protocol interface hardening Gary asked about. Let me check the module + tests to see the exact edit pattern, then check how the tool consumes the catalog (to know what keys matter):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is a very productive discovery. The module `report_tree_planting.py` uses `canonical_labels=['Latitude','Longitude','Species',...]` while the **catalog** requires `Tree Count` + `Location` — the exact mismatch that broke my canary. Three separate definitions of the same event disagree. Let me check the catalog structure/version and any tests that assert its shape, so the PR I open is safe:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The architecture is now fully mapped — the catalog at `/events-catalog` (served from `events_catalog.json`) is the interface `lookup_event_docs` and my submission tool consult, and it's **out of sync with the real contracts** in exactly the ways that bit us. Before editing, let me capture the raw file formatting (for exact hunks) and check how the tool consumes the catalog keys:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the raw FBE and TREE PLANTING blocks exactly as they appear in the file (so my PR edits are precise):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The catalog is the single source of truth and the exact gaps are confirmed. Before editing, let me check for any tests asserting catalog shape/count and validate the JSON is well-formed for my edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The catalog file is the single source of truth and my submission tool's validation mirrors it exactly (the rejection echoed its `canonical_labels` list). Let me check whether the autopilot tool has a local mirror of the catalog that also needs updating, and confirm there's no strict-schema test that would break with extra keys:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3068,11 +3074,13 @@ Now I have the complete architecture — **three surfaces** to the interface:
 3. `truesight_autopilot/app/tools/lookup_event_docs.py` — hardcoded `_IMPORTANT_FIELDS` + intent guidance
 
 Let me check the snapshot and the tool's hardcoded hints to scope all three precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The architecture is clear. Let me see how `lookup_event_docs` merges the catalog with its hardcoded maps (to know whether adding keys to the catalog JSON is sufficient, or whether the tool needs a change too):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3080,26 +3088,31 @@ The architecture is clear. Let me see how `lookup_event_docs` merges the catalog
 I now have the complete architecture. Key finding: `_build_result` in the tool only passes through catalog keys `category/canonical_labels/required_fields/description/dapp_page` — so catalog edits are the data fix, and the tool's hardcoded `_IMPORTANT_FIELDS`/`_INTENT_GUIDANCE` need a code update for full effect (separate PR next turn).
 
 Let me grab the exact labels the plot-invalidation GAS handler parses so I can define that event correctly in the catalog:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the invalidation handler labels (`Plot ID`, `Reason`, `Retractor Email`). Now let me see the catalog's key order to pick the right insertion point for a new `PLOT INVALIDATION EVENT` entry, and capture the exact JSON text for precise hunks:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — there's a `MEDIA RETRACTION EVENT` but no `PLOT INVALIDATION EVENT`. Let me check what text marker the invalidation GAS handler actually scans for, and what MEDIA RETRACTION EVENT covers:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have the complete picture — catalog, tool layer, and handler labels. This is the dao_protocol interface hardening PR. Let me first apply the changes to a local copy with a transformation script (validate exactly-once matches), then open the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Transform validated. Now let me apply it to the repo file and run the test suite (per the local-test-before-push rule):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3262,4 +3275,165 @@ PR opened. Merging now per your 👍 go (authorizes merging my own PRs):
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /tmp/dao_p && echo "=== venv layout ===" && ls .venv-test/ 2>/dev/null | head; find . -maxdepth 2 -name "pyvenv.cfg" 2>/dev/null | head -; cd /tmp/dao_p && .venv-test/bin/python -m pytest tests/ -q 2>&1 | tail -20; cd /tmp/dao_p && ls -la .venv-test/bin/python* 2>/dev/null; echo "=== try full path ===" && ./.venv-test/bin/python -c "import sys; print(sy; …(+7 more)
 • `merge pr` → ✅ PR #155 on dao_protocol merged successfully (sha: 8265be2f32787c379a2e91aaffe33fe519d6f4ef). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] [Handoff context — this Telegram topic (thread 20065) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Turn complete — dao_protocol event catalog hardened (v4)
+
+**PR: [dao_protocol #155](https://github.com/TrueSightDAO/dao_protocol/pull/155)** — `chore(catalog): v4 — sync FBE + TREE PLANTING contr
+
+
+### 🤖 Autopilot
+
+👍 Go received — resuming with autopilot PR A: sync the snapshot + `lookup_event_docs.py`. Let me read both current files to scope the change precisely:
+
+
+### 🤖 Autopilot
+
+The snapshot has a different shape (list, no version). Let me read how `lookup_event_docs.py` consumes it and what the fallback logic is:
+
+
+### 🤖 Autopilot
+
+The tool says "no hardcoded event definitions" — it fetches live from Edgar. Let me read the full file to understand how it really works (where the snapshot is used, if at all):
+
+
+### 🤖 Autopilot
+
+The tool fetches **live** from Edgar (CATALOG_URL) — so my dao_protocol #155 catalog update is already live at the source. The tool uses `_INTENT_GUIDANCE` + `_IMPORTANT_FIELDS` as the local LLM-facing hints. The snapshot file is legacy/fallback. Let me read the rest — `_FALLBACK_DOCS`, `_IMPORTANT_FIELDS` entries, and `_build_result`:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The tool's gaps: `_IMPORTANT_FIELDS` has no TREE PLANTING / FBE / PLOT INVALIDATION entries, `_INTENT_GUIDANCE` lacks their intent phrases, `_FALLBACK_DOCS` lacks their fallbacks. Let me see `_build_result` + how the snapshot file is used (grep for it), then verify the live catalog is actually v4:
+
+
+### 🤖 Autopilot
+
+**Critical discovery:** the live catalog at `edgar.truesight.me/events-catalog` is **still v3** (TPE required = only `Tree Count, Location`, FBE still has `Plot ID`, no PLOT INVALIDATION). PR #155 merged v4 into the dao_protocol repo, but the **running Edgar server hasn't picked it up** — so `lookup_event_docs` (which fetches live) still sees the old contract. Let me check how the server serves the catalog (file-read-per-request vs startup-load) to know what deployment is needed:
+
+
+### 🤖 Autopilot
+
+Key finding: the route reads the catalog **from disk per request** (`_load_catalog()` on every GET). So v4 would already be served if the **deployed file on the Edgar server** were updated — but the running server still has v3, meaning **dao_protocol needs deploying** to the `dao_protocol` host. Let me confirm how dao_protocol deploys (git pull on host? CI?) and check the live server's file:
+
+
+### 🤖 Autopilot
+
+The `ssh_run` tool's `dao_protocol` host label uses its own SSH config (I shouldn't nest ssh). Let me use the proper tool host:
+
+
+### 🤖 Autopilot
+
+SSH key auth to dao_protocol host is failing from this shell context. The deployment mechanism must be elsewhere. Let me check the deploy docs / CI for how dao_protocol reaches Edgar's host — likely an SSH deploy script or GitHub Actions in the repo:
+
+
+### 🤖 Autopilot
+
+Let me read the deploy script to understand the deployment flow (this tells me what it takes to get v4 live on Edgar):
+
+
+### 🤖 Autopilot
+
+Deployment is a git pull + restart on the `dao_protocol_nelanco` box (98.93.94.86) via SSH from a machine with the right key. The `ssh_run` dao_protocol host had a key issue from this shell context. Let me check whether deploy.sh is runnable from the autopilot box (does it have the SSH key/alias?) — testing the ssh alias used by the script:
+
+
+### 🤖 Autopilot
+
+The autopilot box **can** reach `dao_protocol_nelanco` (hostname `ip-172-31-23-207` responded) — that's the deploy target. The dao_protocol deploy is a standard `git pull` + restart, which is a **production deploy** — per my hard rule I must NOT deploy to production without an explicit governor command. My 👍 go covers the catalog PR + autopilot code PRs (plan units), not a production service restart.
+
+Let me scope this correctly: the tool-layer PR is still valid and needed (intent guidance + important fields + fallback docs are code in the autopilot repo, independent of the live catalog). Let me finish that PR, then flag the deploy as the explicit-gate step. First, local-test the autopilot repo, then make the edits:
+
+
+### 🤖 Autopilot
+
+Let me verify whether autopilot tests pass on pristine main (baseline) before my change:
+
+
+### 🤖 Autopilot
+
+**855 passed** on pristine main — clean baseline. Now let me apply the tool-layer edits to `lookup_event_docs.py`: add the three events to `_IMPORTANT_FIELDS`, `_INTENT_GUIDANCE`, and `_FALLBACK_DOCS`. Let me capture exact anchor text first:
+
+
+### 🤖 Autopilot
+
+Now I have all anchors. Let me make the three edits (intent guidance, important fields, fallback docs):
+
+
+### 🤖 Autopilot
+
+Edits 1–2 applied in memory but the assertion on edit 3 failed (my heredoc used `\u2014` escapes but the file has literal characters) — so **nothing was written** (atomic write at end). Let me check the actual file characters and redo:
+
+
+### 🤖 Autopilot
+
+Two issues: (1) the em-dash in the file is a literal UTF-8 char, not the `\u2014` escape my search used (so nothing was written — good, atomic); (2) there are unrelated dirty files in the clone (`events_catalog_snapshot.json`, `followups/state.json`) — not mine. Let me restore those and redo the edit with a unicode-safe anchor:
+
+
+### 🤖 Autopilot
+
+All 3 edits applied cleanly (50 insertions, single file). Now the full local test suite per the hard rule:
+
+
+### 🤖 Autopilot
+
+All checks pass except ruff format wants to reformat my file. Let me apply the formatter then re-verify:
+
+
+### 🤖 Autopilot
+
+All tests pass (855) + format clean. But two unrelated files show as modified again — `events_catalog_snapshot.json` and `followups/state.json` — likely a pytest run mutated them (a test exercises the catalog refresh). Let me confirm they're test-generated and restore them so the PR is single-purpose:
+
+
+### 🤖 Autopilot
+
+The snapshot file seems to have been deleted by a test. Let me investigate:
+
+
+### 🤖 Autopilot
+
+A pytest test **deletes** `events_catalog_snapshot.json` as part of its test (that's expected test behavior — it's a test fixture the suite recreates). Restored both; only my intended change remains. Let me confirm the file is back and run the relevant tests once more, then push the PR:
+
+
+### 🤖 Autopilot
+
+Clean — only `lookup_event_docs.py` modified, related tests pass (33 passed). Pushing the PR:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+## Convergence — autopilot lookup_event_docs PR ready but not yet pushed
+
+### What's done
+**The edit is fully applied, tested, and clean** in `/tmp/tsap` (shallow clone of truesight_autopilot):
+
+- `app/tools/lookup_event_docs.py` modified (+67 lines): added the three SunMint event types to `_INTENT_GUIDANCE` (register boundary/plot, tree planting, invalidate plot), `_IMPORTANT_FIELDS` (FBE/TREE PLANTING/PLOT INVALIDATION with the dual validator/parser contract + omit-Plot-ID rules), and `_FALLBACK_DOCS` (offline fallbacks).
+- **All local checks pass:** compileall OK, ruff check "All checks passed", ruff format clean, full suite **855 passed, 1 skipped**, targeted `-k lookup` 33 passed.
+- Working tree is clean except the one intended file: ` M app/tools/lookup_event_docs.py` (a pytest test intentionally deletes/recreates `events_catalog_snapshot.json` — restored, not part of change).
+
+### Blocking
+`git_push_changes` returned **"nothing to do: provide writes, edits, and/or deletes"** — the tool won't take the local working-tree diff; it requires the edits passed **explicitly** in the call (same as the dao_protocol PR last turn, where I had to pass `edits` hunks). I prepared the full PR body + branch name but the call was rejected before pushing.
+
+**Also discovered (deploy gate):** the live catalog at `edgar.truesight.me/events-catalog` is still **v3** — dao_protocol #155 merged but the NELANCO box (`dao_protocol_nelanco` @ 98.93.94.86, service `truesight-dao-protocol` on :8010) hasn't done `git pull` + restart. The autopilot box **can** reach that host (`ip-172-31-23-207` answered), and `deploy.sh` exists — but restarting a production service is an **explicit-gate step** requiring Gary's command, which I will not do unilaterally.
+
+### RESUME HERE
+- **Context:** autopilot tool-layer PR (companion to dao_protocol #155) — edits applied + fully tested at `/tmp/tsap`, only `app/tools/lookup_event_docs.py` modified.
+- **Next action:** re-run `git_push_changes(repo='truesight_autopilot', branch='feat/lookup-event-docs-sunmint-contracts', ...)` **passing the `edits` hunks explicitly** (extract the diff from `/tmp/tsap` via `git diff app/tools/lookup_event_docs.py` first), PR title/body as drafted. Then merge per the 👍 go.
+- **Then (needs Gary's explicit deploy go — separate step):** deploy dao_protocol v4 catalog to the NELANCO box so `lookup_event_docs` live fetch returns v4 (`cd dao_protocol && git pull --ff-only && pip install -e . && sudo systemctl restart truesight-dao-protocol` via `dao_protocol_nelanco`), verify `curl edgar.truesight.me/events-catalog` shows version 4.
+- **Then the pending tree registration** (10 trees, species **Cacau - Hybrid**): canary Tree 1 already accepted; verify the rendered row in `SunMint Tree Planting` tab has lat/lng populated, fire Trees 2–10, report.
+
+———
+**Done this turn:** baseline tests (855 pass); applied + formatted + tested the 3-map edit to `lookup_event_docs.py`; restored test-mutated files; attempted PR push (blocked on explicit `edits` param); mapped the dao_protocol deploy gate.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×22 → cd /tmp && rm -rf tsap && git clone --depth 1 https://github.com/TrueSightDAO/truesight_autopilot.git tsap 2>&1 | tail -1 && cd tsap && echo; cd /tmp/tsap && echo "=== lookup_event_docs.py structure ===" && grep -n "snapshot\|_IMPORTANT_FIELDS\|_INTENT_GUIDANCE\|def \|events_catalo; cd /tmp/tsap && wc -l app/tools/lookup_event_docs.py && sed -n '1,60p' app/tools/lookup_event_docs.py; …(+19 more)
 
