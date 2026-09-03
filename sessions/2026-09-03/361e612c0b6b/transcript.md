@@ -2690,11 +2690,13 @@ Note: I did **not** fire the 10 submissions this turn because the canary proved 
 ### 🤖 Autopilot
 
 Species locked: **Cacau - Hybrid** for all 10. Resuming the tree registration — first, regenerate the authoritative 10-tree list and convert each chosen photo to JPEG for evidence, then canary-submit Tree 1 with the corrected format (adding canonical `Location` to satisfy the validator, plus `Latitude`/`Longitude` lines for the GAS parser).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 10 photos converted to JPEG. Now let me upload all 10 to the sunmint repo for the Photo URL evidence (parallel calls), then canary Tree 1.
+[10 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2834,4 +2836,98 @@ My resubmission of Tree 1 now carries exactly those keys (**Latitude, Longitude,
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
 • `ssh run` → cd /tmp && curl -s "https://edgar.truesight.me/dao/submissions?limit=2" | head -c 3000; echo; echo "==="; curl -s "https://edgar.truesight.m
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] Can we update agentic_ai_context to make sure the heuristics for figuring out unique trees as well as the 4 corners are all well defined as well did as well as the submissions. I wonder if we should update the dao_protocol interface to ensure these get well defined so that future LLMs and Sophia's know exactly what is required for submissions of these two types
+
+
+### 🤖 Autopilot
+
+Good idea — this session surfaced exactly the kind of tribal knowledge that should be codified (the dig-time heuristic, the exiftool hemisphere gotcha, the no-empty-fields rule, the dual validator/parser field requirement). Let me check what's already documented so I extend rather than duplicate:
+
+
+### 🤖 Autopilot
+
+Nothing documented — this is net-new tribal knowledge. Let me check what SunMint/boundary docs exist so I extend the right files:
+
+
+### 🤖 Autopilot
+
+Two docs already exist that should anchor this — let me read the boundary submission plan (it's the natural home for the FBE contract) and check the plots registry structure so I extend rather than sprawl:
+
+
+### 🤖 Autopilot
+
+This is a valuable codification task. Two clear deliverables, and I'll do the agentic_ai_context documentation first (one PR this turn), then propose the dao_protocol interface update as the follow-on. Let me first gather the exact current definitions so the doc and interface proposal are precise:
+
+
+### 🤖 Autopilot
+
+Let me look at the actual dao_protocol event definitions to ground the interface proposal — checking the event catalog and tree-planting handling:
+
+
+### 🤖 Autopilot
+
+Let me check the event catalog location in dao_protocol's repo layout and how lookup_event_docs resolves these events:
+
+
+### 🤖 Autopilot
+
+Good instinct from Gary — this session produced hard-won tribal knowledge (dig-time heuristic, exiftool hemisphere gotcha, empty-field line-bleed, dual validator/parser requirement) that no doc captures yet (searches returned 0 hits). Two natural anchors exist: `SUNMINT_PLOTS_REGISTRY.md` (boundary) and the FBE plan. Let me check whether a tree-planting runbook exists before deciding placement:
+
+
+### 🤖 Autopilot
+
+The plots runbook already covers plot definition well but has **no** tree-photo heuristics or submission contracts — those searches returned zero. Let me check the E2E runbook so I place this correctly (extend vs. new file):
+
+
+### 🤖 Autopilot
+
+I have the full picture now — this session produced genuinely new tribal knowledge (searches for these heuristics return **zero hits** in context). The right move: **one new runbook doc** in agentic_ai_context that defines (1) the unique-tree heuristics, (2) the 4-corner identification, and (3) both submission contracts — then a follow-on proposal for the dao_protocol interface.
+
+Let me write the runbook and open the PR:
+
+
+### 🤖 Autopilot
+
+PR #904 opened. Per your request (the go for the doc update), I'll merge it now:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn complete — runbook codified & merged
+
+**PR: [agentic_ai_context #904](https://github.com/TrueSightDAO/agentic_ai_context/pull/904)** — `SUNMINT_TREE_PHOTO_PROCESSING.md` — **merged** (sha `ccb5d2a4`).
+
+**What changed:** A new runbook that codifies everything this session taught us (searches confirmed zero prior documentation — all net-new tribal knowledge):
+
+1. **Getting GPS-bearing originals** — Telegram/WhatsApp strip EXIF from recompressed JPGs; HEIC container originals keep GPS; safe channels (email/Document/Drive/scp).
+2. **EXIF gotchas** — DMS→decimal S/W-negative, the `exiftool -s` hemisphere-in-value trap, md5 dedupe of random-name re-uploads.
+3. **Distinct-tree heuristic (Gary's dig-time rule)** — cluster by capture time FIRST (≤60–90 s = same tree; minutes apart = distinct digging events), distance as secondary only; with the worked 10-tree example.
+4. **Smiley-preference selection** — cv2 5.x dropped CascadeClassifier (use 4.x venv); low-light defeats smile cascade → fall back to face-count.
+5. **4-corner identification** — corners at GPS-cloud extremes; pixel-match stripped JPGs to GPS-bearing HEICs; convex-hull polygon, `approx` authority; inside-polygon sanity check.
+6. **Exact submission contracts** — FBE (never an empty `Plot ID` line — the line-bleed bug, fixed in #458; media joined `; `), TREE PLANTING (BOTH canonical `Location`/`Tree Count` for the validator AND `Latitude`/`Longitude` lines for the parser), PLOT INVALIDATION (sentinel-gated, soft-only).
+7. **Verification checklist** + Do/Don't section.
+
+---
+
+**RESUME HERE → next unit (fresh turn):**
+**dao_protocol interface hardening.** Gary's second question: *should the dao_protocol interface be updated so future LLMs/Sophias know exactly what's required for these two submission types?* This is a code-level proposal in `dao_protocol` (event catalog / `lookup_event_docs` canonical labels + validation for `FARM BOUNDARY EVIDENCE EVENT` and `TREE PLANTING EVENT`) — e.g.:
+- Add both event types to the catalog with explicit required-fields lists and intent guidance (mirroring what the runbook now documents: FBE requires Farm Name + Media URLs/Count, Plot ID optional-never-empty; TREE PLANTING requires Tree Count + Location AND Latitude/Longitude).
+- Tighten the validator so it *accepts and surfaces* both field styles, or documents that Latitude/Longitude are also valid.
+- File first as a proposal/issue in `dao_protocol` (it's not truesight_autopilot, so per the self-improvement rules I describe the issue for Gary to decide, or open a PR if he says go) — plus note the species-vocabulary standardization question.
+
+The runbook (#904) is the documentation half; the dao_protocol catalog/validator change is the code half — ready to open when you give the word.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && curl -s "https://edgar.truesight.me/dao/event-catalog" | head -c 3000; echo; echo "=== alt ==="; curl -s "https://edgar.truesight
+• `merge pr` → ✅ PR #904 on agentic_ai_context merged successfully (sha: ccb5d2a4c694d336241ffaa587f3ebe8a1b3f89d). Pull Request successfully merged
 
