@@ -669,3 +669,44 @@ Corner SW: ...
 ```
 or send me a CSV/KML export from a field app. The moment I have them I'll: (1) run the pairwise haversine spacing check for distinctness, (2) build the polygon from the 4 corners, (3) verify all 10 trees fall inside it.
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **eb5ec7eff9ce46069e76511981666791.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+This is **eb5ec7ef… — corner photo C**, already inspected in the earlier batch (md5 `5f80254c…`). Quick confirmation check that nothing changed:
+
+
+### 🤖 Autopilot
+
+Confirmed — **eb5ec7ef… is corner photo C**, unchanged since the batch inspection (md5 `5f80254c…`, 223 KB). No new content.
+
+**This file's signature (from earlier inspection):**
+- GPS: ❌ none (Telegram-stripped)
+- OCR: no text · QR: none
+- Pixels: **24% green** (the most vegetated of the four corners), 21% gray, 19% dark
+
+**Catalog remains complete & unchanged — 14 photos total:**
+- **10 tree photos** — received, inspected, no GPS
+- **4 corner photos** — received, inspected, no GPS (303b5b8d… / 2ca18c0e… / eb5ec7ef… / 2b3a0fb1…)
+
+Everything is logged as visual evidence. The **single missing input is coordinates** — Telegram stripped GPS from all 14 images, so I can't auto-extract lat/lng.
+
+**To unlock the registration + checks**, paste coordinates as text (or send CSV/KML/EXIF-preserved originals):
+- 10 tree lat/lng pairs
+- 4 corner lat/lng pairs for Fazenda Bom Sucesso
+
+Then I'll: (1) run the pairwise haversine spacing check (distinctness ≥ ~3 m), (2) build the plot polygon from the corners, (3) verify all trees fall inside, and (4) register the 10 trees as TREE PLANTING events with photo evidence attached.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && ls -la eb5ec7eff9ce46069e76511981666791.jpg && md5sum eb5ec7eff9ce46069e76511981666791.jpg && exiftool -s -GPSLati
+
