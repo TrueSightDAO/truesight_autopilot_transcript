@@ -401,6 +401,7 @@ Say **"go"** and I'll merge #398 + #905, then start the next unit.
 ### 🤖 Autopilot
 
 Merging both now.
+[2 tool result(s) compacted: merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -452,6 +453,7 @@ One open flag carried forward for later (not blocking): the **display_name-as-tr
 ### 🤖 Autopilot
 
 👍 Go received. Executing the next unit: **GPS extraction + `telegram_adapter.py` image_exts wiring**. First, let me recover your refined-scope message details and check the handoff registry.
+[3 tool result(s) compacted: recall_context, recall_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -550,4 +552,45 @@ Let me check the test layout, whether a real HEIC fixture already exists in the 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /opt/truesight_autopilot && echo "=== main.py import block 60-90 ==="; sed -n '60,90p' app/main.py; echo "=== main.py 4230-4320 (per-file; cd /opt/truesight_autopilot && echo "=== telegram_adapter top imports 1-80 ==="; sed -n '1,80p' app/telegram_adapter.py | grep -n "^import \; cd /opt/truesight_autopilot && echo "BEFORE: $(git rev-parse --short HEAD) dirty:"; git status --porcelain | head; echo "--- restoring the 4; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20182] [Handoff context — this Telegram topic (thread 20182) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Checking in - been quiet for a while since your last 'resuming GPS-extraction wiring' message. Continue from there, or report status if blocked.
+
+
+### 🤖 Autopilot
+
+Resuming. Let me re-establish exact state — where the tree is, what reconnaissance was already gathered (tests, venv deps, auth), so I can land the PR cleanly.
+
+
+### 🤖 Autopilot
+
+Quick recon of the remaining unknowns before I write the PR: Pillow's GPS-IFD capabilities on this box (needed for a self-contained unit test), existing HEIC/convert test names to mirror, and confirm of exact current image-branch text.
+
+
+### 🤖 Autopilot
+
+Continuing. I need to nail two things before writing code: (1) the exact Pillow GPS-IFD write format that round-trips (for a hermetic unit test without piexif), and (2) whether a real GPS-bearing JPEG exists on-box as a high-fidelity fixture.
+
+
+### 🤖 Autopilot
+
+Real GPS-bearing JPEGs (converted from the Fazenda HEIC) confirmed on-box; Pillow writes GPS IFD with float lists — hermetic tests can craft JPEGs without piexif. Let me check the existing HEIC upload e2e test to mirror its fixture approach, then write the code.
+
+
+### 🤖 Autopilot
+
+GPS fixture JPEGs confirmed on-box (the real Fazenda conversions), and Pillow's float-list write format round-trips — so I can write hermetic unit tests without piexif. Two last checks before writing: import-cycle safety for adding a qr_scanner import into telegram_adapter, and the exact main.py insertion point.
+
+
+### 🤖 Autopilot
+
+State re-established: HEAD == `3395c6e` (merged #398), no open work in tree. Recon complete — I have verbatim pre-edit text for every hunk. Now the build path: first check push credentials (determines commit+push vs tool-PR), find a real HEIC to smoke against, then apply the edits to the worktree so tests run against the actual code.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /opt/truesight_autopilot && echo "HEAD: $(git rev-parse --short HEAD)"; git status --porcelain | grep -v "^ M tokenomics\|^ M worktrees/v; cd /opt/truesight_autopilot && echo "=== tests dir ==="; ls tests/ 2>/dev/null | head -30; echo "=== heic fixtures in repo? ==="; find . -in; cd /opt/truesight_autopilot && echo "=== Pillow version + Exif GPS write/read smoke ==="; .venv/bin/python - <<'EOF' from PIL import Image, ; …(+5 more)
 
