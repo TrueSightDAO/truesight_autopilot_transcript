@@ -1343,56 +1343,67 @@ Gary's asking whether the **current production sunmint.truesight.me interface** 
 ### 🤖 Autopilot
 
 Let me dig deeper — first see exactly what event types the live v3 catalog has, what the SunMint frontend submits and to where, and what v4 (merged but not deployed) contains.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Live v3 catalog already has the key SunMint events (TREE PLANTING, TREE GROWTH MONITORING, FARM BOUNDARY EVIDENCE, TREE PLANTING LINK). The v4 file path I guessed 404'd — let me find the real snapshot path and examine what the SunMint pages actually submit to edgar.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the real catalog file path in dao_protocol (excluding .venv noise) and compare v3→v4, plus check whether prod SunMint is even deployed with the latest code.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tree listing was flooded with `.venv` noise, but I can see the relevant path starts with `truesight_dao_client/server/data/events_cata…`. Let me find the exact catalog path and compare v3 live vs v4 in repo, and check the prod SunMint page's submission format against the deployed catalog.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `truesight_dao_client/server/data/events_catalog.json`. Let me compare repo v4 vs live v3, check the live edgar API's validation behavior for the new event, and check the deployed state on the NELANCO box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see exactly what payload the SunMint frontend builds and whether the live (v3) validator accepts it — that determines if "syncs properly" today.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the full submit function — how it builds the payload text and which event name it sends:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me compare the v3 (live) vs v4 (repo) contracts for the SunMint events, and check what the limites page submits vs the FBE contract:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the crux. Let me verify the current production SunMint page payloads against BOTH v3 (live validator) and v4 (pending), and check what validator the live edgar box actually runs.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SSH directly needs the fleet credentials — let me use the proper `ssh_run` host label for the dao_protocol box, and check whether the live endpoint enforces required fields at all.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dao_protocol host is unreachable via direct SSH (key issue on that host). Let me verify the key facts from the repo side and check what PROD SunMint currently serves vs. what v4 expects:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1451,6 +1462,7 @@ Related pending item from the other Sophia's handoff: the `lookup_event_docs` au
 ### 🤖 Autopilot
 
 Go signal received — executing the two deploy gates (dao_protocol v4 catalog deploy + sunmint beta→prod sync) plus the ready `lookup_event_docs` PR. First, let me check the handoff manifest/plan and verify current state before any irreversible step.
+[2 tool result(s) compacted: check_handoffs, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1540,4 +1552,26 @@ The remaining item from the handoff context: **the pending tree registration (10
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → echo "=== deploy.sh locations ===" && find / -maxdepth 4 -name "deploy.sh" -not -path "*/node_modules/*" -not -path "*/.venv*" 2>/dev/null |; cd /tmp && echo "=== PROD after sync — feature check ===" && for p in "" "monitor-tree-growth/" "limites-da-fazenda/"; do f="prod2_${p//\//_; echo "=== connect via ssh config identity ===" && ssh -i ~/.ssh/id_ed25519_truesight_autopilot -o StrictHostKeyChecking=no -o ConnectTimeout; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20044] so we are good to go?
+
+
+### 🤖 Autopilot
+
+Yes — **we're good to go on the deployment side.** Quick recap of what's live right now:
+
+- ✅ **sunmint.truesight.me (prod)** — all three pages now have the new code, byte-identical to beta: gallery photo upload + EXIF-GPS + HEIC support on tree planting, gallery upload on monitor growth, and photo deselect on limites.
+- ✅ **Edgar backend** — running catalog **v4** with the updated contracts (Tree Planting now requires Latitude/Longitude, Plot Invalidation added).
+- ✅ **Autopilot tool layer** — the lookup docs for the SunMint events are merged.
+
+So the interface and backend are in sync. **What's left is your call:**
+
+1. **Your UAT on prod** — the main thing we were chasing: upload the original HEIC photo to `sunmint.truesight.me` tree planting and confirm it now picks up lat **-3.0953 / lng -52.0950** from the photo (not the phone). That was the failing test — worth confirming it passes on prod now.
+
+2. **The pending 10-tree registration batch** (Cacau – Hybrid) — Tree 1 was already accepted; I can fire Trees 2–10 against the new v4 contract whenever you give the go.
+
+Want me to kick off the tree batch now, or are you testing the photo flow first?
 
