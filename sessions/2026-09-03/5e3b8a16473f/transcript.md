@@ -315,11 +315,13 @@ DateTimeOriginal uses `:` separators, not ISO `-`. Quick fix:
 ### 🤖 Autopilot
 
 GPS alone can't decide the ambiguous cases (4 ↔ 10 are 2.1 m apart but 20 min apart; 18/19 have ±180 m error). The ground truth is **image content** — two shots of the same tree from the same spot are nearly identical. Let me compute perceptual hashes on the converted JPEGs and build a similarity matrix:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The dhash matrix is uniformly high (27–52 everywhere) with no near-zero matches — that's a red flag. iPhone HEICs carry EXIF rotation (e.g. "Rotate 90 CW"), and `heif-convert` may not bake it into the JPEGs, so I'm likely comparing sideways images. Let me fix orientation first, then re-hash:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -431,4 +433,44 @@ Wait — one nuance worth flagging: my **stop S14 representative is `9e4ce3…`*
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && ls -la 0b7f549e35384127bb3e29b917f2b0b0.HEIC 2>/dev/null; exiftool -c '%.6f' -DateTimeOriginal -OffsetTimeOriginal
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/d9c8cebc0c694ffda0c58b80d487cf5b.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+Another HEIC arrived — `d9c8ce…` matches the 19:21:22 burst shot I saw in the full sweep. Let me verify it's the same file already in the set:
+
+
+### 🤖 Autopilot
+
+`d9c8ce…` exists on disk — 19:21:22 capture, GPS 3.094200°S / 52.095189°W, ±~5 m, heading 234°. My moments lookup missed it because it's the **second file** of the 19:21:22 burst. Let me confirm membership correctly:
+
+
+### 🤖 Autopilot
+
+Confirmed — `d9c8ce…` is the **second file of the 19:21:22 burst** (paired with `95dd59…`), which belongs to **stop S12** (representative currently `3ca82a…` at 19:21:10). This attachment is already in the set — no new data.
+
+**One more refinement opportunity:** S12 currently uses `3ca82a…` (±14 m GPS, the 19:21:10 shot) as representative, but `d9c8ce…` (19:21:22) has tighter GPS (~±5 m vs ±14 m) and is from the same spot (heading 234° vs 236°, ~2 m apart). Depending on image quality, `d9c8ce` may be the better representative for S12.
+
+**Current state (unchanged):** 33 HEICs → 15 stops, awaiting your grouping call to finalize 10 trees.
+
+---
+
+**RESUME HERE:** Next turn — once Gary replies with the grouping (or "trust GPS merges"), I'll:
+1. Finalize 10 clusters; re-pick representatives among the siblings (e.g. `0b7f54` for S14, `d9c8ce` for S12, `925b56` for the 19:21:15 burst) based on sharpness + GPS accuracy.
+2. Output the final 10-photo manifest (file, time, lat/lon, alt, neighbor distances) + persist via `append_to_transcript`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/tg_attachments && exiftool -c '%.6f' … d9c8ce…HEIC && python3 burst membership checks — **duplicate of existing S12 burst shot; no new data**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/tg_attachments && ls -la d9c8cebc0c694ffda0c58b80d487cf5b.HEIC 2>/dev/null; exiftool -c '%.6f' -DateTimeOriginal -OffsetTimeOriginal; cd /tmp/tg_attachments && python3 -c " import json moms = json.load(open('moments.json')) for m in moms: if any('d9c8ce' in f for f in m['fi
 
