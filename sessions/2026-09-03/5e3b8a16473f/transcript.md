@@ -165,3 +165,53 @@ Keep sending the rest — once the batch is complete I'll finalize clusters and 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/tg_attachments && exiftool -c '%.6f' -DateTimeOriginal -OffsetTimeOriginal -GPSLatitude -GPSLongitude -GPSAltitude -GPSPosition -GPS; cd /tmp/tg_attachments && python3 - << 'PY' import json, math, datetime m = json.load(open('tree_photos_manifest.json')) new = { "file": "3c
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/3f1a8b7427e547b0a0210a139b39e91e.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+Photo #4 has very poor GPS (±181 m) — flagging that. Let me update the manifest:
+
+
+### 🤖 Autopilot
+
+**Photo #4 processed** — `3f1a8b7427e547b0a0210a139b39e91e.HEIC`
+
+| Field | Value |
+|---|---|
+| Device | iPhone 12 Pro Max |
+| Captured | 2026-09-02 19:26:28 (UTC−03:00) |
+| Latitude | 3.094333° S |
+| Longitude | 52.096053° W |
+| Altitude | 121.3 m ASL |
+| GPS accuracy | **±181.5 m ⚠️⚠️ (very poor)** |
+| Heading | 119.6° (NE — note: all others face ~235° SW) |
+
+**Updated distance matrix (m):**
+
+| | 925b56c8 | 9e4ce380 | 3ca82aea | 3f1a8b74 |
+|---|---|---|---|---|
+| **925b56c8** (#1) | — | 39.3 | 5.0 ~ | 97.9 ~ |
+| **9e4ce380** (#2) | 39.3 | — | 43.4 | 84.9 ~ |
+| **3ca82aea** (#3) | 5.0 ~ | 43.4 | — | 102.6 ~ |
+| **3f1a8b74** (#4) | 97.9 ~ | 84.9 ~ | 102.6 ~ | — |
+
+`~` = distance < combined GPS error → unverifiable by GPS alone
+
+**Interpretation:**
+- **#4's GPS fix is essentially unusable** (±181 m = the coordinate could be ~180 m off in any direction). It sits in the middle of the timeline (19:26, between the 19:21 cluster and #2 at 19:31) and faces **NE (120°)** — the *opposite* direction of every other shot (~235° SW). That suggests the photographer turned around or walked to another spot.
+- I **cannot** reliably cluster #4 against the others from GPS alone. It's plausibly a distinct tree (its lon is ~90 m west of the cluster and the heading flip suggests a different vantage), but needs either a neighbor in the batch or visual confirmation.
+
+**Running tally:** 4 photos → #1+#3 same tree; #2 distinct; #4 = *probable distinct, unconfirmed* → **~3 distinct trees so far, 7 to go.**
+
+Keep them coming — and if you have a map/planting list with tree positions, that would let me resolve #4-type ambiguity definitively.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/tg_attachments && exiftool -c '%.6f' -DateTimeOriginal -OffsetTimeOriginal -GPSLatitude -GPSLongitude -GPSAltitude -GPSPosition -GPS; cd /tmp/tg_attachments && python3 - << 'PY' import json, math, datetime m = json.load(open('tree_photos_manifest.json')) m['photos'].append(
+
