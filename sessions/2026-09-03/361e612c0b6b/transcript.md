@@ -2237,11 +2237,13 @@ A large new batch has landed (59 HEIC total now — the tree photos Gary said he
 ### 🤖 Autopilot
 
 24 unique HEIC files, all GPS-bearing — this is the full set. The 4 earliest (18:18–18:31) are the **corner photos**; the 20 from 18:42–19:31 are **tree photos** — with multiple shots of several trees (that's why you said "pick which 10"). Let me cluster them into distinct trees using GPS proximity + your dig-time heuristic, with correct S/W signs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The full set is 24 unique photos (20 tree + 4 corner). The tree photos form **time-burst clusters** — several trees have 2–3 shots each (that's exactly why you said "pick one per tree, prefer smiley ones"). Now let me run **smile/face detection** over the candidates so I can apply your smiley-preference rule with evidence, not guessing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2444,4 +2446,51 @@ Say "confirmed, cacao, planted by X" and I'll submit the 10 `[TREE PLANTING EVEN
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && ls -la f751d1dc78c3429fb8973a25c30b0c57.HEIC && md5sum f751d1dc78c3429fb8973a25c30b0c57.HEIC && echo "---GPS---" &
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] status of the photos analysis
+
+
+### 🤖 Autopilot
+
+Let me do a quick freshness check on the folder before giving the status — to confirm nothing new landed since my last analysis:
+
+
+### 🤖 Autopilot
+
+## 📊 STATUS — Photos analysis
+
+### Set composition
+- **59 HEIC on disk → 24 unique** photos (deduped by md5; the rest are random-name re-uploads)
+- **20 unique = tree photos** · **4 unique = corner photos** (18:18–18:31, already used to register plot PL-002)
+- All iPhone 12 Pro Max, 2026-09-02, all GPS-bearing
+
+### Clustering result — **exactly 10 distinct trees** ✅
+Using your **dig-time heuristic** (photos ≤ 90 s apart = same tree; you can't dig a hole in under a minute):
+
+| Tree | Time | Shots | Proposed pick | Faces/smile |
+|---|---|---|---|---|
+| 1 | 18:42 | 1 | `23768d7c` | 2 faces |
+| 2 | 18:47 | 3 | **`74ae3d15`** | ✅ smile detected |
+| 3 | 18:52–53 | 3 | `46d7e4d8` | 3 faces (most people) |
+| 4 | 18:57 | 1 | `17016c60` | 1 face |
+| 5 | 19:02 | 1 | `2c364eb3` | 3 faces |
+| 6 | 19:09–10 | 2 | `1ae19a42` | 1 face |
+| 7 | 19:16 | 2 | `22cf3ff2` | 1 face |
+| 8 | 19:21 | 3 | `925b56c8` | 1 face |
+| 9 | 19:26 | 2 | `8ecc12ab` | 2 faces |
+| 10 | 19:31 | 2 | **`9e4ce380`** | ✅ smile detected |
+
+### Where it stands
+- **Done:** dedupe, GPS extraction, time-based clustering → 10 trees, smile/face detection over all 20 candidates
+- **Smile rule applied where detectable:** Tree 2 + Tree 10 picks are the smile shots. For Trees 3/6/7/8/9 no smile was auto-detected (dark/low-light defeats the cascade) — picks default to "most/best faces"
+- **Blocked on your confirm:** (1) are the picks right — especially any you *remember* as smiley shots? (2) species (cacao?) (3) planter name
+
+**Last arrivals were duplicates** (`f751d1dc`, `d5c94b14` = Tree 10 re-uploads) — no new content since my analysis. Once you confirm picks + species + planter, I submit 10 `[TREE PLANTING EVENT]`s against **PL-002** with the chosen photos as evidence.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && echo "HEIC total on disk: $(ls *.HEIC 2>/dev/null | wc -l)"; echo "Unique by md5: $(md5sum *.HEIC 2>/dev/null | aw
 
