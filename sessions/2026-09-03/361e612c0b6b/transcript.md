@@ -1075,11 +1075,13 @@ Duplicate re-upload of `a9cf65d0` (T10) — already in my processing set. Quick 
 ### 🤖 Autopilot
 
 Another duplicate (`a9cf65d0`, T10 — unchanged), but the count jumped to **12** — a new file arrived. Let me identify it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Another new arrival (`7f77424b`, 18:31) — the set is now **12 HEIC files**. Let me run the consolidated analysis on everything on disk so we have one clean picture:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1339,4 +1341,49 @@ I'll pause here rather than re-scan the same verified file — nothing new to ex
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && ls -la 17016c6014254867b3a74fbd0145911e.HEIC && md5sum 17016c6014254867b3a74fbd0145911e.HEIC && exiftool -s -GPSLa
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/193eca20029547e8b7e7d6cffd8a2167.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+Another from the set (`193eca20` — T3). Quick verification:
+
+
+### 🤖 Autopilot
+
+`193eca20` verified (T3, unchanged). Count steady at **14 HEIC**, no new arrivals — set complete.
+
+This is the 5th confirmed duplicate re-upload of an already-catalogued tree file, so I'll keep this brief rather than repeat the full table each time. **Nothing new to extract.**
+
+## Status unchanged — waiting on 4 decisions
+
+All **14 originals** are on disk, GPS-extracted, and analyzed:
+
+- **Plot**: ~1.02 ha from 4 GPS corners
+- **9/10 trees inside**; `2c6b2aac` ~48 m outside polygon (map sent)
+- **3 tight pairs** flagged (193eca20↔1d6a3a4c 1.4 m = likely duplicate; 95dd596c↔a9cf65d0 2.0 m; 2c364eb3↔b08309c1 2.2 m)
+
+**To execute registration I need:**
+1. Tight pairs → dedupe or keep all?
+2. `2c6b2aac` → outside polygon: adjust corners or register outside?
+3. Species + planter names
+4. Pledge QR linkage?
+
+Or just say **"register all 10 as-is, defaults"** and I'll proceed: species = Cacao, planter = (need a name — Kirsten?), tight pairs kept as distinct with a ledger note, `2c6b2aac` registered with its own coordinates + a note it sits outside the corner polygon.
+
+Meanwhile — is there anything else in the 14 files you want me to look at (e.g. visual confirmation of species from the photos themselves), or shall we lock in the decisions?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && ls -la 193eca20029547e8b7e7d6cffd8a2167.HEIC && md5sum 193eca20029547e8b7e7d6cffd8a2167.HEIC && exiftool -s -GPSLa
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && ls -la 193eca20029547e8b7e7d6cffd8a2167.HEIC && md5sum 193eca20029547e8b7e7d6cffd8a2167.HEIC && exiftool -s -GPSLa
 
