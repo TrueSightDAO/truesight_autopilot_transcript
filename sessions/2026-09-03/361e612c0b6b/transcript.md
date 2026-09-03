@@ -3173,26 +3173,31 @@ The interface Gary asked about hardens across **one canonical file + two autopil
 ### 🤖 Autopilot
 
 👍 Go received — resuming the dao_protocol catalog hardening. First, find the test runner and run the suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The venv has `python3.11` under `.venv-test/bin/python` — my earlier glob just failed. Let me run the test suite properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Odd — `ls` showed `python` in `.venv-test/bin` but direct exec fails. Let me check the actual symlink target:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The venv was created on Gary's **Mac** (`/Users/garyjob/...`) — broken symlinks on this Linux box. Let me use system python3 + pip-installed deps, or check if there's a working autopilot venv with dao_client deps:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The venv is Mac-built (broken on this Linux box) and collection fails on a pre-existing `dedup` import error — unrelated to my JSON-only change. Let me confirm these failures exist **without** my change (pristine) and check whether the `dedup` module genuinely exists:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3200,41 +3205,49 @@ The venv is Mac-built (broken on this Linux box) and collection fails on a pre-e
 Pre-existing failure confirmed on pristine main (Mac-built venv + missing `dedup` module on this Linux box — unrelated to my JSON-only change; note the tip commit `b373300` just added PLOT INVALIDATION EVENT routing, so the catalog addition is timely). JSON validates clean; compileall/ruff don't apply to JSON.
 
 Let me grab the exact insertion anchor text for the new PLOT INVALIDATION EVENT entry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — my earlier transform inserted PLOT INVALIDATION before PRACTICE EVENT alphabetically, but the file layout shows PARTNER CHECK-IN at 382 → PRACTICE at 420, so "PLOT INVALIDATION EVENT" (P-L-O) sorts between them correctly. Let me verify the current file state after my transform (the insertion should be around line ~415):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The catalog is in the desired state (version 4, PI event inserted at line 404 alphabetically between PARTNER CHECK-IN and PRACTICE). Now let me run the full local test set per the hard rule (compileall + ruff for the repo, even though my change is JSON-only) and then push the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pre-existing lint debt confirmed (30 errors / 78 unformatted files across untouched code — my change is JSON-only, so compileall + JSON validation are the applicable checks and both pass). Pushing the PR now:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool needs file edits passed explicitly. Let me provide the full JSON file content via `writes`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PR tool needs explicit edits. Let me capture the precise diff hunks to construct search/replace edits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the complete diff. Now let me push the PR with the explicit edits:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR opened. Merging now per your 👍 go (authorizes merging my own PRs):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3289,51 +3302,61 @@ PR opened. Merging now per your 👍 go (authorizes merging my own PRs):
 ### 🤖 Autopilot
 
 👍 Go received — resuming with autopilot PR A: sync the snapshot + `lookup_event_docs.py`. Let me read both current files to scope the change precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The snapshot has a different shape (list, no version). Let me read how `lookup_event_docs.py` consumes it and what the fallback logic is:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool says "no hardcoded event definitions" — it fetches live from Edgar. Let me read the full file to understand how it really works (where the snapshot is used, if at all):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool fetches **live** from Edgar (CATALOG_URL) — so my dao_protocol #155 catalog update is already live at the source. The tool uses `_INTENT_GUIDANCE` + `_IMPORTANT_FIELDS` as the local LLM-facing hints. The snapshot file is legacy/fallback. Let me read the rest — `_FALLBACK_DOCS`, `_IMPORTANT_FIELDS` entries, and `_build_result`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the full picture. The tool's gaps: `_IMPORTANT_FIELDS` has no TREE PLANTING / FBE / PLOT INVALIDATION entries, `_INTENT_GUIDANCE` lacks their intent phrases, `_FALLBACK_DOCS` lacks their fallbacks. Let me see `_build_result` + how the snapshot file is used (grep for it), then verify the live catalog is actually v4:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Critical discovery:** the live catalog at `edgar.truesight.me/events-catalog` is **still v3** (TPE required = only `Tree Count, Location`, FBE still has `Plot ID`, no PLOT INVALIDATION). PR #155 merged v4 into the dao_protocol repo, but the **running Edgar server hasn't picked it up** — so `lookup_event_docs` (which fetches live) still sees the old contract. Let me check how the server serves the catalog (file-read-per-request vs startup-load) to know what deployment is needed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key finding: the route reads the catalog **from disk per request** (`_load_catalog()` on every GET). So v4 would already be served if the **deployed file on the Edgar server** were updated — but the running server still has v3, meaning **dao_protocol needs deploying** to the `dao_protocol` host. Let me confirm how dao_protocol deploys (git pull on host? CI?) and check the live server's file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `ssh_run` tool's `dao_protocol` host label uses its own SSH config (I shouldn't nest ssh). Let me use the proper tool host:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SSH key auth to dao_protocol host is failing from this shell context. The deployment mechanism must be elsewhere. Let me check the deploy docs / CI for how dao_protocol reaches Edgar's host — likely an SSH deploy script or GitHub Actions in the repo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the deploy script to understand the deployment flow (this tells me what it takes to get v4 live on Edgar):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3436,4 +3459,73 @@ Clean — only `lookup_event_docs.py` modified, related tests pass (33 passed). 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×22 → cd /tmp && rm -rf tsap && git clone --depth 1 https://github.com/TrueSightDAO/truesight_autopilot.git tsap 2>&1 | tail -1 && cd tsap && echo; cd /tmp/tsap && echo "=== lookup_event_docs.py structure ===" && grep -n "snapshot\|_IMPORTANT_FIELDS\|_INTENT_GUIDANCE\|def \|events_catalo; cd /tmp/tsap && wc -l app/tools/lookup_event_docs.py && sed -n '1,60p' app/tools/lookup_event_docs.py; …(+19 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] [Handoff context — this Telegram topic (thread 20065) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Convergence — autopilot lookup_event_docs PR ready but not yet pushed
+
+### What's done
+**The edit is fully applied, tested, and clean** in `/tmp/tsap` (shallow clone of truesight_autopilot):
+
+- `ap
+
+
+### 🤖 Autopilot
+
+👍 Go received — resuming: extract the exact diff hunks and push the PR with explicit edits.
+
+
+### 🤖 Autopilot
+
+Diff captured. Now pushing the PR with explicit `edits` hunks (matching my locally-tested change — additions only, keeping cosmetic reformat hunks out):
+
+
+### 🤖 Autopilot
+
+PR opened. Merging per the 👍 go:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ⚠️ Turn complete — PR opened, but merge blocked by CI
+
+**PR: [truesight_autopilot #397](https://github.com/TrueSightDAO/truesight_autopilot/pull/397)** — `feat(lookup_event_docs): add SunMint boundary/tree/invalidation events to intent + important-field guidance` — **opened** (commit `5d7833f9`), **NOT merged**.
+
+### What changed (3 additions to `app/tools/lookup_event_docs.py`)
+1. **`_INTENT_GUIDANCE`** — +10 intent phrases → FBE / TREE PLANTING / PLOT INVALIDATION ("register boundary", "register plot", "tree planting", "register tree", "invalidate plot", etc.)
+2. **`_IMPORTANT_FIELDS`** — +3 event entries (FBE: Farm Name/Is New Farm/Media URLs…; TREE PLANTING: Tree Count/Location/**Latitude/Longitude**/Species…; PLOT INVALIDATION: Plot ID/Reason/Retractor Email)
+3. **`_FALLBACK_DOCS`** — +3 offline fallbacks with contract caveats (omit-Plot-ID + `; ` join; dual Location+Lat/Lng; sentinel gate)
+
+### Blocked: merge refused — CI not green
+`merge_pr` returned: **"Refusing to merge PR #397… CI not green (failing-or-pending: smoke, test)."** Locally everything passed (compileall OK, ruff check clean, ruff format clean, **855 tests passed**), so CI is either still running or tripping on something CI-only.
+
+**Likely cause (my hypothesis):** my local working copy was `ruff format`-ed, which produced **cosmetic reformats** of pre-existing lines (e.g. the `SALES EVENT` description string continuation, `logger.info(...)` call wrapping, `available = list(...)`) that I deliberately **excluded** from the pushed hunks (additions-only). If CI's format/static checks are stricter than my local run, the PR branch may not be format-clean. A second possibility is a transient/pending CI state.
+
+### RESUME HERE → next unit (fresh turn)
+1. **Check CI status on PR #397** — via GitHub API (`curl api.github.com/repos/TrueSightDAO/truesight_autopilot/commits/5d7833f9/check-runs` or list_prs) to see *why* smoke/test are failing or pending.
+2. **If format-related** — push a follow-up commit to the same branch applying the ruff-format hunks (the 3–4 cosmetic reformats from my local diff that I excluded), wait for CI green, then merge.
+3. **If transient** — just re-run/merge once checks pass.
+4. **Then next units:** (a) deploy dao_protocol v4 catalog to the NELANCO box (**explicit governor deploy-go required** — production restart), verify `edgar.truesight.me/events-catalog` shows version 4; (b) finish the **10-tree registration** (canary Tree 1 already accepted; verify rendered row → fire Trees 2–10, species **Cacau - Hybrid**, photos live in `sunmint/images/`).
+
+———
+**Done this turn:** extracted diff, pushed PR #397 with explicit edits (3 hunks applied, commit `5d7833f9`), attempted merge → refused (CI: smoke/test not green). No merge performed.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tsap && git diff app/tools/lookup_event_docs.py | head -120
+• `git push changes` → truesight_autopilot PR #397 opened (sha 5d7833f9)
+• `merge pr` → ❌ Refusing to merge PR #397: CI not green (failing-or-pending: smoke, test)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tsap && git diff app/tools/lookup_event_docs.py | head -120
+• `merge pr` → ❌ Failed to merge PR #397 on truesight_autopilot: Refusing to merge PR #397 on truesight_autopilot: CI not green (failing-or-pending: smoke,
 
