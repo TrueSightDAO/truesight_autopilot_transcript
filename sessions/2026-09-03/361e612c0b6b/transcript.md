@@ -2249,11 +2249,13 @@ The full set is 24 unique photos (20 tree + 4 corner). The tree photos form **ti
 ### 🤖 Autopilot
 
 cv2 5.0.0 and pillow_heif are available, but no haarcascade files in the default location. Let me find the cascade XMLs and set up smile detection over the candidate photos:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The cv2 data dir is missing the cascade XMLs. Let me download the standard OpenCV haarcascades (face + smile) so I can run detection:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2493,4 +2495,156 @@ Using your **dig-time heuristic** (photos ≤ 90 s apart = same tree; you can't 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && echo "HEIC total on disk: $(ls *.HEIC 2>/dev/null | wc -l)"; echo "Unique by md5: $(md5sum *.HEIC 2>/dev/null | aw
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] For each unique tree identified, can you make a submission to the underlying smart contract of 
+
+https://beta.sunmint.truesight.me/
+
+And make sure each one is submitted successfully?
+
+
+### 🤖 Autopilot
+
+Go received. Let me first learn the exact tree-planting contract on the SunMint site — the event docs + how the beta site submits:
+
+
+### 🤖 Autopilot
+
+Gary wants each tree submitted through the same contract the beta SunMint site uses. Let me read the exact GAS parser that consumes tree planting submissions, plus the runbook's tree-planting section, so I match the format precisely:
+
+
+### 🤖 Autopilot
+
+GitHub API rate-limited. Let me read the GAS parser from the local tokenomics checkout on the box instead:
+
+
+### 🤖 Autopilot
+
+Both parsers found locally. Let me read the primary one that consumes tree-planting submissions from Telegram Chat Logs:
+
+
+### 🤖 Autopilot
+
+Let me read the parser's message-parsing section (top of file — how it maps labels to columns A–E) from the artifact:
+
+
+### 🤖 Autopilot
+
+I need the top-of-file parsing logic (how it reads Tree Count / Location / Species from the message). Let me grab just that section:
+
+
+### 🤖 Autopilot
+
+Let me see how the parser locates Tree Count/Location rows in the chat log (the section mapping the message columns to tree data):
+
+
+### 🤖 Autopilot
+
+Let me see the exact row-filter + parse logic (lines ~220–260) — what marks a chat-log row as a tree-planting event:
+
+
+### 🤖 Autopilot
+
+Now I understand the consuming parser. Before submitting 10 events, I need the exact ground-truth format — how Edgar renders a `[TREE PLANTING EVENT]` submission and what the beta site's "contract" expects. Let me check the parser's helper extractors, find the spreadsheet ID, and read the runbook's tree-planting section:
+
+
+### 🤖 Autopilot
+
+Now let me see exactly what the beta SunMint site's tree-planting page submits (the "underlying smart contract" Gary means) and the parser header columns — fetching the beta page's JS and reading the local file header:
+
+
+### 🤖 Autopilot
+
+The beta page 404'd at that path. The real contract is the DApp's tree-planting submission — let me fetch the raw HTML/JS from the dapp_beta repo (raw.githubusercontent, avoiding the rate-limited API) to see exactly what event text it builds:
+
+
+### 🤖 Autopilot
+
+Let me read the actual submission-builder JS in that page (the event text format it constructs) — the part that defines the "smart contract" Gary means:
+
+
+### 🤖 Autopilot
+
+The contract is clear — each tree = one `[TREE PLANTING EVENT]` text block posted to `edgar.truesight.me/dao/submit_contribution`. Let me read the exact submit function (lines ~677–760) to see the payload shape and how the photo is attached:
+
+
+### 🤖 Autopilot
+
+The contract is now fully clear — the beta DApp builds a `[TREE PLANTING EVENT]` text with `- Latitude: / - Longitude: / - Species: / - Planting Time: / - Photo URL:` lines and posts it (signed) to Edgar. That's exactly what my `submit_contribution` does for each tree. Let me lock the authoritative per-tree data (coordinates + time from the chosen photos) with one consolidated extraction:
+
+
+### 🤖 Autopilot
+
+Coordinates came out **positive** (3.09, 52.09) — but Fazenda Bom Sucesso is in Brazil, so lat/lng must be **negative** (S/W). My ref-parsing silently failed. Let me verify with raw EXIF and fix the sign handling before registering anything:
+
+
+### 🤖 Autopilot
+
+Found the bug — `exiftool -s` puts the hemisphere letter *inside* the value (`...S`) while `GPSLatitudeRef` is the full word (`South`), so my `ref in ('S','W')` check never fired → positive coords. My **earlier** analysis (the `-3.0944…` values) parsed correctly. Let me regenerate with correct sign logic and produce the authoritative 10-tree list:
+
+
+### 🤖 Autopilot
+
+The authoritative 10 trees are locked with correct S/W coordinates. Before submitting, let me pull the exact on-disk file paths for each chosen photo and check the current state of the tree-planting ledger for duplicates:
+
+
+### 🤖 Autopilot
+
+All 10 chosen photos are on disk with correct S/W coordinates. Before mass-submitting, let me submit **Tree 1** as a canary and confirm Edgar renders/accepts it cleanly, then fire the rest in parallel.
+
+
+### 🤖 Autopilot
+
+The schema wants `Location` (canonical), not separate lat/lng. Let me check how Edgar renders/expects Location for this event and what a prior successful submission looked like:
+
+
+### 🤖 Autopilot
+
+Let me check the exact schema for TREE PLANTING EVENT's Location field locally:
+
+
+### 🤖 Autopilot
+
+Let me find the exact TREE PLANTING EVENT section header (the parser expects `- Latitude:`/`- Longitude:` lines from the chat log, but Edgar's canonical requires `Location`). I need to see what form "Location" takes for this event. Let me search more precisely:
+
+
+### 🤖 Autopilot
+
+The canary failed: Edgar's canonical schema requires a **Location** field, but the GAS parser consumes `- Latitude:` / `- Longitude:` lines. I need to see a **real successful submission's raw text** to mirror it exactly. Let me read the Telegram Chat Logs + SunMint Tree Planting tabs for a precedent:
+
+
+### 🤖 Autopilot
+
+I've hit my tool-round cap for this turn — converging now with a clean status and resumable plan.
+
+## Status: contract mapped, but canary revealed a format requirement
+
+**What I've established (from the beta DApp source + GAS parser + live ledger rows):**
+
+The "underlying smart contract" for `beta.sunmint.truesight.me` tree planting is: each tree = one **`[TREE PLANTING EVENT]`** text block with `- Latitude:` / `- Longitude:` / `- Species:` / `- Planting Time:` / `- Photo URL:` lines, posted to `edgar.truesight.me/dao/submit_contribution`. The GAS parser (`process_tree_planting_telegram_logs.js`) reads exactly those `- Latitude:`/`- Longitude:` lines into the **SunMint Tree Planting** tab.
+
+**Canary test result:** my first submission attempt (Tree 1, with `Latitude`/`Longitude` as attributes) was **rejected by Edgar's validator** — "Missing required fields for TREE PLANTING EVENT: **Location**". Edgar's canonical schema for this event requires `Tree Count` + `Location`, but the downstream parser needs the `- Latitude:`/`- Longitude:` lines. So the submission must include **both**: the canonical `Location` (to pass validation) **and** `Latitude`/`Longitude` (so the parser populates K/L correctly).
+
+**Locked & ready (verified this turn, correct S/W signs):**
+- **10 distinct trees** (time-cluster of 20 unique tree photos by your dig-time heuristic)
+- Authoritative coords + times saved at `/tmp/tree_final.json` (e.g. Tree 1 `-3.094431, -52.095225` 18:42:13 … Tree 10 `-3.094528, -52.095314` 19:31:12)
+- Chosen photos on disk, one per tree
+
+## RESUME HERE → next unit (fresh turn)
+
+1. **Canary** — submit Tree 1 as `[TREE PLANTING EVENT]` with attributes: `Tree Count: 1`, `Location: "-3.094431, -52.095225"` (satisfies validator), plus `Latitude: -3.094431`, `Longitude: -52.095225`, `Species: Cacao (Native)`, `Planting Time: 2026-09-02T18:42:13-03:00`, `Photo URL: <sunmint raw URL>`, `Submission Source: autopilot-sophia` → then read the tail of **Telegram Chat Logs** (col F) to confirm the rendered text contains both `- Location:` and `- Latitude:`/`- Longitude:` lines.
+2. **Mirror photos** — convert each of the 10 chosen HEICs to JPEG and upload to `TrueSightDAO/sunmint/images/20260902_bomsucesso_tree<NN>.jpg` (raw URLs) for the `Photo URL` line (same convention as the DApp).
+3. **Fire remaining 9** once the canary renders correctly; confirm each returns success.
+4. **Verify** — check **SunMint Tree Planting** tab shows 10 `NEW` rows with correct lat/lng/species/photo, then report the table.
+5. **Open items for Gary:** species default = `Cacao (Native)` (the page's own default) — confirm or correct; planter attribution (events will show the autopilot signature/name unless you want a farmer name).
+
+Note: I did **not** fire the 10 submissions this turn because the canary proved the naive attribute set fails validation — firing blind risked 10 malformed rows. One canary next turn, then the rest.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×16 → cd /tmp/tok_r 2>/dev/null && find . -name "process_tree_planting_telegram_logs.js" 2>/dev/null | head -2; find . -name "process_tree_plantin; cd /tmp/tok_r && cat google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF/process_tree_planting_telegram_logs.js; cd /tmp/tok_r && F=google_app_scripts/1Jp8qNIBCZaRTlmOmbJoJmYnSFyXtQkUHP2Qv5uqKZpt0Ugo-e25nhASF/process_tree_planting_telegram_logs.js && se; …(+11 more)
+• `submit contribution` → Missing required fields for TREE PLANTING EVENT: Location. Canonical labels are: Tree Count, Location, Species, Planter, Attached Filename,
 
