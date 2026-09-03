@@ -280,6 +280,7 @@ Both PAT files are confirmed present. Let me check the writer script's token usa
 ### 🤖 Autopilot
 
 Executing now. First: locate the vault's server-side store + add path, pull the exact cron lines, and sanity-check both PATs (values never echoed — read from file at runtime only).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -370,4 +371,98 @@ One quick state confirmation, then I'll give you the full status:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo '=== cron line (masked) ==='; crontab -l | grep sync_sunmint_signatures | sed 's/GITHUB_TOKEN="$(cat[^)]*)[^ ]*/GITHUB_TOKEN="$(cat ~\/
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20498] document them
+
+
+### 🤖 Autopilot
+
+Documenting the two vault entries now. First, locating the credentials doc repo and current content:
+
+
+### 🤖 Autopilot
+
+The credentials doc lives in the `agentic_ai_api_credentials/` folder inside `agentic_ai_context`. Let me read it to find the right section for the GitHub PAT entries:
+
+
+### 🤖 Autopilot
+
+The credentials doc isn't where I expected — let me locate it precisely (repo tree + local box search):
+
+
+### 🤖 Autopilot
+
+Found it — `agentic_ai_context/credentials/API_CREDENTIALS_DOCUMENTATION.md`. Let me read it to find the right section for the GitHub PAT entries:
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the doc to find the right section (likely a truesight_autopilot / GitHub PAT table):
+
+
+### 🤖 Autopilot
+
+Let me see the doc's tail to find the exact insertion point:
+
+
+### 🤖 Autopilot
+
+The local file is at `/home/ubuntu/agentic_ai_context/credentials/API_CREDENTIALS_DOCUMENTATION.md`. Let me read its actual tail to find the right insertion point:
+
+
+### 🤖 Autopilot
+
+I have the full structure. The cleanest place for a new audit entry is after §10.7, before the closing `---`. Let me make the edit locally via a git_push_changes PR to `agentic_ai_context`:
+
+
+### 🤖 Autopilot
+
+I need to provide the actual file content. Let me append §10.8 to the doc via an edit — I'll target the closing lines:
+
+
+### 🤖 Autopilot
+
+Missing `repo` param — retrying:
+
+
+### 🤖 Autopilot
+
+PR #906 opened. Merging it now (the governor's "document them" authorizes this doc PR):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Documented — PR #906 merged
+
+**What I did this turn:**
+
+| Step | Result |
+|---|---|
+| Located the credentials doc | `agentic_ai_context/credentials/API_CREDENTIALS_DOCUMENTATION.md` (found on box at `/home/ubuntu/agentic_ai_context/` + repo) |
+| Added §10.8 | New **"Public-Signatures PATs (`verify_public_signatures`)"** section documenting both credentials — names, purpose, use cases, code locations, storage (vault + local file paths + cron) — **no values anywhere** |
+| PR | **https://github.com/TrueSightDAO/agentic_ai_context/pull/906** — `docs(credentials): document PUBLIC_SIGNATURES READ/WRITE PATs` |
+| Merged | ✅ squash-merged (sha `3779360c`) |
+
+**Content documented (names/locations only, per policy):**
+- `PUBLIC_SIGNATURES_READ_PAT` — read-only; `signature_ledger_pipeline.py` read/verify paths
+- `PUBLIC_SIGNATURES_WRITE_PAT` — `Contents: write` on `verify_public_signatures`; `sync_sunmint_signatures.py --push` cron + dao_protocol emit hook
+- Vault entries v1 (`/opt/truesight_autopilot/vault/vault.json.enc`, Fernet), local `~/PUBLIC_SIGNATURES_{READ,WRITE}_PAT` files (600), cron line using `$(cat …)`
+- Security notes: fine-grained repo-scoped, not the operator/autopilot broad token; rotation = mitigation
+
+**Full task now complete:** cron swapped ✅ · PATs vaulted ✅ · writes verified live ✅ · documented ✅
+
+**RESUME HERE →** The one remaining (flagged, pre-existing) item is the **dao_protocol emit hook** — it needs `PUBLIC_SIGNATURES_WRITE_PAT` in its own env on the dao_protocol box (SSH was rejected earlier; needs the deploy flow or Gary's hand). Say **"wire the dao_protocol emit hook"** to take that on in a fresh turn; otherwise this thread's work is done. No secrets were exposed; nothing pending except that optional follow-up.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → find /opt /home/ubuntu -name 'API_CREDENTIALS_DOCUMENTATION.md' -o -name 'env.template' 2>/dev/null | grep -v node_modules | head -20; echo ; tail -60 /home/ubuntu/agentic_ai_context/credentials/API_CREDENTIALS_DOCUMENTATION.md
+• `merge pr` → ✅ PR #906 on agentic_ai_context merged successfully (sha: 3779360c2c410a6ad9df637e8a30cdfbb1a491ad). Pull Request successfully merged
 
