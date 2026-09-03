@@ -1237,6 +1237,7 @@ Another new arrival (`bf9c8484`) — count now **14**. Let me get its GPS and ch
 ### 🤖 Autopilot
 
 The 4 early HEICs (18:18–18:31) sit at the cloud's extremes — strong candidate for the **corner originals**. Let me convert them and compare against the 4 GPS-less corner JPGs to confirm they're the same photos:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1251,6 +1252,7 @@ The 4 early HEICs (18:18–18:31) sit at the cloud's extremes — strong candida
 | 7f77424b | 303b5b8d | 18:31:08 |
 
 So the full set is exactly **10 tree HEICs + 4 corner HEICs = 14** — and now **every point has GPS**, including the plot corners. Let me extract the corner coordinates and build the polygon + containment check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1528,4 +1530,26 @@ Say **"9 trees, cacao, planter X, 2c6b2aac inside-plot-add-corner"** (or however
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && python3 -c " import math, subprocess, re, itertools def dms2dec(d,m,s,ref): v=d+m/60.0+s/3600.0; return -v if ref
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] Alright, so I changed for the 4 corners to be already data. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — so the 4 corner HEIC photos I extracted GPS from are confirmed as the plot boundary data. That locks the polygon: roughly 1.02 hectares, enclosing 9 of the 10 tree points.
+
+That leaves just a couple of quick confirmations before I can register:
+
+1. The two photos taken 11 seconds apart — that's the same tree, so we're at **9 distinct trees**. Good to go with 9?
+2. The outlier at the west edge — `2c6b2aac`, planted last at 19:26 — sits about 48 meters outside that corner polygon. Do you want the plot boundary widened to include it, or is it on a neighboring patch?
+3. Species and planter for the ledger — all cacao, and who planted?
+
+Answer those and I'll run the registrations end to end.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && echo "HEIC: $(ls *.HEIC 2>/dev/null | wc -l) unique_md5: $(md5sum *.HEIC 2>/dev/null | awk '{print $1}' | sort -u
 
