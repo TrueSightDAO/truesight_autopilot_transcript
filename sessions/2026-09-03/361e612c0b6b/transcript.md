@@ -1219,16 +1219,19 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 Another from the set (`6c9b7665` — T8). Quick verification + new-arrival check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Another new arrival (`bf9c8484`) — count now **14**. Let me get its GPS and check whether these newest files might be the corner originals (the 4 corners were the JPGs without GPS):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `6c9b7665` verified (T8, unchanged) — and the count is now **14**. That's significant: 14 HEIC originals = **10 tree-walk photos + 4 earlier photos (18:18–18:31)**. And look where those 4 early points sit — at the **four extremes of the cloud**. Let me test the hypothesis that these 4 ARE the corner originals with GPS:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1471,4 +1474,58 @@ Register trees (TREE PLANTING events with lat/lng + photo evidence) → register
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/tg_attachments && echo "HEIC count: $(ls *.HEIC 2>/dev/null | wc -l)"; echo "JPG count: $(ls *.jpg 2>/dev/null | wc -l)"; echo "---m; cd /tmp/tg_attachments && ls -lat *.HEIC | head -8; echo "---new files GPS---"; for f in $(ls -t *.HEIC | head -4); do echo "== $f"; exiftoo; cd /tmp/tg_attachments && echo "=== new arrivals vs known corners ==="; md5sum 5b199d8b26684165ac748e4f95ab57cd.HEIC 70f17ae18dca47b282704bd
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] I think another way to decipher if the trees are distinct besides distance is to check how much time their photos are taken apart from each other
+
+Since it takes time to dig a hole
+
+
+### 🤖 Autopilot
+
+Gary — that's the right discriminator, and I can quantify it. **Time gap is the tell:** digging a hole for a sapling takes minutes, not seconds. Two photos 11 s apart at the same spot can't be two trees; two photos 20 min apart at nearly the same spot *could* be two trees planted close together — or a revisit. Let me run the combined distance + time-gap analysis on all tree pairs:
+
+
+### 🤖 Autopilot
+
+Applied your heuristic — and it sharpens the verdict nicely. Here's the walk, in planting order, with both signals:
+
+## Planting timeline (sorted by photo time)
+
+| Time | Tree | Distance to nearest | Time gap to nearest | Verdict |
+|---|---|---|---|---|
+| 18:42:13 | b08309c1 | — (first) | — | tree #1 |
+| 18:47:03 | 193eca20 | 1.4 m → 1d6a3a4c | **11 s** | ⛔ **same tree** |
+| 18:47:14 | 1d6a3a4c | 1.4 m → 193eca20 | **11 s** | ⛔ **same tree** |
+| 18:52:14 | 35a3744d | 7.2 m | 4 m 50 s | ✅ distinct (7.2 m > noise) |
+| 18:57:04 | 17016c60 | 7.2 m | 4 m 50 s | ✅ distinct |
+| 19:02:37 | 2c364eb3 | 2.2 m → b08309c1 | **20 m 24 s** | ✅ **distinct** (time to dig) |
+| 19:10:01 | a9cf65d0 | 2.0 m → 95dd596c | **11 m 21 s** | ✅ **distinct** (time to dig) |
+| 19:16:07 | 6c9b7665 | 21.1 m | 6 m 06 s | ✅ distinct |
+| 19:21:22 | 95dd596c | 2.0 m → a9cf65d0 | **11 m 21 s** | ✅ **distinct** (time to dig) |
+| 19:26:28 | 2c6b2aac | 92 m | 5 m 06 s | ✅ distinct (but ⚠️ outside polygon) |
+
+## What the time test changes
+
+- **193eca20 ↔ 1d6a3a4c (11 s apart)** — 11 seconds is *not* time to dig a hole. Same tree, photographed twice (turn around, second shot). **→ merge to ONE tree.** Near-certain.
+- **95dd596c ↔ a9cf65d0 (11 m 21 s)** — 11 minutes *is* time to dig. They planted a9cf65d0 at 19:10, walked 21 m to 6c9b7665 at 19:16, planted it, then planted **95dd596c just 2 m from the first** at 19:21. Tight 2 m spacing, but two distinct digging events. **→ keep both** (tight-spacing note).
+- **2c364eb3 ↔ b08309c1 (20 m 24 s)** — 20 minutes apart with 3 other trees planted in between; they *returned* to plant 2.2 m from their first tree. Distinct digging event. **→ keep both.**
+
+## So: 10 photos → **9 distinct trees** (by your distance + time test)
+
+The only merge is the 11-second pair. The other two tight pairs survive because the planter demonstrably dug elsewhere in between — exactly the evidence your heuristic was designed to catch.
+
+**Remaining before I can register:**
+1. ✅/❌ confirm the 193eca20+1d6a3a4c merge → **9 trees**?
+2. `2c6b2aac` — still **outside the corner polygon** (~48 m). Adjust corners, or register as a 9th/10th tree on a neighboring patch? (It's at 19:26, the last one — plausibly the corner walk ended before it.)
+3. Species + planter names.
+4. Pledge linkage?
+
+Say **"9 trees, cacao, planter X, 2c6b2aac inside-plot-add-corner"** (or however you want #2 handled) and I'll execute the registrations.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && python3 -c " import math, subprocess, re, itertools def dms2dec(d,m,s,ref): v=d+m/60.0+s/3600.0; return -v if ref
 
