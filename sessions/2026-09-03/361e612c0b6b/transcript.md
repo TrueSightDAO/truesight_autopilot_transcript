@@ -256,6 +256,11 @@ Please inspect the attached file.
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: ssh_run, ocr_image, scan_qr_from_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 **Attachment inspected:** `ae40fa48cdb147acb5a0bbe4300a9bd0.jpg` (190 KB, 960×1280)
 
 | Check | Result |
@@ -533,4 +538,88 @@ Nine down, **one to go**. All remain **visual evidence only**. When the last pho
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && ls -la b139e0bff7584435a90d1d2da3750024.jpg && md5sum b139e0bff7584435a90d1d2da3750024.jpg && exiftool -s -GPSLati
+
+
+### 🧑 Governor
+
+These are photos of the 4 corners
+
+[Attachment auto-processed: **303b5b8d4a774890a814cfb59aae7546.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Let me inspect this corner photo and check whether the other corner shots arrived alongside it:
+
+
+### 🤖 Autopilot
+
+All four corner photos are on disk (timestamps 02:00–02:01). Let me inspect the other three:
+
+
+### 🤖 Autopilot
+
+All four corner photos are on disk now. Here's the full consolidated status:
+
+## All 14 photos received & catalogued
+
+**Tree photos (10)** — uploaded as one batch (01:58), all inspected:
+
+| # | File | GPS | Pixel signature |
+|---|---|---|---|
+| 1 | 0e51c2b2… | ❌ | (first file — inspected turn 1) |
+| 2 | 9a941217… | ❌ | dark warm |
+| 3 | abcab4d5… | ❌ | dark warm, low light |
+| 4 | 1a1919bd… | ❌ | brighter/gray, overcast |
+| 5 | ae40fa48… | ❌ | dark, earth + green |
+| 6 | 8b9d322a… | ❌ | darkest, some sky |
+| 7 | c61e85e8… | ❌ | warm/bright, earth tones |
+| 8 | 23199476… | ❌ | dense texture, foliage |
+| 9 | f81209ca… | ❌ | dense dark |
+| 10 | b139e0bf… | ❌ | sky-heavy, cool/gray |
+
+**Corner photos (4)** — uploaded 02:00–02:01:
+
+| Corner | File | GPS | Pixel signature |
+|---|---|---|---|
+| A | 303b5b8d… | ❌ | mixed/gray, 8% warm |
+| B | 2ca18c0e… | ❌ | gray 39%, bright 10% |
+| C | eb5ec7ef… | ❌ | **green 24%** (most vegetated) |
+| D | 2b3a0fb1… | ❌ | sky 20%, brightest |
+
+## Status — confirmed blocker stands
+
+Every one of the 14 photos is **Telegram-stripped of EXIF/GPS** — zero coordinate data in any of them. No text, no QR, no readable markers either. So:
+
+- ❌ I **cannot** yet run the pairwise-spacing check (need 10 coordinate pairs)
+- ❌ I **cannot** yet build the Fazenda Bom Sucesso polygon (need 4 corner coordinates)
+- ✅ I **can** and will use all 14 photos as visual/evidence attachments on the registrations once coordinates are known
+
+## To proceed, pick the coordinate route
+
+**Quickest (recommended):** paste the coordinates as text — e.g.:
+
+```
+Tree 1: -3.xxxxx, -49.xxxxx
+Tree 2: ...
+...up to 10
+Corners: NW/NE/SW/SE (4 pairs) for the plot
+```
+
+Any format works (decimal degrees, DMS, or Google Maps "plus codes") — I'll normalize and validate.
+
+**Or:** send the original files **by email / WhatsApp "Document" / Drive** (EXIF survives those channels) and I'll extract GPS myself.
+
+**Or:** if you have them in a field app (e.g. GPS Essentials, SW Maps, Avenza), export a CSV/KML and send it.
+
+One question that helps disambiguation: the tree photos look quite similar in character — if you have any sense of **species or spacing** (e.g. all cacao at 3×3 m, or a mix), tell me, because it feeds the "are these plausibly distinct" sanity check once I have coordinates.
+
+How do you want to send the coordinates?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/tg_attachments && ls -lat *.jpg | head -20; echo "---md5+exif---"; md5sum 303b5b8d4a774890a814cfb59aae7546.jpg; exiftool -s -GPSLati; cd /tmp/tg_attachments && for f in 2ca18c0edcf949b3930e4b8b002ff250.jpg eb5ec7eff9ce46069e76511981666791.jpg 2b3a0fb1e0024d02a68e5af6bead080
 
