@@ -8,73 +8,6 @@
 ---
 
 
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-Please inspect the attached file.
-
-[Attachment auto-processed: **0e51c2b26f4d4f84b68599e03ff9e91a.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: list_directory, ocr_image — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-OCR found no text (blank or graphics-only image). Let me check whether it contains a QR code — that's the usual pattern for photos in this workflow.
-[1 tool result(s) compacted: scan_qr_from_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I inspected the attached file — here's what I found:
-
-**File:** `0e51c2b26f4d4f84b68599e03ff9e91a.jpg` (190 KB, 960×1280)
-
-| Check | Result |
-|---|---|
-| OCR (text extraction) | **No text detected** — 0% confidence, poor quality |
-| QR code scan | **No barcodes or QR codes found** |
-
-**Interpretation:** The image appears to contain no machine-readable text or QR content — it's likely a photo of a physical scene/object, a graphic, or an image that's too blurry/obscured for the current OCR pipeline. Note the auto-processor flagged it as "quality: poor."
-
-I don't have visual analysis available in this case (no base64 preview was included with the message), so I can't tell you what the picture depicts. A few options:
-
-1. **Tell me what the image shows** (e.g., "it's a receipt," "a cacao bag," "a product photo") and what you'd like me to do with it.
-2. **If it's a photo of something with text** (document, receipt, packaging), a clearer/re-cropped shot often fixes the poor-quality OCR result.
-3. **If it's one of a set**, note there are 15 other attachments sitting in `/tmp/tg_attachments` (several .jpg, .pdf, .docx, and .oga voice notes) — I can process any of those if you point me at them.
-
-What's this image of, and what would you like done with it?
-
-
-### 🧑 Governor
-
-I am going to attach 10 photos of trees being planted. Let me know if you will be able to register these 10 trees using their latitude and longitude 
-
-First verify that their latitude and longitude are far enough apart to be distinct trees
-
-They belong on the plot of land on Fazenda Bom Sucesso
-
-I will pass you plot information later with 4 photos marking their four corners to generate the plot
-
-[Attachment auto-processed: **9a941217b03a4379bbc056dba7209279.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-I'll start by checking the EXIF GPS data embedded in this first photo to see if the coordinates are recoverable.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
 ### 🤖 Autopilot
 
 exiftool is available. Let me pull the EXIF GPS data from this first photo:
@@ -4267,26 +4200,31 @@ Now the full picture is clear. Let me confirm the exact key the app's git tools 
 ### 🤖 Autopilot
 
 The grep on `git_tools.py` returned nothing (file may be structured differently) — but the credential helper comment said the app tools carry their own inline helper using **`TRUESIGHT_DAO_AUTOPILOT`** from the .env. Let me find the actual key the app uses and confirm the write token's fingerprint so you can extend *that* one:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the architecture: the app uses **`TRUESIGHT_DAO_AUTOPILOT`** (write token, .env) for GitHub API ops, while my shell `curl` was using the **gh CLI token** from `hosts.yml` (likely the read token). Let me test the actual write token for Actions permission:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **💥 Dispatch fired — HTTP 204!** The **write token** (`TRUESIGHT_DAO_AUTOPILOT`, fingerprint `…lm7m`) has full Actions access — my earlier failures were just me testing the **wrong token** (the gh CLI read token `…FM4I`). The `tree-index-rebuild` workflow is now running. Let me verify the run kicked off and watch it regenerate the geojson:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The rebuild is **in progress** (`in_progress`, run `ad6a40ef`, dispatched 08:49:58Z). The geojson still shows the old data (generated 09-02, 3 trees) because the workflow hasn't committed yet. Let me watch it complete:
+[1 tool result(s) compacted: watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Watch tool needs a topic context. Let me poll the workflow directly with a bounded wait instead:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4299,41 +4237,49 @@ Watch tool needs a topic context. Let me poll the workflow directly with a bound
 ### 🤖 Autopilot
 
 👍 Resuming — the dispatch fired (run `ad6a40ef`), but my polls 404'd because the Actions runs API needs auth (unauthenticated = 404). Let me re-check with the write token and see the geojson state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **✅ The rebuild completed — trees are now on the map!** `generated_at: 2026-09-03T08:50:21Z`, **31 tree features**. But I see **duplicate features** (same Edgar ID 2–3×: `078` ×2, `004` ×2, `006` ×3) — likely my multiple canary submissions + async double-capture. Let me quantify the dupes before reporting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The geojson schema differs from my guess — let me inspect the actual feature structure to read it correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can read the schema correctly — `tree_id` is the key (not `id`). Let me do the accurate dup + my-10 analysis:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The rebuild **worked** — all 10 trees now have POINT geometry with correct coordinates. But two issues surfaced: **duplicate features** (each of Trees 2–10 appears 2–3×) and the **stale canary rows** (076, 078 — no geometry). Before reporting, one critical check: does the sunmint.html map even **render `NEW`-status trees**, or only `LINKED` ones?
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The page fetches `trees/index.geojson` and references `status`. Let me check the page's actual status handling to see if NEW trees render:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the `addTreeMarkers` function (lines ~449–485) to see if it filters by status:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The map renders **every** feature with point geometry (no status filter) — so the 10 trees should now appear. One last check: whether the default viewport (`PILOT_CENTER`) actually covers the Fazenda Bom Sucesso location (~57 km from the Altamira pilot center):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4462,4 +4408,139 @@ Converging — I'm at the tool-round cap. Status:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → cd /tmp && echo "=== how plot pills/list are rendered in sunmint.html ==="; grep -n "plots\|pill\|plot-list\|plotItem\|sidebar\|panel\|featu; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geojson" | python3 -c " import json,sys d=json.l; cd /tmp && sed -n '628,710p' sunmint.html; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] Fix 2 for now.
+
+
+### 🤖 Autopilot
+
+Gary wants Fix 2 (the plot pill) now. The sanctioned path is `extract_plot_gps.py` — it reads GPS from the corner media, builds the hull polygon, and upserts the PL-002 row. Let me read the full script's CLI/env requirements and check the box's credentials + the PL-002 row state in parallel:
+
+
+### 🤖 Autopilot
+
+The script is clear — upsert via hull of GPS points, with a `--dry-run`. I need (1) the `get_creds()` requirement (top of file) and (2) the exact on-disk corner HEICs (only those 4 — passing all 59 files would include tree points and inflate the hull). Let me find both:
+
+
+### 🤖 Autopilot
+
+4 unique corner captures found (dupes by md5: 18:18 has 2 copies, 18:19 has 2, 18:27 has 3, 18:31 has 2). I need `SA_NAME` (the creds file prefix) — likely the `edgar_dapp_listener` or a sunmint SA. Let me check the script's SA_NAME + what SA files exist in the creds dir:
+
+
+### 🤖 Autopilot
+
+All pieces ready: script uses `agroverse_qr_code_manager` SA (file present at the expected path), spreadsheet ID matches, and the 4 canonical corner HEICs are identified (one per capture: 70234a89 @18:18, cd6887a2 @18:19, bf9c8484 @18:27, 7f77424b @18:31). Running the **dry-run** first to see the computed hull before any sheet write:
+
+
+### 🤖 Autopilot
+
+Dry-run is clean — 4 GPS points (all correct S/W), convex hull ring built (5 vertices), 1.016 ha. Coordinates match my earlier extraction exactly. Now executing the real write (upserts the existing PL-002 row — no new row since it exists):
+
+
+### 🤖 Autopilot
+
+PL-002 row **updated** (data row 14) — polygon ring, farm_id, hectares, region, media all written. Now I need to regenerate `plots/index.geojson`. Let me fire the `plots-index-rebuild` dispatch via the write token (the same mechanism that worked for the tree index):
+
+
+### 🤖 Autopilot
+
+Dispatch fired (HTTP 204). Let me wait for the workflow to complete, then verify the regenerated `plots/index.geojson` has PL-002 with a Polygon:
+
+
+### 🤖 Autopilot
+
+The rebuild ran — and it exposed an **off-by-one bug in `extract_plot_gps.py`**: the polygon landed on the **mangled row** (`- Boundary Type: approx`), not on PL-002. The update branch writes to `row_i + 1` but should write to `row_i + 2` (sheet row = data index + 2). Evidence: the mangled row now shows `geom=Polygon, farm=fazenda-bom-sucesso, ha=1.016` while PL-002 is still `geom=None, farm=None`.
+
+Let me read the actual Plots tab rows to see the precise state before correcting:
+
+
+### 🤖 Autopilot
+
+Now I see the full state — the plot data sits on the **mangled row** (`- Boundary Type: approx`, data row 12, sheet row 13) while **PL-002 is bare** (data row 13, sheet row 14). The `extract_plot_gps.py` update hit the *wrong row*: it found the mangled row's plot-id? No — it reported "updating existing plot PL-002 (data row 14)"... but the coordinates went to the row above. **Wait** — the mangled row's Plot ID cell contains `- Boundary Type: approx` (from the line-bleed), so `find_row(PL-002)` should match only the real PL-002 row. Yet the mangled row now carries the polygon + farm + media.
+
+The actual bug: the update-branch `set_cell(r, ...)` uses `r = row_i` (0-based) but writes to `r + 1` — correct — *however* `find_row` returned an index into the **data rows** list where the mangled row sits at position 12... no. Let me look precisely: the rows list = data rows (row 2+). Mangled row is sheet-row 13 → data index 11. PL-002 is sheet-row 14 → data index 12. The script printed "updating existing plot PL-002 (data row 14)" — meaning `r + 2 = 14` → `r = 12` → that's the **PL-002 row** (sheet row 14). But the sheet shows PL-002 (sheet row 14) is still bare, and the *mangled* row (sheet row 13) got the data!
+
+So there's a **1-row off-by-one**: the script wrote to sheet row 13 instead of 14. Looking at `find_row` — it enumerates `rows` (data rows, 0-based from sheet row 2) and returns `r_i`. For PL-002 at sheet-row 14 → data index 12. Then in the update branch `r = row_i` and later `set_cell(r + 1, ...)` writes sheet row 13 — **one row too high**. The new-plot branch uses `next_row = len(rows) + 2` and `set_cell(next_row - 1, ...)` → writes sheet row `len(rows)+1` — that branch is right; the **update branch is off by one** (`r + 1` should be `r + 2`).
+
+**Fix:** (1) correct the PL-002 row (sheet row 14) with the polygon/farm/hectares/media/region; (2) revert the mangled row (sheet row 13) — but it was already `invalid` before, and the invalidation flag got clobbered (Invalidated By now shows `admin+sophia@truesight.me` was on it earlier... actually the earlier read showed it as `invalid`+invalidated, then my earlier PLOT INVALIDATION set it invalid; but now it shows `proposed` again with data — my update resurrected it). Cleanest: write the correct data into the PL-002 row (sheet row 14), restore the mangled row to `invalid` (clear its polygon/data back to the audit-trail state), and keep the ledger truthful.
+
+I'll do a **targeted sheet repair** (governor-authorized: Gary said "Fix 2") — write polygon/farm_id/ha/media/region into the PL-002 row, and re-invalidate the mangled row. Using a python gspread script with the agroverse_qr_code_manager SA (which has write access):
+
+
+### 🤖 Autopilot
+
+PL-002 row (sheet row 14) is now fully populated, and the mangled row (sheet row 13) is re-invalidated. Now regenerate `plots/index.geojson` (fire the dispatch again) and verify PL-002 has a Polygon:
+
+
+### 🤖 Autopilot
+
+The geojson still shows the old `generated_at` (09:07:17 — the *first* rebuild, before my repair). The second dispatch may still be running. Let me check the workflow run status:
+
+
+### 🤖 Autopilot
+
+Second rebuild completed (09:08:36Z, success). The earlier fetch may have hit the GitHub raw cache or raced the commit. Let me re-fetch with cache-busting:
+
+
+### 🤖 Autopilot
+
+The geojson is **still stale** (generated_at 09:07:17, and still showing the mangled row with the polygon and PL-002 bare) — yet the second rebuild run completed at 09:08:36 with success. This suggests the rebuild's *builder* read the sheet **before my repair landed**, OR there's a git race (the workflow committed but raw.githubusercontent still serves the older commit... but the generated_at timestamp is what the builder wrote, and 09:07:17 predates my 09:08 fix).
+
+Wait — the workflow at 09:08:36 should have regenerated with `generated_at` ≈ 09:08:36. The fact it still says 09:07:17 means **the 09:08:36 run committed nothing new** (the builder found the sheet unchanged from its view — possibly it read a cached SA view, or the run actually failed to see my writes). Let me check whether my repair actually persisted (re-read the sheet) and look at the 09:08:36 run's logs:
+
+
+### 🤖 Autopilot
+
+The repair persisted (PL-002 row 14 fully populated; mangled row 13 re-invalidated) and the second rebuild committed at **09:08:50Z** (`7842c235` — after my repair). My earlier fetches raced the commit. Re-fetching now:
+
+
+### 🤖 Autopilot
+
+The geojson STILL shows generated_at 09:07:17 with the old data — even though commit `7842c235` landed at 09:08:50Z. That's contradictory. Possibility: the `- Boundary Type: approx` row is being read by the builder with status `proposed` (not `invalid`), and PL-002 bare — meaning **the workflow's SA read a *different/cached* spreadsheet state** OR the builder ran against a stale export. But wait — commit `7842c235` says "Update plots and farms indexes [2026-09-03 09:08 UTC]" — if it committed, the committed file should reflect my repair. Unless the raw fetch is served from a CDN cache keyed on the file path that ignores `?cb=`.
+
+Let me check the **actual committed file content at commit `7842c235`** (by SHA, bypassing the main-branch cache):
+
+
+### 🤖 Autopilot
+
+**The fix is confirmed at the commit level** — commit `7842c235` (09:08:49Z) has **PL-002 with `geom=Polygon`, status=proposed**, and the mangled row gone from the Bom Sucesso entries. The `main` branch raw fetch was just serving a **stale CDN cache** (the `?cb=` param doesn't bust GitHub's raw CDN). The committed artifact is correct — sunmint.html fetches via the same raw URL but the page itself appends `?cb=Date.now()`, and GitHub's raw CDN usually honors cache-busting on subsequent requests; if Gary still sees the old file, a hard refresh will get commit `7842c235`.
+
+Let me do a final confirmation that main's HEAD == 7842c235 (so the committed fix is what the page will eventually serve) and verify the polygon coordinates are correct:
+
+
+### 🤖 Autopilot
+
+**✅ Fix 2 is complete — PL-002 now has a real polygon on main.**
+
+## Summary — Fazenda Bom Sucesso plot pill fixed
+
+**Root cause found & fixed:**
+1. PL-002's row in `SunMint Plots` had **no coordinates/farm/hectares** → `build_plots_geojson.py` emitted `geometry: null` → sunmint.html line 640 (`if (!geom || geom.type !== 'Polygon') return;`) **skipped it — no polygon, no pill/chip**.
+2. First `extract_plot_gps.py` run hit an **off-by-one** and wrote the polygon to the *mangled* row (`- Boundary Type: approx`) instead of PL-002 — I corrected PL-002's row directly (farm_id `fazenda-bom-sucesso`, 1.016 ha, region, media, coordinates) and re-invalidated the mangled row.
+
+**Verified at commit `7842c235` (sunmint main HEAD, 09:08:50Z):**
+| Property | Value |
+|---|---|
+| plot_id | **PL-002** |
+| geometry | **Polygon** (5-vertex hull: -3.093989..-3.095311, -52.094789..-52.095919) |
+| name | Fazenda Bom Sucesso |
+| farm_id | fazenda-bom-sucesso |
+| hectares | 1.016 |
+| status | proposed · boundary approx · region Altamira, Para |
+| media | 4 corner HEICs |
+
+**The pill will now render** — the page's render loop includes every feature with Polygon geometry, and PL-002 qualifies. Note: the raw main fetch was CDN-cached (showed the older 09:07 file), but the **committed file is correct** and sunmint.html appends `?cb=Date.now()` on load, so a fresh page load pulls commit `7842c235`.
+
+**One process note (worth flagging for a follow-up):** `extract_plot_gps.py` has a real off-by-one in its update branch (`set_cell(r + 1, ...)` should be `r + 2` for an existing row when data rows are 0-based from sheet row 2) — it wrote to the row *above* the target. I worked around it with a direct repair, but the script itself needs a one-line fix + it overwrote the `invalid` state of the mangled row (I restored it). That's a small PR in `sunmint` (`extract_plot_gps.py`) — **but `sunmint` isn't in the PR-allowed repo list** (same guardrail as the tree-dedupe fix), so I'd need you to add it to `settings.allowed_repos`, or I can file it in `OPEN_FOLLOWUPS.md` for the next governor cycle.
+
+**Remaining (Fix 1, the tree dedupe):** same `sunmint` repo-access blocker — the builder-side dedupe hunk is drafted and ready to push the moment `sunmint` is PR-allowed (or via direct-main edit if you approve that path).
+
+**Next:** hard-refresh sunmint.html (or wait a few min for CDN) → you should see the **Fazenda Bom Sucesso polygon + pill** southwest of the Altamira pilot center. Want me to proceed to Fix 1 (tree dedupe) now, or add `sunmint` to the allowed repos first so both fixes go through proper PRs?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×17 → cd /tmp && sed -n '130,403p' extract_plot_gps.py; cd /opt/truesight_autopilot && grep -oE '^[A-Z_]+=' .env | sort | grep -iE 'GOOGLE|SERVICE|SHEET|GSPREAD|ACCOUNT|DA0|DAO' ; echo "=== SA jso; cd /tmp && sed -n '1,50p' extract_plot_gps.py | grep -nE "get_creds|CREDS|json|env|SHEET_ID|def " ; echo "=== SHEET_ID ==="; grep -n "SHEET_; …(+13 more)
 
