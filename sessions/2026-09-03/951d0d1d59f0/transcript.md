@@ -1099,6 +1099,7 @@ Let me dump the box structure:
 ### 🤖 Autopilot
 
 The `meta` box is a FullBox (my walker misaligned by not skipping version/flags). HEIC GPS extraction needs a proper ISO-BMFF parser — let me map the real structure (where the Exif item lives: `idat` vs `mdat` via `iloc` extents):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1108,11 +1109,13 @@ PR #78's JPEG fix **is** live on beta (cache-busted fetch confirms `tiff + u32(e
 **Gary's test photo is an iPhone HEIC** (12 Pro Max, front camera) with real GPS (3°5'43.12"S, 52°5'42.17"W) — but my parser has a **JPEG-only guard**, so HEIC files return null before any parsing. Telegram preserved this HEIC's EXIF (unlike the JPEG it stripped earlier), so if Gary uploaded the original HEIC, the GPS is in the file — the code just can't read it yet.
 
 This needs a **HEIC (ISO-BMFF) Exif extractor**. Let me decode the real container structure first to write a correct parser:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My iinf walk is misparsing (the `items: {}` means entry-count or version handling is off). Rather than reverse-engineer the full ISO-BMFF structure interactively, let me take a more pragmatic route — check whether the file content that Telegram delivered has an intact Exif payload I can search for directly, since the earlier exiftool `-v3` dump showed `Exif\0\0MM\0*\0\0` at offset ~0x1621 in an item:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1120,6 +1123,7 @@ My iinf walk is misparsing (the `items: {}` means entry-count or version handlin
 Found the Exif blob at offset **5669** with an embedded TIFF (`MM 00 2a`) — and interestingly it's wrapped in an XML-ish context (`meta>` … `Exif\0\0`), which suggests this is a **`meta` box payload that exiftool/Gary's file has in the `mdat`/`idat` region**. The earlier `-v3` output said "Item 65) 'Exif' (2614 bytes)" and showed `1621: 00 00 00 06 45 78 69 66 00 00 4d 4d...` — that's offset 0x1621=5665. Close to my 5669 (there's a 4-byte size prefix). 
 
 Let me extract the Exif TIFF and validate GPS parsing at this offset:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1281,4 +1285,141 @@ Content persisted to the session transcript for cross-session recall.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/tg_attachments && ls -la 67b8bc6bb0cb4fb582109172b4e1af17.HEIC && file 67b8bc6bb0cb4fb582109172b4e1af17.HEIC && echo "=== exiftool G; cd /tmp && python3 - <<'PYEOF' import re, subprocess, urllib.request # pull readExifGps from true main (has #78 + #79) s = urllib.request.ur
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-09-03/89333eec9a08/transcript.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20044] [Handoff context — this Telegram topic (thread 20044) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+This work that the other Sophia did, does the current sunmint.truesight.me interface sync properly with it?
+
+
+Convergence — autopilot lookup_event_docs PR ready but not yet pushed
+
+What's done
+The edit is fully applied, tested, and clean in /tmp/tsap (shallow clone of truesight_autopilot):
+
+• app/tools/lookup_event_docs.py modified (+67 lines): added the three SunMint event types to _INTENT_GUIDANCE (register boundary/plot, tree planting, invalidate plot), _IMPORTANT_FIELDS (FBE/TREE PLANTING/PLOT INVALIDATION with the dual validator/parser contract + omit-Plot-ID rules), and _FALLBACK_DOCS (offline fallbacks).
+• All local checks pass: compileall OK, ruff check "All checks passed", ruff format clean, full suite 855 passed, 1 skipped, targeted -k lookup 33 passed.
+• Working tree is clean except the one intended file:  M app/tools/lookup_event_docs.py (a pytest test intentionally deletes/recreates events_catalog_snapshot.json — restored, not part of change).
+
+Blocking
+git_push_changes returned "nothing to do: provide writes, edits, and/or deletes" — the tool won't take the local working-tree diff; it requires the edits passed explicitly in the call (same as the dao_protocol PR last turn, where I had to pass edits hunks). I prepared the full PR body + branch name but the call was rejected before pushing.
+
+Also discovered (deploy gate): the live catalog at edgar.truesight.me/events-catalog is still v3 — dao_protocol #155 merged but the NELANCO box (dao_protocol_nelanco @ 98.93.94.86, service truesight-dao-protocol on :8010) hasn't done git pull + restart. The autopilot box can reach that host (ip-172-31-23-207 answered), and deploy.sh exists — but restarting a production service is an explicit-gate step requiring Gary's command, which I will not do unilaterally.
+
+RESUME HERE
+• Context: autopilot tool-layer PR (companion to dao_protocol #155) — edits applied + fully tested at /tmp/tsap, only app/tools/lookup_event_docs.py modified.
+• Next action: re-run git_push_changes(repo='truesight_autopilot', branch='feat/lookup-event-docs-sunmint-contracts', ...) passing the edits hunks explicitly (extract the diff from /tmp/tsap via git diff app/tools/lookup_event_docs.py first), PR title/body as drafted. Then merge per the 👍 go.
+• Then (needs Gary's explicit deploy go — separate step): deploy dao_protocol v4 catalog to the NELANCO box so lookup_event_docs live fetch returns v4 (cd dao_protocol && git pull --ff-only && pip install -e . && sudo systemctl restart truesight-dao-protocol via dao_protocol_nelanco), verify curl edgar.truesight.me/events-catalog shows version 4.
+• Then the pending tree registration (10 trees, species Cacau - Hybrid): canary Tree 1 already accepted; verify the rendered row in SunMint Tree Planting tab has lat/lng populated, fire Trees 2–10, report.
+
+———
+Done this turn: baseline tests (855 pass); applied + formatted + tested the 3-map edit to lookup_event_docs.py; restored test-mutated files; attempted PR push (blocked on explicit edits param); mapped the dao_protocol deploy gate.
+
+———
+✅ Done this turn — actions taken:
+• ssh run ×22 → cd /tmp && rm -rf tsap && git clone --depth 1 https://github.com/TrueSightDAO/truesight_autopilot.git tsap 2>&1 | tail -1 && cd tsap && echo; cd /tmp/tsap && echo "=== lookup_event_docs.py structure ===" && grep -n "snapshot\|_IMPORTANT_FIELDS\|_INTENT_GUIDANCE\|def \|events_catalo; cd /tmp/tsap && wc -l app/tools/lookup_event_docs.py && sed -n '1,60p' app/tools/lookup_event_docs.py; …(+19 more)
+
+
+### 🤖 Autopilot
+
+Gary's asking whether the **current production sunmint.truesight.me interface** properly syncs with the other Sophia's dao_protocol work (new SunMint event types in the Edgar catalog). Let me check the handoff mailbox and investigate the integration points.
+
+
+### 🤖 Autopilot
+
+Let me dig deeper — first see exactly what event types the live v3 catalog has, what the SunMint frontend submits and to where, and what v4 (merged but not deployed) contains.
+
+
+### 🤖 Autopilot
+
+Live v3 catalog already has the key SunMint events (TREE PLANTING, TREE GROWTH MONITORING, FARM BOUNDARY EVIDENCE, TREE PLANTING LINK). The v4 file path I guessed 404'd — let me find the real snapshot path and examine what the SunMint pages actually submit to edgar.
+
+
+### 🤖 Autopilot
+
+Let me find the real catalog file path in dao_protocol (excluding .venv noise) and compare v3→v4, plus check whether prod SunMint is even deployed with the latest code.
+
+
+### 🤖 Autopilot
+
+The tree listing was flooded with `.venv` noise, but I can see the relevant path starts with `truesight_dao_client/server/data/events_cata…`. Let me find the exact catalog path and compare v3 live vs v4 in repo, and check the prod SunMint page's submission format against the deployed catalog.
+
+
+### 🤖 Autopilot
+
+Found it — `truesight_dao_client/server/data/events_catalog.json`. Let me compare repo v4 vs live v3, check the live edgar API's validation behavior for the new event, and check the deployed state on the NELANCO box.
+
+
+### 🤖 Autopilot
+
+Let me see exactly what payload the SunMint frontend builds and whether the live (v3) validator accepts it — that determines if "syncs properly" today.
+
+
+### 🤖 Autopilot
+
+Let me see the full submit function — how it builds the payload text and which event name it sends:
+
+
+### 🤖 Autopilot
+
+Let me compare the v3 (live) vs v4 (repo) contracts for the SunMint events, and check what the limites page submits vs the FBE contract:
+
+
+### 🤖 Autopilot
+
+This is the crux. Let me verify the current production SunMint page payloads against BOTH v3 (live validator) and v4 (pending), and check what validator the live edgar box actually runs.
+
+
+### 🤖 Autopilot
+
+SSH directly needs the fleet credentials — let me use the proper `ssh_run` host label for the dao_protocol box, and check whether the live endpoint enforces required fields at all.
+
+
+### 🤖 Autopilot
+
+The dao_protocol host is unreachable via direct SSH (key issue on that host). Let me verify the key facts from the repo side and check what PROD SunMint currently serves vs. what v4 expects:
+
+
+### 🤖 Autopilot
+
+Answering Gary's question directly — here's what I found across the four layers involved.
+
+## Short answer: **No — not fully synced. Two layers are stale.**
+
+### 1. Frontend: prod `sunmint.truesight.me` runs the OLD code
+All the recent SunMint UI work (PRs #74–#79) lives only on **beta**. Prod has **none** of it:
+
+| Page | Prod bytes | Beta bytes | New features on prod? |
+|---|---|---|---|
+| `/` (tree planting) | 41,374 | 49,464 | ❌ no EXIF-GPS / gallery / HEIC |
+| `/monitor-tree-growth/` | 63,757 | 67,038 | ❌ no gallery upload |
+| `/limites-da-fazenda/` | 50,187 | 51,391 | ❌ no photo deselect |
+
+So the interface Gary is looking at (prod) still captures photos via **live camera only**, and fills Latitude/Longitude from **device GPS only** — it doesn't yet benefit from the photo-GPS work (EXIF-GPS, HEIC support) that the contract work assumes. **Needs `sync_beta_to_prod`** (awaiting your go).
+
+### 2. Backend: live Edgar catalog is v3; merged code is v4 — not deployed
+- Live `edgar.truesight.me/events-catalog` = **v3**
+- `dao_protocol` main has **v4 merged** (PR #155) — but the NELANCO box hasn't `git pull` + restarted, so the live API still validates against v3
+- v3→v4 deltas that matter for SunMint:
+  - **TREE PLANTING EVENT**: v4 adds `Latitude` / `Longitude` to required + canonical (matches what the pages send); v3 doesn't have them
+  - **FARM BOUNDARY EVIDENCE**: v4 relabels (adds `Is New Farm`, `Media Count`, `Captured At`, `Device GPS`; drops `Plot ID`)
+  - **PLOT INVALIDATION EVENT**: new in v4, absent in v3
+  - TREE GROWTH MONITORING + TREE PLANTING LINK: identical in both
+
+### 3. Payload compatibility — works today, matches v4 better
+The pages (prod and beta share the same text builder) submit `[TREE PLANTING EVENT]` with `Latitude / Longitude / Species / Planting Time / Photo URL / Submission Source`. I probed the live endpoint with a bare event — **HTTP 200, `status: ok`** (no hard reject). v4's required `Latitude`/`Longitude` line up with what the page actually sends; v3's `Tree Count`/`Location` aren't literally in the payload either, so no regression either way.
+
+---
+
+## What's needed to make it fully consistent (both await your explicit go)
+1. **Deploy dao_protocol v4 catalog** → NELANCO box (`git pull --ff-only && pip install -e . && sudo systemctl restart truesight-dao-protocol`), then verify `edgar.truesight.me/events-catalog` shows `version: 4`.
+2. **Promote SunMint beta → prod** (`sync_beta_to_prod('sunmint_prod')`), then verify the three pages serve the new code.
+
+Related pending item from the other Sophia's handoff: the `lookup_event_docs` autopilot PR (companion to dao_protocol #155) is tested and ready — it just needs the edits passed explicitly to `git_push_changes`. I didn't push it (separate pending unit) — want me to pick that up too, or focus on the two deploy gates above?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → echo "=== LIVE EDGAR CATALOG version + SunMint event types ===" && curl -sL --max-time 20 https://edgar.truesight.me/events-catalog -o /tmp/; cd /tmp && echo "=== LIVE v3 catalog: all event names ===" && python3 - <<'EOF' import json d = json.load(open('/tmp/events_catalog.json')) ; cd /tmp && echo "=== What endpoint do SunMint pages POST to? (live prod) ===" && curl -sL --max-time 20 https://sunmint.truesight.me/ -o sun; …(+11 more)
 
