@@ -514,3 +514,40 @@ Your original refined-scope message in this thread is outside my live context (r
 
 **RESUME HERE:** next message = implement the PR per your scope answer (A/B/C above) — wiring map is done, `/opt/truesight_autopilot` HEAD == origin/main after #398 merge (`3395c6e1`), test gate + real-HEIC GPS assertion ready to run. If you'd rather I proceed on assumption **A only** (smallest, safe: LLM/transcript surface), say "A" and I'll land it.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20182] [Handoff context — this Telegram topic (thread 20182) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Gary topped up the DeepSeek balance. Resuming - continue the GPS-extraction wiring unit from your reconnaissance findings.
+
+
+### 🤖 Autopilot
+
+Resuming the unit. Scope A it is (surface GPS in the attachment summary → LLM + transcript) — the smallest safe default I flagged, and consistent with "the actual point of the task." Let me pull the last exact code regions I need for bulletproof edit hunks.
+
+
+### 🤖 Autopilot
+
+Resuming the GPS-extraction unit (Scope A: surface GPS in attachment summaries → LLM + transcript). First, sync the local checkout to merged main so edits sit cleanly on top of #398.
+
+
+### 🤖 Autopilot
+
+Checkout synced to merged main `3395c6e` (ff from cc821bd, #398's 4 files now in). Remaining dirty files are the known unrelated runtime/submodule state — not part of this PR.
+
+Now the exact hunk for the **GPS extraction helper** in `qr_scanner.py` — I'll add it right after `convert_heic_to_jpg` (which ends at line ~330) and check the import block for `ExifTags`:
+
+
+### 🤖 Autopilot
+
+Resuming the GPS-extraction wiring unit. Before I write code, let me check the test layout/fixtures, venv capabilities (piexif), and how git auth is set on this box (so the push path is clean).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+Let me check the test layout, whether a real HEIC fixture already exists in the repo, venv capabilities, and the git remote auth scheme before I write the code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /opt/truesight_autopilot && echo "=== main.py import block 60-90 ==="; sed -n '60,90p' app/main.py; echo "=== main.py 4230-4320 (per-file; cd /opt/truesight_autopilot && echo "=== telegram_adapter top imports 1-80 ==="; sed -n '1,80p' app/telegram_adapter.py | grep -n "^import \; cd /opt/truesight_autopilot && echo "BEFORE: $(git rev-parse --short HEAD) dirty:"; git status --porcelain | head; echo "--- restoring the 4; …(+1 more)
+
