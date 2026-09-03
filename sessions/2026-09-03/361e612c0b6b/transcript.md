@@ -863,16 +863,19 @@ None of the photos carry GPS — Telegram strips EXIF on image upload (documente
 ### 🤖 Autopilot
 
 Let me check whether new photos with GPS just landed in the attachments folder:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 10 new files are **iPhone HEIC originals** (02:03–02:05) — exactly the format the runbook says preserves GPS. Let me extract coordinates from all 10 right now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Jackpot — the HEIC originals carry full GPS.** All 8 files on disk (02:03–02:05) have coordinates. **Note: I count 8 HEIC files, not 10** — two may still be uploading, or the batch was 8. Let me convert to decimal degrees and run the pairwise-spacing check on what's here:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1119,4 +1122,75 @@ Give me those and I'll run the full registration: dedupe → register trees → 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/tg_attachments && ls -la a9cf65d0bcfb4234bf32fee0c0cc7310.HEIC && md5sum a9cf65d0bcfb4234bf32fee0c0cc7310.HEIC && exiftool -s -GPSLa; cd /tmp/tg_attachments && ls -lat *.HEIC | head -6 && echo "---new file GPS---" && NEW=$(ls -t *.HEIC | head -1) && echo "newest: $NEW" && e; cd /tmp/tg_attachments && python3 -c " import math, subprocess, re, itertools, glob files = sorted(glob.glob('*.HEIC')) def dms2dec(deg,min,
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/2c6b2aacd29442eda051430da18e4f6f.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+Another file from the set (`2c6b2aac` — T7). Quick verification and count check:
+
+
+### 🤖 Autopilot
+
+`2c6b2aac` verified (T7, unchanged) — and another new arrival (`cd6887a2`) pushed the count to **13**. Let me get its GPS and re-run the consolidated analysis:
+
+
+### 🤖 Autopilot
+
+Another new arrival (`cd6887a2`, 18:19:24, southernmost point yet) — count is now **13 HEIC**. Three of these (18:18, 18:19, 18:31) sit *outside* the 18:42–19:26 tree-walk timeline. Let me render the 13 points as a relative map so we can see the geometry:
+
+
+### 🤖 Autopilot
+
+`2c6b2aac` verified (T7, unchanged) — but two more new arrivals came in behind it: **`cd6887a2`** (18:19:24) and previously `7f77424b` (18:31). The count is now **13 HEIC files**.
+
+## What the geometry shows — 13 points over ~140 m × 100 m
+
+Relative map (5 m/char, north at top, each `#` = a photo):
+
+```
+.....#....   70234a89 18:18 ┐
+.....#....   cd6887a2 18:19 ┘ early cluster (east)
+   #....    a9cf65d0 19:10
+   #.....   6c9b7665 19:16
+#.........   2c6b2aac 19:26 ┐ west edge
+  #.....    b08309c1 18:42 │ main tree
+  #.#....   2c364eb3 19:02 │ walk
+  #......   1d6a3a4c 18:47 │ (18:42–19:26)
+  #.....    35a3744d 18:52 │
+  #......   17016c60 18:57 │
+..#......   7f77424b 18:31 ┘ early outlier (south-west)
+```
+
+**Two distinct groups are emerging:**
+- **Main cluster (8 pts)** — the 18:42–19:26 walk: 193eca20, 1d6a3a4c, 2c364eb3, b08309c1, 35a3744d, 17016c60, 6c9b7665, 95dd596c + a9cf65d0 (~2 m apart pair), 2c6b2aac (west).
+- **Early cluster (3 pts)** — 18:18–18:31, 60–140 m away: 70234a89, cd6887a2, 7f77424b. Different spot or an earlier walk.
+
+## I need a decision from you — the set keeps growing past "10"
+
+Every "inspect" ping is delivering another original. I now hold **13 GPS-bearing HEIC files** (all iPhone 12 Pro Max, Sep 2 evening). Rather than keep re-running the table, tell me:
+
+1. **How many trees should be registered, and which files?** Options:
+   - "Register the 8–10 from the main walk (18:42–19:26), skip the 3 early ones"
+   - "Register all 13 as-is" (I'll keep the 3 tight pairs flagged in the ledger)
+   - Or name specific files to include/exclude.
+2. **Species** (all cacao / Criolla?) and **planter** name for the events.
+3. **The 4 corners** — I still have only the GPS-less JPGs. Send the **corner HEIC originals** or paste **4 corner lat/lng as text** so I can build the Fazenda Bom Sucesso polygon and run the containment check.
+4. Pledge QR linkage — yes/no?
+
+One clean message with those four answers and I'll execute end-to-end (dedupe decision → register trees → plot polygon → containment → on-chain TREE PLANTING events + photo evidence).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → verified 2c6b2aac; detected + read GPS of new cd6887a2; rendered 13-point relative geometry map.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp/tg_attachments && ls -la 2c6b2aacd29442eda051430da18e4f6f.HEIC && md5sum 2c6b2aacd29442eda051430da18e4f6f.HEIC && exiftool -s -GPSLa; cd /tmp/tg_attachments && exiftool -s -GPSLatitude -GPSLongitude -DateTimeOriginal -Make -Model cd6887a2c2b9460bad6578ad3431490f.HEIC 2>/dev; cd /tmp/tg_attachments && python3 -c " import math, subprocess, re, glob files = sorted(glob.glob('*.HEIC')) def dms2dec(d,m,s,ref): v=d+m/6
 
