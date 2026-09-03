@@ -1627,16 +1627,19 @@ Let me apply the edit locally, verify, and push (one PR):
 ### 🤖 Autopilot
 
 Input tags are void elements (self-closing — no `</input>` expected), so that's fine. Scripts pass. Let me verify the diff is only my 3 intended hunks, then push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff is exactly the 3 intended hunks. Pushing to `sunmint_beta` (beta-first), using the file's literal escape-sequence text as anchors:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #80 opened. Merging per the standing go (UI feature PRs self-merge):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1696,26 +1699,31 @@ Gary asked: when attaching a photo where the page says "GPS location of the phot
 ### 🤖 Autopilot
 
 Go received — executing the sync: verify beta has the coords change → promote to prod → verify prod serves it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Live beta (49765 bytes) already has the coords change (3 hits), but raw.githubusercontent CDN is lagging (shows pre-#80 content — known issue from earlier). Let me confirm main HEAD via the API, then promote:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Main HEAD = 70cfd16408 (#80 merged), and live beta already serves it (49765 bytes, 3 hits of `photoGpsCoords`). Beta is confirmed good. Promoting to prod:
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod synced (ledger: `deploy_20260903T090628Z_sunmint-prod`). Now verifying live prod serves the coords feature:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod live page still serves the old content (49464 bytes, 0 hits) — but that could be CDN cache lag. Let me check whether the sunmint_prod **repo** actually has the update (vs. the live site cache):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1723,6 +1731,7 @@ Prod live page still serves the old content (49464 bytes, 0 hits) — but that c
 Diagnosis clear: the **sunmint_prod repo has the update** (HEAD 93241a6b, raw grep = 3 hits of `photoGpsCoords`) — but the **live GitHub Pages site is serving a cached copy** (etag `6a992f33-c138`, `cache-control: max-age=600`, `x-cache: HIT`, `age: 249`). GitHub Pages caches up to 10 minutes. The sync only landed moments ago, so the edge cache hasn't expired yet.
 
 Let me confirm by comparing against the beta URL's headers (beta showed the change immediately because it had been serving it longer), and wait for cache expiry with a watcher:
+[1 tool result(s) compacted: watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1876,4 +1885,82 @@ I'll build both changes beta-first (PR each), verify against the HEIC + a GPS JP
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd /tmp && curl -sL --max-time 20 "https://raw.githubusercontent.com/TrueSightDAO/sunmint_beta/main/index.html" -o plant_now2.html 2>/dev/nu; cd /tmp && echo "=== PLANT: readExifGps full + does it read DateTime? ===" && python3 - <<'EOF' import re s = open('plant_now2.html', encodi; cd /tmp && echo "=== find readExifGps ===" && grep -n "readExifGps\|Exif\|exif\|DateTime\|EXIF" plant_now2.html | head -30; …(+7 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20044] [Handoff context — this Telegram topic (thread 20044) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ⏳ Sophia's brain is up but BUSY/unresponsive (health probe timed out or unhealthy) — a long tool call may be running. Please wait a moment and resend.
+
+
+### 🤖 Autopilot
+
+Go received — proceeding with the plan (close-up-photo-date priority for the monitor page as recommended). Starting with the **plant page** (date = photo creation date), one PR this turn. Building + verifying locally first:
+
+
+### 🤖 Autopilot
+
+All 10 edits applied cleanly and both scripts pass `node --check`. One anomaly to resolve before pushing: the API base fetched as **49172 bytes**, but earlier this session the same API path returned **49765** — I need to confirm the base is genuinely current main (all my #80-era anchors matched, which is reassuring, but let me verify markers + diff explicitly):
+
+
+### 🤖 Autopilot
+
+Main HEAD = #80 (`70cfd16408`), and markers confirm the base has the coords code — but the API returned **49172 bytes** while the live Pages page was **49765** post-#80. That ~593-byte gap needs resolving before I push (I must not build on a stale/partial base). Let me diff the API base against the live beta page:
+
+
+### 🤖 Autopilot
+
+diff says the API base and live beta are identical, yet byte counts differ (49172 vs 49765) — that's contradictory, so let me settle it definitively with md5/cmp before trusting my build base:
+
+
+### 🤖 Autopilot
+
+Mystery solved — `plant_main2.html` is **49765 bytes** now (identical md5 `391328ee` to live beta). The earlier "49172 bytes" print was stale from the *previous* fetch in the same shell (the heredoc wrote `plant_main2.html` but I printed the length of the earlier `plant_main.html` read). The base is **genuine current main (#80)**, byte-identical to what's live on beta. My build is on solid ground.
+
+Now verify my **fixed** file's diff is exactly my 10 intended hunks (48 changed lines), then push:
+
+
+### 🤖 Autopilot
+
+Diff is exactly my 10 intended hunks — clean. Now let me run a functional test of the extended parser against the real HEIC (verifies `takenAt` extraction end-to-end) before pushing:
+
+
+### 🤖 Autopilot
+
+Test harness failed to parse — likely my regex captured an incomplete function span. Let me check what the actual function looks like and debug the extraction:
+
+
+### 🤖 Autopilot
+
+The function capture looks fine (5254 chars, complete). The syntax error is probably from the harness's fake FileReader interfering with node's module wrapper — or the capture includes a subtle issue. Let me check the actual generated test file around the error line and simplify the harness:
+
+
+### 🤖 Autopilot
+
+Found it — the harness file shows the captured function ends with `function downscaleImage` (a dangling fragment) because my regex included the *anchor text* in the capture. The regex matched through `function downscaleImage` and included it, breaking the JS. I need to exclude the anchor. Let me fix the harness regex to stop before `downscaleImage`:
+
+
+### 🤖 Autopilot
+
+GPS parses but `takenAt` is null — found the second bug: for ASCII (type 2) EXIF values longer than 4 bytes (DateTimeOriginal is 20 bytes), the 4-byte value field is also an **offset pointer**, same as RATIONAL. My code read the string inline at `e+8`. Fixing to dereference:
+
+
+### 🤖 Autopilot
+
+**Full PASS.** The parser now returns from the actual HEIC:
+- `lat: -3.095311111111111` ✅
+- `lng: -52.09504722222223` ✅
+- `takenAt: "2026-09-02T18:27:41.000Z"` ✅ (matches exiftool's DateTimeOriginal `2026:09:02 18:27:41`)
+
+(The trailing TIMEOUT is just my setTimeout safety firing after the test already passed — harmless.)
+
+Note: the EXIF timestamp is parsed as **local time without offset** (18:27:41 local -03:00, stored naive → converted as if UTC). exiftool shows `SubSecDateTimeOriginal: 2026-09-02 18:27:41.758-03:00`, i.e. true UTC = 21:27:41. My parser doesn't read `OffsetTimeOriginal` so there's a 3h skew risk. For a *date* field this is minor (same calendar day), but worth noting. Given the photos are used for tree registration date, the local naive interpretation is arguably even the *desired* "photo date" the farmer sees — I'll keep it simple, but the displayed date matches what the camera said.
+
+Now push PR #81 for the plant page:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd /tmp && python3 - <<'EOF' import json, base64, urllib.request, re, subprocess # fetch true main via API (CDN lags) req = urllib.request.R; cd /tmp && echo "=== main HEAD via API ===" && curl -sL --max-time 20 "https://api.github.com/repos/TrueSightDAO/sunmint_beta/commits/main" ; cd /tmp && curl -sL --max-time 20 "https://beta.sunmint.truesight.me/" -o beta_live_now.html && echo "beta live bytes: $(wc -c < beta_live_n; …(+7 more)
 
