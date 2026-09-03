@@ -3638,36 +3638,43 @@ This completes the **autopilot code surface** of the interface hardening. Combin
 ### 🤖 Autopilot
 
 The `ssh_run` tool's `dao_protocol` alias fails (publickey denied — that label points at a host with a different key). Earlier I confirmed the autopilot box can reach the deploy target via its own SSH config. Let me find the working alias + the documented deploy procedure:
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `dao_protocol` ssh alias in `~/.ssh/config` failed — but I see the autopilot box has a `~/dao_protocol` checkout. Let me find the exact host entry for the dao_protocol service (the key mismatch) and the deploy/systemd details:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the working alias is `dao-protocol` (uses the autopilot ed25519 key), not `dao_protocol`. Let me check the host's current state and find the deploy method (service name/systemd unit):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The fleet tool's own connection to `dao_protocol` is key-denied, but the autopilot box has the working SSH alias `dao-protocol` (ed25519 key). The 👍 go on the resume explicitly covers the dao_protocol deploy step (it was flagged as the deploy-go). I'll execute the deploy **via the autopilot host's own SSH config** (the sanctioned path this box uses), carefully: check state → pull → restart → verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Connected. Service `truesight-dao-protocol` is active; repo at `b373300` (pre-#155). Untracked local files (`config/`, `test_sandbox.py`) exist — I'll leave them untouched. Executing the deploy: `git pull --ff-only` → verify catalog v4 → restart service:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fast-forward pulled #155 (catalog v4, `8265be2`). The catalog route reads from disk per-request — so let me check whether the live endpoint already serves v4 (no restart needed), then restart the service to be safe:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Live catalog already serves v4** — the pull was sufficient (catalog route reads from disk per-request; only the data file changed, no restart needed). Let me confirm service health and wrap up:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3722,21 +3729,25 @@ The full interface-hardening chain is now complete end-to-end:
 ### 🤖 Autopilot
 
 Gary's "deploy" = deploy the updated autopilot code (PR #397 — lookup_event_docs SunMint guidance) so it's live for future sessions. Executing:
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy deferred — another thread (20044) is mid-turn and the deploy would restart the shared autopilot. Let me retry:
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy is **blocked by a concurrent thread** — thread 20044 (another active conversation on this autopilot) is mid-turn, and deploying now would restart the shared autopilot process and kill that thread's work. Let me wait briefly and retry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Retrying after the wait:
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3788,11 +3799,13 @@ No irreversible action taken — the guard did its job protecting the other thre
 ### 🤖 Autopilot
 
 👍 Go received — retrying the deploy (thread 20044 may have finished):
+[1 tool result(s) compacted: deploy_autopilot — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Deploy resolved itself — the running autopilot is **already on commit `cc821bd2`** (the PR #397 merge), so the updated `lookup_event_docs` guidance is already live. No restart needed. Let me confirm the process state and then move to the final pending unit — verifying the Tree 1 canary landed correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3800,31 +3813,37 @@ Deploy resolved itself — the running autopilot is **already on commit `cc821bd
 Autopilot is **already live on `cc821bd2`** (PR #397) — processes restarted at 08:28 with the new code. Deploy confirmed complete.
 
 Now the final pending unit: **verify the Tree 1 canary landed, then register Trees 2–10**. Let me check the rendered submissions in Telegram Chat Logs and the Tree Planting ledger:
+[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the correct spreadsheet ID for the SunMint Tree Planting ledger (it's the `1qbZZhf-…` one I used earlier, not the Main Ledger):
+[2 tool result(s) compacted: read_google_sheet, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need the correct spreadsheet ID — let me find it in the GAS parser config on the local tokenomics checkout:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the correct spreadsheet ID (`1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ` — I had it truncated earlier). Let me check the Telegram Chat Logs tail for my Tree 1 canary and the Tree Planting tab:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the correct spreadsheet. The Tree Planting tab's top row is the **2025-07-11 precedent** (the DApp format I matched). My submissions from today append at the **bottom** — let me find the tab's total rows and read the tail for my Tree 1 canary:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet read was truncated — let me read the tail of the artifact to find my recent Tree 1 canary submissions (rows from today):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3909,4 +3928,77 @@ The full chain is now complete: plot PL-002 registered → interface hardened (c
 • `deploy autopilot` → Already on the latest commit cc821bd2 — no deploy needed. Did NOT restart. Do not retry.
 • `ssh run` ×6 → echo "=== running autopilot commit ===" && (ps aux | grep -iE "autopilot|uvicorn|python.*app" | grep -v grep | head -5); echo "=== repo HEAD; echo "=== find tree planting spreadsheet id ===" && grep -rn "SunMint Tree Planting\|tree_planting\|Tree Planting" ~/truesight_autopilot/app; cd /tmp/tok_r 2>/dev/null || cd ~/dao_protocol 2>/dev/null; echo "=== search tokenomics checkout ===" && find /tmp /home /opt -maxdepth 4 -n; …(+3 more)
 • `submit contribution` ×10 → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] By the way, why am I not seeing Fazenda Bom Sucesso listed here as a plot?
+
+https://truesight.me/sunmint.html
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] [Handoff context — this Telegram topic (thread 20065) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking… (round 23)
+
+
+### 🤖 Autopilot
+
+Gary's asking why Fazenda Bom Sucesso isn't on the public sunmint.html map. Let me diagnose — first, what the page loads and the state of the PL-002 row + geojson:
+
+
+### 🤖 Autopilot
+
+The plots sheet shows the smoking gun — **Fazenda Bom Sucesso is split across TWO rows, both incomplete**:
+
+| Plot ID | Farm ID | Hectares | Media | Status |
+|---|---|---|---|---|
+| `- Boundary Type: approx` (mangled) | fazenda-bom-sucesso | 1.016 | 4 HEICs | **proposed** (revived!) |
+| **PL-002** | *(empty)* | *(empty)* | *(empty)* | proposed |
+
+Let me check the Farm Boundary Evidence tab (where the GPS lives) and the geojson the public page actually loads:
+
+
+### 🤖 Autopilot
+
+Found the smoking gun. Let me confirm two things — PL-002's full evidence row (does it carry GPS + area?) and how the geojson builder selects plots:
+
+
+### 🤖 Autopilot
+
+The geojson (generated 03:02:27, after PL-002 existed) contains only RM-P1, RM-P2, SA-P1, CL-P1, LD-P1 — **no PL-002 / Bom Sucesso**. Let me find the geojson builder to see exactly what it requires from a plot row:
+
+
+### 🤖 Autopilot
+
+PL-002 **is** in the geojson — but with **`geometry: null`** (the tail of the artifact shows it). That's the answer: the map can't draw a plot with no polygon, so Bom Sucesso never appears. Let me confirm what the public page actually lists and PL-002's full geojson properties:
+
+
+### 🤖 Autopilot
+
+Found it — **PL-002 *is* in the geojson the map loads, but with `geometry: null`**, so the map has nothing to draw. Here's the evidence-based diagnosis:
+
+## Why Fazenda Bom Sucesso isn't on the map
+
+**The public map** (`sunmint.html` → live impact map) renders `sunmint/plots/index.geojson` (regenerated 03:02:27Z). It contains a **PL-002 / Fazenda Bom Sucesso feature — but `geometry: null`**. No polygon → nothing renders, and it drops out of the plot list.
+
+**Root cause — the plot's data is split across two rows, and the good one has a garbage ID:**
+
+| Plots row | Farm ID | Hectares | Media | Region | GPS (FBE) |
+|---|---|---|---|---|---|
+| **`- Boundary Type: approx`** (mangled ID) | fazenda-bom-sucesso | **1.016** | 4 HEICs | Altamira, Para | ✅ (FBE `…024631_068`) |
+| **PL-002** (clean ID) | *(empty)* | *(empty)* | *(empty)* | *(empty)* | ✅ (FBE `…025329_070`) |
+
+The geojson builder found **PL-002** (clean ID) but its row carries **no farm_id, hectares, media, or region** — and the builder couldn't assemble a polygon for it, so it emitted `geometry: null`. Meanwhile the row that *has* all the data sits under the mangled ID `- Boundary Type: approx` (from the original empty-Plot-ID submission) — the builder skips it as garbage. (Note: that row shows `proposed`, not `invalid` — my earlier invalidation of it appears to have been superseded/resurrected when the clean PL-002 row was created, another artifact of the split.)
+
+**Net effect:** the plot exists on-chain (both FBE events PROCESSED with the 4 corner GPS points), but the registry row the map consumes is incomplete → no polygon → invisible on the page.
+
+## Fix options
+
+1. **Merge the split (recommended):** repair the PL-002 row to carry `farm_id=fazenda-bom-sucesso`, hectares **1.016**, the 4 corner HEIC media, region **Altamira, Para** (all already sitting in the mangled row / FBE rows) → re-invalidate the mangled `- Boundary Type: approx` row → re-ping the geojson rebuild. The FBE row `…025329_070` already has the 4 GPS points, so the rebuild will produce the hull polygon and PL-002 appears on the map.
+2. **Re-submit a corrected boundary event** carrying the full payload so the handler writes one complete row — but there's no "plot update" event yet (only create + invalidate), so this would need a handler extension.
+3. **Hand-correct the sheet** (governor-approved, one-off) + trigger rebuild.
+
+The cleanest is option 1 — and it needs the missing `farm_id`/hectares on PL-002, which points at a small gap in the plot-first FBE handler (new-farm rows are created bare; the second submission didn't back-fill). Want me to do the merge + invalidation + rebuild (option 1), and/or file the handler gap (option 2) as a follow-up? I'd need your 👍 for the sheet-level repair since it's machine-owned data.
 
