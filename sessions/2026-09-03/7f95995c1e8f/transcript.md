@@ -30,3 +30,25 @@ Tree 10: 9e4ce380… 2026-09-02 19:31:12, -3.094528 -52.095314, acc±6.4 m, shar
 EXCLUDED: stop S13 (8ecc12…/3f1a8b…, 19:26:28) — GPS accuracy ±177 m (junk), heading 120° (opposes all others ~235°); unresolvable by metadata, needs visual check.
 Artifacts: /tmp/tg_attachments/tree_manifest.json, tree_manifest.csv, final_10_trees.png, contact_sheet_15.png, stops.json, moments.json.
 ```
+
+
+---
+
+## Attachment: tree_photo_manifest_altamira_followup.md
+
+| Field | Value |
+|-------|-------|
+| **Type** | PDF |
+| **Filename** | tree_photo_manifest_altamira_followup.md |
+| **Received** | 2026-09-03T03:17:10Z |
+
+### Extracted Text
+
+```
+Follow-up verification 2026-09-03: 4 more HEICs inspected, none are new trees.
+- 5b4c89dc… (19:16:07, hdg 333°) — already in manifest, Tree 9 cluster burst 11.
+- b9c75533… (18:52:14) — MD5 23a308673dba9273d711eaaf402074ec = byte-identical duplicate of Tree 7 rep 35a3744d (re-upload same photo, same 2,033,492 bytes).
+- f133330d… (18:47:14) — Tree 6 sibling, sharp 422 < rep 193eca20 485, keep rep.
+- 26e99cd0… (18:53:03, hdg 52°) — Tree 7 extra angle, sharp 28 (blurry), not a rep.
+Final 10-tree manifest (tree_manifest.json / final_10_trees.png) UNCHANGED. All 36 on-disk HEICs trace to the same 10 trees + 1 excluded GPS-junk stop (8ecc12…/3f1a8b… 19:26:28, acc ±177 m).
+```
