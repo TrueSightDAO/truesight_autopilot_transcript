@@ -2580,61 +2580,73 @@ Now let me see exactly what the beta SunMint site's tree-planting page submits (
 ### 🤖 Autopilot
 
 The beta page 404'd at that path. The real contract is the DApp's tree-planting submission — let me fetch the raw HTML/JS from the dapp_beta repo (raw.githubusercontent, avoiding the rate-limited API) to see exactly what event text it builds:
+[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the actual submission-builder JS in that page (the event text format it constructs) — the part that defines the "smart contract" Gary means:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The contract is clear — each tree = one `[TREE PLANTING EVENT]` text block posted to `edgar.truesight.me/dao/submit_contribution`. Let me read the exact submit function (lines ~677–760) to see the payload shape and how the photo is attached:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The contract is now fully clear — the beta DApp builds a `[TREE PLANTING EVENT]` text with `- Latitude: / - Longitude: / - Species: / - Planting Time: / - Photo URL:` lines and posts it (signed) to Edgar. That's exactly what my `submit_contribution` does for each tree. Let me lock the authoritative per-tree data (coordinates + time from the chosen photos) with one consolidated extraction:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Coordinates came out **positive** (3.09, 52.09) — but Fazenda Bom Sucesso is in Brazil, so lat/lng must be **negative** (S/W). My ref-parsing silently failed. Let me verify with raw EXIF and fix the sign handling before registering anything:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the bug — `exiftool -s` puts the hemisphere letter *inside* the value (`...S`) while `GPSLatitudeRef` is the full word (`South`), so my `ref in ('S','W')` check never fired → positive coords. My **earlier** analysis (the `-3.0944…` values) parsed correctly. Let me regenerate with correct sign logic and produce the authoritative 10-tree list:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The authoritative 10 trees are locked with correct S/W coordinates. Before submitting, let me pull the exact on-disk file paths for each chosen photo and check the current state of the tree-planting ledger for duplicates:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 10 chosen photos are on disk with correct S/W coordinates. Before mass-submitting, let me submit **Tree 1** as a canary and confirm Edgar renders/accepts it cleanly, then fire the rest in parallel.
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The schema wants `Location` (canonical), not separate lat/lng. Let me check how Edgar renders/expects Location for this event and what a prior successful submission looked like:
+[2 tool result(s) compacted: lookup_event_docs, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the exact schema for TREE PLANTING EVENT's Location field locally:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the exact TREE PLANTING EVENT section header (the parser expects `- Latitude:`/`- Longitude:` lines from the chat log, but Edgar's canonical requires `Location`). I need to see what form "Location" takes for this event. Let me search more precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The canary failed: Edgar's canonical schema requires a **Location** field, but the GAS parser consumes `- Latitude:` / `- Longitude:` lines. I need to see a **real successful submission's raw text** to mirror it exactly. Let me read the Telegram Chat Logs + SunMint Tree Planting tabs for a precedent:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2752,4 +2764,74 @@ Files staged: `/tmp/tree_final.json` (10 trees), `/tmp/tree_jpgs/tree01..10_*.jp
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && cat tree_final.json 2>/dev/null | head -5; echo "==="; cd /tmp/tg_attachments && mkdir -p /tmp/tree_jpgs && python3 << 'EOF' impo
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] Resubmit the first with what is required to get it to pass first
+
+
+### 🤖 Autopilot
+
+Gary wants Tree 1 re-submitted with the full field set so it passes cleanly end-to-end. Resubmitting with **both** canonical `Location` (validator) **and** `Latitude`/`Longitude` (parser):
+
+
+### 🤖 Autopilot
+
+Accepted. Now let me verify how Edgar rendered it — checking whether the `- Latitude:` / `- Longitude:` lines appear in the rendered text (the parser's requirement). Propagation is async, so let me check the chat logs tail:
+
+
+### 🤖 Autopilot
+
+The chat-log propagation is still async. Let me query Edgar directly to see the rendered submission text for the latest event:
+
+
+### 🤖 Autopilot
+
+Let me check how Edgar renders TREE PLANTING submissions — searching the dao_protocol renderer for the exact text format:
+
+
+### 🤖 Autopilot
+
+Let me check how dao_protocol renders a submission into the chat-log text (whether attribute labels like Latitude/Longitude appear as `- Label:` lines):
+
+
+### 🤖 Autopilot
+
+The plan doc confirms the parser mechanics: `[TREE PLANTING EVENT]` rows land in **`SunMint Tree Planting`** via the GAS cron (dedup key = Telegram Message ID, col D; parser fills Latitude/Longitude from the text). My resubmission now carries both `Location` (validator) and `Latitude`/`Longitude` (parser) — let me check whether the canary row has propagated:
+
+
+### 🤖 Autopilot
+
+The historical rows confirm the exact target format the DApp uses (row 6, 2025-07-26):
+```
+[TREE PLANTING EVENT]
+- Latitude: 45.497431
+- Longitude: -122.569062
+- Species: Cacao
+- Planting Time: 2025-07-26T02:26:19.583Z
+- Photo URL: ...
+```
+My resubmission of Tree 1 now carries exactly those keys (**Latitude, Longitude, Species, Planting Time, Photo URL**) plus canonical **Location** to satisfy Edgar's validator — **accepted**. The parser's cron will pick it up from Telegram Chat Logs on its next run (async, deduped by Telegram Message ID).
+
+## ✅ Status — Tree 1 resubmitted with the full required field set
+
+**Submission 2 (Tree 1, canary) — accepted by Edgar:**
+- `Location: -3.094431, -52.095225` (canonical → passes validator)
+- `Latitude: -3.094431` / `Longitude: -52.095225` (parser columns K/L)
+- `Species: Cacau - Hybrid` (your spec for all 10) · `Planting Time: 2026-09-02T18:42:13-03:00`
+- `Photo URL: …/20260902_bomsucesso_tree01.jpg` (live in sunmint repo)
+- `Planter: Gary Teh`
+
+**All 10 photos** are mirrored and live at `raw.githubusercontent.com/TrueSightDAO/sunmint/main/images/20260902_bomsucesso_tree01…10.jpg`.
+
+## RESUME HERE → next unit (fresh turn)
+1. **Verify Tree 1 canary rendered correctly** — read `Telegram Chat Logs` col G tail + `SunMint Tree Planting` tab tail (spreadsheet `1qbZZhf-…`): confirm the row landed with Latitude/Longitude populated, Status `NEW`, species `Cacau - Hybrid`, photo URL, and dedup didn't reject it (two submissions of Tree 1 exist — same photo/coords but different Message IDs, so both may land; if a dup row appears, invalidate one later).
+2. **If clean** → submit **Trees 2–10** in identical format (coords + times from `/tmp/tree_final.json`: Tree 2 `-3.094461,-52.095119` 18:47:03 … Tree 10 `-3.094528,-52.095314` 19:31:12), species **Cacau - Hybrid**, each with its live photo URL. Confirm each returns "submitted successfully."
+3. **Final verify** — all 10 rows in `SunMint Tree Planting` with correct lat/lng/species/photo; report the table + commit URLs.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+• `ssh run` → cd /tmp && curl -s "https://edgar.truesight.me/dao/submissions?limit=2" | head -c 3000; echo; echo "==="; curl -s "https://edgar.truesight.m
 
