@@ -3412,26 +3412,31 @@ All 3 edits applied cleanly (50 insertions, single file). Now the full local tes
 ### 🤖 Autopilot
 
 All checks pass except ruff format wants to reformat my file. Let me apply the formatter then re-verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All tests pass (855) + format clean. But two unrelated files show as modified again — `events_catalog_snapshot.json` and `followups/state.json` — likely a pytest run mutated them (a test exercises the catalog refresh). Let me confirm they're test-generated and restore them so the PR is single-purpose:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The snapshot file seems to have been deleted by a test. Let me investigate:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 A pytest test **deletes** `events_catalog_snapshot.json` as part of its test (that's expected test behavior — it's a test fixture the suite recreates). Restored both; only my intended change remains. Let me confirm the file is back and run the relevant tests once more, then push the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean — only `lookup_event_docs.py` modified, related tests pass (33 passed). Pushing the PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3484,16 +3489,19 @@ Clean — only `lookup_event_docs.py` modified, related tests pass (33 passed). 
 ### 🤖 Autopilot
 
 👍 Go received — resuming: extract the exact diff hunks and push the PR with explicit edits.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Diff captured. Now pushing the PR with explicit `edits` hunks (matching my locally-tested change — additions only, keeping cosmetic reformat hunks out):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR opened. Merging per the 👍 go:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -3701,4 +3709,56 @@ The full interface-hardening chain is now complete end-to-end:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /tmp/dao_p 2>/dev/null && echo "=== deploy scripts ===" && ls -la deploy*.sh *.sh 2>/dev/null; echo "=== deploy.sh contents ===" && cat d; echo "=== host state ===" && hostname && echo "---" && cd ~/dao_protocol 2>/dev/null && git log --oneline -3 2>/dev/null || (sudo find / -ma; echo "=== ~/.ssh/config aliases ===" && grep -A4 -i "dao_protocol\|nelanco" ~/.ssh/config 2>/dev/null | head -40; echo "=== known deploy doc; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] deploy
+
+
+### 🤖 Autopilot
+
+Gary's "deploy" = deploy the updated autopilot code (PR #397 — lookup_event_docs SunMint guidance) so it's live for future sessions. Executing:
+
+
+### 🤖 Autopilot
+
+Deploy deferred — another thread (20044) is mid-turn and the deploy would restart the shared autopilot. Let me retry:
+
+
+### 🤖 Autopilot
+
+Deploy is **blocked by a concurrent thread** — thread 20044 (another active conversation on this autopilot) is mid-turn, and deploying now would restart the shared autopilot process and kill that thread's work. Let me wait briefly and retry:
+
+
+### 🤖 Autopilot
+
+Retrying after the wait:
+
+
+### 🤖 Autopilot
+
+Deploy remains **deferred** — thread 20044 (another active conversation on this autopilot) is still mid-turn. The deploy guard won't restart the shared autopilot process while that thread is working, to avoid killing its in-flight work — and I've now retried 3 times over ~30s with the same result, so it's not a momentary blip.
+
+## Status — deploy waiting on thread 20044
+
+| Item | State |
+|---|---|
+| dao_protocol catalog v4 | ✅ **already live** (deployed last turn — service healthy, `events-catalog` = v4) |
+| truesight_autopilot PR #397 code (lookup_event_docs SunMint guidance) | 📦 **merged but not yet running** — this is what "deploy" needs to ship |
+| Deploy attempt | ⏸️ DEFERRED ×3 — busy thread: `…:20044` mid-turn |
+
+The merged code is safe on `main` — nothing is broken; the new intent/important-field guidance just won't be active for live sessions until the process restarts with the new build.
+
+**Options:**
+1. **Wait for thread 20044 to finish** — then say "deploy" again (or I retry) and it should go through immediately.
+2. **I keep retrying with backoff** in later turns — say the word and I'll retry periodically.
+3. If 20044 is a long-running/parked session, you may want to nudge it to idle so the deploy can proceed.
+
+No irreversible action taken — the guard did its job protecting the other thread. Which way do you want to handle it?
+
+———
+**✅ Done this turn — actions taken:**
+• `deploy autopilot` ×3 → Deploy DEFERRED: 1 thread(s) still running a turn. I did NOT restart — your active threads are safe. Retry when idle.
+• `ssh run` → sleep 20 && echo "waited"
 
