@@ -881,16 +881,19 @@ The 10 new files are **iPhone HEIC originals** (02:03–02:05) — exactly the f
 ### 🤖 Autopilot
 
 **GPS recovered — all 8 HEIC originals have coordinates.** Two notes before the verdict: only **8 of the "10"** have arrived so far, and there's one flagged pair. Let me check for stragglers:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 A 9th HEIC just landed (02:06). Let me extract its GPS and include it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 A 9th HEIC arrived (02:06) — and this one is important for the distinctness check. Let me run the full pairwise analysis on all 9 with timestamps, so we can see which photos are the *same tree*:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1193,4 +1196,95 @@ One clean message with those four answers and I'll execute end-to-end (dedupe de
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/tg_attachments && ls -la 2c6b2aacd29442eda051430da18e4f6f.HEIC && md5sum 2c6b2aacd29442eda051430da18e4f6f.HEIC && exiftool -s -GPSLa; cd /tmp/tg_attachments && exiftool -s -GPSLatitude -GPSLongitude -DateTimeOriginal -Make -Model cd6887a2c2b9460bad6578ad3431490f.HEIC 2>/dev; cd /tmp/tg_attachments && python3 -c " import math, subprocess, re, glob files = sorted(glob.glob('*.HEIC')) def dms2dec(d,m,s,ref): v=d+m/6
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/6c9b7665e24c43348008d71bd8f303c6.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+Another from the set (`6c9b7665` — T8). Quick verification + new-arrival check:
+
+
+### 🤖 Autopilot
+
+Another new arrival (`bf9c8484`) — count now **14**. Let me get its GPS and check whether these newest files might be the corner originals (the 4 corners were the JPGs without GPS):
+
+
+### 🤖 Autopilot
+
+`6c9b7665` verified (T8, unchanged) — and the count is now **14**. That's significant: 14 HEIC originals = **10 tree-walk photos + 4 earlier photos (18:18–18:31)**. And look where those 4 early points sit — at the **four extremes of the cloud**. Let me test the hypothesis that these 4 ARE the corner originals with GPS:
+
+
+### 🤖 Autopilot
+
+The 4 early HEICs (18:18–18:31) sit at the cloud's extremes — strong candidate for the **corner originals**. Let me convert them and compare against the 4 GPS-less corner JPGs to confirm they're the same photos:
+
+
+### 🤖 Autopilot
+
+**Breakthrough — the 4 "early" HEICs ARE the corner originals with GPS intact.** Pixel comparison (mean diff ~2/255 ≈ identical) confirms:
+
+| Corner HEIC | = corner JPG | GPS time |
+|---|---|---|
+| 70234a89 | 2ca18c0e | 18:18:03 |
+| cd6887a2 | 2b3a0fb1 | 18:19:24 |
+| bf9c8484 | eb5ec7ef | 18:27:41 |
+| 7f77424b | 303b5b8d | 18:31:08 |
+
+So the full set is exactly **10 tree HEICs + 4 corner HEICs = 14** — and now **every point has GPS**, including the plot corners. Let me extract the corner coordinates and build the polygon + containment check:
+
+
+### 🤖 Autopilot
+
+**Major resolution — the full 14-file set is now identified, and every point has GPS.** The 4 "early" HEICs (18:18–18:31) are pixel-identical (mean diff ~2/255) to the 4 corner JPGs you sent — **they're the corner originals, GPS intact.** So: **10 tree HEICs + 4 corner HEICs = 14.** Let me render a map so you can eyeball the geometry:
+
+
+### 🤖 Autopilot
+
+Map rendered. Let me send it to you and summarize the full picture:
+
+
+### 🤖 Autopilot
+
+**Map sent.** Here's the complete picture after full GPS recovery:
+
+## The full 14-file set — all GPS-bearing
+
+| Role | Files | GPS |
+|---|---|---|
+| **10 tree photos** | 193eca20, 1d6a3a4c, 2c364eb3, b08309c1, 35a3744d, 17016c60, 6c9b7665, 95dd596c, a9cf65d0, 2c6b2aac | ✅ |
+| **4 corner photos** | 70234a89 (=JPG 2ca18c0e), cd6887a2 (=JPG 2b3a0fb1), bf9c8484 (=JPG eb5ec7ef), 7f77424b (=JPG 303b5b8d) | ✅ |
+
+The 4 corner HEICs are **pixel-identical to the 4 corner JPGs** you sent earlier (mean diff ~2/255) — same photos, but with GPS intact.
+
+## ✅ Distinctness + containment results
+
+**Plot polygon** (from the 4 corners, ~**1.02 ha**): bounded by the 4 corner GPS points — area ~10,183 m².
+
+**Tree spacing (haversine):**
+- 9 of 10 trees ≥ 7 m apart — **comfortably distinct** ✅
+- **3 tight pairs** below the ~3 m GPS-noise floor (possible same-tree duplicates):
+  - **193eca20 ↔ 1d6a3a4c** — 1.4 m, 11 s apart (near-certain duplicate)
+  - **95dd596c ↔ a9cf65d0** — 2.0 m, 11 min apart
+  - **2c364eb3 ↔ b08309c1** — 2.2 m, 20 min apart
+
+**Containment: 9/10 trees inside the plot** ✅ — but **`2c6b2aac` is OUTSIDE** the polygon by ~48 m (it's the far-west point, near corner 7f77424b's edge). See the red dot on the map.
+
+## Awaiting your decisions before registration
+
+1. **The 3 tight pairs** — duplicates (register fewer trees) or genuinely distinct saplings?
+2. **`2c6b2aac` outside the polygon** — is the corner boundary wrong (corners should enclose it), or is that tree on a different patch? This determines whether the plot polygon needs adjusting or that tree registers outside the plot.
+3. **Species + planter** for the events (all Cacao? planted by whom?)
+4. **Pledge linkage** — do these map to specific pledge QR codes?
+
+Give me those four answers and I'll execute end-to-end. If you'd rather I just proceed with sensible defaults, say so and I'll register all 10 as distinct trees (flagging the tight pairs) with species = Cacao (pending your correction), and note the polygon question for 2c6b2aac.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp/tg_attachments && ls -la 6c9b7665e24c43348008d71bd8f303c6.HEIC && md5sum 6c9b7665e24c43348008d71bd8f303c6.HEIC && exiftool -s -GPSLa; cd /tmp/tg_attachments && exiftool -s -GPSLatitude -GPSLongitude -DateTimeOriginal -Make -Model bf9c8484fc32430fb9ba2ff3a451de4c.HEIC 2>/dev; cd /tmp/tg_attachments && python3 -c "import pillow_heif; print('pillow_heif OK')" 2>/dev/null || echo "no pillow_heif"; which heif-convert ; …(+3 more)
 
