@@ -459,21 +459,25 @@ One open flag carried forward for later (not blocking): the **display_name-as-tr
 ### 🤖 Autopilot
 
 Go received. Before writing code, I need the exact refined-scope detail (it lived in an earlier message that's no longer in live context) and the current code layout. Let me search the transcript/code in parallel.
+[3 tool result(s) compacted: search_transcript, ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Go received. Let me ground the exact wiring by reading the two code regions — `telegram_adapter.py` image routing and `main.py` upload/conversion path.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me recover Gary's refined-scope message (it's the authority for this unit's exact scope) and inspect the remaining wiring points.
+[2 tool result(s) compacted: recall_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see how attachments are downloaded/routed before reaching `_auto_process_attachment` (line 1971 caller) — there may be an earlier allowlist gate that drops `.heic`, plus the refined-scope details in the transcript around that region.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -593,4 +597,30 @@ State re-established: HEAD == `3395c6e` (merged #398), no open work in tree. Rec
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /opt/truesight_autopilot && echo "HEAD: $(git rev-parse --short HEAD)"; git status --porcelain | grep -v "^ M tokenomics\|^ M worktrees/v; cd /opt/truesight_autopilot && echo "=== tests dir ==="; ls tests/ 2>/dev/null | head -30; echo "=== heic fixtures in repo? ==="; find . -in; cd /opt/truesight_autopilot && echo "=== Pillow version + Exif GPS write/read smoke ==="; .venv/bin/python - <<'EOF' from PIL import Image, ; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20182] [Handoff context — this Telegram topic (thread 20182) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go ahead - apply the edits, run the test gate, and open the PR.
+
+
+### 🤖 Autopilot
+
+Go received. Applying the edits now. First, exact pre-edit text for the three remaining regions (telegram_adapter `image_exts` block, main.py HEIC conversion site, `_run_script` def) so hunks are bulletproof:
+
+
+### 🤖 Autopilot
+
+Go received. I need one precise read of the adapter's full image-branch region (there appear to be two OCR call sites — lines 1586 and 1617) and uniqueness checks for my anchors, then I'll apply all edits in one shot:
+
+
+### 🤖 Autopilot
+
+Executing now — applying all code edits to the worktree (qr_scanner helper, main.py upload path, telegram_adapter wiring), then running the full gate on the exact code that ships, then pushing via git_push_changes.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot && echo "=== telegram_adapter 1500-1560 (ext sets + fn start) ==="; sed -n '1500,1560p' app/telegram_adapter.py;; cd /opt/truesight_autopilot && echo "=== main.py 4160-4230 (HEIC conversion + processed_files) ==="; sed -n '4160,4230p' app/main.py; cd /opt/truesight_autopilot && echo "=== telegram_adapter 1555-1660 ==="; sed -n '1555,1660p' app/telegram_adapter.py; echo "=== anchor uniq
 
