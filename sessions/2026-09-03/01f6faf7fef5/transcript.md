@@ -261,21 +261,25 @@ All four files' content confirmed against origin/main (HEAD == origin/main `cc82
 ### 🤖 Autopilot
 
 Gate: compileall ✅, ruff check ✅. Ruff format --check reports 32 files would be reformatted — I need to verify these are **pre-existing** (untouched by my fix) and not my files, since the rule allows pre-existing errors in untouched files. Also need to confirm pytest's own args (it rejected `--timeout`).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both touched files are clean under ruff format (and were clean on HEAD too — the 32-file reformat list is pre-existing, unrelated to my fix). pytest's config uses `addopts` without `--timeout` — my earlier run failed only because of my extra flag. Re-running pytest correctly (unit suite only, per pyproject):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One test failure — `test_defaults_match_sophias_existing_hardcoded_repos`. I need to check whether this is pre-existing on HEAD (unrelated to my fix) or caused by my changes. My fix touched only main.py/qr_scanner.py/requirements/pyproject — let me confirm this test failure exists independent of my change, and understand it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This failure is **environmental and pre-existing** — the test asserts `github_read_pat == ""`, but this box's `.env` sets `GITHUB_READ_PAT` (a live credential), which `Settings()` loads. It's unrelated to my HEIC fix (which touches no config/credential code). Let me verify it fails identically on clean HEAD, to be rigorous.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -291,6 +295,7 @@ Test gate result:
 Also verified: the `github_pat_...` value is a **live credential** that got echoed — I will not reproduce it in any message/commit. (Note to self: that test failure output leaks the PAT; the PR body/commits must not include test output. The failing test is pre-existing and unrelated.)
 
 Now the final step — verify the real-HEIC smoke test of the actual converter function (GPS preservation end-to-end), then commit via `git_push_changes`.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -298,26 +303,31 @@ Now the final step — verify the real-HEIC smoke test of the actual converter f
 Smoke test passes — the real Fazenda Bom Sucesso HEIC converts through the actual `convert_heic_to_jpg` with **GPS (3°5'39.12"S, 52°5'42.65"W) and DateTimeOriginal intact**. 
 
 Final pre-PR checks: confirm exact module-import context for the edit hunk and that no stray references to the old function name remain.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All content verified. Now committing via `git_push_changes` with the 4 relevant files. I'll base on `main` (HEAD == origin/main), exclude the unrelated dirty files (`data/active_tracks.json`, `followups/state.json`, nginx conf, `tokenomics`/`worktrees/vault` submodule pointers, `events_catalog_snapshot.json` — those are runtime/local state, not part of this fix).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool clones fresh from origin/main, so I'll pass the exact content hunks as `edits` (origin/main == HEAD `cc821bd`, verified above).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #398 is open. Now the docs fix — the "(macOS sips)" reference lives in `agentic_ai_context/autopilot/AUTOPILOT_CODE_MODIFICATIONS.md` (a separate repo, nested checkout). Let me pull the exact text and check the other doc hit.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The second file's "sips" hit is likely incidental (a different context — probably an image-processing note elsewhere). Let me check its exact line, then fix the real doc reference in `AUTOPILOT_CODE_MODIFICATIONS.md`.
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -325,11 +335,13 @@ The second file's "sips" hit is likely incidental (a different context — proba
 Those two hits in `RETAILER_TECHNICAL_ONBOARDING.md` are unrelated — they reference `sips` as a generic operator-Mac image-resize tool in the retailer onboarding workflow, not the autopilot HEIC upload path. **Out of scope** for this fix (different context, operator-side tooling).
 
 The real doc fix is the `AUTOPILOT_CODE_MODIFICATIONS.md` pipeline diagram line 179: `1. HEIC → JPEG conversion (macOS sips)`. Let me update it via a docs PR to `agentic_ai_context`.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PRs are open. Let me report to Gary. The docs PR (905) is a one-line doc fix in agentic_ai_context (own-repo gate — governor "go" authorizes self-merge of feature PRs), and the code PR (398) is the main one awaiting his review.
+[1 tool result(s) compacted: pin_note — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -422,4 +434,83 @@ One open flag carried forward for later (not blocking): the **display_name-as-tr
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #398 on truesight_autopilot merged successfully (sha: 3395c6e1d1ebdcfb6af4904efbd2823778c59ffb). Pull Request successfully merged; ✅ PR #905 on agentic_ai_context merged successfully (sha: 26fbbfa8f75334d94e2e6e9f8e0d155093c90fec). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20182] [Handoff context — this Telegram topic (thread 20182) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Both PRs merged successfully:
+
+## ✅ Merged this turn
+
+| PR | Repo | What | Merge SHA |
+|---|---|---|---|
+| **#398** | `truesight_autopilot` | Replace macOS-only `sips` HEIC conversion with cross-platf
+
+
+### 🤖 Autopilot
+
+👍 Go received. Executing the next unit: **GPS extraction + `telegram_adapter.py` image_exts wiring**. First, let me recover your refined-scope message details and check the handoff registry.
+
+
+### 🤖 Autopilot
+
+Go received. Before writing code, I need the exact refined-scope detail (it lived in an earlier message that's no longer in live context) and the current code layout. Let me search the transcript/code in parallel.
+
+
+### 🤖 Autopilot
+
+Go received. Let me ground the exact wiring by reading the two code regions — `telegram_adapter.py` image routing and `main.py` upload/conversion path.
+
+
+### 🤖 Autopilot
+
+Let me recover Gary's refined-scope message (it's the authority for this unit's exact scope) and inspect the remaining wiring points.
+
+
+### 🤖 Autopilot
+
+Let me see how attachments are downloaded/routed before reaching `_auto_process_attachment` (line 1971 caller) — there may be an earlier allowlist gate that drops `.heic`, plus the refined-scope details in the transcript around that region.
+
+
+### 🤖 Autopilot
+
+The refined-scope message from thread 20182 predates my live context. Before building, let me locate it in the local session/transcript store, and inspect the download/ext logic for precise wiring.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20182] status?
+
+
+### 🤖 Autopilot
+
+**Status — mid-execution of the GPS-extraction unit (post-#398 merge).** I've completed the wiring reconnaissance; no code written yet, no PR opened. Here's exactly where it stands:
+
+## What I've confirmed (the wiring map)
+
+| Site | Current state | Gap |
+|---|---|---|
+| `telegram_adapter.py:1526` | `image_exts = {.jpg,.jpeg,.png,.tiff,.tif,.bmp,.webp}` | **`.heic`/`.heif` missing** → HEIC sent via Telegram DM hits the "Unknown file type" branch (`_auto_process_attachment` returns None) — no OCR, no QR scan, no summary |
+| `telegram_adapter.py:1971` | caller passes `local_path` to `_auto_process_attachment` | ext preserved from Telegram `file_path` (line 712), so `.heic` stays `.heic` → never reaches OCR |
+| `main.py:4174-4188` (`/chat/upload`) | HEIC → `convert_heic_to_jpg` (pillow_heif) already wired | Conversion done, JPEG written with GPS EXIF intact — **but GPS never read/extracted** |
+| `tools/qr_scanner.py:162-201` | HEIC already in scanner's `image_exts` + converter exists (PR #398) | scanner path is fine |
+
+## The change set this unit needs (one PR)
+
+1. **`telegram_adapter.py`** — add `.heic`/`.heif` to `image_exts`; in the image branch, if ext is HEIC → convert to JPEG first (`convert_heic_to_jpg`, imported from `qr_scanner`) → then OCR the JPEG (tesseract/pyzbar can't read HEIC natively).
+2. **GPS extraction helper** — small function (e.g. in `qr_scanner.py` or a new `image_meta.py`): read JPEG EXIF GPS IFD via `PIL.ExifTags.GPSTAGS` → decimal lat/lon; call it in the Telegram image path AND the `/chat/upload` path so converted uploads surface GPS (e.g. `3°5'39.12"S, 52°5'42.65"W` from the Fazenda Bom Sucesso originals).
+3. **Test gate** — compileall / ruff / ruff-format / pytest, plus a real-HEIC smoke assertion that GPS survives end-to-end (converter → GPS read-back).
+4. Docs line in the same PR or follow-up as needed.
+
+## One scoping question before I write it
+
+Your original refined-scope message in this thread is outside my live context (recalled the gist from the transcript: *"GPS extraction + telegram_adapter.py image_exts wiring — the actual point of the whole task"*). **What should the extracted GPS feed into?** My assumption, to confirm:
+
+- **A)** Surface GPS in the attachment summary sent to the LLM + session transcript (so Sophia/bots can geolocate cacao-bag/farm photos conversationally), and/or
+- **B)** Auto-fill `Latitude`/`Longitude` on downstream DAO events (sunmint tree/boundary photos already carry those fields per `lookup_event_docs`), and/or
+- **C)** Persist GPS to a machine-usable sidecar (e.g. the agroverse inventory / media sidecar convention).
+
+**RESUME HERE:** next message = implement the PR per your scope answer (A/B/C above) — wiring map is done, `/opt/truesight_autopilot` HEAD == origin/main after #398 merge (`3395c6e1`), test gate + real-HEIC GPS assertion ready to run. If you'd rather I proceed on assumption **A only** (smallest, safe: LLM/transcript surface), say "A" and I'll land it.
 
