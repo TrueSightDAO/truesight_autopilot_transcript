@@ -101,46 +101,55 @@ Found the culprit. The HEIC conversion path calls macOS-only `sips` — which do
 ### 🤖 Autopilot
 
 Both conversion sites call `sips` (macOS-only) — **not installed on this Linux box**. Meanwhile `convert`, `heif-convert`, `exiftool`, and `pillow_heif` are all present. Let me check the git history around the HEIC commits and look for any in-progress fix work.
+[2 tool result(s) compacted: ssh_run, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I've found the state of things. Let me verify the root cause empirically with the HEICs sitting in `/tmp/tg_attachments`, then report.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The picture is nearly complete. Let me check for any prior in-flight PR or context-update entry about this exact fix, plus look at the tests that cover HEIC conversion.
+[3 tool result(s) compacted: search_context, search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have the full picture. Root cause is confirmed in code. Let me verify empirically which Linux-native converter preserves GPS before writing the fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three Linux-native paths preserve GPS. Now let me understand what the pipeline does *after* conversion and where GPS extraction is expected to happen, plus what the tests expect.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `sips` (macOS-only) call is the confirmed broken path, on a Linux box. Let me look at the test expectations and check whether a shared helper module exists before writing the fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check this conversation's earlier history for the actual task context, and look at how attachments/tools handle HEIC today.
+[3 tool result(s) compacted: recall_context, recall_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have the diagnosis nailed down. Let me gather the last pieces of context — recent event-log entries (was this fix started before?), requirements (is `pillow_heif` declared?), and how the e2e test fabricates its HEIC fixture.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the tail of CONTEXT_UPDATES from the local checkout to see the most recent activity around the HEIC/GPS fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -208,21 +217,25 @@ To confirm sequencing: this PR fixes HEIC conversion itself (foundational). The 
 ### 🤖 Autopilot
 
 Executing now. First, let me pull the exact current code at both call sites + dependency files so my edit hunks are precise, and confirm local checkout matches GitHub main for app code.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The working tree at `/opt/truesight_autopilot` already contains **uncommitted local modifications** implementing this exact fix — `sips` is gone, a `pillow_heif`-based `convert_heic_to_jpg` exists in `qr_scanner.py`, and `main.py` imports it. That's the "where I left off" — code written, never committed or PR'd. Let me review the full diff and check the dep/docs state.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The uncommitted diff spans 10 files — but most are unrelated local runtime state (`data/active_tracks.json`, `followups/state.json`, submodule pointers, nginx conf, events_catalog_snapshot). The HEIC fix itself is 4 files. Let me review the actual code hunks to validate before committing only the relevant files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The working-tree diff is exactly the fix I'd write — clean. Now let me verify two things before the test gate: (1) `subprocess` import removal in main.py is safe (not used elsewhere there), and whether qr_scanner.py still needs its `subprocess` import; (2) locate the docs reference to fix (`AUTOPILOT_CODE_MODIFICATIONS.md`).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -230,16 +243,19 @@ The working-tree diff is exactly the fix I'd write — clean. Now let me verify 
 Good — `main.py` removes only the module-level `import subprocess` (its other `subprocess` uses are function-local `import subprocess` at lines 4684/5372 — unaffected). `qr_scanner.py` legitimately keeps `subprocess` (used at 83/117/388).
 
 Now, the docs reference lives in the **`agentic_ai_context`** checkout (not `truesight_autopilot`). Let me look at it and check how that context checkout is wired (it's a separate repo — the doc fix belongs in its own PR).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The working tree already contains the full fix (uncommitted, from the earlier session) — exactly what I'd write. Now I'll (1) pull exact origin/main text for bulletproof edit hunks, and (2) run the full local test gate against the working tree (which already has the fix applied).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All four files' content confirmed against origin/main (HEAD == origin/main `cc821bd`, so the working tree holds the only copy of the fix). Now running the full local test gate against the working tree (which has the fix applied), plus a real-HEIC smoke test of the actual `convert_heic_to_jpg` function as written.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -363,4 +379,47 @@ Say **"go"** and I'll merge #398 + #905, then start the next unit.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd /opt/truesight_autopilot && echo "HEAD:$(git rev-parse --short HEAD) origin/main:$(git rev-parse --short origin/main 2>/dev/null)" && git; cd /opt/truesight_autopilot && echo "=== qr_scanner imports ==="; grep -n "^import \|^from \|getLogger" app/tools/qr_scanner.py | head -15; ; cd /opt/truesight_autopilot && git diff --stat && echo "=== main.py import block ==="; sed -n '60,78p' app/main.py && echo "=== grep sips le; …(+12 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20182] merge them
+
+
+### 🤖 Autopilot
+
+Merging both now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Both PRs merged successfully:
+
+## ✅ Merged this turn
+
+| PR | Repo | What | Merge SHA |
+|---|---|---|---|
+| **#398** | `truesight_autopilot` | Replace macOS-only `sips` HEIC conversion with cross-platform `pillow_heif` (EXIF/GPS-preserving) in `qr_scanner.py` + `main.py`; declare `pillow_heif>=1.0.0` in requirements/pyproject | `3395c6e1` |
+| **#905** | `agentic_ai_context` | Docs: vision-pipeline diagram now says `pillow_heif, cross-platform, preserves GPS EXIF` instead of `(macOS sips)` | `26fbbfa8` |
+
+Test gate passed before push (compileall ✅ · ruff check ✅ · format on touched files ✅ · **129 passed**), plus a real-file smoke test confirming GPS survives conversion (Fazenda Bom Sucesso HEIC → JPEG with `3°5'39.12"S / 52°5'42.65"W / DateTimeOriginal` intact). The one pytest failure (`test_config_own_data_repos`) is pre-existing/environmental (live `GITHUB_READ_PAT` in `.env`) — confirmed identical on clean HEAD, unrelated to this change.
+
+**HEIC conversion itself is now fixed and merged.** No deploy to prod involved (code-repo only; the running service picks it up on next autopilot deploy — I have not deployed).
+
+---
+
+## RESUME HERE → next unit (the actual point of the task)
+
+Per your refined-scope message in thread 20182: **GPS extraction + `telegram_adapter.py` image_exts wiring**. With #398 merged, HEIC uploads now convert to GPS-bearing JPEGs — the next unit is to (1) extract GPS from converted uploads and (2) wire `.heic`/`.heif` into `telegram_adapter.py`'s image-extension handling so HEIC files reach the upload/OCR path at all. Say **"go"** in a fresh turn and I'll execute that unit (same pattern: local test gate → PR → merge on your go).
+
+One open flag carried forward for later (not blocking): the **display_name-as-trust-signal** issue in `telegram_adapter.py:1753-1758` you raised — authorization should be **user_id-only**, never display_name text. Noted; I'll fold it into a follow-up after the GPS unit.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #398 on truesight_autopilot merged successfully (sha: 3395c6e1d1ebdcfb6af4904efbd2823778c59ffb). Pull Request successfully merged; ✅ PR #905 on agentic_ai_context merged successfully (sha: 26fbbfa8f75334d94e2e6e9f8e0d155093c90fec). Pull Request successfully merged
 
