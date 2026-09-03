@@ -1802,16 +1802,19 @@ The event processed but produced a **mangled row** — same artifact visible in 
 ### 🤖 Autopilot
 
 The nested artifacts aren't giving me clean code. Let me read the actual handler file directly from the repo to see the plot-ID logic:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is truncated — let me read the full content from the artifact:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file keeps getting truncated through the artifact chain. Let me read it directly off the repo on the autopilot box:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1819,6 +1822,7 @@ The file keeps getting truncated through the artifact chain. Let me read it dire
 The handler is now clear. **Root cause identified:** the GAS parser regex `- Plot ID:\s*([^\n]+)` — with an **empty Plot ID**, the `\s*` swallowed the newline and captured the *next line* (`- Boundary Type: approx`) as the Plot ID. Same artifact visible in the earlier E2E test rows. The plot row in `SunMint Plots` got created corrupted (`"- Boundary Type: approx"` as Plot ID, empty Farm ID).
 
 Let me pull the exact raw message Edgar rendered into Telegram Chat Logs to confirm field labels before re-submitting:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1991,4 +1995,98 @@ Converging — I'm at the tool-round cap for this turn.
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] [Handoff context — this Telegram topic (thread 20065) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Converging — I'm at the tool-round cap for this turn.
+
+## Status: clean re-submission done ✅ (parser fix queued)
+
+**What I did:**
+1. **Fetched the live `limites-da-fazenda` contract** — confirmed the
+
+
+### 🤖 Autopilot
+
+👍 Go received. Resuming: verify the clean plot row landed, then open the parser-bug fix PR.
+
+
+### 🤖 Autopilot
+
+Clean re-submission **landed**: `SunMint Plots` now shows **PL-002 — "Fazenda Bom Sucesso"** (proposed, approx) ✅ — the well-formed row from my UI-format re-submission. The old mangled row (`- Boundary Type: approx` as Plot ID) is still there from the first attempt.
+
+Now part 2: **fix the parser bug**. Let me read the exact `grab()` implementation in the GAS script to craft the fix:
+
+
+### 🤖 Autopilot
+
+The `grab` function definition is at line 93 but the body is elsewhere (probably a shared helper). Let me find the actual regex and the text source it parses:
+
+
+### 🤖 Autopilot
+
+Found the exact bug — line 94:
+
+```js
+var re = new RegExp('-\\s+' + escapeRe(label) + ':\\s*([^\\n]+)', 'i');
+```
+
+`\s*` after the colon matches **newlines**, so an empty `- Plot ID:` swallows the line break and `([^\n]+)` captures the **next line** (`- Boundary Type: approx`). Let me confirm the repo + test a fix locally:
+
+
+### 🤖 Autopilot
+
+Confirmed the bug at line 94: `\s*` after the colon eats newlines, so an empty `- Plot ID:` lets `([^\n]+)` capture the next line (`- Boundary Type: approx`). Let me prove it with a node repro and validate the fix:
+
+
+### 🤖 Autopilot
+
+My repro message lacked the empty `- Plot ID:` line — need to include it to trigger the bleed. Re-running with the actual mangling case:
+
+
+### 🤖 Autopilot
+
+**Bug reproduced and fix proven.** The OLD regex gives `plotId: "- Boundary Type: approx"` (exactly the corruption in the sheets); the FIXED regex `[ \t]*` gives `plotId: ""` — clean. Now let me apply the fix via a PR to tokenomics:
+
+
+### 🤖 Autopilot
+
+Need to pass the actual file edit. Let me apply the fix with the edits parameter:
+
+
+### 🤖 Autopilot
+
+PR opened. Per your 👍 go and the standing rule that your "go" authorizes merging my own PRs, I'll merge it now:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn complete — both parts done
+
+### 1. Clean plot registration landed
+The UI-format re-submission propagated: **`SunMint Plots` tab now has PL-002 — "Fazenda Bom Sucesso"** (status `proposed`, boundary `approx`) — a well-formed row with an auto-assigned Plot ID. ✅ (The old mangled row — Plot ID `- Boundary Type: approx` from my first manual submission — is still present and will need cleanup, but the authoritative row now exists.)
+
+### 2. Parser bug fixed (reproduced → PR → merged)
+- **Root cause** (`process_farm_boundary_evidence.gs:94`): `grab()` used `'...:\\s*([^\\n]+)'` — the `\s*` matches **newlines**, so an **empty** `- Plot ID:` swallowed the line break and captured the *next* line (`- Boundary Type: approx`) as the value. Same corruption class as the older `- Submission Source: e2e-uat` row.
+- **Proved it**: node repro of the exact corrupting message → OLD regex gives `plotId: "- Boundary Type: approx"`; FIXED regex gives `plotId: ""`.
+- **Fix**: tightened separator to `'[ \t]*'` (spaces/tabs only — never newline).
+- **PR**: [tokenomics #458](https://github.com/TrueSightDAO/tokenomics/pull/458) — `fix(fbe): stop empty-field line-bleed in boundary evidence parser` — **merged** (sha `7f767af`). Empty optional fields now parse cleanly as `""` instead of eating the next attribute line.
+
+---
+**RESUME HERE → next unit (fresh turn):**
+- **Cleanup:** the two mangled rows in `SunMint Plots` (Plot ID `- Boundary Type: approx` + the older `- Submission Source: e2e-uat` row) — decide with Gary whether to invalidate/hand-clean via a governor-approved sheet edit or leave as historical artifacts (post-fix they can't recur).
+- **Then tree registration:** Fazenda Bom Sucesso plot now = **PL-002**. Register the **9 trees** (10 photos → 9 after the 11-second `193eca20`/`1d6a3a4c` duplicate merge) as `[TREE PLANTING EVENT]`s against **PL-002**, with the HEIC photo evidence + GPS. Still pending Gary's confirmations: species (cacao?), planter name, and whether the outlying tree `2c6b2aac` (~48 m outside the corner polygon) belongs to this plot or a neighboring patch.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp/tok_r 2>/dev/null && find . -name "process_farm_boundary_evidence.gs" 2>/dev/null | head -3; echo "---"; grep -n "function grab\|gra; cd /tmp/tok_r && F=google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_farm_boundary_evidence.gs && echo "=; cd /tmp/tok_r && echo "=== remote ===" && git remote -v | head -2 && echo "=== node? ===" && which node || echo "no node" && F=google_app_sc; …(+2 more)
+• `merge pr` → ✅ PR #458 on tokenomics merged successfully (sha: 7f767af9d30cea481a38e84cd5fa6fb89575e726). Pull Request successfully merged
 
