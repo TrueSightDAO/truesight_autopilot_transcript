@@ -770,3 +770,70 @@ Ready when you are — paste away.
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && ls -la 2b3a0fb1e0024d02a68e5af6bead0807.jpg && md5sum 2b3a0fb1e0024d02a68e5af6bead0807.jpg && exiftool -s -GPSLati
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] [Handoff context — this Telegram topic (thread 20065) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Let me know how you plan to go about processing these 14 photos?
+
+
+### 🤖 Autopilot
+
+Let me check the handoff registry and any related plans before answering, since this topic may reference an execution plan.
+
+
+### 🤖 Autopilot
+
+Let me ground my plan in the actual runbooks and check whether this thread maps to a registered plan:
+
+
+### 🤖 Autopilot
+
+Let me verify a few operational details before laying out the plan — the TREE PLANTING EVENT schema, and whether "Bom Sucesso" already exists anywhere in the repos:
+
+
+### 🤖 Autopilot
+
+## Processing plan for the 14 Fazenda Bom Sucesso photos
+
+I checked the handoff registry (thread 20065 isn't a registered plan — this is a live task), the SunMint runbooks, and the plots registry. Here's how I propose to run it. **One blocker sits at the top — coordinates.** Everything else is a documented, precedented flow.
+
+### ⚠️ The blocker (confirmed on all 14 files)
+None of the photos carry GPS — Telegram strips EXIF on image upload (documented in `SUNMINT_PLOTS_REGISTRY.md` §3.1, and I verified live: `exiftool` finds zero GPS tags in every file). So I cannot read coordinates *out of* the photos. The plot's "approx from photo hull" tier is impossible without coords. **I need coordinates from one of:**
+1. **Original files** (email / WhatsApp "Document" / Drive) → I extract GPS myself, or
+2. **Text paste** — 10 tree lat/lng + 4 corner lat/lng (any format), or
+3. **CSV/KML** export from a field app.
+
+### Phase 1 — Inventory (✅ done)
+14 photos catalogued: 10 tree photos (01:58 batch) + 4 corners (303b5b8d / 2ca18c0e / eb5ec7ef / 2b3a0fb1, 02:00–02:01). All logged as evidence; all no-GPS.
+
+### Phase 2 — Validate distinctness + containment (once coords arrive)
+- **Pairwise haversine** over the 10 trees → report min gap; flag any pair < **~3 m** (phone GPS noise floor) as not provably distinct trees.
+- **Polygon from the 4 corners** → verify all 10 trees fall **inside** (point-in-polygon); compute centroid + approx hectares.
+
+### Phase 3 — Register the farm + plot (new: "Fazenda Bom Sucesso" has 0 hits anywhere in context/code)
+- Add farm to **SunMint Farms sheet** tab (owner/family, region, hectares) + plot row (`plot_id`, `farm_id`, centroid, boundary points from the 4 corners, `boundary_authority: approx | gps_walk | car`).
+- I'll need from you: **farm owner/family name**, and whether the corners come from a **walk/CAR** or just photos (authority tier).
+
+### Phase 4 — Anchor 10 trees on-chain
+- 10 × **[TREE PLANTING EVENT]** via `submit_contribution` (canonical: Tree Count, Location incl. lat/lng, Species, Planter, Attached Filename, Submission Source) — matching the live precedent `Edgar_20260902202927_050` (Latitude/Longitude/Species).
+- Upload each compressed photo to `sunmint/images/<plot_id>/` as evidence, reference the filename in the event.
+- **Question:** do these 10 trees map to specific pledge QR codes (e.g. `2024OSCAR_CT_…` FounderHaus pledges, via TREE PLANTING LINK), or are they standalone plot trees?
+
+### Phase 5 — Maps + ledger identity
+- Regenerate `trees/index.geojson` (auto via workflow) + `plots/index.geojson` (mirror `build_tree_geojson.py`) → polygon appears on the impact map; anchor the parcel with a geo-located event.
+- Report back: ledger rows + map links.
+
+### Phase 6 — Open questions before execution
+1. **Coordinates route** — which of the three above?
+2. **Species** — all cacao (e.g. Cacao - Criolla, like the precedent)? Mixed?
+3. **Planter name** for the events (Kirsten? the farmer? you?)
+4. **Pledge linkage** — yes/no?
+5. **Farm owner** for Fazenda Bom Sucesso (family/entity, hectares)?
+
+**Suggested immediate move:** paste the 10 + 4 coordinates as text and answer Q2–Q5 — then I'll execute Phases 2–5 and report back. Want me to also drop this plan into a `plans/*.md` file so it's trackable like other SunMint executions, or run it inline from here?
+
+———
+**Reads this turn:** handoff manifest (no 20065 plan → live task), SUNMINT_PLOTS_REGISTRY.md, SUNMINT_E2E_RUNBOOK.md, lookup_event_docs(TREE PLANTING EVENT), org code search "Bom Sucesso" (0 hits), ADVISORY_SNAPSHOT (live tree-planting precedent).
+
