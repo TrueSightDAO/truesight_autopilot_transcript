@@ -3849,6 +3849,7 @@ The sheet read was truncated — let me read the tail of the artifact to find my
 ### 🤖 Autopilot
 
 Let me read the bottom rows of the ledger where today's canary submissions should be:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3856,16 +3857,24 @@ Let me read the bottom rows of the ledger where today's canary submissions shoul
 Found it — **both Tree 1 canary submissions landed** in the ledger (`Edgar_20260903071844_076` @ 07:18 and `Edgar_20260903072613_078` @ 07:26), but I can see the problem clearly now: the rendered text contains **only `- Location:`** — **no `- Latitude:` / `- Longitude:` lines** (my resubmission attributes didn't carry them through), and **no `- Planting Time:` / `- Photo URL:`**. Compare with the DApp precedent rows, which all carry `- Latitude:`/`- Longitude:`/`- Planting Time:`/`- Photo URL:` — that's what downstream geojson parsing reads from column F.
 
 So the canary proved the exact gap I flagged: **validator satisfied, parser starved.** Let me submit the corrected Tree 1 canary with the full contract (both canonical `Location` AND `Latitude`/`Longitude` + time + photo), then verify it renders correctly:
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Accepted. Now let me verify how this one rendered — whether the `- Latitude:` / `- Longitude:` lines finally appear (checking the ledger tail):
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That row (`Edgar_20260903082307_082`) is **not mine** — it's another submission (Cacao - Criolla, from the SunMint site — likely a test/other thread). My corrected canary hasn't propagated to the ledger yet. Let me wait briefly and re-check the bottom:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3877,16 +3886,19 @@ That row (`Edgar_20260903082307_082`) is **not mine** — it's another submissio
 - Photo column populated, Status date 20260903 ✅
 
 This is the template. Now let me pull the authoritative 10-tree dataset and fire Trees 2–10 in the same format:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tree 1 canary is verified as the correct template. Now I need Tree 10's exact data (cut off in the head read), then I'll fire Trees 2–10:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 10 trees confirmed. Firing **Trees 2–10** in parallel with the verified template (species Cacau - Hybrid, planter Gary Teh, each with canonical Location + parser lines + live photo URL):
+[9 tool result(s) compacted: submit_contribution, submit_contribution, submit_contribution, submit_contribution, submit_contribution, submit_contribution, submit_contribution, submit_contribution, submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4001,4 +4013,91 @@ The geojson builder found **PL-002** (clean ID) but its row carries **no farm_id
 3. **Hand-correct the sheet** (governor-approved, one-off) + trigger rebuild.
 
 The cleanest is option 1 — and it needs the missing `farm_id`/hectares on PL-002, which points at a small gap in the plot-first FBE handler (new-farm rows are created bare; the second submission didn't back-fill). Want me to do the merge + invalidation + rebuild (option 1), and/or file the handler gap (option 2) as a follow-up? I'd need your 👍 for the sheet-level repair since it's machine-owned data.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] Also  all 10 trees within that have been submitted are Cacau - Hybrid 
+
+They are also not appearing on https://truesight.me/sunmint.html
+
+
+### 🤖 Autopilot
+
+Let me diagnose why the trees aren't appearing — checking the trees geojson the map loads, the ledger's lat/lng columns for the 10 rows, and the headers:
+
+
+### 🤖 Autopilot
+
+The trees geojson is the key — **generated_at 2026-09-02T10:19:19Z**, a full day *before* my 10 tree submissions (2026-09-03 ~08:34Z). Let me see my ledger rows' parsed columns (K=Latitude, L=Longitude, M=Status) and how the geojson rebuild gets triggered:
+
+
+### 🤖 Autopilot
+
+The trees geojson is **stale** — `generated_at: 2026-09-02T10:19:19Z`, a full day **before** my 10 submissions (09-03 ~08:34Z). The ledger rows are fine (lat/lng populated, Status NEW) — the map data just hasn't been rebuilt. Let me find the trees-geojson builder + its trigger:
+
+
+### 🤖 Autopilot
+
+Let me read how the trees geojson rebuild is triggered (the link handler mentions it) and find the builder in the sunmint repo:
+
+
+### 🤖 Autopilot
+
+The trees geojson was last generated **2026-09-02T10:19Z — before my 10 submissions** (09-03 ~08:34Z). The rebuild path is a daily GitHub Actions cron (06:00 UTC) + a `tree-index-rebuild` dispatch fired only on LINK/INVALIDATE — **not on new NEW submissions**. So the map data is simply stale. Let me confirm the builder + fire the rebuild dispatch:
+
+
+### 🤖 Autopilot
+
+Found it — `rebuild-tree-index.yml` workflow exists (fires `tree-index-rebuild`). Let me read it and fire the dispatch so the geojson regenerates with my 10 trees:
+
+
+### 🤖 Autopilot
+
+The root cause is confirmed: the trees geojson (`generated_at: 2026-09-02T10:19Z`) **predates** all 10 submissions (09-03 ~08:34Z). The rebuild fires on a daily 06:00 UTC cron or a `tree-index-rebuild` dispatch — which apparently didn't fire for these NEW rows. Let me check the workflow's recent runs to confirm:
+
+
+### 🤖 Autopilot
+
+Confirmed: last `rebuild-tree-index` run was **2026-09-02T10:19Z** — nothing today. My 10 trees (submitted 09-03 ~08:34Z) came in *after* the last run, and the dispatch didn't fire for plain NEW rows. Let me fire the rebuild dispatch now using the box's GitHub credentials (without exposing them):
+
+
+### 🤖 Autopilot
+
+The dispatch 403'd — the token on this box lacks `Actions:write` scope (same limitation the GAS handler itself logs: "check TGM_GITHUB_TOKEN scope"). Let me confirm whether the tree-planting parser is even *supposed* to fire this dispatch for NEW rows (to determine if this is a gap):
+
+
+### 🤖 Autopilot
+
+Root cause confirmed. Let me give you the full diagnosis — I've gathered the evidence.
+
+## Why the 10 trees aren't on sunmint.html
+
+**They're in the ledger (all confirmed `NEW`, lat/lng populated) but the map never rebuilt.** The public page renders `trees/index.geojson`, which was **last generated 2026-09-02T10:19Z** — the day *before* your 10 submissions (09-03 ~08:34Z). Nothing has regenerated it since.
+
+**Evidence chain:**
+| Check | Result |
+|---|---|
+| Ledger rows (SunMint Tree Planting) | ✅ All 10 present, Status `NEW`, lat/lng + species `Cacau - Hybrid` + photo populated |
+| `trees/index.geojson` | ⚠️ `generated_at: 2026-09-02T10:19:19Z` — **stale, 0 of the 10 trees** |
+| Rebuild workflow (`rebuild-tree-index.yml`) | Fires on **daily 06:00 UTC cron** + `tree-index-rebuild` dispatch |
+| Last workflow run | `2026-09-02T10:19Z schedule` — nothing since my submissions |
+| Dispatch trigger | Only fired by the **LINK/reject** handler (`process_tree_planting_link.js`), **not** on plain NEW rows from the log parser |
+
+**Two compounding gaps:**
+1. **The log parser** (`process_tree_planting_telegram_logs.js`, which consumes my submissions) **never fires the `tree-index-rebuild` dispatch** — only the *link* handler does. So NEW trees wait for the daily cron.
+2. I tried firing the dispatch manually but the box's token **403'd** (no `Actions:write` scope) — the same known limitation logged in the GAS code itself.
+
+**Fix options:**
+- **(Fastest) Manual `workflow_dispatch`** — if you can click "Run workflow" on `sunmint` → Actions → Rebuild Tree Index (or provide a token with Actions:write), it regenerates `trees/index.geojson` immediately and the 10 trees appear. I can't trigger it from here (403).
+- **(Root fix) Codify the gap** — the tree-planting log parser should fire `tree-index-rebuild` after processing new NEW rows (mirroring the link handler), so trees appear without waiting for the cron. That's a small GAS change in tokenomics (open PR).
+- The daily 06:00 UTC cron will eventually catch them regardless (safety net).
+
+**Same root cause family as the plot issue:** data is on-chain/ledgered correctly, but the *derived* map index lags because rebuild triggers are incomplete. Worth noting both plots AND trees have this single weak point.
+
+Want me to (a) open the PR fixing the parser to fire the dispatch (root fix), and/or (b) draft the exact "Run workflow" click-path for you, or is the daily-cron wait acceptable? Also happy to file the plot-row merge (PL-002 needs farm_id/hectares back-filled) as the next task once you confirm.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp/tok_r 2>/dev/null || cd ~/dao_protocol 2>/dev/null; find /tmp/tok_r -name "*.gs" 2>/dev/null | xargs grep -ln "trees/index.geojson\|; cd /tmp/tok_r && echo "=== process_tree_planting_link.js trigger logic ===" && sed -n '500,560p' google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SY; cd /tmp && echo "=== sunmint workflows ===" && curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/.github/workflows" 2>/dev; …(+4 more)
 
