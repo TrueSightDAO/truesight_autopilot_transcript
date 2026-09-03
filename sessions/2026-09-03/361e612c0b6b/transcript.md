@@ -1258,11 +1258,13 @@ So the full set is exactly **10 tree HEICs + 4 corner HEICs = 14** — and now *
 ### 🤖 Autopilot
 
 **Major resolution — the full 14-file set is now identified, and every point has GPS.** The 4 "early" HEICs (18:18–18:31) are pixel-identical (mean diff ~2/255) to the 4 corner JPGs you sent — **they're the corner originals, GPS intact.** So: **10 tree HEICs + 4 corner HEICs = 14.** Let me render a map so you can eyeball the geometry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Map rendered. Let me send it to you and summarize the full picture:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1552,4 +1554,90 @@ Answer those and I'll run the registrations end to end.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && echo "HEIC: $(ls *.HEIC 2>/dev/null | wc -l) unique_md5: $(md5sum *.HEIC 2>/dev/null | awk '{print $1}' | sort -u
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] just registered the plot with the 4 corners first
+
+
+### 🤖 Autopilot
+
+Gary registered the plot himself with the 4 corners — let me pull the plot schema and check where that registration landed so I can align the tree events to the same plot ID.
+
+
+### 🤖 Autopilot
+
+Let me verify Gary's plot registration landed — checking the plots registry and the source-of-truth sheet:
+
+
+### 🤖 Autopilot
+
+Gary registered the plot himself — let me find where it landed so the tree events align to the same plot ID. Checking the plot-first model doc and the plots registry:
+
+
+### 🤖 Autopilot
+
+Gary registered the plot himself. Let me find where it landed so I align the tree events to the same plot — checking the source-of-truth sheet and recent events:
+
+
+### 🤖 Autopilot
+
+Let me find the spreadsheet ID and check the plots sheet for Gary's new registration:
+
+
+### 🤖 Autopilot
+
+The plot registration may be further down in that geojson. Let me read the full output:
+
+
+### 🤖 Autopilot
+
+The plots geojson is stale (generated 2026-09-02, only the 5 older plots) — Gary's registration likely landed in the source-of-truth sheet via the GAS handler. Let me check the handler to find the exact spreadsheet + tabs, then look at the sheet:
+
+
+### 🤖 Autopilot
+
+Gary registered the plot via the boundary-evidence flow — the upsert lands in the **'SunMint Plots' tab** of spreadsheet `1qbZZhf-…pyzASQ`. Let me read it to find the new plot row and its Plot ID:
+
+
+### 🤖 Autopilot
+
+The plots sheet shows only the 5 governance plots + test rows — no Bom Sucesso row yet. Gary said he "just registered the plot with the 4 corners" — let me find where that registration landed (tracking tab, recent events, or Edgar ledger):
+
+
+### 🤖 Autopilot
+
+The plots sheet and tracking tab show no Bom Sucesso row yet — only the governance plots + test rows. Let me check where Gary's plot registration actually landed — recent events in the Telegram Chat Logs and the Tree Planting tabs of that spreadsheet:
+
+
+### 🤖 Autopilot
+
+The sheets I read show older data only. Gary's fresh plot registration should be at the *bottom* of one of these tabs (append-only logs). Let me check the tails:
+
+
+### 🤖 Autopilot
+
+Gary says he just registered the plot — let me check whether the sheet updated since my earlier read (the GAS handler may have just written the new row):
+
+
+### 🤖 Autopilot
+
+Let me check a couple more places where the registration could have landed before asking you to point me at it:
+
+
+### 🤖 Autopilot
+
+Checked everywhere I can see and **the Bom Sucesso plot hasn't landed in any of the registries yet**:
+
+- **SunMint Plots sheet** (source of truth) — still only the 5 governance plots + test rows, no Bom Sucesso
+- **Farm Boundary Evidence** tracking tab — no new row
+- **plots/index.geojson** + **sunmint repo** + org-wide code search — nothing
+
+So either it's still propagating (the GAS handler can take a minute or two, and the geojson only rebuilds on the daily cron unless the dispatch fires), or it landed somewhere I'm not looking. Two quick things that would unblock me:
+
+1. **Where did you register it?** (SunMint farmer app, the DApp, the Telegram flow?) 
+2. **What Plot ID did it get?** (e.g. `PL-###` or a name like `BS-…`) — if you can see it on your screen, tell me and I'll pull it up directly.
+
+Once I can see the plot row and its ID, I'll register the trees against **that plot** — which also resolves my open question about the western outlier, since the plot polygon will define what's in/out.
 
