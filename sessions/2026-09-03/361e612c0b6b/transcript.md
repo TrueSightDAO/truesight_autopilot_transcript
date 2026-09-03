@@ -1758,26 +1758,31 @@ The submission reported success but hasn't propagated to the sheets yet. Let me 
 ### 🤖 Autopilot
 
 The submission succeeded but hasn't reached the sheets yet — propagation is likely async (Edgar → listener → Telegram Chat Logs → GAS trigger). Let me confirm the expected path and latency from the runbook:
+[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The submission went through Edgar — now it needs to land in Telegram Chat Logs → GAS webhook → sheets (async, with an hourly backup trigger). Let me check whether my submission appeared in the Telegram Chat Logs tab:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The submission succeeded but propagation is async (Edgar → Telegram Chat Logs → GAS webhook → plots tab). Let me re-check the bottoms of both tabs for the new row:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The event propagated (PROCESSED 02:46:36) but I can see a **parsing problem**: the Plot ID column captured `"- Boundary Type: approx"` — the field labels bled across lines, so the GAS parser mis-read my submission. The plot row in `SunMint Plots` is likewise mangled (`"- Boundary Type: approx"` as Plot ID, empty Farm ID). Let me look at the exact message text Edgar appended, to see how my attributes were rendered:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The raw message is what matters. Let me find my exact row in Telegram Chat Logs by searching for the message ID Edgar returned:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1785,11 +1790,13 @@ The raw message is what matters. Let me find my exact row in Telegram Chat Logs 
 I can see the problem. The event **processed** (02:46:36) but the parser mis-read it — my empty `Plot ID` field caused the greedy regex to swallow the newline and grab the next line (`- Boundary Type: approx`) as the plot ID value, and I left `Area (ha)` empty. The plots row is mangled (`"- Boundary Type: approx"` as Plot ID, empty Farm ID).
 
 Before re-submitting cleanly, let me confirm how the handler treats a blank Plot ID (auto-generate PL-###?) by reading the rest of the GAS script:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The event processed but produced a **mangled row** — same artifact visible in the earlier E2E test rows: when `Plot ID` is left empty, Edgar's renderer runs the fields together and the parser's line-based `grab('Plot ID')` swallows the next label (`- Boundary Type: approx`). The plots-sheet row is likewise corrupted (empty Farm ID, wrong Plot ID). Let me read the rest of the handler to see how it auto-assigns a Plot ID, so I can re-submit cleanly:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1939,4 +1946,49 @@ Want me to go ahead with that re-submission (UI-format, 4 HEICs attached) next t
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -sL "https://sunmint.truesight.me/limites-da-fazenda/" -o limites.html && echo "size: $(wc -c < limites.html)" && grep -n "F; cd /tmp && sed -n '690,790p' limites.html
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] Do 1 first and fix the second after
+
+
+### 🤖 Autopilot
+
+Gary wants the clean re-submit (option 1) now, parser-bug fix after. Let me get the exact field contract and the already-mirrored media URLs in parallel:
+
+
+### 🤖 Autopilot
+
+Confirmed the contract and the already-mirrored media URLs. The earlier parse broke because my submission carried an **empty `- Plot ID:` line** (parser's `\s*` swallowed the next line). The live UI omits Plot ID entirely — so I'll re-submit the same way: **no Plot ID field**, farm name + boundary + media URLs + GPS + area, `Is New Farm: true`.
+
+Submitting the clean boundary event for **Fazenda Bom Sucesso** (no empty Plot ID this time — auto-generates `PL-###`):
+
+
+### 🤖 Autopilot
+
+Clean submission accepted. Let me verify it landed in the plots/tracking sheets (propagation is async — GAS processes Telegram Chat Logs on a schedule):
+
+
+### 🤖 Autopilot
+
+Converging — I'm at the tool-round cap for this turn.
+
+## Status: clean re-submission done ✅ (parser fix queued)
+
+**What I did:**
+1. **Fetched the live `limites-da-fazenda` contract** — confirmed the UI sends **no `- Plot ID:` line at all** (my earlier submission's *empty* Plot ID line is what corrupted the row — the GAS regex `\s*` swallowed the newline and captured `- Boundary Type: approx`).
+2. **Confirmed the 4 corner HEIC originals** are live at `sunmint/images/boundaries/` (raw URLs verified, all 4 files present).
+3. **Submitted the clean `[FARM BOUNDARY EVIDENCE EVENT]`** — `Farm Name: Fazenda Bom Sucesso`, `Boundary Type: approx`, the 4 media URLs, extracted GPS, `Area (ha): 1.016`, `Is New Farm: true`, no empty Plot ID field. Edgar **accepted** (`Contribution submitted successfully`).
+
+**Pending (async):** the GAS processor picks the event up from Telegram Chat Logs on its next run → should append a well-formed row to `Farm Boundary Evidence` and create the plot row in `SunMint Plots` with an auto-generated `PL-###` Plot ID. The tracking tab I read still shows the *old* mangled row (`Edgar_20260903024631_068`, Plot ID = `- Boundary Type: approx`) — the new one hasn't propagated yet.
+
+## RESUME HERE
+- **Context:** Fazenda Bom Sucesso boundary registration via the real `limites-da-fazenda` contract. Earlier manual submission (`Edgar_20260903024631_068`) produced a **mangled row** (empty Plot ID → parser grabbed `- Boundary Type: approx`). Gary approved: re-submit clean **first**, fix parser **second**.
+- **State:** Clean `[FARM BOUNDARY EVIDENCE EVENT]` re-submitted and accepted (no Plot ID field, 4 corner HEIC URLs + GPS + area 1.016 ha, is_new_farm true). 4 HEICs mirrored at `sunmint/images/boundaries/fazenda-bom-sucesso_20260902_{181803,181924,182741,183108}_corner{1..4}_*.HEIC`.
+- **Next action:** (1) re-read `Farm Boundary Evidence` + `SunMint Plots` tabs (spreadsheet `1qbZZhf-…`) to confirm the clean row landed with auto `PL-###`; (2) then open the **parser-bug fix PR** in tokenomics — make `grab()` in `process_farm_boundary_evidence.gs` treat empty/absent fields without line-bleed (e.g. require `[^\n]*` bounded by `\n` or next `- ` label), so an empty optional field can never capture the next label; (3) after plot is clean, register the **9 trees** against it.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
