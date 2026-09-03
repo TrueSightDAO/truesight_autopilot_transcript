@@ -72,3 +72,45 @@ One thing to confirm: 10 photos of 10 *different* trees, or multiple photos per 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → ls -la /tmp/tg_attachments/925b56c8666c4541870b6300fbb61688.HEIC && file /tmp/tg_attachments/925b56c8666c4541870b6300fbb61688.HEIC && which ; cd /tmp/tg_attachments && exiftool -G1 -s 925b56c8666c4541870b6300fbb61688.HEIC | head -60; echo '---HEIF-INFO---'; heif-info 925b56c8666c45; cd /tmp/tg_attachments && exiftool -G1 -s 925b56c8666c4541870b6300fbb61688.HEIC | grep -iE 'gps|lat|lon|alt|position' ; echo '---RAW---'; ex
 
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/9e4ce38022bc49dca263fc1a8884fc37.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+Second photo processed. Recording both in a running manifest so I can cluster once the batch is in:
+
+
+### 🤖 Autopilot
+
+**Photo #2 processed** — `9e4ce38022bc49dca263fc1a8884fc37.HEIC`
+
+| Field | Value |
+|---|---|
+| Device | iPhone 12 Pro Max |
+| Captured | 2026-09-02 19:31:12 (UTC−03:00) |
+| Latitude | **3.094528° S** |
+| Longitude | **52.095314° W** |
+| Altitude | 136.1 m ASL |
+| GPS accuracy | ±6.4 m |
+| Heading | 235.4° (SW) |
+
+**Pairwise check vs photo #1:**
+- **Distance: ~39 m apart** → almost certainly two *different* trees (well beyond GPS error of ±3.5–6.4 m)
+- **Time gap: ~10 min** → separate visit/position, not a burst of the same tree
+
+So far both photos look like distinct trees. Running manifest saved at `/tmp/tg_attachments/tree_photos_manifest.json`; I'll cluster everything once the full batch arrives.
+
+**Send the rest of the HEIC photos (ideally in one message) and I'll:**
+1. Extract lat/lon + timestamps from all of them
+2. Cluster by GPS proximity (~≤8–10 m apart = likely same tree) and near-identical timestamps
+3. Pick one distinct representative per tree → 10 photos for 10 trees
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/tg_attachments && exiftool -c '%.6f' -DateTimeOriginal -OffsetTimeOriginal -GPSLatitude -GPSLongitude -GPSAltitude -GPSPosition -GPS; cd /tmp/tg_attachments && cat > tree_photos_manifest.json << 'EOF' { "job": "10 trees photo dedup - Gary Teh", "site_hint": "Altamira, Para,
+
