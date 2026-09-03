@@ -4328,51 +4328,61 @@ Want me to proceed with 2 + 3 (PR for parser dedupe, then the plot repair + rebu
 ### 🤖 Autopilot
 
 Go received — two tasks: (1) dedupe the trees, (2) fix the missing plot pill. Let me first understand exactly why the plot pill is missing (page logic) and the current plots geojson state, plus scope the dedupe approach:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the whole picture. Let me read the plot pill-rendering logic (lines 628–700) to know *exactly* why PL-002's pill is missing — the page may filter by geometry or farm:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plot pill logic is now crystal clear — line 640: `if (!geom || geom.type !== 'Polygon') return;` — **PL-002 has `geometry: null`, so it's skipped: no polygon AND no pill/chip.** The pill only renders for rows the builder could give a polygon. Now let me scope the dedupe — where duplicates originate (ledger rows vs builder):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Quoting error. Let me retry the tree listing with a simpler command:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the builders. Let me read `build_tree_geojson.py` (to see where dupes come from) and `build_plots_geojson.py` (to see why PL-002 got null geometry despite the FBE GPS):
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the tree loader (dupe origin) and the plots geometry fallback logic in detail:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me confirm where the duplicate rows actually live (ledger vs builder) and check the parser's dedupe logic:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Go on dedupe + plot-pill fix. Let me confirm the duplication pattern in the ledger and where PL-002's corner GPS lives, plus the plots-rebuild workflow — in parallel:
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two clear threads: (A) dedupe the trees, (B) make PL-002 render as a polygon + pill. The plots builder reads only the Plots tab, but there's an `extract_plot_gps.py` script — likely the piece that fills coordinates from FBE evidence. Let me check it and the plots-rebuild workflow:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two threads to land: **(A) tree dedupe** and **(B) the PL-002 plot pill**. The dedupe root fix is in the geojson builder (`sunmint/scripts/build_tree_geojson.py`) — dedupe by `tree_id` so re-scanned submission rows can't multiply markers. Let me read `main()` to craft the precise edit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4380,6 +4390,7 @@ Two threads to land: **(A) tree dedupe** and **(B) the PL-002 plot pill**. The d
 I'm at the tool-round cap — converging. I have both root causes fully mapped. Let me land the **dedupe fix** (PR) now and resume the plot fix next turn.
 
 **Dedupe fix** in `sunmint/scripts/build_tree_geojson.py`: dedupe by `tree_id`, preferring the copy with coordinates (kills the 2–3× stacked markers regardless of where the ledger dupes originated):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4418,16 +4429,19 @@ Converging — I'm at the tool-round cap. Status:
 ### 🤖 Autopilot
 
 Gary wants Fix 2 (the plot pill) now. The sanctioned path is `extract_plot_gps.py` — it reads GPS from the corner media, builds the hull polygon, and upserts the PL-002 row. Let me read the full script's CLI/env requirements and check the box's credentials + the PL-002 row state in parallel:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The script is clear — upsert via hull of GPS points, with a `--dry-run`. I need (1) the `get_creds()` requirement (top of file) and (2) the exact on-disk corner HEICs (only those 4 — passing all 59 files would include tree points and inflate the hull). Let me find both:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 4 unique corner captures found (dupes by md5: 18:18 has 2 copies, 18:19 has 2, 18:27 has 3, 18:31 has 2). I need `SA_NAME` (the creds file prefix) — likely the `edgar_dapp_listener` or a sunmint SA. Let me check the script's SA_NAME + what SA files exist in the creds dir:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4543,4 +4557,90 @@ Let me do a final confirmation that main's HEAD == 7842c235 (so the committed fi
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×17 → cd /tmp && sed -n '130,403p' extract_plot_gps.py; cd /opt/truesight_autopilot && grep -oE '^[A-Z_]+=' .env | sort | grep -iE 'GOOGLE|SERVICE|SHEET|GSPREAD|ACCOUNT|DA0|DAO' ; echo "=== SA jso; cd /tmp && sed -n '1,50p' extract_plot_gps.py | grep -nE "get_creds|CREDS|json|env|SHEET_ID|def " ; echo "=== SHEET_ID ==="; grep -n "SHEET_; …(+13 more)
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] just do direct edit
+
+
+### 🤖 Autopilot
+
+Direct-edit authorization received for `sunmint`. Two code fixes to land: (1) tree dedupe in `build_tree_geojson.py`, (2) the off-by-one in `extract_plot_gps.py`. Let me fetch both current files:
+
+
+### 🤖 Autopilot
+
+I have `build_tree_geojson.py` fully. For `extract_plot_gps.py` the update branch was truncated — let me read the artifact tail to see every `set_cell` call in the update path (so my off-by-one fix is complete):
+
+
+### 🤖 Autopilot
+
+I have the full picture of the off-by-one now. Let me read the last chunk of the update branch to see all `set_cell` calls before I edit:
+
+
+### 🤖 Autopilot
+
+I have the two files on disk. Let me extract the exact update-branch lines of `extract_plot_gps.py` (the off-by-one) so I can build precise edits:
+
+
+### 🤖 Autopilot
+
+Both files are on disk. `sunmint` is an API-only data repo, so the **sanctioned write path is `upload_file_to_github`** (Contents API, direct main) — which matches Gary's "just do direct edit" authorization. Let me see the exact update-branch loop lines of epg.py to craft the off-by-one fix:
+
+
+### 🤖 Autopilot
+
+I can see the bug now. Let me get the exact remaining update-loop lines so my edit is precise:
+
+
+### 🤖 Autopilot
+
+I have both files on disk in full (`/tmp/btg.py`, `/tmp/epg.py`). Root causes confirmed:
+
+1. **`extract_plot_gps.py` off-by-one**: `find_row` returns a 0-based data index `r` (data row 0 = sheet row 2), but the update branch calls `set_cell(r, ...)` which internally writes `r + 1` → sheet row 13 for PL-002 (should be 14). Fix: pass `r + 1`.
+2. **`build_tree_geojson.py` dedupe**: emits one Feature per ledger row; multiple rows share the same tree id (async re-scans). Fix: dedupe by id, preferring rows with coordinates.
+
+Applying both fixes locally, syntax-checking, then uploading:
+
+
+### 🤖 Autopilot
+
+Both fixes applied and compile-clean. Now uploading both patched scripts to `sunmint` (direct edit, per Gary's authorization — `sunmint` is an API-only data repo, so Contents-API write is the sanctioned path):
+
+
+### 🤖 Autopilot
+
+Both fixes are live in `sunmint` main. Now regenerate the tree index with the dedupe fix — firing the `tree-index-rebuild` dispatch:
+
+
+### 🤖 Autopilot
+
+**✅ Dedupe fix verified — tree index is clean.** The rebuild committed (`37634534`, generated_at 09:13:16Z):
+
+| Metric | Before | After |
+|---|---|---|
+| Features | 31 | **17** |
+| Duplicate ids | 14 extra (2–3× per tree) | **NONE** |
+| Unique trees | 17 | 17 |
+| Species | — | Cacau - Hybrid ✅ present |
+
+Each of your 10 Cacau - Hybrid trees now appears **exactly once** (17 unique total incl. the earlier Criolla/Bougainvillea trees). The stacked duplicate markers are gone.
+
+**Both direct edits are complete and live:**
+1. `scripts/build_tree_geojson.py` — dedupe by tree id, prefer rows with coordinates (commit `64ae6921`)
+2. `scripts/extract_plot_gps.py` — off-by-one fix in the update branch (commit `4c074bb2`)
+
+**Summary of what's now working:**
+- ✅ **PL-002 (Fazenda Bom Sucesso) polygon** on the map (fixed earlier via sheet repair + rebuild — commit `7842c235`)
+- ✅ **10 Cacau - Hybrid trees** each rendered once (dedupe fix + rebuild — commit `37634534`)
+- ✅ Both scripts corrected at the source so future submissions parse/write cleanly
+
+**Still open (your call):** the earlier stale canary rows (`…_076`, `…_078` — pre-format submissions that lack Latitude/Longitude lines, so they have no geometry) and the Criolla test row (`…_082`). They don't render on the map (no geometry) but sit in the ledger. I can invalidate them via the PLOT INVALIDATION-style flow if you want the ledger pristine — but tree rows use a different status column, so it'd be a targeted ledger edit. Want me to clean those up, or leave them as audit history?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/build_tree_geojson.py" -o btg.py && echo "=== build_; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/scripts/extract_plot_gps.py" -o epg.py && echo "=== extract_; cd /tmp && echo "=== epg.py update branch (lines 250-330) ===" && sed -n '250,330p' epg.py; echo "=== btg.py main() feature loop (lines 155-; …(+4 more)
 
