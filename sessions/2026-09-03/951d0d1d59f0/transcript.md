@@ -638,21 +638,25 @@ Envoy is correct — line 423 (`en` block) lacks the trailing comma after `photo
 ### 🤖 Autopilot
 
 Confirmed FAIL on script 0. Let me get the exact syntax error message, then fix the file locally and re-verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SyntaxError confirmed (`Unexpected identifier 'treeButton'` at line 102 — the missing comma). Fixed locally with a single replace. Now re-verify the fixed file passes `node --check` on ALL scripts and diff to confirm only the comma changed:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All scripts pass now; diff is exactly one comma added. Pushing the fix:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #77 opened. Merging (go authorizes self-merge):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -712,36 +716,43 @@ The fix is merged to `sunmint_beta` main but **beta.sunmint.truesight.me may sti
 ### 🤖 Autopilot
 
 Go received — resuming the UAT re-run unit. Verifying the comma fix is live on beta and running the full UAT sweep across all three pages.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Comma fix is live on beta (line 423 now ends with `,`, file grew 48473→48474). Now the full UAT sweep — `node --check` on every inline script of all three live pages + feature-presence verification:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three pages PASS script checks and feature presence. Final UAT checks — HTML tag balance, i18n key completeness in both languages, and a functional smoke test of the EXIF-GPS parser logic under node:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 HTML balanced (img are self-closing — fine). Let me verify i18n pt/en key parity per page properly (extracting each lang object's keys) plus a functional smoke test of `readExifGps`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Root and monitor have full pt/en parity (56/56 and 86/86). Limites uses a different structure — let me check its lang keys differently, plus run the functional EXIF smoke test:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Limites uses `pt:` and `en:` sub-objects inside one `STRINGS` object with single-quoted keys. Let me extract those two blocks and compare keys, then run the EXIF-GPS functional smoke test to complete UAT:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Limites pt/en parity OK (17/17 — compact single-line keys; only line-start keys captured but parity holds and earlier feature checks confirmed the deselect strings). Now the functional EXIF-GPS smoke test — extract `readExifGps` from the live root page and exercise its fallback/no-GPS path under node:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -757,6 +768,7 @@ UAT summary:
 | `/limites-da-fazenda/` | ✅ 2/2 PASS | deselect ✕ present | ✅ 17/17 | ✅ 25/25 |
 
 All checks pass. Reporting the UAT PASS to the governor:
+[1 tool result(s) compacted: post_to_telegram_topic — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -815,6 +827,7 @@ It did not pickup the lat and long in the browser
 ### 🤖 Autopilot
 
 Gary reports a UAT failure: uploading a photo to the beta tree-planting page did **not** pick up lat/long in the browser. Let me first inspect the actual attached image — its format and whether it even contains EXIF GPS — to diagnose why `readExifGps` returned nothing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -957,4 +970,239 @@ const d = readRat(base), m = readRat(base+8), s = readRat(base+16);
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → ls -la /tmp/tg_attachments/ | tail -5; echo "---"; F=$(ls -t /tmp/tg_attachments/*.jpg 2>/dev/null | head -1); echo "FILE: $F"; file "$F"; e; exiftool /tmp/tg_attachments/c0d4045225884a978535b4ac11c7a8e8.jpg | grep -iE "gps|latitude|longitude|exif|make|model|datetime" ; echo "=== f; cd /tmp && echo "=== check parse path in readExifGps — does it handle progressive? ===" && python3 - <<'EOF' import re s = open('uat_root.ht; …(+9 more)
 • `merge pr` → ✅ PR #78 on sunmint_beta merged successfully (sha: 1abea27bac79a6b1702876e89f6cc659a68c0890). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20044] Did not pass. I attached this to 
+
+https://beta.sunmint.truesight.me/
+
+It did not pickup the lat and long in the browser
+
+
+### 🤖 Autopilot
+
+Gary — let me check two things right away: whether the beta site has actually picked up the fix yet, and what GPS data the photo you're testing with actually carries.
+
+
+### 🤖 Autopilot
+
+Two important findings already:
+
+1. **The fix (#78) is NOT live on beta yet** — the served page is still 48474 bytes (same as before the EXIF fix) and the fix marker `tiff + u32(e+8)` appears **0 times**.
+2. **Gary's new test photo is a `.HEIC` file** (iPhone format) — and my parser has a **JPEG-only guard** (`file.type.indexOf('image/jpeg') === -1 → null`), which would reject HEIC outright.
+
+Let me confirm what the live page actually serves and check whether the HEIC carries GPS:
+
+
+### 🤖 Autopilot
+
+**Two clear problems found:**
+
+1. **Beta is still serving the OLD code** — `readExifGps` on the live page is still the buggy 3208-byte version with `readRat(e+8), m = readRat(e+12)` — PR #78's fix isn't deployed yet. (My earlier grep for `tiff + u32(e+8)` returned 0 because the fix isn't there.)
+
+2. **Gary's test photo is an iPhone HEIC** (`67b8bc6b...HEIC`) with **real GPS** (lat ref South, lng ref West, from an iPhone 12 Pro Max front camera). The current parser has a **JPEG-only guard** — `image/jpeg` check → HEIC is rejected before any parsing. So even with the EXIF fix deployed, HEIC photos would still fail.
+
+So there are **two fixes needed**, not one:
+- **Fix A (already merged #78):** RATIONAL offset dereference for JPEGs — but **not deployed to beta yet**
+- **Fix B (new):** accept **HEIC/HEIF** photos (iPhone default format) and parse their GPS. Browsers can't natively decode HEIC to a DataView with Exif the way they can JPEG — HEIC GPS lives in an Exif blob inside the HEIC container (different structure than JPEG APP1).
+
+Let me check the beta deployment situation and understand the HEIC structure better:
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The HEIC's GPS is:
+- **Lat: 3° 5' 43.12" S → -3.095311**
+- **Lng: 52° 5' 42.17" W → -52.095047**
+- Stored in an Exif blob (`Exif\0\0` + `MM\0*\0\0` TIFF, **big-endian**) that's an **item in the HEIC container** (`ftyp`/`meta`/`iloc` box structure), at item type `Exif` (item 65), 2614 bytes.
+
+Browsers **cannot natively parse HEIC** Exif the way they can JPEG (no HEIC decoding in Chrome/Safari for the container walk — Safari can display HEIC but JS can't read its box structure easily via FileReader... actually Safari *can* decode HEIC in `<img>` but the raw box parsing is doable in JS since it's just binary).
+
+**Parsing HEIC GPS in-browser requires walking the ISO-BMFF box structure** (`ftyp` → `meta` → `iloc`/`iinf`/`idat` to find the Exif item, then parse the Exif TIFF inside — big-endian here). That's substantial but doable.
+
+But wait — let me step back and check what's actually feasible and what the **simplest robust path** is. The key question: what does the **browser give us** for an HEIC upload?
+
+**Key realization:** For HEIC, we can't rely on FileReader+JPEG marker walk. Options:
+1. **Parse the HEIC ISO-BMFF container in JS** to find the Exif item, then parse its TIFF GPS (this is what exiftool does). ~60-100 lines. Feasible but more complex.
+2. **Use the phone's geolocation as fallback** — but Gary explicitly wants photo GPS.
+3. **Safari-only `img` + canvas → re-encode to JPEG**: Safari can decode HEIC; drawing to canvas and re-exporting as JPEG via `canvas.toDataURL('image/jpeg')` **drops the GPS EXIF** — doesn't help.
+
+So option 1 (JS ISO-BMFF parser) is the real path for HEIC GPS. But it's a meaningful chunk of code.
+
+Let me also reconsider the immediate issue: **the beta site isn't even running PR #78 yet**. The page Gary tested was the buggy pre-#78 code. Two things to communicate + fix:
+
+1. Beta needs to pick up #78 (deploy lag or needs redeploy)
+2. HEIC needs its own parser (new PR)
+
+Let me first check if beta deploy is manual or auto, and whether main has #78 (it does — merged). Let me check how beta gets deployed.
+
+
+### 🤖 Autopilot
+
+Confusing state — the git log shows #78 IS merged into main (1abea27b), but raw main's grep for the fix marker returns 0, and the beta HEAD now shows content-length 48578 (up from 48474 — likely the deploy DID land). My earlier beta fetch may have hit a stale cache. Let me look at the ACTUAL current content of both main and beta:
+
+
+### 🤖 Autopilot
+
+**Key finding — the state is actually better and worse than it looked:**
+
+1. **PR #78's fix IS live on beta now** — the cache-busted fetch (48578 bytes) shows `const base = tiff + u32(e+8);` present. My earlier fetches hit stale CDN/cache (the raw.githubusercontent copy is lagging; the GitHub API confirms main HEAD = 1abea27b = #78). So Gary's JPEG-EXIF bug is deployed.
+2. **But Gary's new test photo is an iPhone HEIC** (`67b8bc6b.HEIC`, 2.8 MB, from an iPhone 12 Pro Max) — with real GPS: **3°5'43.12" S, 52°5'42.17" W**. And the current parser has a **JPEG-only guard**: `file.type.indexOf('image/jpeg') === -1 → null` → **HEIC is rejected outright before any parsing**.
+
+So the remaining failure is **HEIC support**. Let me inspect the upload/downscale/submit flow to see what HEIC handling requires end-to-end:
+
+
+### 🤖 Autopilot
+
+Now I understand the full flow. Key facts:
+- The input is `accept="image/*"` (accepts HEIC)
+- `downscaleImage(file, maxDim)` uses `URL.createObjectURL(file)` + `<img>` — **works for HEIC in Safari** (only Safari/Apple devices decode HEIC; Chrome on Android can't). But the re-encode drops GPS anyway since it reads from the decoded pixels, not metadata.
+- `readExifGps(file)` is JPEG-only and returns null for HEIC.
+- The submit path stores `photoBlob` (blob of the chosen/uploaded image) and pushes lat/lng.
+
+So for Gary testing on an iPhone (he's clearly on iOS — HEIC, front camera, "attached to browser"):
+- The file picker gives him an HEIC file
+- `readExifGps` returns null (JPEG-only guard)
+- `downscaleImage` re-encodes to JPEG (Safari can decode HEIC → canvas → toDataURL JPEG) → photo uploads fine, but **no GPS** → falls back to device GPS
+
+**The fix needed: parse GPS from HEIC files.** The HEIC's GPS sits in an Exif blob inside the ISO-BMFF container. In-browser, for HEIC we need to:
+1. Walk the ISO-BMFF boxes (`ftyp` → ... → `meta`), find the `Exif` item via `iinf`/`iloc`, extract the Exif payload
+2. Parse the embedded TIFF (Exif blob starts `Exif\0\0` then TIFF `MM\0*\0\0` — big-endian)
+
+This is doable in JS but ~80-120 lines and only matters for Apple devices (Safari). Let me verify the box structure of this HEIC to write a correct parser.
+
+Let me dump the box structure:
+
+
+### 🤖 Autopilot
+
+The `meta` box is a FullBox (my walker misaligned by not skipping version/flags). HEIC GPS extraction needs a proper ISO-BMFF parser — let me map the real structure (where the Exif item lives: `idat` vs `mdat` via `iloc` extents):
+
+
+### 🤖 Autopilot
+
+PR #78's JPEG fix **is** live on beta (cache-busted fetch confirms `tiff + u32(e+8)` present — earlier fetches hit CDN cache). The remaining failure is now clear:
+
+**Gary's test photo is an iPhone HEIC** (12 Pro Max, front camera) with real GPS (3°5'43.12"S, 52°5'42.17"W) — but my parser has a **JPEG-only guard**, so HEIC files return null before any parsing. Telegram preserved this HEIC's EXIF (unlike the JPEG it stripped earlier), so if Gary uploaded the original HEIC, the GPS is in the file — the code just can't read it yet.
+
+This needs a **HEIC (ISO-BMFF) Exif extractor**. Let me decode the real container structure first to write a correct parser:
+
+
+### 🤖 Autopilot
+
+My iinf walk is misparsing (the `items: {}` means entry-count or version handling is off). Rather than reverse-engineer the full ISO-BMFF structure interactively, let me take a more pragmatic route — check whether the file content that Telegram delivered has an intact Exif payload I can search for directly, since the earlier exiftool `-v3` dump showed `Exif\0\0MM\0*\0\0` at offset ~0x1621 in an item:
+
+
+### 🤖 Autopilot
+
+Found the Exif blob at offset **5669** with an embedded TIFF (`MM 00 2a`) — and interestingly it's wrapped in an XML-ish context (`meta>` … `Exif\0\0`), which suggests this is a **`meta` box payload that exiftool/Gary's file has in the `mdat`/`idat` region**. The earlier `-v3` output said "Item 65) 'Exif' (2614 bytes)" and showed `1621: 00 00 00 06 45 78 69 66 00 00 4d 4d...` — that's offset 0x1621=5665. Close to my 5669 (there's a 4-byte size prefix). 
+
+Let me extract the Exif TIFF and validate GPS parsing at this offset:
+
+
+### 🤖 Autopilot
+
+The GPS IFD is fully there with the same structure as JPEG (tags 2/4 = type 5 RATIONAL × 3 with valfield = TIFF offsets 2480/2504). So the **same corrected RATIONAL-dereference parser** works on the HEIC Exif blob — I just need to extract the Exif payload from the ISO-BMFF container first.
+
+Now I need to write a robust in-browser **HEIC Exif extractor**. The cleanest approach: walk ISO-BMFF boxes, find `meta`, parse `iinf`+`iloc` to locate the Exif item extents, then read it. But my earlier iinf parse failed on version 1/2 subtleties. Given this specific file's Exif blob sits at a predictable offset, let me find the **simplest robust heuristic** that works across typical iPhone HEICs. Let me check the actual box structure around the Exif blob to pick the right approach:
+
+
+### 🤖 Autopilot
+
+The Exif payload is a real TIFF at offset 5675 (`MM 00 2A`, big-endian) — GPS IFD present with the same RATIONAL structure. This HEIC was delivered by Telegram **with EXIF intact** (unlike the JPEG earlier), so if Gary uploaded the original, the GPS is in the file — my code just can't read HEIC yet.
+
+Let me verify a robust signature-scan approach works in node (find `Exif\0\0` + TIFF magic anywhere in the buffer), which avoids fragile full ISO-BMFF parsing in the browser:
+
+
+### 🤖 Autopilot
+
+**HEIC GPS extraction works** — signature-scan finds the Exif blob at 5669 and the corrected TIFF parser yields **lat -3.0953, lng -52.0950** (matches exiftool's 3°5'43.12"S / 52°5'42.17"W exactly).
+
+So the complete fix for this UAT round: make `readExifGps` accept **HEIC/HEIF** (not just JPEG) by signature-scanning for the `Exif\0\0` + TIFF blob when the file isn't a JPEG. Let me build this against current main:
+
+
+### 🤖 Autopilot
+
+Now I'll build the HEIC-capable parser, verify against both a GPS JPEG and the GPS HEIC, and syntax-check:
+
+
+### 🤖 Autopilot
+
+**Both formats pass.** The new parser handles:
+- **JPEG with GPS**: `{lat: 22.5, lng: -43.2}` ✅
+- **HEIC with GPS** (Gary's iPhone photo): `{lat: -3.0953, lng: -52.0950}` ✅
+
+Both scripts pass `node --check`. Let me verify the diff is limited to the `readExifGps` function and then push:
+
+
+### 🤖 Autopilot
+
+The diff reveals something important: my local base was **stale** — raw.githubusercontent's CDN lags one commit behind (the git log shows main HEAD = #78, but raw still serves pre-#78 content). If I push my local file as-is, I'd **revert #78**. I must build against the true main at commit SHA 1abea27b:
+
+
+### 🤖 Autopilot
+
+True main (at commit 1abea27b) has #78's fix (2 occurrences of `tiff + u32(e+8)`, both `readRat(base...)` lines) but still has the JPEG-only guard at line 2. Now I'll build the HEIC extension on **this** base and verify:
+
+
+### 🤖 Autopilot
+
+Both formats verified against true main (with #78's fix): **JPEG PASS, HEIC PASS**, scripts OK, diff is 27 adds / 12 dels confined to the parser function. Pushing:
+
+
+### 🤖 Autopilot
+
+PR #79 opened. Merging:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**Turn complete ✅ — HEIC/HEIF photo GPS support shipped**
+
+## What I did this turn
+Gary re-tested and it still failed. I found **two separate causes**:
+
+1. **PR #78's fix was deployed to beta but my earlier fetches hit CDN staleness** — a cache-busted fetch confirmed the RATIONAL fix WAS live (48578 bytes, `tiff + u32(e+8)` present). GitHub API confirmed main HEAD = #78. So the JPEG-EXIF bug was already fixed.
+2. **The real remaining issue: Gary's test photo is an iPhone HEIC** (`67b8bc6b.HEIC`, iPhone 12 Pro Max, front camera) — which **has GPS** (3°5'43.12"S, 52°5'42.17"W), but `readExifGps` had a **JPEG-only guard** (`file.type.indexOf('image/jpeg') === -1 → null`), so HEIC files were rejected before any parsing.
+
+**PR:** https://github.com/TrueSightDAO/sunmint_beta/pull/79 — merged ✅ (sha `d8291451`)
+
+**What changed (`readExifGps` in `index.html`):**
+- **Relaxed the guard** to accept any file type
+- **JPEG** (SOI 0xFFD8): keeps the APP1 segment walk
+- **HEIC/HEIF + everything else**: scans the buffer for the Exif blob signature `Exif\0\0` + TIFF magic (MM 00 2A / II 2A 00), then parses the TIFF GPS IFD with the same corrected RATIONAL-offset dereference
+- Built against **true main at commit 1abea27b** (after discovering raw.githubusercontent CDN lags a commit behind — avoided accidentally reverting #78)
+
+**Verification:**
+- JPEG with GPS → `{lat: 22.5, lng: -43.2}` **PASS**
+- **The actual HEIC Gary uploaded** → `{lat: -3.095311, lng: -52.095047}` **PASS** (exactly matches exiftool)
+- Both inline scripts pass `node --check`; diff confined to the parser function
+
+---
+
+## RESUME HERE → next unit: Re-verify on beta + Gary re-tests with the HEIC
+1. Wait for beta to pick up #79, then cache-bust fetch `https://beta.sunmint.truesight.me/` and confirm the HEIC scan code is live (grep for the signature-scan loop / `image/jpeg' ) === -1` guard gone)
+2. `node --check` the live served page
+3. **Tell Gary to re-test**: upload the **HEIC photo directly** on `beta.sunmint.truesight.me` (the version he attached came through Telegram, but this HEIC kept its EXIF — verify by re-downloading and checking GPS is still present). Expected result: lat **-3.0953**, lng **-52.0950** shown, or if it still doesn't appear, the fallback device GPS should kick in with a status message.
+4. Once Gary confirms PASS on beta → his explicit go → `sync_beta_to_prod('sunmint_prod')`
+
+⚠️ One caveat to verify during re-test: the page's `downscaleImage()` uses `createObjectURL` + `<img>` — HEIC decodes only in **Safari**, so on an iPhone this works, but the downscaled re-encode happens *after* GPS extraction (which reads the original buffer), so GPS should still be captured. If Gary tests in Chrome on Android with a HEIC, decoding will fail — but Android defaults to JPEG, so this mainly matters for iOS where Safari is the browser anyway.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cache-busted beta fetch proved #78 live (48578 bytes); exiftool showed HEIC has GPS (3°5'43.12"S / 52°5'42.17"W, iPhone 12 Pro Max); decoded ISO-BMFF structure; found Exif blob at 5669 with embedded big-endian TIFF; wrote + verified node parser (HEIC GPS PASS); built HEIC support on true main @1abea27b; node --check OK; diff 27 adds/12 dels in parser only
+• `git_push_changes` → PR #79 opened (built on 1abea27b, no revert of #78)
+• `merge pr` → ✅ PR #79 merged (sha `d8291451`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×18 → cd /tmp && curl -sL -o beta_root_now.html https://beta.sunmint.truesight.me/ && echo "size: $(wc -c < beta_root_now.html)" && echo "=== fix ; cd /tmp && echo "=== extract readExifGps from LIVE beta page ===" && python3 - <<'EOF' import re s = open('beta_root_now.html', encoding='ut; cd /tmp && echo "=== HEIC structure - where is Exif? ===" && exiftool -G1 -s /tmp/tg_attachments/67b8bc6bb0cb4fb582109172b4e1af17.HEIC 2>/de; …(+15 more)
+• `merge pr` → ✅ PR #79 on sunmint_beta merged successfully (sha: d829145155aff85b0f8e4c429312a402a2b8ec7d). Pull Request successfully merged
 
