@@ -1604,46 +1604,60 @@ Gary registered the plot himself. Let me find where it landed so I align the tre
 ### 🤖 Autopilot
 
 Let me find the spreadsheet ID and check the plots sheet for Gary's new registration:
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plot registration may be further down in that geojson. Let me read the full output:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plots geojson is stale (generated 2026-09-02, only the 5 older plots) — Gary's registration likely landed in the source-of-truth sheet via the GAS handler. Let me check the handler to find the exact spreadsheet + tabs, then look at the sheet:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary registered the plot via the boundary-evidence flow — the upsert lands in the **'SunMint Plots' tab** of spreadsheet `1qbZZhf-…pyzASQ`. Let me read it to find the new plot row and its Plot ID:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plots sheet shows only the 5 governance plots + test rows — no Bom Sucesso row yet. Gary said he "just registered the plot with the 4 corners" — let me find where that registration landed (tracking tab, recent events, or Edgar ledger):
+[2 tool result(s) compacted: read_google_sheet, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plots sheet and tracking tab show no Bom Sucesso row yet — only the governance plots + test rows. Let me check where Gary's plot registration actually landed — recent events in the Telegram Chat Logs and the Tree Planting tabs of that spreadsheet:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheets I read show older data only. Gary's fresh plot registration should be at the *bottom* of one of these tabs (append-only logs). Let me check the tails:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary says he just registered the plot — let me check whether the sheet updated since my earlier read (the GAS handler may have just written the new row):
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check a couple more places where the registration could have landed before asking you to point me at it:
+[2 tool result(s) compacted: search_code, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1670,31 +1684,37 @@ Once I can see the plot row and its ID, I'll register the trees against **that p
 ### 🤖 Autopilot
 
 Gary's asking me to submit the boundary registration myself with the 4 corner files. Let me first read the full boundary-evidence handler (to get the exact required format), check the event docs, and re-extract the 4 corners' GPS in parallel:
+[3 tool result(s) compacted: read_tool_result, lookup_event_docs, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Yes — I'll submit it as a **[FARM BOUNDARY EVIDENCE EVENT]** with the 4 corner files. First let me get the exact handler expectations (tail of the GAS script) and the definitive GPS for the 4 corner HEICs currently on disk (my earlier guess at two filenames was wrong — they didn't exist):
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary explicitly asked me to submit the boundary event with the 4 corner files — that's a clear go. Plan: (1) confirm exact decimal GPS for the 4 corner HEICs + hull area, (2) upload the 4 originals to the sunmint media store so the event carries real URLs, (3) submit the **[FARM BOUNDARY EVIDENCE EVENT]**. Let me compute the precise values first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary confirmed the approach — I'll submit the **[FARM BOUNDARY EVIDENCE EVENT]** with the 4 corner files. Before submitting I want to nail the exact message field names Edgar assembles (so the GAS handler parses it cleanly) and stage the media. Let me check the event template and an example processed message:
+[2 tool result(s) compacted: search_code, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the boundary submission plan for the exact message format, and check how the daemon converts a submission into the message body the GAS handler parses:
+[2 tool result(s) compacted: read_context_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I need the exact renderer format — how Edgar turns a FARM BOUNDARY EVIDENCE EVENT submission into the message body the GAS parser reads. Let me check dao_protocol:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1702,11 +1722,13 @@ I need the exact renderer format — how Edgar turns a FARM BOUNDARY EVIDENCE EV
 Gary explicitly asked me to submit it — going ahead. Plan: (1) upload the 4 GPS-bearing corner HEIC originals to the sunmint media store, (2) submit the **[FARM BOUNDARY EVIDENCE EVENT]** with their raw URLs + extracted GPS, farm name Fazenda Bom Sucesso, boundary `approx`, new farm.
 
 Uploading the 4 corner originals first:
+[4 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 4 corner originals are mirrored to the media store. Before I submit, I need the exact renderer format — the GAS parser expects specific field labels (`Area (ha):`, `Is New Farm:`) that may differ from the catalog's canonical labels. Let me check how Edgar renders this event:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1718,16 +1740,19 @@ I'll submit it as a **[FARM BOUNDARY EVIDENCE EVENT]** — signed as the autopil
 - **Media URLs:** the 4 raw corner HEIC URLs
 - **Extracted GPS:** `-3.093989,-52.095256; -3.094158,-52.094789; -3.095311,-52.095047; -3.094883,-52.095919`
 - **Area (ha):** 1.016 · **Is New Farm:** true · **Submission Source:** telegram
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The submission went through. Now let me verify it actually landed — checking the tracking tab and plots sheet for the new Fazenda Bom Sucesso row:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The submission reported success but hasn't propagated to the sheets yet. Let me verify where it landed and how the propagation works — checking recent Edgar events and the listener mechanism:
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1834,4 +1859,84 @@ The corrupted plots row can't be cleanly upserted over (farm-id match fails beca
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp/tg_attachments && for f in 70234a89c2c9460bad6578ad3431490f.HEIC cd6887a2c2b9460bad6578ad3431490f.HEIC bf9c8484fc32430fb9ba2ff3a451d; cd /tmp/tg_attachments && echo "=== corner-relevant HEICs on disk (dedup by md5) ===" && md5sum *.HEIC 2>/dev/null | sort -k1,1 -u && echo &; cd /tmp/tg_attachments && python3 -c " import subprocess, re, math files = { 'corner_A_70234a89': '70234a894d764c49937ede894a878d26.HEIC', '; …(+2 more)
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] I meant this the underlying small contract for this 
+
+https://sunmint.truesight.me/limites-da-fazenda/
+
+
+### 🤖 Autopilot
+
+Let me look at that page's underlying contract — checking what `limites-da-fazenda` is and how it submits boundary registrations:
+
+
+### 🤖 Autopilot
+
+There's a `SUNMINT_BOUNDARY_SUBMISSION_PLAN.md` — let me read it to understand the exact intended submission contract:
+
+
+### 🤖 Autopilot
+
+Gary's pointing me at the actual farmer UI — `limites-da-fazenda` — so I should drive the **same contract that page uses**, not a hand-rolled submission. Let me fetch the page and find its source:
+
+
+### 🤖 Autopilot
+
+The page is the live farmer UI. Let me read the rest of its HTML/JS to extract the exact submission contract it uses (field labels + event text):
+
+
+### 🤖 Autopilot
+
+Let me pull the page's actual submission JS — the part that constructs the boundary event — so I match its exact contract:
+
+
+### 🤖 Autopilot
+
+Let me see the full submission contract — the exact text format the live page uses:
+
+
+### 🤖 Autopilot
+
+Now I have the **exact live contract** the `limites-da-fazenda` page uses — and it reveals why my earlier submission mangled. The page sends:
+
+```
+[FARM BOUNDARY EVIDENCE EVENT]
+- Farm Name: <name>
+- Is New Farm: yes|no
+- Media URLs: <filenames joined with '; '>
+- Media Count: <n>
+- Captured At: <ISO>
+- Device GPS: <json>
+- Submission Source: sunmint-limites-da-fazenda
+--------
+```
+
+**Key differences from what I submitted:**
+1. **No `- Plot ID:` line at all** (I sent an empty one → the parser's `\s*` swallowed the next line → `"- Boundary Type: approx"`)
+2. **`Media URLs` joined with `; `** (I used commas)
+3. **`Media Count`, `Captured At`, `Device GPS`** extra fields
+4. Farm name sent from the **farm picker** — which means the real registration flow is: pick/type farm → the UI uploads **photo blobs** (not just names) to Edgar, which then mirrors to GitHub.
+
+**The crucial realization:** the live page submits **photo files as `attachment` blobs** (multipart) — Edgar reads GPS from the actual images. My earlier submission used raw GitHub URLs in a text field, which is why the parser produced a row without proper media and the plot got mangled.
+
+So the right move — and what you're pointing me at — is to **drive the real UI's contract**: submit the boundary event **with the 4 corner HEIC files attached as multipart uploads**, farm name "Fazenda Bom Sucesso", `is_new_farm: yes`, letting Edgar/GAS extract GPS from the originals and create the plot cleanly (no empty Plot ID line to corrupt the parse).
+
+Before I do that, one quick confirmation — the 4 files I'd attach are the **GPS-bearing corner HEIC originals** (`70234a89`, `cd6887a2`, `bf9c8484`, `7f77424b` — the ones whose GPS I extracted). That matches the live contract exactly (farmer walks corners, uploads photos, GPS embedded).
+
+I'm at ~29/30 tool rounds this turn, so let me land this as the plan rather than fire the submission blind:
+
+## RESUME HERE
+- **Context:** Gary pointed at `https://sunmint.truesight.me/limites-da-fazenda/` as the correct contract for registering the Fazenda Bom Sucesso plot. I fetched the live page and extracted its exact submission format (above).
+- **Root cause of earlier mangling:** my submission had an **empty `- Plot ID:` line** which the GAS regex (`- Plot ID:\s*([^\n]+)`) mis-parsed into `- Boundary Type: approx`; the live UI sends **no Plot ID line at all**.
+- **Fix:** re-submit as the UI does — `[FARM BOUNDARY EVIDENCE EVENT]` with `Farm Name: Fazenda Bom Sucesso`, `Is New Farm: yes`, media filenames, `Submission Source`, **plus the 4 corner HEIC files attached as multipart blobs** so Edgar/GAS extracts GPS from the images and creates the plot row cleanly. No Plot ID field.
+- **Next turn:** call the same endpoint Edgar's UI hits (multipart POST with the 4 HEICs + the exact text body), verify the row lands well-formed in `SunMint Plots` / `Farm Boundary Evidence`, then proceed to the 9-tree registration against the resulting plot.
+
+Want me to go ahead with that re-submission (UI-format, 4 HEICs attached) next turn?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && curl -sL "https://sunmint.truesight.me/limites-da-fazenda/" -o limites.html && echo "size: $(wc -c < limites.html)" && grep -n "F; cd /tmp && sed -n '690,790p' limites.html
 
