@@ -464,6 +464,11 @@ Please inspect the attached file.
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: ssh_run, ocr_image, scan_qr_from_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 **Attachment inspected:** `f81209ca543b48a892458c60dfa4540b.jpg` (187 KB, 960×1280)
 
 | Check | Result |
@@ -513,6 +518,11 @@ Please inspect the attached file.
 - Type: Image (OCR confidence: 0.0%, quality: poor)
 
 *(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: ssh_run, ocr_image, scan_qr_from_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -568,6 +578,7 @@ These are photos of the 4 corners
 ### 🤖 Autopilot
 
 Let me inspect this corner photo and check whether the other corner shots arrived alongside it:
+[3 tool result(s) compacted: ssh_run, ocr_image, scan_qr_from_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -836,4 +847,79 @@ None of the photos carry GPS — Telegram strips EXIF on image upload (documente
 
 ———
 **Reads this turn:** handoff manifest (no 20065 plan → live task), SUNMINT_PLOTS_REGISTRY.md, SUNMINT_E2E_RUNBOOK.md, lookup_event_docs(TREE PLANTING EVENT), org code search "Bom Sucesso" (0 hits), ADVISORY_SNAPSHOT (live tree-planting precedent).
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] Oops the previous ones had their lat and long omitted. Use these recent 10 instead
+
+
+### 🤖 Autopilot
+
+Let me check whether new photos with GPS just landed in the attachments folder:
+
+
+### 🤖 Autopilot
+
+The 10 new files are **iPhone HEIC originals** (02:03–02:05) — exactly the format the runbook says preserves GPS. Let me extract coordinates from all 10 right now:
+
+
+### 🤖 Autopilot
+
+**Jackpot — the HEIC originals carry full GPS.** All 8 files on disk (02:03–02:05) have coordinates. **Note: I count 8 HEIC files, not 10** — two may still be uploading, or the batch was 8. Let me convert to decimal degrees and run the pairwise-spacing check on what's here:
+
+
+### 🤖 Autopilot
+
+**GPS recovered — all 8 HEIC originals have coordinates.** Two notes before the verdict: only **8 of the "10"** have arrived so far, and there's one flagged pair. Let me check for stragglers:
+
+
+### 🤖 Autopilot
+
+A 9th HEIC just landed (02:06). Let me extract its GPS and include it:
+
+
+### 🤖 Autopilot
+
+A 9th HEIC arrived (02:06) — and this one is important for the distinctness check. Let me run the full pairwise analysis on all 9 with timestamps, so we can see which photos are the *same tree*:
+
+
+### 🤖 Autopilot
+
+**Breakthrough — GPS recovered.** The 9 HEIC originals (iPhone 12 Pro Max, Sep 2 evening, ~18:42–19:26) carry real coordinates. But the numbers reveal something you'll want to decide on before we register:
+
+## What the GPS shows
+
+**9 files arrived so far** (you said 10 — one may still be uploading, or the set is 9+4corners). All plot within a **~122 m × 43 m** box at **-3.0942..-3.0946, -52.0949..-52.0961** — a coherent planting area, so the corner photos should enclose it.
+
+**Spacing check — distinctness verdict:**
+
+| Pair | Gap | Reading |
+|---|---|---|
+| 193eca20 ↔ 1d6a3a4c | **1.4 m** | ⚠️ **below 3 m floor** |
+| b08309c1 ↔ 2c364eb3 | **2.2 m** | ⚠️ **below 3 m floor** |
+| 35a3744d ↔ 17016c60 | 7.2 m | close, likely adjacent trees |
+| 2c6b2aac ↔ everything | 92–124 m | clear outlier (different row/section) |
+| all other pairs | 10–49 m | ✅ comfortably distinct |
+
+Two pairs fall under the ~3 m GPS-noise floor:
+
+- **193eca20 ↔ 1d6a3a4c** — 1.4 m apart, taken **11 seconds apart** (18:47:03 → 18:47:14), nearly identical coords → **almost certainly the SAME tree photographed twice** (looking at it from two angles, or two shots in a row).
+- **b08309c1 ↔ 2c364eb3** — 2.2 m apart, taken 20 min apart (18:42 → 19:02) → could be two adjacent saplings or the same tree revisited.
+
+## What I need from you before registering
+
+The photos themselves say **"9 (or 10) trees"**, but the GPS says **2 of those points are probably duplicates**. Options:
+
+1. **Confirm which are duplicates** — e.g. "193eca20 and 1d6a3a4c are the same tree" → I dedupe and register **8 distinct trees** (or 9, if the 10th HEIC arrives).
+2. **Or tell me these are genuinely distinct saplings** planted ~1.4–2.2 m apart (tight spacing happens) → I register all with their own lat/lng, and we note the tight pair for the plot's hectare math.
+3. Also: did you intend **10 HEIC files**? I have 9 — if a 10th exists, send it and I'll fold it in.
+
+**Species/planter confirmation still open** (all cacao-Criolla? planted by whom?) — same questions as before, but now we're minutes from execution.
+
+**How do you want to handle the two tight pairs?**
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp/tg_attachments && ls -lat *.jpg 2>/dev/null | head -30 && echo "---ALL FILES---" && ls -lat | head -40; cd /tmp/tg_attachments && which exiftool || sudo apt-get install -y libimage-exiftool-perl >/dev/null 2>&1; for f in a9cf65d0bcfb4234bf32fee; cd /tmp/tg_attachments && python3 -c " import math, subprocess, re files = ['a9cf65d0bcfb4234bf32fee0c0cc7310.HEIC','35a3744dcb5249bd8b04205; …(+3 more)
 
