@@ -795,6 +795,7 @@ Let me know how you plan to go about processing these 14 photos?
 ### 🤖 Autopilot
 
 Let me check the handoff registry and any related plans before answering, since this topic may reference an execution plan.
+[3 tool result(s) compacted: read_context_file, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -964,4 +965,83 @@ Once you answer those, I execute: dedupe → register trees → plot corners →
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && ls -la b08309c107d54dda82ce4a9a62b3b9c4.HEIC && md5sum b08309c107d54dda82ce4a9a62b3b9c4.HEIC && exiftool -s -GPSLa
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/35a3744dcb5249bd8b042054f8a270d2.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+Duplicate re-upload of `35a3744d` — already in my processing set. Quick verification:
+
+
+### 🤖 Autopilot
+
+**The 10th HEIC has arrived** — count is now 10. Let me find the new file and extract its GPS:
+
+
+### 🤖 Autopilot
+
+**All 10 HEIC files are now on disk.** Let me run the complete pairwise-spacing analysis on the full set:
+
+
+### 🤖 Autopilot
+
+**All 11 HEIC files now on disk** (the 10 you sent plus one earlier straggler, `70234a89` from 18:18). But that last file makes the count question sharper — let me list what's actually here and present the full picture:
+
+
+### 🤖 Autopilot
+
+**Complete set confirmed — 10 tree photos + 1 earlier extra.** Here's the full picture:
+
+## The 10 tree photos (HEIC originals, iPhone 12 Pro Max, GPS intact)
+
+All landed 02:03–02:07, sorted north→south:
+
+| # | File | Lat | Lon | Time | Dist to nearest |
+|---|---|---|---|---|---|
+| T1 | 17016c60 | -3.0945806 | -52.0949639 | 18:57 | 7.2 m |
+| T2 | 35a3744d | -3.0945167 | -52.0949556 | 18:52 | 7.2 m |
+| T3 | 193eca20 | -3.0944611 | -52.0951194 | 18:47 | 1.4 m ⚠️ |
+| T4 | 1d6a3a4c | -3.0944556 | -52.0951306 | 18:47 | 1.4 m ⚠️ |
+| T5 | 2c364eb3 | -3.0944500 | -52.0952222 | 19:02 | 2.2 m ⚠️ |
+| T6 | b08309c1 | -3.0944306 | -52.0952250 | 18:42 | 2.2 m ⚠️ |
+| T7 | 2c6b2aac | -3.0943333 | -52.0960528 | 19:26 | 92.5 m |
+| T8 | 6c9b7665 | -3.0942167 | -52.0949833 | 19:16 | 21.1 m |
+| T9 | 95dd596c | -3.0942000 | -52.0951889 | 19:21 | 2.0 m ⚠️ |
+| T10 | a9cf65d0 | -3.0941944 | -52.0951722 | 19:10 | 2.0 m ⚠️ |
+
+*Plus one earlier arrival `70234a89` (-3.0939889, -52.0952556, 18:18) — likely an 11th tree or a leftover from the first batch; set it aside unless you want it included.*
+
+## Distinctness verdict — 3 tight pairs below the ~3 m noise floor
+
+| Pair | Gap | Times | Likely interpretation |
+|---|---|---|---|
+| **T3 ↔ T4** (193eca20 ↔ 1d6a3a4c) | **1.4 m** | 11 s apart | ⚠️ **same tree, two photos** (nearly identical coords, back-to-back) |
+| **T5 ↔ T6** (2c364eb3 ↔ b08309c1) | **2.2 m** | 20 min apart | ⚠️ same tree revisited, or two adjacent saplings |
+| **T9 ↔ T10** (95dd596c ↔ a9cf65d0) | **2.0 m** | 11 min apart | ⚠️ same tree revisited, or two adjacent saplings |
+
+Everything else is 7–124 m apart — comfortably distinct.
+
+**So: of your "10 trees," the GPS suggests 2–3 of the photo pairs may be the *same* tree shot twice** (T3/T4 is the strongest candidate — 11 seconds apart). Before I register, I need you to confirm one of:
+
+1. **"They're 10 distinct trees"** → register all 10 as-is (tight pairs noted in the ledger).
+2. **"Dedupe the duplicates"** → tell me which photos are the same tree (e.g. "T4 is a second shot of T3") → I register the deduped count with the best photo each.
+3. **Species/planter/linkage** still needed: all **Cacao - Criolla**? Planted by **whom** (Kirsten? farmer? you)? Linked to **pledge QRs**?
+
+**And the corners:** the 4 corner JPGs (303b5b8d / 2ca18c0e / eb5ec7ef / 2b3a0fb1) still have **no GPS** — those were the Telegram-stripped ones. Do you have **HEIC originals for the 4 corners** too, or will you give me the 4 corner coordinates as text? Without them I can't build the Fazenda Bom Sucesso polygon or run the inside-plot check.
+
+Once you confirm the dedupe question + species/planter + corner coords, I execute: register trees → build plot → containment check → on-chain events.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → verified 35a3744d unchanged; found 10th/11th HEIC arrivals (95dd596c, 70234a89); full pairwise analysis on all 11 HEIC files.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/tg_attachments && ls -la 35a3744dcb5249bd8b042054f8a270d2.HEIC && md5sum 35a3744dcb5249bd8b042054f8a270d2.HEIC && exiftool -s -GPSLa; cd /tmp/tg_attachments && ls -lat *.HEIC && echo "---newest GPS---" && NEW=$(ls -t *.HEIC | head -1) && echo "newest: $NEW" && exiftool -s -; cd /tmp/tg_attachments && python3 -c " import math, subprocess, re, itertools, glob files = sorted(glob.glob('*.HEIC')) def dms2dec(deg,min,; …(+1 more)
 
