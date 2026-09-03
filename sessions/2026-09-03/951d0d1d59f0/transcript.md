@@ -1575,3 +1575,94 @@ So the interface and backend are in sync. **What's left is your call:**
 
 Want me to kick off the tree batch now, or are you testing the photo flow first?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20044] DON'T fire any more entries for now. Ca you check when I attach a photo where it says Photo uploaded from gallery. GPS location of the photo used can we also indciate clearly the latitude and longitude?
+
+
+### 🤖 Autopilot
+
+Gary — no more entries will be fired; that batch is paused. Let me look at the current tree planting page code to see where that "GPS location of the photo used" message is set and how to add the explicit lat/lng display.
+
+
+### 🤖 Autopilot
+
+Let me see the full upload handler around line 917 and the location fields to understand where lat/lng get set and displayed:
+
+
+### 🤖 Autopilot
+
+Let me see the exact i18n strings (photoGpsFound etc.) and how lat/lng are shown elsewhere on the page:
+
+
+### 🤖 Autopilot
+
+Clear picture. When a gallery photo with GPS is uploaded, the code sets `latitude`/`longitude` from the photo (line 914) but only shows the generic message "Photo GPS used for location." — the actual coordinates never appear to the user. Let me check the `t()` helper and the device-GPS fallback path so I add the coordinate display cleanly:
+
+
+### 🤖 Autopilot
+
+Prod and beta are identical (same md5), so I'll make this change beta-first. Clear diagnosis: when a gallery photo with GPS is used (line 914), the code stores the coords but only shows the generic "Photo GPS used for location." — the actual latitude/longitude never display. I'll add them.
+
+Let me apply the edit locally, verify, and push (one PR):
+
+
+### 🤖 Autopilot
+
+Input tags are void elements (self-closing — no `</input>` expected), so that's fine. Scripts pass. Let me verify the diff is only my 3 intended hunks, then push:
+
+
+### 🤖 Autopilot
+
+Diff is exactly the 3 intended hunks. Pushing to `sunmint_beta` (beta-first), using the file's literal escape-sequence text as anchors:
+
+
+### 🤖 Autopilot
+
+PR #80 opened. Merging per the standing go (UI feature PRs self-merge):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+**Turn complete ✅ — Photo GPS coordinates now shown explicitly**
+
+## What I did this turn
+Gary asked: when attaching a photo where the page says "GPS location of the photo used", can we also clearly indicate the latitude and longitude? 
+
+**Confirmed the gap:** in `handleTreePhotoFile()`, when a gallery photo with embedded GPS is used, the code stored the coordinates (`latitude = gps.lat; longitude = gps.lng`) but only displayed the generic message **"Photo GPS used for location."** — the actual numbers never appeared.
+
+**PR:** https://github.com/TrueSightDAO/sunmint_beta/pull/80 — merged ✅ (sha `70cfd164`)
+
+**What changed (beta `index.html`, 3 hunks):**
+1. **pt string** added: `photoGpsCoords: "Coordenadas GPS da foto — Latitude: {lat}, Longitude: {lng}."`
+2. **en string** added: `photoGpsCoords: "Photo GPS coordinates — Latitude: {lat}, Longitude: {lng}."`
+3. **Success message** now appends the coords formatted to 6 decimals:
+   ```js
+   cameraStatus.textContent = t('photoUploaded') + ' ' + t('photoGpsFound') + ' ' +
+     t('photoGpsCoords').replace('{lat}', latitude.toFixed(6)).replace('{lng}', longitude.toFixed(6));
+   ```
+
+So after upload the user now sees e.g.: *"Photo loaded from gallery. Photo GPS used for location. Photo GPS coordinates — Latitude: -3.095311, Longitude: -52.095047."*
+
+**Verification:** both inline scripts pass `node --check`; HTML balanced (input mismatch is normal — void elements); diff = exactly the 3 intended hunks (+301 bytes). Device-GPS fallback path untouched.
+
+**Not touched:** the pending 10-tree batch is paused per your instruction — no entries fired.
+
+---
+
+## RESUME HERE → next unit: sync to prod + beta verify
+1. Confirm the change renders correctly on **beta.sunmint.truesight.me** (once the deploy picks up main) — ideally you re-test by uploading the HEIC photo and confirming the lat/lng text now appears.
+2. On your OK → `sync_beta_to_prod('sunmint_prod')` to push the coords display live, then verify prod serves it (byte compare + grep for `photoGpsCoords`).
+3. The 10-tree batch (Cacau – Hybrid) stays paused until you explicitly say to resume.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp && curl -sL --max-time 20 "https://sunmint.truesight.me/" -o plant_prod.html && wc -c plant_prod.html && echo "=== message strings =; cd /tmp && echo "=== lines 880-960 (gallery upload handler) ===" && sed -n '880,960p' plant_prod.html && echo "=== location fields / lat-lng; cd /tmp && echo "=== pt strings 355-375 ===" && sed -n '355,375p' plant_prod.html && echo "=== en strings 412-432 ===" && sed -n '412,432p' ; …(+3 more)
+• `merge pr` → ✅ PR #80 on sunmint_beta merged successfully (sha: 70cfd1640848bd78a0e40a243c09af267ad12318). Pull Request successfully merged
+
