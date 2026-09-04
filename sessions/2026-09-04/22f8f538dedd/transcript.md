@@ -812,11 +812,13 @@ RG-P1 is correctly in the rebuilt registry (9-ring polygon, all props set). Now 
 ### 🤖 Autopilot
 
 plots/index.geojson pushed to sunmint (RG-P1 live). Now build + push the farms index (so `raimundo-geniza-para` shows in the farmer-app dropdown / farms seed).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Farm index built with `raimundo-geniza-para`. One display issue: `humanize()` turns the slug into "Raimundo Geniza Para" (loses the &). Let me push the farm index now, and I'll add a proper display-name in the agroverse profile step (that page carries the human name "Sítio Raimundo & Geniza").
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1141,4 +1143,55 @@ Start on #1?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && sha256sum ee64dc10f5d5433eb05ad9e6ba9f2ba9.HEIC; echo "--- sha-match against zip ---"; cd ~/raimundo_geniza && fin
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **5a17b7f2a02b4d3aa3bb30f76c6abcfb.HEIC**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+- Note: HEIC converted to JPEG (EXIF/GPS preserved)
+- 📍 GPS: -3.62945, -53.652017 (alt 173.4 m)
+- 🕐 Captured: 2026:09:03 14:48:04
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Another source original — GPS (−3.62945, −53.652017) is **hull vertex #6** of the RG-P1 polygon. Let me confirm identity.
+
+
+### 🤖 Autopilot
+
+## Inspection: `5a17b7f2a02b4d3aa3bb30f76c6abcfb.HEIC`
+
+| Property | Value |
+|---|---|
+| File identity | **`IMG_8252 2.HEIC`** — byte-identical (sha256 match) to a file in `~/raimundo_geniza.zip` |
+| Device | iPhone 12 Pro Max (original, 3024×4032) |
+| 📍 GPS | **−3.62945, −53.652017** (alt 173.3 m) |
+| 🕐 Captured | 2026-09-03 14:48 local |
+| Scene | warm earth/soil tones (mean RGB 155/128/99), ~0% green, only ~7% dark — bright open ground |
+| OCR/QR | none |
+
+**Finding:** GPS point is **hull vertex #6** of the registered **RG-P1 polygon**. Byte-identical to zip source original `IMG_8252 2.HEIC` — same 36-media batch. Already registered; **no new action needed.**
+
+Confirmed source originals now span **6 of the 8 RG-P1 hull vertices**: #3 (IMG_8253), #4 (IMG_8254 2), #6 (IMG_8252 2), #7 (IMG_8250 2), #8 (IMG_8249) + interior (IMG_8251 2). The polygon is solidly grounded in real GPS-tagged iPhone photos from the 2026-09-03 site walk.
+
+**Still awaiting your go** on:
+1. **Agroverse farm profile** — `agroverse_shop_beta/farms/raimundo-geniza-para/`
+2. **MAP media pipeline** — MOV→MP4 → YouTube + farm-media-raw + manifest
+3. **Impact-map wiring** — `sunmint.html` FARM_SLUG
+
+Start on #1?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → sha256 + sha-match against ~/raimundo_geniza.zip + EXIF + scene profile for 5a17b7f2a02b4d3aa3bb30f76c6abcfb.HEIC (→ IMG_8252 2.HEIC, hull vertex #6)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && sha256sum 5a17b7f2a02b4d3aa3bb30f76c6abcfb.HEIC; echo "--- sha-match against zip ---"; cd ~/raimundo_geniza && fin
 
