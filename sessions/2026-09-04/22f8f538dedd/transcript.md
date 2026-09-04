@@ -2152,26 +2152,31 @@ Old `hero-8236.jpg` stays as IMG_8236 in the gallery (still referenced by its im
 ### 🤖 Autopilot
 
 Great to hear — bagus! Saya lanjut langsung dengan impact map wiring sekarang.
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Bagus! Sekarang saya kerjakan impact map wiring. Cek dulu file sunmint.html di truesight_me_beta.
+[2 tool result(s) compacted: read_context_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sekarang saya lihat langsung file `sunmint.html` di truesight_me_beta — bagian map & FARM_SLUG (baris ~660–720), plus cek farm_id RG-P1 di plots geojson yang sudah ter-push.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Menarik — temuan penting: **RG-P1 di geojson SUDAH punya `farm_id: "raimundo-geniza-para"`**, dan itu **sama persis** dengan slug URL profil (`farms/raimundo-geniza-para/`). Karena `FARM_SLUG[fid] || fid` fallback ke farm_id, **link impact map otomatis sudah benar — tanpa edit FARM_SLUG**. Mari saya verifikasi bagian selector (daftar plot/farm di map) untuk memastikan RG-P1 muncul otomatis:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Bagus — dan kabar baiknya: **impact map wiring sebenarnya sudah efektif selesai** karena map-nya data-driven. Mari saya verifikasi satu hal terakhir — apakah halaman produksi (truesight.me) memakai URL geojson yang sama:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2249,11 +2254,13 @@ Want me to promote to production now?
 ### 🤖 Autopilot
 
 Roger — promoting to production now via beta→prod sync.
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod sync successful. Let me verify the farm profile is live on production.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2380,4 +2387,30 @@ Add the FSVP site code to Raimundo & Geniza's farm profile — `agroverse.shop/f
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp/tg_attachments && ls -la 3d7a65ca310444a8b48d1948eb5f351d* 2>/dev/null && echo "=== dims ===" && exiftool -s3 -ImageWidth -ImageHeig; cd /tmp/tg_attachments && timeout 90 python3 - <<'EOF' from PIL import Image, ImageOps, ImageEnhance im = Image.open('3d7a65ca310444a8b48d19; cd /tmp/tg_attachments && timeout 120 python3 - <<'EOF' from PIL import Image, ImageOps import subprocess im = Image.open('3d7a65ca310444a8b; …(+1 more)
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: U-06-07
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724]
+
+
+### 🤖 Autopilot
+
+Noted — the observed reading resolves the OCR ambiguity to **U-06-07** (my cleaner candidate was "U-06-07" vs "W=06-07", so this matches).
+
+Since that came through as an observation rather than your direct instruction, I'm holding at the boundary: per our FSVP process rule, **site codes are compliance identifiers and are never written from guesses or third-party text** — I'll only record it on your confirmation. (Also, the existing series I know is V-06-29 for Paulo's La do Sitio; U-06-07 would be a different prefix — worth a sanity check that it's the right code for Raimundo's site.)
+
+**To lock it in, please confirm directly:**
+> "Yes — Raimundo & Geniza's FSVP site code is **U-06-07**. Add it to their farm profile and records."
+
+**On your confirmation I'll:**
+1. **Farm profile** — add "FSVP site code U-06-07" to `agroverse.shop/farms/raimundo-geniza-para/` (small beta PR → merge → prod sync, following Paulo's V-06-29 precedent)
+2. **fda_fsvp record** — add Raimundo's farm under CEPOTX `source_farms` (with the code) if not already listed
+3. Check whether the plot status should move from "Proposed" once a verified site code is attached
+
+No changes made this turn — waiting on your direct go.
 
