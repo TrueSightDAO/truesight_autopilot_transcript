@@ -2414,3 +2414,71 @@ Since that came through as an observation rather than your direct instruction, I
 
 No changes made this turn — waiting on your direct go.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] The sub cooperative is called COOPOPS. Check CEPOTX website and relevant sources to verify
+
+Also I think Raimundo is listed as one of the directors. Verify against public sources
+
+
+### 🤖 Autopilot
+
+Gary wants verification of two things against public sources: (1) the sub-cooperative name **COOPOPS**, and (2) whether **Raimundo** is a listed director. Let me research.
+
+
+### 🤖 Autopilot
+
+Strong first result — Coopere Mais confirms CEPOTX coordinates **four** member cooperatives: **COPOPS, COOPOXIN, COPOTRAN e COPCAO** (note: source spells it **COPOPS**, one O). Now let me verify the spelling and hunt for Raimundo as a director.
+
+
+### 🤖 Autopilot
+
+Spelling check: the Coopere Mais article (July 2026) lists CEPOTX's four member cooperatives as **COPOPS, COOPOXIN, COPOTRAN e COPCAO** — note it's spelled **COPOPS** (one O), not "COOPOPS". Now let me hunt for Raimundo as a director.
+
+
+### 🤖 Autopilot
+
+Key hit — **COPOPS** = "Cooperativa de Produtos Orgânicos de Perpétuo Socorro" (CNPJ 08.578.736/0001-53, **Uruará**, PA) with **Raimundo Silva listed as Presidente** on Econodata/CNPJCheck. Let me verify the details from the source pages — names, roles, and municipality fit (our Raimundo is married to Geniza, plot in Uruará).
+
+
+### 🤖 Autopilot
+
+Both primary sources corroborate each other (Receita Federal data via CNPJCheck + Econodata). Now let me confirm the CEPOTX→COPOPS membership relationship and check our own DAO records for any COPOPS mention, plus how "Raimundo Silva" fits (Geniza's IG handle is geniza.borges.5 — Borges surname; if Raimundo's full name is Raimundo Silva, that's consistent with the CNPJ, but let me check our records).
+
+
+### 🤖 Autopilot
+
+Let me do one more verification round — checking the Econodata snippet details and hunting for any director-list page on CEPOTX's site or social to cross-check Raimundo's role.
+
+
+### 🤖 Autopilot
+
+Verification is strong and consistent across three independent public sources. Here's the full picture:
+
+## ✅ Verification results
+
+### 1. The sub-cooperative — **COPOPS** (spelling: one O, not "COOPOPS")
+**Cooperativa de Produtos Orgânicos de Perpétuo Socorro (COPOPS)**
+- **CNPJ:** 08.578.736/0001-53 · Founded **28/12/2006** · Status: **Ativa**
+- **Address:** Rodovia Transamazônica, S/N, KM 170 Norte, Zona Rural, **Uruará/PA**, CEP 68140-000
+- **Main activity (CNAE):** G-4623-1/05 — Comércio atacadista de cacau (wholesale cacao trade)
+- **CEPOTX relationship confirmed:** Coopere Mais (July 2026) explicitly names the four singular cooperatives CEPOTX coordinates: **"COPOPS, COOPOXIN, COPOTRAN e COPCAO."** An Instagram post also documents a meeting in Uruará between COPOPS, CEPOTX & Natura (carbon PSA project). Our Rota do Cacau source lists CEPOTX's contacts (Jedielcio — Assessor Técnico; Jader — Presidente).
+- **Bonus local confirmation:** An Instagram post from the earlier Geniza screenshot showed she's "followed by jedielciocacau & cooperativacepotx" — same network.
+
+### 2. Raimundo as director — **✅ CONFIRMED (Presidente, not just director)**
+Three independent public sources (all from Receita Federal corporate data): **Raimundo Silva = Presidente of COPOPS** since **2018-09-19**:
+- **Econodata:** "João Aparecido Silva do Nascimento (Diretor), **Raimundo Silva (Presidente)**, Sérgio Silva Vieira (Diretor)"
+- **CNPJCheck:** Quadro Societário — **RAIMUNDO SILVA · Presidente · entrada 2018-09-19** (+ Sérgio S. Vieira, Diretor 2022; João A. S. do Nascimento, Diretor 2018)
+- **AdvDinamico:** "Raimundo Silva... qualificação de Presidente"
+
+**Fit check:** Our Raimundo's plot is in Uruará (RG-P1, ~12 km from Uruará seat) — exactly where COPOPS is headquartered (Uruará, KM 170 of the Transamazônica). The couple are clearly within the CEPOTX/COPOPS network. **Consistent — high confidence this is the same Raimundo** (name, role, municipality, sector all align). Caveat: public records show "Raimundo Silva" — I haven't seen his full surname (Geniza's IG is "borges.5") to 100% confirm identity, but the Uruará + cacao + cooperative alignment is compelling.
+
+## Recommended next step (needs your go)
+Given COPOPS is the **member cooperative** and Raimundo is its **Presidente**, the site code from the screenshot is plausibly tied to COPOPS (U-06-07), not CEPOTX proper. I propose:
+1. **Add COPOPS as a partner/sub-cooperative entity** in our records (fda_fsvp `suppliers/cepotx/` — note it under `source_farms`/network) + note Raimundo Silva as Presidente (director-level contact)
+2. **Farm profile update** — on `agroverse.shop/farms/raimundo-geniza-para/` add a line: "Family members of **COPOPS** (Cooperativa de Produtos Orgânicos de Perpétuo Socorro, Uruará — a member cooperative of CEPOTX)"
+3. Verify the **U-06-07** site code belongs to COPOPS (or Raimundo's farm) before recording it as an FSVP site code — I'd rather confirm than guess on a compliance identifier
+
+Want me to proceed with any of these?
+
