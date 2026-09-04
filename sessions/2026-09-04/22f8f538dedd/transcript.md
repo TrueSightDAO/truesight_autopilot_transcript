@@ -343,6 +343,7 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 This is another of the 7 photos from today's batch. Let me run the same quick checks (QR scan + EXIF + OCR) to be thorough and consistent.
+[2 tool result(s) compacted: scan_qr_from_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -528,4 +529,63 @@ Nothing submitted — holding for your confirmation to avoid duplicates/misattri
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && exiftool -s3 -ImageWidth -ImageHeight 4d6ebf3df4fc4a5982f48977bb307a38.jpg 2>/dev/null; timeout 40 python3 - <<'EO
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **f4bbfda5510849db9f3bd55707082d95.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+The last of today's 7 photos. Let me run the full standard battery on `f4bbfda5…` (EXIF + content profile) so we have a complete record of the batch.
+
+
+### 🤖 Autopilot
+
+## Inspection of `f4bbfda5510849db9f3bd55707082d95.jpg` (last of today's 7)
+
+| Property | Value |
+|---|---|
+| Dimensions | 960 × 1280 (portrait) |
+| Mean color | RGB ≈ 160/127/94 (warm tan-brown) |
+| Green vegetation | ~33% of pixels — notably the **most vegetated of today's batch** |
+| Dark/shadowed | ~45% — dense dark mass along the left edge (lum 57–76) |
+| Bright zone | lower-right quadrant (lum 130–164) — open/cleared ground |
+| Edge texture | 17.2% — foliage/structure |
+| EXIF / GPS / text | **none** (Telegram recompress stripped everything) |
+
+*(My earlier psm4 pass on this file produced garbled pseudo-text — that was OCR noise from foliage texture, not real UI text. The color/luminance profile makes clear this is a **field photo with a dense vegetation line/tree row on the left and cleared ground on the right**, not a screenshot.)*
+
+**Interpretation:** a boundary/restoration-plot photo — standing at the edge of a vegetated area looking into a cleared working strip. Distinct scene; consistent with the other 6 field photos in today's batch.
+
+## Batch status — complete
+All **9 files** from today are now inspected:
+
+| File | Content | GPS | Useful? |
+|---|---|---|---|
+| 634a5cb0… | cleared field/track | ✗ | scene |
+| 1191a3ed… | cleared field, low veg | ✗ | scene |
+| 6006a26c… | open field + sky band | ✗ | scene |
+| ba10271e… | dirt track/earth | ✗ | scene |
+| 3d1b09df… | **IG profile Geniza Borges** | ✗ | identity ✅ |
+| 4d6ebf3d… | **WhatsApp Geniza Borges** | ✗ | identity ✅ |
+| f4bbfda5… | veg line + cleared strip | ✗ | scene |
+| 04eff3a1… | iPhone original (GPS −3.0942,−52.0952) | ✅ | = Bom Sucesso |
+| c0b5403b… | 1600×1200, no text/QR | ✗ | — |
+
+**Bottom line unchanged:** the 7 field photos are **new-plot-style evidence but carry no recoverable coordinates**; the only GPS-bearing original today (`04eff3a1`) is byte-identical to a Sep-3 Bom Sucesso HEIC (already submitted). The Geniza screenshots confirm identity but no plot name/coords.
+
+**Blocking question (still open):** Are Raimundo & Geniza the couple behind **Fazenda Bom Sucesso** (PL-002, already submitted) — or do they have a **new plot**? If new: please send the field photos as **HEIC/MOV or email originals** (GPS survives) and I'll extract coords + propose the plot name (e.g. *Sítio Raimundo & Geniza*). Nothing submitted — holding for your call.
+
+**RESUME HERE:** your answer → (a) rename/attribute PL-002 + add Raimundo & Geniza as contributors, or (b) process new HEIC originals per `SUNMINT_TREE_PHOTO_PROCESSING.md`.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && echo "=== EXIF ===" && exiftool -Make -Model -DateTimeOriginal -GPSLatitude -GPSLongitude -ImageWidth -ImageHeight
 
