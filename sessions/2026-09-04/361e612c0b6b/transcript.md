@@ -8,271 +8,6 @@
 ---
 
 
-### 🤖 Autopilot
-
-[3 tool result(s) compacted: ssh_run, ocr_image, scan_qr_from_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Attachment inspected:** `b139e0bff7584435a90d1d2da3750024.jpg` (187 KB, 960×1280)
-
-| Check | Result |
-|---|---|
-| EXIF / GPS metadata | **None** — Telegram-stripped |
-| OCR text | None |
-| QR code | None |
-| Pixel content | **43% gray, 19% blue/sky (highest sky of the set)**, 21% dark, 7% green — mean RGB (86,85,90). Cool/blue-gray, low saturation |
-
-**Interpretation:** Compositionally different from the other eight — a large sky component (overcast or looking-up shot). Could be a tree photo framed against the sky, or a wider angle. Still no readable content.
-
-**Running tally — tree photos received so far:**
-
-| # | Filename | GPS | OCR/QR | Pixel signature |
-|---|---|---|---|---|
-| 1 | 9a941217… | ❌ | none | dark warm |
-| 2 | abcab4d5… | ❌ | none | dark warm, low light |
-| 3 | 1a1919bd… | ❌ | none | brighter/gray, overcast |
-| 4 | ae40fa48… | ❌ | none | dark, earth + green |
-| 5 | 8b9d322a… | ❌ | none | darkest, some sky |
-| 6 | c61e85e8… | ❌ | none | warm/bright, earth tones |
-| 7 | 23199476… | ❌ | none | dense texture, foliage |
-| 8 | f81209ca… | ❌ | none | dense dark, same area |
-| 9 | b139e0bf… | ❌ | none | **sky-heavy, cool/gray** |
-
-Nine down, **one to go**. All remain **visual evidence only**. When the last photo lands, we pick the coordinate route (EXIF originals vs. text) and I'll run the pairwise-spacing + inside-plot checks for Fazenda Bom Sucesso.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la b139e0bff7584435a90d1d2da3750024.jpg && md5sum b139e0bff7584435a90d1d2da3750024.jpg && exiftool -s -GPSLatitude -GPSLongitude -DateTimeOriginal -Make -Model b139e0bff7584435a90d1d2da3750024.jpg 2>/dev/null; echo "---pixels---"; python3 -c "…(+1 more)"</｜｜DSML｜｜parameter>
-</｜｜DSML｜｜invoke>
-</｜｜DSML｜｜tool_calls>
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la b139e0bff7584435a90d1d2da3750024.jpg && md5sum b139e0bff7584435a90d1d2da3750024.jpg && exiftool -s -GPSLati
-
-
-### 🧑 Governor
-
-These are photos of the 4 corners
-
-[Attachment auto-processed: **303b5b8d4a774890a814cfb59aae7546.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-Let me inspect this corner photo and check whether the other corner shots arrived alongside it:
-[3 tool result(s) compacted: ssh_run, ocr_image, scan_qr_from_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All four corner photos are on disk (timestamps 02:00–02:01). Let me inspect the other three:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All four corner photos are on disk now. Here's the full consolidated status:
-
-## All 14 photos received & catalogued
-
-**Tree photos (10)** — uploaded as one batch (01:58), all inspected:
-
-| # | File | GPS | Pixel signature |
-|---|---|---|---|
-| 1 | 0e51c2b2… | ❌ | (first file — inspected turn 1) |
-| 2 | 9a941217… | ❌ | dark warm |
-| 3 | abcab4d5… | ❌ | dark warm, low light |
-| 4 | 1a1919bd… | ❌ | brighter/gray, overcast |
-| 5 | ae40fa48… | ❌ | dark, earth + green |
-| 6 | 8b9d322a… | ❌ | darkest, some sky |
-| 7 | c61e85e8… | ❌ | warm/bright, earth tones |
-| 8 | 23199476… | ❌ | dense texture, foliage |
-| 9 | f81209ca… | ❌ | dense dark |
-| 10 | b139e0bf… | ❌ | sky-heavy, cool/gray |
-
-**Corner photos (4)** — uploaded 02:00–02:01:
-
-| Corner | File | GPS | Pixel signature |
-|---|---|---|---|
-| A | 303b5b8d… | ❌ | mixed/gray, 8% warm |
-| B | 2ca18c0e… | ❌ | gray 39%, bright 10% |
-| C | eb5ec7ef… | ❌ | **green 24%** (most vegetated) |
-| D | 2b3a0fb1… | ❌ | sky 20%, brightest |
-
-## Status — confirmed blocker stands
-
-Every one of the 14 photos is **Telegram-stripped of EXIF/GPS** — zero coordinate data in any of them. No text, no QR, no readable markers either. So:
-
-- ❌ I **cannot** yet run the pairwise-spacing check (need 10 coordinate pairs)
-- ❌ I **cannot** yet build the Fazenda Bom Sucesso polygon (need 4 corner coordinates)
-- ✅ I **can** and will use all 14 photos as visual/evidence attachments on the registrations once coordinates are known
-
-## To proceed, pick the coordinate route
-
-**Quickest (recommended):** paste the coordinates as text — e.g.:
-
-```
-Tree 1: -3.xxxxx, -49.xxxxx
-Tree 2: ...
-...up to 10
-Corners: NW/NE/SW/SE (4 pairs) for the plot
-```
-
-Any format works (decimal degrees, DMS, or Google Maps "plus codes") — I'll normalize and validate.
-
-**Or:** send the original files **by email / WhatsApp "Document" / Drive** (EXIF survives those channels) and I'll extract GPS myself.
-
-**Or:** if you have them in a field app (e.g. GPS Essentials, SW Maps, Avenza), export a CSV/KML and send it.
-
-One question that helps disambiguation: the tree photos look quite similar in character — if you have any sense of **species or spacing** (e.g. all cacao at 3×3 m, or a mix), tell me, because it feeds the "are these plausibly distinct" sanity check once I have coordinates.
-
-How do you want to send the coordinates?
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×2 → cd /tmp/tg_attachments && ls -lat *.jpg | head -20; echo "---md5+exif---"; md5sum 303b5b8d4a774890a814cfb59aae7546.jpg; exiftool -s -GPSLati; cd /tmp/tg_attachments && for f in 2ca18c0edcf949b3930e4b8b002ff250.jpg eb5ec7eff9ce46069e76511981666791.jpg 2b3a0fb1e0024d02a68e5af6bead080
-
-
-### 🧑 Governor
-
-Please inspect the attached file.
-
-[Attachment auto-processed: **2ca18c0edcf949b3930e4b8b002ff250.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-This is **2ca18c0e… — corner photo B**, one of the four Fazenda Bom Sucesso corner shots I already inspected in the previous turn. No new content (same md5 `f52a196b…`).
-
-**Recap of this file's inspection:**
-- GPS: ❌ none (Telegram-stripped)
-- OCR: no text · QR: none
-- Pixels: 39% gray, 29% mixed, 10% bright, 7% warm — outdoor scene, fairly bright/neutral
-
-**Current catalog is unchanged and complete:**
-- **10 tree photos** — all received, all inspected (no GPS)
-- **4 corner photos** (303b5b8d…, 2ca18c0e…, eb5ec7ef…, 2b3a0fb1…) — all received, all inspected (no GPS)
-
-So nothing new to extract from this one. We're still blocked on the one thing that matters: **coordinates** (Telegram strips GPS, so the photos themselves carry none).
-
-**Fastest path forward** — paste the numbers as text, e.g.:
-```
-Tree 1:  -3.XXXXXX, -49.XXXXXX   (10 of these)
-Corner NW: ...
-Corner NE: ...
-Corner SE: ...
-Corner SW: ...
-```
-or send me a CSV/KML export from a field app. The moment I have them I'll: (1) run the pairwise haversine spacing check for distinctness, (2) build the polygon from the 4 corners, (3) verify all 10 trees fall inside it.
-
-
-### 🧑 Governor
-
-Please inspect the attached file.
-
-[Attachment auto-processed: **eb5ec7eff9ce46069e76511981666791.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-This is **eb5ec7ef… — corner photo C**, already inspected in the earlier batch (md5 `5f80254c…`). Quick confirmation check that nothing changed:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed — **eb5ec7ef… is corner photo C**, unchanged since the batch inspection (md5 `5f80254c…`, 223 KB). No new content.
-
-**This file's signature (from earlier inspection):**
-- GPS: ❌ none (Telegram-stripped)
-- OCR: no text · QR: none
-- Pixels: **24% green** (the most vegetated of the four corners), 21% gray, 19% dark
-
-**Catalog remains complete & unchanged — 14 photos total:**
-- **10 tree photos** — received, inspected, no GPS
-- **4 corner photos** — received, inspected, no GPS (303b5b8d… / 2ca18c0e… / eb5ec7ef… / 2b3a0fb1…)
-
-Everything is logged as visual evidence. The **single missing input is coordinates** — Telegram stripped GPS from all 14 images, so I can't auto-extract lat/lng.
-
-**To unlock the registration + checks**, paste coordinates as text (or send CSV/KML/EXIF-preserved originals):
-- 10 tree lat/lng pairs
-- 4 corner lat/lng pairs for Fazenda Bom Sucesso
-
-Then I'll: (1) run the pairwise haversine spacing check (distinctness ≥ ~3 m), (2) build the plot polygon from the corners, (3) verify all trees fall inside, and (4) register the 10 trees as TREE PLANTING events with photo evidence attached.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la eb5ec7eff9ce46069e76511981666791.jpg && md5sum eb5ec7eff9ce46069e76511981666791.jpg && exiftool -s -GPSLati
-
-
-### 🧑 Governor
-
-Please inspect the attached file.
-
-[Attachment auto-processed: **2b3a0fb1e0024d02a68e5af6bead0807.jpg**]
-- Type: Image (OCR confidence: 26.5%, quality: poor)
-
-Extracted text:
-```
-Proverse UPL era UU Xcel
-```
-
-
-### 🤖 Autopilot
-
-This is the final corner photo — **2b3a0fb1… (corner D)**. Interesting: this time OCR surfaced garbled text ("Proverse UPL era UU Xcel", 26.5% confidence) where it found nothing before. Let me verify the file is unchanged and look closer at that text region:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed — **2b3a0fb1… is corner photo D**, unchanged (md5 `a30e55b8…`, 959×1280, no GPS tags).
-
-**About the OCR hit:** this run surfaced faint text ("Proverse UPL era UU Xcel", 26.5% confidence) where earlier runs found nothing — OCR is nondeterministic on low-quality/compressed images. At 26% confidence this is likely a misread of distant signage or a watermark, not plot-critical data. It doesn't change the catalog.
-
-**Full catalog — 14 photos received, all inspected, all logged as visual evidence:**
-
-| Set | Count | GPS |
-|---|---|---|
-| Tree photos | 10 | ❌ all stripped |
-| Corner photos (303b5b8d / 2ca18c0e / eb5ec7ef / 2b3a0fb1) | 4 | ❌ all stripped |
-
-**Everything is ready on my side except the one input I can't derive from these files: the coordinates** (Telegram removes EXIF/GPS on upload — documented limitation, and verified live on all 14 files).
-
-**Next step — send coordinates as text** (any format), e.g.:
-```
-Tree 1:  -3.XXXXXX, -49.XXXXXX   ×10
-Corner NW: -3.XXXXXX, -49.XXXXXX
-Corner NE: ...
-Corner SW: ...
-Corner SE: ...
-```
-
-The moment they arrive I will, in order:
-1. **Pairwise haversine spacing check** — flag any pair < ~3 m (GPS-noise floor) as not clearly distinct trees
-2. **Build the Fazenda Bom Sucesso polygon** from the 4 corners
-3. **Point-in-polygon** — confirm all 10 trees are inside the plot
-4. **Register** the 10 trees as TREE PLANTING events (lat/lng, species, photo evidence attached), then report ledger rows
-
-Ready when you are — paste away.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la 2b3a0fb1e0024d02a68e5af6bead0807.jpg && md5sum 2b3a0fb1e0024d02a68e5af6bead0807.jpg && exiftool -s -GPSLati
-
-
 ### 🧑 Governor
 
 [Telegram context: chat_id=-1003919341801, thread_id=20065] [Handoff context — this Telegram topic (thread 20065) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
@@ -4300,16 +4035,19 @@ The monitor page loads `trees/index.geojson` (lines 442–446), and the dropdown
 ### 🤖 Autopilot
 
 Now I can see the true picture. The ledger **genuinely has duplicate rows** — the same Edgar event (e.g. `Edgar_20260903083551_018`, Message ID `_017`) appears **2–3× as byte-identical rows**. My geojson-builder dedupe fixed the map data, but let me verify what the monitor currently fetches (is the screenshot stale, or is the geojson still serving dupes?) and quantify the ledger dupes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The current geojson (10:28:55Z rebuild) is **clean — 12 unique trees, zero duplicates**. So the screenshot showing dupes is either **stale** (pre-fix) or the monitor reads a **different/stale source**. And the **ledger itself has real duplicate rows** (the same Edgar event `_016`/`_018` appears 2× byte-identical). Let me check what URL the monitor actually fetches, and quantify the ledger dupes precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The current geojson is clean (12 unique, no dupes) but the screenshot shows dupes — likely stale cache, yet the ledger itself genuinely holds duplicate rows. Let me get the definitive state: full ledger inventory (rows per Edgar ID + statuses) and what the monitor's first-priority URL would serve right now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4319,6 +4057,7 @@ The live geojson is **clean** — 12 unique features, zero dupes. So Gary's scre
 Let me also note: the **ledger itself holds byte-identical duplicate rows** (the raw sheet shows `_016`, `_018` etc. appearing 2–3× — my builder dedupes them for the geojson, but they're still in the source). Gary asked "how do we remove them" — the answer depends on *where*: (a) the monitor list (geojson) — already clean, needs a hard refresh; (b) the **ledger source rows** — real dupes need actual removal.
 
 Let me quantify the ledger dupes precisely to give an exact answer:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4374,11 +4113,13 @@ I'm at the tool-round cap — converging with the status and the exact answer to
 ### 🤖 Autopilot
 
 Gary's right to flag this — the farm page on agroverse.shop 404s/missing even though the plot (PL-002) is registered. Let me diagnose in parallel: what the agroverse site serves, whether the farms index has the farm, and whether a Farms-tab row exists:
+[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All farm pages 404 — including the older ones (rancho-maranta etc.) — so this isn't specific to Bom Sucesso. The `/farms/` route may not exist on agroverse.shop at all, or lives elsewhere. Let me find where farm pages actually live:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4386,26 +4127,31 @@ All farm pages 404 — including the older ones (rancho-maranta etc.) — so thi
 **Root cause found.** agroverse.shop's farm pages are **static pages** — the homepage links `farms/<slug>/index.html` for six farms (fazenda-capelavelha-bahia, fazenda-santa-ana-bahia, fazenda-sao-jorge-bahia, oscar-bahia, paulo-la-do-sitio-para, vivi-jesus-do-deus-itacare). There's **no dynamic route** — each farm page is a manually-authored static page. Fazenda Bom Sucesso (registered 09-02) simply **has no farm page created yet** — and the older SunMint plots (rancho-maranta, santa-anna, fazenda-cleide) also 404 for the same reason (no static page; only plots with *product/shop content* got pages).
 
 Let me confirm which repo hosts these pages and how a farm page is structured:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The farm pages are static content in a shop repo. Let me find which repo hosts them (agroverse.shop is the prod domain, so likely `agroverse_shop_prod`):
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The agroverse_shop repo redirects (renamed/moved). Let me find the correct repo and the farm page structure:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I can see the farm page structure — these are hand-authored static pages in the shop repo (agroverse_shop_prod, which redirects to the renamed repo). Fazenda Bom Sucesso has **no such page created** — it's a brand-new farm (registered 09-02), and the farm pages are **manually authored content pages**, not auto-generated from the ledger. Let me confirm the repo layout and how many farm pages exist, then check the CMO/marketing principle for creating farm pages:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pattern is clear — the SunMint farms (rancho-maranta-para, fazenda-cleide-para, santa-anna-fazenda-para) DO have pages; **Fazenda Bom Sucesso simply doesn't have one yet** (newest farm, registered 09-02). Let me check the beta repo + find whether a page generator exists:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4450,51 +4196,61 @@ Analyze it to generate the contents for the page
 ### 🤖 Autopilot
 
 Let me inspect the interview materials archive and analyze its contents:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The archive is 380 MB — let me list its contents fully:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The zip listing shows nothing beyond the archive header — unusual for 380 MB. Let me try listing with different flags:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `file` says it's a zip but python says it isn't — it may be a split/streamed archive or have a leading offset. Let me investigate the structure:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is a valid zip **header** (starts with `PK\x03\x04`, contains `IMG_7982.MOV` etc.) but is **truncated** — no end-of-central-directory record, so the central directory (file list at the end) is missing. The upload/transfer cut it off (380 MB over Telegram). Let me check how much is recoverable — scan for local file headers to enumerate entries:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The archive contains **12 interview video files** (IMG_7987–IMG_8001, MOV from an iPhone — Paulo's interview). It's truncated (no central directory) but each file's local header is intact, so I can recover them. Let me extract them and check transcription tooling:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The archive is truncated mid-file (some MOVs are cut off), so full decompression fails. The recoverable portion — 12 interview videos (IMG_7987–8001), each ~30–130 MB — should still yield content if I extract per-file and skip damaged ones. ffmpeg is available. Let me extract each file individually with tolerance for truncation, then check durations:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — the zip was **still growing between my commands** (363 MB at first `ls`, 739 MB when python scanned it). The transfer may still be in progress. Let me check whether it's stable now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **The zip is still actively being written** — it grew from 846 MB → 900 MB → 988 MB across my checks (and was only 363 MB when this conversation started). Gary is uploading a ~1 GB+ archive and it's mid-transfer. I must **wait for it to finish** before extracting. Let me poll until the size stabilizes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is now **stable at 1.29 GB** (1,287,921,893 bytes). The upload finished. Let me extract it properly now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4602,4 +4358,104 @@ Let me read the remaining transcript content:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×20 → cd ~ && ls -la paulo_interview.zip 2>/dev/null && echo "=== zip contents ===" && unzip -l paulo_interview.zip 2>/dev/null | head -60; cd ~ && unzip -l paulo_interview.zip 2>/dev/null | tail -80; cd ~ && file paulo_interview.zip && echo "=== try python zipfile ===" && python3 -c " import zipfile z = zipfile.ZipFile('paulo_interview.zi; …(+16 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] [Handoff context — this Telegram topic (thread 20065) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Convergence — Paulo interview analyzed (~19 min transcribed); page-content synthesis is next
+
+### What's done
+**Archive recovered** — `~/paulo_interview.zip` (1.29 GB) was still mid-upload when I f
+
+
+### 🤖 Autopilot
+
+👍 Go received. Resuming: completing the fact base by reading the remaining transcripts (IMG_7982–7986), then I'll synthesize the page content.
+
+
+### 🤖 Autopilot
+
+Full fact base now complete. Let me read an existing farm page to model the structure (rancho-maranta-para — the closest analog: a Pará SunMint farm):
+
+
+### 🤖 Autopilot
+
+The agroverse_shop repo moved. Let me find the correct repo (beta first) — listing org repos:
+
+
+### 🤖 Autopilot
+
+The shop pages live in `agroverse_shop_beta` / `agroverse_shop_prod` (agroverse_shop redirects). Let me read the closest analog — the Pará SunMint farm page in beta — to model Fazenda Bom Sucesso's page:
+
+
+### 🤖 Autopilot
+
+The rancho-maranta page gives me the full template (hero → story → highlights → video → map → products). Let me extract the key structural bits I need to model faithfully — highlights markup, the Leaflet map init, and the video/photo conventions:
+
+
+### 🤖 Autopilot
+
+Template captured. Let me see the actual story/highlights HTML content (not CSS) so I can mirror the content structure:
+
+
+### 🤖 Autopilot
+
+Let me see the rest of the rancho page (products/gallery wiring) and how the media gallery gets its JSON, so my Fazenda Bom Sucesso page wires correctly:
+
+
+### 🤖 Autopilot
+
+I now have everything needed: the full Paulo interview (17 clips transcribed), the rancho-maranta page template (structure, highlight markup, map init, media-gallery wiring), and the plot facts (PL-002, 10 Cacau - Hybrid trees, 4-corner polygon, sunmint photo URLs). Here's the synthesized **content for the Fazenda Bom Sucesso page** — grounded strictly in the interview footage + ledger (no invented facts):
+
+---
+
+## Draft content — `farms/fazenda-bom-sucesso/index.html`
+
+### Hero
+**Fazenda Bom Sucesso** — Vitória do Xingu, Pará, Brazil · The family farm of **Paulo**
+
+### The Farm Story (3 sections, drawn from his own words)
+
+**1. A small farm, and our pride.**
+Paulo's family land sits on the road out of Vitória do Xingu, in the Brazilian Amazon — about 25 minutes from town. Roughly **54 hectares** that his family has held for about four years, and that he is still learning to run "with our own bare hands." He is deliberate about growth: "We are in expansion — planting, not buying land. This is enough. We are planting on the land we already have." Walking his fields, he says it plainly: *"It's a small farm, but it's our pride."*
+
+**2. Drought, and planting for a different future.**
+The region is in its hardest drought in years — no rain since June, pasture "not green anymore… becoming the desert." Paulo refuses to plant anything without irrigation, and knows the agronomy well: he works in a store selling irrigation systems and fertilizers. Cattle is still the farm's main income — "very nice to work with" — but he wants to change that: *"I believe there's more to offer in the farm."* His bet is on planting — açaí seedlings in the nursery, bananas, and cacao between them: *"We have to plant trees… to change the weather. Every year we plant more and more cacao trees."*
+
+**3. Honest about cacao — and planting it anyway.**
+Paulo is frank about the industry: "I am still afraid of planting cacao in a large amount… the price is not always fair, and the labor is hard and expensive." So he's cautious about scale — but he loves the tree itself: *"I love to plant cacao between my bananas, so I can work and I can eat."* On 2 September 2026, we planted the first **10 Cacau - Hybrid trees** on the plot — each GPS-pinned and photo-verified into the **SunMint impact map**, the beginning of turning pasture into shaded cacao agroforest.
+
+### Farm Highlights (grid)
+| | |
+|---|---|
+| 🤝 **Farmer** | Paulo, Fazenda Bom Sucesso |
+| 📅 **Site Visit** | 2 September 2026 |
+| 🌳 **SunMint Plot** | PL-002 · ~1.02 ha · **10 Cacau - Hybrid trees** |
+| 💧 **Farming through drought** | Irrigation-first; no rain since June |
+| 🌱 **Transition** | Cattle today → açaí, banana & cacao agroforestry |
+| 🦜 **Place** | Near indigenous-protected forest; Jacu & native birds; Brazil nut trees |
+| 📍 **Location** | Vitória do Xingu, Pará — [SunMint program](https://truesight.me/sunmint.html) |
+
+### Farm Location
+Leaflet map centered on **PL-002's registered polygon** (-3.0944, -52.0952), marker + popup "Fazenda Bom Sucesso — PL-002 · 10 Cacau - Hybrid trees · Vitória do Xingu, Pará" — mirroring rancho-maranta's `initMap` (I'll draw the actual 4-corner polygon, not just a marker, since we have the hull).
+
+### Shipments
+"No cacao shipments yet — this is a tree-planting partnership plot. We'll update this page when the first Fazenda Bom Sucesso harvest ships." (same as rancho)
+
+### Media (video + photo gallery)
+Wired via `media-gallery.js` JSON: the 17 interview clips (IMG_7982–8001) as the farm's media asset + the 14 photos (10 trees + 4 corners) already in `sunmint/images/`.
+
+---
+
+**Two things before I build the beta page:**
+1. **Assets** — for the hero, I'll use one of the tree/corner photos already mirrored in `sunmint/images/` (or a frame from the interview video if you'd prefer — say which).
+2. **Cooperative link** — rancho's page links the CEPOTX cooperative, but the transcripts give **no evidence Paulo is CEPOTX** — so I'll leave that link out unless you say otherwise. Same for the "Brazilian Journey" back-link (I'll keep it, pointing at `../../cacao-journeys/brazilian-path/index.html`, consistent with other Pará farms).
+
+**Want me to build the beta page now** (author `farms/fazenda-bom-sucesso/index.html` in `agroverse_shop_beta` modeled on rancho + upload a hero asset), show it on the beta site for your review — and only sync to `agroverse_shop_prod` after your explicit approval?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd ~/paulo_interview/transcripts && for f in IMG_7982.txt IMG_7983.txt IMG_7984.txt IMG_7985.txt IMG_7986.txt; do echo "===== $f ====="; cat; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/rancho-maranta-para/index.html" -o rancho.; cd /tmp && echo "=== body content: highlights + story ===" && sed -n '430,560p' rancho.html; …(+1 more)
 
