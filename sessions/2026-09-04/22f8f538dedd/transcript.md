@@ -775,6 +775,7 @@ I have the plot geometry (8-point hull, 0.317 ha, centroid −3.629911/−53.652
 ### 🤖 Autopilot
 
 The correct tab is **"SunMint Registered Farms"**. Let me read its schema, confirm the current farms, and check write-access by dry-running the plots builder with this SA.
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -983,4 +984,55 @@ Say the word and I'll build #1 first.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && ls -la f4bfe2f959364123a0dfde84a43b3d86* 2>/dev/null && sha256sum f4bfe2f959364123a0dfde84a43b3d86.HEIC; echo "---
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **4a377851624a4fcfa55b30633c0f52a4.HEIC**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+- Note: HEIC converted to JPEG (EXIF/GPS preserved)
+- 📍 GPS: -3.629464, -53.651931 (alt 172.5 m)
+- 🕐 Captured: 2026:09:03 14:47:31
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Another source original — GPS (−3.629464, −53.651931) is **hull vertex #7** of the RG-P1 polygon. Let me confirm the file identity.
+
+
+### 🤖 Autopilot
+
+## Inspection: `4a377851624a4fcfa55b30633c0f52a4.HEIC`
+
+| Property | Value |
+|---|---|
+| File identity | **`IMG_8250 2.HEIC`** — byte-identical (sha256 match) to a file in `~/raimundo_geniza.zip` |
+| Device | iPhone 12 Pro Max (original, 3024×4032) |
+| 📍 GPS | **−3.629464, −53.651931** (alt 172.5 m) |
+| 🕐 Captured | 2026-09-03 14:47 local |
+| Scene | warm earth/soil tones (mean RGB 145/121/95), ~0.5% green, ~14% dark — dry cleared ground photo |
+| OCR/QR | none |
+
+**Finding:** GPS point is **hull vertex #7** of the registered **RG-P1 polygon** ("Sítio Raimundo & Geniza Plot 1"). Byte-identical to the zip's source original — same 36-media batch that defined RG-P1. Already registered (SunMint Plots sheet + `plots/index.geojson` + `farms/index.json` pushed).
+
+**No new action needed.** Three consecutive source-original confirmations now anchor the polygon: vertices **#4** (IMG_8254 2), **#7** (IMG_8250 2), and **#8** (IMG_8249) of the RG-P1 hull are all real GPS-tagged iPhone photos from the 2026-09-03 site visit.
+
+**Still awaiting your go** on the build-out units:
+1. **Agroverse farm profile** — `agroverse_shop_beta/farms/raimundo-geniza-para/`
+2. **MAP media pipeline** — MOV→MP4 → YouTube + farm-media-raw + manifest
+3. **Impact-map wiring** — `sunmint.html` FARM_SLUG
+
+Want me to start on #1?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → sha256 + sha-match against ~/raimundo_geniza.zip + EXIF + scene profile for 4a377851624a4fcfa55b30633c0f52a4.HEIC (→ IMG_8250 2.HEIC, hull vertex #7)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && ls -la 4a377851624a4fcfa55b30633c0f52a4* 2>/dev/null && sha256sum 4a377851624a4fcfa55b30633c0f52a4.HEIC; echo "---
 
