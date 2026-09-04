@@ -2751,6 +2751,7 @@ Odd — those return zero even though I referenced such docs earlier. Let me inv
 ### 🤖 Autopilot
 
 `MEDIA_ARCHIVE_PIPELINE.md` exists (search tooling may be indexing issues). Let me read it plus the plots-registry and E2E runbooks — the three core SOPs for this exact flow.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2911,4 +2912,71 @@ One hiccup handled: the first push failed transactionally (accent-char anchor mi
 
 👍 Go — executing the final RG bookkeeping unit: the **MAP manifest commit**. Let me check the manifest schema from an existing farm + gather the 14 videos' data (yt_ids now in the sidecars) + the repo layout.
 [2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] [Handoff context — this Telegram topic (thread 20724) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 👍 Go — executing the final RG bookkeeping unit: the **MAP manifest commit**. Let me check the manifest schema from an existing farm + gather the 14 videos' data (yt_ids now in the sidecars) + the repo
+
+
+### 🤖 Autopilot
+
+Go received — continuing the manifest commit. Let me check the repo layout + an existing manifest's schema, and gather the 14 videos' data from the sidecars.
+
+
+### 🤖 Autopilot
+
+All 14 videos have yt_ids — but sidecars show lat/lon None (they may be in different field names). Let me read a full sidecar + the rancho manifest schema to match structure, and pull GPS from the source MOVs if needed.
+
+
+### 🤖 Autopilot
+
+The rancho manifest uses per-file entries: `basename, file, ext, duration_s, gps_raw, latitude, longitude, sha256, size_bytes, yt_id`. My sidecars have yt/sha/duration but lat/lon under different keys. Let me read a full sidecar, the rancho top-level keys, index.json, and extract per-MOV GPS for the manifest.
+
+
+### 🤖 Autopilot
+
+Schema is clear now: rancho manifest top = `{farm_id, plots, source_zips, generated, processed_by, counts, gps_coverage, items[]}` where items carry `basename, file, ext, duration_s, gps_raw, latitude, longitude, sha256, size_bytes, yt_id`. My sidecars have `gps` as a decimal string ("-3.630300, -53.652000"), not lat/lon split. Let me build the RG manifest locally: pull all 14 sidecars + map `gps` → lat/lon, get file sizes from the MP4s, and write both the manifest and index update.
+
+
+### 🤖 Autopilot
+
+Manifest built — **14/14 videos with GPS** (all inside the RG-P1 hull: −3.6302…−3.6306 / −53.6519…−53.652), each with sha256, size, duration, and live yt_id. Now pushing the manifest + updated index.json to the farm_media_manifests repo (straight-to-main Content-API pattern per prior manifest commits):
+
+
+### 🤖 Autopilot
+
+Index prepared. Pushing both files to the farm_media_manifests repo (manifest + index update):
+
+
+### 🤖 Autopilot
+
+Both files are live. The MAP manifest commit for Raimundo & Geniza is complete — this was the final bookkeeping unit of the whole RG onboarding.
+
+## ✅ MAP manifest committed — Raimundo & Geniza pipeline COMPLETE
+
+**Uploaded to `farm_media_manifests` (api-only repo, straight to main per manifest convention):**
+- **`raimundo-geniza-para.json`** (commit `7413d2e`) — farm_id, plots `[RG-P1]`, source zip, counts `{MOV: 14}`, GPS coverage **14/14**, and all 14 items (basename, file, ext, duration_s, gps_raw, **latitude/longitude**, sha256, size_bytes, **live yt_id**, title)
+- **`index.json`** (commit `6cfba9e`) — index entry added: `raimundo-geniza-para` → manifest, updated 2026-09-04
+
+**Content summary (14 videos):** all GPS-tagged inside the RG-P1 hull (−3.6302…−3.6306 / −53.6519…−53.6520), 5.9–79 s each, every one with its verified YouTube ID (HQOcuvdXVHs…BsRuAHKy3RI) — the searchable reference layer for the whole farm-media namespace.
+
+### 🎉 Sítio Raimundo & Geniza — 100% complete end-to-end
+
+| Unit | State |
+|---|---|
+| **Plot** | ✅ RG-P1 registered (SunMint sheet + plots geojson + farms index) |
+| **Media** | ✅ 14 videos → YouTube + manifest; photos in profile gallery |
+| **Profile** | ✅ Live on prod (`agroverse.shop/farms/raimundo-geniza-para/`) with hero, COPOPS story, RG-P1 map, 8-video + 7-photo gallery |
+| **FSVP** | ✅ COPOPS entity + U-06-07 code + CEPOTX update (fda_fsvp PR #11) |
+| **Impact map** | ✅ RG-P1 polygon live + links to prod profile |
+| **SOP** | ✅ Farm-listing runbook + daemon docs + gotchas (agentic_ai_context PR #907) |
+
+All done — nothing left in the queue for this farm. 🎉
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → echo "=== farm_media_manifests repo root ==="; curl -s "https://api.github.com/repos/TrueSightDAO/farm_media_manifests/contents/" | python3 ; echo "=== RG inbox sidecars (yt_ids) ==="; cd ~/media_archive_inbox/farm-media/raimundo-geniza-para 2>/dev/null && for s in *.json; do pytho; echo "=== one full sidecar (IMG_8210) ==="; cat ~/media_archive_inbox/farm-media/raimundo-geniza-para/IMG_8210.mp4.json 2>/dev/null; echo; e; …(+3 more)
 
