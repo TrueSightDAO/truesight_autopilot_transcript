@@ -1755,31 +1755,37 @@ Full go confirmed — executing the farm profile PR now (registry rows captured:
 ### 🤖 Autopilot
 
 Full go — executing now. I have exact registry anchors (0 existing raimundo rows — clean insert). Let me prep the PR contents: check local file sizes and read the finished index.html.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Files are clean and ready (24KB index.html, 1.6KB media.json, 8 images). Now executing the farm profile PR via `git_push_changes` — one commit with the two text files; images follow via upload (they're binary, handled separately).
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Critical catch:** I passed a placeholder (`FULL_RG_INDEX_HTML`) instead of the real index.html content in that push — PR #273 has a broken page. Fixing now: injecting the registry rows locally and re-uploading the real files to the same branch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Registry JS prepared. Now fixing the broken PR #273 — overwriting the placeholder `index.html` with the real content on the same branch, then the registry files:
+[3 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR fixed — real files on branch. Now uploading the 8 images to `assets/images/farms/` (parallel):
+[8 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 8 images + all text files are on the branch — PR #273 is now complete with real content. Let me verify the PR file set is coherent, then check pipeline state (daemon uploads + transcode):
+[2 tool result(s) compacted: list_prs, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1911,4 +1917,49 @@ PR #274 opened. Merging it (ready — validated, real yt_ids):
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd ~ echo "=== reference sidecar (IMG_8206) ==="; cat media_archive_inbox/farm-media/raimundo-geniza-para/IMG_8206.mp4.json 2>/dev/null echo; cd ~ && timeout 240 python3 - <<'EOF' import os, re, json, hashlib, subprocess, glob, datetime INBOX = os.path.expanduser("~/media_archive_i; sleep 50; echo "=== daemon log tail ==="; tail -8 /tmp/farm_media_daemon.log 2>/dev/null; echo "=== yt_ids now in inbox sidecars ==="; cd ~/; …(+2 more)
 • `merge pr` → ✅ PR #274 on agroverse_shop_beta merged successfully (sha: 4e3d69181dc5780a75a9321cd52e15041c06d3e1). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] What is the URL to view the page?
+
+
+### 🤖 Autopilot
+
+Let me determine the exact URL pattern for farm pages on the beta site.
+
+
+### 🤖 Autopilot
+
+The farm page route is `farms/raimundo-geniza-para/index.html`. Now let me find the actual domain — checking the CNAME file on beta and how the ranch page is referenced in the live path-data:
+
+
+### 🤖 Autopilot
+
+CNAME = `beta.agroverse.shop`. The URL is `https://beta.agroverse.shop/farms/raimundo-geniza-para/index.html`. Let me verify the page resolves (status + title):
+
+
+### 🤖 Autopilot
+
+The page is **live and rendering** on the beta site:
+
+## 🔗 URL: **https://beta.agroverse.shop/farms/raimundo-geniza-para/index.html**
+
+**Verified live:**
+- ✅ HTTP **200**
+- ✅ `<title>` = "**Sítio Raimundo & Geniza - Pará, Amazon Rainforest | Agroverse**"
+- ✅ Hero image loads (200): `raimundo-geniza-hero-8236.jpg`
+
+The page shows the full profile — hero, story of Raimundo & Geniza's new restoration plot, the RG-P1 map polygon (Uruará, Pará), and the gallery (8 site-walk videos + 7 photos).
+
+> Note: this is the **beta** host (`beta.agroverse.shop` — the CNAME on both repos). The **production** site (`agroverse.shop`) still runs the older code — per the beta-first rule, promoting to prod happens only after **your explicit approval** to sync (`sync_beta_to_prod agroverse_shop_prod`).
+
+**RESUME HERE → remaining units (when you want them):**
+1. **MAP manifests commit** — `farm_media_manifests/raimundo-geniza-para.json` (sha256/gps/duration/yt_id × 14) — small PR.
+2. **Impact-map wiring** — `sunmint.html` FARM_SLUG in `truesight_me_beta` (~line 705) so RG-P1 shows on the impact map with a popup → profile link — separate PR.
+3. **Prod promotion** — only on your explicit "go" (`sync_beta_to_prod`).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo "=== how farms are linked (search for 'farms/' href patterns) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_s; echo "=== check branch refs of main shop index href for para farms (rancho/paulo) ==="; curl -s "https://raw.githubusercontent.com/TrueSight; echo "=== HTTP status ==="; curl -s -o /dev/null -w "%{http_code}" https://beta.agroverse.shop/farms/raimundo-geniza-para/index.html; echo e
 
