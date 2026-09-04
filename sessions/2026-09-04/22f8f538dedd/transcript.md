@@ -349,6 +349,7 @@ This is another of the 7 photos from today's batch. Let me run the same quick ch
 ### 🤖 Autopilot
 
 Same result as its siblings — no GPS, no text, no QR. Let me do the color/content profile and a subtle check for a handwritten sign or structure (edge density), then summarize.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -588,4 +589,122 @@ All **9 files** from today are now inspected:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && echo "=== EXIF ===" && exiftool -Make -Model -DateTimeOriginal -GPSLatitude -GPSLongitude -ImageWidth -ImageHeight
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] By the way, I have also made the media available in ~/raimundo_geniza.zip do an analysis, figure out how to do up their farm's profile on Agroverse.shop and then for the youtube videos perhaps have them processed via the media archive pipeline and for both the images and the youtube embeds find appropriate ones to embed in their agorverse profile page
+
+
+### 🤖 Autopilot
+
+Gary's given us a new asset: `~/raimundo_geniza.zip`. Let me inspect it and pull the context on the media-archive pipeline and how farm profiles are set up on Agroverse.shop.
+
+
+### 🤖 Autopilot
+
+477MB zip — **44 HEICs + 28 MOVs** (iPhone originals, IMG_82xx series, Sep 3, with `__MACOSX` junk). Let me unzip it and gather context on the media-archive pipeline + farm profile setup in parallel.
+
+
+### 🤖 Autopilot
+
+This is the real payload — **22 HEIC + 14 MOV (36 iPhone originals, IMG_8205–8278, Sep 3)** — a farm walk with videos, likely the actual Raimundo & Geniza plot. Let me extract GPS from all of them (HEIC + MOV) to locate the site, and read the media pipeline runbook in parallel.
+
+
+### 🤖 Autopilot
+
+**Major finding** — this zip is a **different, new location**, not Bom Sucesso:
+
+| | Bom Sucesso batch (earlier) | **raimundo_geniza.zip** |
+|---|---|---|
+| Files | 59 HEIC (Sep 2) | **22 HEIC + 14 MOV** (Sep 3, IMG_8205–8278) |
+| Lat | −3.0940…−3.0953 | **−3.6294…−3.6306** |
+| Lon | −52.0948…−52.0961 | **−53.6518…−53.6522** |
+| GPS coverage | 59/59 | **36/36** |
+
+That's **~60 km WSW of Bom Sucesso**, in the Transamazônica corridor (Uruará direction, Pará) — consistent with a genuinely **new plot for Raimundo & Geniza**. Let me now check it against the existing SunMint registry, confirm the media-pipeline tooling on the box, and learn how existing farm profiles are structured on agroverse.shop.
+
+
+### 🤖 Autopilot
+
+Tooling is all present (sunmint_work with plots geojson, YouTube uploader + token, ffmpeg, ultralytics). Let me check whether the new site (~−3.63/−53.652) is already in the plots index, look at the existing farm-media manifest + shop farm-page structure, and verify the site already has a `farms/` pattern.
+
+
+### 🤖 Autopilot
+
+New plot confirmed — no existing plot near −3.63/−53.652 (only RM/SA/CL registered). The la-do-sitio path 301'd (repo renamed/moved). Let me find the actual repo structure + how farm pages/galleries are wired (read_repo_file on `agroverse_shop` with corrected path; check `farm_media_manifests` contents).
+
+
+### 🤖 Autopilot
+
+Repos aren't checked out locally and the beta repo path guess was off. Let me list what's actually in these repos to learn the correct structure (farm pages, manifests, media dirs) before touching anything.
+
+
+### 🤖 Autopilot
+
+Structure is clear now. Existing farm profiles live at `agroverse_shop_beta/farms/<farm-id>/`. Let me study the most complete existing profile (e.g. `rancho-maranta-para`, which the runbook cites as precedent for media.json + YouTube + images) — reading its folder contents, media.json, and how index.html wires the gallery.
+
+
+### 🤖 Autopilot
+
+The pattern is now fully clear (rancho-maranta is the template: `farms/<farm-id>/` + `media.json` gallery of youtube/image entries + `assets/images/farms/`). This new zip is a genuinely **new plot** (36/36 GPS, ~60 km from Bom Sucesso). Let me run one consolidated analysis pass — convex hull for the plot polygon, media durations, and content heuristics to shortlist gallery candidates.
+
+
+### 🤖 Autopilot
+
+## Analysis complete — here's the full picture and plan
+
+### What's in `~/raimundo_geniza.zip`
+**36/36 iPhone originals with GPS** (Sep 3, 2026, IMG_8205–8278):
+
+| | Value |
+|---|---|
+| Files | 22 HEIC + 14 MOV (477 MB) |
+| Lat | −3.6294 … −3.6306 |
+| Lon | −53.6518 … −3.6522 — wait, −53.6518 … −53.6522 |
+| Location | ~170 km WSW of Bom Sucesso — **Transamazônica corridor (BR-230), Pará** (Uruará direction), NOT the earlier plot |
+
+**This is a genuinely NEW plot** — nothing registered in `sunmint/plots/index.geojson` near these coords (only RM/SA/CL exist). Earlier confusion resolved: the Sep-2 HEICs were Bom Sucesso; this zip is Raimundo & Geniza's own land.
+
+**GPS convex hull (GeoJSON order, lon/lat)** — ready for plot registration:
+```
+[-53.651900, -3.630600], [-53.652064, -3.630328], [-53.652069, -3.630306],
+[-53.652156, -3.629756], [-53.652156, -3.629744], [-53.652017, -3.629450],
+[-53.651931, -3.629464], [-53.651794, -3.629639]
+```
+(≈ 8-point polygon, ~90 × 120 m footprint.)
+
+**14 videos, all short** (6 s → 79 s, ~340 s total) — ideal for YouTube. Photos decode needs heif-convert for thumbnails (pillow alone failed; tooling present).
+
+### Naming recommendation (your original question)
+Existing convention: `paulo-la-do-sitio-para`, `rancho-maranta-para`, `santa-anna-fazenda-para`, `fazenda-cleide-para` → I propose:
+- **farm_id slug:** `raimundo-geniza-para`
+- **Display name:** **"Sítio Raimundo & Geniza"** (sítio = family smallholding; matches restoration context) — alt: "Fazenda Raimundo & Geniza"
+- **SunMint plot id:** `RG-P1` (matches LD-P1/RM-P1/CL-P1 pattern), status `proposed`, `boundary_authority: approx`
+
+### How the farm profile gets built (media archive pipeline, rancho-maranta as template)
+1. **SHA-256 dedupe** → skip anything already archived (anti-duplicate gate).
+2. **MOV→MP4** (ffmpeg) + **GPS re-inject** via exiftool (ffmpeg drops QuickTime GPS) → verify.
+3. **YouTube public upload** (admin@truesight.me) with title pattern `<Farm> — <basename> (cacao pods, <lat>, <lng>)`, retry-on-429 loop (shared quota ~50–60/day; 14 videos fits one batch).
+4. **Photos → `farm-media-raw/raimundo-geniza-para/photos/`** (Content-API only).
+5. **Manifest → `farm_media_manifests/raimundo-geniza-para.json`** (sha256, GPS, duration, yt_id).
+6. **Shop profile (beta-first):** `agroverse_shop_beta/farms/raimundo-geniza-para/` with `index.html` (hero, story, Leaflet pin + plot polygon, gallery) + `media.json` (`{type: youtube, videoId}` + `{type: image, src: ../../assets/images/farms/…}`), web-optimized JPEGs into `assets/images/farms/`. PR → beta review → prod only on your go.
+7. **SunMint plot registration:** add RG-P1 row to Plots sheet tab + `build_plots_geojson.py` → push `plots/index.geojson` (sunmint is api-only).
+
+### "Appropriate" embed selection approach
+- Videos: pick the 3–4 with substance (IMG_8210 79 s walk, IMG_8206 52 s, IMG_8235 40 s, IMG_8215 28 s) as gallery YouTube entries; skip 6 s clips or make them secondary.
+- Images: after HEIC→JPEG thumbnails, I'll select by content (vegetation/restoration work, people, boundary views) — mirrors how rancho-maranta curated 9 images.
+
+### What I need from you to execute (one go)
+1. **Confirm the display name** → "Sítio Raimundo & Geniza" (or your preferred name).
+2. **Go** on the pipeline: **yes/no on public YouTube upload** (14 videos, admin channel) and on **SunMint plot registration (RG-P1)** — these are the irreversible/public steps.
+3. Shop page is beta-first by rule (I'll PR to `agroverse_shop_beta` and show you on beta before any prod sync).
+
+**Nothing has been uploaded, registered, or pushed yet.** Ready to start with step 1 (dedupe + MP4 conversion) the moment you say go — I'll report each stage as it lands.
+
+**RESUME HERE:** on your "go" → dedupe (sha256) → MOV→MP4 + GPS verify → YouTube batch (retry loop) → farm-media-raw uploads → manifest PR → plot RG-P1 registration → agroverse_shop_beta farm profile PR → beta URL for your review.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd ~ && ls -la raimundo_geniza.zip 2>/dev/null && echo "=== CONTENTS ===" && unzip -l raimundo_geniza.zip 2>/dev/null | head -60 && echo "..; mkdir -p ~/raimundo_geniza && cd ~/raimundo_geniza && unzip -o -q ~/raimundo_geniza.zip -x '__MACOSX/*' && echo "=== extracted ===" && ls -l; cd ~/raimundo_geniza && timeout 120 python3 - <<'EOF' import subprocess, glob, re, collections, json def dms2dec(s): m=re.match(r"(\d+)\s*de; …(+6 more)
 
