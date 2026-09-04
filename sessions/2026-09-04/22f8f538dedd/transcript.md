@@ -1857,31 +1857,42 @@ Sidecar format captured (GPS DMS→decimal: IMG_8210 = −3.6303/−53.652, all 
 ### 🤖 Autopilot
 
 All 12 staged with correct GPS (all inside RG-P1 hull: −3.6302…−3.6306 / −53.6519…−53.6520). Inbox now holds **14 MP4+sidecar pairs** (2 uploaded + 12 new). The daemon sweeps ~1 video/inbox/pass — let me confirm uploads start flowing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **All 14 videos uploaded to YouTube — rc=0 on every one.** Full yt_id set collected. Now updating the profile's media.json with real youtube embeds — first checking the exact youtube-entry schema from the ranch precedent on main:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Schema confirmed (youtube = `videoId`+`title`+`caption`). Building the curated RG media.json — 8 substantive videos (≥15 s) as youtube embeds + 7 gallery images — then opening the follow-up PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 media.json built with 8 real youtube embeds + 7 images. Pushing as a follow-up PR on the same branch structure — using git_push_changes with the media.json update:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 media.json is validated and complete. Pushing the follow-up PR to update the gallery with real YouTube embeds:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Missing the `repo` param — retrying:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2045,4 +2056,72 @@ Analysis of `85523a08…jpg` vs. the current hero:
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp/tg_attachments && ls -la 85523a08f97c43ea8e340ef1ccfa5b51* 2>/dev/null echo "=== EXIF ==="; exiftool -ImageWidth -ImageHeight -Make ; cd ~ && echo "=== current hero candidate profile (IMG_8236) ==="; timeout 55 python3 - <<'EOF' from PIL import Image import numpy as np for ; echo "=== does the referenced hero file exist on beta? ==="; curl -s -o /dev/null -w "%{http_code} " https://beta.agroverse.shop/assets/imag; …(+1 more)
 • `merge pr` → ✅ PR #276 on agroverse_shop_beta merged successfully (sha: f6fffe5c95326904df92760a76f5738a1fd26d4e). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] OPtion B
+
+
+### 🤖 Autopilot
+
+Option B it is — swapping the hero to your new photo. Prep: stage the image locally and read the current media.json hero entry so the edit is exact.
+
+
+### 🤖 Autopilot
+
+Hero staged and media.json read. Executing Option B:
+1. Upload the new photo as `raimundo-geniza-hero.jpg` (additive to main)
+2. One PR swapping the 4 index.html refs + media.json hero → new file
+
+
+### 🤖 Autopilot
+
+Image uploaded to main (commit `cf15416`). Now the one PR: swap all hero refs (index.html ×4 + media.json hero src):
+
+
+### 🤖 Autopilot
+
+PR #279 opened with the hero swap. Merging it (validated — real file, exact refs):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Hero swapped — PR #279
+
+**"Hero: Sítio Raimundo & Geniza → new plot photo"** — [agroverse_shop_beta PR #279](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/279) merged (sha `98379b7`)
+
+### What changed (Option B — your photo is now the hero)
+| File | Change |
+|---|---|
+| `assets/images/farms/raimundo-geniza-hero.jpg` | **New hero image** added directly to main (commit `cf15416`) — your 1280×960 plot photo |
+| `farms/raimundo-geniza-para/index.html` | 4 refs (og:image, twitter:image, CSS hero bg ×2) → `raimundo-geniza-hero.jpg` |
+| `farms/raimundo-geniza-para/media.json` | `hero.src` → `raimundo-geniza-hero.jpg` |
+
+Old `hero-8236.jpg` stays as IMG_8236 in the gallery (still referenced by its image entry).
+
+## 🔗 View it live: **https://beta.agroverse.shop/farms/raimundo-geniza-para/index.html**
+
+## RESUME HERE → next units (fresh turn)
+1. **Verify** the new hero renders (HTTP 200 on `raimundo-geniza-hero.jpg` + page).
+2. **MAP manifests commit** — `farm_media_manifests/raimundo-geniza-para.json` (14 videos' sha/gps/duration/yt_id).
+3. **Impact-map wiring** — `sunmint.html` FARM_SLUG in `truesight_me_beta` so RG-P1 shows on the map with popup → profile link.
+4. **Prod promotion** — only on your explicit go (`sync_beta_to_prod`).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×1 → cp /tmp/tg_attachments/85523a08f97c43ea8e340ef1ccfa5b51.jpg ~/rg_shop_assets/raimundo-geniza-hero.jpg (+PIL open check)
+• `upload local file` → agroverse_shop_beta/assets/images/farms/raimundo-geniza-hero.jpg (commit cf15416)
+• `git push changes` → PR #279 (index.html ×4 refs + media.json hero)
+• `merge pr` → ✅ PR #279 merged (sha 98379b75fc841686aa4af5e4cc0a7fc05fb6430d)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cp /tmp/tg_attachments/85523a08f97c43ea8e340ef1ccfa5b51.jpg ~/rg_shop_assets/raimundo-geniza-hero.jpg && echo "copied:" && ls -la ~/rg_shop_
+• `merge pr` → ✅ PR #279 on agroverse_shop_beta merged successfully (sha: 98379b75fc841686aa4af5e4cc0a7fc05fb6430d). Pull Request successfully merged
 
