@@ -523,26 +523,31 @@ Built successfully — 6 pages A4, all changes verified in the text layer:
 - **English-prevails clause** present (1×)
 
 Let me quickly verify the signature image still renders on the final page, then deliver.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The listing got truncated by `head -8`. Let me confirm the signature image is embedded on the final page:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Only page 1's logo appears in the pdfimages listing — I need to confirm the signature is actually embedded on page 6. Let me check cleanly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the bug — in v2 the `SIG` block is a plain string inserted into the f-string, so `{sig_b64}` was never interpolated (the signature image is missing — only the logo embedded; the 5.11% dark was typed text). Fixing by making `SIG` an f-string:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Fixed — the signature image (342×165) is now embedded on page 6 alongside the logo on page 1. (The dark% reads the same because the typed name/title lines dominate that region, but the image is confirmed present in the PDF objects.) Let me deliver the bilingual PDF and archive it alongside the EN version.
+[2 tool result(s) compacted: send_telegram_attachment, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -581,6 +586,7 @@ Before sending to Jedielcio, decide whether the **ISO-7810 card with tree ID** n
 ### 🤖 Autopilot
 
 Notarization is a legal act I can't perform myself (I'm not a commissioned notary public — a notary must verify identity and witness the signature live), but I can absolutely help you get it done right. Let me verify the current mechanics for California (where you'd sign) and Brazil (where Jedielcio signs).
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -618,11 +624,13 @@ Which option do you want — A, B, or C? And should the notarized version keep y
 ### 🤖 Autopilot
 
 Ah — you mean recording this as a **ledger event** on the DAO (signed RSA event via Edgar), not a state notary. Let me check what event types the DApp/Edgar catalog supports for this.
+[2 tool result(s) compacted: lookup_event_docs, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There **is** a NOTARIZATION event in Edgar's live catalog — "Notarize a supply chain document" with fields **Document Hash, Description, Witnesses** (DApp page `notarize.html`). This is exactly the ledger-notarization route. Let me confirm the exact event-name string and compute the SHA-256 of the agreement PDF.
+[2 tool result(s) compacted: lookup_event_docs, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -772,4 +780,35 @@ Just say the number(s) and I'll record it on the ledger.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /home/ubuntu/sunmint_agreement && ls -la --time-style=full-iso *.py *.pdf 2>/dev/null && echo '--- logos/sigs ---' && ls -la --time-style; grep -rl "1003919341801\|20794" /opt/truesight_autopilot/logs /opt/truesight_autopilot/state /home/ubuntu/truesight_autopilot* /tmp 2>/dev/n; ls -lat --time-style=full-iso /opt/truesight_autopilot/state/ 2>/dev/null | head -8; echo '--- transcript dir ---'; ls -lat --time-style=ful; …(+9 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20794] Single entry
+
+
+### 🤖 Autopilot
+
+One single entry combining the work. Let me verify the event format first, then submit.
+
+
+### 🤖 Autopilot
+
+Event format confirmed: **Type**, **Amount**, **Contributor(s)**, **Description**, TDG Issued. Submitting one combined entry (~60 min total for both of us):
+
+
+### 🤖 Autopilot
+
+✅ **Contribution recorded as a single entry.**
+
+- **Event:** `CONTRIBUTION EVENT`
+- **Type:** Time (Minutes) · **Amount:** 60
+- **Contributor(s):** Gary Teh; Sophia Truesight
+- **Description:** Drafting + notarizing the SunMint–CEPOTX Tree Planting Support Agreement (3,000 trees @ R$5 = R$15,000 via PIX) — v1 EN + v2 bilingual EN/PT PDFs (ISO-7810 card-at-trunk, Acorn/Plan Vivo species clauses, Laguna Beach address), archival to `go_to_market/agreements/`, and the NOTARIZATION EVENT anchoring SHA-256 `c554c047…` on the DAO ledger.
+
+One clean ledger row covering both our time. Anything else on this thread — PT cover email for Jedielcio's countersignature round, or a follow-up when the evidence starts arriving?
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
