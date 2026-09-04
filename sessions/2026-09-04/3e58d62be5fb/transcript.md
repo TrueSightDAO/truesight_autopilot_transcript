@@ -487,6 +487,7 @@ On it — four changes: (1) Laguna Beach address, (2) supported/native Amazon sp
 ### 🤖 Autopilot
 
 Now let me read the build script and dig into the card protocol details in the DAO's own docs (sunmint.truesight.me spec) plus the Acorn species research.
+[3 tool result(s) compacted: read_local_file, search_code, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -604,4 +605,45 @@ Short answer: **I can't perform the notarization myself** — notarization is a 
 Also note: our current PDF has your **pre-printed signature image** on it. For a clean notarization you'll typically sign **in front of the notary** — so in option A I'd **remove the stamped image** and leave a **blank wet-signature line** above your name/title (or keep the image as a courtesy copy only if you prefer).
 
 Which option do you want — A, B, or C? And should the notarized version keep your pre-printed signature image, or switch to a blank line for in-person signing?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20794] I mean submit a notarization event via the RSA event exposed on our DApp
+
+
+### 🤖 Autopilot
+
+Ah — you mean recording this as a **ledger event** on the DAO (signed RSA event via Edgar), not a state notary. Let me check what event types the DApp/Edgar catalog supports for this.
+
+
+### 🤖 Autopilot
+
+There **is** a NOTARIZATION event in Edgar's live catalog — "Notarize a supply chain document" with fields **Document Hash, Description, Witnesses** (DApp page `notarize.html`). This is exactly the ledger-notarization route. Let me confirm the exact event-name string and compute the SHA-256 of the agreement PDF.
+
+
+### 🤖 Autopilot
+
+Confirmed — the canonical event is **`NOTARIZATION EVENT`** ("Notarize a supply chain document", DApp page `notarize.html`). Required field: **Document Hash**; optional: **Description**, **Witnesses**.
+
+Document hash computed for the bilingual agreement:
+`c554c0475d70761ca7c604c6922e737da14f2a2933c6f3806db9bf21a684507a`
+
+Before I submit — one choice: **which signer identity** should this notarization event be signed under? Options:
+1. **You (Gary Teh / TrueTech)** — signs as the party executing the agreement,
+2. **Sophia Truesight** (admin@sophia / my registered identity) — signs as the DAO's record-keeper witnessing/notarizing the document on-chain,
+3. **Both** — but one event = one RSA identity, so this would need two submissions.
+
+Also confirming the event details I'd submit:
+
+- **Event:** `NOTARIZATION EVENT`
+- **Document Hash:** `c554c047…84507a` (SHA-256 of the bilingual EN-PT PDF, which is archived at `go_to_market/agreements/…bilingual_EN-PT.pdf`, commit `445a5d7`)
+- **Description:** e.g. "SunMint–CEPOTX Tree Planting Support Agreement (EN/PT, 3,000 trees @ R$5 = R$15,000 via PIX), 4 Sep 2026, TrueTech Inc + CEPOTX"
+- **Witnesses:** (optional) e.g. "Jedielcio Oliveira, CEPOTX — countersignature pending" or blank
+
+Which signer identity (1 or 2, or both as two events)? And is that description + witness text good, or would you like it worded differently?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /home/ubuntu/sunmint_agreement && sha256sum SunMint_Tree_Planting_Support_Agreement_CEPOTX_20260904_bilingual_EN-PT.pdf
 
