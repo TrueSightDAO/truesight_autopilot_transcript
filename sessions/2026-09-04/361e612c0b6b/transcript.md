@@ -4278,31 +4278,37 @@ Wait — the fbs page has the mobile-menu script with `<div class="mobile-menu-o
 ### 🤖 Autopilot
 
 Found a key requirement: media-gallery.js fetches **`./media.json`** (a per-farm JSON file). My page has the `#media-gallery` div but **no `media.json`** in the farm folder — the script tries `fetch('./media.json')` and if it 404s, the gallery fails (and could throw, breaking downstream script execution → styling/JS collapse). Let me verify the media.json exists in rancho's folder and check my page's fetch handling:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found one real gap (**`media.json` missing** — every other farm has it; the gallery's fetch 404s). But "broken styling" suggests something bigger. Rather than keep guessing, let me actually **see** the page — check for a headless browser to screenshot it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Playwright IS available (chromium-1208). Let me screenshot the actual beta page to SEE the breakage instead of guessing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Playwright browsers exist but the Python module isn't in system python. Let me check for a venv that has it, or use chromium headless directly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Chromium needs a fresh profile dir. Let me retry with `--user-data-dir`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Chromium is snap-confined and can't create its socket dir under /tmp. Let me use the node playwright that exists in dapp_beta's node_modules:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4446,4 +4452,107 @@ The "broken styling" report is **most plausibly the empty gallery area** (media.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp && echo "=== raimundo-geniza (newest template) structure vs mine ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agr; cd /tmp && echo "=== raimundo sections (h2/h1 sequence) ===" && grep -nE '<h[12][^>]*>' rg.html | head -20 && echo "" && echo "=== fbs secti; cd /tmp && echo "=== raimundo hero markup (lines 505-530) ===" && sed -n '505,530p' rg.html && echo "" && echo "=== fbs hero markup (lines 2; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] There should be a unit test for the footer and header menu items across all pages, can you find it and run it against this page to ensure the unit tests passes once done commit it.
+
+
+### 🤖 Autopilot
+
+Gary wants me to find the unit test covering footer/header menu items across all pages, run it against the fazenda-bom-sucesso page, and commit once green. Let me search the repo for the test:
+
+
+### 🤖 Autopilot
+
+Found a `tests/` directory and test runner. Let me explore the tests structure and find the footer/header menu test:
+
+
+### 🤖 Autopilot
+
+Found the test files. The most relevant are `header-footer-consistency.spec.ts` and `nav-footer-relationship.spec.ts`. Let me read them to understand what they verify:
+
+
+### 🤖 Autopilot
+
+This is exactly the test Gary means — it checks header + footer menu item consistency across all pages via the shared chrome. My new farm page uses the same shared-chrome.js, so it *should* pass — but the test's `ALL_PAGES` list needs my page added to actually exercise it. Let me read the rest of the spec to understand the flow and how pages get tested:
+
+
+### 🤖 Autopilot
+
+I understand the test now. Let me check the playwright config (baseURL) and whether there's an easy way to run just this spec. First let me clone the repo and set up:
+
+
+### 🤖 Autopilot
+
+This test verifies header/footer menu consistency across `ALL_PAGES` — and my new page isn't in that list yet. The right move per Gary's instruction: add `/farms/fazenda-bom-sucesso` to `ALL_PAGES`, run the spec against the beta site, and commit when green. Let me set up a local checkout:
+
+
+### 🤖 Autopilot
+
+No agroverse_shop_beta checkout on the box — let me clone it and set up the test environment:
+
+
+### 🤖 Autopilot
+
+Deps installed and chromium browser is cached. Now let me add my page to the test's `ALL_PAGES` list and run the spec against the beta site:
+
+
+### 🤖 Autopilot
+
+Now let me run the spec against the beta site (BASE_URL set to beta, server disabled):
+
+
+### 🤖 Autopilot
+
+**All 3 tests passed** — including `/farms/fazenda-bom-sucesso: Navigation structure is correct`. The header/footer consistency suite is green with my page included, which also confirms the shared chrome (nav + footer) renders correctly on the page. Now let me commit the test addition:
+
+
+### 🤖 Autopilot
+
+Clean single-line addition. Now committing via a PR (branch + push — the proper flow for code changes):
+
+
+### 🤖 Autopilot
+
+PR opened. Merging it (Gary said "once it passes commit it" — the tests pass, so merging completes the commit):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn complete — header/footer consistency test now covers Fazenda Bom Sucesso
+
+**PR: [agroverse_shop_beta #275](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/275)** — `test: add fazenda-bom-sucesso to header/footer consistency suite` — **merged** (sha `fcb14075`).
+
+### What I did
+1. **Found the test** — `tests/header-footer-consistency.spec.ts` in `agroverse_shop_beta` (Playwright): verifies header nav items, footer nav items, and nav structure are consistent across every page in its `ALL_PAGES` list (driven by the shared chrome `shared-chrome.js`).
+2. **Added `/farms/fazenda-bom-sucesso`** to `ALL_PAGES` (next to the other Pará farm pages).
+3. **Ran the full spec against the live beta site** (`BASE_URL=https://beta.agroverse.shop`): **3 passed** (~2.4 min) —
+   - ✅ Header nav menu items consistent across all pages
+   - ✅ Footer nav menu items consistent across all pages
+   - ✅ Navigation structure (nav-links present) — `/farms/fazenda-bom-sucesso: Navigation structure is correct`
+4. **Committed via PR #275 and merged.**
+
+### Bonus finding (answers the earlier "broken styling" report)
+The test passing on my page **proves the header and footer render correctly** via shared-chrome — the nav/footer are not broken. The remaining confirmed issue is still the **empty media gallery** (`media.json` 404 → media-gallery.js renders nothing), which is what makes the page look incomplete vs. other farms.
+
+---
+
+**RESUME HERE → next unit (fresh turn):**
+1. **Fix the empty gallery + embed Paulo's interview content** (Nobody's suggestion): fetch `farms/raimundo-geniza-para/media.json` (HTTP 200 — the schema model), create `farms/fazenda-bom-sucesso/media.json` with Paulo's 17 interview clips + the 14 farm photos (10 trees + 4 corners, already in `sunmint/images/`). Need to host the video clips (check `farm-media-raw` / `farm_media_manifests` conventions or convert key clips to YouTube/HLS). Push via PR → merge → beta updates → re-screenshot to confirm the gallery renders.
+2. Re-run the header/footer suite if anything in the shared chrome changes (it shouldn't — media.json is page-local).
+3. Await Gary's visual sign-off on the beta page (screenshot `/tmp/fbs_beta.png` was posted to the thread) before the **prod sync** (`sync_beta_to_prod(agroverse_shop_prod)`) — the original ask: get `https://agroverse.shop/farms/fazenda-bom-sucesso/` live.
+
+**Done this turn:** located the header/footer consistency spec; added my page to its ALL_PAGES; ran it against beta → **3/3 passed**; PR #275 merged.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×11 → cd /tmp && echo "=== search agroverse_shop_beta for tests ===" && curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/git; cd /tmp && python3 -c " import json d = json.load(open('tree.json')) paths = [t['path'] for t in d.get('tree', [])] tests = [p for p in path; cd /tmp && echo "=== header-footer-consistency.spec.ts ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/m; …(+8 more)
+• `merge pr` → ✅ PR #275 on agroverse_shop_beta merged successfully (sha: fcb14075a01847e038d7ae65722c403aecb119ca). Pull Request successfully merged
 
