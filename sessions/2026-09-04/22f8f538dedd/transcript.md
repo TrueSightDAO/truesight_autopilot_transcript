@@ -2528,16 +2528,19 @@ Now I understand the scheme — **site codes follow `[letter]-[co-op]-[plot]`** 
 ### 🤖 Autopilot
 
 The site-code scheme docs are thin in context. I have enough to act on Gary's explicit go with the verified facts. Let me execute the three agreed updates: (1) add COPOPS entity to fda_fsvp, (2) register Raimundo as a source farm with the U-06-07 code, (3) update the CEPOTX entity source_farms list. Let me check the repo structure first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Recon complete. The scheme is clear: **site codes = `[prefix]-06-[site#]`** (e.g. Santa Anna = B-06-58 under COOPOXIN, listed in CEPOTX's entity). U-06-07 follows the same pattern for COPOPS. Gary's go covers: COPOPS entity + U-06-07 registration + profile affiliation. Let me get the exact index structure to edit precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Recon complete — the index schema is clear. Executing Gary's go: creating the **COPOPS entity record** + updating the **CEPOTX entity** (source farm Raimundo & Geniza with code U-06-07) + index — one PR.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2707,4 +2710,88 @@ Anything else on Raimundo & Geniza, or shall we call this one complete? 🌳
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== prod page: COPOPS present? ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_prod/main/farms/raimundo-g
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] examine the current SOP for listing new farms to Agroverse and Sunmint and see if anything is missing in the instruction set for LLMs and Sophia’s to follow. 
+
+Perhaps suggest updates
+
+
+### 🤖 Autopilot
+
+Gary — good self-improvement ask. Let me examine the current SOP docs for farm listing/onboarding, then diff them against what we actually had to discover the hard way this week.
+
+
+### 🤖 Autopilot
+
+My searches for MEDIA_ARCHIVE_PIPELINE and "farm profile onboarding" came back empty — let me check what SOP docs actually exist and read the plots registry runbook.
+
+
+### 🤖 Autopilot
+
+Odd — those return zero even though I referenced such docs earlier. Let me inventory all context files directly.
+
+
+### 🤖 Autopilot
+
+`MEDIA_ARCHIVE_PIPELINE.md` exists (search tooling may be indexing issues). Let me read it plus the plots-registry and E2E runbooks — the three core SOPs for this exact flow.
+
+
+### 🤖 Autopilot
+
+Good — I now have the two core SOPs fresh. Let me check OPEN_FOLLOWUPS (to avoid filing duplicates) and see what fsvp/agroverse sub-docs exist before I write the gap analysis.
+
+
+### 🤖 Autopilot
+
+Found the key doc: `agroverse/AGROVERSE_FARM_PAGE_CONVENTIONS.md` — the farm-listing SOP. Let me read it and the FSVP supplier-onboarding process (the two SOPs covering this flow).
+
+
+### 🤖 Autopilot
+
+Analysis complete. I read the 5 SOPs that govern this flow and diffed them against what we actually did (and hit) across the Raimundo & Geniza build this week.
+
+## The SOP landscape today — 5 docs, no single entry point
+
+| Doc | Covers | Gap vs. reality |
+|---|---|---|
+| `SUNMINT_TREE_PHOTO_PROCESSING.md` | HEIC GPS extraction, dig-time clustering, tree/boundary events | Bom Sucesso-era; nothing about naming/attribution gate |
+| `SUNMINT_PLOTS_REGISTRY.md` | New plot definition, farm_id, geojson regen | ✅ mostly solid |
+| `MEDIA_ARCHIVE_PIPELINE.md` | MOV→MP4, YouTube, manifests | **Daemon flow undocumented** (see #2) |
+| `AGROVERSE_FARM_PAGE_CONVENTIONS.md` | Page anatomy, hero, slug, gotchas | No post-clone token-check step |
+| `fsvp/SUPPLIER_ONBOARDING_PROCESS.md` | FSVP supplier records | No farmer-identity/sub-coop verification step |
+
+## What's missing — gaps we paid for this week
+
+1. **No end-to-end "list a NEW farm" checklist.** The 5 docs cover fragments; nothing walks a Sophia from *"zip arrives"* → *"who are these people?"* → *"is this already registered?"* → *"name it"* → register → profile → map → records. **That's why this thread spent ~15 tool rounds confused** about whether Raimundo & Geniza = Fazenda Bom Sucesso.
+
+2. **The media daemon (current reality) is undocumented.** `MEDIA_ARCHIVE_PIPELINE.md` §7 only documents the legacy one-shot `upload_video_to_youtube.py`. The live flow — inbox at `~/media_archive_inbox/farm-media/<farm>/`, sidecar **must sit beside the .mp4 in the inbox**, GPS tag `Keys:GPSCoordinates`, 1 video/inbox/pass @ ~30 s, **other farms queue ahead** (cleide had 71!), log at `/tmp/farm_media_daemon.log`, new farm = add inbox to daemon config yaml + restart — was discovered entirely by trial. A future Sophia following the doc would burn shared YouTube quota on the legacy path.
+
+3. **No identity / attribution / naming gate.** Nothing says: *before registering, check the existing registry for overlap; never assume a batch belongs to a registered farm; never attribute ownership without governor confirmation; naming: Sítio = family smallholding vs Fazenda = estate; ask, don't invent.* Both our near-misses (mis-attributing to Bom Sucesso; the "Fermentation" highlight leftover from a template clone) trace here.
+
+4. **media.json youtube schema drift.** MAP doc §9 says `{type: youtube, id: yt_id}` — **wrong**. Actual (ranch + our build): `{type: youtube, videoId, title, caption}`. Conventions doc says `{videoId, title}`. Also: literal UTF-8, never `\u00e1` (gotcha #5 there, but worth repeating).
+
+5. **Post-clone token check missing** — the "grep for template remnants" step would have caught the broken hero ref (`header-7660` 404, PR #276) and the `raimundo-geniza-para-para` canonical bug (PR #282). Add: after cloning a farm page, grep for the source farm's names/CEPOTX/header filenames + fix canonical/og:url/twitter:url (slug concat double-appends `-para`).
+
+6. **Cross-environment dead link.** Impact map (prod truesight.me) links to `agroverse.shop` (prod) — 404 until the profile is promoted. Note in the runbook: "profile must reach prod (or map link updated) before the impact-map popup link is clickable."
+
+7. **Sub-cooperative structure + site-code letter prefixes undocumented.** Public records: CEPOTX coordinates **COPOPS, COOPOXIN, COPOTRAN, COPCAO** (spelled **COPOPS** one O — Gary's "COOPOPS" was the only source with two); Raimundo Silva = COPOPS **Presidente**. The `U-06-07` scheme letter-prefix meaning (U = ?) isn't written down anywhere — a future Sophia can't decode codes without re-deriving them.
+
+8. **`search_context` is missing files** — queries for `MEDIA_ARCHIVE_PIPELINE` and farm-onboarding terms return **0 matches** even though the files exist and contain those strings (index staleness?). Worth verifying + filing.
+
+## Suggested updates (small, one PR each or one combined)
+
+- **New `AGROVERSE_SUNMINT_FARM_LISTING.md`** — the single end-to-end checklist (identity → registry check → naming gate → register → MAP → profile → map → FSVP), with the RG build as the worked example and all cross-links. **This is the main fix.**
+- **`MEDIA_ARCHIVE_PIPELINE.md`** — rewrite §7 for the daemon flow (inbox+sidecar pairing, config add, pacing, log path); fix §9 youtube schema.
+- **`AGROVERSE_FARM_PAGE_CONVENTIONS.md`** — add post-clone token-grep + canonical-URL steps; add "hero must be humans-first" note (your RG hero photo is scenery — per their own rule, worth flagging).
+- **`SUNMINT_PLOTS_REGISTRY.md`** — add identity/attribution gate + naming guidance (Sítio vs Fazenda) + sub-coop/site-code note.
+- **`OPEN_FOLLOWUPS.md`** — file the `search_context` indexing gap.
+
+**Want me to open the PR(s)?** I'd suggest one combined doc PR to `agentic_ai_context` (all five edits) so it lands reviewable as a single unit — or separately if you prefer per-doc diffs.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== agentic_ai_context file list (via GitHub API) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/contents; echo "=== agroverse/ subfolder ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/contents/agroverse" | python3 -c
 
