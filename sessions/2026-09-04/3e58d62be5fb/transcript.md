@@ -493,11 +493,13 @@ Now let me read the build script and dig into the card protocol details in the D
 ### 🤖 Autopilot
 
 I have the builder script. Now let me read the SunMint growth-monitoring plans (they should specify the card protocol/dimensions) and check the live sunmint.truesight.me site.
+[3 tool result(s) compacted: read_context_file, read_context_file, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The SunMint monitoring spec confirms the card protocol: **"calibration/reference card (ISO-7810)"** held against the trunk at breast height — that's the card-dimension answer (ISO-7810 ID-1 = the standard bank-card size, **85.60 × 53.98 mm**). Let me confirm the exact spec wording, pull the rest of the build script (I need its tail), and check the DAO's supported-species registry.
+[3 tool result(s) compacted: search_code, read_tool_result, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -646,4 +648,31 @@ Which signer identity (1 or 2, or both as two events)? And is that description +
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /home/ubuntu/sunmint_agreement && sha256sum SunMint_Tree_Planting_Support_Agreement_CEPOTX_20260904_bilingual_EN-PT.pdf
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20794] You.
+
+
+### 🤖 Autopilot
+
+Submitting the ledger notarization now under my registered DAO identity — **Sophia Truesight (admin+sophia@truesight.me)** — as the DAO's record-keeper:
+
+
+### 🤖 Autopilot
+
+✅ **Notarization event submitted to the DAO ledger.**
+
+- **Event:** `NOTARIZATION EVENT` — "Notarize a supply chain document" (DApp page: `notarize.html`)
+- **Signer:** Sophia Truesight (admin+sophia@truesight.me) — DAO record-keeper
+- **Document Hash:** `c554c0475d70761ca7c604c6922e737da14f2a2933c6f3806db9bf21a684507a` (SHA-256 of the bilingual EN-PT agreement PDF, archived at `go_to_market/agreements/…_bilingual_EN-PT.pdf`, commit `445a5d7`)
+- **Description:** SunMint–CEPOTX Tree Planting Support Agreement — 3,000 trees @ R$5 = R$15,000 via PIX, 4 Sep 2026, TrueTech Inc + CEPOTX
+- **Witnesses:** Gary Teh (President, TrueTech Inc); Jedielcio Oliveira (CEPOTX representative)
+
+The agreement's hash is now immutably anchored on the DAO ledger — anyone can verify the archived PDF hasn't been altered by recomputing its SHA-256 and matching it against this event. (This is the DAO's digital notarization; it doesn't replace a state notary/apostille if the counterparty or a Brazilian cartório ever demands one — but as a blockchain-anchored authenticity record, it's the strongest evidence trail the DAO itself can produce.)
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
 
