@@ -755,6 +755,7 @@ Now let me lock the naming and the registration write-path (Farms sheet id + gen
 ### 🤖 Autopilot
 
 Gary's instruction is clear — **name this new plot** (not Bom Sucesso). Before I register anything, I need the canonical sheet schema so my row lands cleanly and regenerates the geojson properly.
+[2 tool result(s) compacted: read_google_sheet, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -762,11 +763,13 @@ Gary's instruction is clear — **name this new plot** (not Bom Sucesso). Before
 Gary's direction is clear — **name it, don't ask again**. Locking in the name: **"Sítio Raimundo & Geniza"** (sítio = family smallholding — fits a couple starting a restoration plot; honors them directly; registry pattern `fazenda-cleide`/`rancho-maranta` → farm display name style). Plot id **RG-P1**, status `proposed`, boundary `approx` (photo/video hull).
 
 Now let me finalize the exact hull + area and check the Farms tab schema so the registration rows land cleanly.
+[3 tool result(s) compacted: ssh_run, read_google_sheet, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the plot geometry (8-point hull, 0.317 ha, centroid −3.629911/−53.652011). The Farms tab name differs — let me find the actual tab name and check write-access for the QR-code-manager SA on this sheet.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -926,4 +929,58 @@ Want me to start with #1 (the farm profile page)?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/tg_attachments && ls -la ca9a107ce6e349f694bb7d6df4dcfad2* 2>/dev/null; echo "---sha256 of attachment---"; sha256sum ca9a107ce6e349f; cd ~/raimundo_geniza && echo "--- sha-match attachment against zip batch ---" && find . -iname "*.HEIC" -o -iname "*.MOV" | while read f; do
 • `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-09-04/daf89bf8828c/transcript.md
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **f4bfe2f959364123a0dfde84a43b3d86.HEIC**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+- Note: HEIC converted to JPEG (EXIF/GPS preserved)
+- 📍 GPS: -3.629639, -53.651794 (alt 174.4 m)
+- 🕐 Captured: 2026:09:03 14:47:03
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Another source original from the RG site visit — and this GPS point (−3.629639, −53.651794) is **hull vertex #8** of the RG-P1 polygon (the closing vertex). Let me confirm the file identity.
+
+
+### 🤖 Autopilot
+
+Confirmed — same pattern as the last one: a source original from the RG site visit, already part of the RG-P1 registration batch.
+
+## Inspection: `f4bfe2f959364123a0dfde84a43b3d86.HEIC`
+
+| Property | Value |
+|---|---|
+| File identity | **`IMG_8249.HEIC`** — byte-identical (sha256 match) to a file in `~/raimundo_geniza.zip` |
+| Device | iPhone 12 Pro Max (original, 3024×4032) |
+| 📍 GPS | **−3.629639, −53.651794** (alt 174.3 m) |
+| 🕐 Captured | 2026-09-03 14:47 local |
+| Scene | very low green (0%), warm earth/soil tones (mean RGB 140/117/92), ~17% dark — dry ground/cleared area photo |
+| OCR/QR | none |
+
+**Finding:** Its GPS point is **hull vertex #8** (closing vertex) of the registered **RG-P1 polygon** ("Sítio Raimundo & Geniza Plot 1"). Like the previous file, this is one of the **36 source originals** (22 HEIC + 14 MOV) whose GPS hull defined RG-P1 — already registered in the SunMint ledger + `plots/index.geojson` + `farms/index.json` (both pushed).
+
+**No new action needed** — accounted for in the RG-P1 registration. Together these two source-original confirmations (vertices #4 and #8 of the hull) validate that the registered polygon comes from real GPS-tagged ground photos of the couple's plot.
+
+**Still awaiting your go** on the next units:
+1. **Agroverse farm profile** (`agroverse_shop_beta/farms/raimundo-geniza-para/`)
+2. **MAP media pipeline** (MOV→MP4 → YouTube + farm-media-raw + manifest)
+3. **Impact-map wiring** (`sunmint.html` FARM_SLUG)
+
+Say the word and I'll build #1 first.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && ls -la f4bfe2f959364123a0dfde84a43b3d86* 2>/dev/null && sha256sum f4bfe2f959364123a0dfde84a43b3d86.HEIC; echo "--- sha-match against zip ---"; cd ~/raimundo_geniza && find . \( -iname "*.HEIC" -o -iname "*.MOV" \) | while read f; do h=$(sha256sum "$f" | cut -d' ' -f1); if [ "$h" = "$(sha256sum /tmp/tg_attachments/f4bfe2f959364123a0dfde84a43b3d86.HEIC | cut -d' ' -f1)" ]; then echo "MATCH: $f"; fi; done; echo "(scan done)"; echo "--- scene check ---"; timeout 40 python3 - <<'EOF'…(+1 more)
+• `append to transcript` → appended earlier this session
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && ls -la f4bfe2f959364123a0dfde84a43b3d86* 2>/dev/null && sha256sum f4bfe2f959364123a0dfde84a43b3d86.HEIC; echo "---
 
