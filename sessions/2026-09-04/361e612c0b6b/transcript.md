@@ -3927,11 +3927,13 @@ Let me build the beta page now — assembling a faithful adaptation of the ranch
 ### 🤖 Autopilot
 
 Page drafted on disk (25.9 KB, all key markers present — the last count was a bad check string, the actual quote uses `<em>It's a small farm...`). Now let me verify the style block made it in (the shared `<style>` with `.farm-hero`, `.highlights-grid`, `.map-container` etc.), then push to beta:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Page is complete and well-formed (style block in, hero with photo, map with polygon + marker, quotes present). Now pushing to the **beta** repo (`agroverse_shop_beta`, not prod — beta-first rule):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3982,6 +3984,7 @@ Use this as the hero image?
 ### 🤖 Autopilot
 
 Let me inspect the hero image first — dimensions/quality check before wiring it in:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4099,4 +4102,40 @@ If it's a better fit, say "swap to it" and I'll: upload → rewire the 3 refs on
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /tmp/tg_attachments && ls -la 60e6d059807743beb0708c7708669de0.jpg 2>/dev/null && file 60e6d059807743beb0708c7708669de0.jpg && python3 -c; cd /tmp/tg_attachments && KEY=$(grep -E '^GEMINI_API_KEY=' /opt/truesight_autopilot/.env | head -1 | cut -d= -f2- | tr -d '"' | tr -d "'") &
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] what is the URL of that profile?
+
+
+### 🤖 Autopilot
+
+Good question — let me confirm exactly what URL the page will live at (and the beta preview URL) rather than guess:
+
+
+### 🤖 Autopilot
+
+Here's the answer, with both URLs (the page is currently a 404 because the PR isn't merged yet):
+
+## The URL of the farm profile
+
+| Stage | URL | Status |
+|---|---|---|
+| **Beta preview** (after merging PR #272 to `agroverse_shop_beta`) | **https://beta.agroverse.shop/farms/fazenda-bom-sucesso/** | 📍 will live here first |
+| **Production** (after you approve the prod sync) | **https://agroverse.shop/farms/fazenda-bom-sucesso/** | the URL you flagged as missing |
+
+**Context:**
+- The shop homepage (agroverse.shop) links farms via relative `farms/<slug>/index.html` — the existing ones (fazenda-capelavelha-bahia, oscar-bahia, paulo-la-do-sitio-para, etc.) are all in that pattern. Fazenda Bom Sucesso's page will follow the same convention once the PR lands.
+- The beta site **does exist** — `beta.agroverse.shop/farms/rancho-maranta-para/` returns HTTP 200 (I verified), so the beta preview URL above is real and will serve the page the moment #272 is merged.
+
+**So right now the profile URL is `https://agroverse.shop/farms/fazenda-bom-sucesso/` (404 — not yet published).** To make it live:
+1. I merge PR **#272** → page appears at **beta.agroverse.shop/farms/fazenda-bom-sucesso/** for your review
+2. You approve → I sync to prod (`agroverse_shop_prod`) → page appears at **agroverse.shop/farms/fazenda-bom-sucesso/**
+
+Want me to merge #272 to beta now so you can eyeball it at the beta URL?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && echo "=== how farm pages are linked from the shop homepage ===" && curl -s "https://agroverse.shop/" | grep -oiE 'href="[^"]*farm
 
