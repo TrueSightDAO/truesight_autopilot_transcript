@@ -2236,3 +2236,69 @@ The impact-map link points to **`agroverse.shop` (PRODUCTION)** — but the RG f
 
 Want me to promote to production now?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] remote to production. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Roger — promoting to production now via beta→prod sync.
+
+
+### 🤖 Autopilot
+
+Prod sync successful. Let me verify the farm profile is live on production.
+
+
+### 🤖 Autopilot
+
+Sync succeeded but the page 404s with a redirect — let me investigate. The files may exist in the repo but the site structure/redirect differs, or Pages needs a moment to rebuild.
+
+
+### 🤖 Autopilot
+
+Files exist in the prod repo (index.html, media.json, hero = 200), but the live URL 404s. Let me check how existing farm profiles resolve on prod to find the correct URL pattern.
+
+
+### 🤖 Autopilot
+
+Ranch (existing) = 200, RG = 404 — but RG files ARE in the prod repo. This is likely **GitHub Pages rebuild lag** (the sync landed at 18:31Z; Pages takes a minute or two to republish). Let me confirm via the Pages deployment status:
+
+
+### 🤖 Autopilot
+
+Sync commit landed at 18:31:37Z (a1418c08) — content is in the prod repo (hero raw = 200). The live 404 is almost certainly **GitHub Pages rebuild lag** (~1–3 min after push). Let me wait and retry:
+
+
+### 🤖 Autopilot
+
+## ✅ Live on production!
+
+The 404 was just GitHub Pages rebuild lag (~90 seconds after the sync). Now confirmed **live on prod**:
+
+| Check | Result |
+|---|---|
+| Profile page | **200** — `https://agroverse.shop/farms/raimundo-geniza-para/index.html` |
+| Title | "**Sítio Raimundo & Geniza - Pará, Amazon Rainforest | Agroverse**" |
+| Hero image | **200** (`raimundo-geniza-hero.jpg`) |
+
+**Deploy record:** [deploy_20260904T183138Z_agroverse-shop-prod](https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260904T183138Z_agroverse-shop-prod.md)
+
+### What this means — the whole loop is now closed:
+1. **Impact map** (`truesight.me/sunmint.html`) shows the **RG-P1 polygon** (Proposed, 0.32 ha, Uruará) with popup → **"View farm profile on Agroverse ↗"**
+2. That link now resolves correctly (was 404 before this sync) → **`agroverse.shop/farms/raimundo-geniza-para/`**
+3. Profile shows the hero (your photo), RG story, map, and gallery of **8 site-walk videos + 7 photos** — all in production.
+
+**End-to-end pipeline complete for Sítio Raimundo & Geniza:** GPS originals → RG-P1 plot registered → media archived + YouTube → beta profile → **production** → linked from impact map. 🎉
+
+## Remaining (optional, small)
+- **MAP manifests commit** — `farm_media_manifests/raimundo-geniza-para.json` (14 videos' sha/gps/duration/yt_id) — the one pending bookkeeping PR.
+
+Want me to do that final manifests commit?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → echo "=== prod profile page status ==="; curl -s -o /dev/null -w "index.html: %{http_code} " https://agroverse.shop/farms/raimundo-geniza-pa; echo "=== follow redirect ==="; curl -s -I https://agroverse.shop/farms/raimundo-geniza-para/index.html | head -15 echo "" echo "=== do the ; echo "=== existing farm on prod (ranch) ==="; curl -s -o /dev/null -w "ranch: %{http_code} " https://agroverse.shop/farms/rancho-maranta-par; …(+2 more)
+
