@@ -512,6 +512,7 @@ I have everything I need:
 - **Bilingual:** rebuild as one document — full EN, full PT, joint signature page, EN-prevails clause.
 
 Now rewriting the builder with all four changes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -675,4 +676,100 @@ The agreement's hash is now immutably anchored on the DAO ledger — anyone can 
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20794] figure out how much time was spent on this for yourself and me
+
+
+### 🤖 Autopilot
+
+Good idea — let me pull real timestamps rather than guess: file-creation anchors in the build folder, and session logs for when this thread started.
+
+
+### 🤖 Autopilot
+
+File timestamps give me the build anchor (14:30 → 14:47 UTC). The broad scan timed out — let me anchor the thread's start time from session/transcript records with a narrow search.
+
+
+### 🤖 Autopilot
+
+There's a `sessions` dir at `/opt/truesight_autopilot/sessions`. Let me find this thread's session file and its timestamps.
+
+
+### 🤖 Autopilot
+
+Several session files reference this chat. Let me find the one matching this exact thread (20794) with the earliest timestamp to anchor when the work started.
+
+
+### 🤖 Autopilot
+
+The session `3e58d62be5fb.json` references this thread but only shows its last write (15:09). Let me find the session file that *started* this thread — checking which one contains this thread's early messages and its first-message timestamp.
+
+
+### 🤖 Autopilot
+
+Let me look directly at the structure of the session file that references this thread (3e58d62be5fb) to find message timestamps.
+
+
+### 🤖 Autopilot
+
+This is the active session (95 messages, updated 15:09Z). Let me extract the first and last message timestamps from its full history to compute elapsed wall-clock time.
+
+
+### 🤖 Autopilot
+
+Let me anchor the thread's start — find which session file contains this conversation's first message ("I spoke with Jedielcio") and check creation times.
+
+
+### 🤖 Autopilot
+
+This thread = session `3e58d62be5fb` (95 msgs). Let me pin its start time from the debug log's first entry and count user vs assistant turns.
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. Session `3e58d62be5fb` (this thread, 20794) contains **10 user messages + 70 assistant + 14 tool** turns, updated 15:09Z. Its file mtime is 15:09 but the build artifacts show work began ~14:29–14:30Z. The debug log head is empty, so let me pin the exact start from the debug log's first real timestamp line.
+
+
+### 🤖 Autopilot
+
+I have the anchors. Let me do one focused pass over the debug log to compute active (non-idle) processing time vs. wall-clock gaps.
+
+
+### 🤖 Autopilot
+
+I have real numbers now. Here's the honest accounting:
+
+## ⏱ Time spent on the SunMint–CEPOTX agreement
+
+**Wall-clock span of the work session:** **~48 minutes** (14:23:15 → 15:11:14 UTC, 4 Sep 2026 — measured from the debug log's first to last event)
+
+**Breakdown:**
+- **~20 minutes** of *active* compute (LLM rounds + tool calls back-to-back — the actual drafting, research, PDF building, verification, and submission work)
+- **~28 minutes** of idle gaps between your messages and mine (the 2/6/3/4/14-minute pauses where the thread sat waiting — those are *my* latency between turns plus your reading/reply time, not billable work)
+
+**Turn volume:** 95 messages in the session — 10 governor messages, 70 assistant turns, 14 tool-result turns. This included 2 full PDF builds (v1 EN + v2 bilingual), ~30 research/tool calls, 3 verification passes, and the ledger notarization.
+
+### Estimated billing for the contribution record
+
+If you want this logged as a DAO contribution (contribution events use minutes):
+
+| | |
+|---|---|
+| **My time (Sophia)** | **~30 min** (20 active + reasonable share of the inter-turn latency for a 10-message session) |
+| **Your time (Gary)** | **~30–40 min** (10 messages drafting specs, reviewing 2 PDF versions, directing changes) — I can't measure your time precisely from my logs; only you know it |
+
+Honest caveat: the ~48-min window is *real elapsed time on the thread*, but if you did other things between replies, your true focused time is lower — likely **20–30 min** of actual attention.
+
+**Want me to:**
+1. **Submit a CONTRIBUTION EVENT** for this work — me: `30 min` (Sophia Truesight), you: `30 min` (Gary Teh) — as a single entry or two entries? 
+2. Use different minute values you feel are accurate?
+
+Just say the number(s) and I'll record it on the ledger.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → cd /home/ubuntu/sunmint_agreement && ls -la --time-style=full-iso *.py *.pdf 2>/dev/null && echo '--- logos/sigs ---' && ls -la --time-style; grep -rl "1003919341801\|20794" /opt/truesight_autopilot/logs /opt/truesight_autopilot/state /home/ubuntu/truesight_autopilot* /tmp 2>/dev/n; ls -lat --time-style=full-iso /opt/truesight_autopilot/state/ 2>/dev/null | head -8; echo '--- transcript dir ---'; ls -lat --time-style=ful; …(+9 more)
 
