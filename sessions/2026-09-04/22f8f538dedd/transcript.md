@@ -614,11 +614,13 @@ Gary's given us a new asset: `~/raimundo_geniza.zip`. Let me inspect it and pull
 ### 🤖 Autopilot
 
 477MB zip — **44 HEICs + 28 MOVs** (iPhone originals, IMG_82xx series, Sep 3, with `__MACOSX` junk). Let me unzip it and gather context on the media-archive pipeline + farm profile setup in parallel.
+[3 tool result(s) compacted: ssh_run, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the real payload — **22 HEIC + 14 MOV (36 iPhone originals, IMG_8205–8278, Sep 3)** — a farm walk with videos, likely the actual Raimundo & Geniza plot. Let me extract GPS from all of them (HEIC + MOV) to locate the site, and read the media pipeline runbook in parallel.
+[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -633,31 +635,37 @@ This is the real payload — **22 HEIC + 14 MOV (36 iPhone originals, IMG_8205�
 | GPS coverage | 59/59 | **36/36** |
 
 That's **~60 km WSW of Bom Sucesso**, in the Transamazônica corridor (Uruará direction, Pará) — consistent with a genuinely **new plot for Raimundo & Geniza**. Let me now check it against the existing SunMint registry, confirm the media-pipeline tooling on the box, and learn how existing farm profiles are structured on agroverse.shop.
+[3 tool result(s) compacted: ssh_run, search_code, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tooling is all present (sunmint_work with plots geojson, YouTube uploader + token, ffmpeg, ultralytics). Let me check whether the new site (~−3.63/−53.652) is already in the plots index, look at the existing farm-media manifest + shop farm-page structure, and verify the site already has a `farms/` pattern.
+[3 tool result(s) compacted: ssh_run, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 New plot confirmed — no existing plot near −3.63/−53.652 (only RM/SA/CL registered). The la-do-sitio path 301'd (repo renamed/moved). Let me find the actual repo structure + how farm pages/galleries are wired (read_repo_file on `agroverse_shop` with corrected path; check `farm_media_manifests` contents).
+[3 tool result(s) compacted: read_repo_file, read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Repos aren't checked out locally and the beta repo path guess was off. Let me list what's actually in these repos to learn the correct structure (farm pages, manifests, media dirs) before touching anything.
+[2 tool result(s) compacted: list_org_repos, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Structure is clear now. Existing farm profiles live at `agroverse_shop_beta/farms/<farm-id>/`. Let me study the most complete existing profile (e.g. `rancho-maranta-para`, which the runbook cites as precedent for media.json + YouTube + images) — reading its folder contents, media.json, and how index.html wires the gallery.
+[3 tool result(s) compacted: ssh_run, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The pattern is now fully clear (rancho-maranta is the template: `farms/<farm-id>/` + `media.json` gallery of youtube/image entries + `assets/images/farms/`). This new zip is a genuinely **new plot** (36/36 GPS, ~60 km from Bom Sucesso). Let me run one consolidated analysis pass — convex hull for the plot polygon, media durations, and content heuristics to shortlist gallery candidates.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -727,11 +735,13 @@ Existing convention: `paulo-la-do-sitio-para`, `rancho-maranta-para`, `santa-ann
 ### 🤖 Autopilot
 
 Understood — **Fazenda Bom Sucesso is off the table**; this is Raimundo & Geniza's own new plot (~60 km WSW, Transamazônica corridor). Let me lock in the naming and registration mechanics.
+[3 tool result(s) compacted: ssh_run, search_code, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The registry schema and mechanics are clear. Let me pull the two authoritative runbooks (plots registry + boundary submission), check the local build tooling, and confirm which municipality these coords fall in — so the plot name and region are right.
+[4 tool result(s) compacted: read_context_file, read_context_file, ssh_run, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -739,6 +749,7 @@ The registry schema and mechanics are clear. Let me pull the two authoritative r
 Good — mechanics confirmed. One correction to my earlier estimate: this plot is actually **~180 km WSW of Bom Sucesso** (lat −3.63 vs −3.09; lon −53.65 vs −52.10), in the **Uruará municipality** area (Uruará seat ≈ −3.72/−53.74, ~12 km SW of the plot). Region label: **"Uruará, Pará"**.
 
 Now let me lock the naming and the registration write-path (Farms sheet id + generator).
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -860,4 +871,59 @@ Say the word and I'll start with **#1 (the farm profile)** — that's the piece 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×10 → cd ~/sunmint_work/plots && python3 -c " import json d=json.load(open('index.geojson')) print('type:', d.get('type'), '| name:', d.get('name'; echo "=== build script ==="; find ~/sunmint_work ~/truesight_autopilot -name 'build_plots_geojson*' 2>/dev/null; echo "=== SA keys ==="; ls ; echo "=== sunmint scripts ==="; curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/scripts" | python3 -c "import json,sys; ; …(+7 more)
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **ca9a107ce6e349f694bb7d6df4dcfad2.HEIC**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+- Note: HEIC converted to JPEG (EXIF/GPS preserved)
+- 📍 GPS: -3.629756, -53.652156 (alt 172.8 m)
+- 🕐 Captured: 2026:09:03 14:50:01
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+An actual HEIC with GPS — and those coordinates (−3.629756, −53.652156) are **exactly one of the RG-P1 hull points** from the registered polygon. Let me verify this file against the zip batch and inspect it.
+
+
+### 🤖 Autopilot
+
+This HEIC is a **source original from the Raimundo & Geniza site visit** — and its GPS (−3.629756, −53.652156) is **exactly hull vertex #4 of the registered RG-P1 polygon**. Let me match it against the zip batch and characterize the image.
+
+
+### 🤖 Autopilot
+
+## Inspection: `ca9a107ce6e349f694bb7d6df4dcfad2.HEIC`
+
+| Property | Value |
+|---|---|
+| File identity | **`IMG_8254 2.HEIC`** — byte-identical (sha256 match) to a file in `~/raimundo_geniza.zip` |
+| Device | iPhone 12 Pro Max (original, 3024×4032) |
+| 📍 GPS | **−3.629756, −53.652156** (alt 172.7 m) |
+| 🕐 Captured | 2026-09-03 14:50 local |
+| Scene | warm earth tones (mean RGB 149/132/94), ~13% green vegetation, ~13% dark — restoration-plot field photo |
+| OCR/QR | none |
+
+**Key finding — this is one of the RG-P1 source originals:**
+- Its GPS point is **hull vertex #4** of the registered **RG-P1 polygon** ("Sítio Raimundo & Geniza Plot 1", −3.629756/−53.652156 appears in the 8-vertex ring).
+- It's part of the **36-media (22 HEIC + 14 MOV) batch** already used to register RG-P1 in the SunMint ledger + `plots/index.geojson` + `farms/index.json` (both pushed).
+
+**No action needed** — this media is already fully accounted for in the RG-P1 registration. It doesn't open a new plot or need a separate submission; it *confirms* the plot geometry with a source original.
+
+**Status unchanged — awaiting your go** on the next units:
+1. **Agroverse farm profile** (`agroverse_shop_beta/farms/raimundo-geniza-para/` — hero, story, Leaflet RG-P1 polygon, gallery) — beta-first
+2. **MAP media pipeline** (MOV→MP4 → YouTube + farm-media-raw + manifest)
+3. **Impact-map wiring** (`sunmint.html` FARM_SLUG)
+
+Want me to start with #1 (the farm profile page)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/tg_attachments && ls -la ca9a107ce6e349f694bb7d6df4dcfad2* 2>/dev/null; echo "---sha256 of attachment---"; sha256sum ca9a107ce6e349f; cd ~/raimundo_geniza && echo "--- sha-match attachment against zip batch ---" && find . -iname "*.HEIC" -o -iname "*.MOV" | while read f; do
+• `append to transcript` → https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-09-04/daf89bf8828c/transcript.md
 
