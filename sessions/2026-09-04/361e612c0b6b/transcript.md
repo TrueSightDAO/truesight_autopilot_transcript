@@ -10,214 +10,6 @@
 
 ### 🤖 Autopilot
 
-Gary wants the clean re-submit (option 1) now, parser-bug fix after. Let me get the exact field contract and the already-mirrored media URLs in parallel:
-[2 tool result(s) compacted: lookup_event_docs, http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed the contract and the already-mirrored media URLs. The earlier parse broke because my submission carried an **empty `- Plot ID:` line** (parser's `\s*` swallowed the next line). The live UI omits Plot ID entirely — so I'll re-submit the same way: **no Plot ID field**, farm name + boundary + media URLs + GPS + area, `Is New Farm: true`.
-
-Submitting the clean boundary event for **Fazenda Bom Sucesso** (no empty Plot ID this time — auto-generates `PL-###`):
-[1 tool result(s) compacted: submit_contribution — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Clean submission accepted. Let me verify it landed in the plots/tracking sheets (propagation is async — GAS processes Telegram Chat Logs on a schedule):
-[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Converging — I'm at the tool-round cap for this turn.
-
-## Status: clean re-submission done ✅ (parser fix queued)
-
-**What I did:**
-1. **Fetched the live `limites-da-fazenda` contract** — confirmed the UI sends **no `- Plot ID:` line at all** (my earlier submission's *empty* Plot ID line is what corrupted the row — the GAS regex `\s*` swallowed the newline and captured `- Boundary Type: approx`).
-2. **Confirmed the 4 corner HEIC originals** are live at `sunmint/images/boundaries/` (raw URLs verified, all 4 files present).
-3. **Submitted the clean `[FARM BOUNDARY EVIDENCE EVENT]`** — `Farm Name: Fazenda Bom Sucesso`, `Boundary Type: approx`, the 4 media URLs, extracted GPS, `Area (ha): 1.016`, `Is New Farm: true`, no empty Plot ID field. Edgar **accepted** (`Contribution submitted successfully`).
-
-**Pending (async):** the GAS processor picks the event up from Telegram Chat Logs on its next run → should append a well-formed row to `Farm Boundary Evidence` and create the plot row in `SunMint Plots` with an auto-generated `PL-###` Plot ID. The tracking tab I read still shows the *old* mangled row (`Edgar_20260903024631_068`, Plot ID = `- Boundary Type: approx`) — the new one hasn't propagated yet.
-
-## RESUME HERE
-- **Context:** Fazenda Bom Sucesso boundary registration via the real `limites-da-fazenda` contract. Earlier manual submission (`Edgar_20260903024631_068`) produced a **mangled row** (empty Plot ID → parser grabbed `- Boundary Type: approx`). Gary approved: re-submit clean **first**, fix parser **second**.
-- **State:** Clean `[FARM BOUNDARY EVIDENCE EVENT]` re-submitted and accepted (no Plot ID field, 4 corner HEIC URLs + GPS + area 1.016 ha, is_new_farm true). 4 HEICs mirrored at `sunmint/images/boundaries/fazenda-bom-sucesso_20260902_{181803,181924,182741,183108}_corner{1..4}_*.HEIC`.
-- **Next action:** (1) re-read `Farm Boundary Evidence` + `SunMint Plots` tabs (spreadsheet `1qbZZhf-…`) to confirm the clean row landed with auto `PL-###`; (2) then open the **parser-bug fix PR** in tokenomics — make `grab()` in `process_farm_boundary_evidence.gs` treat empty/absent fields without line-bleed (e.g. require `[^\n]*` bounded by `\n` or next `- ` label), so an empty optional field can never capture the next label; (3) after plot is clean, register the **9 trees** against it.
-
-———
-**✅ Done this turn — actions taken:**
-• `submit contribution` → Contribution submitted successfully.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=20065] [Handoff context — this Telegram topic (thread 20065) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: Converging — I'm at the tool-round cap for this turn.
-
-## Status: clean re-submission done ✅ (parser fix queued)
-
-**What I did:**
-1. **Fetched the live `limites-da-fazenda` contract** — confirmed the
-
-
-### 🤖 Autopilot
-
-👍 Go received. Resuming: verify the clean plot row landed, then open the parser-bug fix PR.
-[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Clean re-submission **landed**: `SunMint Plots` now shows **PL-002 — "Fazenda Bom Sucesso"** (proposed, approx) ✅ — the well-formed row from my UI-format re-submission. The old mangled row (`- Boundary Type: approx` as Plot ID) is still there from the first attempt.
-
-Now part 2: **fix the parser bug**. Let me read the exact `grab()` implementation in the GAS script to craft the fix:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The `grab` function definition is at line 93 but the body is elsewhere (probably a shared helper). Let me find the actual regex and the text source it parses:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found the exact bug — line 94:
-
-```js
-var re = new RegExp('-\\s+' + escapeRe(label) + ':\\s*([^\\n]+)', 'i');
-```
-
-`\s*` after the colon matches **newlines**, so an empty `- Plot ID:` swallows the line break and `([^\n]+)` captures the **next line** (`- Boundary Type: approx`). Let me confirm the repo + test a fix locally:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed the bug at line 94: `\s*` after the colon eats newlines, so an empty `- Plot ID:` lets `([^\n]+)` capture the next line (`- Boundary Type: approx`). Let me prove it with a node repro and validate the fix:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-My repro message lacked the empty `- Plot ID:` line — need to include it to trigger the bleed. Re-running with the actual mangling case:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Bug reproduced and fix proven.** The OLD regex gives `plotId: "- Boundary Type: approx"` (exactly the corruption in the sheets); the FIXED regex `[ \t]*` gives `plotId: ""` — clean. Now let me apply the fix via a PR to tokenomics:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Need to pass the actual file edit. Let me apply the fix with the edits parameter:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR opened. Per your 👍 go and the standing rule that your "go" authorizes merging my own PRs, I'll merge it now:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-## ✅ Turn complete — both parts done
-
-### 1. Clean plot registration landed
-The UI-format re-submission propagated: **`SunMint Plots` tab now has PL-002 — "Fazenda Bom Sucesso"** (status `proposed`, boundary `approx`) — a well-formed row with an auto-assigned Plot ID. ✅ (The old mangled row — Plot ID `- Boundary Type: approx` from my first manual submission — is still present and will need cleanup, but the authoritative row now exists.)
-
-### 2. Parser bug fixed (reproduced → PR → merged)
-- **Root cause** (`process_farm_boundary_evidence.gs:94`): `grab()` used `'...:\\s*([^\\n]+)'` — the `\s*` matches **newlines**, so an **empty** `- Plot ID:` swallowed the line break and captured the *next* line (`- Boundary Type: approx`) as the value. Same corruption class as the older `- Submission Source: e2e-uat` row.
-- **Proved it**: node repro of the exact corrupting message → OLD regex gives `plotId: "- Boundary Type: approx"`; FIXED regex gives `plotId: ""`.
-- **Fix**: tightened separator to `'[ \t]*'` (spaces/tabs only — never newline).
-- **PR**: [tokenomics #458](https://github.com/TrueSightDAO/tokenomics/pull/458) — `fix(fbe): stop empty-field line-bleed in boundary evidence parser` — **merged** (sha `7f767af`). Empty optional fields now parse cleanly as `""` instead of eating the next attribute line.
-
----
-**RESUME HERE → next unit (fresh turn):**
-- **Cleanup:** the two mangled rows in `SunMint Plots` (Plot ID `- Boundary Type: approx` + the older `- Submission Source: e2e-uat` row) — decide with Gary whether to invalidate/hand-clean via a governor-approved sheet edit or leave as historical artifacts (post-fix they can't recur).
-- **Then tree registration:** Fazenda Bom Sucesso plot now = **PL-002**. Register the **9 trees** (10 photos → 9 after the 11-second `193eca20`/`1d6a3a4c` duplicate merge) as `[TREE PLANTING EVENT]`s against **PL-002**, with the HEIC photo evidence + GPS. Still pending Gary's confirmations: species (cacao?), planter name, and whether the outlying tree `2c6b2aac` (~48 m outside the corner polygon) belongs to this plot or a neighboring patch.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×5 → cd /tmp/tok_r 2>/dev/null && find . -name "process_farm_boundary_evidence.gs" 2>/dev/null | head -3; echo "---"; grep -n "function grab\|gra; cd /tmp/tok_r && F=google_app_scripts/1UrBgqLnnQc6PV4-gMIDh2SYwWu62wTdSrV30xk9q_eVr2UdoxdzXN38v/process_farm_boundary_evidence.gs && echo "=; cd /tmp/tok_r && echo "=== remote ===" && git remote -v | head -2 && echo "=== node? ===" && which node || echo "no node" && F=google_app_sc; …(+2 more)
-• `merge pr` → ✅ PR #458 on tokenomics merged successfully (sha: 7f767af9d30cea481a38e84cd5fa6fb89575e726). Pull Request successfully merged
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=20065] Sure. Go clean up the two mangled rows 
-
-I will attach all the photos of the trees I took.
-
-Figure out which 10 to use where each represent a distinct tree
-
-
-If there are multiple photos for the same tree pick the ones where there are smiley faces in it
-
-
-### 🤖 Autopilot
-
-Go received — two tasks: (1) clean up the two mangled plot rows, (2) prepare to select 10 distinct-tree photos (preferring smiley-face shots) once you attach them.
-
-First, let me find the established mechanism for cleaning/invalidating mangled plot rows (TEST-P1 was invalidated via an "Invalidated By" field — I want to use the same sanctioned path, not a raw hand-edit):
-[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-There's a sanctioned invalidation handler — `process_plot_invalidation.gs`. Let me read it to understand the exact event format to invalidate the two mangled rows (rather than raw hand-editing):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Gary authorized cleanup of the two mangled rows, and there's a **sanctioned path**: `[PLOT INVALIDATION EVENT]` (soft-invalidate, never delete, server-side governor/sentinel gate). Let me read the rest of that handler to get the exact submission format, and check whether my identity (Sophia) clears the governor/sentinel allowlist via dao_members.json:
-[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The invalidation path requires the retractor email to be an **auto-derived governor/sentinel** (from dao_members.json). Let me check which emails have governor/sentinel roles, so I submit with a retractor email that clears the gate (Gary authorized this, so his governor email is the natural retractor):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The invalidation gate clears for **sentinels** — and Sophia (admin+sophia@truesight.me) is a sentinel. Gary (governor) explicitly authorized this cleanup, so a sentinel acting on his instruction is within the design. Let me verify the event format before submitting:
-[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The invalidation handler isn't in Edgar's event catalog, but my earlier FBE submission proved Edgar renders submissions into the Telegram Chat Logs that the GAS handlers scan. I'll submit the `[PLOT INVALIDATION EVENT]`s the same way — with **Sophia (sentinel)** as retractor email (clears the server-side governor/sentinel gate), targeting the two mangled rows Gary flagged:
-[2 tool result(s) compacted: submit_contribution, submit_contribution — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both invalidation events submitted. Propagation to the sheets is async (Edgar → Telegram Chat Logs → GAS `processPlotInvalidationFromTelegramChatLogs` cron). Let me verify they landed — checking the invalidation tracking tab and whether the plots rows flipped to `invalid`:
-[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-First invalidation **confirmed processed** — the `- Boundary Type: approx` row is now `invalid` (Invalidated By: admin+sophia@truesight.me, 03:02:10). The second (`- Submission Source: e2e-uat`) is still propagating (async cron — tracking shows only the first). Let me re-check whether it landed:
-[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
 Both invalidation events **PROCESSED** in the tracking tab. Final confirmation that both mangled plots rows now show `invalid` in the source-of-truth sheet:
 [1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
@@ -4367,6 +4159,7 @@ PR #280 opened. Let me verify the fix parses, then merge per your standing go:
 ### 🤖 Autopilot
 
 Verified — the fixed file parses cleanly. Merging:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4571,4 +4364,106 @@ Quick confirm before I run it — YouTube uploads are **public and effectively i
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd ~/paulo_interview/transcripts && for f in IMG_*.txt; do echo "===== $f ($(wc -c < $f) chars) ====="; head -c 600 "$f"; echo ""; echo "---; cd ~/paulo_interview/transcripts && for f in IMG_7994.txt IMG_7995.txt IMG_7998.txt IMG_7999.txt IMG_8001.txt; do echo "===== $f ($(wc -c <
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] Make sure all the videos are uploaded onto YouTube via the media archive pipeline and the selected ones embedded
+
+
+### 🤖 Autopilot
+
+Gary wants all 17 videos uploaded via the documented media archive pipeline, and the curated ones embedded. Let me read the pipeline runbook first so I follow it exactly (conversion, dedupe, upload, manifest, wiring):
+
+
+### 🤖 Autopilot
+
+Gary's directive is clear: **all 17 videos → YouTube via the MAP pipeline, curated 8 embedded**. That's a multi-phase run (convert → manifest → upload → verify → embed → PR), so let me start executing the pipeline properly. Phase 1 — setup, GPS check on the MOVs, dedupe, and kick off the batch conversion:
+
+
+### 🤖 Autopilot
+
+17/17 MOVs have GPS. Now the conversion batch (MOV→MP4 with GPS re-injection per the pipeline), run in background with a progress file:
+
+
+### 🤖 Autopilot
+
+The nohup'd background process kept the shell attached (the 60s timeout hit). The conversion is likely still running in the background. Let me check progress with a fresh short command:
+
+
+### 🤖 Autopilot
+
+Conversion is running (1 MP4 done so far, ~35-60s each → ~10-15 min for all 17). The batch will finish in the background. Let me set a watcher to notify when it completes, and use the wait time to prepare the manifest + upload script:
+
+
+### 🤖 Autopilot
+
+The nohup backgrounding keeps holding the shell. Let me check state with a minimal command — the watcher likely started despite the timeout:
+
+
+### 🤖 Autopilot
+
+Watcher running, conversion proceeding (2 done, GPS re-injected correctly), and I have the uploader usage. The uploader needs `youtube_token.json` refresh support — let me check the manifest format expected and whether there's an existing farm manifest I should mirror, while conversion continues in the background:
+
+
+### 🤖 Autopilot
+
+I have the manifest format. Let me check the video entry schema (with yt_id) by looking at a video entry in the rancho manifest, while conversion continues:
+
+
+### 🤖 Autopilot
+
+Interesting — the rancho manifest's MOV entries don't carry `yt_id` directly (they may link via a separate mechanism, or the YouTube IDs are tracked elsewhere). Let me check how the uploaded videos' yt_ids are tracked (perhaps a `yt_id` appears post-upload or there's a videos index), and check conversion progress:
+
+
+### 🤖 Autopilot
+
+I have the full manifest schema (yt_id added post-upload). Conversion is proceeding (2/17 done, GPS re-injected). The conversion will take ~10-15 min total for all 17. Let me build the manifest + per-video titles/descriptions (using the transcripts) while it runs, so I'm ready to upload the moment conversion finishes. I'll assemble the full metadata now:
+
+
+### 🤖 Autopilot
+
+GPS parse came back None for the curated ones — the regex didn't match the actual raw format. Let me debug the parsing quickly:
+
+
+### 🤖 Autopilot
+
+Found it — the raw string starts with `GPSCoordinates: ` (the label prefix from `-s -s` output), so my regex anchored at `^` failed. Let me fix the manifest parse (strip the prefix) and regenerate:
+
+
+### 🤖 Autopilot
+
+Manifest is solid: 17 items, 17/17 GPS, 8 curated (the interview moments), all transcripts attached. Conversion is at 2/17 and will take ~10 more minutes. 
+
+Let me set up a watcher to notify when conversion finishes so I can proceed to upload (the natural continuation of the directive):
+
+
+### 🤖 Autopilot
+
+Conversion is running in the background (~15 min for all 17; 2 done, GPS re-injected and verified). The manifest is fully staged. Here's the status and plan:
+
+## 📊 Media archive pipeline — in progress
+
+**Phase 1 ✅ (done):** 17 MOVs staged with GPS (17/17 have coordinates), manifest built at `/home/ubuntu/bomsucesso_work/manifest_raw.json` — sha256 per file, lat/lng parsed (S/W correct, e.g. IMG_8001 at -3.0941, -52.0981 — the farm), durations, and **full transcripts attached** to each item. 8 flagged `curated` (the interesting moments you picked).
+
+**Phase 2 ⏳ (running):** MOV→MP4 conversion (`convert.sh`, background) — GPS re-injection per pipeline (ffmpeg drops it; exiftool re-writes + verify). ~2/17 done; ETA ~10–15 min.
+
+**Phase 3–5 (queued, once conversion completes):**
+- **Upload all 17** to YouTube (admin@truesight.me channel, **public**) via `upload_video_to_youtube.py` with the retry-on-429 loop the pipeline mandates — titles `<Farm> — <clip> (cacao pods, lat, lng)`, descriptions = transcript + GPS + farm context
+- **Verify live** (videos().list, not just captured ID) + write `yt_id` back into the manifest
+- **Commit manifest** → `farm_media_manifests/fazenda-bom-sucesso.json` (+ index update)
+
+**Phase 6 (after uploads verified):** embed the **8 curated** as `youtube` entries at the top of `farms/fazenda-bom-sucesso/media.json` (above the 10 tree photos), merge to beta.
+
+**Then:** farm page shows the curated interview videos; all 17 are archived publicly on the channel + manifested.
+
+**Note:** the MAP runbook lists Fazenda Bom Sucesso's farm_id as a *new* slug (not in its table yet — it has la-do-sitio/rancho/etc.). I'm using `fazenda-bom-sucesso` consistently (matches the shop farm page + plot farm_id), and I'll add it to the runbook's farm table as part of the manifest PR.
+
+**RESUME HERE → next turn:** the conversion should be complete — check `/home/ubuntu/bomsucesso_work/mp4_progress.txt` (expect `ALL DONE`, 17 mp4s) → run the upload loop → verify yt_ids → commit manifest → embed curated 8 in media.json → merge → beta verify.
+
+Want me to continue automatically next turn (upload all 17 + embed curated 8), or pause for your review after conversion finishes?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → set -e; mkdir -p /home/ubuntu/bomsucesso_work/in /home/ubuntu/bomsucesso_work/mp4 /home/ubuntu/bomsucesso_work/manifest; cp ~/paulo_intervie; cd /home/ubuntu/bomsucesso_work && cat > convert.sh << 'EOF' #!/bin/bash cd /home/ubuntu/bomsucesso_work/in for f in *.MOV; do out="/home/ub; tail -5 /home/ubuntu/bomsucesso_work/mp4_progress.txt 2>/dev/null; echo "---"; ls /home/ubuntu/bomsucesso_work/mp4/*.mp4 2>/dev/null | wc -l; …(+9 more)
 
