@@ -1995,16 +1995,19 @@ Can we use this as hero image?
 ### 🤖 Autopilot
 
 Let me inspect the new image — dimensions, quality, content, and how it compares to the current hero.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 1280×960 landscape, warm earth tones with sky (~14% blue), very little green. Let me compare it against the current hero and check the hero slot's aspect requirements in the page template.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Important catch — the merged page references **`raimundo-geniza-para-header-7660.jpg`** (a leftover ranch-template token) in 4 places, but I never uploaded that file — I uploaded `hero-8236.jpg` instead. That means the **live hero may be broken right now**. Let me verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2012,6 +2015,7 @@ Important catch — the merged page references **`raimundo-geniza-para-header-76
 Confirmed — the **live hero is currently broken** (page references `raimundo-geniza-para-header-7660.jpg` = 404; the actual hero `hero-8236.jpg` exists but isn't referenced in the page CSS — only in media.json). This is a bug from the token-replace in the template. 
 
 Two things to answer Gary: (1) can the new photo be the hero, and (2) fix the broken reference. Let me verify the new image renders well as a wide hero by prepping a version, and simultaneously check what ranch's *correct* page references (to see the intended hero filename pattern):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2019,6 +2023,12 @@ Two things to answer Gary: (1) can the new photo be the hero, and (2) fix the br
 Now I have the full picture — and there's a **bug to fix**: my merged RG page references `raimundo-geniza-para-header-7660.jpg` (a leftover ranch token) in 4 places, but that file was never uploaded → **the live hero background is currently 404** (page shows only the gradient). The ranch pattern is `<farm>-header-<name>.jpg`; my actual uploaded hero is `raimundo-geniza-hero-8236.jpg`.
 
 Let me fix the reference (defect I introduced) with one small PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2190,4 +2200,39 @@ Mau saya lanjut promote ke prod sekarang?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo "=== sunmint.html lines 640-730 (map + FARM_SLUG area) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/; echo "=== sunmint.html lines 730-830 (selector populate) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/mai; echo "=== prod sunmint.html plots URL ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_prod/main/sunmint.html" | g
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] Explain in English
+
+
+### 🤖 Autopilot
+
+Got it — here's the full explanation in English.
+
+## ✅ Impact map wiring — done (turned out automatic, zero code change!)
+
+Good news: after tracing it end-to-end, **the impact map was already wired automatically through the data path** — no code edit was needed. Here's the verified chain:
+
+**1. RG-P1 already carries `farm_id: "raimundo-geniza-para"`** in `plots/index.geojson` (pushed to the sunmint repo during registration yesterday).
+
+**2. The map code is data-driven.** Both beta *and* production `truesight.me/sunmint.html` fetch `plots/index.geojson` live from the sunmint repo (raw + jsdelivr CDN with cache-buster). I verified **RG-P1 appears in both sources** (count = 1 in each) — so the polygon renders automatically, no HTML/JS edit needed.
+
+**3. The farm-profile link works automatically.** The map uses `FARM_SLUG[fid] || fid` — since RG's `farm_id` is **identical to the profile URL slug** (`farms/raimundo-geniza-para/`), the "View farm profile on Agroverse ↗" link in the popup resolves correctly. A `FARM_SLUG` map entry is only needed when the farm_id differs from the pretty URL (like `rancho-maranta` → `rancho-maranta-para`), which isn't the case here.
+
+**4. What the RG-P1 popup will show:** name "Sítio Raimundo & Geniza Plot 1 (restoration)" · status **Proposed** (orange dashed outline) · Boundary: Approx (photo hull) · **0.32 ha** · Owner: Raimundo & Geniza · Region: Uruará, Pará → plus the profile link.
+
+The **plot chip "RG-P1"** and the **farm filter "Raimundo Geniza Para"** in the map's selector also populate automatically from the same data.
+
+---
+
+### ⚠️ One important caveat
+The impact-map link points to **`agroverse.shop` (PRODUCTION)** — but the RG farm profile currently exists only on **beta** (`beta.agroverse.shop`). So clicking the link today returns a 404 **until the profile is promoted to production**.
+
+## RESUME HERE → next steps
+1. **Prod promotion** — needs your explicit "go": `sync_beta_to_prod agroverse_shop_prod` (the RG profile, hero image, gallery, and media PRs are all merged into beta's main already)
+2. **MAP manifests commit** — `farm_media_manifests/raimundo-geniza-para.json` (14 videos: sha/gps/duration/yt_id) — a small pending PR
+
+Want me to promote to production now?
 
