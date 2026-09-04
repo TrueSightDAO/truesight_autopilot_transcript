@@ -289,26 +289,31 @@ Access confirmed — the bot's own PAT reads `signature_assets`. There's a `gary
 ### 🤖 Autopilot
 
 Found it — `gary_teh_signature_transparent.png`. Let me download it to the working dir and verify it's a clean transparent signature.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The real signature is confirmed: `gary_teh_signature.png` (342×165 RGBA, transparent background, ink bounding box nearly fills it). All assets are in place. Let me build the formal agreement PDF now with the house Saffron Monk style.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PDF built successfully (114 KB). Let me verify the signature image actually rendered (not a black box) by rasterizing the last page and inspecting it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Minor print-format typo, but the pages rendered. Let me verify the signature area on page 3 properly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 0.00% dark in that region — either the signature landed elsewhere or didn't render. Let me scan page 3 for dark content bands to locate the actual signature block.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -444,4 +449,110 @@ Just say the word on any of those.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && TOKEN=$(grep '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | cut -d= -f2- | tr -d '"' | tr -d "'") && curl -s -H "Aut
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: 1423 Hayes Street, San Francisco, CA 94117 — President, Gary Teh.
+
+Can we change the address to the 1968 South Coast Highway #4616 Laguna Beach California USA 92651? 
+Also the trees must be of supported specie (check with Acorn and other programs for species of trees that are supported and native to the Amazon region)
+
+Can we insert more detail of the Card-at-trunk. What is the dimension of the card
+
+Also we should have a portugese translation within the same document so both sides are aware of what is being signed
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=20794]
+
+
+### 🤖 Autopilot
+
+On it — four changes: (1) Laguna Beach address, (2) supported/native Amazon species clause (per Acorn/Plan Vivo practice), (3) card-at-trunk detail with card dimensions, (4) bilingual EN/PT in one document. Let me first grab the generator + current wording, check whether the DAO protocol already specifies card dimensions, and research Acorn's supported-species approach.
+
+
+### 🤖 Autopilot
+
+Now let me read the build script and dig into the card protocol details in the DAO's own docs (sunmint.truesight.me spec) plus the Acorn species research.
+
+
+### 🤖 Autopilot
+
+I have the builder script. Now let me read the SunMint growth-monitoring plans (they should specify the card protocol/dimensions) and check the live sunmint.truesight.me site.
+
+
+### 🤖 Autopilot
+
+The SunMint monitoring spec confirms the card protocol: **"calibration/reference card (ISO-7810)"** held against the trunk at breast height — that's the card-dimension answer (ISO-7810 ID-1 = the standard bank-card size, **85.60 × 53.98 mm**). Let me confirm the exact spec wording, pull the rest of the build script (I need its tail), and check the DAO's supported-species registry.
+
+
+### 🤖 Autopilot
+
+I have everything I need:
+
+- **Spec answer (card):** SunMint's monitoring spec (v1.4) uses an **ISO-7810 ID-1 calibration card** = standard credit-card size, **85.60 × 53.98 mm** — its fixed dimensions are the in-photo scale reference for DBH measurement. I'll specify that.
+- **Species:** Acorn (Rabobank)/Plan Vivo + IUCN guidance confirm native-Amazon agroforestry species (cacao *Theobroma cacao*, Brazil nut *Bertholletia excelsa*, açaí, cupuaçu, andiroba, cedro, jatobá, cumaru, rubber, ingá…). CEPOTX is an organic cacao cooperative, so the cacao-shade agroforestry model fits. I'll add a supported-species clause with an indicative native list + Acorn/Plan Vivo conformity + written-approval mechanism.
+- **Address:** swap to 1968 South Coast Highway #4616, Laguna Beach, CA 92651.
+- **Bilingual:** rebuild as one document — full EN, full PT, joint signature page, EN-prevails clause.
+
+Now rewriting the builder with all four changes:
+
+
+### 🤖 Autopilot
+
+Built successfully — 6 pages A4, all changes verified in the text layer:
+- **Laguna Beach** appears 4× (party block, notices, PT versions)
+- **85.60** (ISO-7810 card) appears 2× (EN + PT)
+- **English-prevails clause** present (1×)
+
+Let me quickly verify the signature image still renders on the final page, then deliver.
+
+
+### 🤖 Autopilot
+
+The listing got truncated by `head -8`. Let me confirm the signature image is embedded on the final page:
+
+
+### 🤖 Autopilot
+
+Only page 1's logo appears in the pdfimages listing — I need to confirm the signature is actually embedded on page 6. Let me check cleanly:
+
+
+### 🤖 Autopilot
+
+Found the bug — in v2 the `SIG` block is a plain string inserted into the f-string, so `{sig_b64}` was never interpolated (the signature image is missing — only the logo embedded; the 5.11% dark was typed text). Fixing by making `SIG` an f-string:
+
+
+### 🤖 Autopilot
+
+Fixed — the signature image (342×165) is now embedded on page 6 alongside the logo on page 1. (The dark% reads the same because the typed name/title lines dominate that region, but the image is confirmed present in the PDF objects.) Let me deliver the bilingual PDF and archive it alongside the EN version.
+
+
+### 🤖 Autopilot
+
+All four changes are done, delivered, and archived.
+
+## ✅ v2 Bilingual Agreement — Complete
+
+**📄 Delivered to chat** (message 20883) · **📁 Archived:** `go_to_market/agreements/SunMint_Tree_Planting_Support_Agreement_CEPOTX_20260904_bilingual_EN-PT.pdf` (commit `445a5d7`)
+
+### What changed (all four requests):
+
+**1. Address updated** → **1968 South Coast Highway #4616, Laguna Beach, CA 92651, USA** — updated in §1 (Parties), §10 (Notices) and the PT mirror. *(Note: the earlier message footer "1423 Hayes Street…" was just the previous version's notice text, now fully replaced.)*
+
+**2. Supported species clause (new §4)** — all supported trees must be **native to the Amazon biome** and consistent with the **Acorn (Rabobank) / Plan Vivo** agroforestry methodology. Included an indicative list (bilingual, with common names):
+- *Theobroma cacao* (cacao) · *Bertholletia excelsa* (castanha-do-pará) · *Theobroma grandiflorum* (cupuaçu) · *Euterpe oleracea* (açaí) · *Carapa guianensis* (andiroba) · *Cedrela odorata* (cedro-rosa) · *Hymenaea courbaril* (jatobá) · *Dipteryx odorata* (cumaru) · *Hevea brasiliensis* (seringueira) · *Inga edulis* (ingá) · *Bixa orellana* (urucum) · ipê, jenipapo, guaraná, cajá, caju…
+- Cacao-based **agroforestry is expressly supported**; other native species require written approval; **exotic/invasive and illegally-logged trees excluded**. Species listed in §5 evidence must now be a supported species.
+
+**3. Card-at-trunk detail (§6, expanded)** — the identification card is an **ISO-7810 ID-1 card: 85.60 mm × 53.98 mm (standard credit-card size)** — this is the SunMint monitoring spec's own calibration card (spec v1.4, TREEO-style photo-pair). Added: card printed with tree ID/QR + planting date; card's **fixed dimensions serve as the in-photo scale reference** for diameter measurement; must be **fully visible, not obscuring the bark**. Young-tree fallback (<1.30 m): card at **root collar**, record **total height + root-collar diameter** (Acorn/Plan Vivo sapling practice). Bilingual in both EN and PT.
+
+**4. Portuguese in the same document** — the PDF now contains **Part A (English)** §§1–10, then **Part B (Português)** §§1–10, then a joint **§11 Signatures/Assinaturas** page with both signature blocks, an **English-prevails clause** (bilingual), and your signature stamped above *President, TrueTech Inc*. Footer is bilingual; 6 pages A4, TrueSight DAO logo header.
+
+### Suggested next step
+Before sending to Jedielcio, decide whether the **ISO-7810 card with tree ID** needs to be produced/printed for the families (there's an existing SunMint tree-planting QR-code + card workflow in the plans). Happy to draft a short PT-language cover email for the countersignature round if you'd like.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /home/ubuntu/sunmint_agreement && ls -la && echo '=== html/py files ===' && ls *.html *.py 2>/dev/null && echo '=== head of generator ===; cd /home/ubuntu/sunmint_agreement && cat > build_agreement_v2.py <<'PYEOF' #!/usr/bin/env python3 """Build bilingual (EN/PT) SunMint_CEPOTX_; cd /home/ubuntu/sunmint_agreement && pdfimages -list SunMint_Tree_Planting_Support_Agreement_CEPOTX_20260904_bilingual_EN-PT.pdf 2>/dev/null; …(+2 more)
 
