@@ -12,225 +12,6 @@
 
 Please inspect the attached file.
 
-[Attachment saved at /tmp/tg_attachments/2c6b2aacd29442eda051430da18e4f6f.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
-
-
-### 🤖 Autopilot
-
-Another file from the set (`2c6b2aac` — T7). Quick verification and count check:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`2c6b2aac` verified (T7, unchanged) — and another new arrival (`cd6887a2`) pushed the count to **13**. Let me get its GPS and re-run the consolidated analysis:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Another new arrival (`cd6887a2`, 18:19:24, southernmost point yet) — count is now **13 HEIC**. Three of these (18:18, 18:19, 18:31) sit *outside* the 18:42–19:26 tree-walk timeline. Let me render the 13 points as a relative map so we can see the geometry:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`2c6b2aac` verified (T7, unchanged) — but two more new arrivals came in behind it: **`cd6887a2`** (18:19:24) and previously `7f77424b` (18:31). The count is now **13 HEIC files**.
-
-## What the geometry shows — 13 points over ~140 m × 100 m
-
-Relative map (5 m/char, north at top, each `#` = a photo):
-
-```
-.....#....   70234a89 18:18 ┐
-.....#....   cd6887a2 18:19 ┘ early cluster (east)
-   #....    a9cf65d0 19:10
-   #.....   6c9b7665 19:16
-#.........   2c6b2aac 19:26 ┐ west edge
-  #.....    b08309c1 18:42 │ main tree
-  #.#....   2c364eb3 19:02 │ walk
-  #......   1d6a3a4c 18:47 │ (18:42–19:26)
-  #.....    35a3744d 18:52 │
-  #......   17016c60 18:57 │
-..#......   7f77424b 18:31 ┘ early outlier (south-west)
-```
-
-**Two distinct groups are emerging:**
-- **Main cluster (8 pts)** — the 18:42–19:26 walk: 193eca20, 1d6a3a4c, 2c364eb3, b08309c1, 35a3744d, 17016c60, 6c9b7665, 95dd596c + a9cf65d0 (~2 m apart pair), 2c6b2aac (west).
-- **Early cluster (3 pts)** — 18:18–18:31, 60–140 m away: 70234a89, cd6887a2, 7f77424b. Different spot or an earlier walk.
-
-## I need a decision from you — the set keeps growing past "10"
-
-Every "inspect" ping is delivering another original. I now hold **13 GPS-bearing HEIC files** (all iPhone 12 Pro Max, Sep 2 evening). Rather than keep re-running the table, tell me:
-
-1. **How many trees should be registered, and which files?** Options:
-   - "Register the 8–10 from the main walk (18:42–19:26), skip the 3 early ones"
-   - "Register all 13 as-is" (I'll keep the 3 tight pairs flagged in the ledger)
-   - Or name specific files to include/exclude.
-2. **Species** (all cacao / Criolla?) and **planter** name for the events.
-3. **The 4 corners** — I still have only the GPS-less JPGs. Send the **corner HEIC originals** or paste **4 corner lat/lng as text** so I can build the Fazenda Bom Sucesso polygon and run the containment check.
-4. Pledge QR linkage — yes/no?
-
-One clean message with those four answers and I'll execute end-to-end (dedupe decision → register trees → plot polygon → containment → on-chain TREE PLANTING events + photo evidence).
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → verified 2c6b2aac; detected + read GPS of new cd6887a2; rendered 13-point relative geometry map.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×3 → cd /tmp/tg_attachments && ls -la 2c6b2aacd29442eda051430da18e4f6f.HEIC && md5sum 2c6b2aacd29442eda051430da18e4f6f.HEIC && exiftool -s -GPSLa; cd /tmp/tg_attachments && exiftool -s -GPSLatitude -GPSLongitude -DateTimeOriginal -Make -Model cd6887a2c2b9460bad6578ad3431490f.HEIC 2>/dev; cd /tmp/tg_attachments && python3 -c " import math, subprocess, re, glob files = sorted(glob.glob('*.HEIC')) def dms2dec(d,m,s,ref): v=d+m/6
-
-
-### 🧑 Governor
-
-Please inspect the attached file.
-
-[Attachment saved at /tmp/tg_attachments/6c9b7665e24c43348008d71bd8f303c6.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
-
-
-### 🤖 Autopilot
-
-Another from the set (`6c9b7665` — T8). Quick verification + new-arrival check:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Another new arrival (`bf9c8484`) — count now **14**. Let me get its GPS and check whether these newest files might be the corner originals (the 4 corners were the JPGs without GPS):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`6c9b7665` verified (T8, unchanged) — and the count is now **14**. That's significant: 14 HEIC originals = **10 tree-walk photos + 4 earlier photos (18:18–18:31)**. And look where those 4 early points sit — at the **four extremes of the cloud**. Let me test the hypothesis that these 4 ARE the corner originals with GPS:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The 4 early HEICs (18:18–18:31) sit at the cloud's extremes — strong candidate for the **corner originals**. Let me convert them and compare against the 4 GPS-less corner JPGs to confirm they're the same photos:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Breakthrough — the 4 "early" HEICs ARE the corner originals with GPS intact.** Pixel comparison (mean diff ~2/255 ≈ identical) confirms:
-
-| Corner HEIC | = corner JPG | GPS time |
-|---|---|---|
-| 70234a89 | 2ca18c0e | 18:18:03 |
-| cd6887a2 | 2b3a0fb1 | 18:19:24 |
-| bf9c8484 | eb5ec7ef | 18:27:41 |
-| 7f77424b | 303b5b8d | 18:31:08 |
-
-So the full set is exactly **10 tree HEICs + 4 corner HEICs = 14** — and now **every point has GPS**, including the plot corners. Let me extract the corner coordinates and build the polygon + containment check:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Major resolution — the full 14-file set is now identified, and every point has GPS.** The 4 "early" HEICs (18:18–18:31) are pixel-identical (mean diff ~2/255) to the 4 corner JPGs you sent — **they're the corner originals, GPS intact.** So: **10 tree HEICs + 4 corner HEICs = 14.** Let me render a map so you can eyeball the geometry:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Map rendered. Let me send it to you and summarize the full picture:
-[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Map sent.** Here's the complete picture after full GPS recovery:
-
-## The full 14-file set — all GPS-bearing
-
-| Role | Files | GPS |
-|---|---|---|
-| **10 tree photos** | 193eca20, 1d6a3a4c, 2c364eb3, b08309c1, 35a3744d, 17016c60, 6c9b7665, 95dd596c, a9cf65d0, 2c6b2aac | ✅ |
-| **4 corner photos** | 70234a89 (=JPG 2ca18c0e), cd6887a2 (=JPG 2b3a0fb1), bf9c8484 (=JPG eb5ec7ef), 7f77424b (=JPG 303b5b8d) | ✅ |
-
-The 4 corner HEICs are **pixel-identical to the 4 corner JPGs** you sent earlier (mean diff ~2/255) — same photos, but with GPS intact.
-
-## ✅ Distinctness + containment results
-
-**Plot polygon** (from the 4 corners, ~**1.02 ha**): bounded by the 4 corner GPS points — area ~10,183 m².
-
-**Tree spacing (haversine):**
-- 9 of 10 trees ≥ 7 m apart — **comfortably distinct** ✅
-- **3 tight pairs** below the ~3 m GPS-noise floor (possible same-tree duplicates):
-  - **193eca20 ↔ 1d6a3a4c** — 1.4 m, 11 s apart (near-certain duplicate)
-  - **95dd596c ↔ a9cf65d0** — 2.0 m, 11 min apart
-  - **2c364eb3 ↔ b08309c1** — 2.2 m, 20 min apart
-
-**Containment: 9/10 trees inside the plot** ✅ — but **`2c6b2aac` is OUTSIDE** the polygon by ~48 m (it's the far-west point, near corner 7f77424b's edge). See the red dot on the map.
-
-## Awaiting your decisions before registration
-
-1. **The 3 tight pairs** — duplicates (register fewer trees) or genuinely distinct saplings?
-2. **`2c6b2aac` outside the polygon** — is the corner boundary wrong (corners should enclose it), or is that tree on a different patch? This determines whether the plot polygon needs adjusting or that tree registers outside the plot.
-3. **Species + planter** for the events (all Cacao? planted by whom?)
-4. **Pledge linkage** — do these map to specific pledge QR codes?
-
-Give me those four answers and I'll execute end-to-end. If you'd rather I just proceed with sensible defaults, say so and I'll register all 10 as distinct trees (flagging the tight pairs) with species = Cacao (pending your correction), and note the polygon question for 2c6b2aac.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×6 → cd /tmp/tg_attachments && ls -la 6c9b7665e24c43348008d71bd8f303c6.HEIC && md5sum 6c9b7665e24c43348008d71bd8f303c6.HEIC && exiftool -s -GPSLa; cd /tmp/tg_attachments && exiftool -s -GPSLatitude -GPSLongitude -DateTimeOriginal -Make -Model bf9c8484fc32430fb9ba2ff3a451de4c.HEIC 2>/dev; cd /tmp/tg_attachments && python3 -c "import pillow_heif; print('pillow_heif OK')" 2>/dev/null || echo "no pillow_heif"; which heif-convert ; …(+3 more)
-
-
-### 🧑 Governor
-
-Please inspect the attached file.
-
-[Attachment saved at /tmp/tg_attachments/17016c6014254867b3a74fbd0145911e.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
-
-
-### 🤖 Autopilot
-
-Another from the set (`17016c60` — tree T1). Quick verification + count check:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`17016c60` verified (T1, unchanged). Count steady at **14 HEIC** — no new arrivals. The set is complete and fully catalogued:
-
-## Full inventory — 14 HEIC, all GPS-bearing, iPhone 12 Pro Max, 2026-09-02 evening
-
-**10 tree photos** (all inside or near plot):
-193eca20 · 1d6a3a4c · 2c364eb3 · b08309c1 · 35a3744d · 17016c60 · 6c9b7665 · 95dd596c · a9cf65d0 · 2c6b2aac
-
-**4 corner photos** (= the GPS-less JPGs you sent first, matched pixel-identically):
-- 70234a89 (= 2ca18c0e) · cd6887a2 (= 2b3a0fb1) · bf9c8484 (= eb5ec7ef) · 7f77424b (= 303b5b8d)
-
-## ✅ Analysis complete (map sent in previous message)
-
-- **Plot polygon**: ~1.02 ha from 4 corners
-- **9/10 trees inside** the plot; **2c6b2aac outside** (~48 m west)
-- **3 tight pairs** < 3 m flagged (193eca20↔1d6a3a4c at 1.4 m most likely a duplicate)
-
-## ⏳ Waiting on your 4 decisions to register
-
-1. **Tight pairs** — duplicates to dedupe, or all distinct?
-2. **2c6b2aac** — outside polygon: adjust corners, or register outside plot?
-3. **Species + planter** for the events
-4. **Pledge QR linkage** — yes/no?
-
-Once you answer (or say "register with defaults"), I execute end-to-end: TREE PLANTING events per tree with lat/lng + photo evidence, plot registration with the 4 GPS corners, containment documented in the ledger, and map/geojson updates.
-
-I'll pause here rather than re-scan the same verified file — nothing new to extract from `17016c60`.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && ls -la 17016c6014254867b3a74fbd0145911e.HEIC && md5sum 17016c6014254867b3a74fbd0145911e.HEIC && exiftool -s -GPSLa
-
-
-### 🧑 Governor
-
-Please inspect the attached file.
-
 [Attachment saved at /tmp/tg_attachments/193eca20029547e8b7e7d6cffd8a2167.HEIC — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
 
 
@@ -3954,21 +3735,25 @@ The transcribe model returned empty text (0 chars) — likely it needs a specifi
 ### 🤖 Autopilot
 
 The key's project only allows newer models. Let me try `gemini-3.6-flash` (recommended) for transcription with the raw response dump to see what format works:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `gemini-3.6-flash` works — it transcribed IMG_7988 (though it output English where the audio may be PT — let me transcribe all with explicit PT instruction and review quality). Let me run the full batch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 17 clips transcribed (~11K chars total — good interview content!). The transcripts read in English (the interviewer seems to be translating/conducting in English, or Gemini normalized). The content is rich — Paulo talks about his **54-hectare land, cattle as current main income, wanting to change to cacao, fear of planting cacao at scale (companies), weather/drought, workers being hard to find, papaya/eucalyptus**. Let me read the full transcripts to synthesize the farm story:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the remaining transcript content (the tail of the output):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4173,4 +3958,92 @@ Want me to merge to beta for your review?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && python3 << 'PYEOF' import re, urllib.request # 1) Fetch the rancho template html = urllib.request.urlopen("https://raw.githubuser; cd /tmp && echo "=== style present? ===" && grep -c "farm-hero\|highlights-grid\|map-container\|content-section" fbs_page.html && echo "===
+
+
+### 🧑 Governor
+
+Use this as the hero image?
+
+[Attachment auto-processed: **ea4935cc041f4de9866ce235ff0020cd.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Let me inspect the hero image first — dimensions/quality check before wiring it in:
+
+
+### 🤖 Autopilot
+
+Got it — portrait JPEG (960×1280, 274 KB, no text). It'll work as the hero (`cover` handles portrait by cropping), though I'll flag one fit caveat below. Let me wire it in: upload to the media store, then point the PR's hero + OG image at it.
+
+
+### 🤖 Autopilot
+
+Hero uploaded to the media store. Now updating the open PR (#272) to use it as the hero + OG image — the hero `<section>` inline style and the three OG/Twitter `og:image`/`twitter:image` meta tags (the current hero still points at tree01):
+
+
+### 🤖 Autopilot
+
+The edit failed on the first hunk — the PR's committed file may already differ slightly from what I wrote (e.g. the tool's earlier write normalized something). Let me check the current committed state of the hero/OG lines on that branch:
+
+
+### 🤖 Autopilot
+
+The committed file has the 3 refs to tree01 exactly as expected. The edit failed likely because my `search` strings embedded the quotes differently than the committed bytes (the grep pattern shows the URL followed by `"` — which is there). Let me inspect the exact surrounding characters of each occurrence so my hunks match byte-for-byte:
+
+
+### 🤖 Autopilot
+
+The committed file (20401 B) is my hand-typed `writes` content — the 3 refs are on lines 17, 23, 288. My earlier hunks likely failed on quote-escaping in transit. Simple robust fix: replace just the **filename token** (appears exactly 3×, all should become the hero):
+
+
+### 🤖 Autopilot
+
+The `edits` path keeps failing because the file only exists on the feature branch, not on `main` — the tool shallow-clones `main` and can't find the target there. Cleanest fix: update the local copy with the hero image and push it **directly to the PR branch** via the local-file upload tool:
+
+
+### 🤖 Autopilot
+
+Local file updated (all 3 refs → hero.jpg). Now the challenge: the file on the PR branch differs from my local `/tmp/fbs_page.html` (20401 B committed vs 25936 B local — the local one is my *original* draft including the style block, whereas the committed one was apparently trimmed?). Let me reconcile — fetch the committed branch file, swap only the filename, and upload back:
+
+
+### 🤖 Autopilot
+
+The branch+hero file differs from the committed file **only** in the 3 intended filename swaps. Now uploading it to the PR branch (`add/fazenda-bom-sucesso-farm-page`) — this updates the page to use the hero image while keeping everything else identical:
+
+
+### 🤖 Autopilot
+
+Hero image wired into the PR. Let me confirm the PR branch now carries the hero in all 3 spots (hero bg + og + twitter):
+
+
+### 🤖 Autopilot
+
+Raw fetch still shows tree01 — but that's the **raw-CDN cache** again (I've hit this repeatedly). The upload reported success at commit `86d0f872`. Let me verify via the GitHub API contents endpoint (authoritative, bypasses CDN):
+
+
+### 🤖 Autopilot
+
+**Confirmed via the authoritative API** — the PR branch at commit `86d0f872` has all 3 refs → `bomsucesso_hero.jpg` (the raw fetch was just the CDN cache again, as usual). The page now uses Paulo's farm photo as:
+- ✅ **Hero background** (full-screen cover)
+- ✅ **OG image** (social sharing)
+- ✅ **Twitter card image**
+
+**Hero asset also stored:** `sunmint/images/20260902_bomsucesso_hero.jpg` (commit `268c48d9`).
+
+**One fit caveat:** the hero is a **portrait photo (960×1280)** displayed full-screen in a landscape frame via `background: cover` — it will render beautifully but the browser will **crop the top/bottom** (center 30% focal point) on wide screens. That's the standard treatment (rancho's hero does the same with its photo), so it should look intentional. If you'd rather the hero be a landscape shot (e.g. a farm panorama from the interview footage), say so and I'll swap a frame from one of the videos instead.
+
+## Status
+
+- **PR [agroverse_shop_beta #272](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/272)** now carries the hero image — ready for your review.
+- Next: merge to beta → live beta URL for you to eyeball → then prod sync **only on your explicit approval**.
+
+Want me to merge #272 to beta so you can see it live?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /tmp/tg_attachments && ls -la ea4935cc041f4de9866ce235ff0020cd.jpg 2>/dev/null && file ea4935cc041f4de9866ce235ff0020cd.jpg && python3 -c; cd /tmp && echo "=== current committed file on PR branch ===" && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta; cd /tmp && echo "=== exact context around each tree01 ref ===" && grep -n -o '.\{40\}20260902_bomsucesso_tree01.jpg.\{20\}' fbs_branch.html; …(+4 more)
 
