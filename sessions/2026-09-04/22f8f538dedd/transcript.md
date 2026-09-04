@@ -800,11 +800,13 @@ RG-P1 registered in the sheet and the plots builder regenerated. But I need to c
 ### 🤖 Autopilot
 
 The rebuild correctly added **RG-P1** while preserving all live features. The sunmint repo is api-only, so I'll push the regenerated `plots/index.geojson` via Content-API. Let me also build the farms index locally (script exists only in the repo, not local checkout) and push both.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 RG-P1 is correctly in the rebuilt registry (9-ring polygon, all props set). Now pushing the regenerated `plots/index.geojson` to the sunmint repo (api-only → Contents-API write), plus building and pushing the farms index.
+[2 tool result(s) compacted: upload_local_file_to_github, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1088,4 +1090,55 @@ Want me to start on #1?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && ls -la 8dbdbbe29ae24773920cae6293067c5d* 2>/dev/null && sha256sum 8dbdbbe29ae24773920cae6293067c5d.HEIC; echo "---
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **ee64dc10f5d5433eb05ad9e6ba9f2ba9.HEIC**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+- Note: HEIC converted to JPEG (EXIF/GPS preserved)
+- 📍 GPS: -3.630258, -53.652069 (alt 175.1 m)
+- 🕐 Captured: 2026:09:03 14:48:56
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Another source original — GPS (−3.630258, −53.652069) is **hull vertex #3** of the RG-P1 polygon. Let me confirm.
+
+
+### 🤖 Autopilot
+
+## Inspection: `ee64dc10f5d5433eb05ad9e6ba9f2ba9.HEIC`
+
+| Property | Value |
+|---|---|
+| File identity | **`IMG_8253.HEIC`** — byte-identical (sha256 match) to a file in `~/raimundo_geniza.zip` |
+| Device | iPhone 12 Pro Max (original, 3024×4032) |
+| 📍 GPS | **−3.630258, −53.652069** (alt 175.1 m) |
+| 🕐 Captured | 2026-09-03 14:48 local |
+| Scene | warm earth with ~15% green vegetation + ~22% dark — transitional veg/cleared area, greener than siblings |
+| OCR/QR | none |
+
+**Finding:** GPS point is **hull vertex #3** of the registered **RG-P1 polygon**. Byte-identical to zip source original `IMG_8253.HEIC` — same 36-media batch. Already registered; **no new action needed.**
+
+Confirmed source originals now span **5 of the 8 RG-P1 hull vertices**: #3 (IMG_8253), #4 (IMG_8254 2), #7 (IMG_8250 2), #8 (IMG_8249) + interior #6–7 (IMG_8251 2). The polygon is well-grounded in real GPS-tagged photos from the 2026-09-03 site walk.
+
+**Still awaiting your go** on:
+1. **Agroverse farm profile** — `agroverse_shop_beta/farms/raimundo-geniza-para/`
+2. **MAP media pipeline** — MOV→MP4 → YouTube + farm-media-raw + manifest
+3. **Impact-map wiring** — `sunmint.html` FARM_SLUG
+
+Start on #1?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → sha256 + sha-match against ~/raimundo_geniza.zip + EXIF + scene profile for ee64dc10f5d5433eb05ad9e6ba9f2ba9.HEIC (→ IMG_8253.HEIC, hull vertex #3)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/tg_attachments && sha256sum ee64dc10f5d5433eb05ad9e6ba9f2ba9.HEIC; echo "--- sha-match against zip ---"; cd ~/raimundo_geniza && fin
 
