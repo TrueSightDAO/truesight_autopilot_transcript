@@ -138,16 +138,19 @@ This runbook is directly from the same Fazenda Bom Sucesso session and is the au
 ### 🤖 Autopilot
 
 The runbook confirms this HEIC batch pattern (Fazenda Bom Sucesso) was already processed. But Gary is now introducing **Raimundo & Geniza** as a couple working a "new plot" — so this may be a *different* batch. Let me check whether the HEICs came via email (EXIF preserved) and compare today's new JPGs against the old batch.
+[3 tool result(s) compacted: gmail_search, gmail_search, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me directly compare today's 7 new JPGs (Sep 4, 13:55) against the GPS-bearing HEICs via pixel matching — to see whether they're the same Bom Sucesso photos (stripped JPGs) or a genuinely new plot.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The HEIC batch on disk is the already-processed Fazenda Bom Sucesso set. Today's 7 new JPGs don't pixel-match any of them. Let me do a final decisive check — full EXIF on the new JPGs, subfolder contents, and any name traces in the advisory snapshot around those tree events.
+[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -307,4 +310,63 @@ No QR/barcode in this one either. Let me do a proper content description (horizo
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/tg_attachments && timeout 55 python3 - <<'EOF' import importlib, sys for m in ['cv2','pyzbar','numpy']: try: mod=importlib.import_mo; cd /tmp/tg_attachments && timeout 55 python3 - <<'EOF' from PIL import Image import numpy as np im = Image.open('1191a3edcd364342954a382fd47
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **6006a26cb28647d5a3b116529ef1d527.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+This is another of the 7 photos from today's batch. Let me run the same quick checks (QR scan + EXIF + OCR) to be thorough and consistent.
+
+
+### 🤖 Autopilot
+
+Same result as its siblings — no GPS, no text, no QR. Let me do the color/content profile and a subtle check for a handwritten sign or structure (edge density), then summarize.
+
+
+### 🤖 Autopilot
+
+## Inspection of `6006a26cb28647d5a3b116529ef1d527.jpg`
+
+**Content profile:**
+
+| Property | Value |
+|---|---|
+| Dimensions | 960 × 1280 (portrait) |
+| Mean color | RGB ≈ 166/131/103 (warm tan — driest of the batch) |
+| Green-ish | ~12% (sparse low vegetation) |
+| Sky | ~35% at top → open sky visible (unlike siblings) |
+| Dark region | bottom-right quadrant very dark (lum 25–56) — likely a **tree/shrub canopy shadow or a pit/trench edge** |
+| Tan/earth | dominant |
+| Edge density | 15.1% — moderate structure/texture, but no text glyphs |
+| Text / GPS / QR | **none** (OCR empty; no EXIF; no barcode) |
+
+**Interpretation:** a dry, open field scene with a bright sky band at top and a large dark vegetated/shadowed mass in the lower-right — looks like standing at the edge of a cleared area next to taller vegetation (restoration-plot boundary photo, likely). Distinct scene; no machine-readable locator as with the other 6.
+
+**Same standing conclusion for all 7 JPGs from today:**
+- No coordinates recoverable — Telegram stripped GPS (HEIC originals are required).
+- The 59 HEIC originals on the box = **PL-002 Fazenda Bom Sucesso** (already registered; 10 trees submitted 09-03) — **not** a new plot.
+- If Raimundo & Geniza are the Bom Sucesso couple → just confirm and I'll rename the plot (e.g. "Fazenda Bom Sucesso (Raimundo & Geniza)").
+- If it's a **new plot** → please send the HEIC originals of these photos (as Document/email); then I extract coords, propose a name (e.g. "Sítio Raimundo & Geniza"), and submit the boundary + tree events.
+
+I've submitted **nothing** — holding for your clarification to avoid duplicates.
+
+*Analysis appended to transcript (session record updated).*
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/tg_attachments && exiftool -Make -Model -DateTimeOriginal -GPSLatitude -GPSLongitude -ImageWidth -ImageHeight 6006a26cb28647d5a3b116529ef1d527.jpg 2>/dev/null; echo "=== OCR ==="; timeout 50 pytho; cd /tmp/tg_attachments && timeout 55 python3 - <<'EOF' from PIL import Image import numpy as np im = Image.open('6006a26cb28647d5a3b116529ef1d527.jpg').convert('RGB') a = np.asarray(im.resize((64,85))).astype(int) m=a.mean
+• `scan QR` → no_code_found for 6006a26cb28647d5a3b116529ef1d527.jpg
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp/tg_attachments && exiftool -Make -Model -DateTimeOriginal -GPSLatitude -GPSLongitude -ImageWidth -ImageHeight 6006a26cb28647d5a3b116; cd /tmp/tg_attachments && timeout 55 python3 - <<'EOF' from PIL import Image import numpy as np im = Image.open('6006a26cb28647d5a3b116529ef
 
