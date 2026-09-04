@@ -2358,16 +2358,19 @@ The screenshot matters — site codes are FSVP compliance identifiers, so I need
 ### 🤖 Autopilot
 
 OCR is ambiguous on one glyph — the code reads **"U-06-07"** in one pass but **"W=06-07"** in another. Site codes matter for compliance, so let me zoom the exact code row and force a clean read.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me crop that exact code region tightly (top≈545 in 2x = 272 in original, full width) and read it with multiple psm modes + a whitelist of code characters.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One more zoom attempt on the code at its second, possibly cleaner instance, then I'll report.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2433,31 +2436,37 @@ Also I think Raimundo is listed as one of the directors. Verify against public s
 ### 🤖 Autopilot
 
 Gary wants verification of two things against public sources: (1) the sub-cooperative name **COOPOPS**, and (2) whether **Raimundo** is a listed director. Let me research.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Strong first result — Coopere Mais confirms CEPOTX coordinates **four** member cooperatives: **COPOPS, COOPOXIN, COPOTRAN e COPCAO** (note: source spells it **COPOPS**, one O). Now let me verify the spelling and hunt for Raimundo as a director.
+[2 tool result(s) compacted: web_extract, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Spelling check: the Coopere Mais article (July 2026) lists CEPOTX's four member cooperatives as **COPOPS, COOPOXIN, COPOTRAN e COPCAO** — note it's spelled **COPOPS** (one O), not "COOPOPS". Now let me hunt for Raimundo as a director.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key hit — **COPOPS** = "Cooperativa de Produtos Orgânicos de Perpétuo Socorro" (CNPJ 08.578.736/0001-53, **Uruará**, PA) with **Raimundo Silva listed as Presidente** on Econodata/CNPJCheck. Let me verify the details from the source pages — names, roles, and municipality fit (our Raimundo is married to Geniza, plot in Uruará).
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both primary sources corroborate each other (Receita Federal data via CNPJCheck + Econodata). Now let me confirm the CEPOTX→COPOPS membership relationship and check our own DAO records for any COPOPS mention, plus how "Raimundo Silva" fits (Geniza's IG handle is geniza.borges.5 — Borges surname; if Raimundo's full name is Raimundo Silva, that's consistent with the CNPJ, but let me check our records).
+[2 tool result(s) compacted: search_context, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me do one more verification round — checking the Econodata snippet details and hunting for any director-list page on CEPOTX's site or social to cross-check Raimundo's role.
+[2 tool result(s) compacted: web_search, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2576,4 +2585,77 @@ The agroverse.shop farm page update (adding "member of COPOPS / CEPOTX family, P
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo "=== fda_fsvp suppliers dir ==="; curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/contents/suppliers" | python3 -c "import ; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/fda_fsvp/main/entities.index.json" -o entities.index.json && echo "=== li; cd /tmp && python3 - <<'EOF' import json d = json.load(open('entities.index.json')) # insert COPOPS entry after CEPOTX entry entry = { "trad
 • `merge pr` → ✅ PR #11 on fda_fsvp merged successfully (sha: 981d98908f25f1daf79333e71fdc8728ff42ab95). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] [Handoff context — this Telegram topic (thread 20724) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ COPOPS + Raimundo & Geniza records merged — PR #11
+
+**"FSVP records: COPOPS (Perpétuo Socorro, Uruará) entity + Raimundo & Geniza source farm U-06-07"** — [fda_fsvp PR #11](https://github.com/Tru
+
+
+### 🤖 Autopilot
+
+👍 Go — executing the farm-profile affiliation PR. First, let me read the current highlights/story section of the RG page for a precise edit.
+
+
+### 🤖 Autopilot
+
+Let me see the full highlights block (lines 522–575) for precise edits. I also spotted a small bug — canonical/og:url reads `raimundo-geniza-para-para` (double "-para") — worth fixing in the same PR.
+
+
+### 🤖 Autopilot
+
+The highlights have a ranch-era leftover ("Fermentation — On-farm wooden boxes") and the Cooperative item is thin. Also spotted canonical/og:url with a double `-para` bug (`raimundo-geniza-para-para`). Before editing, let me check how the ranch page (the template) handles canonical/URL — so I fix it consistently, not invent a new convention.
+
+
+### 🤖 Autopilot
+
+Ranch convention confirmed: canonical = `https://www.agroverse.shop/farms/<farm-id>` (single, no double suffix) — so RG's `raimundo-geniza-para-para` is a real bug. Now executing the PR: fix the 3 URL refs + upgrade Cooperative highlight to COPOPS + swap the ranch-era "Fermentation" highlight + add the COPOPS line to the story.
+
+
+### 🤖 Autopilot
+
+PR #282 opened with all 6 edits applied. Let me verify the changes render cleanly (no leftover duplicate highlights, single canonical) before merging.
+
+
+### 🤖 Autopilot
+
+All 6 edits verified clean: canonical/urls single (no `-para-para`), COPOPS in story (2 mentions) + Cooperative highlight, Restoration highlight swapped in (no Fermentation leftover). Merging PR #282.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ COPOPS affiliation merged — PR #282
+
+**"Farm profile: COPOPS affiliation for Sítio Raimundo & Geniza + canonical/URL + highlight fixes"** — [agroverse_shop_beta PR #282](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/282) merged (sha `200bea4`)
+
+### What changed (`farms/raimundo-geniza-para/index.html`, 6 edits)
+1. **Story paragraph** — now states the family are members of **COPOPS** (Cooperativa de Produtos Orgânicos de Perpétuo Socorro, Uruará), a member cooperative of the **CEPOTX** organic cacao network, and **Raimundo serves as COPOPS' Presidente** (public-record verified)
+2. **Cooperative highlight** — upgraded from "married couple" → COPOPS membership + Presidente detail
+3. **Canonical URL bug fix** — `raimundo-geniza-para-para` → `raimundo-geniza-para` (3 refs: canonical, og:url, twitter:url) matching ranch convention
+4. **Stale highlight fix** — removed ranch-era "🍫 Fermentation — On-farm wooden boxes" → "🌳 Restoration — New family restoration plot RG-P1, ≈0.32 ha" (this is a restoration plot, not a fermentation farm yet)
+
+All verified clean before merge: single canonical, 2 COPOPS story mentions + highlight, no leftovers.
+
+## RESUME HERE → next unit
+**Promote beta → production** (`sync_beta_to_prod agroverse_shop_prod`) — on your go — so the COPOPS affiliation + URL fixes go live on `agroverse.shop/farms/raimundo-geniza-para/`. (Beta currently shows it; prod still has the pre-affiliation version from the earlier sync.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → grep current highlights/story/URL refs on main; ranch canonical convention check; verify PR branch renders clean (canonical single, COPOPS ×2 story, Restoration highlight, no Fermentation)
+• `git push changes` → PR #282 (6 edits, 1 file)
+• `merge pr` → ✅ PR #282 merged (sha 200bea43079cbf3da8db3a6ccae44884b2b28f4c)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/raimundo-geniza-para/index.html" -o rg.htm; sed -n '522,600p' /tmp/rg.html; echo "=== ranch canonical/og:url ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/rancho-maranta; …(+1 more)
+• `merge pr` → ✅ PR #282 on agroverse_shop_beta merged successfully (sha: 200bea43079cbf3da8db3a6ccae44884b2b28f4c). Pull Request successfully merged
 
