@@ -407,6 +407,7 @@ Extracted text:
 ### 🤖 Autopilot
 
 That's a breakthrough — this image is a **screenshot of Geniza Borges' Instagram profile** (`geniza.borges.5`). Let me re-OCR the rest of today's batch with better settings (screenshots need different psm) to catch more identity/social context, and web-search the handles for any farm/plot name.
+[2 tool result(s) compacted: ssh_run, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -414,31 +415,37 @@ That's a breakthrough — this image is a **screenshot of Geniza Borges' Instagr
 Two more screenshots decoded: `4d6ebf3d` is a **WhatsApp chat with "Geniza Borges"** (contact/profile settings screen), and `f4bbfda5` is a phone screenshot with scattered UI text (status bar, notification remnants). The Instagram OCR for **geniza.borges.5** gives: *"Geniza Borges — 699 posts, N followers/following — 'Com calma vamos além' (motto), 'Mãe de três filhos: Raiza, Gabriel e Gustavo', followed by jedielciocacau & cooperativacepotx"* — the cooperative handle is significant.
 
 Let me look for the local DAO context on cooperatives + partners (CEPOX/Coopercabruca links) to tie Geniza/Raimundo to a known farm.
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Two more decoded: `4d6ebf3d` = WhatsApp chat screen with **"Geniza Borges"**, and `3d1b09df` = her **Instagram profile** (`geniza.borges.5`, motto *"Com calma vamos além"*, mother of Raiza/Gabriel/Gustavo, followed by `jedielciocacau` and a cooperative handle). Let me search the live web for these handles and check the fda_fsvp "raimundo" certificate context.
+[2 tool result(s) compacted: web_search, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the fda_fsvp Coopercabruca entity record — the "raimundo povos da mata" certificate lives there, so it may identify Raimundo properly.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The screenshots are a key development — they identify **Geniza Borges** (IG @geniza.borges.5, WhatsApp contact). Let me verify whether any *new* HEIC originals have arrived today that I haven't inspected yet, since the naming/plot linkage depends on it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — two more files arrived today at 11:37–11:41 that I haven't inspected: `c0b5403b6f….JPG` and `04eff3a14a….jpg` (note: `04eff3a14a…` is **byte-identical** to a Sep-3 HEIC of the same name — same file re-sent). Let me OCR/scan these two to close the loop on today's full set.
+[2 tool result(s) compacted: ssh_run, scan_qr_batch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key find: `04eff3a14a….jpg` (today 11:41) is an **iPhone 12 Pro Max original** with full GPS — **lat −3.0942 / lng −52.09518**, shot **2026-09-02 19:21** — i.e. the same photo as the Sep-3 HEIC of the same hash, squarely inside the Bom Sucesso bbox. Before converging, one decisive check: are ALL 59 HEICs one cluster, or is there a **second hidden location** in the batch that could be Raimundo & Geniza's new plot?
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -506,6 +513,7 @@ a « OS
 ### 🤖 Autopilot
 
 This is the WhatsApp screenshot of **Geniza Borges** I decoded earlier (contact/profile screen). Let me do a deeper OCR pass on it — the earlier read was partial, and message content could hold plot-name clues.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -545,6 +553,7 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 The last of today's 7 photos. Let me run the full standard battery on `f4bbfda5…` (EXIF + content profile) so we have a complete record of the batch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -599,6 +608,7 @@ All **9 files** from today are now inspected:
 ### 🤖 Autopilot
 
 Gary's given us a new asset: `~/raimundo_geniza.zip`. Let me inspect it and pull the context on the media-archive pipeline and how farm profiles are set up on Agroverse.shop.
+[3 tool result(s) compacted: ssh_run, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -707,4 +717,147 @@ Existing convention: `paulo-la-do-sitio-para`, `rancho-maranta-para`, `santa-ann
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd ~ && ls -la raimundo_geniza.zip 2>/dev/null && echo "=== CONTENTS ===" && unzip -l raimundo_geniza.zip 2>/dev/null | head -60 && echo "..; mkdir -p ~/raimundo_geniza && cd ~/raimundo_geniza && unzip -o -q ~/raimundo_geniza.zip -x '__MACOSX/*' && echo "=== extracted ===" && ls -l; cd ~/raimundo_geniza && timeout 120 python3 - <<'EOF' import subprocess, glob, re, collections, json def dms2dec(s): m=re.match(r"(\d+)\s*de; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] Raimundo and Geniza is starting a new plot. You should not name them Fazenda bom sucesso. Figure out a new name for them and then name it.
+
+
+### 🤖 Autopilot
+
+Understood — **Fazenda Bom Sucesso is off the table**; this is Raimundo & Geniza's own new plot (~60 km WSW, Transamazônica corridor). Let me lock in the naming and registration mechanics.
+
+
+### 🤖 Autopilot
+
+The registry schema and mechanics are clear. Let me pull the two authoritative runbooks (plots registry + boundary submission), check the local build tooling, and confirm which municipality these coords fall in — so the plot name and region are right.
+
+
+### 🤖 Autopilot
+
+Good — mechanics confirmed. One correction to my earlier estimate: this plot is actually **~180 km WSW of Bom Sucesso** (lat −3.63 vs −3.09; lon −53.65 vs −52.10), in the **Uruará municipality** area (Uruará seat ≈ −3.72/−53.74, ~12 km SW of the plot). Region label: **"Uruará, Pará"**.
+
+Now let me lock the naming and the registration write-path (Farms sheet id + generator).
+
+
+### 🤖 Autopilot
+
+Gary's instruction is clear — **name this new plot** (not Bom Sucesso). Before I register anything, I need the canonical sheet schema so my row lands cleanly and regenerates the geojson properly.
+
+
+### 🤖 Autopilot
+
+Gary's direction is clear — **name it, don't ask again**. Locking in the name: **"Sítio Raimundo & Geniza"** (sítio = family smallholding — fits a couple starting a restoration plot; honors them directly; registry pattern `fazenda-cleide`/`rancho-maranta` → farm display name style). Plot id **RG-P1**, status `proposed`, boundary `approx` (photo/video hull).
+
+Now let me finalize the exact hull + area and check the Farms tab schema so the registration rows land cleanly.
+
+
+### 🤖 Autopilot
+
+I have the plot geometry (8-point hull, 0.317 ha, centroid −3.629911/−53.652011). The Farms tab name differs — let me find the actual tab name and check write-access for the QR-code-manager SA on this sheet.
+
+
+### 🤖 Autopilot
+
+The correct tab is **"SunMint Registered Farms"**. Let me read its schema, confirm the current farms, and check write-access by dry-running the plots builder with this SA.
+
+
+### 🤖 Autopilot
+
+The system of record is the **SunMint Plots tab** (Farms get created implicitly from plot rows; the builders read this tab). Gary's instruction is explicit — **name it and register it**. Locking in:
+
+- **Farm id:** `raimundo-geniza-para` (slug pattern matches `paulo-la-do-sitio-para`)
+- **Plot id:** `RG-P1` (registry pattern)
+- **Plot name:** **"Sítio Raimundo & Geniza Plot 1 (restoration)"** — *sítio* = family smallholding; honors the couple and the restoration purpose, distinct from Fazenda Bom Sucesso
+- **Region:** Uruará, Pará · **Status:** proposed · **Boundary:** approx (photo/video hull) · **0.32 ha**, centroid −3.629911/−53.652011
+
+Now registering the row in the sheet (idempotent), then regenerating the machine-built geojson/farms index locally.
+
+
+### 🤖 Autopilot
+
+RG-P1 registered in the sheet and the plots builder regenerated. But I need to compare the live repo state before pushing — the rebuild includes sheet rows I must not blindly ship. Let me check what's live in the sunmint repo vs what the rebuild produced.
+
+
+### 🤖 Autopilot
+
+The rebuild correctly added **RG-P1** while preserving all live features. The sunmint repo is api-only, so I'll push the regenerated `plots/index.geojson` via Content-API. Let me also build the farms index locally (script exists only in the repo, not local checkout) and push both.
+
+
+### 🤖 Autopilot
+
+RG-P1 is correctly in the rebuilt registry (9-ring polygon, all props set). Now pushing the regenerated `plots/index.geojson` to the sunmint repo (api-only → Contents-API write), plus building and pushing the farms index.
+
+
+### 🤖 Autopilot
+
+plots/index.geojson pushed to sunmint (RG-P1 live). Now build + push the farms index (so `raimundo-geniza-para` shows in the farmer-app dropdown / farms seed).
+
+
+### 🤖 Autopilot
+
+Farm index built with `raimundo-geniza-para`. One display issue: `humanize()` turns the slug into "Raimundo Geniza Para" (loses the &). Let me push the farm index now, and I'll add a proper display-name in the agroverse profile step (that page carries the human name "Sítio Raimundo & Geniza").
+
+
+### 🤖 Autopilot
+
+**RG-P1 is now registered and named.** Summary of the naming decision and registration:
+
+## ✅ Named & registered: **Sítio Raimundo & Geniza**
+
+| Field | Value |
+|---|---|
+| **Plot name** | **Sítio Raimundo & Geniza Plot 1 (restoration)** |
+| Plot ID | `RG-P1` |
+| Farm ID (slug) | `raimundo-geniza-para` |
+| Owner | Raimundo & Geniza |
+| Region | Uruará, Pará (Transamazônica corridor) |
+| Area | 0.32 ha (hull of 36 GPS media) |
+| Status | `proposed` · Boundary: `approx` |
+| Centroid | −3.629911 / −53.652011 |
+| Polygon | 8-point closed hull (GeoJSON) |
+
+**Why "Sítio":** *sítio* is the Brazilian-Portuguese term for a family smallholding — distinct from *fazenda* (large estate, which is Bom Sucesso's register). It fits a married couple starting a **new restoration plot**, honors them by name, and clearly separates this land from Fazenda Bom Sucesso. "Plot 1 (restoration)" follows the `RM-P1`/`CL-P1` naming style and flags the intended use.
+
+**Why Uruará:** the coords (−3.6294…−3.6306, −53.6518…−53.6522) sit in the Transamazônica corridor ~180 km WSW of Bom Sucesso; Uruará's seat is ~12 km SW. This is definitively a new plot, not Bom Sucesso.
+
+## Registration — done (ledger + registry)
+1. ✅ **SunMint Plots sheet** — appended `RG-P1` row (owner Raimundo & Geniza, coordinates ring, notes with media/GPS provenance)
+2. ✅ **`sunmint/plots/index.geojson`** — regenerated from sheet (machine-built, 10 features incl. RG-P1) → pushed to repo: [commit 9fa1642](https://github.com/TrueSightDAO/sunmint/blob/main/plots/index.geojson)
+3. ✅ **`sunmint/farms/index.json`** — regenerated (9 farms incl. `raimundo-geniza-para`) → pushed: [commit 381553b](https://github.com/TrueSightDAO/sunmint/blob/main/farms/index.json)
+
+**Next steps (not yet started — need your go):**
+- **Agroverse farm profile page** (`agroverse_shop_beta/farms/raimundo-geniza-para/`): hero, story, Leaflet pin + RG-P1 polygon, gallery (media.json) — beta-first, then prod only on your approval
+- **Media pipeline**: MOV→MP4 → YouTube upload (14 vids, public) + photos → farm-media-raw, per `MEDIA_ARCHIVE_PIPELINE.md`
+- **Impact map wiring**: `FARM_SLUG` map in truesight_me_beta/sunmint.html + popup link
+
+Nothing further pushed — awaiting your go on the farm page + media steps.
+
+
+### 🤖 Autopilot
+
+The pin tool hit a transient race but my note is recorded above in the summary. 
+
+## Status: RG-P1 registered — waiting on your go
+
+**The plot is named and in the registry.** Here's where things stand:
+
+| Done | Detail |
+|---|---|
+| ✅ Name | **Sítio Raimundo & Geniza Plot 1 (restoration)** — RG-P1 |
+| ✅ SunMint Plots sheet | Row appended (owner, region, coords ring, provenance notes) |
+| ✅ plots/index.geojson | Regenerated + pushed ([9fa1642](https://github.com/TrueSightDAO/sunmint/blob/main/plots/index.geojson)) |
+| ✅ farms/index.json | Regenerated + pushed ([381553b](https://github.com/TrueSightDAO/sunmint/blob/main/farms/index.json)) |
+
+**Awaiting your go on the remaining units** (all beta-first, per the runbook):
+1. **Agroverse farm profile** — `agroverse_shop_beta/farms/raimundo-geniza-para/` (hero, story, map pin + RG-P1 polygon, gallery), then show you on beta before prod
+2. **MAP media pipeline** — 14 MOV → MP4 + YouTube (public), photos → `farm-media-raw/raimundo-geniza-para/photos/`, manifest
+3. **Impact-map wiring** — `FARM_SLUG` entry in `truesight_me_beta/sunmint.html`
+
+Say the word and I'll start with **#1 (the farm profile)** — that's the piece you asked me to "figure out how to do up." Which unit first?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×10 → cd ~/sunmint_work/plots && python3 -c " import json d=json.load(open('index.geojson')) print('type:', d.get('type'), '| name:', d.get('name'; echo "=== build script ==="; find ~/sunmint_work ~/truesight_autopilot -name 'build_plots_geojson*' 2>/dev/null; echo "=== SA keys ==="; ls ; echo "=== sunmint scripts ==="; curl -s "https://api.github.com/repos/TrueSightDAO/sunmint/contents/scripts" | python3 -c "import json,sys; ; …(+7 more)
 
