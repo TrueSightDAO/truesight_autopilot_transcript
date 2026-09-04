@@ -2510,16 +2510,19 @@ Go for it, man! [System note: the user sent this as a VOICE message via the Tele
 ### 🤖 Autopilot
 
 Go received — executing. First recon: how COPOPS/CEPOTX are structured in our fda_fsvp records, what the site-code scheme (U/V-06-XX) means, and where Paulo's V-06-29 precedent lives.
+[3 tool result(s) compacted: search_code, search_context, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Public sources have no trace of the "U-06-07" style codes — they're our internal scheme. Let me read the CEPOTX entity record and find where Paulo's V-06-29 code pattern lives in our repos.
+[3 tool result(s) compacted: read_repo_file, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I understand the scheme — **site codes follow `[letter]-[co-op]-[plot]`** (e.g. Santa Anna = **B-06-58** under COOPOXIN, noted in the CEPOTX entity.json). So **U-06-07** = "U" prefix (likely a sub-co-op code) + 06 (region/CEPOTX) + 07 (site #). The code U-06-07 for Raimundo would follow the same pattern. Let me read the site-visit runbook + check what letter prefixes map to which sub-co-ops (is "U" = Uruará / COPOPS?).
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2658,4 +2661,50 @@ All verified clean before merge: single canonical, 2 COPOPS story mentions + hig
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/raimundo-geniza-para/index.html" -o rg.htm; sed -n '522,600p' /tmp/rg.html; echo "=== ranch canonical/og:url ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/rancho-maranta; …(+1 more)
 • `merge pr` → ✅ PR #282 on agroverse_shop_beta merged successfully (sha: 200bea43079cbf3da8db3a6ccae44884b2b28f4c). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] Promote
+
+
+### 🤖 Autopilot
+
+Promoting beta → production now.
+
+
+### 🤖 Autopilot
+
+Sync succeeded. Verifying the COPOPS affiliation is live on production (Pages may need ~90s to rebuild — checking now, will confirm).
+
+
+### 🤖 Autopilot
+
+## ✅ Promoted to production — COPOPS affiliation is LIVE
+
+**Deploy record:** [deploy_20260904T193131Z_agroverse-shop-prod](https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260904T193131Z_agroverse-shop-prod.md)
+
+**Verified live on `agroverse.shop`:**
+
+| Check | Result |
+|---|---|
+| COPOPS content in prod repo | ✅ (2 mentions — story + highlight) |
+| Canonical URL fix | ✅ (`raimundo-geniza-para`, no double `-para`) |
+| Live page | ✅ **200** — https://agroverse.shop/farms/raimundo-geniza-para/ |
+
+### Sítio Raimundo & Geniza — full loop now closed end-to-end:
+1. ✅ **Registered** — RG-P1 "Sítio Raimundo & Geniza Plot 1 (restoration)", 0.32 ha, Uruará (plots geojson + farms index + SunMint sheet)
+2. ✅ **Media archived** — 14 site-walk videos on YouTube + photos
+3. ✅ **Farm profile live on prod** — hero (your photo), story with **COPOPS/CEPOTX affiliation + Raimundo = Presidente**, RG-P1 polygon map, 8-video + 7-photo gallery
+4. ✅ **FSVP records** — COPOPS entity + U-06-07 site code (fda_fsvp PR #11)
+5. ✅ **Impact map** — RG-P1 polygon shows on truesight.me/sunmint.html → links to the now-live prod profile
+
+## Remaining optional item
+- **MAP manifests commit** — `farm_media_manifests/raimundo-geniza-para.json` (14 videos' sha/gps/duration/yt_id) — bookkeeping for the media pipeline, one small PR whenever you want it.
+
+Anything else on Raimundo & Geniza, or shall we call this one complete? 🌳
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== prod page: COPOPS present? ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_prod/main/farms/raimundo-g
 
