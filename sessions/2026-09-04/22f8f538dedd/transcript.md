@@ -156,6 +156,7 @@ The HEIC batch on disk is the already-processed Fazenda Bom Sucesso set. Today's
 ### 🤖 Autopilot
 
 The HEIC batch is clearly the **Fazenda Bom Sucesso** set (already processed Sep 2/3 → plot PL-002 + 10 trees). Before answering, let me check the authoritative event payloads (which contain the planter/farm names) to see whether Raimundo & Geniza are the people behind Bom Sucesso, and look at the SunMint Farms/plots sheet for the registered plot.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -369,4 +370,103 @@ I've submitted **nothing** — holding for your clarification to avoid duplicate
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp/tg_attachments && exiftool -Make -Model -DateTimeOriginal -GPSLatitude -GPSLongitude -ImageWidth -ImageHeight 6006a26cb28647d5a3b116; cd /tmp/tg_attachments && timeout 55 python3 - <<'EOF' from PIL import Image import numpy as np im = Image.open('6006a26cb28647d5a3b116529ef
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **3d1b09df535349c8a0ede7614cbc3834.jpg**]
+- Type: Image (OCR confidence: 81.2%, quality: good)
+
+Extracted text:
+```
+”) 8 12:46@ < geniza.borges.5 fa) Geniza Borges a7 teten 699 posts followers following Com calma vamos além CTs ORS We Mae de trés filhos: Raiza,Gabriel e Gustavo more Tomei) a) Followed by jedielciocacau, 8D cooperativacepotx and 1 Celtis Following v Message i Destaques Destaques
+```
+
+
+### 🤖 Autopilot
+
+That's a breakthrough — this image is a **screenshot of Geniza Borges' Instagram profile** (`geniza.borges.5`). Let me re-OCR the rest of today's batch with better settings (screenshots need different psm) to catch more identity/social context, and web-search the handles for any farm/plot name.
+
+
+### 🤖 Autopilot
+
+Two more screenshots decoded: `4d6ebf3d` is a **WhatsApp chat with "Geniza Borges"** (contact/profile settings screen), and `f4bbfda5` is a phone screenshot with scattered UI text (status bar, notification remnants). The Instagram OCR for **geniza.borges.5** gives: *"Geniza Borges — 699 posts, N followers/following — 'Com calma vamos além' (motto), 'Mãe de três filhos: Raiza, Gabriel e Gustavo', followed by jedielciocacau & cooperativacepotx"* — the cooperative handle is significant.
+
+Let me look for the local DAO context on cooperatives + partners (CEPOX/Coopercabruca links) to tie Geniza/Raimundo to a known farm.
+
+
+### 🤖 Autopilot
+
+Two more decoded: `4d6ebf3d` = WhatsApp chat screen with **"Geniza Borges"**, and `3d1b09df` = her **Instagram profile** (`geniza.borges.5`, motto *"Com calma vamos além"*, mother of Raiza/Gabriel/Gustavo, followed by `jedielciocacau` and a cooperative handle). Let me search the live web for these handles and check the fda_fsvp "raimundo" certificate context.
+
+
+### 🤖 Autopilot
+
+Let me read the fda_fsvp Coopercabruca entity record — the "raimundo povos da mata" certificate lives there, so it may identify Raimundo properly.
+
+
+### 🤖 Autopilot
+
+The screenshots are a key development — they identify **Geniza Borges** (IG @geniza.borges.5, WhatsApp contact). Let me verify whether any *new* HEIC originals have arrived today that I haven't inspected yet, since the naming/plot linkage depends on it.
+
+
+### 🤖 Autopilot
+
+Interesting — two more files arrived today at 11:37–11:41 that I haven't inspected: `c0b5403b6f….JPG` and `04eff3a14a….jpg` (note: `04eff3a14a…` is **byte-identical** to a Sep-3 HEIC of the same name — same file re-sent). Let me OCR/scan these two to close the loop on today's full set.
+
+
+### 🤖 Autopilot
+
+Key find: `04eff3a14a….jpg` (today 11:41) is an **iPhone 12 Pro Max original** with full GPS — **lat −3.0942 / lng −52.09518**, shot **2026-09-02 19:21** — i.e. the same photo as the Sep-3 HEIC of the same hash, squarely inside the Bom Sucesso bbox. Before converging, one decisive check: are ALL 59 HEICs one cluster, or is there a **second hidden location** in the batch that could be Raimundo & Geniza's new plot?
+
+
+### 🤖 Autopilot
+
+## Converged findings — Raimundo & Geniza plot request
+
+### 1. HEIC coordinates — deciphered ✅
+All **59 HEIC files** carry GPS (iPhone originals). They form **one single tight cluster** — there is no second location hiding in the batch:
+
+| | Value |
+|---|---|
+| Latitude range | **−3.0940 … −3.0953** |
+| Longitude range | **−52.0948 … −52.0961** |
+| Captured | 2026-09-02, 18:18–19:31 local |
+| Location | Fazenda Bom Sucesso area, Altamira / Transamazônica, Pará |
+
+*(Center ≈ −3.0946, −52.0950. Per-file coordinates available on request.)*
+
+### 2. This is NOT a new plot — it's already registered
+That exact footprint matches the existing SunMint plot **PL-002 "Fazenda Bom Sucesso"** (farm_id `fazenda-bom-sucesso`, ~1.0 ha, bbox −3.095311..−3.093989 / −52.095919..−52.094789 — the HEICs fall inside it), with **10 [TREE PLANTING EVENT]s already submitted on 2026-09-03** (Cacau–Hybrid, `20260902_bomsucesso_tree01..10`). The photo-processing runbook was codified from that same session. **Re-submitting would duplicate the ledger.**
+
+### 3. Today's new photos — who they are
+- 7 field photos (earth/track scenes): **no GPS, no QR, no text** — Telegram stripped metadata; coordinates are not recoverable from them.
+- 2 screenshots identify the family: **Geniza Borges** — WhatsApp contact + Instagram `@geniza.borges.5` (motto *"Com calma vamos além"*, mother of Raiza/Gabriel/Gustavo, followed by `jedielciocacau` and a cooperative). This ties her to the regional cacao/cooperative world but gives no plot name or coords.
+
+### 4. Raimundo & Geniza in DAO records — **not found**
+Neither name appears in agentic_ai_context, repos, transcripts, or mail. The only "Raimundo" trace is a 2024 Coopercabruca (Bahia) supplier certificate filename — a different state, so likely unrelated.
+
+### 5. The naming question
+The registry name for this land is already **"Fazenda Bom Sucesso" (PL-002)**. If Raimundo & Geniza are the couple restoring/planting it, the appropriate full name would be **"Fazenda Bom Sucesso (Família Raimundo & Geniza)"** — but I need **your confirmation** that they are that couple before I attribute the plot to them (I will not invent ownership).
+
+## The one blocking question
+**Are Raimundo & Geniza the couple who planted Fazenda Bom Sucesso (the 09-02/09-03 HEIC batch)?**
+- **If yes** → no new coords/submission needed; next step = attribute/rename PL-002 → *Fazenda Bom Sucesso (Família Raimundo & Geniza)* + optionally add them as contributors/partners.
+- **If this is a genuinely different plot** → today's 7 JPGs can't give coordinates; please resend as **HEIC/MOV or email attachments** and I'll process per the runbook.
+
+**Nothing submitted** — holding to avoid duplicates or misattribution.
+
+## RESUME HERE
+Next turn: take Gary's yes/no on the Bom Sucesso link. If **yes**: propose the PL-002 rename/attribution PR + partner-add event for Raimundo & Geniza (need their handles/CPF-free contact from Gary). If **no/new plot**: wait for HEIC originals, then run `SUNMINT_TREE_PHOTO_PROCESSING.md` (dig-time clustering → 4-corner hull → FARM BOUNDARY EVIDENCE + TREE PLANTING events with both `Location` and `Latitude`/`Longitude`).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → OCR psm4 batch re-run (decoded 2 screenshots: Geniza Borges IG + WhatsApp), exiftool on c0b5403b…/04eff3a14a… (found iPhone original w/ GPS at −3.0942,−52.09518 inside Bom Sucesso bbox), full 59-HEIC GPS cluster analysis (one cluster only)
+• `scan_qr_batch` ×1, `web_search` ×2, `search_code`/`read_repo_file` ×2 (Coopercabruca entity — Raimundo trace only there)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/tg_attachments && for f in f4bbfda5510849db9f3bd55707082d95 634a5cb0a42f4b63933f9639ad42de2d ba10271e124949178f8ddd75a8bbe551 4d6ebf; cd /tmp/tg_attachments && echo "=== ALL FILES by mtime (top 30) ===" && ls -lt --time-style=+%Y-%m-%d_%H:%M | head -30 && echo "=== HEIC cou; cd /tmp/tg_attachments && for f in c0b5403b6fd8405dad8543adc9a251ae.JPG 04eff3a14a1446b88d9354001979ef31.jpg; do echo "===== $f ====="; exif; …(+1 more)
 
