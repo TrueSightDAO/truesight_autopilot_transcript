@@ -361,16 +361,19 @@ Now I have complete ground truth. Let me look at the actual fix files (daemon's 
 I now have complete ground truth. The manifests and gallery files have distinct schemas (older `santa/rancho` = rich per-item dicts; `paulo` = flat). The `farm_media_manifest.py` committer only handles the flat daemon schema and default inbox path — but the committed manifests were hand-built per farm with richer metadata, so I'll **surgically patch the two corrupted IDs in the committed manifests** (not regenerate), which is the safe minimal fix.
 
 Let me check the shop gallery's `_note` + remaining structure and the santa/rancho shop media.json gallery structure before writing fixes:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All ground truth is in hand. The cleide gallery embeds 2 wrong videos (IMG_4838→dead `6H7W2Q3kLpM`, IMG_4839→La do Sitio's `dTcdegmZFm0`); correct ids are `Qkcuc_zk694`/`O2NJB6D69-o` (cleide manifest). Now I'll execute the remediation as **one PR per repo** with surgical edits. Starting with the **agroverse_shop_beta** gallery fix (2 videoId swaps):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The edits need explicit hunks — providing them:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -537,4 +540,84 @@ Everything resolves cleanly: `yt_id` = where the world watches it; `raw` = the v
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → echo "=== raw MOV originals on box per farm (count + GB) ==="; for d in /home/ubuntu/*_work /home/ubuntu/*media* 2>/dev/null; do [ -d "$d" ]; python3 - <<'EOF' import json,urllib.request,base64 def api(url): req=urllib.request.Request(url,headers={'User-Agent':'sophia','Accept':'ap; python3 - <<'EOF' import os,glob,json movs=[] for pat in ['/home/ubuntu/**/*.MOV','/home/ubuntu/**/*.mov','/home/ubuntu/**/*.mp4']: movs+=gl; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] Do all 5
+
+For the S3 glacier do it in Nelanco AWS S3 account. Can we have the bucket these raw blobs are stored set to an appropriate subdomain under Agroverse or TrueSight me?? Thoughts
+
+
+### 🤖 Autopilot
+
+"Do all 5" — acknowledged. Before I start mutating, let me ground two things: (a) which AWS account actually hosts the `truesight.me` / agroverse DNS zones (decides what subdomain is even possible), and (b) whether this box has credentials for the Nelanco account so I can move 16GB of raws directly:
+
+
+### 🤖 Autopilot
+
+"Do all 5" — understood. Before executing the S3 move I need to resolve the subdomain question with facts, so let me check the DNS zones (which account owns what), existing subdomains to avoid collisions, current S3 buckets in Nelanco, and where this box's AWS credentials actually live (no aws CLI is installed):
+
+
+### 🤖 Autopilot
+
+"Do all 5" + the S3/subdomain question — let me ground the answer with facts about the DNS zones, bucket options, and what this box can actually do for a 16GB move:
+
+
+### 🤖 Autopilot
+
+"Do all 5" — understood. Before mutating AWS I grounded the subdomain question in facts, and one of those facts is a real blocker for step 4. Here's the state + my recommendation + the single decision I need.
+
+## Facts I just pulled
+
+| Question | Answer |
+|---|---|
+| Where does **DNS** live? | **Explorya** Route53 owns BOTH zones: `truesight.me` (34 records incl. api/edgar/sophia/assets/beta) and `agroverse.shop` (16 records incl. beta/www/capoeira/affiliate). **Nelanco has ZERO hosted zones.** |
+| Where does **S3** live? | **Nelanco** has the buckets — incl. an existing **`assets.truesight.me`** bucket (the "bucket named after the subdomain" pattern is already established here). No farm-media bucket yet. |
+| Can this box upload 16GB to Nelanco S3? | **Not yet.** `awscli` + `boto3` ARE installed on the box, but there are **no credentials** (`~/.aws` empty, no IAM role — IMDS 404). The `aws_query` tool reaches Nelanco from the control plane but can't stream local files. |
+| Disk | Now **81% (16G free)** — earlier 98% probe must have been transient (git clones cleaned). Fine for per-file streaming. |
+
+## Subdomain recommendation: `media.agroverse.shop`
+
+- Farm media is the **public Agroverse provenance brand** (raw GPS-tagged originals, transparency is the point — the repo README says public by default). `agroverse.shop` is the right parent; `truesight.me` subdomains are DAO-internal infra (api/edgar/sophia) and I'd keep them clean.
+- **Mechanics (cross-account, standard + works):** create the bucket in **Nelanco** named exactly **`media.agroverse.shop`** (S3 static-hosting custom domains require bucket name = domain), then add one CNAME record in **Explorya's** `agroverse.shop` zone → the bucket endpoint. Same shape as the existing `assets.truesight.me` bucket/DNS split.
+- Layout: `media.agroverse.shop/raw/<farm>/…` + `media.agroverse.shop/previews/<farm>/…` — one bucket, two prefixes; manifest `raw_url` = stable object URL.
+
+## Glacier nuance (read this before you sign off)
+
+Pure **Glacier/Deep Archive objects can't serve instant public GETs** — retrieval takes minutes/hours, so a manifest `raw_url` pointing at Glacier breaks any future explorer/timeline view. Recommendation: **Standard-IA for raws + a lifecycle rule → Glacier Deep Archive after ~180 days**, previews stay hot (they're tiny). The manifest URL stays the same object URI across class transitions. If you'd rather go all-Glacier to save money, `raw_url` becomes an s3:// URI requiring restore-before-access — fine for pure archive, bad for "glance at the archive" UX. My rec is two-tier.
+
+## The one blocker + my proposed fix
+
+The box has **no way to talk to Nelanco S3** for the 16GB move. Two options:
+- **(a)** You drop Nelanco access keys into `~/.aws/credentials` on the box, or
+- **(b)** I create a **scoped Nelanco IAM user `farm-media-uploader`** (policy: `s3:PutObject` on `media.agroverse.shop` only) via the control plane and install its key on the box — least human toil, least privilege.
+
+**(b) is my recommendation.** It's a write-class op, so I need your OK.
+
+## What I can start immediately (no AWS needed) — the "Do all 5" split
+
+Steps 1–3 + 5 don't touch AWS and are unblocked by your "go":
+
+1. **Schema PR** (`farm-media-daemon` + `MEDIA_ARCHIVE_PIPELINE.md`/`DESIGN.md`): add `captured_at`, `raw`, `preview` fields — forward for new intake.
+2. **Backfill `captured_at`** from the zips' QuickTime/EXIF (one-pass exiftool sweep → per-farm CSV → manifest updates).
+3. **Previews**: ffmpeg frame per video → upload to `farm-media-raw/<farm>/previews/` → `preview` refs in manifests (167 thumbs already exist on the box to bootstrap).
+5. **Remediation continues**: merge PR #271 (cleide gallery), santa-anna 8-id fold, jedielcio decision.
+
+Step 4 (raws → S3, then zips off disk) waits on the credential decision above.
+
+## Decision needed (one line back is enough)
+"**media.agroverse.shop + option (b)**" and I'll: create the Nelanco bucket + IAM user, wire the Explorya CNAME, and run steps 1–5 in order.
+
+## RESUME HERE
+Execute "do all 5": (0) awaiting Gary's pick — subdomain `media.agroverse.shop` (recommended) vs `media.truesight.me`, and S3 creds option (a) keys-on-box vs (b) scoped IAM `farm-media-uploader` via control plane; then create Nelanco bucket + Explorya CNAME (cross-account), and run schema PR → `captured_at` backfill (exiftool from zips) → ffmpeg previews → `farm-media-raw/<farm>/previews/` → manifests `raw`/`preview`/`captured_at` → S3 upload 16GB → zip cold-storage; parallel: merge agroverse_shop_beta **PR #271**, santa-anna fold-in, jedielcio decision. Box has awscli+boto3 but no creds yet; disk 81%. All fix-maps in `/tmp/paulo_fix_map.json` + `/tmp/truth_committed.json`.
+
+———
+**✅ Done this turn — actions taken:**
+• `aws_query` ×3 → nelanco ListHostedZones (empty) / ListBuckets (assets.truesight.me etc.); explorya ListResourceRecordSets for truesight.me (34 recs) + agroverse.shop (16 recs).
+• `ssh run` ×1 → disk 81%, boto3 1.43.2 + awscli installed, no ~/.aws creds, no IAM role (IMDS 404).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== aws cli ==="; which aws && aws --version 2>&1 | head -1; echo "=== profiles ==="; aws configure list-profiles 2>/dev/null; echo "=; echo "=== disk ==="; df -h / | tail -1 echo "=== boto3/awscli on box ==="; python3 -c "import boto3; print('boto3', boto3.__version__)" 2>&1
 
