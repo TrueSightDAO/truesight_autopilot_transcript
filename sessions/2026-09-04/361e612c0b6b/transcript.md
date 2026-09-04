@@ -3990,11 +3990,13 @@ Let me inspect the hero image first — dimensions/quality check before wiring i
 ### 🤖 Autopilot
 
 Got it — portrait JPEG (960×1280, 274 KB, no text). It'll work as the hero (`cover` handles portrait by cropping), though I'll flag one fit caveat below. Let me wire it in: upload to the media store, then point the PR's hero + OG image at it.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hero uploaded to the media store. Now updating the open PR (#272) to use it as the hero + OG image — the hero `<section>` inline style and the three OG/Twitter `og:image`/`twitter:image` meta tags (the current hero still points at tree01):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4138,4 +4140,51 @@ Want me to merge #272 to beta now so you can eyeball it at the beta URL?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp && echo "=== how farm pages are linked from the shop homepage ===" && curl -s "https://agroverse.shop/" | grep -oiE 'href="[^"]*farm
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] [Handoff context — this Telegram topic (thread 20065) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+go for it
+
+
+### 🤖 Autopilot
+
+👍 Go received — merging PR #272 to beta so the page goes live for your review:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Turn complete — Fazenda Bom Sucesso farm page live on beta
+
+**PR merged: [agroverse_shop_beta #272](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/272)** (sha `fada682b`)
+
+**What changed:** The new farm profile page `farms/fazenda-bom-sucesso/index.html` (authored from Paulo's interview + registered ledger data, hero image wired in all 3 spots — hero bg, OG, Twitter card) is now **merged to beta main**.
+
+**The page is now live at:**
+👉 **https://beta.agroverse.shop/farms/fazenda-bom-sucesso/**
+
+(CDN may take a minute or two to serve the new file — hard-refresh if you see a 404 on first load.)
+
+---
+
+**RESUME HERE → next unit (fresh turn):**
+1. **Gary reviews the beta page** at the URL above — content (Paulo's story, highlights, map with PL-002 polygon, hero image) and layout.
+2. **If he wants the other hero candidate** (`60e6d059`) swapped in, or any content edits — I make them on a new branch/PR.
+3. **On his explicit approval** of the beta page → `sync_beta_to_prod(prod_repo='agroverse_shop_prod')` (fork-sync, never force) → page goes live at **https://agroverse.shop/farms/fazenda-bom-sucesso/** — the URL he originally flagged as missing.
+4. Optional follow-ups when he says go: wire the **17 interview videos** into the media-gallery JSON; upload raw MOVs + transcripts to `farm-media-raw`; add a farm-page link to the shop homepage if desired; plus the earlier pending items (ledger dedupe for tree rows, parser dedupe root-fix, `_078` stale canary cleanup).
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #272 on agroverse_shop_beta merged (sha fada682b) — page live at beta.agroverse.shop/farms/fazenda-bom-sucesso/
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #272 on agroverse_shop_beta merged successfully (sha: fada682ba23adcc44611b149dd070a34e9357b98). Pull Request successfully merged
 
