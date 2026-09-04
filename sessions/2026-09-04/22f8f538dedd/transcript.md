@@ -2080,6 +2080,7 @@ Analysis of `85523a08…jpg` vs. the current hero:
 ### 🤖 Autopilot
 
 Option B it is — swapping the hero to your new photo. Prep: stage the image locally and read the current media.json hero entry so the edit is exact.
+[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2087,16 +2088,19 @@ Option B it is — swapping the hero to your new photo. Prep: stage the image lo
 Hero staged and media.json read. Executing Option B:
 1. Upload the new photo as `raimundo-geniza-hero.jpg` (additive to main)
 2. One PR swapping the 4 index.html refs + media.json hero → new file
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Image uploaded to main (commit `cf15416`). Now the one PR: swap all hero refs (index.html ×4 + media.json hero src):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #279 opened with the hero swap. Merging it (validated — real file, exact refs):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2301,4 +2305,79 @@ Want me to do that final manifests commit?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → echo "=== prod profile page status ==="; curl -s -o /dev/null -w "index.html: %{http_code} " https://agroverse.shop/farms/raimundo-geniza-pa; echo "=== follow redirect ==="; curl -s -I https://agroverse.shop/farms/raimundo-geniza-para/index.html | head -15 echo "" echo "=== do the ; echo "=== existing farm on prod (ranch) ==="; curl -s -o /dev/null -w "ranch: %{http_code} " https://agroverse.shop/farms/rancho-maranta-par; …(+2 more)
+
+
+### 🧑 Governor
+
+This is their site code with CEPOTX
+
+[Attachment auto-processed: **3d7a65ca310444a8b48d1948eb5f351d.jpg**]
+- Type: Image (OCR confidence: 54.6%, quality: good)
+
+Extracted text:
+```
+all LTE Gd Portuguese (Brazil) U -06 - 07 Raimundo ) {a English UR Clone Ors Raimundo ED) ia On a) Lied aU eo [6(1i—) es (Brazil) = English
+```
+
+
+### 🤖 Autopilot
+
+Gary — let me get a clean read of that screenshot (the OCR is noisy) and check what CEPOTX codes mean in our records.
+
+
+### 🤖 Autopilot
+
+Let me search our records for CEPOTX and how farm "site codes" work.
+
+
+### 🤖 Autopilot
+
+Gary — this screenshot matters. Let me decode what those codes mean in our FSVP system (the OCR shows "Raimundo", a language selector, and what looks like a code "U-06-07").
+
+
+### 🤖 Autopilot
+
+The screenshot matters — site codes are FSVP compliance identifiers, so I need to read it precisely. Let me zoom into the code region for a clean read.
+
+
+### 🤖 Autopilot
+
+OCR is ambiguous on one glyph — the code reads **"U-06-07"** in one pass but **"W=06-07"** in another. Site codes matter for compliance, so let me zoom the exact code row and force a clean read.
+
+
+### 🤖 Autopilot
+
+Let me crop that exact code region tightly (top≈545 in 2x = 272 in original, full width) and read it with multiple psm modes + a whitelist of code characters.
+
+
+### 🤖 Autopilot
+
+One more zoom attempt on the code at its second, possibly cleaner instance, then I'll report.
+
+
+### 🤖 Autopilot
+
+OCR keeps failing on the small UI glyphs — the code is small and stylized in the screenshot. I can't reliably read it with Tesseract. Let me summarize honestly what I know and what I need.
+
+## About this screenshot
+
+**What it shows:** the **language-selector / settings view of a mobile app** ("Raimundo", Portuguese (Brazil) / English toggle — looks like a **profile/site view**, 591×1280 phone screenshot, ~1:50 pm).
+
+**The key element — a site code** that OCR reads ambiguously as **"U-06-07"** or **"W=06-07"** (two renderings on screen; the glyph before "-06-07" is unclear to Tesseract at this resolution).
+
+**Why this matters (FSVP context):** In our system, **site codes are FSVP compliance identifiers** — e.g. **V-06-29** is Paulo's La do Sitio code (added to his farm page Aug 31, PR #255). The code format `*-06-07` strongly resembles **"V-06-07"** — which would be Raimundo's **FSVP site code** (06-07 being a site within the CEPOTX/06 group). CEPOTX is the Transamazônica cooperative (Jedielcio's network) that Raimundo & Geniza's region belongs to — and the farm page convention (like Paulo's) shows the FSVP site code when verified.
+
+**Honest limitation:** I **cannot reliably read the first glyph** (U? V? W? from 3 OCR passes). Site codes are compliance identifiers — per our own SITE_VISIT_PROCESS rule, I must **never guess** them on records.
+
+## What I need from you (1 answer)
+**Please confirm the exact code** — is it **V-06-07** (matching the V-06-XX FSVP series), or something else (e.g. U-06-07)?
+
+## Once confirmed, the natural next action (matching Paulo's precedent)
+Add the FSVP site code to Raimundo & Geniza's farm profile — `agroverse.shop/farms/raimundo-geniza-para/` currently shows the plot/RG-P1 as "Proposed / Approx". With a **confirmed site code**, the profile would display "**FSVP site code V-06-07**" (like Paulo's La do Sitio page shows V-06-29), signaling verified supplier status — and I'd file/update the FSVP entity record (`fda_fsvp`) accordingly.
+
+**RESUME HERE:** → you confirm the code → I add it to the farm profile page (small PR, beta → prod) + update fda_fsvp entity.json if Raimundo isn't yet listed under CEPOTX source_farms.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd /tmp/tg_attachments && ls -la 3d7a65ca310444a8b48d1948eb5f351d* 2>/dev/null && echo "=== dims ===" && exiftool -s3 -ImageWidth -ImageHeig; cd /tmp/tg_attachments && timeout 90 python3 - <<'EOF' from PIL import Image, ImageOps, ImageEnhance im = Image.open('3d7a65ca310444a8b48d19; cd /tmp/tg_attachments && timeout 120 python3 - <<'EOF' from PIL import Image, ImageOps import subprocess im = Image.open('3d7a65ca310444a8b; …(+1 more)
 
