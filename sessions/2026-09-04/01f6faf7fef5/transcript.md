@@ -714,26 +714,31 @@ Let me look at one complete in-process test using `_auto_process_attachment`-adj
 ### 🤖 Autopilot
 
 No existing test calls `_auto_process_attachment` directly — I'll write a hermetic unit test that monkeypatches `_run_script` and `send_message`/`edit_message_text` to exercise the HEIC-conversion + GPS-summary path without shelling out. First, quick check of the converter's behavior with a **real** converted GPS JPEG (my fixture) and what `_run_script` mock must return, then I write the test file. Let me also confirm `ta` has no import-time side effects (config load etc.):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All wiring code already exists in the worktree (uncommitted, from the interrupted session): `qr_scanner.py` helper +72, `main.py` import + GPS surfacing, `telegram_adapter.py` `.heic/.heif` conversion + GPS summary. **Missing: the test file, the gate, and the PR.** Let me add a hermetic test file and run the gate against the real (already-patched) worktree:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gate 1–3 pass. But my 4th test's OCR stub approach is flawed — swapping `sys.executable` makes the adapter run the stub *as the interpreter*. Cleaner hermetic approach: patch `subprocess.run` (same module object regardless of where it's imported) to return canned OCR JSON. Rewriting that test:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 3 of 4 pass; the 4th fails only on precision — `extract_gps_from_image` rounds to 6 decimals (`-3.094181`) but my assertion used 4 (`-3.0942`). Fix the assertion to match the actual 6-decimal rounding, and run ruff format on the test file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real HEIC end-to-end passes — but my sed set the wrong lat: real extraction gives `lat: -3.0942` (exactly), `lon: -52.095181`. My sed wrote `-3.094181` for lat. Correcting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -880,4 +885,50 @@ Say **"go"** and I'll merge #399. That completes the whole HEIC/GPS task (founda
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot && git fetch origin main -q 2>&1 | tail -1; git diff origin/main -- app/tools/qr_scanner.py app/main.py app/tele; cd /opt/truesight_autopilot && ls -la /tmp/pr_body_gps.md 2>/dev/null && head -3 /tmp/pr_body_gps.md; echo "=== attempt token via git creden
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20182] Go - merge #399.
+
+
+### 🤖 Autopilot
+
+Merging #399 now.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## Merge of #399 **refused by CI gate** — not merged
+
+I attempted the merge on your "go," but the tool refused:
+
+> ❌ **Refusing to merge PR #399 on truesight_autopilot: CI not green (failing-or-pending: `test`, `smoke`)**
+
+**Nothing merged.** PR #399 remains open at https://github.com/TrueSightDAO/truesight_autopilot/pull/399 with the full GPS-extraction unit intact (branch `feat/gps-extraction-heic-wiring`, +228/−2, 4 files).
+
+## What this means
+
+The merge guard requires CI checks **`test`** and **`smoke`** to be green before it will merge. My **local** gate passed (858 passed, only the pre-existing `.env`-PAT env failure), so the CI failure is either:
+1. something in my change that only manifests in CI's environment, or
+2. a **repo-wide CI issue** — worth noting PRs #389, #390, #379 have been sitting open for days, which hints CI may already be red on `main`/repo-wide independent of my change.
+
+I can't diagnose further this turn (one-PR-per-turn rule + turn budget), and there is no force-merge path — CI must go green first.
+
+## RESUME HERE → next unit: get CI green, then merge #399
+
+1. **Pull CI logs** for #399's run — `gh run list` / Actions tab on the branch `feat/gps-extraction-heic-wiring`; read the failing `test` and `smoke` job output.
+2. **Determine causation:** check whether #389/#390/#379 (unrelated, older open PRs) have the same red checks → if yes, CI is broken repo-wide (likely on `main` too) and the fix is a separate small PR; if only #399 is red, diagnose my change (prime suspects: `smoke` boots the app → module import of `extract_gps_from_image`; `test` runs the new `test_gps_extraction.py` under CI's Python/Pillow versions).
+3. **Fix** (either my code or the repo CI config) via a small PR, confirm green, then re-run `merge_pr` on #399 — your "go" still stands.
+
+Nothing is lost: the code, tests, real-HEIC proof, and PR all remain; only the final merge is gated until CI passes. Say "go" next turn and I'll start the CI investigation.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ❌ Failed to merge PR #399 on truesight_autopilot: Refusing to merge PR #399 on truesight_autopilot: CI not green (failing-or-pending: test,
 
