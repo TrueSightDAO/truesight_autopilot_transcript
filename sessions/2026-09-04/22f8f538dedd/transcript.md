@@ -1602,31 +1602,37 @@ Three precise fixes: og/twitter meta descriptions (CEPOTX), map popup text (Plot
 ### 🤖 Autopilot
 
 Clean of ranch content. Let me inspect the 7 highlight-item values (some are ranch-specific — fermentation, cooperative) so I can tailor them to RG before pushing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The regex didn't match (structure differs). Let me directly view the highlights block:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see the highlight items — several still carry ranch-era specifics that need correcting for RG (Cooperative→Owners, Site Visit 30 Aug→03 Sep 2026, Fermentation boxes → Restoration, Region→Uruará). Fixing all to match the real RG story:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The region replace didn't take (whitespace mismatch). Let me fix that remaining highlight (Region still says "Pará, Brazil") and verify all is clean:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `\u` in the replacement string hit Python's regex-escape parsing. Use a lambda replacement:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 index.html is now clean and RG-specific. Now build media.json (hero + image gallery + youtube placeholders strategy) and check transcode/daemon state before the push:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1634,16 +1640,19 @@ index.html is now clean and RG-specific. Now build media.json (hero + image gall
 media.json is valid; transcode at 5/14 and climbing. The daemon still hasn't uploaded (quiet journal) — I'll investigate that after the push. Now: **push the farm profile PR** (git_push_changes — all files at once: index.html + media.json + 8 images + registry rows).
 
 Let me check the daemon upload logic first (why no yt_ids) in parallel with preparing the PR file set:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The daemon logic is clear — it iterates inboxes, uploads videos whose sidecars lack `yt_id`. Critically, `iter_sidecars` at line 121: it lists `os.listdir(inbox_path)` and only considers **`.mp4` files that have a matching `.json` sidecar** (`mp4 + ".json"`). My staged files ARE in that shape (`IMG_8206.mp4` + `IMG_8206.mp4.json`) — good. But there's no upload log/journal activity, so either the sweep interval is long or it errored silently. Let me check what upload_cmd is (YouTube uploader script path) + whether there's a per-file error being swallowed, and confirm the log path it writes to:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the bug: the daemon logs to **`/tmp/farm_media_daemon.log`** (its `--log-file`), not journald (systemd isn't capturing stdout) — that's why journalctl was empty. The daemon processes 1 video per inbox per pass (`limit = priority = 1`), sleeps 30s between passes, and RG is last of 5 inboxes. Let me check the real log + upload script error, and check the daemon has the youtube token:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1651,6 +1660,7 @@ Found the bug: the daemon logs to **`/tmp/farm_media_daemon.log`** (its `--log-f
 The log file doesn't exist at all despite the daemon "active" for 8 minutes — meaning **no pass has completed** (it writes on first attempt). The youtube token exists. Given only 1 video per inbox per 30s pass, and RG is **last of 5 inboxes**, the daemon is likely chewing through the other inboxes' queued videos first (cleide/paulo/santa-anna/jedielcio may have pending uploads). RG's 2 staged videos will upload **eventually** but slowly.
 
 For Gary's "go", the more reliable path is to **run a one-shot pass targeting RG directly** so its videos upload now. Let me check whether other inboxes have pending work, then run a manual `--once` daemon pass (it processes RG within that pass):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1658,16 +1668,19 @@ For Gary's "go", the more reliable path is to **run a one-shot pass targeting RG
 **Root cause found:** my sidecars are in the inbox but the **MP4 files are NOT** — I staged only `.mp4.json` sidecars into `~/media_archive_inbox/farm-media/raimundo-geniza-para/`, but the MP4s themselves live in `~/rg_transcode/`. The daemon's `iter_sidecars` only picks up pairs (`.mp4` + `.mp4.json` in the same dir), so RG has **0 processable videos** — the daemon correctly skips it (which is why no log/attempts).
 
 Fix: **move the completed MP4s into the inbox** alongside their sidecars. The other inboxes (cleide 71!) will still slow RG's turn, but at least RG becomes processable. Let me move the completed stable MP4s in (IMG_8206, IMG_8209 — IMG_8210 is still writing, skip):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both videos are now properly paired in the inbox — the daemon can process them. Now let me verify the upload actually happens by watching the log (the daemon sweeps every ~30s but cleide's 71 videos are ahead of RG; the daemon does 1/inbox/pass, so RG's turn comes each pass). Let me confirm the daemon logs an attempt within a pass or two:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The 75s wait exceeded the 60s SSH cap. Let me check the log + sidecars now (enough time has passed):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1730,11 +1743,13 @@ go for it
 ### 🤖 Autopilot
 
 Gary's given the go — executing the remaining units. Checking the handoff registry for this thread's plan while I recon the exact registry-row format and pipeline state in one batch.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full go confirmed — executing the farm profile PR now (registry rows captured: `farms-data.js` line 41 pattern + `brazilian-path-data.js` line 173 pattern). Grabbing precise anchors + checking box-side GitHub creds for the image uploads, and reading my two local files for the PR.
+[2 tool result(s) compacted: ssh_run, read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1809,4 +1824,91 @@ Note: the farm-profile PR did **not** include youtube gallery entries — media.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → echo "=== staged RG assets ==="; ls -la ~/rg_shop_assets/ 2>/dev/null; echo "=== ranch registry rows in js data files ==="; for f in js/farm; cd ~ echo "=== exact anchor: farms-data.js ===" curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/js/farms-da; cd ~ && wc -c rg_index.html rg_media.json && echo "=== head/tail sanity ===" && head -5 rg_index.html && echo "..." && tail -5 rg_index.html; …(+3 more)
 • `merge pr` → ✅ PR #273 on agroverse_shop_beta merged successfully (sha: e3df1c2dbea30488eb0279eb771f2dbbc89acf09). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] [Handoff context — this Telegram topic (thread 20724) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ Farm profile PR merged — PR #273
+
+**"Farm profile: Sítio Raimundo & Geniza (raimundo-geniza-para)"** — [agroverse_shop_beta PR #273](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/273)
+
+
+### 🤖 Autopilot
+
+👍 Go received — resuming execution. Unit 1: stage the 12 completed MP4s into the daemon inbox with GPS sidecars. Let me check the working sidecar format and the transcode inventory first.
+
+
+### 🤖 Autopilot
+
+Sidecar format captured (GPS DMS→decimal: IMG_8210 = −3.6303/−53.652, all inside RG-P1). Now staging all 12 — one script builds sidecars (sha256, ffprobe duration, DMS→decimal GPS from source MOV's `Keys:GPSCoordinates`) and moves MP4 + sidecar into the inbox:
+
+
+### 🤖 Autopilot
+
+All 12 staged with correct GPS (all inside RG-P1 hull: −3.6302…−3.6306 / −53.6519…−53.6520). Inbox now holds **14 MP4+sidecar pairs** (2 uploaded + 12 new). The daemon sweeps ~1 video/inbox/pass — let me confirm uploads start flowing:
+
+
+### 🤖 Autopilot
+
+**All 14 videos uploaded to YouTube — rc=0 on every one.** Full yt_id set collected. Now updating the profile's media.json with real youtube embeds — first checking the exact youtube-entry schema from the ranch precedent on main:
+
+
+### 🤖 Autopilot
+
+Schema confirmed (youtube = `videoId`+`title`+`caption`). Building the curated RG media.json — 8 substantive videos (≥15 s) as youtube embeds + 7 gallery images — then opening the follow-up PR:
+
+
+### 🤖 Autopilot
+
+media.json built with 8 real youtube embeds + 7 images. Pushing as a follow-up PR on the same branch structure — using git_push_changes with the media.json update:
+
+
+### 🤖 Autopilot
+
+media.json is validated and complete. Pushing the follow-up PR to update the gallery with real YouTube embeds:
+
+
+### 🤖 Autopilot
+
+Missing the `repo` param — retrying:
+
+
+### 🤖 Autopilot
+
+PR #274 opened. Merging it (ready — validated, real yt_ids):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Media gallery PR merged — PR #274
+
+**"Gallery: add YouTube embeds to Sítio Raimundo & Geniza profile"** — [agroverse_shop_beta PR #274](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/274) merged (sha `4e3d691`)
+
+### What happened this turn (big: MAP pipeline completed)
+1. **All 14 site-walk videos → YouTube, rc=0** (daemon log confirmed every one):
+   - 12 remaining staged with GPS sidecars (DMS→decimal from `Keys:GPSCoordinates`, all verified inside RG-P1 hull: −3.6302…−3.6306 / −53.6519…−53.6520; durations 5.9–79 s; sha256 each) → daemon uploaded all within minutes.
+   - yt_ids: `HQOcuvdXVHs`(8206), `zMFRPQvYIro`(8209), `YitQkzR8dtY`(8210), `CBEahJEoYxw`(8215), `xAWFfPzVpas`(8235), `XKfM27PJr1c`(8237), `gIxIHjIYcUI`(8239), `MM4xxqHM2y0`(8242), `G--yy3d3ljM`(8244), `Qptt10C097k`(8245), `1QmDWuGdngs`(8246), `SHDwW39Up0U`(8247), `G-If2PHUazU`(8248), `BsRuAHKy3RI`(8259)
+2. **`media.json` updated** with **8 youtube embeds** (substantive ≥15 s takes: 8210/8206/8235/8215/8248/8244/8237/8247 with title+caption, ranch schema) + **7 curated images** (15 gallery entries total). No placeholders — every videoId is a real, verified upload.
+
+### What the profile now shows (live on main, beta)
+`agroverse_shop_beta/farms/raimundo-geniza-para/` — hero, story, RG-P1 polygon map, **8 playable site-walk videos + 7 photos**.
+
+## RESUME HERE → next units (fresh turn)
+1. **Verify profile live on beta site** — check `farms/raimundo-geniza-para/` renders (hero/images resolve, gallery loads both youtube + image entries).
+2. **MAP manifests commit** — write `farm_media_manifests/raimundo-geniza-para.json` (sha256/gps/duration/yt_id for all 14) → repo.
+3. **Impact-map wiring** — `truesight_me_beta/sunmint.html` FARM_SLUG map (~line 705): add `raimundo-geniza-para` → farm link so the RG-P1 polygon (already in pushed `plots/index.geojson`) shows + pops to the profile. Separate PR, then beta review.
+
+**Done this turn:** 12 videos staged → daemon uploaded all (14/14 total) → media.json rebuilt with real embeds → PR #274 → merged. No prod pushes; shop changes are on beta `main` only.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → cd ~ echo "=== reference sidecar (IMG_8206) ==="; cat media_archive_inbox/farm-media/raimundo-geniza-para/IMG_8206.mp4.json 2>/dev/null echo; cd ~ && timeout 240 python3 - <<'EOF' import os, re, json, hashlib, subprocess, glob, datetime INBOX = os.path.expanduser("~/media_archive_i; sleep 50; echo "=== daemon log tail ==="; tail -8 /tmp/farm_media_daemon.log 2>/dev/null; echo "=== yt_ids now in inbox sidecars ==="; cd ~/; …(+2 more)
+• `merge pr` → ✅ PR #274 on agroverse_shop_beta merged successfully (sha: 4e3d69181dc5780a75a9321cd52e15041c06d3e1). Pull Request successfully merged
 
