@@ -1791,6 +1791,7 @@ All 8 images + all text files are on the branch — PR #273 is now complete with
 ### 🤖 Autopilot
 
 PR #273 is complete — all 12 files present. Transcode at 12/14 and climbing. Per your standing go, I'm merging the profile PR and staging the newly-completed videos into the daemon inbox:
+[2 tool result(s) compacted: merge_pr, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1844,11 +1845,13 @@ Note: the farm-profile PR did **not** include youtube gallery entries — media.
 ### 🤖 Autopilot
 
 👍 Go received — resuming execution. Unit 1: stage the 12 completed MP4s into the daemon inbox with GPS sidecars. Let me check the working sidecar format and the transcode inventory first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sidecar format captured (GPS DMS→decimal: IMG_8210 = −3.6303/−53.652, all inside RG-P1). Now staging all 12 — one script builds sidecars (sha256, ffprobe duration, DMS→decimal GPS from source MOV's `Keys:GPSCoordinates`) and moves MP4 + sidecar into the inbox:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1962,4 +1965,84 @@ The page shows the full profile — hero, story of Raimundo & Geniza's new resto
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo "=== how farms are linked (search for 'farms/' href patterns) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_s; echo "=== check branch refs of main shop index href for para farms (rancho/paulo) ==="; curl -s "https://raw.githubusercontent.com/TrueSight; echo "=== HTTP status ==="; curl -s -o /dev/null -w "%{http_code}" https://beta.agroverse.shop/farms/raimundo-geniza-para/index.html; echo e
+
+
+### 🧑 Governor
+
+Can we use this as hero image?
+
+[Attachment auto-processed: **85523a08f97c43ea8e340ef1ccfa5b51.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Let me inspect the new image — dimensions, quality, content, and how it compares to the current hero.
+
+
+### 🤖 Autopilot
+
+1280×960 landscape, warm earth tones with sky (~14% blue), very little green. Let me compare it against the current hero and check the hero slot's aspect requirements in the page template.
+
+
+### 🤖 Autopilot
+
+Important catch — the merged page references **`raimundo-geniza-para-header-7660.jpg`** (a leftover ranch-template token) in 4 places, but I never uploaded that file — I uploaded `hero-8236.jpg` instead. That means the **live hero may be broken right now**. Let me verify:
+
+
+### 🤖 Autopilot
+
+Confirmed — the **live hero is currently broken** (page references `raimundo-geniza-para-header-7660.jpg` = 404; the actual hero `hero-8236.jpg` exists but isn't referenced in the page CSS — only in media.json). This is a bug from the token-replace in the template. 
+
+Two things to answer Gary: (1) can the new photo be the hero, and (2) fix the broken reference. Let me verify the new image renders well as a wide hero by prepping a version, and simultaneously check what ranch's *correct* page references (to see the intended hero filename pattern):
+
+
+### 🤖 Autopilot
+
+Now I have the full picture — and there's a **bug to fix**: my merged RG page references `raimundo-geniza-para-header-7660.jpg` (a leftover ranch token) in 4 places, but that file was never uploaded → **the live hero background is currently 404** (page shows only the gradient). The ranch pattern is `<farm>-header-<name>.jpg`; my actual uploaded hero is `raimundo-geniza-hero-8236.jpg`.
+
+Let me fix the reference (defect I introduced) with one small PR:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Hero reference fixed — PR #276
+
+**"Fix: RG farm hero image reference (404 → hero-8236)"** — [agroverse_shop_beta PR #276](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/276) merged (sha `f6fffe5`)
+
+### What I found
+While evaluating your new image, I discovered a **bug in the merged RG profile**: the page referenced `raimundo-geniza-para-header-7660.jpg` in **4 places** (og:image, twitter:image, CSS hero background ×2) — a leftover ranch-template token. That file was never uploaded, so the **live hero was a 404** (page showed only the dark gradient) and social share images were broken. Fixed all 4 refs → the real, already-uploaded `raimundo-geniza-hero-8236.jpg` (verified HTTP 200).
+
+### Now — **can your new photo be the hero?** 
+
+Analysis of `85523a08…jpg` vs. the current hero:
+
+| | Your new photo | Current (IMG_8236) |
+|---|---|---|
+| Size | 1280×960 landscape | 1600×1200 |
+| Content | warm earth + **sky band at top** (row0 has dark 68 → likely vegetation/tree line under sky), open ground below | brighter, 28% sky, 9% green |
+| Vibe | dry-season plot view with tree line + sky | brighter open landscape |
+
+**Yes, it can work** — it's a genuine landscape with a natural horizon (good for `center 30%/cover` positioning), same warm RG plot palette. One caveat: it's **low-res (1280×960)** vs. the current 1600×1200, and hero images render wide (the CSS uses it as a full-width background). It'll look fine but slightly softer on large screens. I'd suggest **keeping IMG_8236 as primary** OR testing yours as the hero — **your call**:
+- **Option A:** Keep current (IMG_8236, sharper), add yours to the gallery
+- **Option B:** Swap hero to yours (I'll upload as `raimundo-geniza-hero.jpg` at best quality + update the 4 refs + media.json hero) — one small PR
+
+## RESUME HERE → next units
+1. **Your hero choice** (A or B above) → if B, one PR (upload image + swap 4 refs + media.json hero).
+2. **Verify page after fix** — hero now renders on `https://beta.agroverse.shop/farms/raimundo-geniza-para/index.html`.
+3. **MAP manifests commit** — `farm_media_manifests/raimundo-geniza-para.json` (14 videos' sha/gps/duration/yt_id).
+4. **Impact-map wiring** — `sunmint.html` FARM_SLUG in `truesight_me_beta`.
+5. **Prod promotion** — only on your explicit go.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/tg_attachments && ls -la 85523a08f97c43ea8e340ef1ccfa5b51* 2>/dev/null echo "=== EXIF ==="; exiftool -ImageWidth -ImageHeight -Make ; cd ~ && echo "=== current hero candidate profile (IMG_8236) ==="; timeout 55 python3 - <<'EOF' from PIL import Image import numpy as np for ; echo "=== does the referenced hero file exist on beta? ==="; curl -s -o /dev/null -w "%{http_code} " https://beta.agroverse.shop/assets/imag; …(+1 more)
+• `merge pr` → ✅ PR #276 on agroverse_shop_beta merged successfully (sha: f6fffe5c95326904df92760a76f5738a1fd26d4e). Pull Request successfully merged
 
