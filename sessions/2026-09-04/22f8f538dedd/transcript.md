@@ -2546,16 +2546,19 @@ Recon complete — the index schema is clear. Executing Gary's go: creating the 
 ### 🤖 Autopilot
 
 PR #11 opened with the COPOPS entity + CEPOTX update. I still need the `entities.index.json` update on the same branch — let me add COPOPS there (keeping the PR coherent) and validate JSON.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Index updated and valid. Now push it to the PR branch.
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #11 is now complete (3 files: COPOPS entity + CEPOTX entity update + index). Merging per the standing go.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2605,31 +2608,37 @@ The agroverse.shop farm page update (adding "member of COPOPS / CEPOTX family, P
 ### 🤖 Autopilot
 
 👍 Go — executing the farm-profile affiliation PR. First, let me read the current highlights/story section of the RG page for a precise edit.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the full highlights block (lines 522–575) for precise edits. I also spotted a small bug — canonical/og:url reads `raimundo-geniza-para-para` (double "-para") — worth fixing in the same PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The highlights have a ranch-era leftover ("Fermentation — On-farm wooden boxes") and the Cooperative item is thin. Also spotted canonical/og:url with a double `-para` bug (`raimundo-geniza-para-para`). Before editing, let me check how the ranch page (the template) handles canonical/URL — so I fix it consistently, not invent a new convention.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Ranch convention confirmed: canonical = `https://www.agroverse.shop/farms/<farm-id>` (single, no double suffix) — so RG's `raimundo-geniza-para-para` is a real bug. Now executing the PR: fix the 3 URL refs + upgrade Cooperative highlight to COPOPS + swap the ranch-era "Fermentation" highlight + add the COPOPS line to the story.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #282 opened with all 6 edits applied. Let me verify the changes render cleanly (no leftover duplicate highlights, single canonical) before merging.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 6 edits verified clean: canonical/urls single (no `-para-para`), COPOPS in story (2 mentions) + Cooperative highlight, Restoration highlight swapped in (no Fermentation leftover). Merging PR #282.
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -2794,4 +2803,92 @@ Analysis complete. I read the 5 SOPs that govern this flow and diffed them again
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== agentic_ai_context file list (via GitHub API) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/contents; echo "=== agroverse/ subfolder ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/contents/agroverse" | python3 -c
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] [Handoff context — this Telegram topic (thread 20724) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Analysis complete. I read the 5 SOPs that govern this flow and diffed them against what we actually did (and hit) across the Raimundo & Geniza build this week.
+
+## The SOP landscape today — 5 docs, no
+
+
+### 🤖 Autopilot
+
+👍 Go — executing the SOP documentation PR. I have the exact text of all target docs from my reads; building the combined doc update now.
+
+
+### 🤖 Autopilot
+
+Go received. I have all five target docs' text from my reads this session. Building the combined SOP PR: one new end-to-end checklist doc + three surgical edits (MAP daemon reality + schema fix, page-conventions gotchas, follow-up filed).
+
+
+### 🤖 Autopilot
+
+The edit anchor for the conventions doc failed — the file's gotcha numbering/text differs from my read. Let me pull the exact current text of that section.
+
+
+### 🤖 Autopilot
+
+The anchor text matches on screen but the edit failed — likely an encoding mismatch (em-dash/accents). Let me view the exact raw bytes of that section to anchor precisely.
+
+
+### 🤖 Autopilot
+
+The conventions doc's line 57 contains a precomposed accented char that broke the exact-match edit. Let me check whether the first attempt partially landed (branch/PR state), then rebuild that file's full content locally for a clean write.
+
+
+### 🤖 Autopilot
+
+Branch not found — the earlier failure was transactional (no partial branch/PR). Clean slate. The conventions doc is updated locally; let me print it to pass the whole file as a `write` (avoids the anchor-matching problem entirely).
+
+
+### 🤖 Autopilot
+
+The earlier call was transactional (nothing landed — no branch). Now I'll re-run with the conventions doc as a full-file write (avoiding the anchor mismatch) plus the other three changes:
+
+
+### 🤖 Autopilot
+
+PR #907 opened with all 5 changes applied. Merging it per the standing go (docs-only, low-risk, content verified):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ SOP documentation PR merged — PR #907
+
+**"SOP: end-to-end Agroverse+SunMint farm listing (RG worked example) + daemon & template-clone gotchas"** — [agentic_ai_context PR #907](https://github.com/TrueSightDAO/agentic_ai_context/pull/907) merged (sha `b39b10c`)
+
+### What changed (5 files)
+
+| File | Change |
+|---|---|
+| `AGROVERSE_SUNMINT_FARM_LISTING.md` | **NEW** — the end-to-end farm-listing SOP this thread lacked: **Step-0 identity/attribution/naming gate** (the Bom Sucesso mis-attribution trap), intake/GPS rules, plot registration, daemon media flow, profile build + post-clone checks, impact-map auto-wiring + prod-link caveat, FSVP/site-code notes, RG-P1 worked timeline. Cross-links all 5 existing runbooks. |
+| `MEDIA_ARCHIVE_PIPELINE.md` | **§7a new** — documents the LIVE farm-media daemon (inbox+sidecar pairing, config-add for new farm + restart, 1 vid/inbox/pass pacing, `/tmp/farm_media_daemon.log`, other farms queue ahead). **§9 fix** — youtube media.json schema corrected to `{videoId, title, caption}` (was wrong `{id}`). |
+| `agroverse/AGROVERSE_FARM_PAGE_CONVENTIONS.md` | **Gotchas 8–10 added** — post-clone token grep (would've caught the 404 hero), canonical/og:url double-`-para`, media.json youtube schema. |
+| `OPEN_FOLLOWUPS.md` | **New Pending entry** — `search_context`/`search_code` return 0 matches for existing docs (index staleness), filed for a future fix. |
+
+One hiccup handled: the first push failed transactionally (accent-char anchor mismatch in the conventions doc) → verified nothing landed → re-ran with the conventions doc as a full-file write. Clean.
+
+## RESUME HERE → possible next units (fresh turn, your pick)
+1. **Manifest commit** — `farm_media_manifests/raimundo-geniza-para.json` (14 videos' sha/gps/duration/yt_id) — last remaining RG bookkeeping item.
+2. **The `search_context` index fix** — investigate why context search misses existing docs (per the newly-filed OPEN_FOLLOWUPS entry) — autopilot self-improvement.
+3. **Any other farm** — the new SOP makes the next onboarding (Cleide? Santa Anna phase 2?) a checklist walk instead of discovery-by-trial.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → read-conventions anchor verification (cat -A byte check), local gotcha-8–10 insertion + full-file capture
+• `git push changes` → PR #907 (2 full-file writes + 3 edits)
+• `merge pr` → ✅ PR #907 merged (sha b39b10cce15f1a05cb6b10ce8183601a876e5040)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/agroverse/AGROVERSE_FARM_PAGE_CONVENTIONS.md" -o /tmp/agro_f; sed -n '49,58p' /tmp/agro_farm_conv.md | cat -A | head -20; echo "=== branch exists? ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/branches/docs/farm-listing-sop-rg" | py; …(+1 more)
+• `merge pr` → ✅ PR #907 on agentic_ai_context merged successfully (sha: b39b10cce15f1a05cb6b10ce8183601a876e5040). Pull Request successfully merged
 
