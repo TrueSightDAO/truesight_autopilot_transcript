@@ -744,16 +744,19 @@ Real HEIC end-to-end passes — but my sed set the wrong lat: real extraction gi
 ### 🤖 Autopilot
 
 All 4 GPS tests pass. Now the full gate: format check, then the complete pytest suite (per hard rule, all must pass except the known pre-existing env failure), before pushing the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 4 GPS tests pass and the real-HEIC end-to-end check confirms GPS extraction works through the actual converter. Full suite: **858 passed** (only the known pre-existing `.env` PAT failure, unrelated). Now I'll read the final formatted test file, then push the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The test file is clean and all four tests pass. Now I'll push the PR with all the changes: GPS extraction helper, main.py wiring, telegram_adapter wiring, and the new test file.
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -931,4 +934,69 @@ Nothing is lost: the code, tests, real-HEIC proof, and PR all remain; only the f
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ❌ Failed to merge PR #399 on truesight_autopilot: Refusing to merge PR #399 on truesight_autopilot: CI not green (failing-or-pending: test,
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20182] Likely just CI timing (same pattern as PR #385 earlier) - recheck the check-runs and merge when green.
+
+
+### 🤖 Autopilot
+
+Rechecking CI status on #399:
+
+
+### 🤖 Autopilot
+
+`smoke` ✅ passed (1m43s); `test` is **pending** — consistent with your #385 timing call. Let me poll until it finishes:
+
+
+### 🤖 Autopilot
+
+Both checks green — `test` ✅ and `smoke` ✅. Merging #399 now:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ #399 merged — GPS-extraction unit complete
+
+Your timing call was exactly right. I rechecked the check-runs: `smoke` had already passed (1m43s) and `test` was merely **pending** — it flipped to **pass** (1m50s) on the first poll, then the merge went through:
+
+> ✅ **PR #399 merged successfully** (sha `7bc41334a515ac8e2b9482d20d0a3d990928da28`)
+
+**https://github.com/TrueSightDAO/truesight_autopilot/pull/399**
+
+### What this PR delivered (merged to `main`)
+1. **`app/tools/qr_scanner.py`** — `extract_gps_from_image()` (EXIF GPS IFD → S/W-aware decimal degrees + alt + timestamp; JPEG + HEIC)
+2. **`app/main.py`** — `/chat/upload` surfaces `📍 GPS:` / `Altitude:` / `Captured:` in LLM content for every image
+3. **`app/telegram_adapter.py`** — `.heic`/`.heif` wired into `image_exts` (the gap that silently dropped HEIC DMs), HEIC→JPEG conversion before OCR, GPS + capture-time surfaced in the attachment summary
+4. **`tests/test_gps_extraction.py`** — 4 hermetic tests
+
+### The whole HEIC/GPS task is now DONE
+| Unit | PR | State |
+|---|---|---|
+| HEIC→JPEG conversion fix (pillow_heif, EXIF-preserving) | #398 | ✅ merged `3395c6e` |
+| Docs fix (vision pipeline diagram) | #905 (agentic_ai_context) | ✅ merged `26fbbfa8` |
+| **GPS extraction + telegram_adapter wiring** (the point of the task) | **#399** | ✅ **merged `7bc41334`** |
+
+Real-HEIC end-to-end proof held throughout: Fazenda Bom Sucesso HEIC → JPEG → `{lat: -3.0942, lon: -52.095181, alt: 132.8, ts: 2026:09:02 22:21:12}` — GPS now surfaces in both the DApp upload path and Telegram DM path.
+
+## RESUME HERE → next unit (parked, not started)
+
+Two follow-ups flagged during this work, both **not yet begun** — say "go" on whichever you want next:
+
+1. **`telegram_adapter.py:1753-1758` authorization hardening** (you raised it): stop display_name text from influencing authorization reasoning — make the trust check **user_id-only** (currently a cosmetic profile field like "Nobody Will not DM you" can muddy the signal). Small focused PR.
+2. **Cleanup of the interrupted-session debris**: the unrelated dirty files in `/opt/truesight_autopilot` working tree (`data/active_tracks.json`, `followups/state.json`, nginx conf, submodule pointers) — safe to leave; only worth touching if we want a pristine tree.
+
+No production deploy was made (code-repo only; the running service picks up #398+#399 on next autopilot deploy, which I have not triggered).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot && gh pr checks 399 2>&1 | head -20; echo "=== recent runs ==="; gh run list --branch feat/gps-extraction-heic-w; cd /opt/truesight_autopilot && for i in 1 2 3 4 5 6; do sleep 20; STATE=$(gh pr checks 399 2>/dev/null | grep -E "^test" | awk '{print $2}')
+• `merge pr` → ✅ PR #399 on truesight_autopilot merged successfully (sha: 7bc41334a515ac8e2b9482d20d0a3d990928da28). Pull Request successfully merged
 
