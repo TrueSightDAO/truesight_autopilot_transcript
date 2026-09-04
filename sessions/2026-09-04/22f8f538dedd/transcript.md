@@ -1898,6 +1898,7 @@ Missing the `repo` param — retrying:
 ### 🤖 Autopilot
 
 PR #274 opened. Merging it (ready — validated, real yt_ids):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1941,16 +1942,19 @@ PR #274 opened. Merging it (ready — validated, real yt_ids):
 ### 🤖 Autopilot
 
 Let me determine the exact URL pattern for farm pages on the beta site.
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The farm page route is `farms/raimundo-geniza-para/index.html`. Now let me find the actual domain — checking the CNAME file on beta and how the ranch page is referenced in the live path-data:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 CNAME = `beta.agroverse.shop`. The URL is `https://beta.agroverse.shop/farms/raimundo-geniza-para/index.html`. Let me verify the page resolves (status + title):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2124,4 +2128,66 @@ Old `hero-8236.jpg` stays as IMG_8236 in the gallery (still referenced by its im
 **✅ Done this turn — actions taken:**
 • `ssh run` → cp /tmp/tg_attachments/85523a08f97c43ea8e340ef1ccfa5b51.jpg ~/rg_shop_assets/raimundo-geniza-hero.jpg && echo "copied:" && ls -la ~/rg_shop_
 • `merge pr` → ✅ PR #279 on agroverse_shop_beta merged successfully (sha: 98379b75fc841686aa4af5e4cc0a7fc05fb6430d). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] Ya, bahawa hiro map ini bagus dan bahawa media kontennya ini sangat bagus Saya rasa kita harus membuat impact map warring ke depan [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Great to hear — bagus! Saya lanjut langsung dengan impact map wiring sekarang.
+
+
+### 🤖 Autopilot
+
+Bagus! Sekarang saya kerjakan impact map wiring. Cek dulu file sunmint.html di truesight_me_beta.
+
+
+### 🤖 Autopilot
+
+Sekarang saya lihat langsung file `sunmint.html` di truesight_me_beta — bagian map & FARM_SLUG (baris ~660–720), plus cek farm_id RG-P1 di plots geojson yang sudah ter-push.
+
+
+### 🤖 Autopilot
+
+Menarik — temuan penting: **RG-P1 di geojson SUDAH punya `farm_id: "raimundo-geniza-para"`**, dan itu **sama persis** dengan slug URL profil (`farms/raimundo-geniza-para/`). Karena `FARM_SLUG[fid] || fid` fallback ke farm_id, **link impact map otomatis sudah benar — tanpa edit FARM_SLUG**. Mari saya verifikasi bagian selector (daftar plot/farm di map) untuk memastikan RG-P1 muncul otomatis:
+
+
+### 🤖 Autopilot
+
+Bagus — dan kabar baiknya: **impact map wiring sebenarnya sudah efektif selesai** karena map-nya data-driven. Mari saya verifikasi satu hal terakhir — apakah halaman produksi (truesight.me) memakai URL geojson yang sama:
+
+
+### 🤖 Autopilot
+
+## ✅ Impact map wiring — sudah selesai (ternyata otomatis, zero code change!)
+
+Kabar baiknya: setelah saya telusuri, **impact map sebenarnya sudah ter-wire otomatis** lewat jalur data. Ini hasil verifikasinya:
+
+**1. RG-P1 sudah punya `farm_id: "raimundo-geniza-para"`** di `plots/index.geojson` yang sudah saya push kemarin.
+
+**2. Map code-nya data-driven:** `truesight.me/sunmint.html` (beta DAN prod) fetch langsung `plots/index.geojson` dari repo sunmint (raw + jsdelivr, dengan cache-buster). Saya konfirmasi **RG-P1 muncul di kedua sumber (count = 1/1)** — jadi polygon-nya langsung tampil tanpa edit kode apa pun.
+
+**3. Link farm profil otomatis benar:** map pakai logika `FARM_SLUG[fid] || fid` — karena farm_id RG **sama persis** dengan slug URL profil (`farms/raimundo-geniza-para/`), link "View farm profile on Agroverse ↗" langsung berfungsi. Tidak perlu tambah entry di peta FARM_SLUG (itu hanya untuk kasus farm_id ≠ slug, seperti rancho-maranta).
+
+**4. Popup RG-P1 akan menampilkan:** nama "Sítio Raimundo & Geniza Plot 1 (restoration)" · status **Proposed** (oranye putus-putus) · Boundary: Approx (photo hull) · **0.32 ha** · Owner: Raimundo & Geniza · Region: Uruara, Para + link ke profil.
+
+**Plot chip "RG-P1" dan filter farm "Raimundo Geniza Para"** di selector juga muncul otomatis.
+
+---
+
+### ⚠️ Satu catatan penting
+Link dari impact map menunjuk ke **`agroverse.shop` (PROD)** — tapi profil farm RG saat ini baru ada di **beta** (`beta.agroverse.shop`). Jadi kalau diklik sekarang akan 404 sampai profil di-promote ke prod.
+
+## RESUME HERE → langkah berikut
+1. **Prod promotion** — butuh "go" eksplisit dari Anda: `sync_beta_to_prod agroverse_shop_prod` (semua profil RG + hero + media sudah ter-merge di beta main)
+2. **MAP manifests commit** — `farm_media_manifests/raimundo-geniza-para.json` (14 video: sha/gps/duration/yt_id) — PR kecil yang masih pending
+
+Mau saya lanjut promote ke prod sekarang?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo "=== sunmint.html lines 640-730 (map + FARM_SLUG area) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/; echo "=== sunmint.html lines 730-830 (selector populate) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_beta/mai; echo "=== prod sunmint.html plots URL ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/truesight_me_prod/main/sunmint.html" | g
 
