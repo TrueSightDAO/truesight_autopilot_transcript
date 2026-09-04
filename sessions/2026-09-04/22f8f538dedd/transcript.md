@@ -906,6 +906,12 @@ An actual HEIC with GPS — and those coordinates (−3.629756, −53.652156) ar
 ### 🤖 Autopilot
 
 This HEIC is a **source original from the Raimundo & Geniza site visit** — and its GPS (−3.629756, −53.652156) is **exactly hull vertex #4 of the registered RG-P1 polygon**. Let me match it against the zip batch and characterize the image.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1314,4 +1320,184 @@ Ready to proceed with the build-out (#1 farm profile page, #2 media pipeline, #3
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && sha256sum 34553421f67848279d22826982dafa38.HEIC; echo "--- sha-match against zip ---"; cd ~/raimundo_geniza && fin
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] [Handoff context — this Telegram topic (thread 20724) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+1. Yes. Sítio Raimundo & Geniza
+
+2. Go
+
+3. Go for it.
+
+
+### 🤖 Autopilot
+
+Gary has given the full go — name confirmed (**Sítio Raimundo & Geniza**), and both remaining units greenlit. Let me check the handoff registry for any formal plan file, and pull the reference structures I'll need to build against.
+
+
+### 🤖 Autopilot
+
+The registry is dense — let me scan the full manifest for this thread (20724) and any farm-profile/map plans, while pulling the media-daemon inbox convention and the agroverse farm-page structure I'll mirror.
+
+
+### 🤖 Autopilot
+
+Gary's given full go on all units. The daemon is live and the inbox convention is clear. Let me batch-read the remaining manifest (scan for this thread), the rancho-maranta profile templates (media.json + index.html structure + image hosting), and the farm-media-raw repo layout — so I build exactly to convention.
+
+
+### 🤖 Autopilot
+
+Full go received. Recon first — I need the exact inbox/daemon/config conventions and image-hosting layout before I stage anything.
+
+
+### 🤖 Autopilot
+
+The parallel call lost its parameters. Re-running the recon properly.
+
+
+### 🤖 Autopilot
+
+Full go received and recon is complete. Execution plan for this turn (media pipeline first — it's the long pole; the daemon is **live**):
+
+1. **Stage Raimundo & Geniza media** — convert 14 MOV→MP4 (GPS re-injected), build sidecars, drop into the daemon inbox → the live daemon uploads to YouTube as quota allows
+2. **Photos** — HEIC→web-optimized JPEG for gallery/hero
+3. **Shop profile PR** (next, once uploads land yt_ids)
+
+Let me read the daemon config + a sample sidecar so my staging matches exactly.
+
+
+### 🤖 Autopilot
+
+Full go. The daemon is live — I need to add RG as a watched inbox, then stage. First: transcode prep + per-file GPS dump so sidecar titles are accurate, plus convert photos to gallery JPEGs.
+
+
+### 🤖 Autopilot
+
+GPS confirmed — all 36 media fall inside the RG-P1 polygon (DMS reads match the decimal coords exactly: e.g. 3°37'46.70"S = −3.62964). MOVs carry GPS (no DateTimeOriginal — they use QuickTime:CreateDate, fine for sidecars). Now staging:
+
+**Turn plan (executing now under your go):** add `raimundo-geniza-para` inbox to the live daemon → transcode 14 MOV→MP4 in background → build sidecars → photos to JPEG.
+
+
+### 🤖 Autopilot
+
+Inbox added + daemon restarted (active). Queue CLI uses `--farm`. Now the long pole: transcode 14 MOV→MP4 (GPS re-inject) — this takes a while, so I'll launch it in the background and poll.
+
+
+### 🤖 Autopilot
+
+Transcode running in background. Meanwhile, photos: convert all 22 HEICs to web JPEGs (1600px) so I can screen them for the gallery.
+
+
+### 🤖 Autopilot
+
+Inbox configured, daemon live, 22 photos converted. Transcode is chewing through the first (large) video. While it runs — critical check: the daemon config's default footer says **"Cacao farm visit, CEPOTX, Para, Brazil."** — that's wrong for Raimundo & Geniza (Uruará, not CEPOTX). Let me read the daemon's merge logic to see how to override it per farm, and prep the sidecars.
+
+
+### 🤖 Autopilot
+
+The daemon reads sidecars verbatim (title/description passed straight to YouTube) — so I control full copy per farm. The queue CLI's base path is stale vs the daemon config (`farm_media_inbox` vs `media_archive_inbox`) — a minor tooling gap, noted; the daemon itself uses the right path and is what matters. Checking transcode progress:
+
+
+### 🤖 Autopilot
+
+Transcode is slow on this t3.medium (~1 vid in a few min; 14 total = maybe 20–40 min). While it churns, I'll build the photo side of the farm profile — the shop page PR is the deliverable Gary cares about. Let me screen the 22 photos and read the ranch index.html structure to mirror.
+
+
+### 🤖 Autopilot
+
+Ranch's page pulls `media.json` into a gallery container. Let me read its JS render logic + the tail of the file (map + gallery scripts), check transcode progress, then build the RG profile to match.
+
+
+### 🤖 Autopilot
+
+Profile structure captured. Now the gallery JS discovery + farm-registry data files (so the new farm is navigable), in one recon call:
+
+
+### 🤖 Autopilot
+
+Complete picture now. The RG profile needs: `farms/raimundo-geniza-para/index.html` + `media.json`, web JPEGs in `assets/images/farms/`, a registry entry in `js/brazilian-path-data.js` (and likely farms-data.js), and hero slot support. This is a **multi-file PR** — the right vehicle is `git_push_changes`. Let me check transcode, then inspect how the shop front-page lists farms so the registry entry lands in all right places.
+
+
+### 🤖 Autopilot
+
+Transcode still on #1 (82s video → h264 at veryfast is CPU-bound on t3.medium; 14 vids could take 1h+). I'll let it run in the background and build the **farm profile page PR** now — that's the visible deliverable. Files needed:
+- `farms/raimundo-geniza-para/index.html` (mirror ranch, RG content, plot polygon on map)
+- `farms/raimundo-geniza-para/media.json` (hero + gallery from converted photos; youtube slots once yt_ids land)
+- images → `assets/images/farms/`
+- registry entries in `js/farms-data.js` + `js/brazilian-path-data.js`
+
+Let me pull the full ranch index.html (local copy already saved) and the exact registry-file list to modify.
+
+
+### 🤖 Autopilot
+
+The transcode is CPU-bound (background). Now I'll build the farm profile. Step A — generate the RG page locally by transforming the ranch template (correct farm, coords, story, polygon), and pick gallery photos programmatically:
+
+
+### 🤖 Autopilot
+
+Orientation data gathered. Given the turn budget, the most valuable atomic step now is to wire the **finished transcodes into the live daemon** (real YouTube progress), then converge. Let me stage sidecars for completed MP4s — the daemon uploads them automatically:
+
+
+### 🤖 Autopilot
+
+Staging ran but I spot two data-quality bugs: GPS came back `None` for all (my exiftool subprocess likely hit the QuickTime GPS tag name) and IMG_8210's duration was `None` — meaning that file may have been **mid-write** when globbed (wrong sha risk). Let me verify integrity + fix sidecars in one pass:
+
+
+### 🤖 Autopilot
+
+Critical catch: **IMG_8210.mp4 was staged while still being written** (size changed, ffprobe FAIL) — its sha/duration are wrong and it could upload corrupt. The daemon restarted at 14:24 (picks up my inbox) but hasn't grabbed anything yet (no yt_ids). Also GPS is still None in the sidecars. Fixing now — delete the bad IMG_8210 sidecar (re-stage when stable), and correct GPS extraction (QuickTime uses a different tag):
+
+
+### 🤖 Autopilot
+
+Found it — MOVs store GPS under **`Keys:GPSCoordinates`** (a composite string), not `-GPSLatitude`/`-GPSLongitude` (those are Composite tags derived only when a reader computes them; my earlier `-GPSLatitude` query returned empty because exiftool lists it as Composite requiring different extraction). Fix the two staged sidecars with correct decimal GPS from the Keys tag:
+
+
+### 🤖 Autopilot
+
+GPS now correct (−3.6303, −53.652 — matches the hull). Two videos staged with full metadata. The daemon will upload them on its next sweep (budget 500/day, priority 1). Let me check whether the daemon picked them up, and confirm the transcode queue's pace:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+## Converging — Raimundo & Geniza execution status
+
+### ✅ Done (under your "go")
+| Unit | State |
+|---|---|
+| **Name + registration** | **RG-P1 "Sítio Raimundo & Geniza Plot 1 (restoration)"** — SunMint Plots sheet + `sunmint/plots/index.geojson` + `farms/index.json` pushed. Farm slug `raimundo-geniza-para`. Uruará, Pará, 0.32 ha hull. |
+| **Daemon inbox** | `raimundo-geniza-para` added to live daemon config (`/opt/truesight_autopilot/media_archive_daemon_config.yaml`), daemon restarted → **active**. |
+| **Photos** | 22 HEIC → web JPEGs (1600px, ~220–840 KB each) in `~/rg_photos/`, orientation + content screening done (picks ready). |
+| **Videos staged** | **2 of 14** transcoded + sidecared with correct GPS (**−3.6303, −53.652**), sha256, duration: `IMG_8206.mp4` (51.7 s), `IMG_8209.mp4` (5.9 s) → sitting in daemon inbox awaiting upload (no yt_id yet). |
+
+### 🔄 In progress / blocking
+1. **Transcode still running** (background, log `~/rg_transcode.log`): only 3/14 done (~IMG_8206/8209 done, IMG_8210 still writing — CPU-bound on t3.medium; remaining 11 will take a while). **IMG_8210's sidecar was correctly deleted** (it was staged mid-write → corrupt risk) — **must re-stage once its MP4 is stable**.
+2. **Daemon hasn't uploaded yet** — no yt_ids, no uploads log entries, no journal activity since 14:25 restart. Needs one verification pass next turn (confirm it sweeps the new inbox; check `farm_media_daemon.py` sweep interval + where it logs).
+3. **GPS gotcha solved:** MOVs store GPS under `Keys:GPSCoordinates` (not `-GPSLatitude`) — the fixer now extracts decimal pairs correctly; use it for all remaining sidecars.
+
+### ⏳ Not yet started (recon complete, ready to build)
+- **Farm profile page** (`agroverse_shop_beta`, beta-first): template = `farms/rancho-maranta-para/` (saved at `~/ranch_index.html`) — hero + story + Leaflet map w/ RG-P1 polygon + gallery via `js/media-gallery.js` → `media.json`. Files to add: `farms/raimundo-geniza-para/{index.html, media.json}`, JPEGs → `assets/images/farms/`, registry rows in `js/farms-data.js` + `js/brazilian-path-data.js`.
+- **Impact-map wiring** (`sunmint.html` FARM_SLUG) — separate parked-plan unit.
+
+## RESUME HERE
+1. **Verify daemon sweep** — check sidecars for yt_id/error + daemon code/log path (`/opt/truesight_autopilot/farm_media_daemon/farm_media_daemon.py` — find sweep interval & upload log); confirm the 2 staged videos upload.
+2. **Watch transcode** to completion (`~/rg_transcode.log`); when IMG_8210.mp4 size is stable + ffprobe OK → **re-stage its sidecar** (GPS fixer script from this turn); stage the remaining 11 with the **Keys:GPSCoordinates** extractor.
+3. Once yt_ids land → collect them from sidecars → **build farm profile PR** to `agroverse_shop_beta` (git_push_changes): index.html + media.json (hero = IMG_8255 or similar landscape; gallery = selected portraits incl. hull-corner shots + youtube entries w/ real videoIds) + image uploads to `assets/images/farms/` + registry rows in `farms-data.js`/`brazilian-path-data.js` → show beta URL.
+4. Manifest commit (`farm_media_manifests/raimundo-geniza-para.json`) after uploads complete.
+5. Then impact-map FARM_SLUG wiring if you still want it.
+
+**Nothing further has been pushed to agroverse_shop_beta yet** — the YouTube uploads are the gating dependency for media.json, and I want a clean, yt_id-verified PR rather than placeholders.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×26 → echo "=== agroverse_shop_beta farms dir (via GitHub API) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/conten; echo "=== raimundo_geniza inventory ==="; cd ~/raimundo_geniza && ls -la | head -60; echo "TOTAL HEIC:"; ls *.HEIC 2>/dev/null | wc -l; echo; echo "=== agroverse_shop_beta farms ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/contents/farms" | python3 -; …(+22 more)
 
