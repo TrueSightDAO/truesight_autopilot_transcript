@@ -2683,11 +2683,13 @@ All verified clean before merge: single canonical, 2 COPOPS story mentions + hig
 ### 🤖 Autopilot
 
 Promoting beta → production now.
+[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sync succeeded. Verifying the COPOPS affiliation is live on production (Pages may need ~90s to rebuild — checking now, will confirm).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2731,16 +2733,19 @@ Perhaps suggest updates
 ### 🤖 Autopilot
 
 Gary — good self-improvement ask. Let me examine the current SOP docs for farm listing/onboarding, then diff them against what we actually had to discover the hard way this week.
+[3 tool result(s) compacted: search_context, search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My searches for MEDIA_ARCHIVE_PIPELINE and "farm profile onboarding" came back empty — let me check what SOP docs actually exist and read the plots registry runbook.
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Odd — those return zero even though I referenced such docs earlier. Let me inventory all context files directly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -2891,4 +2896,19 @@ One hiccup handled: the first push failed transactionally (accent-char anchor mi
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → curl -s "https://raw.githubusercontent.com/TrueSightDAO/agentic_ai_context/main/agroverse/AGROVERSE_FARM_PAGE_CONVENTIONS.md" -o /tmp/agro_f; sed -n '49,58p' /tmp/agro_farm_conv.md | cat -A | head -20; echo "=== branch exists? ==="; curl -s "https://api.github.com/repos/TrueSightDAO/agentic_ai_context/branches/docs/farm-listing-sop-rg" | py; …(+1 more)
 • `merge pr` → ✅ PR #907 on agentic_ai_context merged successfully (sha: b39b10cce15f1a05cb6b10ce8183601a876e5040). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] [Handoff context — this Telegram topic (thread 20724) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ SOP documentation PR merged — PR #907
+
+**"SOP: end-to-end Agroverse+SunMint farm listing (RG worked example) + daemon & template-clone gotchas"** — [agentic_ai_context PR #907](https://github.com
+
+
+### 🤖 Autopilot
+
+👍 Go — executing the final RG bookkeeping unit: the **MAP manifest commit**. Let me check the manifest schema from an existing farm + gather the 14 videos' data (yt_ids now in the sidecars) + the repo layout.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
