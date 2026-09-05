@@ -10,130 +10,9 @@
 
 ### 🧑 Governor
 
-[CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
+[CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
 Turn — [CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
-Turn — [CONTEXT SUMMARY — turns 1–1 compacted,:
-• `ssh run` ×19 → echo "=== farm_media_manifests tree ==="; curl -s "https://api.github.com/repos/TrueSightDAO/farm_media_manifests/git/trees/main?recursive=1; echo "=== README ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm_media_manifests/main/README.md"; echo; echo "=== index.j; echo "=== full manifest item list (basenames + gps + dates) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm_media_manifes; …(+16 more)
-
-Turn — [Telegram context: chat_id=-1003919341801, thread_id=21534] Can you insert my signature in the right location properly?:
-• `ssh run` ×9 → echo "=== signature files on box ==="; find /home/ubuntu /opt /tmp -maxdepth 3 \( -iname "*sign*" -o -iname "*assinat*" -o -iname "*gary*" \; echo "=== signature PNG dimensions/alpha ==="; python3 <<'PYEOF' from PIL import Image import os for p in ["/home/ubuntu/sunmint_agreement/g; cd /tmp && python3 <<'PYEOF' import fitz # Santa Anna full p7 text doc = fitz.open("/tmp/fsvp_examples/santa_anna_20260830.pdf") p7 = doc[6]; …(+5 more)
-
----
-
-Please inspect the attached file.
-
-[Attachment auto-processed: **b1fed20b7dc24811812bda4be156230a.HEIC**]
-- Type: Image (OCR confidence: 23.8%, quality: poor)
-- Note: HEIC converted to JPEG (EXIF/GPS preserved)
-- 📍 GPS: -3.630328, -53.652011 (alt 181.1 m)
-- 🕐 Captured: 2026:09:03 14:41:58
-
-Extracted text:
-```
-S P oF ae J oS cA eee
-```
-
-
-### 🤖 Autopilot
-
-Gary sent another original HEIC from the site walk — GPS **-3.630328, -53.652011** (alt 181.1 m), captured **2026-09-03 14:41:58 UTC** (= 11:41:58 local). Let me locate the file and match it against the site-walk originals to identify its IMG number:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-No zip candidate at 14:41:58 UTC exactly. Let me widen — search by byte-size match (2,457,171) and by nearby timestamps (allowing local/UTC ±3h ambiguity):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Definitive match: this is IMG_8236** — byte-size identical (2,457,171) and timestamp-aligned (zip 11:41:58 local = 14:41:58 UTC reported). Let me verify with sha256 against the zip original and pull its archive record:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-sha256 confirms: **this upload IS IMG_8236** — byte-identical to the site-walk original. Let me check the media archive manifest + repo to see if IMG_8236 is already archived (and whether the archive sidecar lives in the repo, not local):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me pull the actual manifest file content from the repo — it should hold the HEIC archive records (the local copy is empty):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-sha256 match is definitive. Let me look more carefully at the image content — OCR caught *something* at 23.8% ("S P oF ae J oS cA eee"), which suggests text/document content. Let me run enhanced OCR passes and check GPS against the plot hull:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The upscale OCR timed out. Let me run lighter passes with shorter individual commands:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Full-res 4032×3024 photo, OCR empty in 30s (noise-level text at best). Let me try downscaled + psm variants quickly to see if there's real text content (sign/placard/bag label), since the auto-extract caught *some* pattern:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-OCR is effectively noise (no legible text). Let me get a proper **visual** read of the scene using available vision — the processor's OCR confidence was 23.8% meaning there IS some texture; but more usefully, let me compare this photo against the known site-walk originals to place it in the visit sequence (IMG_8236 was captured 11:41:58 local — right in the middle of the fermentation/drying video run 11:41–11:46, between IMG_8235.MOV and IMG_8237.MOV), and check the GPS position relative to the drying station:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Key finding: **IMG_8236 sits 9.6 m from IMG_8277** — the drying/fermentation station. Its timestamp (11:41:58) slots it between IMG_8235.MOV (11:41:12) and IMG_8237.MOV (11:42:02) — i.e. the middle of the fermentation-video sequence. So this is almost certainly another **drying/fermentation station photo**, same spot as IMG_8277, taken ~1h47m earlier in the morning visit.
-
-Let me append this finding to the transcript and send Gary the key facts + ask how he wants it used (the report already has IMG_8277 in Facility B/C — do you want IMG_8236 added too?):
-[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The transcript tool needs the session hash, not the thread key. Let me find the right session id from the earlier successful append and retry:
-[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Transcript appended. Here's the full picture on this photo:
-
-## 📸 b1fed20b…HEIC = **IMG_8236** (confirmed)
-
-**sha256 byte-identical** to the site-walk original — no doubt:
-
-| Field | Value |
-|---|---|
-| **Identity** | IMG_8236.HEIC (raimundo_geniza.zip) |
-| **Device** | iPhone 12 Pro Max |
-| **Captured** | 2026-09-03 **11:41:58** local (= 14:41:58 UTC) |
-| **GPS** | -3.630328, -53.652011 (alt 181.1 m) |
-| **Integrity** | sha256 `cdd6bae5…` matches zip original exactly |
-
-**What it shows / where it sits:**
-- GPS is **9.6 m from IMG_8277** (the drying & fermentation station) and **inside the U-06-07 hull**
-- Timestamp slots it **between IMG_8235.MOV (11:41:12) and IMG_8237.MOV (11:42:02)** — i.e. the middle of the morning fermentation-station video run
-- So this is a **drying/fermentation station photo, same spot as IMG_8277**, taken ~1h47m earlier in the same visit — strong corroborating evidence for Facility B/C
-
-**Note:** OCR found only noise-level fragments (the auto-extract's "S P oF ae…" isn't legible text — likely foliage/equipment texture), and I can't visually characterize the scene without the Grok vision key (not on this box). Its identity, time, and location are rock-solid from EXIF/sha256 though.
-
-**How do you want it used?** Options:
-1. **Add IMG_8236 to the site-visit PDF** as a second Facility B/C evidence photo (corroborating IMG_8277, same station, morning pass)
-2. **Just log it** (done — transcript appended) — the PDF keeps IMG_8277 as the station representative
-3. It's actually the **cacao-tree inspection photo** you mentioned earlier (i.e. belongs to Facility A)?
-
-Which is it?
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [CONTEXT SUMMARY — turns 1–2 compacted,:
 • `ssh run` ×9 → cd /tmp/tg_attachments && ls -la b1fed20b7dc24811812bda4be156230a* 2>/dev/null; echo "---sha256---"; sha256sum b1fed20b7dc24811812bda4be1562; cd /tmp && python3 <<'PYEOF' import zipfile from datetime import datetime, timedelta z = zipfile.ZipFile("/home/ubuntu/raimundo_geniza.zip"); cd /tmp && python3 <<'PYEOF' import zipfile, hashlib z = zipfile.ZipFile("/home/ubuntu/raimundo_geniza.zip") # sha256 of zip's IMG_8236.HEIC; …(+6 more)
 • `append to transcript` ×2 → Script exited 2: usage: append_to_transcript.py [-h] --session-id SESSION_ID --content CONTENT --filename FILENAME --type {PDF,Image,Word} [; https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-09-05/3a97b642d960/transcript.md
 
@@ -479,11 +358,18 @@ Let me check the flow — page 2 seems nearly empty (just the Facility A photo s
 👍 Go received. Resuming: polish the v5 layout (Facility A photo spill), rebuild, deliver for review.
 
 **Step 1 — fix layout:** Facility A's photo spills onto a near-empty page 2. Since page 1 is already at capacity (intro + supplier bullets + facilities + Facility A table), the clean fix is to make p2 a deliberate evidence page with a larger photo, consistent with Facilities B/C.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Layout is now deliberate: **p1** = intro + supplier/facilities + Facility A observations, **p2** = Facility A evidence photo (130mm), **p3** = Facility B + IMG_8277, **p4** = Facility C + IMG_8236 + signed closing. Sending v5 for review:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -525,26 +411,31 @@ Rebuilt the report to match the **canonical Cleide information format** and sent
 ### 🤖 Autopilot
 
 👍 Two tasks: (1) notarize the site-visit record via the DApp ledger, (2) add the record to `fda_fsvp`. Let me first check the correct event type for notarization and pull the current `entity.json` so I can update its `source_documents`:
+[2 tool result(s) compacted: lookup_event_docs, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Correct event: **NOTARIZATION EVENT**. Let me get its schema and check precedent examples:
+[2 tool result(s) compacted: lookup_event_docs, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **NOTARIZATION EVENT** schema: `Document Hash` (required), `Description`, `Witnesses`. Let me compute the PDF's sha256 and look for precedent submissions:
+[2 tool result(s) compacted: ssh_run, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Document hash computed: `b496b14d…582b26`. Let me check the notarization script for the exact attribute keys used in practice before submitting:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GAS script shows the Telegram-side fields. But the canonical event schema (from Edgar live catalog) is: **Document Hash** (required), Description, Witnesses. Let me check how prior NOTARIZATION EVENTs were actually submitted to Edgar (attribute naming in the API docs):
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -676,4 +567,43 @@ Here's the time reconstruction, from evidence rather than vibes:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → echo "=== work artifacts mtimes (session files) ==="; ls -la --time-style=full-iso /tmp/*.py /tmp/CEPOTX*.pdf /tmp/fsvp_examples/*.pdf /tmp/; echo "=== find today's session transcripts ==="; curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot_transcript/contents/; echo "=== session dirs today ==="; curl -s "https://api.github.com/repos/TrueSightDAO/truesight_autopilot_transcript/contents/sessions/2026-; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21534] how much for each contributor?
+
+
+### 🤖 Autopilot
+
+Good question — let me ground the split in who actually did what, and check how agent vs governor time is conventionally logged around here:
+
+
+### 🤖 Autopilot
+
+The scoring plan and the AI-agent contribution doc are exactly the conventions I need. Let me read both:
+
+
+### 🤖 Autopilot
+
+Found the authoritative convention — **set by you 2026-08-24 (thread 14165), codified in `dao/DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md`**: Sophia's time splits into **two separate events** (raw execution + direct time), and governor time is a **third separate event** under your name. Never collapsed.
+
+Applying it to this session (thread 21534, ~105 min wall clock 19:40→21:25 UTC):
+
+## Proposed per-contributor split
+
+| # | Contributor | Type | Min | Description basis |
+|---|---|---|---|---|
+| 1 | **Sophia Truesight** | Time (Minutes) | **55** | **Raw machine execution** — ~40+ tool ops (ssh ×many, EXIF/GPS forensics, 5× PDF render-builds, downloads incl. 25 MB Cleide reference, GitHub commits ×2, notarization submit) + **13 walk-video whisper transcriptions on CPU** (the dominant compute block) |
+| 2 | **Sophia Truesight** | Time (Minutes) | **35** | **Direct time (engagement/analysis)** — IMG_8236 sha256/EXIF/GPS identification, Cleide-format reverse-engineering (p1–p7 layout, hazard-row names, remark style), mining Raimundo's PT narration for record-backed remark cells, v1→v5 correction cycles |
+| 3 | **Gary Teh** | Time (Minutes) | **15** | **Gary Teh direct time** — direction & review: "8236 is the sun drying station" correction, Cleide-format request, notarize+file instruction, photo reference, this time accounting |
+
+**Total = 105 min** — consistent with the measured window, so nothing is double-counted or padded.
+
+## Notes per the convention
+- **TDG Issued: 0** on all three unless you set real economics (amounts are informational in the ledger split).
+- Contributor names exactly: `Sophia Truesight` ×2, `Gary Teh` ×1 (never "Garyjob").
+- Each description starts with the required prefix ("Raw machine execution…" / "Direct time (engagement/analysis)…" / "Gary Teh direct time…").
+
+**Want me to adjust any number?** If the split looks right, say **"submit it"** — with or without a TDG amount per event — and I'll file the three CONTRIBUTION EVENTs.
 
