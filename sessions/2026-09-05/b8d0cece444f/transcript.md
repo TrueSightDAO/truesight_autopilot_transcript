@@ -446,21 +446,25 @@ Pre-existing local dirt confirmed (events_catalog_snapshot deletion, sophia.conf
 ### 🤖 Autopilot
 
 Both files exist on disk but `git_push_changes` needs inline content (it clones fresh — it can't see my /opt checkout), and hand-reproducing 27KB of file content through the tool risks corruption. The files are already local and tested — cleanest path is to commit and push them directly from the /opt checkout via git, then open the PR. Let me check the repo's git state and available tooling first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `gh` CLI is authenticated as garyjob — I can commit+push from the /opt checkout and open the PR with gh. Let me create the feature branch, stage only my two files, and commit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Commit `444caf6` created with exactly my two new files staged (the pre-existing dirty files D/M are unstaged, untouched). Let me verify the commit contents, push, and open the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed (2 files, +681). Now open the PR with gh:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -622,4 +626,163 @@ PR0 merged — stopping here per the one-PR-per-turn rule (PR1 runs in a fresh t
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' from github import Auth, Github import app.config as cfg g = Github(auth=Auth.T
 • `merge pr` → ✅ PR #401 on truesight_autopilot merged successfully (sha: 9a14378cbf21aeda1b39d73573ba0fcb7bbe1576). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Continue - start PR1 (manual trigger tool).
+
+
+### 🤖 Autopilot
+
+PR1 go received. Re-reading the plan's PR1 spec (§5 tail) and reconnoitering the tool/dispatch structure in parallel:
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the PR1 spec (§5 steps 1c–1e + rollout) and look at an existing tool module pattern (e.g. `read_oracle_logs.py` or `deploy.py` governor gating) to mirror conventions:
+
+
+### 🤖 Autopilot
+
+PR1 spec is clear (§5 1a–1d). Now I need the tool-registration pattern + the governor-gate mechanism for `ssh_run`/`deploy_autopilot` to mirror. Let me find the tool registry in main.py and read the policy classify function:
+
+
+### 🤖 Autopilot
+
+Tools are dispatched differently than a main.py literal registry. Let me find where tool names/schemas live (the tool-call dispatch map) and how governor gating is enforced at runtime:
+
+
+### 🤖 Autopilot
+
+Now let me understand the architecture: tool_registry, llm_client schemas, and where the governor gate (classify_action WRITE) is enforced for the tool dispatch:
+
+
+### 🤖 Autopilot
+
+Now let me study the session locking, load/save + hashing machinery in main.py, and the `_run_tool_sync` policy gate, so the PR1 tool does exactly what the turn path does:
+
+
+### 🤖 Autopilot
+
+Let me look at `_session_lock`, the save path, and the policy gate in `_run_tool_sync`, plus an existing session-admin-ish tool with governor gating to mirror:
+
+
+### 🤖 Autopilot
+
+Tool-registration architecture is clear: `ToolSpec` in `app/tools/`, auto-discovered, policy gate via `write_tools` in `policy.py`. Let me check role-gating semantics (`default_roles`), a governor-restricted spec example, and the existing policy-block tests to mirror:
+
+
+### 🤖 Autopilot
+
+Let me look at the tool-registry role gating logic, the ssh_run governor-gate spec (as the closest "infra-adjacent, governor-only" model), and the policy enforcement test:
+
+
+### 🤖 Autopilot
+
+I have the full picture now. Let me check the roles.py WRITE_TOOLS role restriction, how a session file maps to a `session_id`/thread (needed for the tool's input), and the compact_history signature to design the tool's parameters precisely:
+
+
+### 🤖 Autopilot
+
+Session files are md5-hashed (`tg:<chat>:<thread>` → 12-hex), and the tool handler is sync (registry is sync-friendly). I need the save-helper name near line 3268 and how sync tools handle the async lock:
+
+
+### 🤖 Autopilot
+
+Let me confirm `_log_session`'s full body, how Telegram session_id keys form, and whether tool modules can lazy-import main without cycles:
+
+
+### 🤖 Autopilot
+
+Let me confirm the dispatch context shape and how to detect an in-flight session (the manual tool must refuse to compact a session that's mid-turn):
+
+
+### 🤖 Autopilot
+
+Tool architecture is clear. Before writing, three remaining recon items — handler invocation context (sync-in-thread vs loop, determines locking), the policy test's WRITE list (new WRITE tool must be added), and role keys:
+
+
+### 🤖 Autopilot
+
+Let me find where `_run_tool_sync` is actually invoked (executor/thread) to confirm the locking model for a sync tool handler:
+
+
+### 🤖 Autopilot
+
+Tool architecture is fully mapped. Last recon batch — policy `evaluate` (governor pass-through for WRITE), the policy test's exhaustive list mechanics, and conftest's SESSION_LOG_DIR redirect:
+
+
+### 🤖 Autopilot
+
+PR1 recon is nearly complete — I have the full tool-registration + policy-gating picture. Three last checks before writing: the role `tools` semantics (whether an explicit list would hide a new tool), the `Role` dataclass default, and this session's role tag:
+
+
+### 🤖 Autopilot
+
+This thread's session key resolves to `6e0ff0d6ff13` but no file exists at that path — need to check the live `session_log_dir` and role tool-list mechanics before writing the tool:
+
+
+### 🤖 Autopilot
+
+The session dir exists (291 JSONs — earlier my glob missed the full path pattern). Let me find where THIS thread's session (21264) is and check the `infrastructure` role tools tail (whether the role list must explicitly include a new tool):
+
+
+### 🤖 Autopilot
+
+I'm at high round usage — let me do one final targeted recon call, then write the files immediately.
+
+
+### 🤖 Autopilot
+
+Recon complete — architecture fully mapped. Now writing the PR1 tool module:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging per turn budget — PR1 tool module written and compiling; the rest is next turn.
+
+## PR1 status: tool module written, wiring + tests + gate remain
+
+**Done this turn:**
+- Re-read PR1 spec fully (plan §5 1a–1d): tool `compact_session_manual` (or similar) → load under per-session lock → `compact_history` → backup → save → report before/after; governor-only via the `POLICY ALLOW ... role=governor` mechanism; §1d = **required manual validation** against 1–2 real bloated sessions before PR2.
+- Completed full recon of the tool/authorization architecture:
+  - **Tool registration**: `app/tools/*.py` exports `TOOL_SPEC: ToolSpec(name, description, parameters, handler, default_roles)`; auto-discovered by `tool_registry`; sync handlers run via `asyncio.to_thread(_run_tool_sync, …)` off the event loop.
+  - **Governor gate**: `policy.py classify_action` — WRITE tools → `_run_tool_sync` requires `governor_name` + `_policy_evaluate` ALLOW (POLICY ALLOW log). `write_tools` set is in `app/policy.py`; mirrors `tests/test_policy_enforcement.py::WRITE_TOOLS`.
+  - **Roles**: `general` has `tools=[]` = sees every tool; `infrastructure` has explicit list. `default_roles=frozenset({"infrastructure"})` matches `ssh_run` (SRE-only schema visibility) — but the hard governor gate is the WRITE classification, which fires for any role.
+  - **Session files**: `settings.session_log_dir` = `/opt/truesight_autopilot/sessions/`, 291 JSONs, shape `{session_hash, updated_at, message_count, full_history}`; key = `tg:<chat>:<thread>` → `md5(key)[:12]`. Save path mirrors `_log_session` (atomic `os.replace`). In-flight detection via `main._active_streams` (5-min window) + `_live_progress`.
+  - **PR0 library** (`app/context_compaction.py`, merged in #401) is importable: `compact_history`, `count_tokens`, `backup_session_file`, defaults `DEFAULT_KEEP_LAST_TURNS=6` / `DEFAULT_TOKEN_THRESHOLD=20000`.
+- **Wrote `app/tools/compact_session_tool.py` (320 lines, py_compile OK)** — the PR1 tool:
+  - `_resolve_session(session, current_session_id)`: accepts 12-hex hash (`d32b2609056d`), full key (`tg:-1003919341801:21264`), or bare numeric thread id in current chat.
+  - Refuses to race an in-flight turn in another thread (invariant 7); allows compacting the calling session.
+  - No-op (with `force` escape) when under `token_threshold`.
+  - Full pre-compaction backup via `backup_session_file()` → `<hash>.pre-compact-*.json` before any rewrite; aborts if backup fails.
+  - Saves compacted history in `_log_session` shape + syncs live `main._sessions`; returns JSON with `status`, `tokens_before/after`, `reduction_pct`, `backup`, `messages_before/after`.
+  - `TOOL_SPEC` with `default_roles=frozenset({"infrastructure"})`.
+
+**Still to do (next turn, ~7 tool rounds' work):**
+1. Register as WRITE: add `"compact_session_manual"` to `write_tools` in `app/policy.py`; add to `WRITE_TOOLS` in `tests/test_policy_enforcement.py`.
+2. New `tests/test_compact_session_tool.py`: (a) non-governor POLICY BLOCK at the `_run_tool_sync` layer (mirror `test_policy_enforcement`), (b) end-to-end against a synthetic bloated session fixture in a tmp `SESSION_LOG_DIR` — assert backup file exists, token count drops, retained tail byte-identical, (c) no-op under threshold + `force`, (d) refuses when target active in another thread (monkeypatch `_active_streams`/`_live_progress`), (e) `_resolve_session` forms.
+3. Run the 4 local gates: `compileall -q`, `ruff check`, `ruff format --check` (new file must be clean), `pytest -q` (full suite, expect the 1 pre-existing config test failure only).
+4. Push via the proven path (git CLI from `/opt` checkout — **`git pull` first**, PR0 merged since branch cut): branch `feat/context-compaction-pr1`, commit the 3–4 files, push, open PR via `GitHubClient().open_pr` (used for #401).
+5. Report PR URL + gate results; **hold for Gary's checkpoint** — §1d manual validation against 1–2 real bloated sessions (`d32b2609056d.json` 161K tokens / `6827715c3c2b.json` 359 msgs) before PR2.
+
+## RESUME HERE
+Next turn picks up at step 1 above (policy.py write_tools + policy test list), then tests → gates → push+PR for PR1. The tool module `app/tools/compact_session_tool.py` is written and compiles; nothing is wired into the live turn path (PR2 stays unstarted until the §1d validation checkpoint passes with Gary's go).
+
+———
+**✅ Done this turn — actions taken:**
+• `read_tool_result` ×2 → plan §5 PR1 spec (1a–1d) + §3 architecture decisions fully captured
+• `ssh run` ×11 → tool-registry/policy/roles/session-file recon; wrote `app/tools/compact_session_tool.py` (320 lines, py_compile clean)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×23 → cd /opt/truesight_autopilot && echo "=== app/tools ===" && ls -la app/tools/ 2>/dev/null | head -40 && echo "=== governor gate greps ===" &&; cd /opt/truesight_autopilot && echo "=== policy/allow pattern ===" && grep -rnE "POLICY ALLOW|role=governor|role=\"governor\"|GOVERNOR_ONLY|; cd /opt/truesight_autopilot && echo "=== tool registry in main.py ===" && grep -nE '"name": "(ssh_run|deploy_autopilot|read_oracle_logs|scan; …(+20 more)
 
