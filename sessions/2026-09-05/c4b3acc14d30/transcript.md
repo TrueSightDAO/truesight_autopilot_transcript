@@ -1081,6 +1081,7 @@ The handoff registry confirms this thread's lineage (Farm Media Daemon plan — 
 ### 🤖 Autopilot
 
 PR opened. Now let me quickly verify the archive worker is still draining healthily (staying close, as you asked) while I report:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1347,4 +1348,49 @@ Want me to start with the zip-streaming PR (#1)? That's the code change; then I 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /opt/truesight_autopilot/farm_media_daemon 2>/dev/null && echo "=== does worker handle zip roots? ==="; grep -n "zip\|ZipFile\|endswith"
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] Make sure future such processes handle the zip files like this for all Sophias
+
+
+### 🤖 Autopilot
+
+Codifying this as a durable rule — let me first check what the current runbook says (and whether open PR #908 already added an S3 section) so the new rule lands in the right place without duplication:
+
+
+### 🤖 Autopilot
+
+PR #908's branch already carries the S3/raw + captured_at schema, but I found it says previews land in **GitHub `farm-media-raw`** — which predates your decision that previews go to S3 hot. I'll fold the zip rule into the canonical MAP runbook (the doc written so *any Sophia instance* processes media end-to-end) and open a focused PR, then reconcile #908's previews row when I merge it.
+
+Adding the universal ZIP HANDLING RULE to `MEDIA_ARCHIVE_PIPELINE.md`:
+
+
+### 🤖 Autopilot
+
+Done. The rule is now codified for every future Sophia.
+
+## ✅ This turn
+
+**agentic_ai_context #913 opened** — `MAP: ZIP HANDLING RULE — all Sophias unpack zip contents and archive each file individually`
+
+Placed at the top of the pipeline section in `MEDIA_ARCHIVE_PIPELINE.md` — the runbook explicitly written so *"any Sophia instance can process a farm end-to-end"* — so any future LLM that picks up farm/media work hits it as a **mandatory rule**, not a footnote. It codifies:
+
+1. A zip is a **transport container, never an archive unit** — never upload the zip as one blob
+2. Open + iterate entries; extract each file individually (streamed, never whole-zip)
+3. Skip `__MACOSX/` + `._` AppleDouble junk
+4. Per file: sha256 → `captured_at` → preview frame → raw to S3 → preview (hot) → resume-safe marker
+5. Delete originals/zips only after S3 + manifest verify + your explicit go
+6. Points to `farm_media_archive.py` as the reference implementation, with zip-root streaming flagged as its in-progress extension
+
+This complements the earlier "spin up a new Sophia" gap — together, a fresh Sophia reading the runbook will both know the daemon is required infrastructure *and* know to unpack zips per-file.
+
+## RESUME HERE →
+- Merge agentic_ai_context **#913** (zip rule — my own PR, your "go" authorizes self-merge)
+- Reconcile **#908** (MAP runbook — its previews row still says GitHub; needs updating to S3-hot per your decision) then merge
+- Build the **zip-root streaming extension** in `farm_media_archive.py` (per-file stream from each of the 17 zips, ~998 media entries, skipping junk + dedupe via sha256)
+- Then manifest update pass (`raw_url`/`preview_url`/`captured_at`) → then Wave 1/Wave 2 deletion with your go
+
+Want me to continue with merging #913 and reconciling #908?
 
