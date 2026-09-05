@@ -612,11 +612,13 @@ Real content now on PR #284's branch (commits `d6b3205` + `be53539`). Now upload
 ### 🤖 Autopilot
 
 6 renamed assets staged (644K hero + 5 gallery, 252–519K each). Uploading all to the PR branch:
+[6 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 6 assets on the branch. PR #284 now has the complete page (index.html + media.json + 6 images). Per the A rename, the **manifest** `farm_id` also needs updating from `fazenda-dona-rosa` → `fazenda-dona-rosa-para` for consistency. Let me verify PR #284's file list is complete, then fix the manifest, then merge:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -792,4 +794,48 @@ No video file came through on this message (only the hero photo attachment) — 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → find /tmp ~ -maxdepth 3 -iname '*transcri*' -o -iname '*transcript*' 2>/dev/null | grep -viE 'node_modules|site-packages' | head -20; echo "; echo "===recent attachments (any video?)==="; ls -lat /tmp/tg_attachments/ 2>/dev/null | grep -iE 'mp4|mov|mkv|webm|avi' | head; echo "===dr; cd /tmp/dr_audio/transcripts && for f in *.txt; do echo "=== $f ==="; cat "$f"; echo; done
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] This one
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] [Handoff context — this Telegram topic (thread 21167) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+A redeploy happened a bit ago and likely killed your in-flight turn (confirmed - service is healthy now). Resuming - continue from wherever you left off, or report status.
+
+
+### 🤖 Autopilot
+
+Gary said "This one" — likely a video attachment just arrived. Let me check the inbox for the newest file:
+
+
+### 🤖 Autopilot
+
+No new video file landed in the inbox — the newest file is still the hero photo (18:11). The redeploy may have eaten the attachment mid-download. Let me search more broadly for any recent video upload:
+
+
+### 🤖 Autopilot
+
+No new video file survived the redeploy — the inbox's newest file is still the hero photo (18:11), and there's no `.mp4/.mov/.oga` from after that moment anywhere on disk (the `voice_responses/*.mp3` are my own TTS cache, not your uploads). Your "This one" attachment almost certainly got **killed mid-download by the redeploy**.
+
+## What I checked
+| Search | Result |
+|---|---|
+| `/tmp/tg_attachments/` newest files | Hero jpg 18:11 — no video after it |
+| Any `.mp4/.mov/.mkv/.oga` modified in last 90 min (outside DR work dirs) | None |
+| In-progress downloads (`.part`/`.download`) | None |
+
+## How to proceed — pick one
+1. **Re-send the video** now (redeploy is done; service is healthy, so it should land this time) — I'll transcribe it immediately.
+2. If "This one" meant **one of the IMG videos I already listed**, just name the number (e.g. "8526" or "8510") and I'll pull its full raw transcript + a cleaned summary.
+3. If it's one of the **voice-message .oga files** from earlier (18:01, 17:58, 14:05…) you're curious about, say which and I'll transcribe it — the 18:01 one (`00e7e8b5`) is the newest and I haven't transcribed it yet.
+
+Once you re-send or point me at it, I'll answer "what was said in this video" with the actual content — no more guessing on my end.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → ls -lat /tmp/tg_attachments/ 2>/dev/null | head -15; echo "===recent video-ish files anywhere==="; find /tmp /home/ubuntu -type f \( -iname '*.mp4' -o -iname '*.mov' -o -iname '*.mkv' -o -iname
 
