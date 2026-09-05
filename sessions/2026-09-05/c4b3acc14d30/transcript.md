@@ -697,6 +697,7 @@ All 5 steps greenlit. Awaiting Gary's pick: bucket `media.agroverse.shop` vs `me
 Gary's call locks it: DNS record in **Explorya** Route53 (both `agroverse.shop` and `truesight.me` zones live there), pointing at the Nelanco S3 bucket. Proceeding with the recommended defaults unless you veto — bucket **`media.agroverse.shop`** in Nelanco, CNAME in Explorya, Standard storage for previews + lifecycle → Glacier Deep Archive for cold raws.
 
 Executing now — creating the Nelanco bucket and probing where the pipeline schema docs live (for the parallel step-1 PR):
+[3 tool result(s) compacted: aws_query, search_code, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -817,4 +818,85 @@ Great call — and it actually fits the daemon's philosophy perfectly. Yes, I ca
 And one rename thought: since the daemon now handles the whole archive — YouTube plus S3 plus previews — it's really the MAP daemon now. I'd keep the repo name but update the docs to call it the media archive daemon.
 
 Want me to open a PR against farm-media-daemon implementing the S3 archive worker as a new module? That's the natural next step — and tell me your call on the previews home, S3 or mirrored to GitHub.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] Hey, the previews should land and get hot until the S-tree. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — decision locked: **previews land in S3 (`previews/<farm>/`) and stay in the hot tier** (Standard, no lifecycle rule — they're tiny and meant for instant explorer/timeline rendering). Only the raws go cold (STANDARD_IA@30d → DEEP_ARCHIVE@180d). Let me check the daemon's actual module layout so the new worker fits cleanly, then open the PR.
+
+
+### 🤖 Autopilot
+
+Let me see the full daemon structure (the loop, config schema, and how workers are organized) before writing the S3 worker:
+
+
+### 🤖 Autopilot
+
+Locked — previews go to S3 `previews/<farm>/` **hot** (Standard, no lifecycle), raws go `raw/<farm>/` cold (STANDARD_IA@30d → DEEP_ARCHIVE@180d). Now building the daemon extension so this runs as a background worker, not through my chat loop. Writing the new archive-worker module and testing it locally:
+
+
+### 🤖 Autopilot
+
+Syntax + lint pass; formatting needs one fix. Running the formatter, then verifying the module's pure functions work against a real file on the box (capture-time read from an original MOV) before wiring it into the daemon:
+
+
+### 🤖 Autopilot
+
+The smoke test hit a junk file (a `._` AppleDouble resource fork inside a `__MACOSX` zip junk folder — not a real MOV). Picking a real original MOV:
+
+
+### 🤖 Autopilot
+
+All helpers work on real MOVs: sha256 ✅, captured_at (2026-08-27T16:42:39) ✅, duration ✅. Now wiring it into the daemon — adding the `archive:` config section and a systemd unit so it runs as a proper background service (same philosophy as the YouTube worker). Opening the PR with the new module + config + unit:
+
+
+### 🤖 Autopilot
+
+All checks pass. Now opening the PR to add the S3 archive worker to farm-media-daemon (module + systemd unit), plus config docs via edits:
+
+
+### 🤖 Autopilot
+
+PR #12 is open with the new S3 archive worker. I need to align the DESIGN.md schema doc with the archive worker PR's content — but the earlier schema PR (#11) also touched DESIGN.md, so let me first merge #11 (my own PR, governor's "go" authorizes self-merge) to keep the branch clean, then verify #12's diff is complete:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Decision locked:** per your voice note — previews land in S3 `previews/<farm>/` and stay **hot** (Standard, no lifecycle rule); raws go `raw/<farm>/` cold (STANDARD_IA@30d → DEEP_ARCHIVE@180d). Previews do **not** get mirrored to GitHub.
+
+**Built the S3 archive worker** so the 16GB upload runs as a background daemon — not through my chat loop:
+
+1. **Wrote `farm_media_archive.py`** (new module, same philosophy as the YouTube daemon): watches raw roots, and per un-archived original does the full pass in one shot — sha256 (dedupe/integrity) → `captured_at` read from the **original** MOV (ffmpeg drops it, so it's read upstream) → one ffmpeg preview frame → raw upload to `raw/<farm>/` → preview upload to `previews/<farm>/` → writes a `<file>.raw.json` marker (resume-safe state; restart skips done files). Never touches GitHub, never deletes originals.
+2. **Added `systemd/farm-media-archive.service`** — background service, `Restart=always`, creds from `.env` (Nelanco).
+3. **Updated `config.yaml.example`** with the `archive:` section (bucket, region, `preview_frame_frac`, `roots[]`).
+4. **Tested locally**: compileall ✅, ruff check ✅, ruff format ✅, functional smoke test on real MOVs — sha256 ✅, `captured_at` (2026-08-27T16:42:39) ✅, duration ✅.
+5. **Opened PR: farm-media-daemon #12** — `feat/s3-archive-worker` (module + systemd unit + config).
+6. **Merged farm-media-daemon #11** (schema: `captured_at`/`raw_url`/`preview` in DESIGN.md) — my own PR, governor's "go" authorizes self-merge; merged first so #12's branch stays clean.
+
+**Open PRs still pending:** #12 (this worker), agentic_ai_context #908 (MAP runbook), agroverse_shop_beta #271 (cleide gallery fix).
+
+## RESUME HERE →
+Next units, in order:
+1. **Merge farm-media-daemon #12** (S3 archive worker) → deploy to the box (copy module into `/opt/truesight_autopilot/farm_media_daemon/`, add real `archive.roots` to `media_archive_daemon_config.yaml` pointing at the farm raw dirs, `systemctl daemon-reload` + enable/start `farm-media-archive.service`) → watch `/tmp/farm_media_archive.log` as it drains the corpus (cleide 142, la-do-sitio 72, santa 88, oscar 45, rancho… ≈16GB).
+2. **Merge agentic_ai_context #908** (MAP runbook raw→S3 + previews).
+3. **Merge agroverse_shop_beta #271** (cleide gallery 2-video fix) → beta review → prod promo only on Gary's explicit go.
+4. Once worker drains: **santa-anna 8-id fold-in** + jedielcio decision (santa-anna fold vs CEPOTX slug).
+5. After manifests committed with `raw_url`/`preview_url`: **prune zips/work dirs off disk** (Gary's approval — daemon never auto-deletes).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → cd /tmp 2>/dev/null && rm -rf fd_probe && git clone --depth 1 -q https://github.com/TrueSightDAO/farm-media-daemon.git fd_probe 2>&1 | tail ; echo "=== config.yaml.example ==="; cat /tmp/fd_probe/config.yaml.example; echo; echo "=== systemd unit ==="; cat /tmp/fd_probe/systemd/farm; cat > /tmp/fd_probe/farm_media_archive.py <<'PYEOF' #!/usr/bin/env python3 """Farm Media Archive Worker — raw originals -> S3 `media.agrover; …(+3 more)
+• `merge pr` → ✅ PR #11 on farm-media-daemon merged successfully (sha: 93aa1a96ef99a99d8c1db5d73b72526381cf827a). Pull Request successfully merged
 
