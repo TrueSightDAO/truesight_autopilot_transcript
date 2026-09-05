@@ -817,16 +817,19 @@ Sure go for it. Also transcribe the words in this video to figure out their site
 ### 🤖 Autopilot
 
 👍 Go received — continuing with the media archive unit, plus the new task: transcribe the site-visit video to recover the CEPOTX site registration code. First, let me read the SOP's media-archive section, find which video you mean (checking for any new attachment + the MOV list), and check what speech-to-text tooling the box has.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Go received on both fronts. The SOP §6 confirms site codes (X-06-NN) are recorded from source (governor-provided or spoken on site) — transcribing the visit video is a legitimate way to recover it, and the SOP explicitly warns **not** to derive codes from guesses, so the transcription result will carry "source: video" status. First, let me find which video you mean (checking for a just-attached video) and map audio/durations across the 19 MOVs.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Go received on both fronts. The DR batch has **19 MOVs with audio (~7.4 min total)** — I'll transcribe them to hunt for the CEPOTX site code (per SOP §6, a code recovered from site-visit speech gets recorded with source: video, not derived — good). I also see a few new screenshots + voice notes landed in the attachments folder today; let me check those for context on which video you mean, and stage the audio extraction.
+[4 tool result(s) compacted: ocr_image, ocr_image, ocr_image, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -837,46 +840,55 @@ Screenshot OCR just surfaced three important things:
 3. The 19 MOVs all have AAC audio (~7.4 min total) — extracted to WAVs.
 
 Now the main task: transcribe the site-visit audio to recover the CEPOTX site code. `faster-whisper-small` is cached (good pt accuracy) — launching a background transcription of all 19 clips:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Transcription launched in the background (faster-whisper-small, pt, ~7.4 min audio on a t3.medium — takes a few minutes). Meanwhile, let me prep the media-archive lane (MOV→MP4 + GPS reinjection) so both threads advance. First check the transcription progress after a bit and set up the conversion script.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Transcription is still loading the model (no segments yet). Meanwhile, let me understand the farm-media-daemon config so I can add the DR farm inbox correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The daemon config lives at `/opt/truesight_autopilot/media_archive_daemon_config.yaml`. Let me read it to see the structure for adding the DR farm, and check transcription progress.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Daemon config structure is clear (inboxes list + archive roots). Now checking transcription progress — the whisper small model takes a couple minutes to load on CPU.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Transcription still loading the model (process alive). Giving it more time:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Transcription is progressing well (7 of 19 done in ~3 min). Let me wait for the rest to finish, then examine the transcripts for the site code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Transcription is producing rich content (13/19 done). Already recovered key facts — Rosa Wronscki ("primeira mulher, fabricação de chocolate artesanal na transamazônica Medicilândia"), farm is **98 ha with 35 ha of cacao planted 1980** (~46-year-old trees), 6-day fermentation process. Still hunting the site code in the remaining 6 clips. Waiting for completion:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 17/19 done, 2 remaining (8554, 8555). So far the transcripts are rich with production detail (fermentation, chocolate making, Polish descent, ~30 years) but **no site code yet** — it likely appears in the final clips (8554/8555, the last at 22:06, likely the wrap-up near signage/documents). Waiting for the final two:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -931,21 +943,25 @@ Per SOP §6, site codes (`X-06-NN`) are **recorded from source, never derived/gu
 ### 🤖 Autopilot
 
 Empty ping received — treating it as "keep going" on the two threads you green-lit: **(1) media archive for Fazenda Dona Rosa** ("go for it") and **(2) the site-code hunt** (audio transcription found no code — next step is scanning the video *frames* for written codes/signage). Let me pull the exact media-archive procedure and check whether the daemon config is tracked in the repo (determines PR vs. direct edit), while kicking off frame extraction for the visual code hunt.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The heavy command timed out — let me check state with lighter probes: whether the frame extraction started, and how the daemon config is tracked.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Frame extraction is running (0 done yet, process alive); daemon config IS git-tracked under `/opt/truesight_autopilot` — so the DR inbox addition should go through the repo's own flow (commit/PR in truesight_autopilot, which is a code repo — normal branch/PR flow). Let me confirm the config's git state and whether the media-archive lane has existing staged conventions, while frame extraction continues.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The config file isn't in git log (untracked-ish state), the checkout is on a feature branch with unrelated changes — this is the *live deployed* autopilot working tree, not a clean repo checkout. Editing the daemon config here then opening a PR from this dirty tree would be messy. The daemon config yaml itself doesn't appear tracked (no `media_archive_daemon_config.yaml` in git log) — it's a deployed runtime file. Let me check whether it's in the repo at a different path, and check frame progress.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -953,56 +969,67 @@ The config file isn't in git log (untracked-ish state), the checkout is on a fea
 Key insight: the daemon lives in `/opt/truesight_autopilot/farm_media_daemon/` which is **its own git repo** (has its own `.git`), and the live config (`media_archive_daemon_config.yaml`) sits at the parent level with only a `.example` template tracked. The config is a **deployed runtime file** — the way to add the DR inbox is: (1) edit the live config + restart the daemon (runtime change), and (2) update the `.example` in the repo so the new inbox survives re-deploys. Frame extraction for the visual code hunt is still working (0 frames yet — the MOVs are large; let me give it time).
 
 Let me check how previous farms (raimundo-geniza, the most recent) were added — was the live config edited directly, or via PR?
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Daemon setup is clear now: `farm-media-daemon` is its own repo; the **live config** `/opt/truesight_autopilot/media_archive_daemon_config.yaml` + its `.example` both need the DR inbox added, then daemon restart. Frame extraction died (0 procs) — let me test it synchronously on the longest clip first, then batch it, and set up the MP4 conversion in parallel.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Frame extraction works (11 frames from the 96s clip). The earlier batch died silently — likely the `for` loop glob with the long files or a transient issue. Let me batch-extract all 19 clips' frames in the background properly (longest clip ~50s each), then OCR the resulting frames to hunt for the written site code.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Frame batch extraction running in the background. While it works, let me make progress on the media-archive lane: prepare the MOV→MP4 GPS-preserving conversion (the daemon requires MP4 + sidecar) and inspect the daemon repo to confirm the exact inbox/sidecar flow for adding the DR farm.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full flow confirmed. Now let me look at the exact sidecar schema from a raimundo example (to replicate for DR) and kick off the MOV→MP4 GPS-preserving batch conversion in the background — it's the long pole (~35–60s × 19 videos).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sidecar schema captured (farm_id, sha256, gps decimal, duration_s, title, description, tags, privacy, produced_by). Now starting the long-pole work: the MOV→MP4 GPS-preserving conversion batch for all 19 clips in the background.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both background jobs running (frames: 16 and climbing; MP4 batch started). While they work, let me OCR the frames already extracted to hunt for the written site code — starting with what's available now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 16 frames available (IMG_8501 + IMG_8503 clips). Let me OCR them to hunt for written site codes/signage.
+[5 tool result(s) compacted: ocr_image, ocr_image, ocr_image, ocr_image, ocr_image — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 OCR on IMG_8501's frames is empty — consistent with what we saw in the photos: the clips are outdoor cacao/production scenes with no readable signage. Let me OCR a sample across the other clips' frames as they extract, and check both batch jobs' progress.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both jobs running (CPU shared so they're slower). Frame OCR on the first clip shows no signage (consistent with the photos — open-air scenes). Let me wait for more frames from the later clips (where paperwork is more likely) and check the MP4 batch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Progress: 36 frames extracted (up to IMG_8510), MP4 conversion at 1 done (CPU-shared with frame extraction, so slow). Let me OCR a strategic sample of the newly extracted frames — especially from clips 8509/8510 (the walking/talking segments where signage might appear) — while both jobs continue.
+[4 tool result(s) compacted: ocr_image, ocr_image, ocr_image, ocr_image — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1070,4 +1097,143 @@ I'll keep the MP4 conversion running either way and report when it completes.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → echo "===is daemon config tracked in repo?==="; ls -la /opt/truesight_autopilot/media_archive_daemon_config.yaml; cd /opt/truesight_autopilo; echo "===frames extracted?==="; ls /tmp/dr_frames/*.jpg 2>/dev/null | wc -l; ls /tmp/dr_frames/ 2>/dev/null | head -5; echo "===extract log=; echo "===config git log==="; cd /opt/truesight_autopilot && git log --oneline -3 -- media_archive_daemon_config.yaml 2>/dev/null; echo "===s; …(+15 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] [Handoff context — this Telegram topic (thread 21167) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] ??
+
+
+### 🤖 Autopilot
+
+Checking state now — the conversion batch has been running in the background.
+
+
+### 🤖 Autopilot
+
+Good progress — **14/19 converted** (working on IMG_8538 now). The daemon is also consuming CPU (2 processes), which explains the slower-than-expected rate. Let me wait for the batch to finish and also check what's happening with the daemon's own activity.
+
+
+### 🤖 Autopilot
+
+17/19 done, daemon healthy (finished RG batch Sep 04). Waiting for the last two (8550, 8554, 8555 remaining — one is processing):
+
+
+### 🤖 Autopilot
+
+All converted (remaining list empty). Let me confirm the exact count and list, then verify the GPS metadata survived conversion (spot-check with exiftool/ffprobe).
+
+
+### 🤖 Autopilot
+
+18 converted but I expected 19 — IMG_8555's ffprobe came back empty, so it likely didn't convert. Let me verify.
+
+
+### 🤖 Autopilot
+
+Source MOVs aren't in /tmp/dr_work/media — let me locate where they actually live and reconcile 18 vs 19.
+
+
+### 🤖 Autopilot
+
+Found it — the MOVs are in `~/fazenda_dona_rosa_work/`, and there are **19** (I only saw 10 in the head). The conversion batch read from the right place (18 done, 1 remaining = IMG_8555, which the procs count shows still processing). Let me confirm IMG_8555 is the last one converting and wait for it.
+
+
+### 🤖 Autopilot
+
+IMG_8554 is converting now; IMG_8555 is queued behind it. Let me wait for the batch to complete.
+
+
+### 🤖 Autopilot
+
+All **19 MP4s converted** ("ALL DONE 19"), no processes left. The comm output showing IMG_8555 is stale (done3.txt was written before the last ls). Let me verify GPS survived in all 19 and check a sample of sidecar-required metadata.
+
+
+### 🤖 Autopilot
+
+My check syntax was wrong — earlier the location appeared under **format** tags (`"location": "-03.4894-052.9667+177.277/"`), not stream tags, and my grep pattern counted the wrong thing. Let me re-verify correctly.
+
+
+### 🤖 Autopilot
+
+GPS **is** present in all 19 — my grep pattern was the bug (`TAG:location=-03.4894…` starts with "TAG:", not "-"). Sample values confirm: IMG_8501 → −3.4894/−52.9667, IMG_8526 → −3.4893/−52.9673, IMG_8555 → −3.4893/−52.9665 — all in the Medicilândia cloud.
+
+**All 19 MP4s converted with GPS preserved.** Next: build the daemon inbox with sidecar files. Let me check the RG sidecar convention and daemon config structure.
+
+
+### 🤖 Autopilot
+
+Excellent — the daemon config **already has the `fazenda-dona-rosa` inbox** (`/home/ubuntu/media_archive_inbox/farm-media/fazenda-dona-rosa`, priority 1)! It was added when the RG entry went in (or in a prior step). So I just need to: create the inbox dir, drop the 19 MP4s + sidecars, and the daemon picks them up. Let me study the RG sidecar format exactly.
+
+
+### 🤖 Autopilot
+
+The daemon config **already includes the `fazenda-dona-rosa` inbox** (priority 1, dir created Sep 5 16:21) — it was staged when the RG config was written. So I just need to populate it: copy the 19 MP4s in + generate sidecar JSONs (sha256, GPS, duration, title/description per the RG convention). Let me stage the inbox.
+
+
+### 🤖 Autopilot
+
+All 19 MP4s + sidecars staged in the daemon inbox (GPS captured from each file's metadata, all in the Medicilândia cloud). The daemon polls the inbox and uploads within its daily budget. Let me verify the daemon picks them up (check log after a short wait).
+
+
+### 🤖 Autopilot
+
+The daemon hasn't picked up the DR files yet (last activity Sep 04 14:45 — the RG batch). It's been idle ~26h. Let me check the daemon's polling logic and budget state — it may poll on a schedule or have hit its daily budget.
+
+
+### 🤖 Autopilot
+
+Daemon is alive (26h uptime) but idle since the RG batch — no DR pickup yet ~15 min after staging. Let me read the actual scan-loop code and check for a separate log file to see what it's doing.
+
+
+### 🤖 Autopilot
+
+The daemon's logic is clear: it scans inboxes every ~30s when idle, processing `priority` videos per inbox per pass. It loaded its config **at startup (Sep 04 14:24)** — but the `fazenda-dona-rosa` inbox entry was added to the config later (dir created Sep 05 16:21), so the **running daemon doesn't know about the new inbox yet**. Restarting reloads the config — safe, housekeeping on our own box:
+
+
+### 🤖 Autopilot
+
+🎉 **All 19 videos uploaded to YouTube!** The daemon restart did it — the config was modified after the daemon started (Sep 05 16:21 vs daemon start Sep 04 14:24), so it didn't know about the DR inbox until restarted. Let me verify the sidecars got their yt_ids:
+
+
+### 🤖 Autopilot
+
+🎉 **All 19 videos are LIVE on YouTube** — the Fazenda Dona Rosa media archive is uploaded, zero errors, GPS-tagged descriptions intact.
+
+## What happened (the daemon needed a kick)
+
+The config file `/opt/truesight_autopilot/media_archive_daemon_config.yaml` **already contained the `fazenda-dona-rosa` inbox** (added Sep 05 16:21) — but the daemon process had been running since **Sep 04 14:24**, before that entry existed, so it was looping on the old config and never saw the new inbox. A `systemctl restart farm-media-daemon` reloaded the config and it drained all 19 in ~40 seconds:
+
+| Batch | Result |
+|---|---|
+| MOV→MP4 GPS-preserving conversion | 19/19 (all retain `TAG:location` −3.489x/−52.966x — verified per-file) |
+| Sidecars (sha256, GPS, duration, title/desc, tags, privacy) | 19/19, RG-convention format |
+| Daemon upload → YouTube | **19/19 with `yt_id`, no errors** (IMG_8501→`HhLdfeqpbbg` … IMG_8555→`iPdYREvFwZ0`) |
+| Farm inbox | drained; sidecars now carry their YouTube IDs |
+
+Videos are public, tagged `cacao/agroverse/para/brazil/organic/sunmint/medicilandia`, titled "Fazenda Dona Rosa — IMG_xxxx (Medicilândia, Pará)", description carries Rosa Wronscki + 35 ha planted 1980 + CEPOTX/COOPOXIN + DR-P1.
+
+## Site-code hunt — final answer: not in the media
+
+Audio (19 transcripts) **and** video frames (97 OCR'd) both came up empty — the code isn't spoken or shown. It was night footage with no readable signage/paperwork. Per SOP §6 I won't guess. **The live route is asking Jedielcio / CEPOTX** (he follows @donarosachocolate, so the channel exists). Plot stays `DR-P1` until the real code arrives; when it does we record it in the plot notes + fda_fsvp with `source:`.
+
+## RESUME HERE → remaining units (farm onboarding, §3–§8)
+
+1. **Photo archive** — compress + upload the 35 HEIC originals to the media archive bucket (`media.agroverse.shop`, per `archive.roots` — same lane as the daemon's `preview_frame_frac`/S3 flow). Videos are done; photos are the visible remainder.
+2. **Farm profile page** on Agroverse (farm slug `fazenda-dona-rosa-para`) + `FARM_SLUG` map entry so the DR-P1 map popup links resolve.
+3. **On-chain anchor** — geo-located ledger event at the DR-P1 centroid.
+4. **CEPOTX site code** via Jedielcio → record in plot notes + fda_fsvp entity (`source: governor`).
+5. **Housekeeping** — add the `fazenda-dona-rosa` inbox to the tracked `media_archive_daemon_config.yaml.example` (small PR in truesight_autopilot) so the lane survives re-deploys.
+
+Want me to continue with unit 1 (photo archive) next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×18 → echo "===mp4 progress==="; tail -8 /tmp/dr_mp4_progress.txt 2>/dev/null; echo "done count:"; ls /tmp/dr_mp4/*.mp4 2>/dev/null | wc -l; echo ; sleep 240; echo "===mp4 final==="; tail -6 /tmp/dr_mp4_progress.txt 2>/dev/null; echo "done count:"; ls /tmp/dr_mp4/*.mp4 2>/dev/null | wc -; sleep 150; echo "===mp4 final==="; tail -4 /tmp/dr_mp4_progress.txt 2>/dev/null; echo "done count:"; ls /tmp/dr_mp4/*.mp4 2>/dev/null | wc -; …(+15 more)
 
