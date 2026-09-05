@@ -709,3 +709,27 @@ Honest answer: I don't track wall-clock time per turn, so I can't give you an ex
 
 If you want this logged as a contribution (TDG), I can submit a **CONTRIBUTION EVENT** with your name as the contributor — tell me the minutes you'd like recorded (or I can use 75 as a midpoint) and I'll file it. Want me to?
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21041] Log contribution for yourself.
+
+
+### 🤖 Autopilot
+
+Logging the contribution for myself (Sophia Truesight) — 75 minutes at the midpoint I proposed:
+
+
+### 🤖 Autopilot
+
+✅ **Logged.** Contribution submitted for **Sophia Truesight — 75 minutes** (Time).
+
+- **Type:** Time (Minutes) · **Amount:** 75 · **TDG:** awarded per standard schedule
+- **What it covers:** the research trail (lab reports, FSVP repo, emails, ledger), pinning the **400 g/sample** heavy-metals requirement + R$369 price correction from the WhatsApp exchange, and the ledger row 12 fix now on record.
+
+If you'd rather it be a different duration (or want a TDG amount set explicitly), say the word and I'll adjust.
+
+———
+**✅ Done this turn — actions taken:**
+• `submit contribution` → Contribution submitted successfully.
+
