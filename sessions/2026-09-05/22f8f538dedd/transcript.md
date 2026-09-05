@@ -3176,6 +3176,7 @@ Roger — filing the contribution events. Recon first: locate dao_client + confi
 ### 🤖 Autopilot
 
 dao_client isn't at the usual paths. Let me search the box for it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3321,4 +3322,41 @@ All `TDG Issued: 0` (informational), per your 2026-08-24 convention — machine 
 - **(b)** you have **specific numbers/values** you want to adjust for one or more of the three (e.g. different minutes or actual TDG awards).
 
 If it's (b), tell me the amounts and I'll submit the adjustments. Nothing further has been changed — awaiting your numbers if you have them.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] Hey, what is the URL to the SOP for onboarding new forms, can you share that URL? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+The SOP for onboarding new farms is in agentic_ai_context. Let me confirm the exact path and give you the link.
+
+
+### 🤖 Autopilot
+
+Here's the URL for the farm onboarding SOP:
+
+## 🔗 **https://github.com/TrueSightDAO/agentic_ai_context/blob/main/AGROVERSE_SUNMINT_FARM_LISTING.md**
+
+**"Agroverse + SunMint Farm Listing — end-to-end SOP (new farm onboarding)"** — the single entry-point checklist that takes a new partner farm from raw media → live Agroverse profile + SunMint plot + FSVP records.
+
+It consolidates the 5 existing runbooks:
+- `SUNMINT_TREE_PHOTO_PROCESSING.md`
+- `SUNMINT_PLOTS_REGISTRY.md`
+- `MEDIA_ARCHIVE_PIPELINE.md`
+- `agroverse/AGROVERSE_FARM_PAGE_CONVENTIONS.md`
+- `fsvp/SUPPLIER_ONBOARDING_PROCESS.md`
+
+…with the **Sítio Raimundo & Geniza (RG-P1)** build as the worked example — the exact SOP I authored in PR #907 yesterday after the gap analysis you requested.
+
+Related docs you may also want:
+- **Media pipeline** (daemon flow + YouTube): `MEDIA_ARCHIVE_PIPELINE.md` (same repo, root)
+- **Farm page conventions** (hero, slugs, gotchas): `agroverse/AGROVERSE_FARM_PAGE_CONVENTIONS.md` (same repo)
+- **Plot registration**: `SUNMINT_PLOTS_REGISTRY.md` (same repo, root)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== confirm file exists on main ==="; curl -s -o /dev/null -w "%{http_code}" "https://raw.githubusercontent.com/TrueSightDAO/agentic_a
 
