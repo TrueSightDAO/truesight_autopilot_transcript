@@ -264,21 +264,25 @@ Continue - run the §1d manual validation against the real bloated sessions.
 ### 🤖 Autopilot
 
 Starting §1d manual validation. First sync the /opt checkout to merged main and re-check the tool's handler signature (it merged in #402):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Checkout is synced to merged main (both #401 + #402 present). The tool's `compact_session_manual(session, keep_last_turns, token_threshold, force, governor_name)` handler is available. Now run the §1d manual validation — in-memory analysis mode first on two real bloated sessions (no disk writes yet), using the exact tool code path. Let me read the handler's exact behavior first to call it correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Checkout synced; the tool's exact behavior is confirmed (backup before rewrite, save after). Now pick the validation targets — the plan says "this week's real bloated sessions," so let me check the box date and which large sessions were touched most recently:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Today is 2026-09-05. "This week's real bloated sessions" = the recently-touched big ones. Best candidates: `361e612c0b6b` (541 msgs / 353 KB, last write 15:41 ≈ 55 min ago) and `22f8f538dedd` (361 msgs / 259 KB, 15:20 ≈ 75 min ago) — genuinely bloated, this-week activity, and idle enough that the tool's in-flight guard won't block. Running the in-memory validation first (no disk writes — the analysis checkpoint) on both:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -288,21 +292,25 @@ Both in-memory validations **pass all §1d criteria**:
 - `22f8f538dedd`: 361 msgs / **66,247** tokens → 31 msgs / **12,533** tokens (**81.1% ↓**) · 0 dangling · tail byte-identical
 
 Both are genuinely bloated this-week sessions — exactly the 38–50K+ class the plan targets. Now the second half of §1d: exercise the **real tool path** (backup + on-disk save + reload verify) on these. First identify which threads these sessions belong to (must not rewrite an in-flight/live governor thread) and check the tool's own in-flight guard:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both targets are idle this-week sessions (last writes 55 min / 75 min ago). Let me map them to thread names (for the report) and confirm neither is this live thread, then run the real tool path — backup + compact + save + reload verify — on both:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both targets are idle, non-live threads (this thread is `6e0ff0d6ff13`, untouched by the tool's guard). Now the real §1d validation — invoke the **actual merged tool** `compact_session_manual()` end-to-end on both sessions (backup → compact → save → reload), which is precisely the manual-trigger path the plan requires validating. The tool's in-flight guard is itself part of what gets exercised:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The real tool path executed end-to-end on both sessions: backups created, compaction applied, on-disk saves done. Now the final §1d verification — reload both rewritten files from disk, confirm JSON shape integrity (`_log_session`-compatible: `session_hash/updated_at/message_count/full_history`), re-run the dangling check, and verify the retained tail + summary survived the save/load round-trip:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -345,16 +353,19 @@ Actually — the reload already proved shape integrity (`full_history` + `sessio
 ### 🤖 Autopilot
 
 Resuming from the §1d completion — the final verification: prove the live turn path can ingest the compacted files. First, check exactly how main.py loads a session at turn start and where sanitise runs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me see the rest of the loader (what happens after the XML cleanup, particularly around line 300's `_sanitise_tool_messages` and whether the summary message survives ingestion) and the turn-path sanitise context at 3104/4496:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The loader runs `_sanitise_tool_messages` on load (line 301), and the turn path at 3104 runs the full `_compact_old_tool_chains → _trim_history_to_budget → _sanitise_tool_messages` chain. Now simulate the exact live ingestion on the compacted files — load → sanitise → compact-chains → trim → sanitise (the real turn-path sequence) and verify the summary survives, no dangling, no over-trim:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -413,21 +424,25 @@ Go
 ### 🤖 Autopilot
 
 Go received — PR2 (automatic wiring). First, refresh the PR2 spec from the plan and check the current wiring points:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — the grep shows `main.py:35` already imports `compact_history`, and lines 5060–5097 already reference `settings.context_compaction_token_threshold` and call `compact_history(...)`. PR2 may be partially or fully wired already. Let me read the plan's PR2 section fully and inspect what's actually at that site in main.py:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key discovery: **PR2's wiring already exists as uncommitted working-tree changes** — `_maybe_auto_compact` in main.py (with a docstring citing "Context compaction (PR2)"), config settings, and the line-35 import. `git log` shows no committed compaction wiring, so a killed in-flight turn left this uncommitted. Let me see exactly what's changed vs committed, where it's called, and whether tests exist:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR2's implementation already exists as uncommitted working-tree changes (a killed in-flight turn left it mid-flight): `_maybe_auto_compact` + config settings + call sites at 3107/4503 + a `tests/test_auto_compaction.py`. Let me review the full diff and test file state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -533,4 +548,69 @@ CI will need to go green (same `test`/`smoke` workflow as #401/#402). Per the on
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → cd /opt/truesight_autopilot && echo "=== PR2 wiring refs in main.py ===" && grep -n "_compact_old_tool_chains\|_trim_history_to_budget\|comp; cd /opt/truesight_autopilot && echo "=== 5040-5120 ===" && sed -n '5040,5120p' app/main.py && echo "=== git log for these lines ===" && git ; cd /opt/truesight_autopilot && echo "=== git diff --stat (compaction-relevant) ===" && git diff --stat app/main.py app/config.py && echo "==; …(+15 more)
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Merge #403. Nice touch adding the kill-switch env var - wasn't in the original plan but exactly right for a change this consequential.
+
+
+### 🤖 Autopilot
+
+Merging #403 — first checking CI is green on it (same `test`/`smoke` workflow as #401/#402):
+
+
+### 🤖 Autopilot
+
+PyGithub version lacks `get_checks` on PR. Let me use commit check-runs instead (as in the #402 merge):
+
+
+### 🤖 Autopilot
+
+CI is green (`test: success` · `smoke: success`). Merging #403:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ PR #403 merged — PR2 complete
+
+- 🔗 **https://github.com/TrueSightDAO/truesight_autopilot/pull/403** — merged (sha `2a05df168cc1d8c4b5a784232ff25711c1910451`)
+- CI checked first: waited for terminal state — `smoke: success` · `test: success` (~1 min), then merged
+- **What landed on `main`:** automatic context compaction in the live turn path — `_maybe_auto_compact()` wired at both turn sites (streaming ~3107 + blocking ~4503) between `_compact_old_tool_chains` and `_trim_history_to_budget`, inside the per-session lock; config knobs `context_compaction_token_threshold` (20000) / `context_compaction_keep_last_turns` (6); env kill-switch `CONTEXT_COMPACTION_AUTO` + tunable thresholds (rollback without redeploy); pre-compaction disk backup; failure-never-fatal. 8 new tests. Gates green (905 passed).
+
+### Plan progress
+| Unit | PR | Status |
+|---|---|---|
+| PR0 library (`app/context_compaction.py`) | #401 | ✅ merged |
+| PR1 manual tool (`compact_session_manual`, governor-only) | #402 | ✅ merged |
+| §1d real-session validation | — | ✅ passed (84K→16.6K, 66K→12.5K, byte-identical tails, live-ingestion proof) |
+| **PR2 automatic wiring** | **#403** | ✅ **merged this turn** |
+
+### RESUME HERE → next unit: PR3 rollout + monitoring
+Per the plan's rollout section, the remaining work is bringing this live and verifying it in production:
+1. **Deploy** — redeploy the autopilot box so the merged `main` (with auto-compaction) is what serves turns. This needs **your explicit go** (never deploy without it — and note a redeploy mid-turn kills in-flight work, so it should happen between turns, which a fresh turn now is).
+2. **Post-deploy verification** — confirm the service is healthy (`/health` or service check), then watch the first real bloated session cross 20K tokens and auto-fold: check `logger.info("Auto-compacted session …")` output / session file for a `[CONTEXT SUMMARY]` + `.pre-compact-*` backup appearing without manual intervention.
+3. **Observe & tune** — keep `CONTEXT_COMPACTION_AUTO=1` default; if any session misbehaves, flip the env kill-switch to 0 for instant rollback (no code change). Confirm the 38–50K stall range stays unreachable.
+4. **Close out** — mark the plan doc complete (progress checkboxes) when monitoring shows clean auto-folds across a couple of real sessions.
+
+Say **"go deploy"** (or 👍) and I'll run the deploy + post-deploy verification as the next unit.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → CI poll on #403 head commit `2a05df1` (check-runs: smoke+test in_progress → both success)
+• `merge pr` → ✅ PR #403 merged (sha: 2a05df168cc1d8c4b5a784232ff25711c1910451)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot && timeout 240 .venv/bin/python - << 'PYEOF' import time from app.github_client import GitHubClient gh = GitHubC
+• `merge pr` → ✅ PR #403 on truesight_autopilot merged successfully (sha: 2a05df168cc1d8c4b5a784232ff25711c1910451). Pull Request successfully merged
 
