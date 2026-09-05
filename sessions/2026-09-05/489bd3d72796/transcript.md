@@ -350,21 +350,25 @@ The critical data point landed: **COOPOXIN (Cooperativa de Produtos Orgânicos d
 ### 🤖 Autopilot
 
 Nominatim is rate-limiting us (403), so let me use the coordinates directly with a manual municipality check, plus verify via Wikipedia's municipality coords. Let me try a couple of alternative geocoding routes and look up the exact municipality boundaries via the coordinate logic I have.
+[1 tool result(s) compacted: web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me compute exact distances from Dona Rosa's GPS cloud to each registered farm — that settles which farm is "in the same area" — and confirm the COOPOXIN connection details.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Distances are definitive: **Fazenda Cleide (~38–39 km) is the nearest registered farm to the Dona Rosa GPS cloud** — not RG (78 km), not RM/SA (~48 km). Cleide is owned by **Cleide Maris Suk & Marcelo, listed under CEPOTX, organic via CEPOTX site code B-06-108**. Now the key question — which sub-coop does Cleide belong to, and is it the same one Dona Rosa would be in? Let me check Cleide's entity details and the site-code mapping.
+[5 tool result(s) compacted: search_context, search_code, search_context, search_context, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the actual site-visit FSVP PDFs (Cleide + Santa Anna) — these should carry the sub-cooperative names and registration details directly.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -499,4 +503,70 @@ One flag: our shop pages label Cleide as "Altamira municipality" while the FSVP 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd /tmp && curl -sL -o cleide.pdf "https://raw.githubusercontent.com/TrueSightDAO/fda_fsvp/main/suppliers/cepotx/20240702_CEPOTX_site_visit_; cd /tmp && echo "=====CLEIDE grep=====" && grep -aio -E "COOPOXIN|COPOPS|COPOTRAN|COPCAO|COOPABAM|CACAUWAY|COOPATRANS|Brasil Novo|Medicil[^ ; cd /tmp && which pdftotext || (sudo apt-get install -y poppler-utils >/dev/null 2>&1 && which pdftotext); echo "---SANTA TEXT---"; pdftotext; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] Indicate COOPOXIN then
+
+
+### 🤖 Autopilot
+
+Gary's confirming the affiliation — recording Dona Rosa as **COOPOXIN**. Before I touch any record, let me pull the exact SOP and the canonical places where farm/sub-coop affiliations live so the annotation lands in the right file with the right format.
+
+
+### 🤖 Autopilot
+
+The governor has confirmed the affiliation. Per Step Zero, governor confirmation is the authoritative link — but we're pre-registration (no legal name/CNPJ/plot yet), so the right home for this is the cross-session backlog, not the FDA/plots registries. Let me check OPEN_FOLLOWUPS.md for format and duplicates.
+
+
+### 🤖 Autopilot
+
+Now I have the format. Let me add a Pending entry for the Dona Rosa / COOPOXIN affiliation — the zip is analyzed, the attribution is governor-confirmed, but the actual farm listing work is a distinct future unit (needs legal name/CNPJ + plot registration + media archive + profile). This goes in the backlog so it survives across sessions.
+
+
+### 🤖 Autopilot
+
+Confirmed and recorded. The right home for this right now is the cross-session backlog (OPEN_FOLLOWUPS.md) — we have governor-confirmed attribution but no legal name/CNPJ yet, so a full FSVP entity or plot row would jump the Step Zero gate. Filing the lead with everything established so far:
+
+
+### 🤖 Autopilot
+
+PR opened. Merging it now so the affiliation is recorded in the canonical backlog (governor's "go" authorizes merging my own housekeeping PRs):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Recorded. **COOPOXIN affiliation is now in the canonical backlog.**
+
+## What I did this turn
+
+**Opened + merged:** [agentic_ai_context PR #911](https://github.com/TrueSightDAO/agentic_ai_context/pull/911) — *"Add Fazenda Dona Rosa / COOPOXIN farm-listing follow-up"* (merged, sha `b90f840`)
+
+**What changed:** New `## Pending` entry in `OPEN_FOLLOWUPS.md` capturing the full Fazenda Dona Rosa lead:
+- **Media:** `~/fazenda_dona_rosa.zip` analyzed — 61 real files (35 HEIC + 19 MOV + 7 PNG), all GPS-bearing, one continuous 2026-09-04 session, sha256-clean
+- **Location:** GPS cloud −3.4892…−3.4894 / −52.9665…−52.9673 → **Medicilândia, PA**; zero overlap with registered plots (nearest: Fazenda Cleide ~38 km)
+- **Affiliation (governor-confirmed 2026-09-05):** **COOPOXIN** — same sub-coop as the nearest CEPOTX farm, Fazenda Cleide (site code B-06-108; same B-06 family as Santa Anna B-06-58, explicitly COOPOXIN in `fda_fsvp/suppliers/cepotx/entity.json` + Santa Anna site-visit PDF)
+- **⚠️ Corrections baked in:** Belamazonia (IMG_8564) explicitly marked NOT associated; PNGs flagged as mixed screenshots — only HEIC/MOV media is attributable
+- **Next steps** captured per the farm-listing SOP: CNPJ/legal name → plot `DR-P1` → media archive → farm profile
+
+**Evidence anchored** (already established this session, now persistent):
+- Cleide PDF: site code B-06-108, owner Cleide Maris Suk, GPS −3.3985/−52.6333
+- Santa Anna PDF: explicit `Sub-cooperative: COOPOXIN`, site code B-06-58, GPS −3.2925/−52.5723
+- entity.json: Santa Anna tagged COOPOXIN, Raimundo & Geniza tagged COPOPS (U-06-07)
+
+## RESUME HERE →
+
+When you're ready to move this lead forward, the next unit is: **Step 1 of the SOP — get Rosa Wronscki / Dona Rosa's legal name + CNPJ + written confirmation (via Jedielcio, CEPOTX liaison), then register plot `DR-P1`** (SunMint Plots row + `sunmint/plots/index.geojson` + `sunmint/farms/index.json`, status `proposed`) — same pattern as the RG-P1 build (AGROVERSE_SUNMINT_FARM_LISTING.md §1–2). Say "go" and I'll start on the CNPJ verification + plot registration.
+
+One open item from the investigation worth your attention when convenient: our shop pages label Fazenda Cleide as "Altamira municipality" while the FSVP records/SBT documentary say Brasil Novo (COOPOXIN) — a labeling inconsistency I can clean up in a later pass if you want.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #911 on agentic_ai_context merged successfully (sha: b90f840c10144ecd490916e7898857d2bacfeebf). Pull Request successfully merged
 
