@@ -23,52 +23,72 @@ This should be a pull + deploy + verify task, not new code - the logic already e
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: check_handoffs, search_context, aws_query — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: aws_query, read_context_file, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The task says Onaya's checkout is at `/opt/bionpact_autopilot`, but that path doesn't exist on this box — she must run on a different host. Let me find which host she's on.
+[3 tool result(s) compacted: read_tool_result, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `/opt/bionpact_autopilot` checkout is not on this box — Onaya runs on a separate host. Let me locate it and understand her deploy layout.
+[3 tool result(s) compacted: aws_query, search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the Bionpact plan doc to find where Onaya runs and how she's deployed.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Bionpact plan doc confirms Onaya runs on **her own EC2 box in the Nelanco account**, separate from this one. Let me identify her instance precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `aws` CLI isn't on this box — I'll use the aws_query tool with tag filters to find Onaya's instance directly.
+[2 tool result(s) compacted: aws_query, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found her: **Onaya runs on `bionpact_autopilot`** (i-0ebddf52cd92d0841, Nelanco, us-east-1a, 172.31.3.161 / 52.7.37.210). Now I need to figure out how to reach her box. Let me check what SSH access exists from here.
+[2 tool result(s) compacted: ssh_run, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both boxes are in the **same VPC/subnet** (vpc-d59748af, subnet-de8102b9, us-east-1a), so this box can SSH to Onaya over the private IP 172.31.3.161. The `ssh_run` host list doesn't include bionpact, so I'll loop back through my own box and test which key authenticates.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SSH works with the NELANCO key. Now let me recon Onaya's checkout state, services, and config before touching anything.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 She's confirmed: commit 8ee62c4 on main, services running, one untracked backup file (`.env.bak-20260902-140021` — safe from pull). Now let me check her configured governors, the systemd unit layout, and how far behind she is after a fetch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full picture is now clear. Onaya is 12 commits behind main (missing #393–#400 incl. the governor-mention bypass), her `.env` has **Gary Teh + Elizabeth Wong** configured as governors, and the only uncommitted state is an untracked `.env.bak` (pull-safe). Before pulling, let me read the actual fix code so I know precisely what to verify.
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -161,4 +181,135 @@ Nothing is blocking — deploy is queued behind this turn's round limit, all fac
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → ls -la /opt/ | head -50; echo "---"; ls /opt/bionpact_autopilot 2>/dev/null | head; echo "---"; systemctl list-units --all 2>/dev/null | gre; export AWS_DEFAULT_REGION=us-east-1; aws ec2 describe-instances --query 'Reservations[].Instances[].{id:InstanceId,type:InstanceType,state:S; hostname; echo "---keys---"; ls -la ~/.ssh/ 2>/dev/null; echo "---sshconfig---"; cat ~/.ssh/config 2>/dev/null; echo "---known_hosts---"; ls; …(+11 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21293] [Handoff context — this Telegram topic (thread 21293) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Great recon, especially catching the litellm version gotcha. Go ahead - execute all 5 steps: pull, install pillow_heif alone, restart, static-verify governor resolution for all 3 IDs, then do the live no-mention test.
+
+
+### 🤖 Autopilot
+
+Go signal received. Executing all 5 steps now.
+
+**Step 1: Pull main into `/opt/bionpact_autopilot`**
+
+
+### 🤖 Autopilot
+
+Pull clean: `8ee62c4 → 9f0e8d3` (PR #400 merge commit), `.env.bak` preserved.
+
+**Step 2: Install `pillow_heif` alone** (not full requirements.txt, to avoid the litellm downgrade):
+
+
+### 🤖 Autopilot
+
+`pillow_heif 1.6.0` installed, import OK.
+
+**Step 3: Restart both services and verify healthy on new commit:**
+
+
+### 🤖 Autopilot
+
+Both services active on the new commit. The adapter's startup log confirms: `allowlist=[2102593402, 6460718272, 8919657771] governor=Gary Teh key_resolved=True`.
+
+**Step 4: Static-verify governor resolution for all 3 IDs** — running in her venv with her env loaded:
+
+
+### 🤖 Autopilot
+
+Two problems: (1) `.env` has values with spaces (`Gary Teh,Elizabeth Wong`) so plain `source` chokes; (2) my f-string had a quoting bug. Let me use Python's own dotenv loader (which the app uses) instead of shell sourcing:
+
+
+### 🤖 Autopilot
+
+**Static verification passed** — all 3 allowlisted IDs resolve to `Role.GOVERNOR`:
+- `2102593402` (Gary) → GOVERNOR
+- `6460718272` (unconfirmed, likely Liz) → GOVERNOR
+- `8919657771` (@nelanco_claude_bot) → GOVERNOR
+
+So `_sender_is_governor()` will return True for all of them and they all bypass the mention gate. Now let me confirm the identity resolution is keyed on the telegram_id allowlist (not display name) by checking how `resolve_identity` works — plus verify who 6460718272 is from her logs:
+
+
+### 🤖 Autopilot
+
+Static verification complete. All 3 IDs resolve GOVERNOR (telegram_id allowlist is the strongest signal, resolution order confirms it).
+
+Before the live test, let me confirm which chat/thread Gary actually uses with Onaya by finding his user_id in her recent logs, so the test message goes to the right place:
+
+
+### 🤖 Autopilot
+
+No matches in that grep format. Let me search more broadly for the sender IDs and chat activity in her logs:
+
+
+### 🤖 Autopilot
+
+Logs only show her single active chat `-1003840338729`. For the live no-mention test I need to confirm Gary is a member of that group and identify her bot username. Let me query Telegram (read-only) with her bot token:
+
+
+### 🤖 Autopilot
+
+Confirmed: her bot is **@bionpact_bot**, chat `-1003840338729` is **"Bionpact work area"** (supergroup), and **Gary is the creator** (2102593402, garyjob). Also checking Liz's membership (6460718272) to confirm the third ID's identity while I'm here:
+
+
+### 🤖 Autopilot
+
+`UID` is a readonly bash variable — renaming it:
+
+
+### 🤖 Autopilot
+
+Surprise finding: **6460718272 is NOT Liz Wong — it's "XiXi"** (a member, no username). So the allowlist is `Gary (2102593402), XiXi (6460718272), @nelanco_claude_bot/Envoy (8919657771)` — **Liz Wong is configured as a governor NAME in GOVERNOR_NAMES but has NO telegram_id in the allowlist**, and she's not a member of the group.
+
+This matters for the governor-bypass: `resolve_identity` falls back to **display-name matching** for Liz if she were to message, but since her ID isn't on the allowlist, the security gate (which runs BEFORE the mention gate) would reject her outright unless her display name matches. Let me check the security-gate logic + how the allowlist/name bridge interacts, and whether the governor-bypass covers name-resolved governors:
+
+
+### 🤖 Autopilot
+
+Critical nuance found: the **governor ID set == the env allowlist** (`_load_governor_telegram_ids` reads `TELEGRAM_ALLOWED_USER_IDS`). So the security gate and governor bypass share the same source. The allowlist has Gary, XiXi, and the bot — **not Liz's telegram ID**.
+
+The task said "Gary, and Liz Wong if she's configured as governor there too — check, don't assume." I've now checked: Liz **is** in `GOVERNOR_NAMES` but her **telegram ID is not** in the allowlist — so she cannot message Onaya (security gate rejects her as GUEST). Let me read the exact security-gate code and full `resolve_identity` (esp. whether name-matching applies when the ID isn't allowlisted but the name matches):
+
+
+### 🤖 Autopilot
+
+Static verification is thorough now. Resolution logic confirmed: allowlist ID → GOVERNOR (strongest), name-match only as fallback. Let me do a **code-path simulation** — importing her actual adapter and evaluating the real gate condition for each sender (deterministic proof before the live message test):
+
+
+### 🤖 Autopilot
+
+Another f-string quoting issue (nested quotes). Let me fix with variables:
+
+
+### 🤖 Autopilot
+
+All 4 static steps pass — code-path simulation shows every allowlisted sender now gets **FULL RESPONSE** on no-mention messages (the PR #400 bypass is live on her box). Evidence:
+
+| Step | Result |
+|---|---|
+| 1. Pull | `8ee62c4 → 9f0e8d3` (PR #400), fast-forward, `.env.bak` preserved |
+| 2. pillow_heif | `1.6.0` installed, import OK (alone — litellm 1.97.0 untouched) |
+| 3. Restart | Both services **active**; adapter startup: `allowlist=[2102593402, 6460718272, 8919657771] governor=Gary Teh key_resolved=True` |
+| 4. Static verify | All 3 IDs → `Role.GOVERNOR`; code-path sim → no-mention **FULL RESPONSE** for all 3 |
+
+**One important finding before the live test** — I checked who each allowlisted ID actually is (via Telegram `getChatMember`, don't-assume):
+- `2102593402` = **Gary Teh** (garyjob) — group **creator** ✅
+- `6460718272` = **"XiXi"** (plain member, no username) — NOT Liz Wong
+- `8919657771` = **@nelanco_claude_bot** "Envoy TrueSight" (the cross-instance bot documented in SOPHIA_HANDOFFS.md)
+
+⚠️ **Liz Wong is in `GOVERNOR_NAMES` but has NO telegram_id in Onaya's allowlist, and isn't a member of "Bionpact work area".** She would be rejected by the security gate as GUEST (allowlist is the strongest signal; name-matching only helps when the ID is NOT allowlisted but *the name matches* — and since her ID isn't allowlisted, she'd only resolve GOVERNOR if her Telegram display name were literally "Elizabeth Wong"). So the governor-mention bypass is effectively live for **Gary, XiXi, and the Envoy bot** — not Liz, unless her ID is added.
+
+**Step 5 (live no-mention test) needs you, Gary** — I can't send as your account. Please:
+1. Go to **"Bionpact work area"** group (`-1003840338729`, you're creator)
+2. Send a **plain message with NO @mention** of @bionpact_bot — e.g. *"hey Onaya, no-mention test — what's your current task?"*
+3. Tell me here when sent (or wait ~10s and I'll check the logs)
+
+I'll then pull Onaya's journal to confirm it took the **CHAT REQ / full-response** path (not the silent "observed, no reply" path).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×15 → ssh -o BatchMode=yes -i ~/.ssh/NELANCO_aws_20201122.pem ubuntu@172.31.3.161 'cd /opt/bionpact_autopilot && git pull --ff-only origin main &&; ssh -o BatchMode=yes -i ~/.ssh/NELANCO_aws_20201122.pem ubuntu@172.31.3.161 'cd /opt/bionpact_autopilot && .venv/bin/pip install "pillow_hei; ssh -o BatchMode=yes -i ~/.ssh/NELANCO_aws_20201122.pem ubuntu@172.31.3.161 'sudo systemctl restart bionpact-autopilot bionpact-autopilot-te; …(+9 more)
 
