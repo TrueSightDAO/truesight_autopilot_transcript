@@ -393,6 +393,7 @@ One video landed so far: **IMG_8281.mp4** (4.2 MB, 19:38) in the `fazenda-santa-
 ### 🤖 Autopilot
 
 Two videos are now in — **IMG_8281.mp4 (17.4 MB) and IMG_8282.mp4 (524 KB)** — landing in the `fazenda-santa-rosa` ingest folder. The two new JPGs (a 1125×2436 phone screenshot and a 960×1280 photo) are likely context shots. Let me do a final check for the third video and see if more are still streaming in:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -565,4 +566,31 @@ Your voice message came through garbled — I couldn't make out what you said (i
 If you were asking about the proof link: yes, it's live and open for anyone — **beta.agroverse.shop/farms/fazenda-dona-rosa-para/** — you can open it on your phone or computer right now.
 
 If the site won't load for you, tell me and I'll send a PDF snapshot of the page here instead.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] Status
+
+
+### 🤖 Autopilot
+
+Here's the current status:
+
+**Done:**
+- Farm page is live on beta — **beta.agroverse.shop/farms/fazenda-dona-rosa-para/** — with your photo as the hero. Waiting on your proof before promoting to production.
+- Registry rename to `-para` is done and consistent.
+
+**In your hands right now:**
+- Proof the beta page and give me the go for production.
+
+**Waiting on your decision:**
+- The 3 videos (plus a possible 4th) you sent are sitting safely in the Santa Rosa inbox folder — nothing's been uploaded anywhere. They're Dona Rosa footage that got misrouted. I can move them to the Dona Rosa folder and transcribe all of them to tell you what was said — just say go.
+
+**Queued after that:**
+- Renaming the media manifest and raw folder to match the `-para` id
+- Anchoring the farm plot on-chain
+- Getting the CEPOTX site code from Jedielcio
+
+So the two things I need from you: proof the page, and your go on moving and transcribing the videos.
 
