@@ -416,51 +416,66 @@ Sheet + geojson regenerated (`RG-P1` → `U-06-07`). `sunmint_work` isn't a git 
 ### 🤖 Autopilot
 
 Geojson regenerated with `U-06-07` (11 features preserved — only the RG row changed). Pushing it to the sunmint registry (api-only → Contents API), and disambiguating the shop repos in parallel before editing farm-page prose:
+[2 tool result(s) compacted: upload_local_file_to_github, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Geojson pushed to `sunmint` (commit b7f1d61). The farm page lives in `agroverse_shop_beta` (the old `agroverse_shop` name redirects there). Let me fetch the exact farm page content so I can craft precise edits replacing the visible "RG-P1" plot label with `U-06-07`.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sheet (source of truth) ✅ and geojson ✅ are updated and pushed. Now the public-facing references (farm page + media captions in `agroverse_shop_beta`) and the FSVP entity records (`fda_fsvp`). Creating both PRs:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Shop PR #285 opened. Now the fda_fsvp entity records PR — updating the COPOPS entity (purpose/notes/site list) and the CEPOTX entity (source_farms entry) to drop the old RG-P1 alias:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PRs open. Let me update the runbook/registry docs so they stop teaching `RG-P1` as the canonical id (and reflect the new site-code scheme), and check the doc-repo references to `RG-P1` I found earlier.
+[2 tool result(s) compacted: git_push_changes, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The third hunk didn't match exactly. Let me read the exact wording in the file:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I see the exact wording now. Let me apply the doc updates with precise hunks — the worked example row, the two RG-P1 mentions in the runbook, and add a site-code note to the naming section:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All three PRs opened. Let me verify the merged/updated state across the surfaces and confirm there are no remaining live `RG-P1` references in the primary data/display files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One `RG-P1` still lingers in the main geojson (likely inside the notes/media field that wasn't in my earlier read). Let me find its exact location:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The remaining `RG-P1` is only in the provenance note I added (intentional audit trail: "replaces RG-P1; governor-confirmed 2026-09-05") — no live plot-id references remain. Merging the three PRs (explicit governor "go" authorizes self-merge of feature PRs):
+[3 tool result(s) compacted: merge_pr, merge_pr, merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -507,6 +522,7 @@ Gary confirmed change #1: replace the SunMint plot id of Raimundo's farm with it
 ### 🤖 Autopilot
 
 Gary is correcting the caption for IMG_8277 — it's not "field and vegetation," it's their **drying station and fermentation station** (post-harvest processing infrastructure). Let me find every place 8277 is described so the fix lands consistently.
+[2 tool result(s) compacted: http_fetch, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -606,4 +622,109 @@ Gary corrected the caption: **IMG_8277 is a photo of Raimundo & Geniza's drying 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → echo "=== 8277 in shop page HTML (beta main) ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/rai; curl -s https://raw.githubusercontent.com/TrueSightDAO/farm_media_manifests/main/raimundo-geniza-para.json | python3 -c " import sys, json d; echo "=== check other RG media captions in manifests for 8277 ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/farm_media_manife; …(+1 more)
 • `merge pr` → ✅ PR #286 on agroverse_shop_beta merged successfully (sha: a84e8b0b23a73b8df8d0200cdb4c87eff56e387c). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **d23cc94cdb614142975b72dd77d3c5e7.HEIC**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+- Note: HEIC converted to JPEG (EXIF/GPS preserved)
+- 📍 GPS: -3.630242, -53.652017 (alt 180.7 m)
+- 🕐 Captured: 2026:09:03 16:29:06
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Gary sent the original HEIC photo (this should be IMG_8277 — the drying/fermentation station shot, with GPS preserved). Let me find the file on disk and check what vision tooling is available on the box to inspect it.
+
+
+### 🤖 Autopilot
+
+The HEIC is at `/tmp/tg_attachments/d23cc94cdb614142975b72dd77d3c5e7.jpg` (converted, GPS preserved). OCR found no text, so visual inspection needs the vision client — let me check how `grok_client.py` is invoked:
+
+
+### 🤖 Autopilot
+
+The file is a library module — let me check how it's called in the app and run a vision pass on the image to describe what's actually in it:
+
+
+### 🤖 Autopilot
+
+Let me run Grok vision on the image with a context-appropriate prompt (this should be the drying/fermentation station, GPS -3.630242/-53.652017, 2026-09-03 16:29):
+
+
+### 🤖 Autopilot
+
+Grok key isn't on this box (it lives on the market-research host). Let me find where the key is configured and check alternate vision routes — the app may have a working key path:
+
+
+### 🤖 Autopilot
+
+There's a `/home/ubuntu/.env` — let me check whether it holds the Grok key (without printing secrets), and also check the generate_image tool config since that uses Gemini/Google AI Studio:
+
+
+### 🤖 Autopilot
+
+No Grok/Gemini API key on this box (only DAO identity keys), so a vision-model description isn't available locally. But the attachment processor already gave me the key data: **GPS -3.630242, -53.652017 (alt 180.7m), captured 2026-09-03 16:29:06**. Let me inspect the full EXIF (original filename may be embedded, confirming whether this is IMG_8277) and cross-check the GPS against the plot hull and the repo copy of that photo:
+
+
+### 🤖 Autopilot
+
+EXIF confirms the full picture — GPS **-3.630242, -53.652017** (S/W), alt 180.7 m, **iPhone 12 Pro Max**, captured **2026-09-03 13:29:07 local** (16:29 UTC — matches the attachment note). That GPS sits inside the U-06-07 plot hull (−3.6294…−3.6306 / −53.6518…−53.6522) and the timestamp matches the 03 Sep site walk. Now let me identify which IMG number this original is, by checking the media pipeline runbook and the farm-media-raw blob store:
+
+
+### 🤖 Autopilot
+
+`farm-media-raw` has no raimundo folder — RG originals may still live in the source zip `~/raimundo_geniza.zip` (per the manifest). Let me match this photo's GPS/time against the originals there to identify its IMG number and confirm whether this is IMG_8277:
+
+
+### 🤖 Autopilot
+
+The original zip is at `/home/ubuntu/raimundo_geniza.zip` and there's an extracted folder `~/raimundo_geniza/`. The shop asset `~/rg_shop_assets/raimundo-geniza-IMG_8277.jpg` exists (the exact image Gary's caption referred to). Let me compare this uploaded photo's EXIF (GPS/time/size) against the extracted originals to identify which IMG it is:
+
+
+### 🤖 Autopilot
+
+The extracted folder scan found no match (may only hold MOVs, or HEIC EXIF isn't readable by PIL in that folder). The uploaded photo: iPhone 12 Pro Max, 2026:09:03 13:29:07, GPS -3.630242/-53.652017. Let me search the zip contents listing for files with that timestamp and check the extracted folder structure:
+
+
+### 🤖 Autopilot
+
+Definitive match: the zip listing shows **`IMG_8277.HEIC` — 2,086,477 bytes, 2026-09-03 16:29 UTC** — identical byte-size (2,086,477) and timestamp to the uploaded file `/tmp/tg_attachments/d23cc94cdb614142975b72dd77d3c5e7.HEIC` (2,086,477 bytes, 16:29). This confirms the upload **is IMG_8277** — the exact photo Gary captioned as the **drying station and fermentation station**.
+
+So: **the photo Gary just sent IS IMG_8277** (byte-identical original HEIC from the site walk). My earlier caption fix (media.json alt) was already correct. Now let me confirm its GPS sits inside the plot hull and check what the hull records say, so I can give a complete answer with the photo's evidence value:
+
+
+### 🤖 Autopilot
+
+**Confirmed — the attached file is IMG_8277**, byte-identical to the original in the site-walk zip:
+
+- **SHA-256 match**: uploaded `21728b508cc415b6…` = zip's `IMG_8277.HEIC` `21728b508cc415b6…` — same file, no doubt
+- **Size**: 2,086,477 bytes both; **captured** 2026-09-03 16:29 UTC (= 13:29 local), iPhone 12 Pro Max
+- **GPS**: -3.630242, -53.652017 (alt 180.7 m) — **inside the U-06-07 plot hull** ✅
+- This is the **drying station & fermentation station** photo (per Gary's earlier caption fix, which I already applied to the shop media.json in PR #286)
+
+This gives the photo **full evidence value** for the plot record: it's an original HEIC with intact EXIF/GPS (not a Telegram-stripped re-encode), proving the drying/fermentation station sits on/adjacent to the U-06-07 plot.
+
+## What I'd like to do with it
+
+The manifest tracks only the 14 MOVs (`counts: MOV 14, HEIC 0`), and `farm-media-raw` has no raimundo folder — so this original photo isn't archived in the media pipeline yet. Options:
+
+1. **Archive it properly** — add IMG_8277 (and the other HEICs: 8205, 8208, 8232, 8234, 8236, 8240, 8241, 8249, 8250/51/52/53/54/55/56, 8268, 8272-78) to the RG media archive with GPS verified — consistent with MEDIA_ARCHIVE_PIPELINE.md
+2. **Just note it** — record this as confirmation that the existing media.json caption fix is accurate; no further action
+3. **Something else** you had in mind
+
+Which would you like? (I can also append this finding to the session transcript as-is so it's preserved for cross-session recall either way.)
+
+———
+**✅ Done this turn — actions taken:**
+• `list_directory`, `ssh run` ×8 → located d23cc94…HEIC/jpg; grok key absent locally; EXIF verified (iPhone 12 Pro Max, 13:29:07 local, GPS -3.630242/-53.652017 alt 180.7); matched to zip listing `IMG_8277.HEIC` (2,086,477 B, 16:29 UTC); sha256 21728b50… matches extracted original exactly; GPS inside plot hull ✅
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → echo "=== grok/vision clients on box ==="; ls ~/grok_client* /opt/*grok* 2>/dev/null; which grok_client 2>/dev/null; find ~ /opt -maxdepth 3; echo "=== grok_client usage ==="; head -80 /opt/truesight_autopilot/app/grok_client.py; echo "=== any CLI wrapper ==="; ls /opt/truesight_au; echo "=== grok client public API ==="; grep -n "^def \|^class " /opt/truesight_autopilot/app/grok_client.py; echo "=== sample usage in app =; …(+9 more)
 
