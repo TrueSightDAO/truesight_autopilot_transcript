@@ -10,54 +10,6 @@
 
 ### 🧑 Governor
 
-[Telegram context: chat_id=-1003919341801, thread_id=20065] status of the photos analysis
-
-
-### 🤖 Autopilot
-
-Let me do a quick freshness check on the folder before giving the status — to confirm nothing new landed since my last analysis:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-## 📊 STATUS — Photos analysis
-
-### Set composition
-- **59 HEIC on disk → 24 unique** photos (deduped by md5; the rest are random-name re-uploads)
-- **20 unique = tree photos** · **4 unique = corner photos** (18:18–18:31, already used to register plot PL-002)
-- All iPhone 12 Pro Max, 2026-09-02, all GPS-bearing
-
-### Clustering result — **exactly 10 distinct trees** ✅
-Using your **dig-time heuristic** (photos ≤ 90 s apart = same tree; you can't dig a hole in under a minute):
-
-| Tree | Time | Shots | Proposed pick | Faces/smile |
-|---|---|---|---|---|
-| 1 | 18:42 | 1 | `23768d7c` | 2 faces |
-| 2 | 18:47 | 3 | **`74ae3d15`** | ✅ smile detected |
-| 3 | 18:52–53 | 3 | `46d7e4d8` | 3 faces (most people) |
-| 4 | 18:57 | 1 | `17016c60` | 1 face |
-| 5 | 19:02 | 1 | `2c364eb3` | 3 faces |
-| 6 | 19:09–10 | 2 | `1ae19a42` | 1 face |
-| 7 | 19:16 | 2 | `22cf3ff2` | 1 face |
-| 8 | 19:21 | 3 | `925b56c8` | 1 face |
-| 9 | 19:26 | 2 | `8ecc12ab` | 2 faces |
-| 10 | 19:31 | 2 | **`9e4ce380`** | ✅ smile detected |
-
-### Where it stands
-- **Done:** dedupe, GPS extraction, time-based clustering → 10 trees, smile/face detection over all 20 candidates
-- **Smile rule applied where detectable:** Tree 2 + Tree 10 picks are the smile shots. For Trees 3/6/7/8/9 no smile was auto-detected (dark/low-light defeats the cascade) — picks default to "most/best faces"
-- **Blocked on your confirm:** (1) are the picks right — especially any you *remember* as smiley shots? (2) species (cacao?) (3) planter name
-
-**Last arrivals were duplicates** (`f751d1dc`, `d5c94b14` = Tree 10 re-uploads) — no new content since my analysis. Once you confirm picks + species + planter, I submit 10 `[TREE PLANTING EVENT]`s against **PL-002** with the chosen photos as evidence.
-
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` → cd /tmp/tg_attachments && echo "HEIC total on disk: $(ls *.HEIC 2>/dev/null | wc -l)"; echo "Unique by md5: $(md5sum *.HEIC 2>/dev/null | aw
-
-
-### 🧑 Governor
-
 [Telegram context: chat_id=-1003919341801, thread_id=20065] For each unique tree identified, can you make a submission to the underlying smart contract of 
 
 https://beta.sunmint.truesight.me/
@@ -4532,26 +4484,31 @@ Checking the upload status now:
 ### 🤖 Autopilot
 
 **All 17 videos are live on YouTube, exactly once each, no duplicates.** The 8 curated ones have their descriptive titles. Now let me commit the manifest to the `farm_media_manifests` repo and then embed the curated 8 in the page's media.json:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest built (17 videos, 8 curated flagged). Let me commit it to the `farm_media_manifests` repo:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Right — `farm_media_manifests` is an API-only data repo, written via `upload_file_to_github`. Let me write the manifest directly:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest committed. Now the final step — embed the **8 curated** videos in the farm page's `media.json` (youtube type items above the 10 tree photos). Let me build and push it:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #283 opened with the curated videos embedded. Merging per your standing go:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -4617,6 +4574,7 @@ Each has a descriptive title (curated ones tell the story: "It's a small farm, b
 ### 🤖 Autopilot
 
 Gary wants DAO contributions submitted for this work — mine, his, and possibly "Emboi" (a name I should verify from the transcripts — likely a voice-transcription mangling). Let me check the contribution event format and search the transcripts for who "Emboi" is:
+[2 tool result(s) compacted: lookup_event_docs, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4746,4 +4704,61 @@ Say "go with those + <TDG rate>" and I'll fire all three `[CONTRIBUTION EVENT]`s
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /home/ubuntu/bomsucesso_work/in 2>/dev/null && echo "=== MOV creation dates (field-day timing) ===" && for f in *.MOV; do d=$(exiftool -s; cd /home/ubuntu/bomsucesso_work && echo "=== tree planting session times (field day) ==="; python3 -c " trees={'T1':'18:42','T2':'18:47','T3; cd /opt/truesight_autopilot 2>/dev/null && echo "=== recent CONTRIBUTION EVENTS in transcript/ledger? ===" && grep -rnoE "CONTRIBUTION EVENT
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] REmove my time doing the physical stuff since that has already been accounted for its mainly the online administrative stuff you guys are doing
+
+
+### 🤖 Autopilot
+
+Gary's clarified — contributions are for the online administrative work only; his physical field time is already accounted for. Let me get the exact CONTRIBUTION EVENT schema and check how prior events handled the TDG field:
+
+
+### 🤖 Autopilot
+
+The snapshot reveals **prior contribution events already logged today (Sep 5)** — some possibly overlapping this session's work (e.g. `_060` 420 min "HEIC/GPS extraction fix Sep 3–5"). I must avoid double-counting. Let me read the correct submission procedure (OPERATING_INSTRUCTIONS says use dao_client CLI, not submit_contribution) and check what's on the box:
+
+
+### 🤖 Autopilot
+
+The snapshot shows **contribution events logged just minutes ago** (Sep 5, 13:54–15:20) — I must read their full descriptions to see which cover this Fazenda Bom Sucesso work before firing anything, or I'll double-count. Let me read the snapshot detail + the AI-contribution convention doc:
+
+
+### 🤖 Autopilot
+
+The snapshot shows **several contribution events filed TODAY (Sep 5, 14:31–15:20) with no descriptions** (`_062` Sophia 30, `_064` Sophia 60, `_066` Gary 30, `_070` Sophia 75) — these could already cover this thread's work. I must read their full bodies before submitting anything, or I'll double-count. Let me query Edgar:
+
+
+### 🤖 Autopilot
+
+The API shape is different. Let me try the submissions endpoint differently to read the event bodies:
+
+
+### 🤖 Autopilot
+
+I've hit a real ambiguity that I shouldn't guess through: **the advisory snapshot shows several contribution events filed TODAY (Sep 5) with no descriptions** — `_062` Sophia 30, `_064` Sophia 60, `_066` Gary 30 (14:31) and `_070` Sophia 75 (15:20) — alongside a separate workstream (Sítio Raimundo & Geniza onboarding `_054`/`_056`/`_058`, the 420-min HEIC/GPS fix `_060`, Elizabeth clarification `_068`). Those appear to come from parallel threads (20044 etc.), but the **description-less ones could already cover parts of this Fazenda Bom Sucesso arc** — and I can't read their bodies (the Edgar API endpoints I tried all 404, and the DApp doesn't expose body text via my read tools without the right endpoint).
+
+If I fire now, I risk **double-counting** Sophia/Gary time that another thread already logged today.
+
+## My derivation (online admin only, per your instruction)
+
+| Who | Work (this thread, Sep 2–5) | Proposed min |
+|---|---|---|
+| **Sophia Truesight** | Farm-page authorship + review cycle (PRs #272/#275/#277/#280/#281/#283: page, footer CSS restore, brazilian-path-data comma fix, header/footer test, media.json), 17-video convert→YouTube→manifest pipeline (+10-dupe cleanup), plot polygon repair + rebuild, tree dedupe, prod promotion | **~300 min** (5 h, across 3 days) |
+| **Gary Teh** | Online admin only: farm-page review decisions (hero, species, video curation), approvals (merge go's, prod go), uploading the 1.29 GB interview archive | **~45 min** |
+| **Envoy TrueSight** | Observed/flagged issues (broken styling, media gallery, vote B), relayed your calls, verified my work | **~60 min** |
+
+## One crisp question before I fire
+
+**Do the description-less events already filed today (`_062`/`_064`/`_066`/`_070`) cover this Fazenda Bom Sucesso thread — or were they for other threads (Raimundo/Elizabeth etc.)?** 
+
+- If **other threads** → say "go" and I'll submit three `[CONTRIBUTION EVENT]`s: Sophia 300 / Gary 45 / Envoy TrueSight 60 (Type: Time (Minutes), descriptions referencing the PRs + YouTube pipeline + prod deploy `deploy_20260905T152125Z`).
+- If **this thread** → tell me which parts are covered and I'll submit only the delta.
+- Also confirm **TDG Issued**: leave at 0/auto, or set a rate?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /opt/truesight_autopilot 2>/dev/null; echo "=== dao_client availability ==="; which dao_client 2>/dev/null; ls ~/dao_client* /opt/dao_cli; sed -n '40,75p' /opt/truesight_autopilot/context/agentic_ai_context/ADVISORY_SNAPSHOT.md; TOKEN=$(grep -E '^TRUESIGHT_DAO_AUTOPILOT=' /opt/truesight_autopilot/.env | head -1 | cut -d= -f2- | tr -d '"' | tr -d "'"); echo "=== recen; …(+1 more)
 
