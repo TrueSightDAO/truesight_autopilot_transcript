@@ -269,21 +269,25 @@ Before the live test, let me confirm which chat/thread Gary actually uses with O
 ### 🤖 Autopilot
 
 No matches in that grep format. Let me search more broadly for the sender IDs and chat activity in her logs:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Logs only show her single active chat `-1003840338729`. For the live no-mention test I need to confirm Gary is a member of that group and identify her bot username. Let me query Telegram (read-only) with her bot token:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed: her bot is **@bionpact_bot**, chat `-1003840338729` is **"Bionpact work area"** (supergroup), and **Gary is the creator** (2102593402, garyjob). Also checking Liz's membership (6460718272) to confirm the third ID's identity while I'm here:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `UID` is a readonly bash variable — renaming it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -291,6 +295,7 @@ Confirmed: her bot is **@bionpact_bot**, chat `-1003840338729` is **"Bionpact wo
 Surprise finding: **6460718272 is NOT Liz Wong — it's "XiXi"** (a member, no username). So the allowlist is `Gary (2102593402), XiXi (6460718272), @nelanco_claude_bot/Envoy (8919657771)` — **Liz Wong is configured as a governor NAME in GOVERNOR_NAMES but has NO telegram_id in the allowlist**, and she's not a member of the group.
 
 This matters for the governor-bypass: `resolve_identity` falls back to **display-name matching** for Liz if she were to message, but since her ID isn't on the allowlist, the security gate (which runs BEFORE the mention gate) would reject her outright unless her display name matches. Let me check the security-gate logic + how the allowlist/name bridge interacts, and whether the governor-bypass covers name-resolved governors:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -298,16 +303,19 @@ This matters for the governor-bypass: `resolve_identity` falls back to **display
 Critical nuance found: the **governor ID set == the env allowlist** (`_load_governor_telegram_ids` reads `TELEGRAM_ALLOWED_USER_IDS`). So the security gate and governor bypass share the same source. The allowlist has Gary, XiXi, and the bot — **not Liz's telegram ID**.
 
 The task said "Gary, and Liz Wong if she's configured as governor there too — check, don't assume." I've now checked: Liz **is** in `GOVERNOR_NAMES` but her **telegram ID is not** in the allowlist — so she cannot message Onaya (security gate rejects her as GUEST). Let me read the exact security-gate code and full `resolve_identity` (esp. whether name-matching applies when the ID isn't allowlisted but the name matches):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Static verification is thorough now. Resolution logic confirmed: allowlist ID → GOVERNOR (strongest), name-match only as fallback. Let me do a **code-path simulation** — importing her actual adapter and evaluating the real gate condition for each sender (deterministic proof before the live message test):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Another f-string quoting issue (nested quotes). Let me fix with variables:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -348,6 +356,7 @@ I'll then pull Onaya's journal to confirm it took the **CHAT REQ / full-response
 ### 🤖 Autopilot
 
 Re-reading her allowlist now and reconciling who owns each ID — plus cross-checking docs and my own box's config.
+[4 tool result(s) compacted: ssh_run, search_context, search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -355,6 +364,7 @@ Re-reading her allowlist now and reconciling who owns each ID — plus cross-che
 Reading the allowlist again — confirmed unchanged: `2102593402, 6460718272, 8919657771`. Cross-checked against the three verified identities in the group (Gary = 2102593402 creator; Envoy bot = 8919657771; and per your confirmation 6460718272 = Elizabeth Wong's account — Telegram currently shows her profile name as "XiXi", but that doesn't matter since **ID-based resolution (step 1) makes her GOVERNOR regardless of display name**). My earlier "Liz not on the list" claim was wrong — sorry about that; her ID **is** on Onaya's allowlist, so the PR #400 bypass covers her too.
 
 Let me now check whether a no-mention test message has already landed in Onaya's logs since the restart:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -368,6 +378,7 @@ Onaya's allowlist re-read and reconciled — you're right, and I stand corrected
 So all three allowlisted IDs → `Role.GOVERNOR` → the PR #400 no-mention bypass is live for **Gary, Elizabeth Wong, and the Envoy bot**. The static + code-path simulation already proved `FULL RESPONSE` for all three.
 
 Logs since the 15:29 restart show **no incoming message processed yet** — so the no-mention test hasn't reached Onaya's group. Let me check her current time and look for any just-arrived traffic:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -413,16 +424,19 @@ To finish step 5: send a **plain message with no @mention** in the **Bionpact wo
 ### 🤖 Autopilot
 
 Go signal received — checking Onaya's journal for the live no-mention test message now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 She's alive and responding since the restart — but I need to confirm the *trigger path*: were those replies to **no-mention** messages (governor bypass) or @mentions? Let me grep the log for how incoming messages were classified:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Voice replies ARE flowing since the restart (15:37→15:59, all in her group thread 729) — but I need proof they were triggered by **no-mention** messages. Let me pull the full log tail and the incoming-message intake lines:
+[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -437,21 +451,25 @@ INFO:autopilot:[423321] CHAT RESP: len=1253 ...
 ```
 
 Gary Teh was processed as **role=governor** with full multi-round tool sessions (PDF gen, attachment send, voice replies) **after the 15:29 restart**. To make the no-mention proof airtight, let me fetch the session transcript Onaya committed at 16:00 and confirm Gary's messages contained **no @mention** of @bionpact_bot:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript is only 14 bytes — likely a redirect/404 or repo permission issue (the brain log showed a 403 on that repo). Let me check what the file contains and find the right transcript path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript repo is private (404 on raw). Better airtight check: grep her adapter's code for the exact log line emitted when a message is **skipped** (not mentioned → observed-only), then count skips vs full responses since the restart:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the exact gate at line 1937 and the skip/observe log lines emitted, so I can grep the journal for the definitive decision path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -459,6 +477,7 @@ Let me read the exact gate at line 1937 and the skip/observe log lines emitted, 
 The gate code is exactly PR #400's logic — the final condition `and not _sender_is_governor(...)` means governor messages **fall through** to full processing. Non-governors hitting the gate log via `log_observed_message` (the "observed, no reply" path).
 
 Now let me count, since the 15:29 restart, how many messages took each path — and find what log line marks the full-processing entry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -569,4 +588,29 @@ All three resolve `GOVERNOR` → all bypass the mention gate. The fix goal — *
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×21 → ssh -o BatchMode=yes -i ~/.ssh/NELANCO_aws_20201122.pem ubuntu@172.31.3.161 'echo "=== her time ==="; date "+%Y-%m-%d %H:%M:%S %Z"; echo "==; ssh -o BatchMode=yes -i ~/.ssh/NELANCO_aws_20201122.pem ubuntu@172.31.3.161 'echo "=== message-classification lines since restart ==="; sudo; ssh -o BatchMode=yes -i ~/.ssh/NELANCO_aws_20201122.pem ubuntu@172.31.3.161 'echo "=== how incoming messages are logged (grep variants) ==="; …(+18 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21293] Already did. Good job, close out this topic
+
+
+### 🤖 Autopilot
+
+Closing out — the fix is deployed and verified live, confirmed by your no-mention test.
+
+
+### 🤖 Autopilot
+
+Topic closed. Summary of the completed work for the record:
+
+**Onaya (Bionpact) governor no-mention fix — DONE ✅**
+
+1. **Pull**: `8ee62c4 → 9f0e8d3` (PR #400 governor bypass), clean fast-forward on her box
+2. **Dep**: `pillow_heif 1.6.0` installed alone (litellm 1.97.0 preserved)
+3. **Restart**: brain + telegram services active on new commit
+4. **Static verify**: all 3 allowlisted IDs (`Gary Teh`, `Elizabeth Wong`/XiXi, Envoy bot) → `Role.GOVERNOR`
+5. **Live verify**: confirmed by your own no-mention test in the Bionpact work area — full voice/tool responses flowing without @mention
+
+Topic deleted; transcript preserved for future reference.
 
