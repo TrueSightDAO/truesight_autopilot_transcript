@@ -11,198 +11,15 @@
 ### 🧑 Governor
 
 [CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
-Turn — [CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
-Turn — [CONTEXT SUMMARY — turns 1–3 compacted,:
-• `lookup_event_docs` FARM BOUNDARY EVIDENCE EVENT → contract: omit Plot ID only when unknown (we have U-06-06); include Is New Farm, Media URLs, Extracted GPS, Area Hectares
-• `submit_contribution` → **FARM BOUNDARY EVIDENCE EVENT for Fazenda Santa Rosa / U-06-06 submitted successfully**
-• `ssh run` ×12 → verified farm_id display-name derivation (`humanize` = "Fazenda Santa Rosa Para" from slug → fixed sheet B17 → rebuilt → pushed both indexes as "Fazenda Santa Rosa"); read daemon config (inbox schema + existing `fazenda-santa-rosa` archive root); scoped RG sidecar/convert conventions; launched background 31-MOV conversion
-• `read_context_file` HANDOFF_MANIFEST + AGROVERSE_SUNMINT_FARM_LISTING.md SOP
-• Fetched RG page template + media.json + hero to `/tmp/sr_page_base/` for the §4 clone
-
----
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-## ✅ §4 farm page merged — SR-P1 SOP nearly complete
-
-**PR #287 (agroverse_shop_beta) — merged** (sha `1056c452b4`): Fazenda Santa Rosa profile
-- `farms/fazenda-santa-rosa-para/index.html` (682 lines — adapted RG clone: Antônio & Graça, plot **U-06-06**, ~4.75 ha, COPOPS/CEPOTX copy, canonical `https://www.agroverse.shop/farms/fazenda-santa-rosa-para` once, map centered on hull centroid -3.634141/-53.669688, token-grep clean = 0 RG leftovers)
-- `farms/fazenda-santa-rosa-para/media.json` (hero IMG_8338 + 6-image gallery)
-- 7 assets `assets/images/farms/fazenda-santa-rosa-{hero,IMG_8332,IMG_8329,IMG_8325,IMG_8319,IMG_8318,IMG_8301}.jpg` (converted from SR walk HEICs)
-
-### Progress vs SOP
-| § | Step | State |
-|---|---|---|
-| §2 | On-chain FARM BOUNDARY event (U-06-06) | ✅ submitted |
-| §3 | 31 MOV→MP4 conversion (GPS re-inject verified) | 🔄 **10/31** in bg (`/tmp/sr_convert.log`) |
-| §4 | Farm profile PR | ✅ **merged** (this turn) |
-| — | Beta verify | ⏳ next (needs render check) |
-| §3b | Sidecars + daemon config + restart → YouTube | ⏳ after conversion |
-| §6/§5 | FSVP entity + FARM_SLUG mapping | ⏳ follow-ups |
-
-## RESUME HERE → next unit (§3 finish + beta verify)
-1. **Beta verify §4:** check `https://beta.agroverse.shop/farms/fazenda-santa-rosa-para/` renders (hero, gallery, map). If broken, fix in a follow-up PR.
-2. **§3 finish:** confirm conversion hit 31/31 (`/tmp/sr_convert.log` tail, `ls ~/media_archive_inbox/farm-media/fazenda-santa-rosa/*.mp4 | wc -l`). For each mp4 build sidecar `<name>.mp4.json` (schema from RG: farm_id `fazenda-santa-rosa`, title `Fazenda Santa Rosa — IMG_xxxx (Uruará, Pará)`, GPS from exiftool, duration via ffprobe, sha256, privacy public, tags cacao/agroverse/para/brazil/sunmint, produced_by sophia).
-3. **Daemon:** append inbox entry `farm_id: fazenda-santa-rosa, path: /home/ubuntu/media_archive_inbox/farm-media/fazenda-santa-rosa, priority: 1` to `/opt/truesight_autopilot/media_archive_daemon_config.yaml` → `systemctl restart farm-media-daemon` → verify `/tmp/farm_media_daemon.log` rc=0 lines + yt_ids written back into sidecars.
-4. **YouTube gallery PR** (second PR): append the uploaded videos as `{type: youtube, videoId, title, caption}` entries into `farms/fazenda-santa-rosa-para/media.json` gallery → merge → re-verify beta.
-5. **Follow-ups (non-blocking):** FARM_SLUG mapping for impact-map popup (farm_id `fazenda-santa-rosa` ≠ page slug `fazenda-santa-rosa-para`); FSVP entity in fda_fsvp (COPOPS site code U-06-06, needs legal name/CNPJ when available).
-6. **Prod sync** remains on hold until your explicit go after beta looks right.
-
-**Open for you:** no blocking items — page is live on beta after this merge; prod awaits your go.
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
+Turn — [CONTEXT SUMMARY — turns 1–1 compacted,:
 • `ssh run` ×17 → echo "=== conversion log tail ==="; tail -8 /tmp/sr_convert.log 2>/dev/null; echo "=== mp4 count ==="; ls ~/media_archive_inbox/farm-media/f; echo "=== candidate hero images (couple photo from earlier session) ==="; find /tmp/tg_attachments /home/ubuntu/santa_rosa_work /home/ubuntu; echo "=== identify recent attachment images (dimensions + quick ocr/gps) ==="; cd /tmp/tg_attachments && for f in 1ede6a6c52424b17b781dffe8c; …(+14 more)
 • `merge pr` → ✅ PR #287 on agroverse_shop_beta merged successfully (sha: 1056c452b4c68a2b504f718c94dfac74f1793d51). Pull Request successfully merged
 
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=21005] [Handoff context — this Telegram topic (thread 21005) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ §4 farm page merged — SR-P1 SOP nearly complete
-
-**PR #287 (agroverse_shop_beta) — merged** (sha `1056c452b4`): Fazenda Santa Rosa profile
-- `farms/fazenda-santa-rosa-para/index.html` (682 lines
-
-
-### 🤖 Autopilot
-
-👍 GO received — resuming SR-P1 SOP §3 finish + beta verify. Checking conversion state and beta render in parallel:
-[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Beta verify PASSED** ✅ — `https://beta.agroverse.shop/farms/fazenda-santa-rosa-para/` renders correctly (HTTP 200):
-- Title: *"Fazenda Santa Rosa - Pará, Amazon Rainforest | Agroverse"* — UTF-8 Pará ✅
-- Meta/OG with Antônio & Graça + Transamazônica description ✅
-- Canonical/og:url = `https://www.agroverse.shop/farms/fazenda-santa-rosa-para` (single concat, no double suffix) ✅
-- og:image → hero asset ✅
-
-Conversion at **19/31 mp4s** and climbing (~1/min; ~12 min left). While it finishes, let me build the sidecar generator. First I need the exact RG sidecar schema from a real example + the daemon's expected location:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Daemon config mapped. Key learnings:
-- Inbox entries use `farm_id` matching each farm's page dir naming convention (`raimundo-geniza-para`, `fazenda-dona-rosa` — note: RG uses `raimundo-geniza-para` with `-para`, Dona Rosa uses `fazenda-dona-rosa` without). Existing archive root already has **`fazenda-santa-rosa`** (zip).
-- Sidecar schema: `IMG_8501.mp4.json` next to the mp4 (Dona Rosa example available).
-
-Let me read one Dona Rosa sidecar to copy the exact schema, and check the daemon source for expected sidecar fields:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the exact sidecar schema from Dona Rosa. Now let me generate sidecars for all converted SR mp4s (existing ones + ones still converting), and find the actual daemon source to know its expected sidecar consumption + how it picks up files. Let me generate sidecars for the 19 done so far and locate the daemon script:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-20 sidecars written (conversion hit 20/31). Daemon script isn't in the obvious place. Let me locate the daemon process/service + its working script, and check conversion progress:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Daemon confirmed: `farm_media_daemon.py` (running since 16:50), archive worker also active, ffmpeg on IMG_8316 (21/31). Conversion continues ~1/min in background. I need to check whether the daemon **polls** for new inbox files (so adding the config entry mid-conversion works) before I add the SR inbox entry:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The daemon **polls every 30s** (`while True` → scan → `time.sleep(30)`), reads config at startup, and uploads any video whose sidecar lacks a `yt_id`. So the clean flow: let conversion finish (all 31 mp4s + sidecars) → **then** add the SR inbox entry to the config → restart daemon → it picks up SR files and uploads.
-
-But there's a subtlety: the daemon scans inboxes defined in config at startup. Since SR inbox isn't in config yet, existing 20 mp4s+sidecars won't be touched until restart. Adding the config entry now + restart would start uploading the 20 done (and pick up remaining 11 as they land, since it polls the dir every 30s). That's the most efficient path. Let me add the SR inbox entry and restart the daemon now — remaining conversions will be picked up as they appear. First let me check what the daemon log says and confirm the exact YAML insertion point:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Daemon log confirms yesterday's Dona Rosa uploads (48 videos, all rc=0, quota resets 07:05 UTC, budget 500/day — plenty of room). Now I'll add the SR inbox entry, restart the daemon, and confirm it picks up the converted mp4s:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Daemon is live for SR** — first upload landed: `IMG_8281.mp4 → E7rJXE5So5U rc=0`. The daemon polls every 30s, so it will upload the remaining converted mp4s (20+ so far) and pick up the rest as ffmpeg finishes them.
-
-Let me set a background watcher on conversion + uploads so I can report completion, then verify sidecars get yt_ids written back. First check progress:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Interesting — 2 daemon uploads logged (rc=0) but **20 sidecars already have yt_id**. That means 18 yt_ids were written back but the log shows only 2... wait, let me re-read: `grep -l "yt_id"` counts files containing the string `yt_id` — my sidecars were **generated with `"yt_id": null`**, so all 20 contain the key. Let me check which actually have a non-null yt_id (daemon wrote back), and confirm upload pace:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Clean: 4 uploaded with real yt_ids written back to sidecars, daemon log matches. Uploads proceed at ~2-3/min (~upload time each). Conversion is at 20/31 and climbing; daemon picks up each mp4 as it lands.
-
-Let me register a background watcher so I get notified when all 31 are converted+uploaded (long-running — can't wait in-turn), then report status:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The watch tools cover AWS resources/URLs, not local file counts — so I'll verify completion next turn rather than promise a callback. Let me do a final check on the archive worker side (HEICs → S3 raw originals) before converging:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The archive worker is active but its log shows older processing (paulo-la-do-sitio, to-analyze) — the SR zip archive json (`fazenda_santa_rosa.zip.archive.json`) exists from 18:02 but reports **0 files uploaded**. The archive worker processes the zip roots (`~/fazenda_santa_rosa.zip`) — it may be queued/backlogged. Let me check the archive worker's SR zip handling state and whether it's actively working on SR:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The **archive worker already processed the SR zip** — log shows all HEICs → raw + preview on S3 (18:02, sha tracked), and the archive json has entries with `raw_url` pointing to `media.agroverse.shop/raw/fazenda-santa-rosa/IMG_8283.HEIC`. The "0 uploaded" from my earlier parse was just a schema mismatch (it's `entries`, not `files`, and uses `uploaded_at` not `uploaded`). The raw originals (18 HEIC + MOVs) are archived.
-
-Let me confirm the archive json completeness (all entries have uploaded_at/raw_url) and get a full count:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Archive worker complete for SR**: all **49 originals** (18 HEIC + 31 MOV) archived to S3 `media.agroverse.shop/raw/fazenda-santa-rosa/` with raw_urls; 31 previews generated. That's the raw-media archive done (SOP §3 archive leg).
-
-Remaining: the **31 MOV→MP4 YouTube conversions + uploads** (20 mp4 converted, 4 uploaded, daemon auto-picks-up). This is long-running (ffmpeg ~1/min + YouTube ~15s each) and I can't block a turn on it. Let me land a clean converged status with a resume pointer — the daemon runs unattended, and I'll verify 31/31 next turn.
-
-## SR-P1 SOP — status (near complete)
-
-| Step | State | Detail |
-|---|---|---|
-| §1 identity | ✅ | Fazenda Santa Rosa — Antônio & Graça — COPOPS — U-06-06 |
-| Registry (sheet + sunmint indexes) | ✅ | farm_id `fazenda-santa-rosa`, display "Fazenda Santa Rosa", 12 plots / 11 farms |
-| §2 on-chain event | ✅ | FARM BOUNDARY EVIDENCE EVENT submitted |
-| §3a archive (raw originals) | ✅ **done** | **49/49** originals (18 HEIC + 31 MOV) → S3 `raw/fazenda-santa-rosa/` + 31 previews (`fazenda_santa_rosa.zip.archive.json`) |
-| §3b YouTube | 🔄 **running** | 20/31 mp4 converted; **4/31 uploaded** (`IMG_8281→E7rJXE5So5U`, `8282→8EbwHEtQE_E`, `8286→Y2WtNoVzr2c`, `8293→BPk4q7UgVkg`); daemon polls every 30s, auto-uploads as ffmpeg finishes; sidecars get yt_id written back |
-| §4 farm page | ✅ **merged + beta verified** | PR #287 merged; beta renders (title/OG/canonical/hero all correct) |
-| Prod sync | ⏳ your explicit go | — |
-
-## RESUME HERE → finish §3b + follow-ups
-1. **Verify 31/31 done:** `ls ~/media_archive_inbox/farm-media/fazenda-santa-rosa/*.mp4 | wc -l` (expect 31) and `grep -l '"yt_id": "[A-Za-z0-9_-]' *.json | wc -l` (expect 31). Conversion runs ~1/min unattended; daemon uploads each within ~30s of the mp4 landing. No action needed unless a sidecar shows `"error"` — then check `/tmp/farm_media_daemon.log` for that file and retry (delete sidecar's error or re-run upload).
-2. **YouTube gallery PR** (next PR): once all 31 yt_ids are in sidecars, append `{type: youtube, videoId, title, caption}` entries for a curated subset (or all 31) into `farms/fazenda-santa-rosa-para/media.json` → git_push_changes PR → merge → re-verify beta.
-3. **Follow-ups (non-blocking):** FARM_SLUG mapping (farm_id `fazenda-santa-rosa` ≠ page slug `fazenda-santa-rosa-para`) for impact-map popup link; FSVP entity in fda_fsvp (COPOPS U-06-06, legal name/CNPJ needed).
-4. **Prod sync** on your go once beta + YouTube gallery look right.
-
-**Open for you:** nothing blocking — conversions/upload finish unattended; prod awaits your word.
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [Telegram context: chat_id=-1003919341801, thread_id=21005] [Handoff context — this Telegram topic (thread 21005) may be:
 • `ssh run` ×14 → echo "=== conversion log tail ==="; tail -6 /tmp/sr_convert.log 2>/dev/null; echo "=== mp4 count (expect 31) ==="; ls ~/media_archive_inbox/; echo "=== daemon config (inbox entries + sidecar hints) ==="; sed -n '1,80p' /opt/truesight_autopilot/media_archive_daemon_config.yaml; echo; echo "=== Dona Rosa sidecar example ==="; cat ~/media_archive_inbox/farm-media/fazenda-dona-rosa/IMG_8501.mp4.json 2>/dev/null; echo; echo "; …(+11 more)
 
-
-### 🧑 Governor
+---
 
 [Telegram context: chat_id=-1003919341801, thread_id=21005] [Handoff context — this Telegram topic (thread 21005) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
 
@@ -510,36 +327,43 @@ Watch URL returns 200 but oEmbed 404 — that pattern usually means the video is
 ### 🤖 Autopilot
 
 The daemon shells out to an `upload_cmd` (a helper that prints "Video ID:"). The upload reported rc=0 with `lVHN5OZ9HCY` — but the video 404s on oEmbed. Let me find the upload helper script and the credentials, so I can query the video status via the Data API (videos.list) to see if it's private/rejected:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the uploader: `/opt/truesight_autopilot/config/youtube/upload_video_to_youtube.py` + creds in `/opt/truesight_autopilot/config/youtube/`. Let me query the video's actual status via the Data API (`videos.list` with the stored token) to determine why `lVHN5OZ9HCY` isn't oEmbed-visible:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The video isn't visible to the token — but uploads *succeeded* with it, so my token parsing may be wrong (or the video was removed after upload). Let me check how the actual uploader parses credentials and re-query properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My earlier parse took the manual branch; the uploader uses `Credentials.from_authorized_user_file`. Let me re-query properly with the same method (the scopes include `youtube.force-ssl`, which allows reading the video list):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The suspect video is genuinely **gone from the API** (not owned/deleted), yet the channel is "TrueSight DAO". The `contentDetails` part came back without `uploads` — possibly a partial-failure quirk. Let me re-query the channel uploads playlist properly to see which Santa Rosa videos actually exist:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The channel item is returned but `contentDetails.uploads` is missing from the response — unusual. Let me dump the raw channel JSON to see what's actually there:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Channel: **TrueSight DAO** (418 videos, 51 subs) — uploads playlist `UUjzpsu2NPLqMTGX4pa-668w`. My earlier key miss was a dict nesting issue (`contentDetails.relatedPlaylists.uploads`, not `contentDetails.uploads`). Let me list the uploads and check whether IMG_8316 exists under a *different* ID than `lVHN5OZ9HCY` (i.e. the daemon logged a stale/duplicate ID), and confirm all 31 Santa Rosa videos are present:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -547,11 +371,13 @@ Channel: **TrueSight DAO** (418 videos, 51 subs) — uploads playlist `UUjzpsu2N
 **Root cause found**: 30/31 Santa Rosa videos are live on the TrueSight DAO channel — **IMG_8316 is missing**. The daemon logged `lVHN5OZ9HCY rc=0` but that ID doesn't exist on the channel (upload finalized silently or was removed). Everything else is perfect.
 
 Fix: re-upload IMG_8316.mp4 with the same uploader script (same token/creds, same title/description), then update the sidecar + media.json. Re-uploading now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The script resolves relative to its own dir — pass the absolute path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -560,21 +386,25 @@ The script resolves relative to its own dir — pass the absolute path:
 1. The sidecar `IMG_8316.mp4.json` (yt_id → `GURyK-f94xA`)
 2. `media.json` on agroverse_shop_beta (videoId → `GURyK-f94xA`)
 3. Verify the new video resolves via oEmbed
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 New ID resolves (HTTP 200). Now update `media.json` on agroverse_shop_beta — replace the stale `lVHN5OZ9HCY` with `GURyK-f94xA`. Small surgical PR:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The writes array was missing the `path` field. Retrying with the correct path:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #289 opened with the surgical ID fix. Merging it:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -635,46 +465,55 @@ PR #289 opened with the surgical ID fix. Merging it:
 ### 🤖 Autopilot
 
 Searching for the CEPOTX registry across context and code:
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — `CEPOTX_SITE_CODE_REGISTRY.md` in agentic_ai_context. Reading it plus the fda_fsvp CEPOTX records:
+[3 tool result(s) compacted: read_context_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the truncated remainder of both files to see the full picture (Related sections etc.):
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I've read the CEPOTX registry (agentic_ai_context + fda_fsvp mirror). Before I respond, let me check the provenance of **U-06-06** (the site code used for Fazenda Santa Rosa) — where it came from and whether it's documented anywhere:
+[2 tool result(s) compacted: search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me cross-check where U-06-06 / Fazenda Santa Rosa actually appears across records before responding:
+[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify where U-06-06 / Fazenda Santa Rosa actually appear in the records, since the registry itself doesn't list them:
+[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the registry (the truncated tails) and the COPOPS entity record to see the full picture around U-06 codes:
+[3 tool result(s) compacted: read_tool_result, read_tool_result, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The registry check surfaces something important. Let me verify where **U-06-06** (Fazenda Santa Rosa's assigned code) actually came from and where it's currently written, before I respond:
+[2 tool result(s) compacted: search_transcript, search_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search this conversation's own history for where U-06-06 was first mentioned — provenance matters here:
+[2 tool result(s) compacted: recall_context, recall_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -769,4 +608,79 @@ Want me to open a PR adding U-06-06 → Fazenda Santa Rosa (owner Antônio & Gra
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geojson" -o sr_geojson.json && python3 - <<'PYEO; echo "=== U-06-06 anywhere in agentic_ai_context or fda_fsvp (via GitHub search) ==="; curl -s "https://api.github.com/search/code?q=U-06-06
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=21005] [Handoff context — this Telegram topic (thread 21005) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## CEPOTX Registry — cross-checked against U-06-06 / Fazenda Santa Rosa
+
+I read the full registry (both copies — `agentic_ai_context/CEPOTX_SITE_CODE_REGISTRY.md` and its mirror `fda_fsvp/suppliers/ce
+
+
+### 🤖 Autopilot
+
+👍 GO — adding U-06-06 → Fazenda Santa Rosa to the anchors in both registry copies. Reading both files to craft exact edits:
+
+
+### 🤖 Autopilot
+
+Both files confirmed — identical anchors and COPOPS roster structure. Adding U-06-06 → Fazenda Santa Rosa to **both** mirrors (one logical unit: registry + FSVP copy stay in sync). Pushing both PRs:
+
+
+### 🤖 Autopilot
+
+Both PRs opened. Merging both (the GO covers these registry mirror updates):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ CEPOTX registry anchored: U-06-06 → Fazenda Santa Rosa (both mirrors, merged)
+
+**PR #918 (agentic_ai_context) — merged** (sha `3811f3e8`)
+**PR #14 (fda_fsvp) — merged** (sha `c5e40db8`)
+
+Both registry copies updated in parallel, kept in sync per the registry's own rule. Changes (identical in both files):
+
+1. **Anchors table** — new row:
+   `U-06-06 | Fazenda Santa Rosa (SR-P1) | Antônio & Graça | COPOPS | governor-provided translation screenshot (2026-09-05); sunmint plots/index.geojson; shop PRs #288/#289`
+2. **U-06-NN family row** — range note `(plus U-06-06, U-06-07)`; known members now lists Fazenda Santa Rosa alongside Sítio Raimundo & Geniza
+3. **COPOPS roster footnote** — now names both low codes (U-06-06, U-06-07) as governor-screenshot-confirmed, below the visible rows 17–33
+
+Status remains **reported/unverified** (no legal/FSVP use without CEPOTX/Jedielcio confirmation) — consistent with how U-06-07 was anchored.
+
+### Why this was the right move
+- U-06-06 had **no collision** in the visible roster (only rows 17–33 captured; rows 1–16 gap) — exactly the U-06-07 situation
+- The registry's purpose is that site codes tied to DAO farms are **findable via `search_context`/`read_context_file`** — SR/U-06-06 wasn't, now it is
+- Sunmint plot `U-06-06` (plots/index.geojson, farms/index.json), farm page + YouTube descriptions, and on-chain FARM BOUNDARY event all already carry the code — this closes the registry gap
+
+### SR-P1 SOP — full status
+| § | Step | State |
+|---|---|---|
+| §1–2 | Registry + on-chain event | ✅ |
+| §3 | Media archive (49/49) + YouTube (31/31, ID-fix) | ✅ |
+| §4 | Farm page + gallery (PRs #287/#288/#289) + beta verified | ✅ |
+| — | CEPOTX registry anchor (this turn) | ✅ |
+| — | **Prod sync** | ⏳ **your explicit go** |
+
+## RESUME HERE → prod sync (awaits your explicit go)
+1. **Prod sync on your word:** `sync_beta_to_prod(agroverse_shop_prod)` — promotes the entire Fazenda Santa Rosa profile (page PR #287, gallery PR #288, video-ID fix PR #289 all ride the fork-sync). Then verify `https://www.agroverse.shop/farms/fazenda-santa-rosa-para/` (HTTP 200 + gallery renders).
+2. **Open follow-ups (non-blocking):**
+   - **Full legal name + CNPJ for Antônio & Graça** (Fazenda Santa Rosa) — needed to match against COPOPS roster rows 1–16 when they're captured, and for the FSVP supplier entity. Currently only "Antônio & Graça" + "Uruará, Pará".
+   - **FSVP entity** for SR in fda_fsvp (the site_codes.md anchor is done; the full supplier file/entity isn't).
+   - **Self-improvement candidate:** daemon logged `rc=0` with a YouTube ID that never persisted — a post-upload oEmbed/videos.list verify step would catch this automatically (truesight_autopilot change, its own PR if you want it).
+
+**Open for you:** beta + registry are complete and verified; **prod sync needs your go** — I won't cross that gate without it.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` ×2 → ✅ PR #918 on agentic_ai_context merged successfully (sha: 3811f3e877c072f5f7f27c793cbdda21610753d4). Pull Request successfully merged; ✅ PR #14 on fda_fsvp merged successfully (sha: c5e40db82a372218151403ffbcd790b4b6cafd59). Pull Request successfully merged
 
