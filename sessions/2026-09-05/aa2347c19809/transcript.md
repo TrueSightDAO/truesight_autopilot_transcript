@@ -528,21 +528,25 @@ Gary is correcting the caption for IMG_8277 — it's not "field and vegetation,"
 ### 🤖 Autopilot
 
 The org-wide "8277" search matched only noise (price CSVs). Let me search the precise string `IMG_8277` in the repos that matter — the shop page/gallery and the farm media manifests:
+[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Search index returns 0 for `IMG_8277` even though I *know* it's in media.json (I just read it) — GitHub's code search only indexes default branches, and the media.json I fetched is on main. Let me check the exact media.json path and also look at the farm page index.html for the image context block. Actually the file is on main now (PR #285 merged). Let me grep the repo file directly via raw content and check the page HTML + the media manifest repo listing:
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Media.json on main confirmed — IMG_8277 alt currently says "Field and vegetation at the restoration site" (wrong — it's the drying + fermentation station). Let me check whether the farm page HTML also renders its own captions and where farm_media_manifests stores RG media metadata, so the correction lands everywhere:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The shop page is JSON-driven (media-gallery.js reads media.json — so fixing media.json fixes the visible page). But there's also `farm_media_manifests/raimundo-geniza-para.json` (the media manifest) which may carry an 8277 entry with the wrong description. Let me check it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -550,6 +554,7 @@ The shop page is JSON-driven (media-gallery.js reads media.json — so fixing me
 The manifest `raimundo-geniza-para.json` walk returned **nothing** for 8277/"field and vegetation" — so the media manifest doesn't reference 8277 by that caption (it's likely a photos-list without descriptive captions, or 8277 isn't in it). The only place IMG_8277 has a *wrong descriptive caption* is `media.json` in the shop repo.
 
 So the one-line fix: **media.json alt for IMG_8277** → "Sítio Raimundo & Geniza — drying station and fermentation station" (accurate + on-brand). Let me also verify the farm page HTML itself doesn't hardcode any 8277 caption text (media-gallery.js reads media.json, so this should be sufficient), then open the fix PR.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -561,26 +566,36 @@ So the two things to fix:
 2. **raimundo-geniza-para.json manifest** (farm_media_manifests): `plots: ["RG-P1"]` → `["U-06-07"]` (consistency with change #1 — this is api-only data repo, single-file write)
 
 Let me fix both. First the shop media.json via PR (code repo), then the manifest via Contents API (api-only repo):
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My edit had identical search/replace strings (mistake). Let me fix the alt text properly:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #286 opened for the IMG_8277 caption. Now fixing the manifest's stale `RG-P1` plot reference (api-only repo → single-file Contents API write):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Manifest updated (U-06-07 + provenance note). Now let me verify no other media-manifest or data file still references the old plot id for this farm, then merge the caption PR:
+[1 tool result(s) compacted: search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Only 2 doc references to RG-P1 remain, both in agentic_ai_context. Let me check whether OPEN_FOLLOWUPS.md has a stale mention worth cleaning while I merge the caption PR:
+[2 tool result(s) compacted: merge_pr, search_context — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -727,4 +742,38 @@ Which would you like? (I can also append this finding to the session transcript 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → echo "=== grok/vision clients on box ==="; ls ~/grok_client* /opt/*grok* 2>/dev/null; which grok_client 2>/dev/null; find ~ /opt -maxdepth 3; echo "=== grok_client usage ==="; head -80 /opt/truesight_autopilot/app/grok_client.py; echo "=== any CLI wrapper ==="; ls /opt/truesight_au; echo "=== grok client public API ==="; grep -n "^def \|^class " /opt/truesight_autopilot/app/grok_client.py; echo "=== sample usage in app =; …(+9 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21534] Sync it. Also can you extract the latitude and longitude of the photo as well as send it Back as an attachment to ensure we are referring to the same photo
+
+
+### 🤖 Autopilot
+
+Gary explicitly authorized the prod sync ("Sync it") — doing that now, and sending the photo back with its GPS so we're confirming the same image:
+
+
+### 🤖 Autopilot
+
+## ✅ Both done
+
+**1. Prod sync — complete**
+- `agroverse_shop_prod` synced from beta (upstream merge, no force) — deploy ledger recorded:
+  - `deploy_20260905T194414Z_agroverse-shop-prod`
+  - [Evidence URL](https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260905T194414Z_agroverse-shop-prod.md)
+- This carries to **agroverse.shop** (production): the **U-06-07 plot-id rename** AND the **IMG_8277 drying/fermentation station caption fix**. The live farm page `agroverse.shop/farms/raimundo-geniza-para/` should now show both.
+
+**2. Photo sent back as attachment** (message 21663 in this thread) with caption containing:
+- 📍 **Latitude: -3.630242** | **Longitude: -53.652017** (S/W)
+- 🏔 Altitude: 180.7 m · 🕐 2026-09-03 13:29:07 local (iPhone 12 Pro Max)
+- SHA-256 prefix `21728b50…` — matches the zip original `IMG_8277.HEIC` byte-for-byte
+
+So you can confirm on your screen that the image you see is **the same photo** we've been captioning as the drying station & fermentation station (and that I archived/verified GPS for).
+
+**To confirm we're aligned:** does the photo I just sent show what you expect (the drying/fermentation station)? If yes — the loop is closed:
+- Farm page live on prod with `U-06-07` + corrected caption
+- IMG_8277 GPS-verified, inside the plot hull, byte-identical to the site-walk original
+
+If it's *not* the same photo you meant, tell me and I'll dig further. No other open items unless you have change #2 or want the HEIC set archived to the media pipeline.
 
