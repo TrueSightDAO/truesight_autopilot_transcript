@@ -374,16 +374,19 @@ Let me pull the actual site-visit FSVP PDFs (Cleide + Santa Anna) — these shou
 ### 🤖 Autopilot
 
 The PDFs are 20–25 MB scanned image reports (base64 — not text-extractable at this size), so let me verify the coop-affiliation trail through the farm pages and code instead — which farm pages name which sub-coop, and whether Cleide/Medicilândia are linked to COOPOXIN anywhere.
+[4 tool result(s) compacted: search_code, search_code, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the actual farm page files on the shop (Cleide page content + a grep for coop names in the farms folder) and the site-visit PDF text extraction locally.
+[2 tool result(s) compacted: http_fetch, web_extract — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The farm page says "Altamira" for Cleide, but the SBT documentary narration said "**Cleide de Brasil Novo**" and the "B-" site code pattern matches the COOPOXIN base (Brasil Novo). Let me verify municipality boundaries and the COOPOXIN link.
+[2 tool result(s) compacted: web_extract, web_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -433,6 +436,7 @@ So the closest registered farms — Cleide and Santa Anna — are exactly the on
 ### 🤖 Autopilot
 
 Got it — you want me to pin down which sub-coop **Fazenda Cleide** (the closest CEPOTX farmer, ~38 km from the Dona Rosa cloud) actually belongs to, from our records. Let me pull the authoritative files.
+[3 tool result(s) compacted: read_repo_file, http_fetch, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -569,4 +573,111 @@ One open item from the investigation worth your attention when convenient: our s
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #911 on agentic_ai_context merged successfully (sha: b90f840c10144ecd490916e7898857d2bacfeebf). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] can we start onboarding this farm based on this process
+
+https://github.com/TrueSightDAO/agentic_ai_context/blob/main/AGROVERSE_SUNMINT_FARM_LISTING.md
+
+
+### 🤖 Autopilot
+
+Good — the media zip is analyzed and the affiliation is recorded; onboarding can start. Let me first re-run the Step Zero gate against the SOP checklist, and prep the one thing that's un-gated: the convex-hull plot ring from the GPS originals (ready for Step 2 the moment the name is confirmed).
+
+
+### 🤖 Autopilot
+
+The hull is computed — 45 unique GPS points collapsing to a clean 6-vertex ring, **DR candidate: centroid −3.4893 / −52.9669, ~0.14 ha footprint** (tight cluster — likely the yard/processing area; CAR/walk would expand it later, matching `boundary_authority: approx`). Now let me mirror the exact registry formats so the plot row + geojson + farms-index entries are ready to write the moment the gate is confirmed.
+
+
+### 🤖 Autopilot
+
+I have the registry formats. Let me read the tail of the geojson (the RG-P1 feature — newest convention) so my new feature matches exactly.
+
+
+### 🤖 Autopilot
+
+I have the format. Let me fetch the complete RG-P1 feature (the newest — likely at the end of the file) to see its exact property conventions.
+
+
+### 🤖 Autopilot
+
+Excellent — the convex hull is computed and I have the registry schema from existing features (plot_id, farm_id, name, hectares, status, boundary_authority, owner, region, verified_at, notes). Now I need the SunMint Plots sheet details (the source of truth the geojson is regenerated from) before writing. Let me pull the plots-registry runbook and the sheet header.
+
+
+### 🤖 Autopilot
+
+Onboarding is go. Following the SOP, here's the shape of the work (mirroring the RG worked example), and I'm filling the last context gaps before the first gated unit. Two things to gather: (1) public verification of the producer's legal identity (Step Zero #5 — verify before writing into records), and (2) the SunMint Farms sheet location (the registry source of truth).
+
+
+### 🤖 Autopilot
+
+Public verification is solid — **Rosa Wronscki** confirmed as "a primeira mulher produtora de cacau" of Medicilândia (Adriana Manfroi reel), family includes **Darcírio Wronscki** and **Jean**; she's been making artisanal tree-to-bar chocolate since **2004** (A Voz do Xingu profile), 100% organic, and presented at **Chocolat Bahia 2026** (Salvador, 26 July). One more context piece — the actual SunMint Farms sheet location (the registry source of truth), which the boundary-evidence GAS handler references.
+
+
+### 🤖 Autopilot
+
+The GAS script reveals the source of truth: spreadsheet **`1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ`**, tab **`SunMint Plots`** (upsert by header name). Let me read the current state of that tab to mirror the exact row format for the new farm.
+
+
+### 🤖 Autopilot
+
+Onboarding is a go. Step Zero (identity + attribution + coop) is confirmed, Step 1 (media + GPS) is done — so the first execution unit is **Step 2: plot registration** (SunMint Plots sheet row → regenerate `plots/index.geojson` + `farms/index.json` → push to sunmint). Let me verify the box has the registration tooling (sunmint_work checkout, SA key, generator script) before writing anything.
+
+
+### 🤖 Autopilot
+
+The box has everything needed (sunmint_work checkout, generator script, SA keys, gspread). Let me read the generator to understand exactly what it produces and how the sheet maps to the output files.
+
+
+### 🤖 Autopilot
+
+I have everything to build the DR row exactly like the RG precedent. Now let me verify the remote sunmint repo state matches the local checkout before writing (and confirm my plot naming will be unique vs. the registry).
+
+
+### 🤖 Autopilot
+
+The local sunmint_work is a file mirror (no git) — fine for regenerating. Before writing the DR-P1 row, let me check how `farms/index.json` gets built (generator or hand-update) and confirm the remote repo's script set.
+
+
+### 🤖 Autopilot
+
+I have the full pipeline picture. Let me draft the exact DR-P1 plot row and farm entry to propose to you before I write anything — mirroring the RG-P1 precedent and the SOP schema. This is the moment to get your confirmation on naming and plot identity (Step Zero naming gate).
+
+**Proposed registry entries — Fazenda Dona Rosa (DR-P1), Medicilândia:**
+
+**SunMint Plots sheet row (spreadsheet `1qbZZhf…`, tab `SunMint Plots`):**
+```
+Plot ID:            DR-P1
+Farm ID:            fazenda-dona-rosa
+Plot Name:          Fazenda Dona Rosa Plot 1 (processing yard)
+Hectares:           0.14
+Status:             proposed
+Boundary Authority: approx
+Owner:              Rosa Wronscki (Darcírio Wronscki) — COOPOXIN sub-co-op / CEPOTX
+Region:             Medicilandia, Para
+Verified At:        2026-09-05
+Coordinates:        [[-52.9671,-3.4894],[-52.9673,-3.4893],[-52.967014,-3.4892],[-52.9669,-3.4892],[-52.9665,-3.4893],[-52.9666,-3.4894]]  (closed ring)
+Latitude:           -3.4893
+Longitude:          -52.966902
+Notes:              Hull of 45 unique geotagged points from 54 GPS-tagged media (35 HEIC + 19 MOV, 2026-09-04 evening visit): lat -3.4892..-3.4894, lng -52.9665..-52.9673. ~0.14 ha processing yard/compound. Medicilândia municipality (first node outside Altamira/Uruará cluster). Owner per public records + governor: Rosa Wronscki (a primeira mulher produtora de cacau de Medicilândia), tree-to-bar since 2004, Chocolat Bahia 2026. COOPOXIN affiliation governor-confirmed 2026-09-05; site code assignment pending CEPOTX. approx until boundary walk/CAR.
+```
+
+**farms/index.json entry:**
+
+
+**Regeneration:** I'll append the sheet row (write via `agroverse_qr_code_manager` SA), then run `build_plots_geojson.py` + `build_farms_index.py` in `~/sunmint_work`, then push `plots/index.geojson` + `farms/index.json` to the sunmint repo (api-only Contents API).
+
+**Before I write anything — confirm these three (Step Zero naming/identity gate):**
+1. **Farm name/slug** `Fazenda Dona Rosa` / `fazenda-dona-rosa` — or do you prefer the legal/coop-registered name?
+2. **Plot label** `DR-P1 (processing yard)` — the ~0.14 ha hull is clearly the yard/compound, not the whole fazenda (like SA-P1 compound precedent). OK?
+3. **Owner string** `Rosa Wronscki (Darcírio Wronscki) — COOPOXIN sub-co-op / CEPOTX` — good, or adjust?
+
+Say "go" (or adjust any field) and I'll write the row, regenerate, and push both files.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd ~/fazenda_dona_rosa_work 2>/dev/null || { mkdir -p ~/fazenda_dona_rosa_work && cd ~/fazenda_dona_rosa_work && unzip -o -q ~/fazenda_dona_; echo "===HOME dirs==="; ls -d ~/sunmint_work ~/sunmint ~/fazenda_dona_rosa_work 2>/dev/null; echo "===SA keys==="; ls -la /opt/truesight_aut; ls -la ~/sunmint_work/scripts/ ~/sunmint_work/farms/ ~/sunmint_work/plots/ 2>/dev/null; echo "===HEAD build_plots_geojson.py==="; head -120 ; …(+1 more)
 
