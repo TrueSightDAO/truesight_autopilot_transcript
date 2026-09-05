@@ -233,11 +233,13 @@ Archive-worker status: extracted-dir pass complete (374/374 archived + verified 
 ### 🤖 Autopilot
 
 👍 "go" received — executing next unit: reconcile #908's previews row (GitHub → S3 hot, per your decision) then merge it. First I need the PR's head branch name (for the write) and the exact current row text:
+[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The PR head branch is `schema/raw-s3-previews-captured-at`, and #908's "Where things land" table still routes previews to GitHub `farm-media-raw` — which predates your S3-hot decision. I'll surgically fix that one row on the PR's own branch (preserving its other changes), then merge. Checking for a GitHub token on the box to push the branch edit:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -410,4 +412,82 @@ Next unit — **deploy + run the zip archive** (1 turn, no PRs — operator ops)
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #14 on farm-media-daemon merged successfully (sha: ff77b0d369d4dca1b7f65e2c76139a3987303fff). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] [Handoff context — this Telegram topic (thread 19892) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn
+
+**Merged farm-media-daemon #14** (sha `ff77b0d`) — the **zip-root streaming** extension is now on `main`. The archive worker (`farm_media_archive.py`) now supports `zip:` root
+
+
+### 🤖 Autopilot
+
+👍 Received — executing the deploy + run unit. Pull latest, add the 17 zip roots to the config, restart the service, and verify it drains:
+
+
+### 🤖 Autopilot
+
+The box's local `main` has my pre-merge commit `fbd8088`, while GitHub's `main` has the squash-merged `ff77b0d` (same content) — they diverged. The merged version is authoritative; I'll reset local main to origin/main (safe — same content, just rebased onto the squash):
+
+
+### 🤖 Autopilot
+
+Local `main` now matches `origin/main` exactly (`ff77b0d`, `handle_zip_root` present, zero diff). Now appending the 17 zip roots to the live config and restarting the service:
+
+
+### 🤖 Autopilot
+
+All 17 zip roots configured. Restarting the service and watching it pick up the zip work:
+
+
+### 🤖 Autopilot
+
+Need sudo for the restart:
+
+
+### 🤖 Autopilot
+
+Service restarted and is **actively archiving** — log shows the zip root `cacao-variety-parap` already processing at 17:59 (the entries were previously seen at 14:18 under the *extracted-dir* root `cvp`; the zip re-archives them under the zip's farm folder, which is correct since `farm_id` differs). Let me confirm zip state files are being written and check for errors:
+
+
+### 🤖 Autopilot
+
+The service is working cleanly — zip state files are being written, no errors. But it's only done 5 entries of cacao_variety_parap in ~1 minute, and the log's last line was 17:59:26. The worker processes roots **sequentially** and cacao_variety_parap (a 9-entry zip) is early in the root list — but zips later in the list (cleide 85, santa_anna 244) will take a long while. Let me check whether it's actually still progressing or stalled, and how the sequential order maps to zip size:
+
+
+### 🤖 Autopilot
+
+Deploy unit complete — the worker is live and **actively draining zips through the new zip-root path**, error-free. Status:
+
+## ✅ Deploy + run — in progress, healthy
+
+| Step | Result |
+|---|---|
+| Code on box | `git reset --hard origin/main` → `ff77b0d` (#14), `handle_zip_root` present, zero diff vs PR head |
+| Config | Backed up (`media_archive_daemon_config.yaml.bak`) → **17 zip roots appended** (26 total), each with correct `farm_id` + extensions |
+| Service | `sudo systemctl restart farm-media-archive` → **active** |
+| Proof zip path live | Log line `17:59:22 cacao-variety-parap IMG_7654.MOV -> raw + preview` — `cacao-variety-parap` exists **only** as a zip root, so this is the new code running |
+| Progress | 10 zip entries archived in first ~1 min (`cacao_variety_parap` 7 + `rancho_maranta_plot_1` 3 state files); ~2–3s/entry |
+| Errors | **None** since restart |
+
+**How it will run:** roots are processed in config order each pass — extracted-dir roots (all exhausted, markers skip them fast) then the 17 zip roots (small ones first: cacao 9 → fazenda_dona_rosa 61 → fazenda_santa_rosa 56 → … → santa_anna_farzenda_bahia 244 → la do sitio 137). Size-dedupe skips files already in S3 under the same key (e.g. the ~374 previously extracted under matching farm_ids). Real uploads ≈ the non-overlapping remainder — estimated **30–60 min** total drain (biggest: santa_anna 244, la do sitio 137, sao_jorge 103, cleide 85).
+
+## RESUME HERE →
+The drain is a **background job** — check back in ~30–60 min (or ask me for status) with:
+- `sudo tail -20 /tmp/farm_media_archive.log` — should show progress through zips
+- State-file sum: `python3 -c "import json,glob; print(sum(len(json.load(open(f)).get('entries',{})) for f in glob.glob('/home/ubuntu/*.zip.archive.json')))"` → should approach ~998 (minus size-deduped)
+- All 17 `.zip.archive.json` state files present when done
+
+Then: **manifest update pass** (fold `raw_url`/`preview_url`/`captured_at`/`sha256` into per-farm manifests in `farm_media_manifests/`) → **deletion waves** (extracted dirs, then zips) each with your explicit go.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → git fetch/reset --hard origin/main (ff77b0d, handle_zip_root ✓, zero diff); cp config backup + appended 17 zip roots via yaml (added roots: 17, total 26); grep verify all zip roots present; sudo systemctl restart + is-active (active); log tail proves cacao-variety-parap zip root live at 17:59; state files cacao 7 + rancho1 3 = 10 entries; no ERROR/failed/BadZip lines since restart.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /opt/truesight_autopilot/farm_media_daemon && git pull -q origin main 2>&1 | tail -2; echo "=== head ==="; git log --oneline -2; echo; ec; cd /opt/truesight_autopilot/farm_media_daemon && git fetch -q origin && git reset -q --hard origin/main && git log --oneline -3 && echo "===; cd /opt/truesight_autopilot && cp media_archive_daemon_config.yaml media_archive_daemon_config.yaml.bak && python3 - <<'PYEOF' import yaml p; …(+4 more)
 
