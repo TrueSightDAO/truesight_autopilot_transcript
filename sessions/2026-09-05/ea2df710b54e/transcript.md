@@ -528,11 +528,13 @@ Let me find the actual Agroverse service-provider pricing sheet and look for exp
 ### 🤖 Autopilot
 
 Let me check the full sheet structure artifact for a service-provider pricing tab, and search the ledger for AGL4/AGL8 expense entries:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — **"Agroverse Cacao Processing Cost"** tab (gid 603759787) is the service-provider pricing sheet. Let me read it plus the Shipment Ledger Listing for AGL4/AGL8:
+[3 tool result(s) compacted: read_google_sheet, read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -689,4 +691,21 @@ The 400-gram figure is now on record where the price lives — so next time anyo
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cat > /tmp/fix_processing_cost_row12.py << 'EOF' import json from google.oauth2 import service_account from googleapiclient.discovery import; cat > /tmp/fix_cell_f12.py << 'EOF' import json from google.oauth2 import service_account from googleapiclient.discovery import build SCOPES
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21041] How much time was spent on this?
+
+
+### 🤖 Autopilot
+
+Honest answer: I don't track wall-clock time per turn, so I can't give you an exact figure — but estimating from the work actually done:
+
+**Rough estimate: ~60–90 minutes of equivalent effort** across this thread:
+- ~40+ tool operations (searches, PDF extractions, OCR, email sweeps, repo digs)
+- Several false trails chased before you supplied the WhatsApp exchange (which was the decisive source)
+- The ledger fix itself was quick (~10 min incl. verification + the `#ERROR!` phone-cell repair)
+
+If you want this logged as a contribution (TDG), I can submit a **CONTRIBUTION EVENT** with your name as the contributor — tell me the minutes you'd like recorded (or I can use 75 as a midpoint) and I'll file it. Want me to?
 
