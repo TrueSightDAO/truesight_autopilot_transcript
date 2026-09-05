@@ -94,21 +94,30 @@ Full picture is now clear. Onaya is 12 commits behind main (missing #393–#400 
 ### 🤖 Autopilot
 
 Now let me read the telegram adapter at the merge commit of PR #400 to see the exact bypass logic.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The adapter file is large. Let me pull just the governor-gate logic sections to see exactly what changed and how the gate works.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Her local checkout already has some gating code (dated 2026-08-28) — I need the precise diff of PR #400 to understand what changed. Let me inspect PR #400 and diff her version vs main.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Her checkout is exactly as expected: mention-gating exists (2026-08-28) but the governor bypass from PR #400 does not. Let me view the exact `_sender_is_governor` function and call site on origin/main for precise verification.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -116,26 +125,36 @@ Her checkout is exactly as expected: mention-gating exists (2026-08-28) but the 
 Now I have the full picture. The fix is confirmed on origin/main: `_sender_is_governor()` (line 646) added to the mention-gate condition (line 1963), so a sender resolving to GOVERNOR bypasses the gate. Her env has Gary + Liz telegram IDs on the allowlist, so both will resolve GOVERNOR.
 
 Plan: pull main (safe — only an untracked `.env.bak` present), check for new deps, restart both services, verify. Let me first check whether the 12-commit jump introduces new Python dependencies (e.g. pillow_heif from #398):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #398 (in the 12-commit gap) adds `pillow_heif` — a new dependency not in her venv. If code imports it at module load, the adapter would crash on restart. Let me verify the import pattern, then plan the install:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The `pillow_heif` import is lazy (inside `qr_scanner.py`), so no restart crash risk — but I'll still install the new dep to keep her venv in sync. One more thing to pin down: her `TELEGRAM_ALLOWED_USER_IDS` has **3** IDs while `GOVERNOR_NAMES` has 2 names (Gary Teh, Elizabeth Wong). Let me find the ID→name mapping in context docs before verifying.
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: search_context, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the context around that `8919657771` note and read Sophia's handoffs doc section:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Onaya's allowlist is `2102593402, 6460718272, 8919657771` with `GOVERNOR_NAMES=Gary Teh,Elizabeth Wong`. From cross-instance docs: 2102593402 = Gary (garyjob), 8919657771 = @nelanco_claude_bot (per Sophia handoffs doc) — 6460718272 is unverified but is likely Liz. Her logs will give real evidence. Let me check her runtime state and chat activity to map IDs and confirm where she's active.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -195,6 +214,7 @@ Great recon, especially catching the litellm version gotcha. Go ahead - execute 
 Go signal received. Executing all 5 steps now.
 
 **Step 1: Pull main into `/opt/bionpact_autopilot`**
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -312,4 +332,62 @@ I'll then pull Onaya's journal to confirm it took the **CHAT REQ / full-response
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → ssh -o BatchMode=yes -i ~/.ssh/NELANCO_aws_20201122.pem ubuntu@172.31.3.161 'cd /opt/bionpact_autopilot && git pull --ff-only origin main &&; ssh -o BatchMode=yes -i ~/.ssh/NELANCO_aws_20201122.pem ubuntu@172.31.3.161 'cd /opt/bionpact_autopilot && .venv/bin/pip install "pillow_hei; ssh -o BatchMode=yes -i ~/.ssh/NELANCO_aws_20201122.pem ubuntu@172.31.3.161 'sudo systemctl restart bionpact-autopilot bionpact-autopilot-te; …(+9 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21293] Read Onaya allowed list of user id, her's is already on it
+
+
+### 🤖 Autopilot
+
+Re-reading her allowlist now and reconciling who owns each ID — plus cross-checking docs and my own box's config.
+
+
+### 🤖 Autopilot
+
+Reading the allowlist again — confirmed unchanged: `2102593402, 6460718272, 8919657771`. Cross-checked against the three verified identities in the group (Gary = 2102593402 creator; Envoy bot = 8919657771; and per your confirmation 6460718272 = Elizabeth Wong's account — Telegram currently shows her profile name as "XiXi", but that doesn't matter since **ID-based resolution (step 1) makes her GOVERNOR regardless of display name**). My earlier "Liz not on the list" claim was wrong — sorry about that; her ID **is** on Onaya's allowlist, so the PR #400 bypass covers her too.
+
+Let me now check whether a no-mention test message has already landed in Onaya's logs since the restart:
+
+
+### 🤖 Autopilot
+
+Onaya's allowlist re-read and reconciled — you're right, and I stand corrected:
+
+- `2102593402` = **Gary Teh** (creator)
+- `6460718272` = **Elizabeth Wong** — her ID **is** on the allowlist (Telegram profile name shows "XiXi", but ID-based resolution makes her GOVERNOR regardless of display name). My earlier "Liz's ID not on the list" claim was wrong — apologies.
+- `8919657771` = @nelanco_claude_bot / Envoy TrueSight (intentionally allowlisted cross-instance bot)
+
+So all three allowlisted IDs → `Role.GOVERNOR` → the PR #400 no-mention bypass is live for **Gary, Elizabeth Wong, and the Envoy bot**. The static + code-path simulation already proved `FULL RESPONSE` for all three.
+
+Logs since the 15:29 restart show **no incoming message processed yet** — so the no-mention test hasn't reached Onaya's group. Let me check her current time and look for any just-arrived traffic:
+
+
+### 🤖 Autopilot
+
+You're right — I've re-read her allowlist and reconciled. Correcting my earlier finding:
+
+**Onaya's `TELEGRAM_ALLOWED_USER_IDS` = `2102593402, 6460718272, 8919657771`**
+
+| ID | Identity | Verified |
+|---|---|---|
+| `2102593402` | **Gary Teh** (garyjob) | group creator |
+| `6460718272` | **Elizabeth Wong** — profile name shows "XiXi" but ID is on the list | her ID **is** allowlisted → resolves GOVERNOR by ID, regardless of display name |
+| `8919657771` | @nelanco_claude_bot / Envoy TrueSight | intentional cross-instance bot |
+
+My earlier statement "Liz's ID is not on the allowlist" was **wrong** — I only cross-checked Telegram display names and docs, neither of which had mapped `6460718272` → Elizabeth Wong. Thanks for the catch. Since ID-based resolution is `resolve_identity` step 1 (strongest signal), all three are `Role.GOVERNOR`, and the PR #400 no-mention bypass is live for **Gary, Elizabeth Wong, and the Envoy bot** — exactly the fix goal.
+
+**State of the 5 steps:**
+1. ✅ Pull → `9f0e8d3`
+2. ✅ pillow_heif 1.6.0 installed
+3. ✅ Both services restarted & active on new commit
+4. ✅ Static verify + code-path sim → `FULL RESPONSE` for all 3 IDs on no-mention
+5. ⏳ **Live no-mention test still pending** — her adapter has processed **zero messages since the 15:29:20 restart** (last activity was your 15:27–15:28 exchange in thread 729, pre-restart).
+
+To finish step 5: send a **plain message with no @mention** in the **Bionpact work area** group (e.g. *"hey Onaya, no-mention test — what are you working on?"*), then tell me here — I'll pull her journal and confirm it took the full-response path (voice/text reply) rather than the silent "observed, no reply" path.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → ssh -o BatchMode=yes -i ~/.ssh/NELANCO_aws_20201122.pem ubuntu@172.31.3.161 'cd /opt/bionpact_autopilot && echo "=== current allowlist / gov; for f in /opt/truesight_autopilot/.env /opt/autopilot/.env /home/ubuntu/truesight_autopilot/.env /home/ubuntu/autopilot/.env; do if [ -f "$f; ssh -o BatchMode=yes -i ~/.ssh/NELANCO_aws_20201122.pem ubuntu@172.31.3.161 'echo "=== telegram adapter logs since restart (15:29) ===" && s; …(+1 more)
 
