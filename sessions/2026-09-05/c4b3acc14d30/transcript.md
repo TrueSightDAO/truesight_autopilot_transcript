@@ -999,16 +999,19 @@ Let me verify what's actually inside the zips (do the MOVs live only in zips?) a
 Key insight: the raws live **inside the zips** (cleide 142, santa 302, la-do-sitio 154, oscar 124 videos — far more than manifests track), while the work dirs hold only extracted *processed* subsets. The zips are the true raw archive. So the archive worker should extract-and-archive **per zip** — not watch extracted dirs.
 
 The current worker watches a flat dir of MOVs. For zip roots it needs an extract-to-temp → archive → (keep zip for now) flow, with `captured_at`+sha256 read from the extracted original. That's a real but small extension (`zip:` root type). Given your "stay close", I'll: (1) write that zip-root support, test it against ONE zip's first file, then (2) configure all zips + extracted dirs, (3) install + start the service. Let me look at the current worker's `run()` to extend it minimally:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The raws live inside zips (cleide 142, santa 302, la-do-sitio 154, oscar 124 — more than manifests track), but ~374 MOVs are **already extracted** in work dirs on disk. Smart order: point the current worker at those extracted dirs now (zero code change, uses disk already spent), get the service draining immediately, then add zip-streaming support as a follow-up PR. Configuring the archive roots first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 End-to-end **works**: 3 test raws + 3 hot previews are live in `media.agroverse.shop` (raw + previews/rancho-maranta-plot-1), markers written, resume-safe. Now installing the systemd service and starting it against the full corpus, then confirming it's draining:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1016,11 +1019,13 @@ End-to-end **works**: 3 test raws + 3 hot previews are live in `media.agroverse.
 The archive worker is **live and draining** — `active (running)`, currently chewing through santa-ana (151 MOVs) at ~2-3 sec/file, uploading raw + hot preview per file, markers written (resume-safe). 9 farm roots configured. Rancho test proved the full loop (3 raws + 3 previews verified in S3).
 
 To honor "stay close" without burning turns polling manually, let me register a background watcher that tells this thread when the queue drains:
+[1 tool result(s) compacted: watch_url — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The watcher needs a Telegram topic context I don't have here, so I'll monitor inline instead. Let me check current drain progress (counts done per root, log rate) so I can report a concrete state and estimate:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1191,4 +1196,47 @@ So your assumption is right *in principle* — the daemon is now documented as p
 Want me to open that doc PR now? It'd be a small, focused addition to agentic_ai_context (SOPHIA_HANDOFFS.md or a new `SOPHIA_PROVISIONING.md` + a line in the manifest/registry pointing to it). Say the word and I'll create it.
 
 One more note for accuracy: I'm speaking as **Sophia Truesight** (admin+sophia@truesight.me). The daemon work this thread has been doing is real and merged — the gap is purely that *the "spin up a new Sophia" path doesn't yet point at it*.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] status
+
+
+### 🤖 Autopilot
+
+Checking the archive drain progress and open PRs so the status is current, not from memory:
+
+
+### 🤖 Autopilot
+
+## Status — Media Archive Daemon
+
+**🎉 Extracted-dir raw archiving is COMPLETE.** All 9 roots drained:
+
+| Root | Markers | | Root | Markers |
+|---|---|---|---|---|
+| santa-ana | 151 | | bomsucesso | 17 |
+| sao-jorge | 67 | | raimundo-geniza | 14 |
+| oscar | 62 | | cvp | 9 |
+| fernando-carla | 34 | | rancho plot 1 | 3 |
+| paulo-interview | 17 | | **Total** | **374** |
+
+**S3 `media.agroverse.shop` verified: `raw/` 374 + `previews/` 374** — exact match to markers. Service still `active` (idle, waiting for more work). Each object has sha256 + `captured_at` + hot preview frame.
+
+**Open PRs (mine, awaiting merge):**
+- **agroverse_shop_beta #271** — Cleide gallery 2-wrong-video fix
+- **agentic_ai_context #908** — MAP runbook (raw→S3, previews, captured_at)
+- **farm-media-daemon #13** — ✅ merged earlier (docs rename)
+
+**Remaining work:**
+1. **Zip-streaming support** in `farm_media_archive.py` — the zips still hold the *rest* of the raws (cleide 142, la-do-sitio 154, oscar 124, santa 302-video count > the 151 extracted). Biggest remaining chunk; needs the stream-from-zip extension so it never stores full extracts (disk 81%).
+2. Merge #271 + #908.
+3. Manifests get `raw_url`/`preview_url` once zips are in S3 → then prune originals off disk (your approval).
+
+Want me to proceed with the zip-streaming PR next?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → systemctl is-active farm-media-archive.service; echo "--- markers per root ---"; for d in /home/ubuntu/santa_ana_bahia_work /home/ubuntu/sao
 
