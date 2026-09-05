@@ -245,11 +245,13 @@ The PR head branch is `schema/raw-s3-previews-captured-at`, and #908's "Where th
 ### 🤖 Autopilot
 
 Clone succeeded (read PAT works). Now editing the previews row on the PR's branch to route previews → S3 hot (your decision), then pushing with a write credential from `.env` (values never printed):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The previews row is now fixed on #908's branch (previews → S3 hot). Merging #908:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -300,21 +302,25 @@ Next unit — **build zip-root streaming** in `farm-media-daemon/farm_media_arch
 ### 🤖 Autopilot
 
 👍 received — executing the zip-root streaming unit. First, let me read the current worker code (post-#12 merge) and the live config to understand the structure I'm extending:
+[2 tool result(s) compacted: read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 👍 Received — building the zip-root streaming unit. I have the worker code + live config. Let me get the full file text (tail was truncated) so my edits are exact:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Building the zip-root streaming extension. First, apply the code changes to the worker on the box (with exact-match asserts), then compile-check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Lint passes; formatting needs a fix. Running the formatter, then a **real end-to-end smoke test** against a small zip (`rancho_maranta_plot_1.zip`, 7 entries) — archive its first media entry to S3 and verify:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -490,4 +496,18 @@ Then: **manifest update pass** (fold `raw_url`/`preview_url`/`captured_at`/`sha2
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×7 → cd /opt/truesight_autopilot/farm_media_daemon && git pull -q origin main 2>&1 | tail -2; echo "=== head ==="; git log --oneline -2; echo; ec; cd /opt/truesight_autopilot/farm_media_daemon && git fetch -q origin && git reset -q --hard origin/main && git log --oneline -3 && echo "===; cd /opt/truesight_autopilot && cp media_archive_daemon_config.yaml media_archive_daemon_config.yaml.bak && python3 - <<'PYEOF' import yaml p; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] So I'm assuming the code base for this is merge into main branch on GitHub [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes, exactly right. The zip streaming code is fully merged into the main branch of the farm-media-daemon repo on GitHub — that was pull request 14, merged a few minutes ago, commit ff77b0d. And the live server is now running exactly that merged code: I reset the working copy on the box to match GitHub main, confirmed zero difference, and the service is actively archiving zip contents right now.
+
+So the codebase on GitHub main and the code running on the box are identical — it's not some unreviewed branch floating around. And the two documentation rules that govern it, the zip handling rule and the media archive pipeline, are also merged into the context repo on main.
+
+The only thing that is *not* on GitHub is the runtime config with the 17 zip locations — that stays local on the server, which is correct, since it points to files that only exist on that machine. Want me to also drop that example config into the repo so a future Sophia can see the format?
 
