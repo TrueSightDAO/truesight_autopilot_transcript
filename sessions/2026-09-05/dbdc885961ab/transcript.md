@@ -103,31 +103,52 @@ Let me see the `_dm` helper (line 370) and the `sent` fixture (line 185) to writ
 ### 🤖 Autopilot
 
 Let me view the rest of the mention-gating test section (from ~660 onward) plus the tail of the file to see the full test for large-group gating and its neighbors.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I now have a clear picture of the code, policy layer, and test conventions. Before writing the change, let me verify a few operational facts: how `allowed` is derived at the poll loop (vs `resolve_identity`'s governor-ID source), the production allowlist size (count only, no values), and how the running service/deploy works (the /opt tree is on a divergent feature branch — I must not clobber in-flight work).
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the `/opt` deployment mechanism (auto-deploy on merge? branch mapping?) before deciding how the deploy will occur, and check where `/opt` gets its code from (is it on a feature branch deliberately, or should main be checked out).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me verify the operational context: how many IDs are in the allowlist (count only — no values), and what the governor registry is, so I understand exactly who the bypass affects.
+[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me understand the identity semantics better — how "governor" is determined in production and what the "earlier fix this week" referenced. Let me check recent history and how the allowlist relates to governor resolution.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The allowlist count is 3 and (in the real env, with .env loaded) those IDs resolve to GOVERNOR via policy.py step 1. Let me look at the earlier mention-gating fix commit (`fa4efc9`) — Gary referenced the display-name pitfall from it — and confirm how `resolve_identity` classifies allowlisted users in the real runtime environment.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -135,11 +156,13 @@ The allowlist count is 3 and (in the real env, with .env loaded) those IDs resol
 I now understand the full context — including why the gate exists (noise reduction for OTHER members in busy groups) and how the existing security gate already admits verified governors. The fix is a clean extension of the same `resolve_identity` pattern already used twice in this file.
 
 Let me check the real env allowlist→role resolution properly (loading .env as the service does), plus glance at `_thread_dispatch_lock` gating interplay and existing test patterns for the gate bypass.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The real-env resolution shows all 3 allowlisted IDs resolve to GOVERNOR (policy step 1: allowlist == governor telegram IDs). Let me check the test isolation setup (conftest) and the other mention-gating test file, plus how CI/deploy work, before writing the change.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -212,12 +235,19 @@ if (
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: list_prs, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Not done yet — but I see signs the change may be partially present on the box. Let me check the actual state precisely.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The fix **exists in the working tree but isn't finished** — no PR, not merged, service hasn't restarted. Let me verify exactly what state the edits are in before answering.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -229,21 +259,25 @@ The fix **exists in the working tree but isn't finished** — no PR, not merged,
 - ❌ **Not merged, not deployed** — the running service (pid 449235) started Sep 04, *before* the 14:02 edits, so it's still running the old code
 
 You said "go for it", so finishing it now. Running the local checks first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Compile + lint pass. Running format check and the unit tests:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 72 adapter tests pass. Running the **full** suite to confirm nothing else broke:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One unrelated failure — let me confirm it's pre-existing (not caused by my change):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -251,11 +285,18 @@ One unrelated failure — let me confirm it's pre-existing (not caused by my cha
 Confirmed: the `test_config_own_data_repos` failure is **pre-existing on the pristine tree** (a hardcoded-repo-list mismatch against the real org, unrelated to my change — it fails without my edits too). All 72 adapter tests + the 2 new governor-gate tests pass. The change is ready.
 
 Now creating the branch + PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Committed. Now pushing the branch and opening the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -354,4 +395,43 @@ The pre-existing `test_config_own_data_repos.py` failure is unrelated (confirmed
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×23 → cd /opt/truesight_autopilot && git log --oneline -5 && echo "---branch---" && git branch --show-current && echo "---gate region check---" &&; cd /opt/truesight_autopilot && echo "=== git status ===" && git status --short | head -20 && echo "=== is the helper committed? ===" && git ; cd /opt/truesight_autopilot && echo "=== file mtimes vs service start (pid 449235, started Sep04) ===" && stat -c '%y %n' app/telegram_adapt; …(+20 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21047] Go - merge #400. Good catch on the uncommitted runtime state, do it your careful way (git fetch + checkout main + reset preserving those files, not a blind deploy.sh reset), then restart the telegram service and verify live with a real no-mention message from me in a 3+ member group.
+
+
+### 🤖 Autopilot
+
+Merging PR #400 now:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ PR #400 merged
+
+**PR:** https://github.com/TrueSightDAO/truesight_autopilot/pull/400
+**Merge sha:** `9f0e8d3` (squash)
+
+**What changed** (`truesight_autopilot`):
+- `app/telegram_adapter.py` — new `_sender_is_governor(user_id, username, display_name)` helper reusing `resolve_identity()` from `app/policy.py` (keyed on telegram_id first, never display-name text — the 'Nobody'/'Will not DM you' pitfall). Gate condition now ends with `and not _sender_is_governor(...)` as the last term (short-circuits before any identity lookup on common paths); `except → False` so policy errors fail closed.
+- `tests/test_telegram_adapter.py` — 2 new tests: governor w/o mention in 3+ group → full response; allowlisted-but-GUEST w/o mention → still logged-only (proves allowlist alone isn't a bypass).
+- CI: `test` ✅ + `smoke` ✅ both green. All 72 adapter tests + full suite pass (only pre-existing unrelated `test_config_own_data_repos` drift, confirmed on pristine tree).
+
+**Security note:** untouched — `is_allowed`/`TELEGRAM_ALLOWED_USER_IDS` not modified. Bypass only admits senders who already resolve `Role.GOVERNOR`.
+
+**RESUME HERE → next unit (your explicit go covers it):**
+1. On the box: `cd /opt/truesight_autopilot && git fetch origin main && git stash -u` (or carefully preserve) the uncommitted runtime state files (`followups/state.json`, `data/active_tracks.json`, `config/nginx/sophia.conf`, submodule pointers) → `git checkout main && git reset --hard origin/main` → restore the preserved files → do **not** run blind `deploy.sh` (its `reset --hard + clean -fd` would nuke them).
+2. Restart the service: `sudo systemctl restart truesight-autopilot-telegram` and confirm `active (running)`.
+3. **Verify live:** you send a real no-@-mention message in a 3+ member group (this one qualifies) → I should now give a full response instead of log-only.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #400 on truesight_autopilot merged successfully (sha: 9f0e8d3da321efbbf37a3f0ac4495dc35c9dd096). Pull Request successfully merged
 
