@@ -10,161 +10,10 @@
 
 ### 🧑 Governor
 
-[CONTEXT SUMMARY — turns 1–3 compacted, full history in transcript repo]:
-Turn — [TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and c:
-• `ssh run` ×18 → ls -lt /tmp/tg_attachments/ | head -30 && echo "---thread recent---" && ls -lt /tmp/tg_attachments/ | head -5; cd /tmp && rm -rf tsx && mkdir tsx && cd tsx && git clone -q --depth 20 https://github.com/TrueSightDAO/truesight_autopilot_transcript.git 2; cd /tmp/tsx/truesight_autopilot_transcript && ls -lt sessions/ | head -10 && echo "---" && grep -rl "21534" sessions/ 2>/dev/null | head -5; …(+15 more)
-
-Turn — [Telegram context: chat_id=-1003919341801, thread_id=21534] Two changes can we make the plot id similar to the CEPOTX SI:
-• `ssh run` ×4 → cd /opt/truesight_autopilot/sessions && python3 - <<'EOF' import json d = json.load(open('aa2347c19809.json')) h = d.get('full_history') or ; cd /opt/truesight_autopilot/sessions && ls -la aa2347c19809* 2>/dev/null; echo "---precompact search---"; python3 - <<'EOF' import json, glo; cd /opt/truesight_autopilot/sessions && tail -c 6000 aa2347c19809_debug.log | python3 -c "import sys; d=sys.stdin.read(); import re; print(d
+[CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
+1 earlier turn(s) in this thread were compacted; 0 tool call(s) executed across them. Full detail is in the session transcript repo.
 
 ---
-
-[Telegram context: chat_id=-1003919341801, thread_id=21534] Replace the Sunmint plot id of Raimundo farm with its site code from CEPOTX
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=21534] [Handoff context — this Telegram topic (thread 21534) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-A redeploy happened a bit ago and likely killed your in-flight turn (confirmed - service is healthy now). Resuming - continue from wherever you left off, or report status.
-
-
-### 🤖 Autopilot
-
-The governor has clarified the first change: **replace the SunMint plot id of Raimundo's farm with its CEPOTX site code.** Let me verify the actual site code on record (not trust my earlier table), find every place `RG-P1` is referenced, and check the handoff manifest in parallel.
-[4 tool result(s) compacted: search_context, search_context, search_code, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed: Raimundo & Geniza's CEPOTX site code is **U-06-07** (governor-provided, status: reported, fda_fsvp PR #11). Now let me find every live reference to `RG-P1` in data/display files (geojson, farm page, trees links, entity records) and understand how the SunMint Plots sheet gets written.
-[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed the target: Raimundo & Geniza site code = **U-06-07** (governor-provided, recorded in fda_fsvp PR #11). The change is to replace the SunMint plot id `RG-P1` with `U-06-07`. Let me read the runbook for the exact canonical flow and check the remaining surfaces for `RG-P1` references.
-[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Governor's instruction is clear and self-contained: replace SunMint plot id `RG-P1` with the CEPOTX site code **U-06-07**. I have the surface map — now let me check the write tooling (sheet update + geojson regen) and the remaining registries (farms index, impact-map popup) so the change lands everywhere consistently.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed target: Raimundo & Geniza's plot id `RG-P1` → replace with CEPOTX site code **`U-06-07`** (governor-provided, recorded in fda_fsvp PR #11). Let me check the sheet-write helper and the geojson build script so I land the change via the canonical flow.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Clear directive received: **replace the SunMint plot id of Raimundo's farm with its CEPOTX site code `U-06-07`**. I have the full surface map. Executing the canonical flow now:
-
-1. **Sheet (source of truth):** `SunMint Plots` tab A15 `RG-P1` → `U-06-07` (+ provenance note)
-2. **Regenerate + push** `sunmint/plots/index.geojson`
-3. **Update references** in fda_fsvp entities + agroverse farm page prose (beta)
-
-Let me first grab the exact entity/page line content to craft precise edits, and locate the sheet-write key file.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Confirmed scope. Executing change #1 (plot id `RG-P1` → CEPOTX site code `U-06-07`) through the canonical chain. Starting with the source-of-truth sheet write + pulling the exact files needing reference updates, in parallel:
-[3 tool result(s) compacted: ssh_run, read_repo_file, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The sheet write failed on formatting — `ws.update('A15', 'value')` needs a values-list. Fixing:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Sheet source-of-truth updated (`RG-P1` → `U-06-07` + provenance note). Now regenerating the geojson from the sheet via the canonical build script, then checking git state for the push:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Sheet + geojson regenerated (`RG-P1` → `U-06-07`). `sunmint_work` isn't a git checkout — sunmint is api-only, so I push via Contents API. Reading the regenerated file to upload it:
-[1 tool result(s) compacted: read_local_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Geojson regenerated with `U-06-07` (11 features preserved — only the RG row changed). Pushing it to the sunmint registry (api-only → Contents API), and disambiguating the shop repos in parallel before editing farm-page prose:
-[2 tool result(s) compacted: upload_local_file_to_github, list_org_repos — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Geojson pushed to `sunmint` (commit b7f1d61). The farm page lives in `agroverse_shop_beta` (the old `agroverse_shop` name redirects there). Let me fetch the exact farm page content so I can craft precise edits replacing the visible "RG-P1" plot label with `U-06-07`.
-[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Sheet (source of truth) ✅ and geojson ✅ are updated and pushed. Now the public-facing references (farm page + media captions in `agroverse_shop_beta`) and the FSVP entity records (`fda_fsvp`). Creating both PRs:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Shop PR #285 opened. Now the fda_fsvp entity records PR — updating the COPOPS entity (purpose/notes/site list) and the CEPOTX entity (source_farms entry) to drop the old RG-P1 alias:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both PRs open. Let me update the runbook/registry docs so they stop teaching `RG-P1` as the canonical id (and reflect the new site-code scheme), and check the doc-repo references to `RG-P1` I found earlier.
-[2 tool result(s) compacted: git_push_changes, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The third hunk didn't match exactly. Let me read the exact wording in the file:
-[1 tool result(s) compacted: read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I see the exact wording now. Let me apply the doc updates with precise hunks — the worked example row, the two RG-P1 mentions in the runbook, and add a site-code note to the naming section:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All three PRs opened. Let me verify the merged/updated state across the surfaces and confirm there are no remaining live `RG-P1` references in the primary data/display files:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-One `RG-P1` still lingers in the main geojson (likely inside the notes/media field that wasn't in my earlier read). Let me find its exact location:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The remaining `RG-P1` is only in the provenance note I added (intentional audit trail: "replaces RG-P1; governor-confirmed 2026-09-05") — no live plot-id references remain. Merging the three PRs (explicit governor "go" authorizes self-merge of feature PRs):
-[3 tool result(s) compacted: merge_pr, merge_pr, merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
 
 [TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
 
@@ -347,51 +196,61 @@ Gary sent the original HEIC photo (this should be IMG_8277 — the drying/fermen
 ### 🤖 Autopilot
 
 The HEIC is at `/tmp/tg_attachments/d23cc94cdb614142975b72dd77d3c5e7.jpg` (converted, GPS preserved). OCR found no text, so visual inspection needs the vision client — let me check how `grok_client.py` is invoked:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The file is a library module — let me check how it's called in the app and run a vision pass on the image to describe what's actually in it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me run Grok vision on the image with a context-appropriate prompt (this should be the drying/fermentation station, GPS -3.630242/-53.652017, 2026-09-03 16:29):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Grok key isn't on this box (it lives on the market-research host). Let me find where the key is configured and check alternate vision routes — the app may have a working key path:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a `/home/ubuntu/.env` — let me check whether it holds the Grok key (without printing secrets), and also check the generate_image tool config since that uses Gemini/Google AI Studio:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No Grok/Gemini API key on this box (only DAO identity keys), so a vision-model description isn't available locally. But the attachment processor already gave me the key data: **GPS -3.630242, -53.652017 (alt 180.7m), captured 2026-09-03 16:29:06**. Let me inspect the full EXIF (original filename may be embedded, confirming whether this is IMG_8277) and cross-check the GPS against the plot hull and the repo copy of that photo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 EXIF confirms the full picture — GPS **-3.630242, -53.652017** (S/W), alt 180.7 m, **iPhone 12 Pro Max**, captured **2026-09-03 13:29:07 local** (16:29 UTC — matches the attachment note). That GPS sits inside the U-06-07 plot hull (−3.6294…−3.6306 / −53.6518…−53.6522) and the timestamp matches the 03 Sep site walk. Now let me identify which IMG number this original is, by checking the media pipeline runbook and the farm-media-raw blob store:
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `farm-media-raw` has no raimundo folder — RG originals may still live in the source zip `~/raimundo_geniza.zip` (per the manifest). Let me match this photo's GPS/time against the originals there to identify its IMG number and confirm whether this is IMG_8277:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The original zip is at `/home/ubuntu/raimundo_geniza.zip` and there's an extracted folder `~/raimundo_geniza/`. The shop asset `~/rg_shop_assets/raimundo-geniza-IMG_8277.jpg` exists (the exact image Gary's caption referred to). Let me compare this uploaded photo's EXIF (GPS/time/size) against the extracted originals to identify which IMG it is:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The extracted folder scan found no match (may only hold MOVs, or HEIC EXIF isn't readable by PIL in that folder). The uploaded photo: iPhone 12 Pro Max, 2026:09:03 13:29:07, GPS -3.630242/-53.652017. Let me search the zip contents listing for files with that timestamp and check the extracted folder structure:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -399,6 +258,7 @@ The extracted folder scan found no match (may only hold MOVs, or HEIC EXIF isn't
 Definitive match: the zip listing shows **`IMG_8277.HEIC` — 2,086,477 bytes, 2026-09-03 16:29 UTC** — identical byte-size (2,086,477) and timestamp to the uploaded file `/tmp/tg_attachments/d23cc94cdb614142975b72dd77d3c5e7.HEIC` (2,086,477 bytes, 16:29). This confirms the upload **is IMG_8277** — the exact photo Gary captioned as the **drying station and fermentation station**.
 
 So: **the photo Gary just sent IS IMG_8277** (byte-identical original HEIC from the site walk). My earlier caption fix (media.json alt) was already correct. Now let me confirm its GPS sits inside the plot hull and check what the hull records say, so I can give a complete answer with the photo's evidence value:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -439,6 +299,7 @@ Which would you like? (I can also append this finding to the session transcript 
 ### 🤖 Autopilot
 
 Gary explicitly authorized the prod sync ("Sync it") — doing that now, and sending the photo back with its GPS so we're confirming the same image:
+[2 tool result(s) compacted: sync_beta_to_prod, send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -545,4 +406,96 @@ Reply with those 5 (or "fill from the site-walk notes / farm page") and I'll fin
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → echo "=== fda_fsvp repo tree ==="; curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" | python3 -c " im; echo "=== suppliers tree (rest) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" | python3 -c "; mkdir -p /tmp/fsvp_examples && cd /tmp/fsvp_examples && curl -sL -o santa_anna_20260830.pdf "https://raw.githubusercontent.com/TrueSightDAO/; …(+2 more)
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+Also this as an inspection of their existing cacao trees
+
+[Attachment auto-processed: **1ede6a6c52424b17b781dffe8c00c49b.jpg**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Gary's sending a second evidence photo — this one shows an inspection of the existing cacao trees (Facility A — the grove). Let me locate it, pull its EXIF (GPS/date), and check whether it matches an original from the site-walk zip like IMG_8277 did.
+
+
+### 🤖 Autopilot
+
+The new file is `/tmp/tg_attachments/1ede6a6c52424b17b781dffe8c00c49b.jpg` (332,843 bytes). Let me pull its EXIF (GPS/date/device) and visually inspect it via OCR (even though the processor found no text, I want to confirm scene context):
+
+
+### 🤖 Autopilot
+
+No EXIF on this one — Telegram stripped it (1280×960 re-encode). Unlike IMG_8277 I can't read GPS/date directly. Let me try to identify which original site-walk photo this is (perceptual hash vs the extracted originals) so I can recover the GPS/timestamp from the matching original:
+
+
+### 🤖 Autopilot
+
+The originals are all HEIC. To match the Telegram-re-encoded JPG (no EXIF) to its original, I'll compute perceptual hashes — comparing the uploaded image against downscaled versions of every HEIC original:
+
+
+### 🤖 Autopilot
+
+Both libs ready. Now computing perceptual hashes to identify which original matches the uploaded tree photo:
+
+
+### 🤖 Autopilot
+
+phash is inconclusive (closest 22 is too far for a confident match — likely heavy re-encode). Let me check the shop media.json captions to see which IMG numbers were captioned as showing the cacao grove/trees, then match against those specifically:
+
+
+### 🤖 Autopilot
+
+Empty — media.json structure differs. Let me look at the raw file:
+
+
+### 🤖 Autopilot
+
+The gallery JSON has captions. Let me get the full picture of which images have which captions — especially the ones that show cacao trees:
+
+
+### 🤖 Autopilot
+
+None of the site-walk photos on the farm page are captioned as "cacao trees" — Gary says this new photo is "an inspection of their existing cacao trees." Let me actually look at the image to see the trees, since OCR found no text (it's a scene photo). Let me check what vision capability exists — the earlier session established no Grok key on this box, so let me verify the image's visual content via a perceptual comparison against a few likely originals, and examine the .raw.json sidecars (which may carry per-photo vision descriptions from the media pipeline):
+
+
+### 🤖 Autopilot
+
+The manifest confirms the HEICs were never archived (only 14 MOVs) — no stored vision descriptions for the photos. The uploaded JPG (1280×960, 4:3 landscape) is a Telegram re-encode with EXIF stripped, so to recover GPS/time I need a confident match to an original HEIC. The single phash wasn't conclusive — let me run a multi-hash consensus (dhash + ahash + color histogram) to narrow it down:
+
+
+### 🤖 Autopilot
+
+I've hit the limit of what I can recover automatically from this one — let me be straight about it:
+
+**What I know:**
+- `/tmp/tg_attachments/1ede6a6c52424b17b781dffe8c00c49b.jpg` (332 KB, 1280×960) — **no EXIF** (Telegram stripped it), so no GPS/date embedded, unlike IMG_8277
+- It's a landscape 4:3 photo → its original is a landscape HEIC from the 03-Sep site walk (portrait originals can't produce a 1280×960 landscape re-encode)
+- I ran a 3-hash consensus + color-histogram comparison against all 22 original HEICs in `~/raimundo_geniza/` — **IMG_8256** ranks closest, but the distances are too high for a confident match (heavy Telegram re-compression defeats fingerprinting)
+
+**I won't guess** which original it is on a compliance document — that's exactly the kind of invented detail `SITE_VISIT_PROCESS.md` forbids.
+
+**What I need from you (10 seconds):** which IMG number is this on your phone? (e.g. IMG_8256, IMG_8272…) — then I'll pull the GPS/time from that original HEIC and embed it properly.
+
+Meanwhile, here's how I'll fold it into the report either way:
+
+| Facility | Evidence | Caption (your words) |
+|---|---|---|
+| **A — Cacao Farm (grove)** | this photo | *"Inspection of their existing cacao trees"* — Sítio Raimundo & Geniza |
+| **B — Fermentation** | IMG_8277 | drying & fermentation station |
+| **C — Drying** | IMG_8277 | drying & fermentation station |
+
+If you'd rather not look it up: just say **"same site walk / same plot"** and I'll geo-reference it to U-06-07 (plot-level coordinates, noted as site-level not photo-level EXIF) — that's defensible as long as the report says so explicitly.
+
+Which do you prefer — the IMG number, or plot-level geo-reference?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /tmp/tg_attachments && python3 <<'PYEOF' from PIL import Image from PIL.ExifTags import TAGS, GPSTAGS import hashlib, os f = "1ede6a6c524; ls -la ~/raimundo_geniza/ 2>/dev/null | head -40; echo "=== count ==="; ls ~/raimundo_geniza/ 2>/dev/null | wc -l; echo "=== find HEIC/JPG =; python3 -c "import pillow_heif; print('pillow_heif OK')" 2>/dev/null || pip install -q pillow_heif 2>&1 | tail -1; python3 -c "import imageh; …(+4 more)
 
