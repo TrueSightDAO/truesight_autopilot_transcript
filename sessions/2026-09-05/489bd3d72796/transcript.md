@@ -1156,31 +1156,37 @@ All converted (remaining list empty). Let me confirm the exact count and list, t
 ### 🤖 Autopilot
 
 18 converted but I expected 19 — IMG_8555's ffprobe came back empty, so it likely didn't convert. Let me verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Source MOVs aren't in /tmp/dr_work/media — let me locate where they actually live and reconcile 18 vs 19.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the MOVs are in `~/fazenda_dona_rosa_work/`, and there are **19** (I only saw 10 in the head). The conversion batch read from the right place (18 done, 1 remaining = IMG_8555, which the procs count shows still processing). Let me confirm IMG_8555 is the last one converting and wait for it.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 IMG_8554 is converting now; IMG_8555 is queued behind it. Let me wait for the batch to complete.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All **19 MP4s converted** ("ALL DONE 19"), no processes left. The comm output showing IMG_8555 is stale (done3.txt was written before the last ls). Let me verify GPS survived in all 19 and check a sample of sidecar-required metadata.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My check syntax was wrong — earlier the location appeared under **format** tags (`"location": "-03.4894-052.9667+177.277/"`), not stream tags, and my grep pattern counted the wrong thing. Let me re-verify correctly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1188,41 +1194,49 @@ My check syntax was wrong — earlier the location appeared under **format** tag
 GPS **is** present in all 19 — my grep pattern was the bug (`TAG:location=-03.4894…` starts with "TAG:", not "-"). Sample values confirm: IMG_8501 → −3.4894/−52.9667, IMG_8526 → −3.4893/−52.9673, IMG_8555 → −3.4893/−52.9665 — all in the Medicilândia cloud.
 
 **All 19 MP4s converted with GPS preserved.** Next: build the daemon inbox with sidecar files. Let me check the RG sidecar convention and daemon config structure.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent — the daemon config **already has the `fazenda-dona-rosa` inbox** (`/home/ubuntu/media_archive_inbox/farm-media/fazenda-dona-rosa`, priority 1)! It was added when the RG entry went in (or in a prior step). So I just need to: create the inbox dir, drop the 19 MP4s + sidecars, and the daemon picks them up. Let me study the RG sidecar format exactly.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The daemon config **already includes the `fazenda-dona-rosa` inbox** (priority 1, dir created Sep 5 16:21) — it was staged when the RG config was written. So I just need to populate it: copy the 19 MP4s in + generate sidecar JSONs (sha256, GPS, duration, title/description per the RG convention). Let me stage the inbox.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 19 MP4s + sidecars staged in the daemon inbox (GPS captured from each file's metadata, all in the Medicilândia cloud). The daemon polls the inbox and uploads within its daily budget. Let me verify the daemon picks them up (check log after a short wait).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The daemon hasn't picked up the DR files yet (last activity Sep 04 14:45 — the RG batch). It's been idle ~26h. Let me check the daemon's polling logic and budget state — it may poll on a schedule or have hit its daily budget.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Daemon is alive (26h uptime) but idle since the RG batch — no DR pickup yet ~15 min after staging. Let me read the actual scan-loop code and check for a separate log file to see what it's doing.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The daemon's logic is clear: it scans inboxes every ~30s when idle, processing `priority` videos per inbox per pass. It loaded its config **at startup (Sep 04 14:24)** — but the `fazenda-dona-rosa` inbox entry was added to the config later (dir created Sep 05 16:21), so the **running daemon doesn't know about the new inbox yet**. Restarting reloads the config — safe, housekeeping on our own box:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 🎉 **All 19 videos uploaded to YouTube!** The daemon restart did it — the config was modified after the daemon started (Sep 05 16:21 vs daemon start Sep 04 14:24), so it didn't know about the DR inbox until restarted. Let me verify the sidecars got their yt_ids:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1271,56 +1285,67 @@ Want me to continue with unit 1 (photo archive) next?
 ### 🤖 Autopilot
 
 👍 Go received — continuing the onboarding. Per the handoff directive, first checking the manifest, then starting **Unit 1: photo archive** — let me pull the exact photo-archive convention (how RG photos were handled) in parallel.
+[3 tool result(s) compacted: read_context_file, read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 👍 Go received. The manifest confirms this thread isn't a separately-tracked plan (it's the live DR onboarding) — I'll keep executing per the SOP + MEDIA_ARCHIVE_PIPELINE runbook. The runbook says photos go to **`farm-media-raw` repo under `<farm-id>/photos/`**, one object per file. Before uploading 35 HEICs one-by-one, let me check for an existing on-box uploader (so I don't burn 35 API calls if a local script handles it) and confirm the prior-farm layout.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Only `app/config.py` references `farm-media-raw` — no on-box batch photo uploader exists. The runbook says photos go to the **`farm-media-raw` GitHub repo** (`<farm-id>/photos/`, Contents API). Let me read the config reference and check that repo's current layout + whether a Governor-uploader CLI exists anywhere.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No batch photo uploader exists — the standard path is individual Contents-API uploads of the 35 HEICs (the repo layout confirms: `farm-media-raw/<farm-id>/photos/`... actually subfolders like `cleide/`, `la-do-sitio/`). Let me check the exact per-farm layout (whether photos sit directly in `cleide/` or a `photos/` subfolder) before uploading.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Photos live in `cleide/photos/` and `la-do-sitio/photos/` subfolders. Let me check how many files are in one and what they're named (extension conventions — HEIC original vs JPG conversion).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Convention confirmed: **original HEIC files** stored directly in `<farm-id>/photos/` (e.g. `cleide/photos/IMG_4847.HEIC`, 14 files; `la-do-sitio/photos/` 52 files). So for DR: `farm-media-raw/fazenda-dona-rosa/photos/*.HEIC` (35 files, 70 MB total). The Contents API is the required path (api-only data repo). 35 individual uploads is the honest approach — I'll do them in a batch loop on the box using the repo's stored upload helper if present, else via the upload_file_to_github tool per file. Let me check for a GitHub token + upload helper on the box to do this efficiently.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No token on box for scripted Contents-API PUTs, and the runbook mandates per-file Content-API uploads — my `upload_local_file_to_github` tool does exactly that (local file already on disk, one call per file, auto-creates parent dirs). `farm-media-raw` is an allowed api-only data repo, so this is the correct lane. Let me get the exact 35 filenames first.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 35 HEICs confirmed. Now uploading all to `farm-media-raw/fazenda-dona-rosa/photos/` (one object per original, per the zip-handling rule + repo convention). Batch 1 of 4:
+[10 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Batch 1 (10/35) uploaded. Continuing batch 2:
+[10 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Batch 2 done (20/35). Batch 3:
+[10 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Batch 3 done (30/35). Final batch 4:
+[5 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1430,4 +1455,86 @@ Pick up at the RESUME HERE retry and I'll land the index row, then continue to t
 **✅ Done this turn — actions taken:**
 • `ssh run` ×13 → echo "===RG/cleide photo archive conventions==="; find /home/ubuntu -maxdepth 4 -iname '*.jpg' -path '*raimundo*' 2>/dev/null | head -3; fin; echo "===DR HEIC inventory==="; ls ~/fazenda_dona_rosa_work/*.HEIC 2>/dev/null | wc -l; du -ch ~/fazenda_dona_rosa_work/*.HEIC 2>/dev/null |; echo "===config.py farm-media-raw ref==="; grep -n -A3 -B3 'farm-media-raw' /opt/truesight_autopilot/app/config.py; echo "===farm-media-raw ; …(+10 more)
 • `upload file to github` → https://docs.github.com/rest/repos/contents#create-or-update-file-contents
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] [Handoff context — this Telegram topic (thread 21167) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Wrapping up this round cleanly — the photo-archive unit is essentially landed, with one small loose end.
+
+## ✅ Done this turn (photo archive — Unit 1 of the media lane)
+
+**1. Photos archived — 35/35 H
+
+
+### 🤖 Autopilot
+
+👍 Resuming — first the loose end: retry the `farm_media_manifests/index.json` update (adding the fazenda-dona-rosa row).
+
+
+### 🤖 Autopilot
+
+✅ **Index registered** — `farm_media_manifests/index.json` now lists `fazenda-dona-rosa` (commit `362c9fb`) — the sha auto-fetch worked this time, closing the loose end. The **media lane is now fully landed** (photos + videos + manifest + index).
+
+Next unit per the SOP: **farm profile page**. Let me read the exact steps from the farm-listing doc and see how the RG profile was built (which repo, what files).
+
+
+### 🤖 Autopilot
+
+Resuming the profile unit. The SOP §4–5 is clear. One key detail: the registry `farm_id` I pushed is **`fazenda-dona-rosa`** — so per §5 the page slug should match it exactly (`farms/fazenda-dona-rosa/`) so the map link resolves with no FARM_SLUG entry. Let me read the page conventions and inspect the rancho-maranta-para template structure in the beta repo.
+
+
+### 🤖 Autopilot
+
+I have the SOP + conventions. The template for the farm page is `farms/raimundo-geniza-para/` (the newest, most-corrected build — has all the gotcha fixes baked in). Since the registry farm_id `fazenda-dona-rosa` would differ from the needed region-disambiguated slug, I should check what slug convention fits: conventions §3 say `<farm>-<region>` e.g. `santa-anna-fazenda-para`. But the sunmint registry `farm_id` is `fazenda-dona-rosa` — §5 says if registry farm_id equals the page slug the link works with no FARM_SLUG entry.
+
+This is a real decision point. Let me look at the RG page structure (files in the folder) to understand the clone scope, and check how the map's FARM_SLUG currently maps (whether existing pages' slugs all match their registry farm_ids).
+
+
+### 🤖 Autopilot
+
+The RG page is a 2-file structure (index.html 24.5 KB + media.json 3.4 KB). Let me pull both as the clone base, and find where FARM_SLUG lives org-wide (not in truesight_me_beta apparently).
+
+
+### 🤖 Autopilot
+
+Index loose end closed ✅ — and I've pulled the full profile-page template + conventions for the next unit. Landing a clean handoff here because the profile build has one naming decision that ripples across already-pushed artifacts, and per the SOP naming gate I shouldn't guess it silently.
+
+## ✅ Done this turn
+
+**1. Loose end closed — `farm_media_manifests/index.json` updated** (commit `362c9fb`): the `fazenda-dona-rosa` row is now in the aggregate index. The earlier 422 was transient/tool-version — the sha auto-fetch worked on retry.
+
+**Media lane is now fully complete for Fazenda Dona Rosa:**
+| Artifact | Status |
+|---|---|
+| 19 videos → YouTube (public, GPS descriptions) | ✅ |
+| 35 HEIC photos → `farm-media-raw/fazenda-dona-rosa/photos/` | ✅ |
+| Manifest `fazenda-dona-rosa.json` (19 items + yt_ids) | ✅ committed `8d822d7` |
+| Aggregate `index.json` registration | ✅ committed `362c9fb` |
+| Plot DR-P1 (geojson + farms index + sheet) | ✅ (earlier: `7887f54`, `d9997bb`) |
+
+## ⚠️ Naming decision needed before the profile page (SOP §5 + conventions §3/§7)
+
+I set the registry `farm_id` to **`fazenda-dona-rosa`** (no region suffix) when I pushed DR-P1. But **every other Pará farm carries `-para`** (`fazenda-cleide-para`, `raimundo-geniza-para`, `santa-anna-fazenda-para`, `paulo-la-do-sitio-para`) — conventions §7 mandate region disambiguation ("Santa Ana Bahia vs Santa Anna Pará" trap). Options:
+
+- **A) Rename to `fazenda-dona-rosa-para`** — consistent with all sibling farms; page slug matches farm_id so the impact-map popup links resolve with no FARM_SLUG entry (SOP §5). Cost: ripple-edit ~5 already-pushed artifacts (sunmint `farms/index.json` + `plots/index.geojson`, sheet row, manifest `farm_id`, `farm-media-raw/` folder + index ref, daemon inbox path).
+- **B) Keep `fazenda-dona-rosa`** — no rework, but breaks the convention if a Bahia/other Dona Rosa ever appears, and the slug looks inconsistent next to its siblings.
+
+**My recommendation: A** (do it now while the lead is fresh; a rename later is far costlier).
+
+## RESUME HERE → next unit (farm profile page, SOP §4)
+
+Once you pick A or B, the page build is a single focused unit:
+1. Clone `farms/raimundo-geniza-para/` (index.html + media.json) as base → rewrite story for **Fazenda Dona Rosa** (98 ha / 35 ha cacao from 1980, Rosa Wronscki — primeira mulher produtora de cacau da Transamazônica, artisanal bean-to-bar since 2004, 6-day fermentation, COOPOXIN/CEPOTX, Medicilândia — first node outside the Altamira/Uruará cluster)
+2. **Mandatory post-clone token grep** for RG/COPOPS/Uruará leftovers (gotcha #8)
+3. Curate hero + gallery from the 35 HEICs (need people-first hero per conventions §1 — our photos are site scenes; **may need to ask you for/confirm a people photo**) + 19 YouTube videos → `media.json` (literal UTF-8, `{type: youtube, videoId, title, caption}`)
+4. Web-optimize HEICs → `assets/images/farms/fazenda-dona-rosa-*.jpg` + upload
+5. PR → merge → beta verify `beta.agroverse.shop/farms/<slug>/` → **then hold for your explicit go before `sync_beta_to_prod`** (never auto-promote)
+
+Say **"A"** (rename) or **"B"** (keep), and I'll start the build in the next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `upload file to github` → https://github.com/TrueSightDAO/farm_media_manifests/blob/main/index.json
 
