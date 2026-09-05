@@ -524,6 +524,7 @@ This is the photo of the farmer and his wife. The names are in the photo
 ### 🤖 Autopilot
 
 The OCR came back empty on this photo (low quality). Let me enhance it and re-OCR — names may be in small caption text or on clothing/signage.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -650,4 +651,97 @@ Two things before I register the plot (per the SOP Step-0 discipline — I never
 5. Prod sync only on your explicit go
 
 Give me the surname + coop status (or say "proceed with Antônio as-is") and I'll start.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21005] He is part of CEPOTX belongs to the same sub coop as Raimundo and his wife
+
+
+### 🤖 Autopilot
+
+Got it — same sub-coop as Raimundo & Geniza (RG-P1) under CEPOTX. Let me pull Raimundo's registry record to mirror the exact sub-coop name and plot-ID conventions for Santa Rosa.
+
+
+### 🤖 Autopilot
+
+Confirmed identity locked: **Antônio & Graça — Fazenda Santa Rosa — CEPOTX, same sub-coop as Raimundo & Geniza (COPOPS, Uruará)**. Let me pull the exact registry conventions (RG-P1 record, plot-ID/slug format, sheet procedures) so I propose the correct registry values.
+
+
+### 🤖 Autopilot
+
+Let me read the full plots registry to see the RG-P1 record format (Santa Rosa's sister plot in the same COPOPS sub-coop) so I propose registry values that match exactly.
+
+
+### 🤖 Autopilot
+
+The geojson artifact is nesting too deep to read cleanly. Let me pull it directly on the box and extract the RG-P1 record (Santa Rosa's sister plot in the same COPOPS sub-coop) to mirror its exact fields.
+
+
+### 🤖 Autopilot
+
+Registry fully mapped. **Key corroboration:** Santa Rosa's GPS cloud (**-3.6338…-3.6363 / -53.6677…-53.6706**) sits **~2 km from RG-P1** (Raimundo & Geniza: -3.6294…-3.6306 / -53.6518…-53.6522, Uruará) — perfectly consistent with your statement that Antônio is in the **same COPOPS sub-coop as Raimundo** (COPOPS = Uruará co-op). They're neighbors.
+
+Let me compute the actual convex hull from the Santa Rosa GPS points so the proposed registry record has real numbers:
+
+
+### 🤖 Autopilot
+
+exiftool isn't in the cwd-relative path for globs (files are in ~/santa_rosa_work but maybe uppercase extensions / already-converted jpgs). Let me check what's actually in the work dir and where the GPS-bearing originals are.
+
+
+### 🤖 Autopilot
+
+Files are uppercase `.HEIC/.MOV/.PNG` — globs were fine but exiftool returned no GPS. The earlier GPS extraction used a different method. Let me re-check how GPS was extracted before and re-run the hull computation with the working method:
+
+
+### 🤖 Autopilot
+
+The GPS is in **DMS format** (not decimal) — my regex only matched decimal. And the earlier GPS cloud values I quoted (-3.6338…-3.6363 / -53.6677…-53.6706) — let me recheck: this HEIC is at **3°38'4.56"S = -3.6346, 53°40'14.16"W = -53.6706**. Consistent with the cloud. Let me recompute the hull parsing DMS properly:
+
+
+### 🤖 Autopilot
+
+My regex isn't matching because exiftool `-s` with `-GPSLatitude` prints `3 deg 38' 4.56" S` but my capture may have the raw `-s` output differently (actually the earlier run showed `GPS Latitude` without the `-s` tag names). Let me debug the actual exiftool output format:
+
+
+### 🤖 Autopilot
+
+Found it — the regex needed to allow spaces before the colon. Fixing and recomputing:
+
+
+### 🤖 Autopilot
+
+Hull computed. Here's the concrete picture — and I'm ready to execute the full onboarding the moment you confirm the registry values.
+
+## Fazenda Santa Rosa — computed registry record (proposed)
+
+**Identity (confirmed by you):** Antônio & Graça — CEPOTX, **COPOPS sub-coop** (same as Raimundo & Geniza, Uruará) ✅
+
+**GPS proof of the "same sub-coop" claim:** Santa Rosa centroid **-3.634141, -53.669688** sits **~2.0 km** from RG-P1 (Raimundo & Geniza: -3.6294…-3.6306 / -53.6518…-53.6522). They're literally neighbors — consistent with same COPOPS cluster.
+
+| Field | Proposed value | Basis |
+|---|---|---|
+| plot_id | **SR-P1** | `<initials>-P1` pattern (RG-P1, SA-P1, DR-P1) |
+| farm_id | **fazenda-santa-rosa-para** | = page slug → impact-map link works with no FARM_SLUG entry (SOP §5) |
+| name | Fazenda Santa Rosa Plot 1 (cacao walk) | walk covered cacao area |
+| hectares | **4.75** (hull) | 37 unique GPS pts, 56 files; full farm ~30 ha claimed — flag like RG-P1 |
+| status | proposed | new |
+| boundary_authority | approx | photo/video hull, not CAR/walk perimeter |
+| owner | Antônio & Graça (CEPOTX/COPOPS) | your confirmation + photo caption |
+| region | Uruara, Para | matches RG-P1 / COPOPS (Perpétuo Socorro, Uruará) |
+| centroid | -3.634141, -53.669688 | computed |
+| hull | 10 vertices, ~47,463 m² | computed (lng,lat order) |
+
+**Name-collision check (resolved):** there IS already a `fazenda-dona-rosa` (Rosa Wronscki, **COOPOXIN**, Medicilândia, DR-P1) in the registry — **different farm** (different owner, co-op, municipality). Santa Rosa is clear to register under its own id; no Step-0 conflict.
+
+**Two notes before I pull the trigger:**
+1. **Surname** — registry can carry "Antônio & Graça" as-is (like "Raimundo & Geniza"), surname added later when the original photo/INCRA doc surfaces. Fine to proceed without.
+2. **Hectares 4.75 vs ~30 claimed** — I'll record 4.75 (walk hull) with a note that the full boundary needs CAR/INCRA, mirroring how RG-P1 and SA-P1 flag their gaps.
+
+**Say "confirm" and I execute the SOP in order:** SunMint Plots sheet row → geojson + farms index push → on-chain geo event → media archive (33 MOV + 18 HEIC → daemon, YouTube) → farm page clone from `rancho-maranta-para` → **beta** for your review. Prod sync only on your explicit go.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /tmp && curl -s https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geojson -o sr_plots.geojson && python3 - <<'EOF' ; cd /tmp && echo "=== farms/index.json ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/farms/index.json | python3 -; cd ~/santa_rosa_work && python3 - <<'EOF' import subprocess, re, glob, math, os pts = [] for f in sorted(glob.glob('*.HEIC')+glob.glob('*.MO; …(+5 more)
 
