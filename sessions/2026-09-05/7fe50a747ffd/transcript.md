@@ -113,6 +113,11 @@ Nº Código Nome Produtor Cooperativa
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me cross-check these rosters against what we already have in the records.
 
 
@@ -170,4 +175,69 @@ Got it — appending to the COOPCAO capture:
 So COOPCAO rows 1–16 now on record: N-06-02 → N-06-52. Interesting — the Cruz Oliveira family appears in several entries (José Paulo Cruz Oliveira N-06-49, Juliano N-06-50, Janilson N-06-51 — likely relatives in consecutive codes).
 
 Still holding the earlier question open: want me to (1) file the OPEN_FOLLOWUPS.md Pending entry with the full roster source + B-06-56 vs B-06-58 verification item, (2) start the COOPCAO fda_fsvp entity research, or (3) keep this as reference only?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21727] Save all these somewhere so that in the future we have something to referende when trying to figure out the site code for new farms coming online from CEPOTX
+
+
+### 🤖 Autopilot
+
+On it. Before I write, let me check the two likely homes — the fda_fsvp supplier structure and the Agroverse site-code SOP doc — so the save lands where future-me will actually find it.
+
+
+### 🤖 Autopilot
+
+Saving this properly. The right home is the fda_fsvp supplier records (where site codes already live: B-06-58, U-06-07, V-06-29), with a pointer from the farm-listing SOP so future onboarding finds it. Quick checks first — date, index structure, and whether any roster file already exists:
+
+
+### 🤖 Autopilot
+
+Everything's in place for the save. Two homes make sense: (1) **fda_fsvp** — where site codes B-06-58 / U-06-07 / V-06-29 already live, as a permanent roster reference under `suppliers/cepotx/`; (2) a **cross-link in the farm-listing SOP** so future onboarding finds it. I'll do both as PRs.
+
+
+### 🤖 Autopilot
+
+fda_fsvp PR #13 opened. Now the cross-link in the farm-listing SOP so future onboarding checks this registry before assigning a code:
+
+
+### 🤖 Autopilot
+
+Both PRs opened. The save is a documentation task the governor asked for directly — merging both so the reference is actually in place:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Done — saved and merged. ✅
+
+## What I did this turn
+
+**Two PRs, both merged:**
+
+1. **fda_fsvp PR #13** → merged (`db6c3dc`)
+   - New: `suppliers/cepotx/site_codes.md` — the durable site-code registry with all three rosters:
+     - **COOPOXIN** B-06 family (rows 1–27 + 29–56, incl. B-06-108 Fazenda Cleide anchor)
+     - **COPOPS** U-06 family (rows 17–33 visible; U-06-07 Raimundo & Geniza noted separately)
+     - **COOPCAO** N-06 family (rows 1–16, N-06-02 → N-06-52)
+   - Plus: prefix→coop association table, known-farm anchors (B-06-58 Santa Anna, V-06-29 La do Sítio, N-06-37 CEPOTX president), the "one code per property, not per person" observation (Raimundo Silva Santos ×3, etc.), and the **⚠️ B-06-56 vs B-06-58 discrepancy flag** (verify with CEPOTX before changing records).
+   - Updated `suppliers/cepotx/entity.json` source_documents → points at the registry.
+   - Status honestly marked: **reported/unverified** (video capture, not an official CEPOTX register).
+
+2. **agentic_ai_context PR #916** → merged (`d3e7e2f`)
+   - `AGROVERSE_SUNMINT_FARM_LISTING.md` §6 now instructs future onboarding to **look up `fda_fsvp/suppliers/cepotx/site_codes.md` before assigning a plot_id** to a new CEPOTX-area farm — so the registry is actually consulted, not just stored.
+
+**Future reference flow:** new farm from CEPOTX → check the roster registry first → producer's existing codes (or confirm new code with CEPOTX) → then register plot.
+
+RESUME HERE → When you next have a producer name or code to resolve for a new CEPOTX-area farm, query the merged `site_codes.md` — and optionally consider a COOPCAO `fda_fsvp/suppliers/copcao/entity.json` (needs legal name + CNPJ verification; not urgent).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → date -u +%Y-%m-%d
+• `merge pr` ×2 → ✅ PR #13 on fda_fsvp merged successfully (sha: db6c3dc94d627d3663d3023811e53226eca27c70). Pull Request successfully merged; ✅ PR #916 on agentic_ai_context merged successfully (sha: d3e7e2f587372bbe1660c909863c5adf37ba3517). Pull Request successfully merged
 
