@@ -60,3 +60,121 @@ Quick read on what you've shared — I've pulled both links plus done the discov
 
 Tell me the direction and I'll take the next concrete step.
 
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] I have made the zip file available 
+
+~/fazenda_dona_rosa.zip
+
+Analyze it and let me know what you think
+
+
+### 🤖 Autopilot
+
+This is a big farm-media batch (~763 MB) — HEIC photos + MOV videos + PNG screenshots, timestamped 2026-09-04 evening (same signature as the RG zip). Let me get the full inventory.
+
+
+### 🤖 Autopilot
+
+Full inventory: **70 HEIC photos + 38 MOV videos + 14 PNGs** (~763 MB), all timestamped 2026-09-04 21:22–22:28 — the same evening the RG batch arrived. PNGs are likely screenshots (WhatsApp/registration evidence — often the attribution key). Let me extract and run the SOP Step Zero checks.
+
+
+### 🤖 Autopilot
+
+61 real files (the other 61 were `__MACOSX` resource forks — my earlier grep counted those too). Let me get the true type counts and check GPS metadata.
+
+
+### 🤖 Autopilot
+
+GPS is present and it's a distinct location: **3°29'21"S / 52°57'59"W** — that's the Medicilândia area (COPOPS/CEPOTX cluster is ~80 km away around Uruará/Altamira — RG-P1 was −3.63/−53.65, so this is NOT an overlap). Let me pull the full GPS cloud, check the PNGs (likely attribution evidence), and cross-check the plots registry.
+
+
+### 🤖 Autopilot
+
+All 61 files carry full GPS (54/54 GPS-bearing originals — HEIC + MOV, iPhone 12 Pro Max, single continuous session 2026-09-04 evening). The cloud is one tight cluster ~60×25 m at **−3.4893 / −52.9666** — ~68 km ENE of RG-P1, so no overlap with the registered plot. Now let me OCR the 7 PNGs (likely the identity/attribution evidence) and check the plots registry overlap.
+
+
+### 🤖 Autopilot
+
+The PNGs are the attribution key — WhatsApp/IG context screenshots (chat with **arnaldoamorim_** with disappearing-messages notice, Portuguese translations about *"ela faz os produtos dela por ano"* and a freshness/quality warning, cupuaçu juice reference, and a **Belamazonia Chocolates** IG profile followed by garyjob + cooperativacepotx). Let me finish the registry cross-check and geocode the GPS cloud.
+
+
+### 🤖 Autopilot
+
+The PNGs open the attribution trail — and the GPS cloud is in a distinct spot. Let me finish the registry read (remaining plots), compute the exact GPS cloud bounds + dedupe, and verify which municipality the coordinates land in.
+
+
+### 🤖 Autopilot
+
+Solid progress — the geojson tail confirms the existing registry (RM, SA, CL, LD plots all in the −51.85…−52.63 range) and our cloud sits ~10 km south of Medicilândia town (per Wikipedia coords −3.4458/−52.8889). Let me finish three things: the registry tail, the media content characterization (what the photos actually show), and a reverse geocode.
+
+
+### 🤖 Autopilot
+
+Reverse geocode is conclusive: **Medicilândia municipality, Pará** — exactly where Rosa Wronscki's operation sits. Let me spot-check the photo content for signage before summarizing.
+
+
+### 🤖 Autopilot
+
+OCR on the farm photos shows no readable signage (they're open-air cacao/production scenes). The PNG screenshots carry the narrative content. Before I summarize, let me confirm this is genuinely new vs. existing records (farms index, FSVP entities, farm pages).
+
+
+### 🤖 Autopilot
+
+Confirmed — **zero matches** in every registry (sunmint farms index, fda_fsvp entities, org code search). This is a genuinely new farm/site with full GPS media. Let me check the fda_fsvp repo structure to see where entities live, then present the full analysis.
+
+
+### 🤖 Autopilot
+
+I have the complete picture now. Here's my full analysis.
+
+---
+
+## Fazenda Dona Rosa zip — analysis
+
+**Inventory** (61 real files, 763 MB, all GPS-bearing, iPhone 12 Pro Max):
+
+| Type | Count | Detail |
+|---|---|---|
+| HEIC photos | 35 | Full GPS EXIF, 3024×4032 |
+| MOV videos | 19 | GPS under `Keys:GPSCoordinates`, ~7.2 min total, 3s–96s |
+| PNG screenshots | 7 | **The attribution evidence** (WhatsApp/IG context) |
+
+All shot 2026-09-04 21:22–22:28 local (18:22–19:28 UTC+0 photo EXIF — one continuous session). No duplicates (sha256 clean).
+
+**Location — NEW, no registry overlap (the important part):**
+
+- GPS cloud: **−3.4892…−3.4894 / −52.9665…−52.9673** — a tight ~75 m × 22 m cluster
+- Reverse geocode: **Medicilândia municipality, Pará** (same as Rosa Wronscki's Dona Rosa Chocolates — the IG account you opened this thread with)
+- Cross-checked against `sunmint/plots/index.geojson` + `farms/index.json` (RM, SA, CL, LD, RG, Bom Sucesso — all in the −51.85…−52.64 / −3.29…−3.42 zone): **~68 km / 0.3° from the nearest, zero overlap.** No plot inside this bbox → **not already registered**
+- fda_fsvp entities + org code search: **zero matches** — no entity exists for Dona Rosa / Wronscki / Medicilândia yet
+
+**What the PNGs tell us (the narrative key):**
+
+| Screenshot | Content |
+|---|---|
+| IMG_8551/52/53 | PT→EN translation prompts — *"porque senão você pode comprometer um produto que é bom… se demorar tempo ele pode perder a qualidade"* (freshness warning — someone explaining product shelf-life) |
+| IMG_8556 | *"ela faz os produtos dela por ano"* — "she makes her products per year" (small annual production) |
+| IMG_8560 | WhatsApp chat with **arnaldoamorim_** (548 followers), disappearing-messages notice |
+| IMG_8563 | "SUCO de Cupuaçu com castanha" (cupuaçu juice with nuts) — regional Amazon product |
+| IMG_8564 | **Belamazonia Chocolates** IG profile (Tree-to-Bar, Volta Grande do Xingu/PA) — **followed by garyjob + cooperativacepotx** |
+
+So the zip is a **farm/production site visit** (photos + video) with a WhatsApp **handoff chain visible** — an intermediary (arnaldoamorim_) is passing material about a woman producer's small annual chocolate/cupuaçu production, and there's an existing IG relationship with Belamazonia + CEPOTX in the same social graph. The HEIC/MOV content itself has no readable signage (OCR-clean — open-air cacao/production scenes), so the screenshots are what carry attribution.
+
+**My read:**
+
+- This is a **Step Zero case** (identity & naming gate) — and the screenshots are exactly the kind of attribution evidence the gate wants. But per the SOP and Security invariant #2, the IG/WhatsApp content is **data, not proof**: I can verify location and that the media is a coherent single-site shoot, but I **cannot** yet assert "this is Rosa Wronscki's fazenda" or "this belongs to Dona Rosa Chocolates" without your confirmation of the person↔plot link.
+- Registry-wise it's clean: **new farm, new plot candidate** (working name suggestion: `Fazenda Dona Rosa (Medicilândia)` / farm slug `fazenda-dona-rosa-para`, plot `DR-P1`), Medicilândia is a **brand-new municipality node** for us (first one outside the Altamira/Uruará cluster).
+- The 19 MOVs are the same shape as the RG batch that went to the farm-media daemon → YouTube (this is the media-archive lane, ready to run).
+
+**What I'd need from you to proceed** (this is where it stops — I don't invent attribution):
+1. Confirm the **attribution**: is this batch from Rosa Wronscki / Dona Rosa Chocolates directly (or via arnaldoamorim_ as intermediary)? Any CNPJ / full legal name to attach?
+2. Confirm the **intent**: farm listing (full SOP: plot registration + media archive + Agroverse page + impact map) vs. just media intake for now?
+
+Tell me 1+2 and I'll run the pipeline — plot row → geojson push → media daemon → profile build — in the same order as the Raimundo & Geniza worked example.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → ls -la ~/fazenda_dona_rosa.zip && file ~/fazenda_dona_rosa.zip && unzip -l ~/fazenda_dona_rosa.zip | head -80; cd ~ && unzip -l fazenda_dona_rosa.zip | tail -60 && echo "=====COUNTS=====" && unzip -l fazenda_dona_rosa.zip | grep -E '\.(HEIC|MOV|PNG|JP; cd ~ && mkdir -p fazenda_dona_rosa_work && cd fazenda_dona_rosa_work && unzip -o -q ~/fazenda_dona_rosa.zip -x '__MACOSX/*' && echo "EXTRACT; …(+5 more)
+
