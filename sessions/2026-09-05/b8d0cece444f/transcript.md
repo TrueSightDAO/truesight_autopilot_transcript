@@ -10,175 +10,12 @@
 
 ### 🧑 Governor
 
-[CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
-Turn — [CONTEXT SUMMARY — turns 1–4 compacted, full history in transcript repo]:
-Turn — [CONTEXT SUMMARY — turns 1–10 compacted:
-• `ssh run` ×8 → cd /opt/truesight_autopilot && git checkout main 2>&1 | tail -2 && git pull --ff-only origin main 2>&1 | tail -2 && echo "=== head ===" && g; cd /opt/truesight_autopilot && sed -n '154,280p' app/tools/compact_session_tool.py; cd /opt/truesight_autopilot && date -u && echo "=== sessions by recency (top 15 touched) ===" && .venv/bin/python - << 'PYEOF' import os, js; …(+5 more)
-
-Turn — [Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be:
-• `ssh run` ×3 → cd /opt/truesight_autopilot && grep -n "def _load_or_create_session\|def _load_session\|_sanitise_tool_messages\|full_history" app/main.py | head -20 && echo "=== loader body ===" && sed; cd /opt/truesight_autopilot && sed -n '295,315p' app/main.py && echo "=== context 3090-3110 ===" && sed -n '3090,3110p' app/main.py; cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' import json import app.main as m from app.context_compaction import count_tokens def; …(+1 more)
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: §1d manual validation is **now fully complete including the live-ingestion proof**. Both compacted sessions were run through the *exact* turn-path sequence (`_load_or_create_session` loader → `_compac
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Go
-
-
-### 🤖 Autopilot
-
-Go received — PR2 (automatic wiring). First, refresh the PR2 spec from the plan and check the current wiring points:
-[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Interesting — the grep shows `main.py:35` already imports `compact_history`, and lines 5060–5097 already reference `settings.context_compaction_token_threshold` and call `compact_history(...)`. PR2 may be partially or fully wired already. Let me read the plan's PR2 section fully and inspect what's actually at that site in main.py:
-[2 tool result(s) compacted: read_tool_result, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Key discovery: **PR2's wiring already exists as uncommitted working-tree changes** — `_maybe_auto_compact` in main.py (with a docstring citing "Context compaction (PR2)"), config settings, and the line-35 import. `git log` shows no committed compaction wiring, so a killed in-flight turn left this uncommitted. Let me see exactly what's changed vs committed, where it's called, and whether tests exist:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR2's implementation already exists as uncommitted working-tree changes (a killed in-flight turn left it mid-flight): `_maybe_auto_compact` + config settings + call sites at 3107/4503 + a `tests/test_auto_compaction.py`. Let me review the full diff and test file state:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR2's implementation is complete as uncommitted work: `_maybe_auto_compact` wired into **both** turn sites (3107 streaming, 4503 blocking), config settings, line-35 import, and an 8-test suite. Let me verify tests import/run cleanly and check the rest of the test file:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The test file references `m._history_token_count` — let me confirm that helper exists in main.py (the in-flight work may have added it), then run the new test suite:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 8 PR2 tests pass. Now let me review the full `_maybe_auto_compact` implementation and the `_history_token_count` helper for correctness (checking the fast-path logic, the trim interplay, and whether it handles the char-count `_history_token_count` that `_trim_history_to_budget` uses), plus check what else is uncommitted:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me see the exact uncommitted diff for main.py to confirm precisely what the in-flight turn added, and confirm the settings constants exist:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR2's implementation is complete, well-crafted, and matches the plan spec exactly (both turn sites wired, backup-before-rewrite, env kill-switch, failure-never-fatal). The working-tree diff for `main.py`/`config.py` is *only* PR2 changes (+93 lines) plus the untracked 8-test file. Now run the full local gate suite:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Ruff clean. Now the full pytest suite — expecting 897 + 8 = **905 passed** with only the pre-existing config test failing:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The full suite exceeded the 60s SSH timeout. Let me run it with a longer timeout and capture output to a file:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-No pytest-timeout plugin. Run the full suite in the background, writing to a log, then poll:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All gates green: **905 passed, 1 failed** — the only failure is the same pre-existing `test_config_own_data_repos.py` PAT-literal assertion (unrelated to PR2; it also failed during PR0/PR1). It again leaked the PAT into the log — I won't repeat it; recommend rotation if this thread is shared externally. The background pytest finished (the "still running" was a stale match).
-
-PR2's changes are verified complete and correct. Now commit and push as PR #403 — branch off the current main, carrying exactly the PR2 files:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Commit `ee79653` created with exactly the 3 PR2 files (291 insertions; the unrelated working-tree dirt stayed unstaged). Now push and open the PR:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Branch pushed. The `open_pr` signature differs — let me check the actual keyword names:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-It uses `head`/`base`/`draft`. Opening the PR correctly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #403 is open. Verifying it carries exactly the 3 PR2 files:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #403 is clean: 3 files, exactly the PR2 changes (+291/−0). PR2 is ready for review and merge.
-
-## ✅ PR2 pushed — PR #403 open
-
-**🔗 https://github.com/TrueSightDAO/truesight_autopilot/pull/403** — `main ← feat/context-compaction-pr2`, non-draft, 3 files (+291/−0)
-
-### What I found (important)
-The redeploy-killed in-flight turn had already **fully implemented PR2 as uncommitted working-tree changes** — I verified every piece, ran the complete gate suite, and shipped it:
-- `app/main.py` +81 — `_maybe_auto_compact(history, session_id)` wired at **both** turn sites (`_stream_chat` ~3107, `_chat_blocking_turn` ~4503) between `_compact_old_tool_chains` and `_trim_history_to_budget`, inside the existing per-session lock. In-place `history[:] = compacted` (keeps the `_sessions[id]` list object live); pre-compaction `backup_session_file()` on disk; failure never fatal.
-- `app/config.py` +12 — `context_compaction_token_threshold` (default 20000) + `context_compaction_keep_last_turns` (default 6).
-- `tests/test_auto_compaction.py` +198 — 8 tests, all passing.
-
-### Gates (all green)
-| Gate | Result |
-|---|---|
-| `compileall` | ✅ rc=0 |
-| `ruff check` / `ruff format --check` | ✅ All passed / formatted |
-| `pytest` full suite | ✅ **905 passed**, 1 failed — only the pre-existing `test_config_own_data_repos.py` PAT-literal assertion (unrelated, same as PR0/PR1) |
-
-### Design compliance (plan §2 invariants)
-- ✅ Trigger token-count-based at turn start (20K threshold, fires before the observed 38–50K stall range)
-- ✅ Inside the existing per-session async lock (invariant 7)
-- ✅ Boundaries on full turns, never mid-tool-sequence (inherited from `compact_history`, §1d-proven)
-- ✅ Last K turns verbatim; older folded into `[CONTEXT SUMMARY]` reusing each turn's Done-report text
-- ✅ Pre-compaction backup + GitHub transcript audit trail untouched (invariant 1/2)
-- ✅ **Env kill-switch** `CONTEXT_COMPACTION_AUTO=0` — instant rollback without redeploy; thresholds tunable via env
-- ⚠️ **Now automatic** — day-one manual-only (invariant 8) was satisfied by PR1 + §1d validation; you gave the go for automatic wiring
-
-### RESUME HERE → merge #403 when you're ready
-CI will need to go green (same `test`/`smoke` workflow as #401/#402). Per the one-PR-per-turn rule I'm stopping here — say **"merge #403"** (or 👍) and I'll check CI and merge, then report.
-
-———
-**✅ Done this turn — actions taken:**
+[CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
+Turn — [CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
+Turn — [CONTEXT SUMMARY — turns 1–4 compacted,:
 • `ssh run` ×18 → cd /opt/truesight_autopilot && echo "=== PR2 wiring refs in main.py ===" && grep -n "_compact_old_tool_chains\|_trim_history_to_budget\|comp; cd /opt/truesight_autopilot && echo "=== 5040-5120 ===" && sed -n '5040,5120p' app/main.py && echo "=== git log for these lines ===" && git ; cd /opt/truesight_autopilot && echo "=== git diff --stat (compaction-relevant) ===" && git diff --stat app/main.py app/config.py && echo "==; …(+15 more)
 
-
-### 🧑 Governor
+---
 
  You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
 
@@ -408,21 +245,25 @@ Noted: nothing further needed from me on this. **Closing out** — no new work s
 ### 🤖 Autopilot
 
 The 👍 is the go for the close-out PR. Let me pull the current plan file + manifest to see exact checkbox format and whether Envoy already touched it:
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Reading the full plan tail (progress/rollout section + RESUME HERE) to update it accurately:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the final section of the plan (rollout/closeout checkboxes) so my edit matches the exact wording:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Reading the final rollout/closeout section of the plan:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -561,4 +402,41 @@ Both: **status `success`** · `TDG Issued: 0` (no TDG moved — that stays gover
 ———
 **✅ Done this turn — actions taken:**
 • `create dao submission` ×2 → Contribution submitted
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21264] Alright, close this diagram track and delete it. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me search for what "diagram" refers to — the manifest is large; looking for any diagram-related plan/track:
+
+
+### 🤖 Autopilot
+
+Let me resolve "diagram track" — checking the roadmap track map and code before assuming anything:
+
+
+### 🤖 Autopilot
+
+Let me check whether anything in the plans/manifest is actually diagram-track-related before I ask, since my searches came up empty:
+
+
+### 🤖 Autopilot
+
+I don't have a "diagram track" in my context — I searched for it and came up empty. Specifically I checked:
+
+- **agentic_ai_context** content search for "diagram track" and "diagram" → no track/plan named that
+- **Handoff manifest** (all active execution handoffs) → no diagram row
+- **TRACK_MAP.md** (the roadmap's active tracks) → no diagram track
+- **All plan files** in the repo → nothing diagram-titled
+- **Org-wide code search** → nothing diagram-track related
+
+So before I delete anything, can you point me at what you mean? A few guesses on my end — is it a Telegram topic/thread here in the group, a specific plan document, a repo, or a branch? If you can tell me the name or paste a link, I'll close and delete the right thing.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp/aac_ctx && echo "=== plan files with 'diagram' in title ===" && ls plans/ | grep -i diagram; echo "=== manifest rows mentioning diag
 
