@@ -375,6 +375,7 @@ Let me check thoroughly for those 3 videos — they may have landed somewhere ot
 ### 🤖 Autopilot
 
 Two new images landed (19:30, 19:36) but no `.mp4/.mov` in the Telegram inbox. However — I found something interesting: a recent video in the **media-archive daemon inbox** (`media_archive_inbox/farm-media/fazenda-santa-rosa/IMG_8281.mp4`, modified within the last 2h). The 3 videos may have been sent via the daemon-ingest path rather than as chat attachments. Let me check:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -522,4 +523,30 @@ Remaining steps whenever you're ready:
 3. Then the follow-ups: renaming the media manifest and media-raw folder to the `-para` id, anchoring the plot on-chain, and chasing the CEPOTX site code through Jedielcio.
 
 Just say the word when you've had a look.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] Have you shared a URL with me so I can proof on it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Let me verify the page is actually live before I share the URL:
+
+
+### 🤖 Autopilot
+
+Yes — the page is live and confirmed up (HTTP 200, hero = your photo). Here's your proofing URL:
+
+**https://beta.agroverse.shop/farms/fazenda-dona-rosa-para/**
+
+What's on it to check:
+- **Hero** — your photo (full-width, center 30%)
+- **Story** — Rosa Wronscki, first woman artisanal chocolate maker on the Transamazônica; 98 ha / 35 ha cacao since 1980; 6-day coxo fermentation; honey-cacao line
+- **Map** — DR-P1 centroid (−3.4893, −52.9669), Medicilândia, Pará
+- **Media** — 8 YouTube clips + 5 site photos in the gallery
+- **Links** — back-link to farms index, canonical → www.agroverse.shop/farms/fazenda-dona-rosa-para
+
+Note: I checked it renders and the meta/hero are wired correctly, but I can't *see* it — so your eyeball is the real proof. Once you've had a look and it's good, say the word and I'll promote it to production.
 
