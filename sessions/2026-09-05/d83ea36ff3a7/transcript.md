@@ -102,16 +102,24 @@ No AGL16 exists anywhere yet (registry maxes at AGL15). Let me check how fuel/ex
 ### 🤖 Autopilot
 
 Let me check this conversation's earlier history for AGL16 context and read the supply-chain runbook to see where fuel costs belong.
+[2 tool result(s) compacted: recall_context, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 AGL16 isn't in the Shipment Ledger Listing (registry currently runs AGL0–AGL15 + SEF1/PP1/TBM/BEC/MAIN) nor anywhere in context/repos — only as an ID-format example. Before I ask, let me OCR the receipt more aggressively to capture the full detail, and check the managed-ledgers index for anything recent.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The receipt is a **Posto Maverick (gas station)** card receipt. Amount reads vary between **R$ 458,82** and **R$ 458,88** across OCR passes — let me do a tight, targeted OCR of the amount region to pin it down.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -223,4 +231,94 @@ So "AGL16" can't be a destination ledger the GAS parser can route to yet, and I 
 Once you confirm, the booking will be via the expense CLI (dao_client): `[DAO Inventory Expense Event]`, `--inventory-type "Fuel top-up — Posto Maverick"`, `--inventory-quantity 458.88` (BRL), `--description "Fuel top up cost for AGL16"`, with the receipt image attached as proof. Nothing has been submitted yet.
 
 **RESUME HERE:** Receipt = Posto Maverick Visa crédito **R$ 458,88** (04/09), captioned "Fuel top up cost for AGL16". AGL16 is NOT a registered ledger (Shipment Ledger Listing ends AGL15; only doc-example mention exists). Awaiting Gary: AGL16 spreadsheet URL, "create it", or corrected ledger name → then book via dao_client expense CLI with attachment.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21628] 2
+
+
+### 🤖 Autopilot
+
+"2" = **create AGL16**, then book the expense. Let me understand the ledger-creation process before acting — reading the deploy script and how ledgers get registered.
+
+
+### 🤖 Autopilot
+
+Found it — `conventions/MANAGED_LEDGER_EXPLORER_PATTERN.md` has the "How to set up a new ledger" section. That's exactly what I need for creating AGL16.
+
+
+### 🤖 Autopilot
+
+"2" = **create AGL16**, then book. Before I create anything on production finance infra, let me check exactly what write tooling this box has (dao_client + .env, tokenomics checkout, GAS/Sheets service-account creds) — creating a ledger needs Drive+Sheets write, and booking the expense needs Edgar signing.
+
+
+### 🤖 Autopilot
+
+dao_client (0.2.0), tokenomics checkout, and `/home/ubuntu/.env` all exist on this box. Let me check the available Google service-account creds + how the managed-ledger JSON is published, so creating AGL16 uses the right write path.
+
+
+### 🤖 Autopilot
+
+"2" = create AGL16, then book the fuel expense. Before I write anything to production finance infra, I need to confirm which signing identity + which Google service account this box has — creating a ledger needs Drive/Sheets write (template copy + Main Ledger register), and booking the expense needs a signature.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the ledger-pattern doc — it may specify the exact creation tooling and who holds the write creds.
+
+
+### 🤖 Autopilot
+
+"2" = **create AGL16, then book the fuel expense**. The pattern doc gives the recipe (copy AGL template sheet → register in Shipment Ledger Listing with Program → publish JSON → book expense to it). Before I mutate production finance infra, one read-only probe: does the service-account key on this box have any access to the AGL template, and are the required write SAs present?
+
+
+### 🤖 Autopilot
+
+"2" = create AGL16, then book. One cheap read-only probe to confirm whether this box's service account can actually *write* (copy template → create sheet → register row), then I'll lay out the execution plan.
+
+
+### 🤖 Autopilot
+
+**Confirmed plan: create AGL16, then book the fuel expense to it.** Probing shows this box can do the full flow:
+
+- ✅ SA `agroverse-market-research` **can read the AGL template** (`1WoGS2…` — owned by garyjob@agroverse.shop)
+- ✅ Same SA is a **writer on the Main Ledger**, so I can register the new row in `Shipment Ledger Listing`
+- ✅ `dao_client` 0.2.0 expense module + Edgar signing identity present on box
+
+One gap before I execute — and it's a **required-input gap**, not a blocker I can guess around:
+
+## What is AGL16 *for*? (needed for correct metadata)
+The pattern doc is explicit: *"AI sessions creating new ledgers MUST prompt the operator for [Program] when it's not obvious."* A "fuel top-up" is an operational expense, not a shipment description — so AGL16's purpose isn't self-evident from the receipt. Creating a production ledger with the wrong description/program has real downstream effects (it surfaces on truesight.me program pages, `/aum`, treasury rollups).
+
+My default assumption, please confirm or correct in one line:
+- **Ledger ID:** AGL16
+- **Description:** *"Operational fund — Brazil logistics/fuel for cacao procurement (next Agroverse consignment)"* — or tell me the real purpose
+- **Transaction Type:** `DAO financed`
+- **Program:** `agroverse` ✅ (safe — matches all AGLs)
+- **Status:** ACTIVE
+
+## Then, the expense booking (once AGL16 exists)
+`[DAO Inventory Expense Event]` via dao_client:
+- DAO Member Name: Gary Teh
+- Target Ledger: **AGL16**
+- Inventory Type: `Fuel top-up — Posto Maverick (auto/combustível)`
+- Inventory Quantity: **458.88** (BRL — the receipt is R$, not USD; no FX assumed)
+- Description: `Fuel top up cost for AGL16`
+- Attachment: the receipt jpg (uploaded as proof)
+
+## Execution sequence (after your confirm)
+1. Copy AGL template → new sheet `AGL16 — <purpose>` (owned by SA)
+2. Register row in Shipment Ledger Listing (A=AGL16, C=ACTIVE, D=desc, H=`DAO financed`, AC=`agroverse`)
+3. Publish `AGL16.json` snapshot → treasury-cache
+4. Book expense via dao_client `--dry-run` first, show you, then submit + attach receipt
+5. Trigger GAS `parseAndProcessTelegramLogs` so the ledger reflects the deduction
+
+**One line to proceed:** e.g. *"AGL16 = Brazil fuel/ops for AGL16 consignment, agroverse, DAO financed — go"* — and I'll run steps 1–5.
+
+(If AGL16 is actually meant to be a *product/shipment* ledger like AGL13/14 — cacao batch from a farm — tell me the farm/batch and I'll adjust the description before creating.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → echo "=== dao_client present? ==="; ls -d /home/ubuntu/*dao* /home/ubuntu/dao_client 2>/dev/null; find /home/ubuntu -maxdepth 3 -iname "*.en; cd /home/ubuntu && echo "=== SA json creds on box ==="; find . -maxdepth 5 -name "*.json" -path "*credential*" 2>/dev/null | grep -v node_mo; cd /home/ubuntu && echo "=== .env identity (email only) ==="; grep -E "^EMAIL=" .env | sed 's/=.*@/=***@/'; echo "=== SA client_emails on bo; …(+2 more)
 
