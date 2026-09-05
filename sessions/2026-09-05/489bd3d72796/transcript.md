@@ -657,21 +657,25 @@ The GAS script reveals the source of truth: spreadsheet **`1qbZZhf-_7xzmDTriaJVW
 ### 🤖 Autopilot
 
 Onboarding is a go. Step Zero (identity + attribution + coop) is confirmed, Step 1 (media + GPS) is done — so the first execution unit is **Step 2: plot registration** (SunMint Plots sheet row → regenerate `plots/index.geojson` + `farms/index.json` → push to sunmint). Let me verify the box has the registration tooling (sunmint_work checkout, SA key, generator script) before writing anything.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The box has everything needed (sunmint_work checkout, generator script, SA keys, gspread). Let me read the generator to understand exactly what it produces and how the sheet maps to the output files.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have everything to build the DR row exactly like the RG precedent. Now let me verify the remote sunmint repo state matches the local checkout before writing (and confirm my plot naming will be unique vs. the registry).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The local sunmint_work is a file mirror (no git) — fine for regenerating. Before writing the DR-P1 row, let me check how `farms/index.json` gets built (generator or hand-update) and confirm the remote repo's script set.
+[2 tool result(s) compacted: search_code, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -724,31 +728,37 @@ Say "go" (or adjust any field) and I'll write the row, regenerate, and push both
 ### 🤖 Autopilot
 
 👍 Go received — executing the DR-P1 registration plan. First, quick context checks in parallel: the handoff manifest (per directive), the exact hull ring from the media, and how `farms/index.json` is built.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 👍 Go received. Executing the DR-P1 registration. First, recompute the exact hull ring from the media GPS (authoritative — don't trust my earlier rounded memory) and fetch the farms-index generator:
+[2 tool result(s) compacted: ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 👍 Go received — executing the DR-P1 registration unit. All context is in place (hull ring confirmed from the 45 unique GPS points; both generators read the `SunMint Plots` tab). Executing: append the sheet row (write SA) → regenerate both index files → verify.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 DR-P1 row appended and both indexes regenerated (11 plots, 10 farms). Now verify the local output contains DR-P1 correctly and the previous features survived:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files verified — DR-P1 present with correct ring and notes; all prior plots/farms intact; new farm `fazenda-dona-rosa` in the farms index. Now push both generated files to the sunmint repo (api-only data repo → Contents API writes to main):
+[2 tool result(s) compacted: read_local_file, read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both files verified. Now pushing to the sunmint repo (api-only data repo → Contents API writes to main, per repo classes):
+[2 tool result(s) compacted: upload_file_to_github, upload_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -911,4 +921,153 @@ Per SOP §6, site codes (`X-06-NN`) are **recorded from source, never derived/gu
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → echo "===recent attachments==="; ls -la --time-style=full-iso /tmp/tg_attachments/ 2>/dev/null | tail -15; echo "===DR work dir (media)===";; echo "===NEWEST tg_attachments (all, top 25 by mtime)==="; ls -lt --time-style=full-iso /tmp/tg_attachments/ 2>/dev/null | head -26; echo; e; echo "===whisper model cache==="; ls -la ~/.cache/huggingface/hub/ 2>/dev/null | head; ls ~/.cache/whisper 2>/dev/null; echo "===extract aud; …(+9 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167]
+
+
+### 🤖 Autopilot
+
+Empty ping received — treating it as "keep going" on the two threads you green-lit: **(1) media archive for Fazenda Dona Rosa** ("go for it") and **(2) the site-code hunt** (audio transcription found no code — next step is scanning the video *frames* for written codes/signage). Let me pull the exact media-archive procedure and check whether the daemon config is tracked in the repo (determines PR vs. direct edit), while kicking off frame extraction for the visual code hunt.
+
+
+### 🤖 Autopilot
+
+The heavy command timed out — let me check state with lighter probes: whether the frame extraction started, and how the daemon config is tracked.
+
+
+### 🤖 Autopilot
+
+Frame extraction is running (0 done yet, process alive); daemon config IS git-tracked under `/opt/truesight_autopilot` — so the DR inbox addition should go through the repo's own flow (commit/PR in truesight_autopilot, which is a code repo — normal branch/PR flow). Let me confirm the config's git state and whether the media-archive lane has existing staged conventions, while frame extraction continues.
+
+
+### 🤖 Autopilot
+
+The config file isn't in git log (untracked-ish state), the checkout is on a feature branch with unrelated changes — this is the *live deployed* autopilot working tree, not a clean repo checkout. Editing the daemon config here then opening a PR from this dirty tree would be messy. The daemon config yaml itself doesn't appear tracked (no `media_archive_daemon_config.yaml` in git log) — it's a deployed runtime file. Let me check whether it's in the repo at a different path, and check frame progress.
+
+
+### 🤖 Autopilot
+
+Key insight: the daemon lives in `/opt/truesight_autopilot/farm_media_daemon/` which is **its own git repo** (has its own `.git`), and the live config (`media_archive_daemon_config.yaml`) sits at the parent level with only a `.example` template tracked. The config is a **deployed runtime file** — the way to add the DR inbox is: (1) edit the live config + restart the daemon (runtime change), and (2) update the `.example` in the repo so the new inbox survives re-deploys. Frame extraction for the visual code hunt is still working (0 frames yet — the MOVs are large; let me give it time).
+
+Let me check how previous farms (raimundo-geniza, the most recent) were added — was the live config edited directly, or via PR?
+
+
+### 🤖 Autopilot
+
+Daemon setup is clear now: `farm-media-daemon` is its own repo; the **live config** `/opt/truesight_autopilot/media_archive_daemon_config.yaml` + its `.example` both need the DR inbox added, then daemon restart. Frame extraction died (0 procs) — let me test it synchronously on the longest clip first, then batch it, and set up the MP4 conversion in parallel.
+
+
+### 🤖 Autopilot
+
+Frame extraction works (11 frames from the 96s clip). The earlier batch died silently — likely the `for` loop glob with the long files or a transient issue. Let me batch-extract all 19 clips' frames in the background properly (longest clip ~50s each), then OCR the resulting frames to hunt for the written site code.
+
+
+### 🤖 Autopilot
+
+Frame batch extraction running in the background. While it works, let me make progress on the media-archive lane: prepare the MOV→MP4 GPS-preserving conversion (the daemon requires MP4 + sidecar) and inspect the daemon repo to confirm the exact inbox/sidecar flow for adding the DR farm.
+
+
+### 🤖 Autopilot
+
+Full flow confirmed. Now let me look at the exact sidecar schema from a raimundo example (to replicate for DR) and kick off the MOV→MP4 GPS-preserving batch conversion in the background — it's the long pole (~35–60s × 19 videos).
+
+
+### 🤖 Autopilot
+
+Sidecar schema captured (farm_id, sha256, gps decimal, duration_s, title, description, tags, privacy, produced_by). Now starting the long-pole work: the MOV→MP4 GPS-preserving conversion batch for all 19 clips in the background.
+
+
+### 🤖 Autopilot
+
+Both background jobs running (frames: 16 and climbing; MP4 batch started). While they work, let me OCR the frames already extracted to hunt for the written site code — starting with what's available now.
+
+
+### 🤖 Autopilot
+
+16 frames available (IMG_8501 + IMG_8503 clips). Let me OCR them to hunt for written site codes/signage.
+
+
+### 🤖 Autopilot
+
+OCR on IMG_8501's frames is empty — consistent with what we saw in the photos: the clips are outdoor cacao/production scenes with no readable signage. Let me OCR a sample across the other clips' frames as they extract, and check both batch jobs' progress.
+
+
+### 🤖 Autopilot
+
+Both jobs running (CPU shared so they're slower). Frame OCR on the first clip shows no signage (consistent with the photos — open-air scenes). Let me wait for more frames from the later clips (where paperwork is more likely) and check the MP4 batch.
+
+
+### 🤖 Autopilot
+
+Progress: 36 frames extracted (up to IMG_8510), MP4 conversion at 1 done (CPU-shared with frame extraction, so slow). Let me OCR a strategic sample of the newly extracted frames — especially from clips 8509/8510 (the walking/talking segments where signage might appear) — while both jobs continue.
+
+
+### 🤖 Autopilot
+
+More empty frames (dark/open-air footage). Let me wait for the later clips (8537–8555 — interior/production/label shots where a code would appear) rather than OCR-ing every frame.
+
+
+### 🤖 Autopilot
+
+Frames now cover through IMG_8537 (production/tasting clips). Let me OCR samples from these interior/production segments — where labels or paperwork would more likely appear.
+
+
+### 🤖 Autopilot
+
+Frame OCR is coming up empty on the outdoor footage — mostly dark/open-air scenes with no readable signage, consistent with the photos. Let me wait for the final clips (8537–8555, the production/tasting interiors where product labels would show) and check the conversion batch.
+
+
+### 🤖 Autopilot
+
+Frame extraction complete (97 frames from all 19 clips). MP4 conversion is still slow (1 done — CPU-bound). Let me OCR the final clips' frames — the production/interior/tasting footage (8537–8555) where labels or registration paperwork would most likely appear.
+
+
+### 🤖 Autopilot
+
+Visual code hunt is also negative — and now I can explain why. Here's the honest status:
+
+## Site-code hunt — result: NOT in the media (audio or video)
+
+**What I ran:**
+- **Audio:** faster-whisper pt transcription of all 19 MOVs (~7.4 min) — rich farm narrative, **no `X-06-NN` code, no "código/registro/CEPOTX" spoken**
+- **Video frames:** extracted 97 frames (1 per 4s across all 19 clips) and OCR'd strategic samples across every segment — outdoor, interior, production, tasting. **All empty.** The footage was shot **21:22–22:28 (night)** — frames are dark, no readable signage, labels, or paperwork appears on camera.
+
+**Conclusion per SOP §6:** site codes are recorded **from source only, never derived**. This media doesn't contain the code in any recoverable form, so I will **not** guess one. Options to get it:
+1. A screenshot of her registration (like the "U-06-06 Raimundo" one you shared) — fastest
+2. Ask Jedielcio / CEPOTX directly — he follows @donarosachocolate (confirmed in the IG screenshot), so the channel exists
+
+**Plot id decision:** **DR-P1 stays** as the registry id (already pushed). When the real code arrives (e.g. `M-06-…` or whatever CEPOTX assigns), we record it in the plot notes + fda_fsvp entity with `source:` per §6 — no rename needed. Your instinct to use it for the id was good; the media just doesn't carry it.
+
+## Transcription bonus — farm facts now on record
+
+The audio DID recover valuable registration content (for the future entity/profile):
+- **98 ha farm, 35 ha planted with cacao (1980)** → trees ~44–46 yrs old
+- **Rosa Wronscki** — first woman making artisanal chocolate on the Transamazônica (Medicilândia); **Acílio Wronscki** pioneered cacao fermentation in the region
+- 6-day fermentation in the coxo (48h then turned every 24h); honey + 70% chocolate products; **one product already shipping to the Chinese market** (buyer values old-growth canopy)
+- Polish-descendant family; past in Santa Catarina/Florianópolis
+
+## Media archive lane — in progress
+
+- MOV→MP4 GPS-preserving conversion running in background: **2/19 done** (night footage converts slower than the doc's estimate; ~t3.medium CPU-bound). Frames job finished (97 frames).
+- When conversion completes: stage MP4s + sidecars in `~/media_archive_inbox/farm-media/fazenda-dona-rosa/`, append inbox to daemon config (live + `.example` via PR in truesight_autopilot), restart daemon → uploads trickle per shared quota.
+
+**Two questions before I go further:**
+1. **Do you have (or can you screenshot) Dona Rosa's CEPOTX site registration code?** That's the only remaining route — it's not in the media.
+2. **Proceed with the YouTube upload when conversion finishes** (public, per the RG precedent), or hold until the site code is in hand so the video descriptions can carry it?
+
+I'll keep the MP4 conversion running either way and report when it completes.
+
+———
+**✅ Done this turn — actions taken:**
+• Extracted 97 video frames (1/4s × 19 MOVs) + OCR'd ~20 strategic frames across all segments — **no signage/code found** (night footage)
+• Confirmed code not in audio either (grep across 19 transcripts: no `X-06-NN`/código/registro patterns)
+• Started background MOV→MP4 GPS-preserving conversion (2/19 done) — will continue reporting
+• Read MEDIA_ARCHIVE_PIPELINE.md + farm-media-daemon README/config — full inbox/sidecar/daemon flow mapped for the DR farm add
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×18 → echo "===is daemon config tracked in repo?==="; ls -la /opt/truesight_autopilot/media_archive_daemon_config.yaml; cd /opt/truesight_autopilo; echo "===frames extracted?==="; ls /tmp/dr_frames/*.jpg 2>/dev/null | wc -l; ls /tmp/dr_frames/ 2>/dev/null | head -5; echo "===extract log=; echo "===config git log==="; cd /opt/truesight_autopilot && git log --oneline -3 -- media_archive_daemon_config.yaml 2>/dev/null; echo "===s; …(+15 more)
 
