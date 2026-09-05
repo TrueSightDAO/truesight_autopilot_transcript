@@ -448,26 +448,31 @@ PR2's implementation already exists as uncommitted working-tree changes (a kille
 ### 🤖 Autopilot
 
 PR2's implementation is complete as uncommitted work: `_maybe_auto_compact` wired into **both** turn sites (3107 streaming, 4503 blocking), config settings, line-35 import, and an 8-test suite. Let me verify tests import/run cleanly and check the rest of the test file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The test file references `m._history_token_count` — let me confirm that helper exists in main.py (the in-flight work may have added it), then run the new test suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 8 PR2 tests pass. Now let me review the full `_maybe_auto_compact` implementation and the `_history_token_count` helper for correctness (checking the fast-path logic, the trim interplay, and whether it handles the char-count `_history_token_count` that `_trim_history_to_budget` uses), plus check what else is uncommitted:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the exact uncommitted diff for main.py to confirm precisely what the in-flight turn added, and confirm the settings constants exist:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR2's implementation is complete, well-crafted, and matches the plan spec exactly (both turn sites wired, backup-before-rewrite, env kill-switch, failure-never-fatal). The working-tree diff for `main.py`/`config.py` is *only* PR2 changes (+93 lines) plus the untracked 8-test file. Now run the full local gate suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -613,4 +618,95 @@ Say **"go deploy"** (or 👍) and I'll run the deploy + post-deploy verification
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot && timeout 240 .venv/bin/python - << 'PYEOF' import time from app.github_client import GitHubClient gh = GitHubC
 • `merge pr` → ✅ PR #403 on truesight_autopilot merged successfully (sha: 2a05df168cc1d8c4b5a784232ff25711c1910451). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21264] Deploy it now so it's actually live, then verify - check that the kill-switch env var defaults correctly (compaction on) and that a real live turn on a session near/over the threshold triggers compaction cleanly.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+Deploy authorized — running the deploy of merged main (PR2 auto-compaction), then verifying. Starting with the deploy:
+
+
+### 🤖 Autopilot
+
+Deploy tool reports no-op (already at merged commit `2a05df16`). But "no restart" means I must verify the *running process* actually executes PR2 code — not just that files on disk have it. Checking ground truth: running process + start time vs code write time, this thread's session state, and env-default logic:
+
+
+### 🤖 Autopilot
+
+Deploy tool: no-op (already at merged sha). But the process table tells a bigger story — uvicorn restarted at **18:14:11** (after PR2 code mtime 17:07), and the pre-compact backup list shows **9 auto-compaction backups across 4 real sessions between 17:56–18:29** — including at 18:15 and 18:29, i.e. *after* the current process started. Auto-compaction appears to already be firing live. Verifying precisely — env defaults on the running process, log evidence, and the most-recently auto-folded session's shape:
+
+
+### 🤖 Autopilot
+
+The deploy is effectively **already live** — and better: the journal proves the running service has been auto-compacting real sessions for the last ~20 minutes (pids 623650 → 648453, the current uvicorn). Key facts so far:
+- **Kill-switch defaults**: `/proc/648453/environ` has **no** `CONTEXT_COMPACTION_*` vars → all defaults → `AUTO=1` (compaction **ON**), threshold 20000, keep 6. ✅
+- **Live auto-compactions logged**: `18:13:51 d6a0767ddfc8: 75→68`, `18:15:43 489bd3d72796: 141→120`, `18:29:11 489bd3d72796: 142→99` — all by the current live process (648453), each preceded by a backup line. ✅
+
+One loose end: my summary-marker count showed 0 — likely a case-sensitivity bug in my grep (`COMPACTED]` vs the actual marker). Verifying the folded summary is actually in those files, plus confirming the service unit has no env override:
+
+
+### 🤖 Autopilot
+
+All verified. Summary markers are present in all four auto-compacted sessions (3/6/1/1 folds respectively) — my earlier count of 0 was a broken grep pattern. The service unit has no `CONTEXT_COMPACTION_*` override in Environment or `.env`, so the running process uses pure defaults. Checking one last thing — that `.env` doesn't disable it:
+
+
+### 🤖 Autopilot
+
+All verification complete — no further tool calls needed. Here's the full picture:
+
+## ✅ Deploy + verification COMPLETE — auto-compaction is LIVE and firing in production
+
+### 1. Deploy status — already live on merged main
+- `deploy_autopilot`: no-op — box is at merged sha `2a05df16` (#403).
+- **Running process is serving PR2 code**: uvicorn `app.main` pid **648453** started **18:14:11**, *after* PR2's code mtimes (main.py 17:07, config.py 17:06). Service unit `truesight-autopilot.service` active/running, ActiveEnterTimestamp 18:14:11. The earlier redeploy you mentioned was this same 18:14 restart.
+
+### 2. Kill-switch defaults — compaction ON ✅
+- `/proc/648453/environ`: **no** `CONTEXT_COMPACTION_*` vars
+- `.env`: no `CONTEXT_COMPACTION_*` keys
+- Service unit `Environment`: PATH only
+- → **All defaults apply: `AUTO=1` (ON), threshold 20000, keep_last_turns 6.** No override anywhere.
+
+### 3. Real live turns triggering compaction — PROVEN by journal ✅
+The **current live process (648453)** has auto-folded real sessions, each preceded by a backup line:
+| Time | Session | Fold | Log |
+|---|---|---|---|
+| 18:15:43 | `489bd3d72796` | 141→120 msgs | `INFO:autopilot:Auto-compacted session … 6 turns kept verbatim (threshold=20000)` |
+| 18:29:11 | `489bd3d72796` | 142→99 msgs | same, preceded by `Backed up … pre-compact-20260905T182911Z.json` |
+
+(Earlier folds at 17:56–18:13 — `c4b3acc14d30`, `b8d0cece444f`, `d6a0767ddfc8` — were the pre-restart process 623650 running the same code; that process had also loaded the PR2 working tree.) No errors logged on any fold.
+
+### 4. Folded-session integrity ✅
+- `[CONTEXT SUMMARY — turns N–M compacted, full history in transcript repo]` user messages present: `489bd3d72796` ×3, `b8d0cece444f` ×6, `c4b3acc14d30` ×1, `d6a0767ddfc8` ×1
+- All 4 files load in exact `_log_session` shape (`session_hash/updated_at/message_count/full_history`), counts consistent
+- **10 pre-compact backup files on disk** (full recovery originals)
+
+### Honest caveat — oscillation on hyper-active sessions
+`489bd3d72796` is at 111 msgs / **27.7K tokens right now** — *above* threshold again, because it's an extremely active session (12 messages arrived in the ~30 min after its last fold). This is **designed behavior**: it folds at the start of every turn once over 20K, so it never reaches the old 38–50K stall zone — the fold is what keeps the LLM call's context bounded. If you'd rather it stay lower, tune `CONTEXT_COMPACTION_TOKEN_THRESHOLD` (env var, no code change) — but 20K firing as-is is doing exactly its job.
+
+### Summary vs your three asks
+- **Kill-switch default**: ✅ ON (AUTO=1 via no-override → defaults)
+- **Real live turn near/over threshold → compaction**: ✅ 2 folds by the current process in the last 20 min, backups + summaries + clean shape verified
+- **Deployed live**: ✅ serving merged main since 18:14:11
+
+## RESUME HERE → optional follow-ups
+1. **Watch the next stall-risk window** — I can check back later that no session exceeds ~35K before folding (or you 👍 and I'll pull a session-token census in a few hours).
+2. **Close out the plan doc** — mark `SOPHIA_CONTEXT_COMPACTION_PLAN.md` PR2/rollout checkboxes complete with this verification evidence (small PR to agentic_ai_context) when you want the paper trail finalized.
+3. Optionally tighten threshold for the hyper-active session if 20K is too loose for your taste.
+
+Otherwise: **PR0→PR1→§1d→PR2→deploy→live-verify is fully done.** 🎉
+
+———
+**✅ Done this turn — actions taken:**
+• `deploy autopilot` → Already on the latest commit 2a05df16 — no deploy needed. Did NOT restart. Do not retry.
+• `ssh run` ×9 → cd /opt/truesight_autopilot && echo "=== git state ===" && git branch --show-current && git log --oneline -2 && echo "=== processes ===" && ; cd /opt/truesight_autopilot && echo "=== pre-compact backups present ===" && ls -la sessions/*.pre-compact* 2>/dev/null; echo "=== this thre; cd /opt/truesight_autopilot && echo "=== config defaults ===" && grep -n "CONTEXT_COMPACTION\|context_compaction" app/config.py && echo "===; …(+6 more)
 
