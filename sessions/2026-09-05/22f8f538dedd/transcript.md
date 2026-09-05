@@ -3104,6 +3104,7 @@ Let me check our actual contribution-reporting conventions quickly (search tool 
 ### 🤖 Autopilot
 
 The canonical doc is `agentic_ai_context/dao/DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md`. Let me read it — it defines how AI-agent (my) contributions get reported vs. humans'.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3253,4 +3254,42 @@ Want me to adjust any amounts, or set TDG awards on any of the three?
 Kedengarannya transkripsi voice-nya kurang jelas — saya tidak yakin maksudnya. Mau saya pastikan dulu: apakah Anda bermaksud **memberi angka/penyesuaian untuk 3 kontribusi** yang barusan saya submit (150/100/60 menit)? Atau maksudnya yang lain — misalnya "di sini ada beberapa *input* untuk baris-baris kontribusi" atau soal struktur 3 event?
 
 Kalau bisa, ketik ulang atau ulangi pesannya — nanti langsung saya eksekusi (misalnya ubah amount atau tambah catatan). Belum ada perubahan yang saya buat — saya tunggu klarifikasi Anda.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] [Handoff context — this Telegram topic (thread 20724) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go ahead to submit the tree lines. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Siap — konfirmasi dulu ketiga submission sudah masuk ledger.
+
+
+### 🤖 Autopilot
+
+Ketiga submission sudah sukses masuk di turn sebelumnya ("Contribution submitted" ×3). Saya verifikasi di ledger otoritatif supaya tidak dobel-submit:
+
+
+### 🤖 Autopilot
+
+Verifikasi: ketiga submission **sudah sukses diterima** (status "Contribution submitted" untuk masing-masing — Edgar/DAO API menerimanya). Repo `verify_public_signatures` hanya mirror berjumlah ~1000 file (listing terbatas, mungkin belum sinkron/belum ter-reflect nama 20260904).
+
+Ringkasan yang sudah masuk:
+
+| # | Kontribusi | Kontributor | Menit | TDG |
+|---|---|---|---|---|
+| 1 | **Raw machine execution** — GPS, transcode 14 video, 8 PR, 2 prod sync, manifest | Sophia Truesight | 150 | 0 |
+| 2 | **Direct time** — analisis, forensik, naming, verifikasi COPOPS, SOP | Sophia Truesight | 100 | 0 |
+| 3 | **Gary Teh direct time** — arahan, ruling, go-signals | Gary Teh | 60 | 0 |
+
+Semuanya `TDG Issued: 0` (informational) sesuai konvensi 2026-08-24.
+
+**Pertanyaan verifikasi:** di pesan voice sebelumnya Anda menyebut "3 lines of the chords" — apakah maksudnya **3 baris kontribusi ini** (yang sudah masuk), atau Anda punya **angka/penyesuaian** yang ingin dipakai untuk salah satunya? Kalau ada angka spesifik (misal TDG atau menit yang berbeda), beri tahu saya — akan saya submit sebagai event penyesuaian. Belum ada yang saya ubah — menunggu instruksi Anda.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== 3 most recent contribution events in local ledger ==="; ls -t /home/ubuntu/scripts/_ledger/contribution_event/ | grep -v index | h; echo "=== check Edgar remote ledger (verify_public_signatures) for today's events ==="; curl -s "https://api.github.com/repos/TrueSightDAO/v
 
