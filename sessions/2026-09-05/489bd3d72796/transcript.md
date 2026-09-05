@@ -10,66 +10,12 @@
 
 ### 🧑 Governor
 
-[CONTEXT SUMMARY — turns 1–4 compacted, full history in transcript repo]:
-Turn — [TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and c:
-• `ssh run` ×13 → echo "===RG/cleide photo archive conventions==="; find /home/ubuntu -maxdepth 4 -iname '*.jpg' -path '*raimundo*' 2>/dev/null | head -3; fin; echo "===DR HEIC inventory==="; ls ~/fazenda_dona_rosa_work/*.HEIC 2>/dev/null | wc -l; du -ch ~/fazenda_dona_rosa_work/*.HEIC 2>/dev/null |; echo "===config.py farm-media-raw ref==="; grep -n -A3 -B3 'farm-media-raw' /opt/truesight_autopilot/app/config.py; echo "===farm-media-raw ; …(+10 more)
-• `upload file to github` → https://docs.github.com/rest/repos/contents#create-or-update-file-contents
-
-Turn — [Telegram context: chat_id=-1003919341801, thread_id=21167] [Handoff context — this Telegram topic (thread 21167) may be:
-• `upload file to github` → https://github.com/TrueSightDAO/farm_media_manifests/blob/main/index.json
-
----
-
-[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
-
-
-### 🤖 Autopilot
-
-Landing a clean handoff — the Fazenda Dona Rosa farm page is **built and validated locally**, ready to ship. Here's the state.
-
-## ✅ Done this turn — DR farm page built (clone of RG template)
-
-**Naming decision resolved:** I proceeded with **B — keep `fazenda-dona-rosa`** as the canonical id (already pushed consistently: sunmint registry, manifest, media-raw, daemon inbox) and built the page slug to match → the impact-map popup resolves with **no FARM_SLUG entry** (SOP §5). Correcting my earlier A-recommendation: A's `-para` suffix was unnecessary churn — no name collision exists, and the already-pushed artifacts shouldn't ripple.
-
-**Hero selection (evidence-based, per conventions §1):** No Grok key on-box, so I ran **YuNet face detection across all 35 JPGs** + luminance/sharpness/color metrics:
-- **19/35 contain faces** (night visit, but usable people shots exist)
-- **IMG_8515** = best hero candidate by every objective metric: landscape, **2 faces**, sharpest (Laplacian 5243), good color (76), well-lit (118)
-- Strong alternates: IMG_8535 (sharp 3163), IMG_8536 (3 faces), IMG_8561 (3 faces)
-- ⚠️ **I have not visually confirmed content** (no vision available on-box). This is the one thing I'd want your eyes on before publishing — see below.
-
-**Page built at `~/dr_web/fazenda-dona-rosa.html` + `media.json`** — all validations pass:
-| Check | Status |
-|---|---|
-| Title/canonical/og/twitter → DR (single-suffix, gotcha #9) | ✅ |
-| Story → Rosa Wronscki, 98 ha / 35 ha cacao since 1980, coxo fermentation, COOPOXIN/CEPOTX, DR-P1 | ✅ |
-| Highlights → COOPOXIN, site visit 04 Sep 2026, agroforestry, 70% honey chocolate | ✅ |
-| Map → DR-P1 centroid **−3.4893/−52.9669**, Medicilândia, marker+popup, Google-Maps DMS link | ✅ |
-| **Mandatory post-clone token grep (gotcha #8): LEFTOVER: NONE** | ✅ |
-| media.json → 8 YouTube (real yt_ids from manifest) + 6 images, literal UTF-8, `{type: youtube, videoId, title, caption}` | ✅ |
-| Media gallery hook `id="media-gallery"` present | ✅ |
-| Shipments copy → DR-appropriate (sourcing farm, Chinese-market line) | ✅ |
-
-## ⚠️ Remaining before the page goes live (blocking)
-
-1. **Hero/gallery visual confirmation** — I picked IMG_8515 (2 faces, sharpest) by metrics but haven't seen it. Quickest path: **you glance at the 4–6 candidate JPGs** (I can send them as Telegram attachments next turn) or tell me to proceed on metrics. I will NOT publish a scenery-as-hero against conventions §1.
-2. **Web-optimized assets upload** — the 35 web JPGs sit at `~/dr_web/assets/*.jpg`; hero needs `fazenda-dona-rosa-hero.jpg` + gallery `fazenda-dona-rosa-img_8515.jpg` etc. → `agroverse_shop_beta/assets/images/farms/` (binary → `upload_local_file_to_github`).
-3. **Page files to repo** — `farms/fazenda-dona-rosa/index.html` + `media.json` → agroverse_shop_beta (code repo → git_push_changes PR).
-
-## RESUME HERE → next turn
-
-1. (Optional) Send you hero candidates IMG_8515/8535/8536/8561 for a 2-second eyeball → your pick (or "proceed").
-2. Upload assets: `upload_local_file_to_github` ×~7 (hero + 6 gallery JPGs) → `agroverse_shop_beta/assets/images/farms/fazenda-dona-rosa-*.jpg`
-3. PR the page: `git_push_changes(repo=agroverse_shop_beta, branch=add/fazenda-dona-rosa-farm, writes=[farms/fazenda-dona-rosa/index.html, media.json])` → merge
-4. Beta verify `beta.agroverse.shop/farms/fazenda-dona-rosa/` → **HOLD for your explicit go before `sync_beta_to_prod`** (never auto-promote)
-
-Everything after that: on-chain anchor at DR-P1 centroid, then the CEPOTX site code via Jedielcio when you have it.
-
-———
-**✅ Done this turn — actions taken:**
+[CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
+Turn — [CONTEXT SUMMARY — turns 1–4 compacted, full history in transcript repo]:
+Turn — [TURN DIRECTIVE] You have used 23 of 30:
 • `ssh run` ×19 → echo "===HEIC inventory==="; ls -la ~/fazenda_dona_rosa_work/*.HEIC 2>/dev/null | head -40; echo "count:"; ls ~/fazenda_dona_rosa_work/*.HEI; set -e; mkdir -p ~/dr_web/assets && cd ~/fazenda_dona_rosa_work; for f in *.HEIC; do b="${f%.HEIC}"; convert "$f" -resize '1600x1600>' -qual; cd ~/dr_web/assets && ls *.jpg | head -3; echo "===grok client usage==="; head -60 /opt/truesight_autopilot/app/grok_client.py | grep -E 'de; …(+16 more)
 
-
-### 🧑 Governor
+---
 
  You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
 
@@ -238,31 +184,37 @@ Say **"go"** and I'll beta-verify + continue the sweep.
 ### 🤖 Autopilot
 
 Gary — I don't see an attachment on this message (no file path came through). Let me check the attachments inbox for a recent upload:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Most recent image: `6b4dd324cee348989ccd0cba6b436855.jpg` (18:11, 147 KB) — that's likely the hero candidate. Let me inspect it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Got the image (1280×960 JPEG, 147 KB, no EXIF/GPS — likely a forwarded photo). The YuNet model isn't at that path — let me find where it actually lives (it ran earlier on the 35 JPGs):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found the model at `/tmp/cascades/`. Let me run face detection on the new image:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is a strong hero candidate — **1280×960 landscape, 3 faces detected at high confidence (0.90–0.92), well-lit** (overall lum 133). Good people-first hero per conventions §1. Converting it to the web hero and swapping it in to replace IMG_8515:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Hero prepared (1280×960, 172 KB). Also archiving the original to the farm-media-raw photo set (it's a Dona Rosa farm photo — should live with the other 35), then pushing both:
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -453,4 +405,76 @@ I'll wait for the transfer to complete. Give me a moment to confirm all 3 landed
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → echo "===ALL tg_attachments (full, sorted)==="; ls -lat /tmp/tg_attachments/ | head -40; echo; echo "===any video files anywhere on disk, ne; echo "===media_archive_inbox tree (recent)==="; find /home/ubuntu/media_archive_inbox -type f -newermt '2026-09-05 17:00' 2>/dev/null | head; echo "===fazenda-santa-rosa folder==="; ls -la /home/ubuntu/media_archive_inbox/farm-media/fazenda-santa-rosa/ 2>/dev/null; echo; echo "===a; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] The 3 are from regarding dona Rosa not sure why they landed up in the Santa Rosa folder
+
+
+### 🤖 Autopilot
+
+Understood — those 3 are Dona Rosa footage that got misrouted into the Santa Rosa ingest folder. Let me check the current state (all 3 in yet?) and see how the daemon decided the folder, so I can move them correctly and flag the routing bug:
+
+
+### 🤖 Autopilot
+
+All 3 videos are now in: **IMG_8281.mp4 (17.4 MB), IMG_8282.mp4 (22.4 MB), IMG_8286.mp4 (42 MB)** — all in the `fazenda-santa-rosa` folder, with ffmpeg still transcoding IMG_8286 (that's why it's growing). The source uploads are `.MOV`/direct and they're being converted to mp4. Let me read the daemon config to see how the folder routing works:
+
+
+### 🤖 Autopilot
+
+All 3 videos are in (IMG_8281 ✅ 17.4 MB, IMG_8282 ✅ 22.4 MB, IMG_8286 ⏳ still transcoding at 42 MB — ffmpeg is running on it right now). Let me find the source `.MOV` files and figure out what mechanism chose the `fazenda-santa-rosa` folder:
+
+
+### 🤖 Autopilot
+
+All 3 sources are in `~/santa_rosa_work/` (IMG_8281/8282/8286.MOV) — and interestingly there are **already transcription artifacts** (`/tmp/sr_stt/IMG_828*.txt`, wavs, frames) from ~17:05–17:11, likely from an earlier send that the redeploy killed. Let me read what's there and check the routing:
+
+
+### 🤖 Autopilot
+
+Understood — 3 Dona Rosa clips that got routed to the Santa Rosa folder. Let me verify final state (is the IMG_8286 conversion done? has anything been uploaded?) and get the GPS/durations so I can explain exactly how the misroute happened:
+
+
+### 🤖 Autopilot
+
+Let me read the full config (it was truncated) to see how `santa_rosa_work` maps to the farm folders, and check the archive daemon's routing logic:
+
+
+### 🤖 Autopilot
+
+All 3 received — plus a 4th landed too. Here's the full picture:
+
+## 📥 Received — in `~/media_archive_inbox/farm-media/fazenda-santa-rosa/`
+
+| File | Size | Duration | Received |
+|---|---|---|---|
+| IMG_8281.mp4 | 17.4 MB | 12.5s | 19:38 ✅ |
+| IMG_8282.mp4 | 22.4 MB | 21.1s | 19:40 ✅ |
+| IMG_8286.mp4 | 88.7 MB | 54.2s | 19:43 ✅ |
+| IMG_8293.mp4 | 8.4 MB+ | still converting | 19:43 ⏳ (a 4th?) |
+
+**Rough transcripts** (from an earlier STT pass over the same source MOVs — raw Whisper, garbled):
+- **IMG_8281**: "Opa! É indo vir aqui! Opa! Pronto!" — arrival/greeting banter
+- **IMG_8282**: "Olá!" — short greeting only
+- **IMG_8286**: "…a jaca é na baía… muito jaca… jaca é quantos anos?" — jackfruit-tree talk (garbled)
+
+## 🔍 Why they landed in the Santa Rosa folder (the routing bug)
+
+The files came in through the **media converter running out of `~/santa_rosa_work/`** (the source `.MOV`s IMG_8281/8282/8286/8293 live there, dated Sep 3), which transcodes into `farm-media/fazenda-santa-rosa/`. That folder association comes from the archive-roots mapping (`santa_rosa_work` ↔ `fazenda-santa-rosa`), not from anything in your message.
+
+**Good news:** `fazenda-santa-rosa` is **NOT** in the daemon's watched-`inboxes:` list (that list is only cleide, paulo-la-do-sitio, santa-anna-fazenda, jedielcio, raimundo-geniza-para, fazenda-dona-rosa) — so **nothing has been auto-uploaded to YouTube**. The daemon log shows no activity since 19:30. They're sitting safely in the inbox, not published anywhere.
+
+## Next — how do you want me to handle them?
+
+1. **Move to the Dona Rosa inbox** (`farm-media/fazenda-dona-rosa/`) so they route correctly + transcribe all 3 fresh from the mp4s → report "what was said" properly.
+2. Just **transcribe them in place** (no move) and report content.
+3. **Also investigate the misroute root-cause** — the `santa_rosa_work` converter association looks stale/wrong if these are DR clips; I can file a follow-up (OPEN_FOLLOWUPS.md) + propose a config fix.
+
+And is **IMG_8293** also one of yours (a 4th Dona Rosa clip), or is that leftover Santa Rosa material that should stay put?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → echo "===santa-rosa inbox now==="; ls -la /home/ubuntu/media_archive_inbox/farm-media/fazenda-santa-rosa/ 2>/dev/null; echo; echo "===dona-r; cat /opt/truesight_autopilot/media_archive_daemon_config.yaml; echo "===example==="; cat /opt/truesight_autopilot/media_archive_daemon_confi; echo "===find source MOVs for the 828x set==="; find /home/ubuntu /tmp -type f \( -iname 'IMG_8281*' -o -iname 'IMG_8282*' -o -iname 'IMG_82; …(+3 more)
 
