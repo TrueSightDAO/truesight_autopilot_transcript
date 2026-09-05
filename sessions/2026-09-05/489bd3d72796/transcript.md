@@ -611,31 +611,47 @@ The hull is computed — 45 unique GPS points collapsing to a clean 6-vertex rin
 ### 🤖 Autopilot
 
 I have the registry formats. Let me read the tail of the geojson (the RG-P1 feature — newest convention) so my new feature matches exactly.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the format. Let me fetch the complete RG-P1 feature (the newest — likely at the end of the file) to see its exact property conventions.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Excellent — the convex hull is computed and I have the registry schema from existing features (plot_id, farm_id, name, hectares, status, boundary_authority, owner, region, verified_at, notes). Now I need the SunMint Plots sheet details (the source of truth the geojson is regenerated from) before writing. Let me pull the plots-registry runbook and the sheet header.
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Onboarding is go. Following the SOP, here's the shape of the work (mirroring the RG worked example), and I'm filling the last context gaps before the first gated unit. Two things to gather: (1) public verification of the producer's legal identity (Step Zero #5 — verify before writing into records), and (2) the SunMint Farms sheet location (the registry source of truth).
+[3 tool result(s) compacted: web_search, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Public verification is solid — **Rosa Wronscki** confirmed as "a primeira mulher produtora de cacau" of Medicilândia (Adriana Manfroi reel), family includes **Darcírio Wronscki** and **Jean**; she's been making artisanal tree-to-bar chocolate since **2004** (A Voz do Xingu profile), 100% organic, and presented at **Chocolat Bahia 2026** (Salvador, 26 July). One more context piece — the actual SunMint Farms sheet location (the registry source of truth), which the boundary-evidence GAS handler references.
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GAS script reveals the source of truth: spreadsheet **`1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ`**, tab **`SunMint Plots`** (upsert by header name). Let me read the current state of that tab to mirror the exact row format for the new farm.
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -773,4 +789,126 @@ Want me to continue with unit 1 (media archive) in the next turn, or pause here 
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd ~/sunmint_work && echo "===farms/index.json==="; cat farms/index.json; echo; echo "===build_farms_index.py head==="; head -80 scripts/bui; cd ~/fazenda_dona_rosa_work && echo "===extract GPS from all media===" && exiftool -r -q -p '${GPSLatitude#;};${GPSLongitude#}' -ext HEIC -e; set -e # 1. fetch missing farms-index generator into local checkout curl -sL -o ~/sunmint_work/scripts/build_farms_index.py https://raw.gith; …(+1 more)
 • `upload file to github` ×2 → https://github.com/TrueSightDAO/sunmint/blob/main/plots/index.geojson; https://github.com/TrueSightDAO/sunmint/blob/main/farms/index.json
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] [Handoff context — this Telegram topic (thread 21167) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Sure go for it. Also transcribe the words in this video to figure out their site registration code with CEPTOX. Perhaps use that for plot id?
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] [Handoff context — this Telegram topic (thread 21167) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+👍 Go received — continuing with the media archive unit, plus the new task: transcribe the site-visit video to recover the CEPOTX site registration code. First, let me read the SOP's media-archive section, find which video you mean (checking for any new attachment + the MOV list), and check what speech-to-text tooling the box has.
+
+
+### 🤖 Autopilot
+
+Go received on both fronts. The SOP §6 confirms site codes (X-06-NN) are recorded from source (governor-provided or spoken on site) — transcribing the visit video is a legitimate way to recover it, and the SOP explicitly warns **not** to derive codes from guesses, so the transcription result will carry "source: video" status. First, let me find which video you mean (checking for a just-attached video) and map audio/durations across the 19 MOVs.
+
+
+### 🤖 Autopilot
+
+Go received on both fronts. The DR batch has **19 MOVs with audio (~7.4 min total)** — I'll transcribe them to hunt for the CEPOTX site code (per SOP §6, a code recovered from site-visit speech gets recorded with source: video, not derived — good). I also see a few new screenshots + voice notes landed in the attachments folder today; let me check those for context on which video you mean, and stage the audio extraction.
+
+
+### 🤖 Autopilot
+
+Screenshot OCR just surfaced three important things:
+1. **Dona Rosa IG profile** (new screenshot): "Produto Artesanal 100% Orgânico, **Rodovia Transamazônica BR 230/Km 100**, wa.me/5593992398968 — **Followed by jedielciocacau**" — Jedielcio (our Rancho Maranta contact) follows her: another corroborating link.
+2. Two Google-Translate screenshots showing text **"U-06-06 Raimundo"** — a site-code reference in translation (noting it; our record has Raimundo & Geniza as U-06-07 — flagging for later).
+3. The 19 MOVs all have AAC audio (~7.4 min total) — extracted to WAVs.
+
+Now the main task: transcribe the site-visit audio to recover the CEPOTX site code. `faster-whisper-small` is cached (good pt accuracy) — launching a background transcription of all 19 clips:
+
+
+### 🤖 Autopilot
+
+Transcription launched in the background (faster-whisper-small, pt, ~7.4 min audio on a t3.medium — takes a few minutes). Meanwhile, let me prep the media-archive lane (MOV→MP4 + GPS reinjection) so both threads advance. First check the transcription progress after a bit and set up the conversion script.
+
+
+### 🤖 Autopilot
+
+Transcription is still loading the model (no segments yet). Meanwhile, let me understand the farm-media-daemon config so I can add the DR farm inbox correctly.
+
+
+### 🤖 Autopilot
+
+The daemon config lives at `/opt/truesight_autopilot/media_archive_daemon_config.yaml`. Let me read it to see the structure for adding the DR farm, and check transcription progress.
+
+
+### 🤖 Autopilot
+
+Daemon config structure is clear (inboxes list + archive roots). Now checking transcription progress — the whisper small model takes a couple minutes to load on CPU.
+
+
+### 🤖 Autopilot
+
+Transcription still loading the model (process alive). Giving it more time:
+
+
+### 🤖 Autopilot
+
+Transcription is progressing well (7 of 19 done in ~3 min). Let me wait for the rest to finish, then examine the transcripts for the site code.
+
+
+### 🤖 Autopilot
+
+Transcription is producing rich content (13/19 done). Already recovered key facts — Rosa Wronscki ("primeira mulher, fabricação de chocolate artesanal na transamazônica Medicilândia"), farm is **98 ha with 35 ha of cacao planted 1980** (~46-year-old trees), 6-day fermentation process. Still hunting the site code in the remaining 6 clips. Waiting for completion:
+
+
+### 🤖 Autopilot
+
+17/19 done, 2 remaining (8554, 8555). So far the transcripts are rich with production detail (fermentation, chocolate making, Polish descent, ~30 years) but **no site code yet** — it likely appears in the final clips (8554/8555, the last at 22:06, likely the wrap-up near signage/documents). Waiting for the final two:
+
+
+### 🤖 Autopilot
+
+All 19 clips transcribed (~7.4 min of audio). **The honest headline: no CEPOTX site registration code was spoken in any of the video audio.** Full transcription is below — here's what the words recovered, and where the code hunt stands.
+
+## Transcription results — Fazenda Dona Rosa site visit (2026-09-04)
+
+**Farm & production facts recovered (spoken, pt-BR):**
+- **Rosa Wronscki** — "Primeira mulher, fabricação de chocolate artesanal na Transamazônica, Medicilândia" (first woman making artisanal chocolate on the Transamazônica); **Acílio Wronscki** involved in pioneering cacao fermentation in the region
+- **Farm size: 98 hectares total, 35 ha planted with cacao** — planting from **1980**, trees now ~44–46 years old
+- **Fermentation:** 6 days in the "coxo" (48h first, then turned every 24h)
+- **Products:** 70% chocolate with bee honey; "mel" bar; cacao/honey combos — and one product **already going to the Chinese market** (buyer interested in cacao grown under old-growth trees — "energia")
+- **Family:** Polish descendants ("descendente de poloneses"), past in Santa Catarina/Florianópolis, lived among indigenous communities in Paraná
+- Production talk: melangeur, aroma, "muito balanceado" tasting notes
+
+**Site code — NOT found in the audio.** I searched all 19 transcripts for the `X-06-NN` pattern (B-06-…, M-06-…, U-06-… etc.) and for "código/site/registro/CEPOTX/COOPOXIN" — none appear. The code isn't spoken in these clips.
+
+## Why the code hunt matters + how I recommend proceeding
+
+Per SOP §6, site codes (`X-06-NN`) are **recorded from source, never derived/guessed** — and my earlier transcription attempt at "B-06-108"-style guessing is exactly what that rule forbids. So I will **not** invent a code. Options to actually recover it:
+
+1. **Visual scan of video frames** — the code may be written on a sign, notebook, or registration paper shown on camera (not spoken). I can extract + OCR frames from the clips (especially 8503/8526/8550, the longest, likely where documents appear). Say the word and I'll run it.
+2. **A photo/screenshot of the registration** — you showed the translate-screenshot of **"U-06-06 Raimundo"** earlier (side note: our record has Raimundo as U-06-07 — worth reconciling); a similar screenshot for Dona Rosa's code would settle it instantly.
+3. **Ask CEPOTX/Jedielcio** (who follows @donarosachocolate — corroborated in the IG screenshot) for her site code.
+
+**On the plot id:** since no code surfaced, **DR-P1 stands** as the registry plot id (already pushed). When the real code arrives, we record it in the plot notes + fda_fsvp entity with `source: video/screenshot/governor` per §6 — no rename needed unless you prefer it.
+
+## Status on the media-archive unit (the other "go")
+
+- Daemon config read: DR farm would be a new inbox (`~/media_archive_inbox/farm-media/fazenda-dona-rosa/`) + config append + `systemctl restart farm-media-daemon`
+- 19 MOVs → MP4 conversion + GPS reinjection is ready to run (ffmpeg present)
+- **Not yet executed** — I stopped to report the transcription result first, since the site-code question affects whether you want any record changes before I upload 19 videos publicly
+
+**Want me to (a)** run the visual frame-OCR pass for the code, **(b)** execute the media archive (MP4 → daemon → YouTube), or **(c)** both? And do you have a registration screenshot for Dona Rosa's code like the Raimundo one?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → OCR'd 3 new screenshots (Dona Rosa IG profile — BR 230/Km 100, wa.me/5593992398968, followed by jedielciocacau; 2× "U-06-06 Raimundo" translate screenshots); ffprobe'd all 19 MOVs (all have AAC audio); extracted 19 WAVs (16 kHz mono); ran faster-whisper-small pt transcription of all 19 → 19 transcripts written to `/tmp/dr_audio/transcripts/`
+• Read farm-media-daemon config (`/opt/truesight_autopilot/media_archive_daemon_config.yaml`) + systemd unit — DR inbox append point identified
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → echo "===recent attachments==="; ls -la --time-style=full-iso /tmp/tg_attachments/ 2>/dev/null | tail -15; echo "===DR work dir (media)===";; echo "===NEWEST tg_attachments (all, top 25 by mtime)==="; ls -lt --time-style=full-iso /tmp/tg_attachments/ 2>/dev/null | head -26; echo; e; echo "===whisper model cache==="; ls -la ~/.cache/huggingface/hub/ 2>/dev/null | head; ls ~/.cache/whisper 2>/dev/null; echo "===extract aud; …(+9 more)
 
