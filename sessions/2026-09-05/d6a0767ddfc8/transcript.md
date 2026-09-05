@@ -727,6 +727,7 @@ Gallery now has 31 videos + 7 images (drying station added). Note the plot hull 
 ### 🤖 Autopilot
 
 IMG_8328 = fermentation station — noted. Let me check the current state of IMG_8328 in the gallery (it was in the original archive, so it may already be present with a generic caption):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -734,6 +735,7 @@ IMG_8328 = fermentation station — noted. Let me check the current state of IMG
 IMG_8328 is a photo that was archived to S3 (raw + preview exist — the log showed `IMG_8328.HEIC -> raw + preview` at 18:02) but was **never added to the gallery** — the image list jumps 8329 → 8327, same gap as 8327 had. So this is another missing gallery entry, now identified: **fermentation station**.
 
 Let me pull the S3 preview for IMG_8328 and check its dimensions against the gallery convention (1600×1200):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -877,4 +879,56 @@ So: duplicate of the last file, nothing further to add. If you meant to send a *
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → cd /tmp/tg_attachments && ls -la | grep -i "83d8047a"; echo "=== EXIF detail ==="; exiftool 83d8047a560d45ae97024f81c09a6c94.HEIC 2>/dev/nul
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment saved at /tmp/tg_attachments/3ab00bcaf1ff48848375762702d48fbf.MOV — use scan_qr_from_file / scan_qr_batch for QR images, extract_pdf_text for PDFs, ocr_image for text extraction from images, or read_local_file for text. After processing, use append_to_transcript to persist the extracted content.]
+
+
+### 🤖 Autopilot
+
+A .MOV video attachment — likely another clip from the Santa Rosa site walk. Let me inspect its metadata (GPS, capture time, duration):
+
+
+### 🤖 Autopilot
+
+A 12.91s 1080p clip, iPhone 12 Pro Max, but the timestamp (17:12:11 UTC = 14:12:11 −03:00) is a few minutes *earlier* than the 8327/8328 photos (14:15). No GPS shown yet. Let me get full GPS + check whether this MOV is already in the S3 raw archive (duplicate check first, like the last HEIC):
+
+
+### 🤖 Autopilot
+
+This MOV is **inside the U-06-06 hull** (GPS 3°38'3.84"S / 53°40'13.44"W), iPhone 12 Pro Max, 12.91s @1080p, captured 14:12:11 local. The raw archive has exactly 31 MOVs — let me check whether this exact file (by size 19,157,981 bytes) is already among them, or whether it's a **missing** clip the governor is backfilling:
+
+
+### 🤖 Autopilot
+
+Size-exact match: this attachment is **19,157,981 bytes — identical to `IMG_8322.MOV`**, which is already archived (raw S3) and already live in the gallery as a YouTube video. Verifying with SHA-256 to confirm it's the same file:
+
+
+### 🤖 Autopilot
+
+Confirmed — no work needed. This attachment is **byte-for-byte identical** (SHA-256 `04a979f9…`) to **IMG_8322.MOV**, which is:
+
+- ✅ Archived: `raw/fazenda-santa-rosa/IMG_8322.MOV` in S3 (19,157,981 bytes)
+- ✅ Already processed: 31/31 clips uploaded to YouTube
+- ✅ Already live in the gallery as a video entry
+
+**This is a duplicate of an existing clip — nothing to add.**
+
+Quick recap of the recent attachments, so we're clear on where things stand:
+
+| Attachment | Identity | Status |
+|---|---|---|
+| `96049f7e…HEIC` | IMG_8327 — **drying station** | ✅ Added (PR #290) |
+| `83d8047a…HEIC` | IMG_8328 — **fermentation station** | ✅ Added (PR #291) |
+| `3ab00bca…MOV` | IMG_8322 — already live | ⚠️ Duplicate, no action |
+
+If you meant to send a **different** video (another station or angle), let me know and I'll check it. Otherwise, the gallery is complete at 31 videos + 8 images on beta, and the next step is the **prod sync** of #290 + #291 on your go. 👍
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd /tmp/tg_attachments && ls -la 3ab00bcaf1ff48848375762702d48fbf.MOV; echo "=== EXIF/QuickTime metadata ==="; exiftool 3ab00bcaf1ff48848375; cd /tmp/tg_attachments && echo "=== full GPS block ==="; exiftool 3ab00bcaf1ff48848375762702d48fbf.MOV 2>/dev/null | grep -A3 "GPS Latitude\; cd /tmp && set -a && . /opt/truesight_autopilot/.env 2>/dev/null && set +a && python3 -c " import boto3, os s3 = boto3.client('s3', region_n; …(+1 more)
 
