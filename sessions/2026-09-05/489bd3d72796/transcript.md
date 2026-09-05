@@ -116,7 +116,13 @@ And is **IMG_8293** also one of yours (a 4th Dona Rosa clip), or is that leftove
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Sending the current hero image (the one we swapped in from your photo) to you now as an attachment:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -309,4 +315,59 @@ Once they land here I'll spot them immediately and route them correctly this tim
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "===recent tg_attachments (last 15 min)==="; ls -lat /tmp/tg_attachments/ | head -15; echo; echo "===new files anywhere (last 10 min, v; echo "===recent video files ANYWHERE (last 20 min)==="; find /tmp /home/ubuntu -type f \( -iname '*.mov' -o -iname '*.mp4' -o -iname '*.MOV'
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] Check your disk
+
+
+### 🤖 Autopilot
+
+Checking disk space now — if the disk is full, that would explain why the videos aren't landing:
+
+
+### 🤖 Autopilot
+
+Disk is at **91%** — 71G used of 78G, **7.2G free** (inodes fine at 5%). Let me check whether anything's actually hitting disk-full errors and what's eating the space:
+
+
+### 🤖 Autopilot
+
+Disk is **91% full (7.2G free) but no ENOSPC errors** — so it's tight but not failing. Let me look for the resent videos across every ingest path, including any half-written downloads, and check the bot's media-receive logs for errors:
+
+
+### 🤖 Autopilot
+
+The journal shows something important — a video **did** land at 21:02 (`3ab00bcaf1ff….MOV`, 19.1 MB) plus 3 photos at 20:58–21:01, and it was already compared against the archive. Let me verify directly what arrived and confirm the disk situation end-to-end:
+
+
+### 🤖 Autopilot
+
+Disk check done — and here's the full picture:
+
+## 💾 Disk
+- **91% full** — 71G/78G used, **7.2G free**. Tight, but **no ENOSPC errors** — nothing is failing on space right now. Inodes fine (5%). I can free ~10G+ of old farm zips if you want headroom.
+
+## 📥 What your "resent" actually contained
+You sent **4 media files ~21:01** (not just the 3 videos):
+
+| File | Size | GPS | Date | What it is |
+|---|---|---|---|---|
+| `3ab00bcf….MOV` | 19.1 MB | 3°38′04″S 53°40′13″W | Sep 3 17:12 | **Video** — Uruará, Santa Rosa area |
+| `b1fed20b….HEIC` | 2.4 MB | 3°37′49″S 53°39′07″W | Sep 3 11:41 | **Photo** — Santa Rosa area |
+| `96049f7e….HEIC` | 3.8 MB | 3°38′03″S 53°40′13″W | Sep 3 14:15 | **Photo** — Santa Rosa area |
+| `83d8047a….HEIC` | 1.4 MB | 3°38′03″S 53°40′13″W | Sep 3 14:15 | **Photo** — Santa Rosa area |
+
+**Critical finding:** the video is **byte-for-byte identical** (SHA-256 `04a979f9…`) to **IMG_8322.MOV**, which is *already in your Santa Rosa work folder* (shot Sep 3, same GPS cluster as the other 828x/832x clips). The photos are also all Sep 3, Santa Rosa/Uruará GPS — the same set.
+
+**So these are NOT Dona Rosa clips.** They're Santa Rosa material — and IMG_8322 has already been converted, uploaded to YouTube (`1axHmhOTJX4`), and is already in the Santa Rosa farm page media.json.
+
+**No new video from this resend needs routing** — it was already in the pipeline. I haven't re-moved anything this time.
+
+**Question:** if you intended to send **Dona Rosa (Medicilândia)** clips, these aren't them — the ones you want would show GPS around **3°29′S 52°58′W** and dates **Sep 4**. Did you pick from the wrong camera roll batch? Or are you fine with these being Santa Rosa extras (in which case, want me to check if any of the 3 photos are duplicates too)?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → echo "===DISK USAGE==="; df -h / /tmp /home 2>/dev/null; echo; echo "===inodes==="; df -i / /tmp /home 2>/dev/null; echo; echo "===largest d; echo "===ENOSPC / disk errors in recent logs?==="; journalctl --since '2 hours ago' 2>/dev/null | grep -iE 'no space|enospc|disk full|write ; echo "===NOW: $(date)==="; echo; echo "===newest files anywhere (last 30 min), any type>1MB==="; find /tmp /home/ubuntu -type f -size +1M -n; …(+1 more)
 
