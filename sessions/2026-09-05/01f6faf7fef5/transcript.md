@@ -1078,16 +1078,19 @@ Auth is clear: JWT via `Authorization: Bearer` using `settings.jwt_secret` — `
 ### 🤖 Autopilot
 
 Auth path is clear — `/chat/upload` accepts a `Bearer` JWT minted with `settings.jwt_secret` (no governor re-check on the JWT path). The GPS extraction runs during file processing, and `_log_session` writes the built user-message (containing the `📍 GPS:` line) to the session log before the LLM streams — so a single live upload of the real GPS-bearing HEIC gives me disk-level proof plus the SSE stream. Running the full live e2e in one script:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The live upload **worked** — real HEIC → pyzbar scan → Grok vision → OCR all firing on the running service (curl rc=28 is just my 20s cap on the SSE stream; the pipeline ran). No QR codes found (these are farm photos), and GPS extraction happens during file processing regardless. The session-log find didn't show GPS proof yet — the SSE shows the LLM is mid-stream with tool calls. Let me grab the GPS proof directly from the processed-files path (which is written into the LLM content pre-stream) by checking the session file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GPS proof found in live session logs. Let me extract the exact GPS line from the session that my live upload just created (most recent file):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1101,11 +1104,13 @@ Live production proof confirmed. The real HEIC uploaded to the running service (
 This is written into the session history (`sessions/2bd1294502e7.json`) — meaning the LLM content included the GPS line from `extract_gps_from_image` on the live service. The deploy is confirmed live and working end-to-end.
 
 Now the second part: time accounting. Let me gather the actual timestamps of every event across this task (PRs, sessions) to reconstruct time spent by me, Envoy, and Gary. Let me pull PR creation/merge times and check for Envoy's contribution record.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Live verification is **confirmed** — the running service extracted GPS from the real HEIC into the session log. Now for the time breakdown, let me ground who Envoy is and what records exist of each participant's work on this task.
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1254,4 +1259,38 @@ If you need to reopen it later, just say so — one `reopenForumTopic` call brin
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot && grep -oE "^(TELEGRAM[^=]*|BOT[^=]*TOKEN[^=]*|.*BOT_TOKEN.*)=" .env 2>/dev/null | head -5; echo "---"; grep -c; cd /opt/truesight_autopilot && TOKEN=$(grep "^TELEGRAM_BOT_API_KEY=" .env | cut -d= -f2- | tr -d '"' | tr -d "'"); echo "token length: ${#TO
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20182] Do you think you can delete this threat on Telegram? Keep the transcript of just delete this grant on Telegram so there doesn't appear in my UI anymore. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Yes — `deleteForumTopic` removes the topic from the UI for everyone permanently, and the transcript lives separately on disk/repos, so nothing is lost. One irreversible step, doing it now — but first a quick check that this thread's transcript is actually persisted so I can truthfully say it's kept:
+
+
+### 🤖 Autopilot
+
+Transcript confirmed safe first: this thread's messages are persisted in the session files (`sessions/01f6faf7fef5.json` references 20182, plus the `_resume_awaiting`/`_topic_names` state) on the box, and my attachment extractions went to the transcript repo — **deleting the Telegram topic does not touch any of that**.
+
+One honest caveat before I do it: `deleteForumTopic` is **irreversible and removes the topic for everyone** in the group (not just your UI). You're the group owner, so that's your call — deleting now, transcript preserved:
+
+
+### 🤖 Autopilot
+
+Done. ✅ Topic **deleted** from Telegram — `deleteForumTopic` returned `{"ok": true}`, so thread 20182 no longer appears in the group's UI for anyone (including you).
+
+**Transcript is kept** — your session history lives in `sessions/` on the autopilot box and the extracted attachments went to the transcript repo, so nothing about this work is lost. The record of what was done (PRs #398/#905/#399, the live GPS verification, the contribution) is all in git and the ledger, not in the Telegram topic itself.
+
+That's the whole thread wrapped: closed, archived, deleted, with everything preserved elsewhere. Anything else I can help with — just open a fresh topic and I'll be there. 🫡
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot && ls -la --time-style=+"%Y-%m-%d %H:%M" sessions/*.json 2>/dev/null | tail -8; echo "---"; grep -l "20182"; cd /opt/truesight_autopilot && TOKEN=$(grep "^TELEGRAM_BOT_API_KEY=" .env | cut -d= -f2- | tr -d '"' | tr -d "'"); CHAT=-1003919341801; THREAD=20182; echo "=== deleting forum
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot && echo "=== find session/transcript files for this chat/thread ==="; ls -la --time-style=+"%Y-%m-%d %H:%M" sess; cd /opt/truesight_autopilot && TOKEN=$(grep "^TELEGRAM_BOT_API_KEY=" .env | cut -d= -f2- | tr -d '"' | tr -d "'"); CHAT=-1003919341801; THRE
 
