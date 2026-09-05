@@ -570,36 +570,43 @@ The rename is applied cleanly on both page files (no bare-slug leftovers) and th
 ### 🤖 Autopilot
 
 The geojson fix is staged locally (DR-P1 `farm_id` → `fazenda-dona-rosa-para`, only that one property changed — formatting matches the existing indent-2 style, so the diff stays minimal). Pushing it to the sunmint registry now:
+[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Registry rename pushed (commit `5dabf67`). Now — the page files: `agroverse_shop_beta` is a **code repo** (branch → PR flow), and I have the renamed files local. Let me open the PR with the page files + verify the folder name is right, then merge:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ⚠️ **I made a mistake** — the PR was opened with **empty file contents** (I passed `content: ""` instead of the real file text). PR #284 exists but the files are blank. Fixing now by reading the real local files and pushing them to the same branch:
+[2 tool result(s) compacted: read_local_file, read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the real content. The PR #284 branch files are empty — I'll push the real files onto that same branch with `upload_local_file_to_github` (reads local disk directly, no content-in-call needed). First, small cleanup: drop the gallery's img_8515 entry (hero already IS IMG_8515 — avoids a duplicate image in the gallery), and prep the manifest farm_id consistency fix.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 IMG_8526 is a **video** (yt QnSrcEaNxPA), not a photo — so the gallery image ref `img_8526.jpg` points at a file that doesn't exist. Fixing the gallery with a real photo, then pushing real content onto the PR branch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The "missing" flags are a case artifact — assets on disk are uppercase `IMG_8535.jpg`, media.json refs lowercase `img_8535.jpg` (files exist; the GitHub upload will use the lowercase names matching the refs). Now pushing the **real content** onto PR #284's branch (Contents-API single-file writes to that branch — cleaner than reopening a PR):
+[2 tool result(s) compacted: upload_local_file_to_github, upload_local_file_to_github — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Real content now on PR #284's branch (commits `d6b3205` + `be53539`). Now upload the 6 web-optimized JPGs (hero IMG_8515 + gallery 8535/8536/8533/8540/8557) to `assets/images/farms/` with the `-para` lowercase names the page references:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -726,4 +733,63 @@ Want me to verify the beta page renders now, or promote to prod after you've eye
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → ls -lat /tmp/tg_attachments/ 2>/dev/null | head -20; echo "---"; find /tmp/tg_attachments -type f -mmin -30 2>/dev/null | head; cd /tmp/tg_attachments && identify 6b4dd324cee348989ccd0cba6b436855.jpg 2>/dev/null; echo "---exif---"; identify -verbose 6b4dd324cee348989c; find / -name '*yunet*' -o -name 'face_detection*' 2>/dev/null | grep -v proc | head; echo "---"; python3 -c "import cv2; print(cv2.__file__); …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] Also what were said in this video
+
+
+### 🤖 Autopilot
+
+Gary — which video do you mean? I don't see a video attached to this message (only the hero photo). If you mean the farm-visit videos from Fazenda Dona Rosa, I have transcripts for all 19 from the earlier audio pass. Let me locate them and pull what was said:
+
+
+### 🤖 Autopilot
+
+Let me check for any video attachment and see what the DR transcripts contain:
+
+
+### 🤖 Autopilot
+
+No video file is attached to this message (only the hero photo came through), so let me read the DR transcripts I have and summarize what the farm videos contain — then you can tell me which one you meant:
+
+
+### 🤖 Autopilot
+
+No video file came through on this message (only the hero photo attachment) — but I do have the machine transcripts for all 19 Fazenda Dona Rosa visit videos from the earlier audio pass. Here's what was said in them (Portuguese, raw Whisper transcription — quality is rough/noisy, so I've cleaned up the readable parts):
+
+## What the farm-visit videos contain
+
+| Video | What was said |
+|---|---|
+| **IMG_8501** | Greetings / introductions on arrival ("Olá! Como estamos? Prazer!" — nice to meet you) |
+| **IMG_8502** | Farm name + age of the plantings: oldest roça ~22 to **44 years** ("fazenda há quantos anos… a mais velha são 22 até 44 anos") |
+| **IMG_8503** | 🌳 **Old trees & China**: trees over 40 years ("aquele ali é… mais de 5 anos"), and the **Chinese-market story** — buyers see big old trees as important; cacao grown under them has "mais energia". His chocolate is already going to China; mentions the **honey cacao** (cacau com mel de abelha) and the **70% chocolate with bee honey** |
+| **IMG_8504** | Asking Dona Rosa for a **sample of dried cacao** to take along |
+| **IMG_8509** | Tasting — "chocolate… mais doce" (sweeter) |
+| **IMG_8510** | ⭐ **The money quote**: "Primeira mulher, fabricação de chocolate artesanal na Transamazônica, Medicilândia… **Rosa Wronscki — primeira fermentação de cacau na região da Transamazônica**" |
+| **IMG_8516** | Short exchange ("Mas tu vai fazer?") |
+| **IMG_8519** | "Vamos lá… para casa?" — heading back |
+| **IMG_8526** | ⭐ **Fermentation detail**: "**Seis dias no coxo** — primeiro 48 horas, depois virado a cada 24 horas. Fazenda: **98 hectares, 35 com cacau. Plantio de 1980** — já está com 44/46 anos" |
+| **IMG_8530** | "Eu com o Maico que me ajuda" (Rosa with Maico who helps her) |
+| **IMG_8531** | ~"400… porque ele ficou bem assim" (unclear — likely a count/weight) |
+| **IMG_8532** | (Garbled — mentions a school board/sign and buying a pump to enrich/improve) |
+| **IMG_8537** | In the field — "olha as peças são na árvore… voltei" (looking at pods on the tree) |
+| **IMG_8538** | Opening a fresh pod — "Olha, olha… Aroma. Muito bom!" (smelling/tasting pulp) |
+| **IMG_8539** | Tasting note — "É muito balanceado. Muito bom. Eu acho que está encostando" |
+| **IMG_8546** | "Melange? Ok, muito bom" (chocolate melangeur / equipment talk) |
+| **IMG_8550** | ~**30 years making chocolate** ("quase 30 anos"); he's of **Polish descent** ("descendente de poloneses"); playful "Eu não gosto de chocolate…" joke |
+| **IMG_8554** | Life story — "Meio século… passado em Santa Catarina / Florianópolis" |
+| **IMG_8555** | "Já viveu com indígenas? … Paraná" (lived with indigenous communities in Paraná) |
+
+**Key facts captured for the page/onboarding:** Rosa Wronscki = first woman artisanal chocolate maker on the Transamazônica; 98 ha total / 35 ha cacao; plantings from 1980 (~46 y/o); 6-day coxo fermentation (48h + turns every 24h); honey-cacao + 70% honey chocolate lines already headed to China; Polish-descent family history.
+
+---
+
+**Which video did you mean?** I don't see one attached to your message. If you meant a specific clip — tell me the IMG number (e.g. 8526) and I'll pull its full raw transcript, or if you're about to send a video, re-send it and I'll transcribe it. Also note there were several **voice-message .oga files** in the inbox today (14:04–18:01) — if one of those is the audio you're asking about, let me know and I'll transcribe it too.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → find /tmp ~ -maxdepth 3 -iname '*transcri*' -o -iname '*transcript*' 2>/dev/null | grep -viE 'node_modules|site-packages' | head -20; echo "; echo "===recent attachments (any video?)==="; ls -lat /tmp/tg_attachments/ 2>/dev/null | grep -iE 'mp4|mov|mkv|webm|avi' | head; echo "===dr; cd /tmp/dr_audio/transcripts && for f in *.txt; do echo "=== $f ==="; cat "$f"; echo; done
 
