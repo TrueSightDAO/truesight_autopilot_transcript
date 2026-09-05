@@ -335,6 +335,7 @@ Gary said "This one" — likely a video attachment just arrived. Let me check th
 ### 🤖 Autopilot
 
 No new video file landed in the inbox — the newest file is still the hero photo (18:11). The redeploy may have eaten the attachment mid-download. Let me search more broadly for any recent video upload:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -368,6 +369,7 @@ Once you re-send or point me at it, I'll answer "what was said in this video" wi
 ### 🤖 Autopilot
 
 Let me check thoroughly for those 3 videos — they may have landed somewhere other than the main inbox:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -502,4 +504,22 @@ If you meant a *different* image (e.g. one of the newer ones you sent at 19:30/1
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "===hero & candidate images on disk==="; find /tmp /home/ubuntu -type f -iname '*hero*.jpg' -newermt '2026-09-05' 2>/dev/null | grep -v
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] Yep, correct. This is the photo to use for our heroic image for this farm. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Got it — good news is that's already exactly what's live. That photo was the one I swapped in as the hero on the beta page earlier today (commit `3e75bff`), so the Fazenda Dona Rosa page on beta is already using it. Nothing more to change for the hero.
+
+Remaining steps whenever you're ready:
+
+1. Eyeball the beta page to confirm it all renders well — `beta.agroverse.shop/farms/fazenda-dona-rosa-para/`
+2. Give me the word and I'll promote the page to production (`sync_beta_to_prod` — I never push to prod on my own)
+3. Then the follow-ups: renaming the media manifest and media-raw folder to the `-para` id, anchoring the plot on-chain, and chasing the CEPOTX site code through Jedielcio.
+
+Just say the word when you've had a look.
 
