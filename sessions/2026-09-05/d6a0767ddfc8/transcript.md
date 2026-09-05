@@ -440,16 +440,19 @@ Let me sweep the box and the repos for where "Antonio" / "artistic" could be hid
 ### 🤖 Autopilot
 
 Good question — but note the WhatsApp screenshots in this zip are **translation-modals** ("« Home", no contact header), so the name isn't in their chrome. If "Antonio"/"artistic" is in this package it's likely a **photo with visible text** (sign/placard/document) — let me dig all 18 HEIC photos at full resolution, sample frames from all 31 videos for signs, and cross-check the Jedielcio sidecars/manifests on the box. Also confirming the Dona Rosa package situation (there's a separate `fazenda-dona-rosa` backlog item that may be getting conflated).
+[5 tool result(s) compacted: ssh_run, ssh_run, ssh_run, http_fetch, recall_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Checking a few more angles in parallel — more video frames (the name may be spoken/signed on camera), any speech-to-text tooling for the audio tracks, and the other farms' manifests for "Antonio"/"artista" references.
+[3 tool result(s) compacted: ssh_run, ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The screenshots are fully read now — they're voice-note translation modals about **Fazenda Santa Rosa** (~30 ha, split among children, co-op loyalty, org from 2005, "40 years"), but **no "Antonio" and no "artistic" in any of them**. So if those names are in this package they're most likely **spoken on the videos** (people saying "seu Antônio…") — and `faster-whisper` is installed on the box. Launching a background transcription of all 31 MOVs + full-res OCR of the HEICs, and checking metadata text fields meanwhile.
+[3 tool result(s) compacted: ssh_run, ssh_run, http_fetch — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -460,26 +463,31 @@ The screenshots are fully read now — they're voice-note translation modals abo
 ### 🤖 Autopilot
 
 Checking the background transcription job and OCR results.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 STT is 15/31 done already. Reading the transcripts for the names now.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 STT is at **15/31** (~1 file/min on this box — the rest land in ~15 min). Results so far: farm-walk chatter in PT (tatajuba tree, gamel(eira), spring water, "ceremonial cacao"), **no "Antonio" yet**. The HEIC OCR phase hasn't started (it runs after the STT loop in the bg script), so let me run it in parallel now rather than wait.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The launch call timed out at 60s (likely the heredoc/nohup interplay held the shell open). Checking whether the OCR job actually started and continuing to monitor STT:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both jobs progressing — STT 18/31, HEIC OCR 8/16 (a tesseract is mid-run now). Let me check partial results for name hits:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -607,4 +615,39 @@ So for the Santa Rosa onboarding, Step-0 identity so far is:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → ls -lat /tmp/tg_attachments/ | head -10; echo "---"; F=$(ls -t /tmp/tg_attachments/*.jpg 2>/dev/null | head -1); echo "latest: $F"; file "$F; F=/tmp/tg_attachments/9aed8c7280e7458f9f8af70a4192b3fd.jpg cd /tmp && python3 - <<'EOF' from PIL import Image, ImageOps, ImageEnhance, Image; cd /tmp && python3 - <<'EOF' from PIL import Image, ImageOps, ImageEnhance im = Image.open('/tmp/tg_attachments/9aed8c7280e7458f9f8af70a4192; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21005] Graca e Antonio 
+
+That is his name and his wife
+
+
+### 🤖 Autopilot
+
+Confirmed — recorded. Identity for the Santa Rosa onboarding:
+
+| Field | Value | Source |
+|---|---|---|
+| **Farmer** | **Antônio** (seu Antônio) | Photo caption + your confirmation |
+| **Wife** | **Graça** | Photo caption + your confirmation |
+| Farm | Fazenda Santa Rosa | WhatsApp screenshots + zip filename |
+| Size | ~30 ha total (cacao planted), divided among children, org from 2005 | WhatsApp screenshots |
+| Location | ~-3.6338…-3.6363 / -53.6677…-53.6706 (Uruará/Transamazônica, Pará) | GPS on 49/56 originals |
+
+Two things before I register the plot (per the SOP Step-0 discipline — I never invent identity fields):
+
+1. **Surname / full legal name** — is it just "Antônio" on record, or does he have a surname (e.g. Antônio **… da Silva / … dos Santos**)? The formal ledger entry (SunMint Plots → geojson → FSVP entity) usually wants a fuller name. If the original photo or a land document (INCRA/title) has it, point me at it — or tell me the surname and I'll use "Antônio + wife Graça" as the display identity.
+
+2. **CEPOTX / cooperative membership** — is Antônio a member of CEPOTX (Jedielcio's coop) like the other Pará farms, or independent? This decides whether the plot links into the CEPOTX cluster records.
+
+**Once you answer those two, here's the plan I'll execute** (new-farm flow per `AGROVERSE_SUNMINT_FARM_LISTING.md`):
+1. Archive media: 33 MOV + 16 HEIC → `farm-media-raw/santa-rosa-…/` (or `fazenda-santa-rosa-para/` to match convention — I'll confirm slug) + manifest in `farm_media_manifests`
+2. GPS intake → convex hull from the walk track → plot polygon
+3. SunMint Plots row + `sunmint` plots/farms index push + on-chain geo event
+4. Farm page cloned from `rancho-maranta-para` template → **beta** for your review
+5. Prod sync only on your explicit go
+
+Give me the surname + coop status (or say "proceed with Antônio as-is") and I'll start.
 
