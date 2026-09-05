@@ -261,16 +261,19 @@ Want me to verify the beta page renders now, or promote to prod after you've eye
 ### 🤖 Autopilot
 
 Gary — which video do you mean? I don't see a video attached to this message (only the hero photo). If you mean the farm-visit videos from Fazenda Dona Rosa, I have transcripts for all 19 from the earlier audio pass. Let me locate them and pull what was said:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check for any video attachment and see what the DR transcripts contain:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No video file is attached to this message (only the hero photo came through), so let me read the DR transcripts I have and summarize what the farm videos contain — then you can tell me which one you meant:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -326,6 +329,7 @@ A redeploy happened a bit ago and likely killed your in-flight turn (confirmed -
 ### 🤖 Autopilot
 
 Gary said "This one" — likely a video attachment just arrived. Let me check the inbox for the newest file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -477,4 +481,25 @@ And is **IMG_8293** also one of yours (a 4th Dona Rosa clip), or is that leftove
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → echo "===santa-rosa inbox now==="; ls -la /home/ubuntu/media_archive_inbox/farm-media/fazenda-santa-rosa/ 2>/dev/null; echo; echo "===dona-r; cat /opt/truesight_autopilot/media_archive_daemon_config.yaml; echo "===example==="; cat /opt/truesight_autopilot/media_archive_daemon_confi; echo "===find source MOVs for the 828x set==="; find /home/ubuntu /tmp -type f \( -iname 'IMG_8281*' -o -iname 'IMG_8282*' -o -iname 'IMG_82; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] Stand it over to me as an attachment so that I can access it to no self, that image. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Sending the current hero image (the one we swapped in from your photo) to you now as an attachment:
+
+
+### 🤖 Autopilot
+
+✅ **Sent** — the current Fazenda Dona Rosa hero image is now attached here in the chat (from your photo, the 1280×960 web-optimized version that's live on the beta page).
+
+If you meant a *different* image (e.g. one of the newer ones you sent at 19:30/19:36, or the original full-res source), tell me which and I'll send that one instead.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "===hero & candidate images on disk==="; find /tmp /home/ubuntu -type f -iname '*hero*.jpg' -newermt '2026-09-05' 2>/dev/null | grep -v
 
