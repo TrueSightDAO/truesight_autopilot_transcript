@@ -10,359 +10,19 @@
 
 ### 🧑 Governor
 
-[CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
-Turn — [TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the ne:
-• `ssh run` ×19 → echo "=== media.json on main (raw) — should have 37 gallery entries ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/fazenda-santa-rosa-para/index.html" -o sr_; echo "=== media-gallery.js fetch logic ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/js/media-galle; …(+14 more)
-• `merge pr` → ✅ PR #289 on agroverse_shop_beta merged successfully (sha: b66639cb32a1dc119b56785838c1f44f3ca46a7f). Pull Request successfully merged
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=21005] See the CEPOTX RESGITREY
-
-
-### 🤖 Autopilot
-
-Searching for the CEPOTX registry across context and code:
-[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found it — `CEPOTX_SITE_CODE_REGISTRY.md` in agentic_ai_context. Reading it plus the fda_fsvp CEPOTX records:
-[3 tool result(s) compacted: read_context_file, read_repo_file, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the truncated remainder of both files to see the full picture (Related sections etc.):
-[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I've read the CEPOTX registry (agentic_ai_context + fda_fsvp mirror). Before I respond, let me check the provenance of **U-06-06** (the site code used for Fazenda Santa Rosa) — where it came from and whether it's documented anywhere:
-[2 tool result(s) compacted: search_context, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me cross-check where U-06-06 / Fazenda Santa Rosa actually appears across records before responding:
-[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me verify where U-06-06 / Fazenda Santa Rosa actually appear in the records, since the registry itself doesn't list them:
-[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the rest of the registry (the truncated tails) and the COPOPS entity record to see the full picture around U-06 codes:
-[3 tool result(s) compacted: read_tool_result, read_tool_result, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The registry check surfaces something important. Let me verify where **U-06-06** (Fazenda Santa Rosa's assigned code) actually came from and where it's currently written, before I respond:
-[2 tool result(s) compacted: search_transcript, search_transcript — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me search this conversation's own history for where U-06-06 was first mentioned — provenance matters here:
-[2 tool result(s) compacted: recall_context, recall_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The registry check raises a real question about U-06-06's provenance. Let me find where it was first introduced — checking the handoff manifest/plan:
-[1 tool result(s) compacted: read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me find the SR-P1 plan row in the manifest and confirm where U-06-06's provenance was recorded:
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the final chunk of the registry (tail of COOPCAO + Related section) to be complete:
-[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check the plan/manifest provenance for U-06-06 and what's actually registered in the sunmint indexes:
-[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The context-level search shows the registry doesn't mention SR. Let me check exactly what's recorded in the sunmint registry files (plots + farms index) for Santa Rosa before I respond:
-[1 tool result(s) compacted: list_org_repos — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me verify the sunmint index records for the SR plot (what code is actually registered there):
-[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the SR plot entry in the geojson (the tail that got truncated):
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me search that artifact for the Santa Rosa plot entry:
-[1 tool result(s) compacted: recall_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me pull the rest of the geojson to find the Santa Rosa plot feature specifically:
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the final chunk of the geojson (which should contain the SR plot feature):
-[1 tool result(s) compacted: read_tool_result — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The nested artifact reads are burning context. Let me fetch the SR plot feature directly via curl and grep, to see exactly what plot_id is stored:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The registry cross-check is done and surfaces a real gap. Let me verify one more thing — whether U-06-06 appears anywhere in the fda_fsvp mirror or entities (it shouldn't, but confirming before I propose changes):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-## CEPOTX Registry — cross-checked against U-06-06 / Fazenda Santa Rosa
-
-I read the full registry (both copies — `agentic_ai_context/CEPOTX_SITE_CODE_REGISTRY.md` and its mirror `fda_fsvp/suppliers/cepotx/site_codes.md`) plus the sunmint plot record and fda_fsvp entities.
-
-### What the registry shows
-- **Source:** "Lista de Produtores" pages captured from video 2026-09-05 (thread 21727) — **reported/unverified**, not an official CEPOTX register.
-- **COPOPS roster (U-06 family):** only rows 17–33 visible = **U-06-62 … U-06-78**. Rows 1–16 (the low-code range) are **not visible** in the capture.
-- **Anchors table** (site codes tied to DAO farms): B-06-58 (Santa Anna), B-06-108 (Cleide), **U-06-07** (Raimundo & Geniza), V-06-29 (La do Sítio), N-06-37 (Jader).
-- Policy: codes come from CEPOTX, never re-derived; one code per property; U-06-07 sits *below* the visible roster range and was confirmed via governor screenshot.
-
-### Check result for U-06-06 / Fazenda Santa Rosa
-
-| Question | Finding |
-|---|---|
-| In visible COPOPS roster? | ❌ No — but rows 1–16 aren't captured, so **no conflict, no confirmation possible from the roster** |
-| Conflicts with any visible code? | ❌ None — U-06-06 is unused in all visible rows |
-| Consistent with known family? | ✅ Yes — sits in the low-U-06 region right next to U-06-07 (Raimundo & Geniza, ~2 km away) |
-| Where is U-06-06 recorded? | sunmint `plots/index.geojson` (plot_id U-06-06, provenance noted: *"governor-provided via translation screenshot, 2026-09-05"*), `farms/index.json`, farm page + media.json captions, YouTube descriptions, on-chain FARM BOUNDARY event |
-| In fda_fsvp cepotx entity / site_codes.md? | ❌ **Not yet** — neither the anchors table nor the mirror lists U-06-06 / Fazenda Santa Rosa |
-
-### Bottom line
-U-06-06 is **consistent with the registry** (no collision, plausible range) but **unverifiable from it** — exactly the same status as U-06-07 before it was anchored (governor-provided, below the visible roster rows). The registry itself flags the COPOPS rows 1–16 gap as the reason low codes like this can only be confirmed with CEPOTX/Jedielcio.
-
-**Gap:** SR/U-06-06 hasn't been added to the registry's **anchors table** (both copies), so the lookup the registry exists for won't find Santa Rosa yet. Note we also only have the owner as "Antônio & Graça" — no full legal name to match against a roster row even when rows 1–16 arrive.
-
-Want me to open a PR adding U-06-06 → Fazenda Santa Rosa (owner Antônio & Graça, COPOPS, source = governor translation screenshot 2026-09-05, status **reported/unverified**) to the anchors in both `agentic_ai_context/CEPOTX_SITE_CODE_REGISTRY.md` and `fda_fsvp/suppliers/cepotx/site_codes.md`? That follows the exact precedent used for U-06-07, and it keeps the two mirrors in sync per the registry's own note.
-
-———
-**✅ Done this turn — actions taken:**
+[CONTEXT SUMMARY — turns 1–5 compacted, full history in transcript repo]:
+Turn — [CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
+Turn — [TURN DIRECTIVE] You have opened or mer:
 • `ssh run` ×2 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geojson" -o sr_geojson.json && python3 - <<'PYEO; echo "=== U-06-06 anywhere in agentic_ai_context or fda_fsvp (via GitHub search) ==="; curl -s "https://api.github.com/search/code?q=U-06-06
 
-
-### 🧑 Governor
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=21005] [Handoff context — this Telegram topic (thread 21005) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## CEPOTX Registry — cross-checked against U-06-06 / Fazenda Santa Rosa
-
-I read the full registry (both copies — `agentic_ai_context/CEPOTX_SITE_CODE_REGISTRY.md` and its mirror `fda_fsvp/suppliers/ce
-
-
-### 🤖 Autopilot
-
-👍 GO — adding U-06-06 → Fazenda Santa Rosa to the anchors in both registry copies. Reading both files to craft exact edits:
-[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both files confirmed — identical anchors and COPOPS roster structure. Adding U-06-06 → Fazenda Santa Rosa to **both** mirrors (one logical unit: registry + FSVP copy stay in sync). Pushing both PRs:
-[2 tool result(s) compacted: git_push_changes, git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both PRs opened. Merging both (the GO covers these registry mirror updates):
-[2 tool result(s) compacted: merge_pr, merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-## ✅ CEPOTX registry anchored: U-06-06 → Fazenda Santa Rosa (both mirrors, merged)
-
-**PR #918 (agentic_ai_context) — merged** (sha `3811f3e8`)
-**PR #14 (fda_fsvp) — merged** (sha `c5e40db8`)
-
-Both registry copies updated in parallel, kept in sync per the registry's own rule. Changes (identical in both files):
-
-1. **Anchors table** — new row:
-   `U-06-06 | Fazenda Santa Rosa (SR-P1) | Antônio & Graça | COPOPS | governor-provided translation screenshot (2026-09-05); sunmint plots/index.geojson; shop PRs #288/#289`
-2. **U-06-NN family row** — range note `(plus U-06-06, U-06-07)`; known members now lists Fazenda Santa Rosa alongside Sítio Raimundo & Geniza
-3. **COPOPS roster footnote** — now names both low codes (U-06-06, U-06-07) as governor-screenshot-confirmed, below the visible rows 17–33
-
-Status remains **reported/unverified** (no legal/FSVP use without CEPOTX/Jedielcio confirmation) — consistent with how U-06-07 was anchored.
-
-### Why this was the right move
-- U-06-06 had **no collision** in the visible roster (only rows 17–33 captured; rows 1–16 gap) — exactly the U-06-07 situation
-- The registry's purpose is that site codes tied to DAO farms are **findable via `search_context`/`read_context_file`** — SR/U-06-06 wasn't, now it is
-- Sunmint plot `U-06-06` (plots/index.geojson, farms/index.json), farm page + YouTube descriptions, and on-chain FARM BOUNDARY event all already carry the code — this closes the registry gap
-
-### SR-P1 SOP — full status
-| § | Step | State |
-|---|---|---|
-| §1–2 | Registry + on-chain event | ✅ |
-| §3 | Media archive (49/49) + YouTube (31/31, ID-fix) | ✅ |
-| §4 | Farm page + gallery (PRs #287/#288/#289) + beta verified | ✅ |
-| — | CEPOTX registry anchor (this turn) | ✅ |
-| — | **Prod sync** | ⏳ **your explicit go** |
-
-## RESUME HERE → prod sync (awaits your explicit go)
-1. **Prod sync on your word:** `sync_beta_to_prod(agroverse_shop_prod)` — promotes the entire Fazenda Santa Rosa profile (page PR #287, gallery PR #288, video-ID fix PR #289 all ride the fork-sync). Then verify `https://www.agroverse.shop/farms/fazenda-santa-rosa-para/` (HTTP 200 + gallery renders).
-2. **Open follow-ups (non-blocking):**
-   - **Full legal name + CNPJ for Antônio & Graça** (Fazenda Santa Rosa) — needed to match against COPOPS roster rows 1–16 when they're captured, and for the FSVP supplier entity. Currently only "Antônio & Graça" + "Uruará, Pará".
-   - **FSVP entity** for SR in fda_fsvp (the site_codes.md anchor is done; the full supplier file/entity isn't).
-   - **Self-improvement candidate:** daemon logged `rc=0` with a YouTube ID that never persisted — a post-upload oEmbed/videos.list verify step would catch this automatically (truesight_autopilot change, its own PR if you want it).
-
-**Open for you:** beta + registry are complete and verified; **prod sync needs your go** — I won't cross that gate without it.
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the ne:
 • `merge pr` ×2 → ✅ PR #918 on agentic_ai_context merged successfully (sha: 3811f3e877c072f5f7f27c793cbdda21610753d4). Pull Request successfully merged; ✅ PR #14 on fda_fsvp merged successfully (sha: c5e40db82a372218151403ffbcd790b4b6cafd59). Pull Request successfully merged
 
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=21005] Just accept the legal name of the place as Antonio and Garcia. That is already there. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Understood — closing that follow-up. The name on record for Fazenda Santa Rosa is **Antônio & Graça**, and that's what's already written everywhere: the CEPOTX registry anchors (just merged in both copies), the sunmint plot record U-06-06, and the farm page. No further action needed — I won't keep flagging it as a gap. 
-
-The only genuinely open item left is the prod sync of the farm profile, which still awaits your go whenever you're ready.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=21005] Sync to production. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Explicit go received — promoting the Fazenda Santa Rosa profile to production via fork-sync:
-[1 tool result(s) compacted: sync_beta_to_prod — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Prod sync succeeded with no conflicts. Now verifying the production page renders:
-[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The 404 is likely deploy lag (Pages rebuild takes a minute) — but let me confirm the files actually landed on the prod main branch first:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Files are on prod main (page 200, media.json present with gallery). The 404 on `www.agroverse.shop` is just GitHub Pages rebuild lag (sync landed 20:59:34Z — Pages takes a couple of minutes). Setting up a watcher to confirm when the live page goes green:
-[1 tool result(s) compacted: watch_url — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Watcher unavailable here — running a bounded retry loop instead to confirm the live page goes green:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Timed out without going green — let me check the current live status directly:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Everything is now 301 (redirect) — homepage included. Let me see where it redirects:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found it — `www.agroverse.shop` 301s to **bare `agroverse.shop`** (canonical host), and the page is **live there: HTTP 200**. Verifying content + gallery on the canonical URL:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-## ✅ Fazenda Santa Rosa profile is LIVE in production
-
-**Prod sync complete and verified — no conflicts:**
-
-1. **`sync_beta_to_prod(agroverse_shop_prod)`** — success, merged upstream (beta→prod fork sync), ledger record `deploy_20260905T205935Z_agroverse-shop-prod` in ecosystem_change_logs
-2. Files confirmed on prod main: farm page (200), `media.json` with full gallery
-3. **Live site verified** on the canonical host (`www.` 301s → bare `agroverse.shop` — that's the intentional CNAME setup, not an error):
-   - Page: **HTTP 200**, title "Fazenda Santa Rosa - Pará, Amazon Rainforest | Agroverse", OG/twitter meta present
-   - media.json: **HTTP 200** — 31 youtube entries, **`GURyK-f94xA` (the fixed IMG_8316 video) present**
-
-### SR-P1 SOP — FULLY COMPLETE ✅
-| § | Step | State |
-|---|---|---|
-| §1–2 | Registry + on-chain event | ✅ |
-| §3 | Media archive (49/49) + YouTube (31/31) | ✅ |
-| §4 | Farm page + gallery + video-ID fix | ✅ |
-| — | CEPOTX registry anchor (U-06-06) | ✅ |
-| — | **Prod sync + live verify** | ✅ **done** |
-
-**Live URL:** `https://agroverse.shop/farms/fazenda-santa-rosa-para/` — worth a quick look to confirm the gallery renders (31 video embeds + 6 images).
-
-**Still open (non-blocking follow-ups, no action needed unless you want them):**
-- FSVP supplier entity for SR in fda_fsvp (registry anchor done; full supplier file when legal docs arrive)
-- Self-improvement candidate: daemon post-upload YouTube verify step (would have caught the dead IMG_8316 ID automatically)
-
-SR-P1 is complete end-to-end. Nothing pending on my side — the ball's in your court for anything else. 🎉
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [Telegram context: chat_id=-1003919341801, thread_id=21005] Sync to production. [System note: the user sent this as a VO:
 • `sync_beta_to_prod` → ✅ agroverse_shop_prod synced from beta (merge, no conflict). Ledger: deploy_20260905T205935Z_agroverse-shop-prod
 • `http fetch` ×2 + `ssh run` ×4 → verified files on prod main + live site 200 on canonical host, media.json 31 youtube + fixed video ID present
 
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×5 → echo "=== prod main: farm page ==="; curl -s -o /dev/null -w "%{http_code} " "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_; for i in $(seq 1 12); do code=$(curl -s -o /dev/null -w "%{http_code}" "https://www.agroverse.shop/farms/fazenda-santa-rosa-para/"); echo "a; echo "=== live www check ==="; curl -s -o /dev/null -w "page: %{http_code} " --max-time 20 "https://www.agroverse.shop/farms/fazenda-santa-r; …(+2 more)
-
-
-### 🧑 Governor
+---
 
 [Telegram context: chat_id=-1003919341801, thread_id=21005] Drying station is 8327
 
@@ -741,6 +401,7 @@ Let me pull the S3 preview for IMG_8328 and check its dimensions against the gal
 ### 🤖 Autopilot
 
 Raw HEIC exists in S3 but the preview JPG 404'd. Let me check how the other SR HEIC previews are named in S3 (they may use a different key), and how the existing 6 gallery JPGs (IMG_8325/8319/etc.) were actually derived:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -748,21 +409,25 @@ Raw HEIC exists in S3 but the preview JPG 404'd. Let me check how the other SR H
 The previews in S3 are only for the **video** files (MOVs — 20 of them, the video thumbnails). The **HEIC photos** (IMG_8328, 8332, 8329, 8325, 8319, 8318, 8301) have their raw HEIC archived but their gallery JPGs were derived separately (downscaled locally). IMG_8327 follows this exact pattern — I derived the JPG locally from the re-sent HEIC.
 
 So for IMG_8328, the raw HEIC is in S3 but I need to derive the gallery JPG from it. Let me download the raw HEIC and downscale it to the 1600×1200 convention:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PIL lacks HEIC support — but the archive worker logged `IMG_8328.HEIC -> raw + preview` at 18:02, so it has a working HEIC conversion path. Let me see exactly how it converts (reuse the canonical method), and where that preview went:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The archive worker uses **ffmpeg** for previews. The HEIC previews failed to produce (only video previews exist in S3 — `ok=False` for photos, but the log line still reads "raw + preview"). Let me check `make_preview` and test whether ffmpeg on this box can decode HEIC, plus verify how the 6 existing gallery JPGs were derived (they might have come from a HEIC-capable converter):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 ffmpeg can't decode HEIC (no libheif). The log's "raw + preview" for HEICs was misleading — previews silently failed (`ok=False`). So the 6 existing gallery JPGs (IMG_8301 etc.) were derived elsewhere, probably at the farm-page build step with a HEIC-capable tool. Let me check how those were actually created and find the HEIC decode path (the incoming HEIC that the governor sent earlier must have been converted somehow — check what tools exist):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -931,4 +596,149 @@ If you meant to send a **different** video (another station or angle), let me kn
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd /tmp/tg_attachments && ls -la 3ab00bcaf1ff48848375762702d48fbf.MOV; echo "=== EXIF/QuickTime metadata ==="; exiftool 3ab00bcaf1ff48848375; cd /tmp/tg_attachments && echo "=== full GPS block ==="; exiftool 3ab00bcaf1ff48848375762702d48fbf.MOV 2>/dev/null | grep -A3 "GPS Latitude\; cd /tmp && set -a && . /opt/truesight_autopilot/.env 2>/dev/null && set +a && python3 -c " import boto3, os s3 = boto3.client('s3', region_n; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21005] I sent 8322 grab a frame from the file and then use that as photo of fruit harvesting
+
+
+### 🤖 Autopilot
+
+Got it — extract a frame from IMG_8322.MOV and add it to the gallery as the **fruit harvesting** photo. Picking the sharpest frame (sampling several timestamps, scoring by Laplacian variance), then formatting to the gallery convention:
+
+
+### 🤖 Autopilot
+
+Sharpest frame at **t=6.5s** (Laplacian 1571.5). Let me check how the gallery renders images (aspect/object-fit) so the frame matches convention, and confirm IMG_8322's current video caption:
+
+
+### 🤖 Autopilot
+
+The 8322 video entry didn't match by src — let me find it by caption and check the existing gallery images' dimensions:
+
+
+### 🤖 Autopilot
+
+Before I add the frame, I need to check two things: how image entries render (so the 16:9 video frame fits the convention), and a discrepancy — the beta main media.json I just fetched shows **7 images and NO IMG_8328**, yet PR #291 merged last turn. Let me verify:
+
+
+### 🤖 Autopilot
+
+PR #291's merge commit IS main's head (4af08f9) and the 8328 **asset** is on main (HTTP 200) — yet media.json on main shows **no "8328"** (grep = 0, and the image list shows only 7). That's contradictory. Let me check what the merge commit actually changed:
+
+
+### 🤖 Autopilot
+
+The contents API confirms main's media.json **does** have 8328 (8 images: 8332, 8329, 8328, 8327, 8325, 8319, 8318, 8301) — the earlier "grep = 0" and 7-image list was a **stale GitHub raw-CDN cache** (the `raw.githubusercontent.com` fetch returned an older copy). False alarm — PR #291 is properly merged and live on main.
+
+So current gallery on main: 31 videos + **8 images**, IMG_8328 = fermentation station correctly present. Now adding the IMG_8322 harvest frame. Let me first check the video entry position for caption-consistency and prepare the frame at gallery-convention size:
+
+
+### 🤖 Autopilot
+
+Frame is **portrait 1080×1920** (video shot upright, auto-rotated) — and the gallery JS has native portrait support (`aspect: 'portrait'` → maxWidth 420px). Let me check exactly how portrait images are declared (field name, any existing portrait entries) so the entry renders correctly:
+
+
+### 🤖 Autopilot
+
+The frame is portrait 9:16 (1080×1920 — the clip was shot upright). Before choosing landscape-pad vs portrait layout, let me see how the existing gallery photos actually look (object-fit CSS + whether they're padded canvases) so the new entry matches:
+
+
+### 🤖 Autopilot
+
+The CSS fetch didn't find farm-video styles in those files. Let me find where `farm-video-container` / `.farm-video` styles actually live, and how the farm page links media-gallery.js + CSS:
+
+
+### 🤖 Autopilot
+
+The farm-video CSS is **inline in the page's `<style>` block**. Let me read the actual style rules to see whether images use object-fit:cover (would crop a portrait frame) and how captions render:
+
+
+### 🤖 Autopilot
+
+That was the general page CSS. Let me get the specific `.farm-video-*` rules (the gallery section styles):
+
+
+### 🤖 Autopilot
+
+Frame is portrait 1080×1920 and the page CSS uses `object-fit: contain` with a dedicated portrait layout (`aspect: 'portrait'`, used for São Jorge's vertical videos). Let me check São Jorge's media.json for the exact portrait-entry pattern, and prep the frame as a clean gallery asset in one go:
+
+
+### 🤖 Autopilot
+
+Let me find São Jorge's media.json to confirm the portrait entry format (the JS comment says portrait layout was built for its vertical videos):
+
+
+### 🤖 Autopilot
+
+The farm dir is `fazenda-sao-jorge-bahia`. Let me check its media.json for how portrait entries are structured (the gallery JS explicitly supports `aspect: 'portrait'`):
+
+
+### 🤖 Autopilot
+
+Now I have the full picture. The portrait frame (1080×1920) will use the gallery's native `aspect: "portrait"` treatment (like São Jorge's vertical entries). Let me fetch the **authoritative** media.json via the contents API (the raw CDN is stale-cached), then splice the new harvest entry between IMG_8325 and IMG_8319 (strictly descending image order):
+
+
+### 🤖 Autopilot
+
+Minor script bug (`json` import inside the wrong scope). The insertion positions were found (8325 at 6545, 8319 at 6732 — adjacent). Let me redo cleanly:
+
+
+### 🤖 Autopilot
+
+Valid JSON, descending IMG order preserved (…8327, 8325, **8322**, 8319…). Now opening the PR with the media.json edit:
+
+
+### 🤖 Autopilot
+
+PR #292 opened. Now uploading the portrait harvest-frame asset to the branch:
+
+
+### 🤖 Autopilot
+
+Asset uploaded (1080×1920 portrait frame). Merging PR #292 — the governor's instruction to add this as the harvest photo is the go:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ IMG_8322 → fruit harvesting photo added — beta merged
+
+**PR #292 on agroverse_shop_beta — merged** (sha `0e00d84`)
+
+### What I did
+You said: *"I sent 8322 — grab a frame from the file and use that as photo of fruit harvesting."*
+
+1. **Frame extraction** — sampled 7 timestamps across the 12.9s IMG_8322.MOV, scored each by Laplacian sharpness → **t=6.5s won** (score 1571.5, runner-up 1552.3 at t=5.0)
+2. **Asset prep** — frame is native **portrait 1080×1920** (clip shot upright); saved as clean JPEG (~634KB). The gallery's media-gallery.js has native `aspect: "portrait"` support (built for São Jorge's vertical videos → centered 420px column), so no letterboxing hack needed — pure frame.
+3. **media.json entry** (PR #292): `fazenda-santa-rosa-IMG_8322.jpg`, `aspect: "portrait"`, caption *"Fazenda Santa Rosa — fruit harvesting, plot U-06-06. Site walk 03 Sep 2026."* — inserted between IMG_8325 and IMG_8319 (strict descending order; image sequence now 8332 → 8329 → 8328 → 8327 → 8325 → **8322** → 8319 → 8318 → 8301)
+4. **Asset** pushed to branch + merged. Validated JSON before opening; gallery now **40 entries** (31 videos + 9 images).
+
+### Notes from this turn
+- **Stale-raw-CDN gotcha**: raw.githubusercontent.com returned a cached media.json *without* IMG_8328 for a while even after PR #291 merged — verified via the GitHub contents API (authoritative, sha `42727ee4`) that 8328 is present on main. Worth remembering: always verify via contents API after merges, not raw CDN.
+- Also surfaced mid-turn and confirmed: IMG_8322.MOV attachment was a byte-identical duplicate of the archived raw (SHA-256 `04a979f9…` match) — that's why the video entry already exists; this turn only adds the *photo* from its frame.
+
+### RESUME HERE → next unit
+1. **Verify beta render** — the Santa Rosa farm page should now show the portrait harvest photo between 8325 and 8319
+2. **Sync to prod on your go** — `sync_beta_to_prod(agroverse_shop_prod)` now carries **#290 (drying), #291 (fermentation), #292 (harvest frame)** in one fork-sync; then verify live site
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #292 on agroverse_shop_beta merged successfully (sha: 0e00d84c1fdd6ee316db19f19b93620278f2051d). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → cd /tmp && rm -rf frames8322 && mkdir -p frames8322 && for t in 2.0 3.5 5.0 6.5 8.0 9.5 11.0; do ffmpeg -v error -ss $t -i /tmp/tg_attachments/3ab00bcaf1ff48848375762702d48fbf.MOV -frames:v 1 -q:v 2 f; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/agroverse_shop_beta/contents/farms/fazenda-santa-rosa-para/media.json?ref=main" | python3 -c " import json,sys,base64 d=json.load(sys.stdin) open('/tmp/sr_media_main.json','w').write(base64.b64decode(d['content']).decode()) print('saved fresh media.json, sha:', d['sha']) "; python3 - <<'PY' ... etc (+10 more)
+• `upload file to github` → https://github.com/TrueSightDAO/agroverse_shop_beta/blob/feat/sr-8322-harvest-frame/assets/images/farms/fazenda-santa-rosa-IMG_8322.jpg
+• `merge pr` → ✅ PR #292 on agroverse_shop_beta merged successfully (sha: 0e00d84c1fdd6ee316db19f19b93620278f2051d). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×16 → cd /tmp && rm -rf frames8322 && mkdir -p frames8322 && for t in 2.0 3.5 5.0 6.5 8.0 9.5 11.0; do ffmpeg -v error -ss $t -i /tmp/tg_attachmen; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/fazenda-santa-rosa-para/media.json" -o sr_; cd /tmp && python3 -c " import json d = json.load(open('sr_media.json')) g = d['gallery'] for it in g: cap = (it.get('caption') or it.get('t; …(+13 more)
+• `merge pr` → ✅ PR #292 on agroverse_shop_beta merged successfully (sha: 0e00d84c1fdd6ee316db19f19b93620278f2051d). Pull Request successfully merged
 
