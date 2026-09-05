@@ -983,6 +983,7 @@ Understood — I'll stay close: deploy it, get it running, and keep this thread 
 ### 🤖 Autopilot
 
 Module's live on the box and imports clean (boto3 present). Now mapping raw dirs → farm_ids using the committed manifests (basename intersection) so I configure roots without guessing — fetching manifests and cross-matching in one pass:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -990,6 +991,7 @@ Module's live on the box and imports clean (boto3 present). Now mapping raw dirs
 The basename overlap is nearly zero because manifests store files by their **basename inside the zip** (e.g. `IMG_48xx.MOV`) while dirs hold extracted subfolders — names don't match at this depth. oscar shows real overlap (45) because its `src/` mirrors manifest names. Rather than chase names, the practical approach: **archive every real MOV dir on the box** (that's the whole point — preserve raws, GPS, capture time, previews), and tag each with its farm dir. So I'll use the dirs' own names as farm_ids (cleide_media is empty of MOVs — the cleide raws are inside `cleide and marcelo's farm.zip`).
 
 Let me verify what's actually inside the zips (do the MOVs live only in zips?) and check the empty cleide_media + to_analyze junk before writing the config:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1152,4 +1154,41 @@ Next unit (zip-streaming support — the biggest remaining gap for full raw cove
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #13 on farm-media-daemon merged successfully (sha: ad1618cf0d0f633ecddd2d63f4f6f502597f0721). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] So I'm all right to assume that when given the instruction to spin up a new Sophia in the future by to other LLMs they will know that they will also need to spin up such a Daemon 2 [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Good question — and the honest answer is: **not reliably yet**. Let me verify what a future LLM would actually read when spinning up a new Sophia, so I'm not guessing:
+
+
+### 🤖 Autopilot
+
+Let me check what actually exists in the context about spinning up new Sophias and daemons — searching the provisioning docs and the farm-media-daemon repo README reference:
+
+
+### 🤖 Autopilot
+
+No direct hits on Sophia provisioning docs. Let me check the SOPHIA_HANDOFFS trigger protocol and the FARM_MEDIA_DAEMON_PLAN to see what a spawning LLM is told today:
+
+
+### 🤖 Autopilot
+
+The honest answer to your question is: **not yet — and I should fix that.**
+
+Here's what I found:
+
+**Today, a future LLM told to "spin up a new Sophia" would NOT reliably learn it needs the Media Archive Daemon.** The daemon lives in its own repo (`farm-media-daemon`) and its own plan (`FARM_MEDIA_DAEMON_PLAN.md` — marked complete), but there's **no provisioning checklist** that says "a Sophia needs X daemons running." Searching the context for "spin up a new Sophia" / "provision" / "daemon required" returns **zero hits**. SOPHIA_HANDOFFS.md documents the *trigger protocol* (how to ping Sophia, thread rules) but **not what infrastructure a fresh Sophia must stand up** (this daemon, the context sync loop, the FastAPI dashboard service, etc.).
+
+So your assumption is right *in principle* — the daemon is now documented as part of the media archive, and the repo README/DESIGN describe it — but **nothing yet tells a spawning LLM "you need this daemon too."** That's a genuine gap.
+
+**My recommendation:** add a short, explicit section to the Sophia runbook — something like **"Standing up a new Sophia — required services"** — listing the daemons/services a fresh instance must have running (the Media Archive Daemon with its two workers, the context-sync loop, etc.), each with its systemd unit name and repo. That way any future LLM (DeepSeek, Claude, Cursor, whoever) that reads the handoff protocol on the way to spinning up a Sophia hits it as a prerequisite checklist.
+
+Want me to open that doc PR now? It'd be a small, focused addition to agentic_ai_context (SOPHIA_HANDOFFS.md or a new `SOPHIA_PROVISIONING.md` + a line in the manifest/registry pointing to it). Say the word and I'll create it.
+
+One more note for accuracy: I'm speaking as **Sophia Truesight** (admin+sophia@truesight.me). The daemon work this thread has been doing is real and merged — the gap is purely that *the "spin up a new Sophia" path doesn't yet point at it*.
 
