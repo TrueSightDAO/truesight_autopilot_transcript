@@ -162,6 +162,7 @@ Just say the word when you've had a look.
 ### 🤖 Autopilot
 
 Let me verify the page is actually live before I share the URL:
+[1 tool result(s) compacted: http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -370,4 +371,59 @@ You sent **4 media files ~21:01** (not just the 3 videos):
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → echo "===DISK USAGE==="; df -h / /tmp /home 2>/dev/null; echo; echo "===inodes==="; df -i / /tmp /home 2>/dev/null; echo; echo "===largest d; echo "===ENOSPC / disk errors in recent logs?==="; journalctl --since '2 hours ago' 2>/dev/null | grep -iE 'no space|enospc|disk full|write ; echo "===NOW: $(date)==="; echo; echo "===newest files anywhere (last 30 min), any type>1MB==="; find /tmp /home/ubuntu -type f -size +1M -n; …(+1 more)
+
+
+### 🧑 Governor
+
+Please inspect the attached file.
+
+[Attachment auto-processed: **63677c46b61849b7a42568b644d1e0a5.HEIC**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+- Note: HEIC converted to JPEG (EXIF/GPS preserved)
+- 📍 GPS: -3.4893, -52.966564 (alt 179.5 m)
+- 🕐 Captured: 2026:09:04 21:51:41
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+A Dona Rosa photo — GPS −3.4893, −52.9666 matches the DR plot (Medicilândia) exactly, and it's timestamped Sep 4 21:51 (within the site-visit window). Let me inspect it on disk, check whether it's already in the Dona Rosa archive (duplicate?) or new, and see what it shows:
+
+
+### 🤖 Autopilot
+
+The duplicate-check grep used the wrong key (attachment filename vs content hash) — let me redo it properly against the content hash, and look at what the photo actually shows:
+
+
+### 🤖 Autopilot
+
+This photo **already exists in the archive** — it's **IMG_8548.HEIC** in `fazenda_dona_rosa_work/` (sha `1b7c9909…` matches). So it's a duplicate of existing Dona Rosa site-visit material, not new content. Since it's already in the archive, no action is needed for ingestion.
+
+**What the file is:** IMG_8548 — Dona Rosa site visit, iPhone 12 Pro Max, 4032×3024, GPS −3.4893/−52.9666 (exactly the DR-P1 plot), shot Sep 4 at 21:51 local (inside the recorded 21:22–22:28 session window).
+
+**About OCR:** the auto-processor said "no text detected" — but this is a **photo of a scene**, not a document. Let me actually look at what it depicts (it may be a cacao tree / beans / farm shot worth noting for the gallery). Let me view it and cross-check the archive naming:
+
+
+### 🤖 Autopilot
+
+I can't see image content directly through these tools, but I have what I need. Let me check the DR media manifest to see if IMG_8548 is already referenced in the farm page gallery:
+
+
+### 🤖 Autopilot
+
+This photo is **IMG_8548.HEIC** — confirmed duplicate of existing archive content, already covered by the Dona Rosa set. It's **not** in the farm page gallery (gallery uses 8533/8535/8536/8540/8557 + 8 videos), so no change needed there either.
+
+**Summary of this attachment:**
+- 📷 **What it is:** Dona Rosa site-visit photo (IMG_8548) — iPhone 12 Pro Max, 4032×3024
+- 📍 **GPS:** −3.4893, −52.9666 — dead-on the DR-P1 plot centroid (Medicilândia, Pará), alt 179 m
+- 🕐 **Time:** Sep 4, 21:51 local — inside the recorded site-visit window (21:22–22:28)
+- 🔁 **Status:** **Already in archive** — sha256 `1b7c9909…` matches the copy in `fazenda_dona_rosa_work/`. Nothing new to ingest.
+- 🖼️ **Not in gallery** — the DR farm page shows a curated subset; this one isn't currently among the 5 site photos. Happy to add it if you want it featured.
+
+No ingestion, move, or dedupe action needed — it's a clean duplicate of material we already hold. If you meant for me to do something specific with it (feature in gallery, use as an alternate hero, etc.), tell me and I'll do that.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → echo "===file on disk==="; ls -la /tmp/tg_attachments/63677c46b61849b7a42568b644d1e0a5.* 2>/dev/null; echo; echo "===sha256==="; sha256sum /; echo "===proper dup check: content sha 1b7c9909 across DR workdir + zip + inbox==="; find /home/ubuntu/fazenda_dona_rosa_work /home/ubuntu/m; echo "===jpg version exists on disk?==="; ls -la /tmp/tg_attachments/63677c46b61849b7a42568b644d1e0a5.jpg 2>/dev/null; echo "===try a vision
 
