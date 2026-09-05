@@ -11,60 +11,12 @@
 ### 🧑 Governor
 
 [CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
-1 earlier turn(s) in this thread were compacted; 0 tool call(s) executed across them. Full detail is in the session transcript repo.
-
----
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-## ✅ SR-P1 SOP §3b COMPLETE + YouTube gallery PR merged
-
-**PR #288 (agroverse_shop_beta) — merged** (sha `493eda2b`): added the full YouTube video gallery to the Fazenda Santa Rosa profile
-- `farms/fazenda-santa-rosa-para/media.json` → **37 gallery entries** (31 youtube + 6 images), mirroring the raimundo-geniza precedent (videos first, images after)
-- Captions per clip: `Fazenda Santa Rosa — IMG_xxxx, <context>. Site walk 03 Sep 2026.`
-- All videoIds from daemon uploads (rc=0, verified)
-
-### What happened this turn
-1. **Found + fixed a real gap**: uploads had stalled at 20/31 — the daemon only uploads mp4s that *have* a sidecar, but my earlier sidecar pass stopped when conversion was at 20. Generated the 11 missing sidecars (sha256 + duration via ffprobe; GPS in source verified via exiftool) → daemon picked them up within 30s.
-2. **31/31 uploaded to YouTube**, all `rc=0`, zero errors, yt_ids written back to sidecars.
-3. Built media.json with all 31 clips + existing 6 images → PR #288 → merged.
-
-### §3 (§3a archive + §3b YouTube) — fully complete
-| Metric | Result |
-|---|---|
-| Raw archive (HEIC/MOV → S3) | ✅ 49/49 originals + 31 previews |
-| MOV→MP4 conversion | ✅ 31/31 |
-| YouTube uploads | ✅ 31/31 (all rc=0) |
-| Sidecars w/ yt_id | ✅ 31/31 |
-
-### SR-P1 SOP status
-| § | Step | State |
-|---|---|---|
-| §1–2 | Registry + on-chain event | ✅ done |
-| §3 | Media archive + YouTube | ✅ **complete** |
-| §4 | Farm page + gallery | ✅ merged (PR #287 page, PR #288 gallery) |
-| — | Beta verify (gallery) | ⏳ next |
-| — | Prod sync | ⏳ your explicit go |
-
-## RESUME HERE → beta verify gallery + follow-ups
-1. **Verify beta renders the gallery:** `http_fetch` on `https://beta.agroverse.shop/farms/fazenda-santa-rosa-para/` — confirm the page loads (HTTP 200) and spot-check that media.json is being served (curl the raw path or check page HTML for a youtube embed/thumbnail reference). If broken, fix in a follow-up PR.
-2. **Follow-ups (non-blocking, from earlier):**
-   - FARM_SLUG mapping (farm_id `fazenda-santa-rosa` ≠ page slug `fazenda-santa-rosa-para`) so the sunmint impact-map popup links to the right profile.
-   - FSVP entity in fda_fsvp (COPOPS site code U-06-06; needs legal name/CNPJ from Antônio & Graça's docs when available).
-3. **Prod sync on your go:** once beta + gallery look right, say the word and I'll `sync_beta_to_prod(agroverse_shop_prod)` (page + gallery + assets all go together — prod is a fork-sync of beta).
-
-**Open for you:** beta gallery render check is worth a quick look (`beta.agroverse.shop/farms/fazenda-santa-rosa-para/`); prod sync awaits your explicit go.
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
+1 earlier turn(s) in this thread were compacte:
 • `ssh run` ×15 → cd ~/media_archive_inbox/farm-media/fazenda-santa-rosa && echo "mp4: $(ls *.mp4 2>/dev/null | wc -l)/31"; echo "uploaded(yt_id): $(grep -l '; echo "=== ffmpeg active ==="; ps aux | grep "ffmpeg" | grep -v grep | head -3; echo "=== convert_sr.sh current line ==="; ps aux | grep conv; cd ~/media_archive_inbox/farm-media/fazenda-santa-rosa; for i in $(seq 1 13); do n=$(ls *.mp4 2>/dev/null | wc -l); u=$(grep -l '"yt_id": "[; …(+11 more)
 • `merge pr` → ✅ PR #288 on agroverse_shop_beta merged successfully (sha: 493eda2bb3589744087cdbe60b1c485819df99eb). Pull Request successfully merged
 
-
-### 🧑 Governor
+---
 
 [Telegram context: chat_id=-1003919341801, thread_id=21005] [Handoff context — this Telegram topic (thread 21005) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
 
@@ -364,31 +316,37 @@ Let me verify the sunmint index records for the SR plot (what code is actually r
 ### 🤖 Autopilot
 
 Let me read the SR plot entry in the geojson (the tail that got truncated):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me search that artifact for the Santa Rosa plot entry:
+[1 tool result(s) compacted: recall_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the rest of the geojson to find the Santa Rosa plot feature specifically:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the final chunk of the geojson (which should contain the SR plot feature):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The nested artifact reads are burning context. Let me fetch the SR plot feature directly via curl and grep, to see exactly what plot_id is stored:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The registry cross-check is done and surfaces a real gap. Let me verify one more thing — whether U-06-06 appears anywhere in the fda_fsvp mirror or entities (it shouldn't, but confirming before I propose changes):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -439,6 +397,7 @@ I read the full registry (both copies — `agentic_ai_context/CEPOTX_SITE_CODE_R
 ### 🤖 Autopilot
 
 👍 GO — adding U-06-06 → Fazenda Santa Rosa to the anchors in both registry copies. Reading both files to craft exact edits:
+[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -594,4 +553,149 @@ SR-P1 is complete end-to-end. Nothing pending on my side — the ball's in your 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → echo "=== prod main: farm page ==="; curl -s -o /dev/null -w "%{http_code} " "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_; for i in $(seq 1 12); do code=$(curl -s -o /dev/null -w "%{http_code}" "https://www.agroverse.shop/farms/fazenda-santa-rosa-para/"); echo "a; echo "=== live www check ==="; curl -s -o /dev/null -w "page: %{http_code} " --max-time 20 "https://www.agroverse.shop/farms/fazenda-santa-r; …(+2 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21005] Drying station is 8327
+
+
+### 🤖 Autopilot
+
+Got it — IMG_8327 is the drying station. Let me check what the current caption says for it in media.json:
+
+
+### 🤖 Autopilot
+
+Only IMG_8326 showed — let me check what IMG_8327's current caption says and scan all captions for anything about drying:
+
+
+### 🤖 Autopilot
+
+IMG_8327 isn't in the captions I've found — let me list the full gallery to see all IMG numbers and check if 8327 is present as an image or under a different caption:
+
+
+### 🤖 Autopilot
+
+IMG_8327 isn't in the gallery at all — the clips jump IMG_8326 → IMG_8333, and no image references 8327 either. Let me check the source archive for what IMG_8327 actually is (video or photo) and where it sits in the pipeline:
+
+
+### 🤖 Autopilot
+
+IMG_8327 doesn't exist in the archive at all — no video, no photo, no file anywhere on the box or in the media.json gallery. The gallery clips jump from IMG_8326 (video) straight to IMG_8332/8333, and images run IMG_8301/8318/8319/8325/8329/8332 — 8327 was never among the 49 raw originals uploaded from the site walk.
+
+Quick sanity check on the source listing to be thorough:
+
+
+### 🤖 Autopilot
+
+The count is 62 (31 mp4 + sidecars etc.). Let me see all 62 files to check for any 8327 variant:
+
+
+### 🤖 Autopilot
+
+IMG_8327 is not among the 31 converted clips on the box. The raw originals (HEIC/MOV) went to S3 during §3 — checking there plus the shop assets for any 8327 file:
+
+
+### 🤖 Autopilot
+
+IMG_8327 confirmed absent from the gallery, local archive, and shop assets. The raw originals went to S3 in §3 — my bucket guess was wrong, let me find the right one:
+
+
+### 🤖 Autopilot
+
+No farm-media bucket in explorya — the raws may be in the nelanco account or on GitHub (farm-media-raw repo). Let me check nelanco buckets and the farm-media-raw repo:
+
+
+### 🤖 Autopilot
+
+Found the farm-media-raw repo — but note there's no `fazenda-santa-rosa` dir; there's a **`fazenda-dona-rosa`** dir (possible naming variant). Let me check its contents and the media.agroverse.shop bucket (created 2026-09-04 — the day of the SR site work):
+
+
+### 🤖 Autopilot
+
+The media.agroverse.shop bucket is empty under `farms/`, and farm-media-raw has no `fazenda-santa-rosa` dir — but has `fazenda-dona-rosa/photos`. Let me check what's inside those photos dirs and search the bucket properly:
+
+
+### 🤖 Autopilot
+
+The farm-media-raw repo covers other farms (dona-rosa ≠ santa-rosa — different IMG range). Let me search the S3 bucket specifically for santa-rosa / 8327 objects:
+
+
+### 🤖 Autopilot
+
+IMG_8327 is not among the 31 uploaded previews either — but I noticed the gallery *images* (IMG_8301, 8318, 8319, 8325, 8329, 8332) aren't in that preview list, meaning the 49 raw originals (incl. HEIC photos) live somewhere else. Let me check the bucket structure, the daemon manifests, and do a deeper disk search for 8327:
+
+
+### 🤖 Autopilot
+
+Interesting — there's a `raw/` prefix in the S3 bucket. Let me look there for the SR raws, and also the manifests. The video previews cover IMG_8281–8340 but photos like 8301/8318/8319/8325/8329/8332 came from somewhere — checking `raw/`:
+
+
+### 🤖 Autopilot
+
+Let me check the raw S3 prefix specifically for fazenda-santa-rosa to see if IMG_8327 was ever uploaded there:
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the artifact to see if IMG_8327 exists in the raw listing:
+
+
+### 🤖 Autopilot
+
+Let me get the last chunk of the raw listing (keys around 8320-8340) to definitively check for IMG_8327:
+
+
+### 🤖 Autopilot
+
+Let me page to the end of the raw listing (keys 8326 onward) to definitively check for 8327:
+
+
+### 🤖 Autopilot
+
+Let me read the final page of the raw listing to complete the picture:
+
+
+### 🤖 Autopilot
+
+Let me do a definitive direct check for IMG_8327 in the raw bucket (HEIC and MOV variants) rather than paging through the huge listing:
+
+
+### 🤖 Autopilot
+
+IMG_8327 doesn't exist as HEIC or MOV in the raw bucket either — definitively confirmed missing from every store. Let me pull a clean name-only inventory of the SR raws to see exactly what's around the gap, and check if maybe it landed under a different extension:
+
+
+### 🤖 Autopilot
+
+No local creds (the aws_query tool holds them). I have enough from the HeadObject probes and listings: **IMG_8327 exists nowhere** — not in the raw S3 archive (HEIC/MOV both 404), not among the 31 uploaded MP4s, not in the gallery or shop assets, not on disk. The sequence jumps IMG_8326 → IMG_8328 (HEIC photo) → IMG_8329.
+
+Wait — that's the key insight. Let me verify the 8328/8329/8330/8331 region of the raw archive, since 8327's absence sits right between the last video (8326) and photos. Let me check what actually exists around the gap:
+
+
+### 🤖 Autopilot
+
+Checked every store — **IMG_8327 doesn't exist in the DAO archive**:
+
+| Store | IMG_8327? |
+|---|---|
+| S3 raw (`media.agroverse.shop/raw/fazenda-santa-rosa/`) | ❌ HEIC + MOV both 404 |
+| S3 previews (31 video thumbnails) | ❌ absent |
+| Local archive (31 MP4 + sidecars) | ❌ absent |
+| GitHub farm-media-raw / shop gallery media.json | ❌ absent |
+
+The archive sequence jumps **IMG_8326 (video) → IMG_8328 (photo)** — and there are other gaps too (8284/8285, 8288, 8291/8292…), which is normal for an iPhone transfer where some shots never made it into the shared set.
+
+So if the drying-station shot was taken as IMG_8327 on the phone, **it never reached the pipeline** — it's one of the missing frames, not a mislabeled one.
+
+Two ways forward — your call:
+1. **Re-send IMG_8327** (HEIC/photo or video) to this chat, and I'll run it through the full pipeline: archive raw → S3 → (video: YouTube upload) → add to the Santa Rosa gallery with a proper *"drying station"* caption → beta → prod.
+2. If the drying station actually appears in **one of the 31 clips already live**, tell me which IMG number and I'll fix that caption instead.
+
+Which is it — do you still have the file, or is the drying station already visible in an existing clip?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×14 → cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_prod/main/farms/fazenda-santa-rosa-para/media.json" -o sr_; cd /tmp && python3 -c " import json d = json.load(open('sr_media.json')) for i, item in enumerate(d.get('gallery', [])): cap = item.get('cap; echo "=== farm-media dir: any 8327 files ==="; ls -la ~/media_archive_inbox/farm-media/fazenda-santa-rosa/ 2>/dev/null | grep -i "8327" ; ec; …(+10 more)
 
