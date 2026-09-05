@@ -712,51 +712,71 @@ I have the full picture now. Let me check the roles.py WRITE_TOOLS role restrict
 ### 🤖 Autopilot
 
 Session files are md5-hashed (`tg:<chat>:<thread>` → 12-hex), and the tool handler is sync (registry is sync-friendly). I need the save-helper name near line 3268 and how sync tools handle the async lock:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me confirm `_log_session`'s full body, how Telegram session_id keys form, and whether tool modules can lazy-import main without cycles:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me confirm the dispatch context shape and how to detect an in-flight session (the manual tool must refuse to compact a session that's mid-turn):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tool architecture is clear. Before writing, three remaining recon items — handler invocation context (sync-in-thread vs loop, determines locking), the policy test's WRITE list (new WRITE tool must be added), and role keys:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find where `_run_tool_sync` is actually invoked (executor/thread) to confirm the locking model for a sync tool handler:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Tool architecture is fully mapped. Last recon batch — policy `evaluate` (governor pass-through for WRITE), the policy test's exhaustive list mechanics, and conftest's SESSION_LOG_DIR redirect:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR1 recon is nearly complete — I have the full tool-registration + policy-gating picture. Three last checks before writing: the role `tools` semantics (whether an explicit list would hide a new tool), the `Role` dataclass default, and this session's role tag:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This thread's session key resolves to `6e0ff0d6ff13` but no file exists at that path — need to check the live `session_log_dir` and role tool-list mechanics before writing the tool:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The session dir exists (291 JSONs — earlier my glob missed the full path pattern). Let me find where THIS thread's session (21264) is and check the `infrastructure` role tools tail (whether the role list must explicitly include a new tool):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I'm at high round usage — let me do one final targeted recon call, then write the files immediately.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -918,4 +938,60 @@ PR #402 is open and clean. Reporting PR1 complete — holding for your merge + t
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×11 → cd /opt/truesight_autopilot && echo "=== current branch/head ===" && git branch --show-current && git log --oneline -3 && echo "=== my PR1 f; cd /opt/truesight_autopilot && echo "=== git diff policy.py ===" && git diff app/policy.py && echo "=== git diff test_policy_enforcement.py ; cd /opt/truesight_autopilot && echo "=== test file structure ===" && grep -nE "^def test_|^class |^import |^from |HAS_MAIN|skip" tests/test_; …(+8 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go - merge #402. Then proceed with the §1d manual validation against the real bloated sessions as planned.
+
+
+### 🤖 Autopilot
+
+Merging #402 after CI check, and scouting validation candidates in parallel:
+
+
+### 🤖 Autopilot
+
+CI is in progress on #402 (same timing pattern as #401). Let me poll until both checks reach terminal state, then merge:
+
+
+### 🤖 Autopilot
+
+CI green: `test: success`, `smoke: success`. Merging #402:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+PR1 merged — stopping here per the one-PR-per-turn rule (§1d validation runs in a fresh turn).
+
+## ✅ PR #402 merged — PR1 complete
+
+- 🔗 **https://github.com/TrueSightDAO/truesight_autopilot/pull/402** — merged successfully (sha `f03fa2d6740809caad681c69bde6a46198257c1a`)
+- CI checked first: waited for terminal state — `test: success` · `smoke: success` (same timing pattern as #401; they were in_progress at first poll, resolved green within ~2 min)
+- **What landed on `main`:** `compact_session_manual` governor-only tool (`app/tools/compact_session_tool.py`, +327) + WRITE registration (`app/policy.py`, `tests/test_policy_enforcement.py`) + 15 tests (`tests/test_compact_session_tool.py`, +264). Local gates all green (897 passed; only the known pre-existing config test fails). Not wired into the automatic turn path — that remains PR2.
+
+## RESUME HERE → next unit: §1d manual validation on real bloated sessions
+
+1. **Candidate sessions scouted** (291 session files on the box; biggest 12 measured). Best targets for validation — pick 2:
+   - `d32b2609056d.json` — 554 msgs / 669 KB, mtime 2026-06-13 (the plan's cited session; **already smoke-tested at library level during PR0: 161K → 49K tokens, 3.3× drop**)
+   - `6827715c3c2b.json` — 359 msgs / 603 KB, mtime 2026-06-11
+   - `a3db3250c3b8.json` — 429 msgs / 420 KB, mtime 2026-08-23 (most recent of the big ones)
+   - `5bb45b91827a.json` — 466 msgs / 403 KB, mtime 2026-06-18
+   - `_resume_awaiting.json` (2.7 MB) is a different shape (msgs=0) — **not** a candidate.
+2. **Run validation** via the merged tool path (library + backup + save, same code the tool executes): for each chosen session — record tokens/messages before → `compact_history(keep=6, threshold=20000)` → assert **byte-identical retained tail**, **token drop**, **zero tool-protocol dangling** (run the `_sanitise_tool_messages` Pass-1/2 check), **backup file created** (`<hash>.pre-compact-<UTC>.json`), and the file on disk re-loads in the same JSON shape `main._log_session` writes.
+3. **Report results back** (tokens before/after, reduction %, tail-identical proof, backup path) — then **HOLD for Gary's go on PR2** (automatic wiring into the turn path), per the plan's rollout section.
+
+Note: since #402 merged the tool itself, the cleanest validation is actually invoking `compact_session_manual()` on one live session via the python REPL — but to be safe, run it in **dry-run/analysis mode first** (load + compact in memory, verify, don't save) and only persist when Gary confirms he wants the on-disk rewrite on a real session file (that's the tool's actual side effect, and it should be exercised deliberately on the chosen targets — these are old sessions from June, not live threads, so no in-flight race risk; I'll confirm each is idle before writing).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' from app.github_client import GitHubClient gh = GitHubClient() repo = gh.g.get_; cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' import os, json, glob, datetime d = "/opt/truesight_autopilot/sessions" files =; cd /opt/truesight_autopilot && timeout 300 .venv/bin/python - << 'PYEOF' import time from app.github_client import GitHubClient gh = GitHubC
+• `merge pr` → ✅ PR #402 on truesight_autopilot merged successfully (sha: f03fa2d6740809caad681c69bde6a46198257c1a). Pull Request successfully merged
 
