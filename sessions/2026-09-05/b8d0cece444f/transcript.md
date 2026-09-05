@@ -285,31 +285,57 @@ Before writing tests, let me smoke-test the library against the real 554-message
 Smoke test passes — my inline comparison was wrong (used `te[-6]+1` instead of the function's `turn_ends[-keep-1]+1`); the function's tail (149 msgs from index 405) IS byte-identical to the input slice, and 161K → 49K tokens (3.3x drop, tail = last 6 turns verbatim, 10 turns compacted). One documented interaction confirmed: the summary `user` message sits adjacent to the tail's opening `user` message, so Pass 3 of `_sanitise_tool_messages` will content-preservingly merge them next turn — the tests must lock that in.
 
 Now writing the test suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 That heredoc blew up (over-long command with a duplication glitch). Let me write the test file in clean smaller chunks using Python file writes:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now the actual test functions — first batch (token counting + boundaries):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One design correction before running: `_sanitise_tool_messages` mutates in place and returns `None`, and its Pass 3 *will* merge the summary user + tail-opener user (the documented content-preserving interaction). The "zero dangling" assertion must target the real hard constraint — tool-protocol dangling (Pass 1/2) — not the benign user-merge. Rewriting those two tests with an explicit structural validator:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now run the new test suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 3 failures — let me diagnose each precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -320,11 +346,18 @@ Diagnosis clear — the library is correct; my test expectations were wrong:
 3. Leftover nonsense assertion line in the sanitise test.
 
 Fixing the three tests:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 22 tests pass. Now the full local gate — compileall, ruff check, ruff format, full pytest:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -377,21 +410,25 @@ Converging per the turn budget — one trivial lint fix remains, everything else
 ### 🤖 Autopilot
 
 Fixing the lint error and running the full gate now:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The python edit found 0 occurrences (the file already differs from my expectation), yet ruff is already CLEAN — so the lint state is good. Let me verify the file's actual guard section, then run the full test suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full gate is nearly green: **882 passed, 1 failed** — `test_config_own_data_repos.py::test_defaults_match_sophias_existing_hardcoded_repos`. My files are additive-only (a new library + new test file, untracked), so this looks pre-existing on main — but let me prove it rigorously by moving my files aside and re-running just that test:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Proven: the 1 failure is pre-existing on main** — it fails identically with my files removed (0.81s, same assertion), and my 22 tests pass restored. Let me confirm it fails on clean main too, then push PR0:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -489,4 +526,55 @@ On the actual bloated session `d32b2609056d.json` (554 msgs / 161,127 tokens): `
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' s = open('tests/test_context_compaction.py').read() # The HAS_MAIN guard's exce; cd /opt/truesight_autopilot && echo "=== guard section ===" && sed -n '30,50p' tests/test_context_compaction.py && echo "=== any 'as exc' le; cd /opt/truesight_autopilot && echo "=== my files untracked? ===" && git status --short | grep -E "context_compaction" ; echo "=== run faili; …(+11 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Go - merge #401. Then proceed to PR1 (manual trigger tool, governor-only) - remember the required manual validation checkpoint against 1-2 real bloated sessions before I confirm PR2.
+
+
+### 🤖 Autopilot
+
+Merging #401, then pulling the PR1 spec from the plan:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Merge attempt blocked — stopping here per the one-PR-per-turn rule (nothing merged yet).
+
+## This turn: attempted merge of #401 → **blocked by CI**
+
+**What happened:**
+- 🔗 PR #401 (PR0: context compaction library + tests) is **open and ready** but `merge_pr` **refused**: *"CI not green (failing-or-pending: test). Failing/pending checks: test, smoke"*
+- I did **not** start PR1 — the merge gate must clear first.
+
+**Why CI is likely red (hypothesis, needs verification next turn):**
+- Local full-suite run showed **882 passed, 1 failed** — the failure `test_config_own_data_repos.py::test_defaults_match_sophias_existing_hardcoded_repos` is **pre-existing on main** (proven by running with my files removed — identical line-22 assertion). If the CI `test` check runs the full suite, that pre-existing failure now blocks every merge, not just #401.
+- The `smoke` check status is unknown — needs investigation (may be the same root cause, or a boot/import check).
+- My PR0 files are purely additive (new library + new test file, nothing wired into the turn path), so they cannot plausibly break `smoke` — but CI's exact job definitions need confirming.
+
+## RESUME HERE → next unit: clear CI gate, then merge, then PR1
+
+1. **Diagnose CI:** inspect `truesight_autopilot` CI workflow (`.github/workflows/*.yml` via `read_repo_file`) to see what `test` and `smoke` run; re-check PR #401's check details (via GitHub API / `gh pr checks 401`) to see which job failed and read its logs.
+2. **Determine if red is pre-existing:** if the `test_config_own_data_repos` failure is the blocker and it exists on `main` too, decide with Gary whether to (a) fix that config-defaults drift in a separate small PR first, or (b) it's a known-accepted red and override/merge anyway — **ask before forcing**.
+3. **Re-merge #401** once checks are green (or Gary authorizes).
+4. **PR1** (per plan §5b, spec now fetched): governor-only manual trigger tool using the PR0 library — then the **required manual validation checkpoint against 1–2 real bloated sessions** (e.g. `d32b2609056d.json` @161K tokens, `7b57a574a968` @30K) before reporting back and waiting for Gary's go on PR2.
+
+Plan-of-record: `agentic_ai_context/plans/SOPHIA_CONTEXT_COMPACTION_PLAN.md` (PR #910, merged) — §5 PR1 spec partially re-read this turn; full read of the remaining section continues next turn.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge_pr(truesight_autopilot, 401)` → ❌ refused: CI not green (failing/pending checks: `test`, `smoke`)
+• `read_repo_file(agentic_ai_context, plans/SOPHIA_CONTEXT_COMPACTION_PLAN.md)` → refreshed plan-of-record; PR1 spec section partially re-read (needs the §5 tail next turn)
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ❌ Failed to merge PR #401 on truesight_autopilot: Refusing to merge PR #401 on truesight_autopilot: CI not green (failing-or-pending: test).
 
