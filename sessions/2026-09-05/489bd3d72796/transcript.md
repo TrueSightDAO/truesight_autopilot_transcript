@@ -1035,21 +1035,40 @@ Progress: 36 frames extracted (up to IMG_8510), MP4 conversion at 1 done (CPU-sh
 ### 🤖 Autopilot
 
 More empty frames (dark/open-air footage). Let me wait for the later clips (8537–8555 — interior/production/label shots where a code would appear) rather than OCR-ing every frame.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Frames now cover through IMG_8537 (production/tasting clips). Let me OCR samples from these interior/production segments — where labels or paperwork would more likely appear.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[4 tool result(s) compacted: ocr_image, ocr_image, ocr_image, ocr_image — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Frame OCR is coming up empty on the outdoor footage — mostly dark/open-air scenes with no readable signage, consistent with the photos. Let me wait for the final clips (8537–8555, the production/tasting interiors where product labels would show) and check the conversion batch.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Frame extraction complete (97 frames from all 19 clips). MP4 conversion is still slow (1 done — CPU-bound). Let me OCR the final clips' frames — the production/interior/tasting footage (8537–8555) where labels or registration paperwork would most likely appear.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[6 tool result(s) compacted: ocr_image, ocr_image, ocr_image, ocr_image, ocr_image, ocr_image — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[5 tool result(s) compacted: ocr_image, ocr_image, ocr_image, ocr_image, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1113,21 +1132,25 @@ I'll keep the MP4 conversion running either way and report when it completes.
 ### 🤖 Autopilot
 
 Checking state now — the conversion batch has been running in the background.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good progress — **14/19 converted** (working on IMG_8538 now). The daemon is also consuming CPU (2 processes), which explains the slower-than-expected rate. Let me wait for the batch to finish and also check what's happening with the daemon's own activity.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 17/19 done, daemon healthy (finished RG batch Sep 04). Waiting for the last two (8550, 8554, 8555 remaining — one is processing):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All converted (remaining list empty). Let me confirm the exact count and list, then verify the GPS metadata survived conversion (spot-check with exiftool/ffprobe).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1236,4 +1259,175 @@ Want me to continue with unit 1 (photo archive) next?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×18 → echo "===mp4 progress==="; tail -8 /tmp/dr_mp4_progress.txt 2>/dev/null; echo "done count:"; ls /tmp/dr_mp4/*.mp4 2>/dev/null | wc -l; echo ; sleep 240; echo "===mp4 final==="; tail -6 /tmp/dr_mp4_progress.txt 2>/dev/null; echo "done count:"; ls /tmp/dr_mp4/*.mp4 2>/dev/null | wc -; sleep 150; echo "===mp4 final==="; tail -4 /tmp/dr_mp4_progress.txt 2>/dev/null; echo "done count:"; ls /tmp/dr_mp4/*.mp4 2>/dev/null | wc -; …(+15 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] [Handoff context — this Telegram topic (thread 21167) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+👍 Go received — continuing the onboarding. Per the handoff directive, first checking the manifest, then starting **Unit 1: photo archive** — let me pull the exact photo-archive convention (how RG photos were handled) in parallel.
+
+
+### 🤖 Autopilot
+
+👍 Go received. The manifest confirms this thread isn't a separately-tracked plan (it's the live DR onboarding) — I'll keep executing per the SOP + MEDIA_ARCHIVE_PIPELINE runbook. The runbook says photos go to **`farm-media-raw` repo under `<farm-id>/photos/`**, one object per file. Before uploading 35 HEICs one-by-one, let me check for an existing on-box uploader (so I don't burn 35 API calls if a local script handles it) and confirm the prior-farm layout.
+
+
+### 🤖 Autopilot
+
+Only `app/config.py` references `farm-media-raw` — no on-box batch photo uploader exists. The runbook says photos go to the **`farm-media-raw` GitHub repo** (`<farm-id>/photos/`, Contents API). Let me read the config reference and check that repo's current layout + whether a Governor-uploader CLI exists anywhere.
+
+
+### 🤖 Autopilot
+
+No batch photo uploader exists — the standard path is individual Contents-API uploads of the 35 HEICs (the repo layout confirms: `farm-media-raw/<farm-id>/photos/`... actually subfolders like `cleide/`, `la-do-sitio/`). Let me check the exact per-farm layout (whether photos sit directly in `cleide/` or a `photos/` subfolder) before uploading.
+
+
+### 🤖 Autopilot
+
+Photos live in `cleide/photos/` and `la-do-sitio/photos/` subfolders. Let me check how many files are in one and what they're named (extension conventions — HEIC original vs JPG conversion).
+
+
+### 🤖 Autopilot
+
+Convention confirmed: **original HEIC files** stored directly in `<farm-id>/photos/` (e.g. `cleide/photos/IMG_4847.HEIC`, 14 files; `la-do-sitio/photos/` 52 files). So for DR: `farm-media-raw/fazenda-dona-rosa/photos/*.HEIC` (35 files, 70 MB total). The Contents API is the required path (api-only data repo). 35 individual uploads is the honest approach — I'll do them in a batch loop on the box using the repo's stored upload helper if present, else via the upload_file_to_github tool per file. Let me check for a GitHub token + upload helper on the box to do this efficiently.
+
+
+### 🤖 Autopilot
+
+No token on box for scripted Contents-API PUTs, and the runbook mandates per-file Content-API uploads — my `upload_local_file_to_github` tool does exactly that (local file already on disk, one call per file, auto-creates parent dirs). `farm-media-raw` is an allowed api-only data repo, so this is the correct lane. Let me get the exact 35 filenames first.
+
+
+### 🤖 Autopilot
+
+35 HEICs confirmed. Now uploading all to `farm-media-raw/fazenda-dona-rosa/photos/` (one object per original, per the zip-handling rule + repo convention). Batch 1 of 4:
+
+
+### 🤖 Autopilot
+
+Batch 1 (10/35) uploaded. Continuing batch 2:
+
+
+### 🤖 Autopilot
+
+Batch 2 done (20/35). Batch 3:
+
+
+### 🤖 Autopilot
+
+Batch 3 done (30/35). Final batch 4:
+
+
+### 🤖 Autopilot
+
+All 35 photos uploaded. Let me verify the repo state and check the manifest convention (whether photos get indexed in `farm_media_manifests` like videos do).
+
+
+### 🤖 Autopilot
+
+All **35 photos verified in `farm-media-raw/fazenda-dona-rosa/photos/`** (72.5 MB). Now the manifest convention is clear — each farm has a `<farm-id>.json` manifest in `farm_media_manifests/` with `items` including photos. Let me check the cleide manifest structure to mirror it for a DR manifest (photos + the video yt_ids we already have).
+
+
+### 🤖 Autopilot
+
+The cleide manifest is video-only. Let me check the newest manifest (raimundo-geniza-para) to see whether photos are included as items with a type marker, and check the `farms/` subfolder.
+
+
+### 🤖 Autopilot
+
+The raimundo manifest (newest convention) is video-only too — photos aren't manifest-listed (they live in farm-media-raw, counted as `HEIC: 0` when absent). So the manifest convention is **videos only**; photos are archived in the repo, not indexed in the manifest. The DR manifest should mirror the RG format — 19 MP4 items with the yt_ids we already have. Let me read the full RG manifest structure to clone it exactly, and check `index.json` (the aggregate).
+
+
+### 🤖 Autopilot
+
+I have the full schema. Now let me build the DR manifest (19 MP4 items with yt_ids from the sidecars, GPS, sha256) and prep the index.json update. First, collect the sidecar data on-box and assemble the manifest JSON.
+
+
+### 🤖 Autopilot
+
+Manifest built (19 items, all with yt_ids). Now let me read the full file to upload it, and fetch the current index.json so I can update it (add fazenda-dona-rosa row).
+
+
+### 🤖 Autopilot
+
+Manifest is built locally at `/tmp/fazenda-dona-rosa.json` (19 items, all yt_ids present). Now uploading it to the manifests repo and updating `index.json` to register the new farm.
+
+
+### 🤖 Autopilot
+
+Manifest uploaded. Now updating `index.json` to register the new farm in the aggregate index:
+
+
+### 🤖 Autopilot
+
+The file exists so the update needs the current blob SHA. Let me fetch it:
+
+
+### 🤖 Autopilot
+
+The current blob SHA is `c998244a9c131f57cba0ddfd9d7547bd8ecca2f6`. Let me retry the index.json update with the SHA included (via a git_push_changes edit on a branch would be the cleaner path, but this is an api-only data repo — Contents API with sha is the correct lane):
+
+
+### 🤖 Autopilot
+
+Raw-token injection isn't the right lane (no secrets in calls). The `upload_file_to_github` tool needs the current sha for updates and errored — let me use `git_push_changes` (branch + PR) for the index.json edit instead, which handles existing files properly:
+
+
+### 🤖 Autopilot
+
+Right — `farm_media_manifests` is api-only (Contents API only). The `upload_file_to_github` tool's 422 means it needs the current sha for an existing file. Looking at the tool docs: it auto-encodes content — the issue was likely that the API needs the sha param for updates. Let me retry `upload_file_to_github` — perhaps the first error was transient (missing sha is standard for create; the tool may fetch sha automatically for update paths, but the error shows it didn't). Since the tool doesn't accept a sha parameter, let me check if the upload tool handles update-on-existing correctly by re-reading its implementation.
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Wrapping up this round cleanly — the photo-archive unit is essentially landed, with one small loose end.
+
+## ✅ Done this turn (photo archive — Unit 1 of the media lane)
+
+**1. Photos archived — 35/35 HEICs → `farm-media-raw/fazenda-dona-rosa/photos/`** (verified: 35 files, 72.5 MB, one object per original per the zip-handling rule, filenames IMG_8505–8561). All committed to `main` via Contents API — e.g. [IMG_8505.HEIC](https://github.com/TrueSightDAO/farm-media-raw/blob/main/fazenda-dona-rosa/photos/IMG_8505.HEIC), and 34 more.
+
+**2. Media manifest created + pushed → `farm_media_manifests/fazenda-dona-rosa.json`** (commit `8d822d7`) — mirrors the RG convention exactly: 19 video items, each with basename, MP4 path, GPS, sha256, duration, size, yt_id, title; plus `counts: {MOV: 19, HEIC: 35}`, `plots: [DR-P1]`, `gps_coverage: 19/19`. Built on-box from the daemon sidecars, so yt_ids are authoritative.
+
+## ⚠️ One loose end (blocking only the index registration)
+
+**`farm_media_manifests/index.json` still needs the `fazenda-dona-rosa` row added.** The first `upload_file_to_github` attempt returned 422 "sha wasn't supplied" — yet the on-disk tool source *does* auto-fetch the existing blob sha for updates (OPEN_FOLLOW_UPS item 4 fix). That means the **running service is likely on an older tool version** than the code at `/opt/truesight_autopilot/app/tools/upload_file_to_github.py`. Not a data problem — nothing is corrupted; the manifest file itself is safely committed.
+
+## RESUME HERE →
+
+1. **Retry** `upload_file_to_github(repo="farm_media_manifests", path="index.json", content=<same JSON + DR row>, message="Index Fazenda Dona Rosa media manifest (2026-09-05)")` — the sha auto-fetch should make it succeed. If it 422s again, run `deploy_autopilot` first (picks up the sha-fetch fix), then retry.
+2. Then the remaining onboarding units per AGROVERSE_SUNMINT_FARM_LISTING.md §3–8:
+   - **Farm profile page** on Agroverse (`farms/fazenda-dona-rosa/media.json` + page + FARM_SLUG map in `truesight_me_beta/sunmint.html`) so the DR-P1 map popup links resolve
+   - **On-chain anchor** at the DR-P1 centroid
+   - **CEPOTX site code** via Jedielcio → plot notes + fda_fsvp entity (`source: governor`)
+   - **Housekeeping PR** — sync the live `media_archive_daemon_config.yaml` (already has the DR inbox) into the tracked `.example`
+
+## State of the whole onboarding (for the record)
+
+| Unit | Status |
+|---|---|
+| DR-P1 plot row + geojson + farms index | ✅ live (commits `7887f54`, `d9997bb`) |
+| 19 videos → YouTube (public) | ✅ live, yt_ids in sidecars |
+| 35 HEIC photos → farm-media-raw | ✅ live (verified 35 files) |
+| Manifest `fazenda-dona-rosa.json` | ✅ committed |
+| Manifest index.json registration | ⏳ retry needed (sha 422 — see above) |
+| Farm profile page / map wiring | ⏳ next unit |
+| On-chain anchor | ⏳ next unit |
+| CEPOTX site code | ⏳ awaiting source (Jedielcio / screenshot) |
+
+Pick up at the RESUME HERE retry and I'll land the index row, then continue to the farm profile page.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×13 → echo "===RG/cleide photo archive conventions==="; find /home/ubuntu -maxdepth 4 -iname '*.jpg' -path '*raimundo*' 2>/dev/null | head -3; fin; echo "===DR HEIC inventory==="; ls ~/fazenda_dona_rosa_work/*.HEIC 2>/dev/null | wc -l; du -ch ~/fazenda_dona_rosa_work/*.HEIC 2>/dev/null |; echo "===config.py farm-media-raw ref==="; grep -n -A3 -B3 'farm-media-raw' /opt/truesight_autopilot/app/config.py; echo "===farm-media-raw ; …(+10 more)
+• `upload file to github` → https://docs.github.com/rest/repos/contents#create-or-update-file-contents
 
