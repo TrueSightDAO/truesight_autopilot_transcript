@@ -88,16 +88,19 @@ All 45 originals carry GPS — a tight cloud around **3°17'31–33"S / 52°34'1
 ### 🤖 Autopilot
 
 Important finding emerging — let me verify against the registry before recommending anything (Step 0 discipline). Context shows **Santa Anna Fazenda was onboarded 2026-08-31** (SA-P1, `santa-anna-fazenda-para`), one day *after* this media was shot. Let me confirm precisely what's already live vs. what this package adds.
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Critical Step 0 finding — the GPS centroid of this zip (~**-3.2924, -52.5722**) exactly matches the documented **Santa Anna Fazenda (Pará) reference** in AGROVERSE_FARM_PAGE_CONVENTIONS.md, and context shows Santa Anna was onboarded **2026-08-31** (SA-P1, commits #243–#260). Let me verify exactly what was already consumed from this media batch before I advise anything.
+[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Key Step-0 finding already:** this zip's GPS cloud matches Santa Anna Fazenda (Pará) — which per context was **already onboarded 2026-08-31** (SA-P1, farm page live, conventions doc written *from* that build). The governor's premise ("haven't onboarded yet") may be off — let me verify precisely what was consumed vs. what's still raw in this package, and read the screenshot conversation fully.
+[3 tool result(s) compacted: ssh_run, http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -232,4 +235,30 @@ Per the SOP I will **not** register anything or invent a "Santa Rosa" plot/owner
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== zips in home ==="; ls -la ~/*.zip 2>/dev/null; echo "=== any santa/rosa dirs ==="; find ~ -maxdepth 3 \( -iname "*rosa*" -o -iname; echo "=== any zip in tg_attachments ==="; find /tmp/tg_attachments -iname "*.zip" -newermt "2026-09-03" 2>/dev/null; ls -la /tmp/tg_attachme
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21005] Opps... send you the wrong zip file
+
+
+### 🤖 Autopilot
+
+No problem — that clears it up. Here's where we stand:
+
+**On the Santa Anna zip (the wrong one):** purely read-only analysis — no ledger writes, no plot registration, no media uploads, nothing committed. All I did was inspect contents, GPS, and match it against the registry (which caught it as already-onboarded Santa Anna). So no cleanup needed; nothing to unwind.
+
+**What I need from you:** the real **Fazenda Santa Rosa** package. When you send it (or drop it on the box), I'll run the full new-farm onboarding from the top of `AGROVERSE_SUNMINT_FARM_LISTING.md`:
+
+1. **Step 0 gate** — registry overlap check for "Santa Rosa" (name + GPS bbox vs `sunmint/plots/index.geojson` + SunMint Plots tab) before any registration; I'll confirm the owner/identity with you rather than guessing
+2. **GPS intake** — media must arrive via a GPS-preserving channel (Document/Drive/scp upload; Telegram photo recompression strips EXIF — if you send photos straight through Telegram I'll flag which lack coordinates)
+3. **Plot registration** → convex hull → SunMint Plots row → `sunmint` geojson/farms index push → on-chain geo event
+4. **Media archive** → daemon inbox + config yaml append (needs `.mp4`/sidecar together)
+5. **Farm page** → clone `rancho-maranta-para` template, slug `santa-rosa-…`, post-clone token grep
+6. **FSVP** → entity profile + site codes as reported
+7. **Deploy** → beta verify first, prod sync only on your explicit go
+
+One question while you prep it: **does Santa Rosa have any connection to Santa Anna / the CEPOTX cluster** (e.g. same family, same cooperative, nearby in Altamira/Pará)? That'll help me pre-check for plot-ID and naming collisions at Step 0.
+
+Ready when you are — send the correct zip and I'll take it from there.
 
