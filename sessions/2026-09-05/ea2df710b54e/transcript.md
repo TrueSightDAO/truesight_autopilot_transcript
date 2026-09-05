@@ -584,16 +584,19 @@ The 410.2024.V0 proposal's "**1.5 kg minimum**" line is about **re-analysis capa
 ### 🤖 Autopilot
 
 Good idea — and you're right that the tab is the natural home for it (it already has a stale R$360 row for exactly this package). Let me check the sanctioned write-path for that tab before touching the Main Ledger.
+[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the sanctioned append script to confirm the write path before proposing anything:
+[1 tool result(s) compacted: read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good instinct — and there's a sanctioned write-path for exactly that tab. Two things to verify before proposing: where the stale R$360 row sits exactly, and whether the autopilot box has the tokenomics checkout + service-account credentials the append script needs.
+[2 tool result(s) compacted: read_google_sheet, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -732,4 +735,89 @@ If you'd rather it be a different duration (or want a TDG amount set explicitly)
 ———
 **✅ Done this turn — actions taken:**
 • `submit contribution` → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21041] close thread and delete it. Dont delete transcript. By the way update so that all sophia knows that in the future when I say close this case since we are done, this is what I mean
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=21041] [Handoff context — this Telegram topic (thread 21041) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
+
+
+### 🤖 Autopilot
+
+Let me first find where thread-closing behavior is documented so I can update the SOP for all Sophia instances, then close the topic.
+
+
+### 🤖 Autopilot
+
+Let me find where Sophia's operating instructions / agent config live so the convention lands where all instances read it.
+
+
+### 🤖 Autopilot
+
+`sophia/SOPHIA_HANDOFFS.md` is the natural home — it's Sophia's cross-instance SOP. Let me read it around the topic-lifecycle section to place the note correctly.
+
+
+### 🤖 Autopilot
+
+Let me read the rest of this file to see the full thread-management section:
+
+
+### 🤖 Autopilot
+
+The file is long — let me read the tail to see if there's already a close/teardown section and find the right insertion point.
+
+
+### 🤖 Autopilot
+
+Let me anchor the exact text to edit. I'll pull the current GitHub version of the thread-management section and check OPERATING_INSTRUCTIONS.md structure in parallel:
+
+
+### 🤖 Autopilot
+
+Adding the close-topic convention to the Sophia SOP doc, and checking whether this thread is registered in the handoff manifest (so I can mark it closed):
+
+
+### 🤖 Autopilot
+
+PR opened. Now merging it and closing the topic (thread 21041 isn't a registered handoff — no manifest row to update):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+Done — all three actions completed this turn:
+
+## ✅ What I did
+
+1. **Closed & deleted the topic** (thread 21041) via `close_telegram_topic` — the Telegram forum topic is deleted from the group, **transcript/session history preserved** as you instructed. Reason logged: work complete (ledger fix + contribution logged).
+
+2. **Documented the close convention for all Sophia instances** — new SOP in `sophia/SOPHIA_HANDOFFS.md`:
+   - **PR #912** (agentic_ai_context): ["Docs: Sophia close-topic convention — 'close this case' = delete topic, keep transcript"](https://github.com/TrueSightDAO/agentic_ai_context/pull/912) — **merged** ✅
+   - What it codifies: "**Thread management — Sophia's three moves**" (was "two moves"), with the new `close_telegram_topic` bullet and a **Close convention (Gary, 2026-09)** section stating that when the governor says *"close this case / close the thread / we're done here"* it always means for every Sophia instance:
+     1. Call `close_telegram_topic(thread_id)` — delete the forum topic
+     2. **Keep the transcript** — never delete session history/transcript repo entries ("delete the topic" ≠ "delete the record")
+     3. If it's a registered handoff, mark its `HANDOFF_MANIFEST.md` row closed so no other instance tries to resume it
+
+3. **Verified** thread 21041 is not a registered handoff (no manifest row), so no registry update was needed.
+
+## Context recap for the closed thread
+Heavy-metals test requirement traced → **400 g of sample per test** (Wesley CIC); ledger row 12 fixed (R$360 → **R$369**, + 400 g/sample noted); contribution logged for Sophia (75 min).
+
+---
+
+**RESUME HERE →** nothing pending on this thread — all requested work is complete and the topic is closed. If anything new comes up, it'll be a fresh topic.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #912 on agentic_ai_context merged successfully (sha: 9aa5ff8dff2795876ab7b830455587c19668b63f). Pull Request successfully merged
 
