@@ -3182,11 +3182,13 @@ dao_client isn't at the usual paths. Let me search the box for it.
 ### 🤖 Autopilot
 
 dao_client exists at `/home/ubuntu/dao_protocol/truesight_dao_client` (the live one). Let me verify the .env credentials and CLI structure there.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No .env in that checkout. Let me check for the env file elsewhere (vault/credential stores) and how previous contribution submissions were made on this box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3359,4 +3361,20 @@ Related docs you may also want:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== confirm file exists on main ==="; curl -s -o /dev/null -w "%{http_code}" "https://raw.githubusercontent.com/TrueSightDAO/agentic_a
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] close this thread and delete it but not the transcript
+
+
+### 🤖 Autopilot
+
+Quick and honest answer: **I can't delete the Telegram thread/topic myself** — my toolset has no delete-topic capability (I can create topics and post into them, but closing/deleting a forum topic is an admin action that needs to be done from the Telegram UI or with bot admin rights I don't currently have exposed).
+
+**What I can confirm:**
+- ✅ **The transcript is safe and stays** — all attachment processing + extracted content from this thread has been persisted to the `truesight_autopilot_transcript` repo (sessions/2026-09-04/…). Deleting the thread won't touch it; nothing about the RG build, the SOPs, or the contribution events is lost.
+- ✅ All work is closed out in the repos anyway (PRs merged, prod deployed, manifest committed) — nothing lives only in this chat.
+
+**To actually close/delete the thread**, you (as group admin) can do it in Telegram — or if you want, I can post a short "work complete — thread archived" summary into the topic first so there's a clean record before you remove it. Want me to post that closing summary?
 
