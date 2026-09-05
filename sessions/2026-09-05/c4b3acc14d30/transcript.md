@@ -1075,6 +1075,7 @@ Handoff registry confirms this thread's lineage (Farm Media Daemon plan — comp
 ### 🤖 Autopilot
 
 The handoff registry confirms this thread's lineage (Farm Media Daemon plan — complete, now evolving into the archive daemon). Gary approved the doc rename — creating the PR now. The change: reframe the repo docs (README + DESIGN + systemd descriptions) around the daemon's true current scope — one **Media Archive Daemon** with two workers (YouTube uploader + S3 raw archive worker). Docs-only, no code touched:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1293,4 +1294,57 @@ Sound right? Confirm and I'll start with the manifest-update pass, then delete W
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → echo "=== disk ==="; df -h / | tail -1; echo; echo "=== zips still on disk (true raw archive) ==="; ls -la /home/ubuntu/*.zip 2>/dev/null |
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] by the way don't just archive the zip as it, you should unpack the contents within the zip file and archive them individually...
+
+
+### 🤖 Autopilot
+
+Exactly right — that's the design intent, and worth stating clearly so it's locked: **never upload the zip as one blob.** The zip is just a transport container; the archive unit is the individual file inside it. So the zip-streaming worker will:
+
+1. **Open each farm zip and iterate its entries** — every real media file (MOV/MP4/HEIC/JPG, skipping `__MACOSX`/`._` AppleDouble junk) is extracted **one at a time, streamed to temp** (never the whole zip at once — disk is 86%)
+2. Per file, the same pass as the extracted-dir worker: sha256 → `captured_at` from the original's QuickTime/EXIF → ffmpeg preview frame → upload **raw to `raw/<farm>/<name>`** + **preview to `previews/<farm>/<name>.jpg`** → write a durable marker
+3. The zip itself stays **untouched** (we never archive `cleide-and-marcelos-farm.zip` as an object — only its contents)
+
+That way S3 mirrors the actual media archive — one object per original file — and the manifest `raw_url`/`preview_url` per item resolves to real files, which is what a future explorer needs. A single zip-blob would be useless for that (you can't timeline-view inside a zip).
+
+Let me confirm the current worker has no zip path yet, and check the zip contents to size the extension:
+
+
+### 🤖 Autopilot
+
+Locked and confirmed — that's exactly the design. Let me give you the concrete inventory and the plan.
+
+## Zip contents (individual media files, junk excluded)
+
+17 zips, **~998 media entries** total — none archived as individual objects yet:
+
+| Zip | Media entries | | Zip | Media entries |
+|---|---|---|---|---|
+| santa_anna_farzenda_bahia | 244 | | rancho_maranta_plot_2 | 28 |
+| la do sitio | 137 | | sorting | 24 |
+| sao_jorge_fazenda | 103 | | paulo_interview | 17 |
+| cleide and marcelo's | 85 | | rancho_maranata | 17 |
+| oscar | 67 | | cacao_variety_parap | 9 |
+| fazenda_dona_rosa | 61 | | rancho_maranta_plot_1 | 7 |
+| fernando_carla | 58 | | to analyze | 4 |
+| fazenda_santa_rosa | 56 | | | |
+| santa_anna_fazenda | 45 | | | |
+
+Note: some of these overlap with the 374 already archived (e.g. oscar's 62 extracted came from oscar.zip's 67; santa's 151 from the 244). So the real *new* archive work is the non-overlapping remainder, but the worker handles dedupe naturally via sha256 + markers.
+
+## Plan (your two directives now shape both waves)
+
+1. **Zip-streaming extension to the worker** — opens each zip, streams entries one at a time (never extracts whole zip — disk 86%), skips `__MACOSX`/`._` junk, and per file: sha256 → `captured_at` → preview frame → upload `raw/<farm>/` + `previews/<farm>/` → marker. Zip blob itself **never** uploaded.
+2. **Manifest update pass** — fold markers into per-farm manifests (`raw_url`/`preview_url`/`captured_at`/`sha256`) so GitHub is authoritative before any deletion.
+3. **Then delete** — extracted dirs (Wave 1) and zips (Wave 2) only after S3 + manifests verify, with your explicit go on each.
+
+Want me to start with the zip-streaming PR (#1)? That's the code change; then I run it, then the manifest pass, then deletion only on your go.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot/farm_media_daemon 2>/dev/null && echo "=== does worker handle zip roots? ==="; grep -n "zip\|ZipFile\|endswith"
 
