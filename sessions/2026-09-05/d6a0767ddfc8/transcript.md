@@ -106,6 +106,7 @@ Critical Step 0 finding — the GPS centroid of this zip (~**-3.2924, -52.5722**
 ### 🤖 Autopilot
 
 Manifest confirms it — let me read the full manifests to see exactly which items were processed and which still lack YouTube IDs.
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -261,4 +262,81 @@ No problem — that clears it up. Here's where we stand:
 One question while you prep it: **does Santa Rosa have any connection to Santa Anna / the CEPOTX cluster** (e.g. same family, same cooperative, nearby in Altamira/Pará)? That'll help me pre-check for plot-ID and naming collisions at Step 0.
 
 Ready when you are — send the correct zip and I'll take it from there.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21005] this is the zip file ~/fazenda_santa_rosa.zip
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=21005] status?
+
+
+### 🤖 Autopilot
+
+Checking the box for the Santa Rosa package now.
+
+
+### 🤖 Autopilot
+
+The correct package is on the box: **`~/fazenda_santa_rosa.zip`** — 847 MB, ~55 media files (IMG_8281–IMG_8341: 33 MOV + 15 HEIC + 7 PNG screenshots). Extracting and running the Step 0 gate now.
+
+
+### 🤖 Autopilot
+
+Extracted. This is a **different site** — GPS cloud ~**-3.6338…-3.6363 / -53.6677…-53.6706** (well south-west of Santa Anna's -3.29/-52.57). Now the Step-0 registry-overlap gate: checking the SunMint registry, existing manifests, and farm indexes for any "Santa Rosa" record, plus grabbing GPS off the HEICs (PIL can't read HEIC — using exiftool) and reading the PNG screenshots.
+
+
+### 🤖 Autopilot
+
+Step 0 gate result is clean — **no "Santa Rosa" anywhere** in the registry. Let me OCR the 7 screenshot PNGs (the conversation evidence) and map the full GPS cloud.
+
+
+### 🤖 Autopilot
+
+Step 0 gate is **clean** — no Santa Rosa anywhere in the registry (plots index, farms index, manifests, farm-media-raw all checked). GPS cloud is tight: ~**-3.6338…-3.6363 / -53.6677…-53.6706** (49 of 56 files GPS-bearing). Screenshots are WhatsApp conversations in PT. Let me OCR the remaining 5 screenshots for the full conversation.
+
+
+### 🤖 Autopilot
+
+Step 0 gate **clean** — "Santa Rosa" appears nowhere in the registry. Package verified as genuinely new. Let me do one sharper OCR pass on the screenshots to pull names/details, since the conversations are the identity evidence.
+
+
+### 🤖 Autopilot
+
+## Status — Fazenda Santa Rosa onboarding
+
+**Received & verified** ✅ `~/fazenda_santa_rosa.zip` (847 MB, extracted to `~/santa_rosa_work/`)
+
+**Step 0 registry gate — CLEAN** (checked plots index, farms index, manifests repo, farm-media-raw): no "Santa Rosa" anywhere. This is genuinely new; no collision with Santa Anna, Rancho Maranta, Cleide, etc.
+
+**Package contents (56 files):**
+
+| Type | Count | Notes |
+|---|---|---|
+| MOV | 33 | farm walk footage (IMG_8281–8340) |
+| HEIC | 16 | photos (IMG_8282–8341) |
+| PNG | 7 | **WhatsApp conversation screenshots** (1125×2436) |
+
+**GPS intake** — 49/56 files carry coordinates; tight cloud **-3.6338…-3.6363 / -53.6677…-53.6706** (Δ~250 m), south of Altamira toward the Uruará/Transamazônica corridor — distinct site from Santa Anna. Good walk track for a plot hull.
+
+**Conversation transcription (the 7 PNGs, PT → EN)** — a farmer describing Santa Rosa to the field person:
+- *"Fazenda Santa Rosa"* (name confirmed in-chat)
+- **~30 ha total, "com cerca de cacau dentro"** — ~30 ha with cacao planted
+- *"A fazenda era maior mas ele dividiu entre os filhos"* — farm was bigger, divided among the children
+- *"começou essa organização deles em 2005"* — (the coop/org) started 2005
+- *"40 anos"* / *"se um dia a cooperativa acabar, ele vai ser o último…"* — loyalty line; ~40 years of something (OCR partial on a couple bubbles — screenshots show only the *translated* overlay text, low-res)
+
+**What I still need before registration (Step 0 — never invent identities):**
+1. **Owner name** — the screenshots don't reveal who owns Santa Rosa. Who is it? (If it's the same farmer family as a known CEPOTX member — Raimundo/Jedielcio/Paulo context — say so and I'll link correctly.)
+2. Confirm **region label** — GPS says Uruará/Transamazônica corridor (Pará); you may know the municipality better than I can infer.
+
+**Ready to proceed once you confirm:** I'll (a) extract the 30-ha story + hull from the walk, (b) transcribe the full conversation into the archive, (c) register plot + farm per the SOP, (d) build the page from the `rancho-maranta-para` template, and (e) stage on beta for your review. **Prod sync only on your explicit go.**
+
+Owner name + region? Then I move.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → ls -la ~/fazenda_santa_rosa.zip 2>/dev/null && echo "=== listing ===" && unzip -l ~/fazenda_santa_rosa.zip 2>/dev/null | grep -v __MACOSX | ; cd ~ && rm -rf santa_rosa_work && mkdir -p santa_rosa_work && cd santa_rosa_work && unzip -o -q ~/fazenda_santa_rosa.zip -x '__MACOSX/*' 2>&; cd ~/santa_rosa_work && echo "=== HEIC + PNG GPS via exiftool ==="; for f in *.HEIC *.heic *.PNG *.png; do [ -f "$f" ] || continue; g=$(exif; …(+3 more)
 
