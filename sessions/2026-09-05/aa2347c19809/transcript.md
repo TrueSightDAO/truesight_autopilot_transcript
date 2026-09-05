@@ -343,16 +343,19 @@ The Santa Anna report (2026-08-30, same supplier) is the structural precedent. I
 ### 🤖 Autopilot
 
 reportlab is available. Building the draft report PDF now — mirroring the Santa Anna structure, embedding IMG_8277, marking unconfirmed fields (visit-date interpretation, host name, practice remarks) clearly as **pending governor confirmation** rather than inventing them:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Draft PDF built (3.67 MB). Let me verify it renders correctly by extracting its text, then send it to Gary with a clear summary of what's confirmed vs. pending:
+[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The draft renders cleanly across 3 pages. Let me send it to Gary with a summary of what's verified vs. what needs his confirmation before this can become a filed FSVP record:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -397,41 +400,49 @@ Also this as an inspection of their existing cacao trees
 ### 🤖 Autopilot
 
 Gary's sending a second evidence photo — this one shows an inspection of the existing cacao trees (Facility A — the grove). Let me locate it, pull its EXIF (GPS/date), and check whether it matches an original from the site-walk zip like IMG_8277 did.
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The new file is `/tmp/tg_attachments/1ede6a6c52424b17b781dffe8c00c49b.jpg` (332,843 bytes). Let me pull its EXIF (GPS/date/device) and visually inspect it via OCR (even though the processor found no text, I want to confirm scene context):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No EXIF on this one — Telegram stripped it (1280×960 re-encode). Unlike IMG_8277 I can't read GPS/date directly. Let me try to identify which original site-walk photo this is (perceptual hash vs the extracted originals) so I can recover the GPS/timestamp from the matching original:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The originals are all HEIC. To match the Telegram-re-encoded JPG (no EXIF) to its original, I'll compute perceptual hashes — comparing the uploaded image against downscaled versions of every HEIC original:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both libs ready. Now computing perceptual hashes to identify which original matches the uploaded tree photo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 phash is inconclusive (closest 22 is too far for a confident match — likely heavy re-encode). Let me check the shop media.json captions to see which IMG numbers were captioned as showing the cacao grove/trees, then match against those specifically:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Empty — media.json structure differs. Let me look at the raw file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The gallery JSON has captions. Let me get the full picture of which images have which captions — especially the ones that show cacao trees:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -549,4 +560,34 @@ Reply with those and I'll finalize → file as `fda_fsvp/suppliers/cepotx/202609
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×6 → echo "=== fda_fsvp full tree ==="; curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" | python3 -c " im; for f in suppliers/cepotx/entity.json suppliers/copops/entity.json; do echo "===== $f ====="; curl -s "https://raw.githubusercontent.com/Tru; cd /tmp && curl -sL -o santa_anna_sv.pdf "https://raw.githubusercontent.com/TrueSightDAO/fda_fsvp/main/suppliers/cepotx/20260830_CEPOTX_site; …(+3 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21534] Status??
+
+
+### 🤖 Autopilot
+
+## Status — CEPOTX site visit report for Sítio Raimundo & Geniza
+
+**📄 Draft PDF built & sent** (message 21701) — Saffron-themed, 5 pages, both photos embedded:
+- IMG_8277 (drying/fermentation station) — GPS-verified `-3.630242, -53.652017`
+- Cacao-tree inspection photo — added per your note
+
+**✅ Confirmed on file:**
+- CEPOTX `entity.json` already lists the site (`U-06-07`, COPOPS member, Raimundo Silva) — done in an earlier PR
+- Prod farm page synced — `agroverse.shop/farms/raimundo-geniza-para/` live with U-06-07 + corrected caption
+- IMG_8277 original verified byte-identical to site-walk zip
+
+**⏳ Blocked on your 5 confirmations** (won't invent compliance facts):
+1. **Visit date** — photo says 03 Sep 2026 13:29 local. Correct?
+2. **Host** — who received you (CEPOTX agronomist? Raimundo?)
+3. **Farm area** (hectares)
+4. **Practice remarks** — grove condition, fermentation method (box/days/turning), drying method
+5. **IMG number** of the cacao-tree photo (Telegram stripped its EXIF, so I can't auto-pull GPS)
+
+**Once you reply with those →** I finalize the PDF, file it as `fda_fsvp/suppliers/cepotx/20260903_CEPOTX_site_visit_to_raimundo_geniza_farm.pdf`, update `entity.json` `source_documents`, and open the PR. That closes the loop: farm page live + FSVP site-visit record filed.
+
+Nothing is blocked on the technical side — just waiting on those 5 answers from you. 🟡
 
