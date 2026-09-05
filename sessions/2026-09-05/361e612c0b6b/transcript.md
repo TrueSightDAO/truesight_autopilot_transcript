@@ -4526,6 +4526,7 @@ Checking the upload status now:
 ### 🤖 Autopilot
 
 **ALL 17 UPLOADED!** 🎉 Pipeline complete. Let me verify them live on the channel and check for duplicates:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4681,4 +4682,68 @@ But I still can't lock down who "Emboi" is — the OCR of that image is too garb
 So to log a third contributor I need one thing from you: **the exact name** (or is it Raimundo?). If they're in the clips, point me at which clip and I'll count their screen time from the durations.
 
 Meanwhile — say the word and I'll go ahead and submit **your + my** contribution now (I proposed ~8h agent time for me; tell me your hours for the field day + interview, and I'll fire both events). Who's the third person?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] NOthing to do except promote to prod
+
+Figure out how much contribution time was spent by you, myself and envoy
+
+
+### 🤖 Autopilot
+
+Gary's explicit approval received — promoting beta to prod, and gathering evidence for the contribution-time calc in parallel:
+
+
+### 🤖 Autopilot
+
+**Prod promotion complete** — `agroverse.shop/farms/fazenda-bom-sucesso/` is now live (deploy ledger: `deploy_20260905T152125Z_agroverse-shop-prod`). ✅
+
+And the mystery name resolves: **"Envoy"** = the interactive Claude Code seat on `nelanco-claude` (@nelanco_claude_bot) — the "Nobody" observer who's been in this thread. Let me get Envoy's exact registered contributor identity + check how prior agent contributions were logged:
+
+
+### 🤖 Autopilot
+
+Prod promotion done ✅. Now let me nail the contribution amounts. "Envoy" = Envoy TrueSight (the interactive Claude seat on nelanco-claude, @nelanco_claude_bot — the "Nobody" observer in this thread). Let me check contribution-logging conventions (how agent/contributor time is normally valued) before computing:
+
+
+### 🤖 Autopilot
+
+Let me find the actual contribution ledger conventions — how prior agent/contributor time was logged (amounts, TDG rates) — checking the contributors ledger and past events:
+
+
+### 🤖 Autopilot
+
+Prod is live ✅ and "Envoy" = **Envoy TrueSight** (the interactive Claude seat on `nelanco-claude` — the "Nobody"/observer in this thread). I have what I need to compute time from the evidence; here's my derivation:
+
+## Contribution time breakdown
+
+**👤 Gary Teh — field day + review (2026-09-02 → 05)**
+| Evidence | Time |
+|---|---|
+| Corner photos | 18:18–18:31 (13 min) |
+| Tree planting (10 trees) | 18:42–19:31 (49 min) |
+| Paulo interview (17 clips) | 18:56–19:52 (footage 16.4 min) |
+| Driving (28 km ×2, ~25 min each) | ~50 min |
+| **On-site + travel total** | **~2.5–3 h** |
+| Cross-day review/approvals (species, hero, uploads, prod) + interview-material prep | ~2–3 h |
+| **Estimated total** | **~300 min (5 h)** |
+
+**🤖 Sophia Truesight (me) — execution, Sep 2–5**
+12+ PRs/commits across 4 repos (dao_protocol #155, autopilot #397, context #904, agroverse_shop_beta #272/#275/#277/#280/#281/#283, sunmint, farm_media_manifests, deploy log) + 10 tree submissions + 17-video convert/upload pipeline + plot polygon repair + prod sync. **Estimated ~480 min (8 h)** of agent time.
+
+**🌐 Envoy TrueSight — observe/verify/relay in this thread**
+Flagged the broken styling, voted B on curation, verified statuses, relayed your calls. **Estimated ~120 min (2 h)**.
+
+## Before I submit — two confirmations needed
+
+1. **Minutes OK?** (Gary 300 / Sophia 480 / Envoy 120) — adjust if your actual time differs.
+2. **TDG**: CONTRIBUTION EVENTs carry a TDG Issued value — that's token issuance, which I won't set without your explicit word. Tell me the rate (e.g. 100 TDG/hour, or a flat amount per person) or say "auto" and I'll check what Edgar defaults.
+
+Say "go with those + <TDG rate>" and I'll fire all three `[CONTRIBUTION EVENT]`s.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /home/ubuntu/bomsucesso_work/in 2>/dev/null && echo "=== MOV creation dates (field-day timing) ===" && for f in *.MOV; do d=$(exiftool -s; cd /home/ubuntu/bomsucesso_work && echo "=== tree planting session times (field day) ==="; python3 -c " trees={'T1':'18:42','T2':'18:47','T3; cd /opt/truesight_autopilot 2>/dev/null && echo "=== recent CONTRIBUTION EVENTS in transcript/ledger? ===" && grep -rnoE "CONTRIBUTION EVENT
 
