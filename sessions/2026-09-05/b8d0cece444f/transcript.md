@@ -434,11 +434,13 @@ Full gate is nearly green: **882 passed, 1 failed** — `test_config_own_data_re
 ### 🤖 Autopilot
 
 Pre-existing local dirt confirmed (events_catalog_snapshot deletion, sophia.conf, active_tracks, followups, tokenomics/worktrees submodules) — none from me. `git_push_changes` stages only explicit paths, so PR0 will contain exactly my two new files. Pushing now:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `git_push_changes` needs explicit file contents (it works from its own clone, not the /opt checkout). Let me read both files and pass them as writes:
+[2 tool result(s) compacted: read_local_file, read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -577,4 +579,47 @@ Plan-of-record: `agentic_ai_context/plans/SOPHIA_CONTEXT_COMPACTION_PLAN.md` (PR
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ❌ Failed to merge PR #401 on truesight_autopilot: Refusing to merge PR #401 on truesight_autopilot: CI not green (failing-or-pending: test).
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21264] Same CI-timing pattern as before - recheck the check-runs and merge when green.
+
+
+### 🤖 Autopilot
+
+Rechecking the check-runs on #401:
+
+
+### 🤖 Autopilot
+
+CI is green — `test: success`, `smoke: success`, mergeable_state: clean. Merging #401:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+PR0 merged — stopping here per the one-PR-per-turn rule (PR1 runs in a fresh turn).
+
+## ✅ PR #401 merged — PR0 complete
+
+- 🔗 **https://github.com/TrueSightDAO/truesight_autopilot/pull/401** — merged successfully (sha `9a14378cbf21aeda1b39d73573ba0fcb7bbe1576`)
+- CI rechecked first: `test: success` · `smoke: success` · `mergeable_state: clean` — exactly the same CI-timing pattern you flagged (check-runs had simply not finished when the first merge attempt ran)
+- **What landed on `main`:** `app/context_compaction.py` (compaction library — `count_tokens`, `find_turn_boundaries`, `extract_done_this_turn`, `default_summarizer`, `compact_history`, `backup_session_file`) + `tests/test_context_compaction.py` (22 tests). Un-wired — zero behavior change for live sessions.
+
+## RESUME HERE → next unit: PR1 (manual trigger tool, governor-only)
+
+1. Re-read plan §5b PR1 spec in full (`agentic_ai_context/plans/SOPHIA_CONTEXT_COMPACTION_PLAN.md` — the §5 tail was still unread last turn).
+2. Build PR1: a governor-only manual compaction trigger tool/command in `truesight_autopilot` that uses the PR0 library against one named session (in-memory + the `<hash>.pre-compact-*.json` backup per plan invariant 1), wired so only a verified governor can invoke it.
+3. Run the **required manual validation checkpoint** against 1–2 of this week's real bloated sessions on the box (e.g. `d32b2609056d.json` @161K tokens, `7b57a574a968` @30K tokens) — verify token drop, byte-identical retained tail, zero tool-protocol dangling, backup file created.
+4. **Report validation results back and HOLD** — PR2 (automatic wiring into the turn path) only after your explicit go per the plan's rollout section.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' from github import Auth, Github import app.config as cfg g = Github(auth=Auth.T
+• `merge pr` → ✅ PR #401 on truesight_autopilot merged successfully (sha: 9a14378cbf21aeda1b39d73573ba0fcb7bbe1576). Pull Request successfully merged
 
