@@ -381,11 +381,13 @@ Two new images landed (19:30, 19:36) but no `.mp4/.mov` in the Telegram inbox. H
 ### 🤖 Autopilot
 
 A new inbox folder appeared at **19:37 — `fazenda-santa-rosa`** with at least IMG_8281.mp4. And there are 2 new images in the chat inbox (19:30, 19:36). Let me see the full santa-rosa folder and check those two images:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 One video landed so far: **IMG_8281.mp4** (4.2 MB, 19:38) in the `fazenda-santa-rosa` ingest folder. Let me check the two new JPGs (they may be stills/thumbnails of the videos) and scan the whole disk for the other two videos:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -549,4 +551,18 @@ What's on it to check:
 - **Links** — back-link to farms index, canonical → www.agroverse.shop/farms/fazenda-dona-rosa-para
 
 Note: I checked it renders and the meta/hero are wired correctly, but I can't *see* it — so your eyeball is the real proof. Once you've had a look and it's good, say the word and I'll promote it to production.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] Maksud saya, saya akan mempunyai bahawa saya akan mempunyai bahawa saya mempunyai [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Your voice message came through garbled — I couldn't make out what you said (it transcribed as something like "I mean, I will have that…"). Could you repeat it, or type it out?
+
+If you were asking about the proof link: yes, it's live and open for anyone — **beta.agroverse.shop/farms/fazenda-dona-rosa-para/** — you can open it on your phone or computer right now.
+
+If the site won't load for you, tell me and I'll send a PDF snapshot of the page here instead.
 
