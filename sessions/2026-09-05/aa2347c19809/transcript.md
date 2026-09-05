@@ -10,138 +10,15 @@
 
 ### 🧑 Governor
 
-[CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
-Turn — [CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
-1 earlier turn(s) in this thread were compacte:
-• `ssh run` ×13 → python3 - <<'EOF' import urllib.request, json def get(url): req = urllib.request.Request(url, headers={'User-Agent':'sophia'}) return urllib; echo "=== sunmint_work checkout ==="; ls -d ~/sunmint_work 2>/dev/null && ls ~/sunmint_work 2>/dev/null; echo "=== scripts ==="; find ~ -max; cd ~/sunmint_work && echo "=== tree ==="; ls -R . | head -30; echo "=== build script head ==="; head -60 scripts/build_plots_geojson.py; ech; …(+6 more)
-• `merge pr` ×3 → ✅ PR #285 on agroverse_shop_beta merged successfully (sha: 8c5b608a67c20c3fe081f389c28405c638759fc5). Pull Request successfully merged; ✅ PR #12 on fda_fsvp merged successfully (sha: 7a7a1b98e074f5bc17d64a8285ba6b5a743801b5). Pull Request successfully merged; ✅ PR #914 on agentic_ai_context merged successfully (sha: 39f0be2f5d4e915938aa0c09810412fe3acab63e). Pull Request successfully merged
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=21534] 8277 is a photo of their drying station and fermentation station
-
-
-### 🤖 Autopilot
-
-Gary is correcting the caption for IMG_8277 — it's not "field and vegetation," it's their **drying station and fermentation station** (post-harvest processing infrastructure). Let me find every place 8277 is described so the fix lands consistently.
-[2 tool result(s) compacted: http_fetch, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The org-wide "8277" search matched only noise (price CSVs). Let me search the precise string `IMG_8277` in the repos that matter — the shop page/gallery and the farm media manifests:
-[2 tool result(s) compacted: search_code, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Search index returns 0 for `IMG_8277` even though I *know* it's in media.json (I just read it) — GitHub's code search only indexes default branches, and the media.json I fetched is on main. Let me check the exact media.json path and also look at the farm page index.html for the image context block. Actually the file is on main now (PR #285 merged). Let me grep the repo file directly via raw content and check the page HTML + the media manifest repo listing:
-[2 tool result(s) compacted: read_repo_file, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Media.json on main confirmed — IMG_8277 alt currently says "Field and vegetation at the restoration site" (wrong — it's the drying + fermentation station). Let me check whether the farm page HTML also renders its own captions and where farm_media_manifests stores RG media metadata, so the correction lands everywhere:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The shop page is JSON-driven (media-gallery.js reads media.json — so fixing media.json fixes the visible page). But there's also `farm_media_manifests/raimundo-geniza-para.json` (the media manifest) which may carry an 8277 entry with the wrong description. Let me check it:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The manifest `raimundo-geniza-para.json` walk returned **nothing** for 8277/"field and vegetation" — so the media manifest doesn't reference 8277 by that caption (it's likely a photos-list without descriptive captions, or 8277 isn't in it). The only place IMG_8277 has a *wrong descriptive caption* is `media.json` in the shop repo.
-
-So the one-line fix: **media.json alt for IMG_8277** → "Sítio Raimundo & Geniza — drying station and fermentation station" (accurate + on-brand). Let me also verify the farm page HTML itself doesn't hardcode any 8277 caption text (media-gallery.js reads media.json, so this should be sufficient), then open the fix PR.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Important catch: `raimundo-geniza-para.json` still lists **`"plots": ["RG-P1"]`** — this manifest predates the U-06-07 rename and is another surface carrying the old id. But wait — this manifest only tracks **MOV videos** (counts: MOV 14, HEIC 0), and its items are video basenames. IMG_8277 is a **photo** (jpg), so it wouldn't be in this video manifest. The photos are in `farm-media-raw` (blob store) which has no captions.
-
-So the two things to fix:
-1. **media.json** (agroverse_shop_beta): IMG_8277 alt → drying/fermentation station ✅ the actual ask
-2. **raimundo-geniza-para.json manifest** (farm_media_manifests): `plots: ["RG-P1"]` → `["U-06-07"]` (consistency with change #1 — this is api-only data repo, single-file write)
-
-Let me fix both. First the shop media.json via PR (code repo), then the manifest via Contents API (api-only repo):
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-My edit had identical search/replace strings (mistake). Let me fix the alt text properly:
-[1 tool result(s) compacted: git_push_changes — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #286 opened for the IMG_8277 caption. Now fixing the manifest's stale `RG-P1` plot reference (api-only repo → single-file Contents API write):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: upload_local_file_to_github — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Manifest updated (U-06-07 + provenance note). Now let me verify no other media-manifest or data file still references the old plot id for this farm, then merge the caption PR:
-[1 tool result(s) compacted: search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Only 2 doc references to RG-P1 remain, both in agentic_ai_context. Let me check whether OPEN_FOLLOWUPS.md has a stale mention worth cleaning while I merge the caption PR:
-[2 tool result(s) compacted: merge_pr, search_context — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-## Done this turn — IMG_8277 caption correction (drying & fermentation station)
-
-Gary corrected the caption: **IMG_8277 is a photo of Raimundo & Geniza's drying station and fermentation station** (post-harvest cacao processing), not "field and vegetation."
-
-**Changes made:**
-| Surface | Change | State |
-|---|---|---|
-| `agroverse_shop_beta/farms/raimundo-geniza-para/media.json` | IMG_8277 alt → *"Sítio Raimundo & Geniza — drying station and fermentation station (post-harvest cacao processing)"* | **[PR #286 merged](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/286)** (sha a84e8b0) — page is JSON-driven (media-gallery.js), so the visible gallery caption is fixed on beta |
-| `farm_media_manifests/raimundo-geniza-para.json` | Stale `plots: ["RG-P1"]` → `["U-06-07"]` + provenance note (leftover from change #1 that the earlier org-wide search missed) | Pushed to main (commit d4afd68) via Contents API |
-
-**Verification:** the media manifest's items only track MOV videos (14), so 8277 (a photo) never lived there — the manifest fix was purely the plot-id consistency cleanup. Remaining `RG-P1` mentions are only **historical/provenance** text: 3 in `AGROVERSE_SUNMINT_FARM_LISTING.md` (timeline + the intentional "RG-P1 → U-06-07" audit row) and 1 in `OPEN_FOLLOWUPS.md` (farm-distance context). No live data/display references remain.
-
-**Notes:**
-- Beta farm page now shows the corrected caption (after the earlier merge, page also shows `U-06-07`).
-- **Prod still shows the old content** — `agroverse.shop/farms/raimundo-geniza-para/` needs a `sync_beta_to_prod` (your explicit go), which will carry *both* the U-06-07 rename and this caption fix.
-
-**RESUME HERE →** (pick one, your call)
-1. **Sync beta → prod** for the farm page (needs your explicit "go" — I will call `sync_beta_to_prod(agroverse_shop_prod)`), or
-2. **Change #2** — you'd said "two changes" earlier; #1 (plot id → site code) is fully done, and this caption fix is folded in. If there was a second intended change beyond these, re-type it and I'll execute.
-
-———
-**✅ Done this turn — actions taken:**
+[CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
+Turn — [TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the ne:
 • `git_push_changes` ×2 → PR #286 opened (agroverse_shop_beta, caption fix); first attempt failed (identical search/replace) then succeeded
 • `merge pr` ×1 → ✅ PR #286 merged (sha a84e8b0)
 • `upload_local_file_to_github` ×1 → farm_media_manifests/raimundo-geniza-para.json updated (commit d4afd68)
 • `ssh run` ×2 → manifest grep + rewrite; shop HTML check (JSON-driven)
 • `search_code` / `search_context` ×3 → confirmed remaining RG-P1 refs are doc-only/historical
 
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → echo "=== 8277 in shop page HTML (beta main) ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/rai; curl -s https://raw.githubusercontent.com/TrueSightDAO/farm_media_manifests/main/raimundo-geniza-para.json | python3 -c " import sys, json d; echo "=== check other RG media captions in manifests for 8277 ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/farm_media_manife; …(+1 more)
-• `merge pr` → ✅ PR #286 on agroverse_shop_beta merged successfully (sha: a84e8b0b23a73b8df8d0200cdb4c87eff56e387c). Pull Request successfully merged
-
-
-### 🧑 Governor
+---
 
 Please inspect the attached file.
 
@@ -448,6 +325,7 @@ The gallery JSON has captions. Let me get the full picture of which images have 
 ### 🤖 Autopilot
 
 None of the site-walk photos on the farm page are captioned as "cacao trees" — Gary says this new photo is "an inspection of their existing cacao trees." Let me actually look at the image to see the trees, since OCR found no text (it's a scene photo). Let me check what vision capability exists — the earlier session established no Grok key on this box, so let me verify the image's visual content via a perceptual comparison against a few likely originals, and examine the .raw.json sidecars (which may carry per-photo vision descriptions from the media pipeline):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -590,4 +468,118 @@ Reply with those and I'll finalize → file as `fda_fsvp/suppliers/cepotx/202609
 **Once you reply with those →** I finalize the PDF, file it as `fda_fsvp/suppliers/cepotx/20260903_CEPOTX_site_visit_to_raimundo_geniza_farm.pdf`, update `entity.json` `source_documents`, and open the PR. That closes the loop: farm page live + FSVP site-visit record filed.
 
 Nothing is blocked on the technical side — just waiting on those 5 answers from you. 🟡
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21534] Correct. I think you should be able to pull the records from the media archive pipeline manifest isn’t it
+
+
+### 🤖 Autopilot
+
+Gary says the records should be pullable from the media archive pipeline manifest — let me go look instead of asking. Checking the manifest repo structure + the pipeline doc:
+
+
+### 🤖 Autopilot
+
+Let me pull the actual manifest contents and the pipeline docs that describe the schema:
+
+
+### 🤖 Autopilot
+
+Gary's right to push — let me actually mine the manifest + video-evidence records instead of asking. Checking the full manifest item list and the video-evidence process outputs:
+
+
+### 🤖 Autopilot
+
+Gary's right — the manifest holds the media records, and the pipeline should have per-item analysis. Let me dig into farm-media-raw (raw media + any sidecars) and the MAP runbook to see what per-photo/video records exist:
+
+
+### 🤖 Autopilot
+
+Good nudge — the MAP records should cover more than I've been leaning on. Let me pull the full pipeline state for this farm: local sidecars (they carry `captured_at`), daemon inbox, and the S3 video previews (which I can match the cacao-tree photo against frame-by-frame):
+
+
+### 🤖 Autopilot
+
+Gary's right — the pipeline records exist (sidecars carry `captured_at`, the zip holds the HEIC originals with EXIF GPS, the 14 MOVs all geo-locate the site). The RG HEICs just never made it into `farm-media-raw` (manifest says `HEIC: 0`). Let me mine the zip properly — extract ALL originals fresh and re-match the cacao-tree photo against the complete set (the earlier match may have used a partial extract), plus read the sidecars for the visit date:
+
+
+### 🤖 Autopilot
+
+The records are there — and they resolve most of my pending items. Let me pull the definitive list (all HEIC zip timestamps + check for any per-file analysis sidecars the pipeline may have written):
+
+
+### 🤖 Autopilot
+
+Now I can pull real records. The MAP data resolves several pending items — visit date confirmed (all 22 HEICs + 14 MOVs dated **2026-09-03**). Let me now (1) match the cacao-tree photo against the exact shop JPGs (same re-encode lineage), (2) read the zip archive sidecar, and (3) pull RG-P1 plot area from sunmint:
+
+
+### 🤖 Autopilot
+
+The archive sidecar has per-HEIC records (captured_at, sha256, raw_url) — that's the manifest data Gary means. Let me pull the complete HEIC records and the plot registry:
+
+
+### 🤖 Autopilot
+
+Gary's right — the archive sidecar IS the manifest record and it has everything: **all 22 HEICs captured 2026-09-03 (10:44–13:29 local), all uploaded to S3**. So visit date = 2026-09-03, confirmed by records, no need to ask. Let me settle the cacao-tree photo's IMG number with a proper simulation match (Telegram-style compression applied to each original, then compare):
+
+
+### 🤖 Autopilot
+
+Gary's right — the archive sidecar resolves most pending items (visit date 2026-09-03 confirmed across all 36 files). Now let me do the real work: pull video frames from the archived site-walk clips to characterize the facilities, and check for vision tooling to read them:
+
+
+### 🤖 Autopilot
+
+Frames extraction timed out (60s) — the videos are large. Let me retry with fewer/lower-res frames and shorter timeout handling, and check the plots registry for RG:
+
+
+### 🤖 Autopilot
+
+Plot found: **U-06-07 = 0.32 ha, status `proposed`, "Sítio Raimundo & Geniza Plot 1 (restoration)"** — and video descriptions call it the **SunMint restoration plot RG-P1**. And the archive sidecar has all 22 HEICs (captured 2026-09-03 10:44–13:29 local, all uploaded to S3). Gary's right — the records fill most of the report. Let me rebuild the PDF with record-backed fields and embed the extracted walk-video frames as evidence:
+
+
+### 🤖 Autopilot
+
+Built v3 (4.58 MB) — now record-backed. Let me verify the pages render cleanly:
+
+
+### 🤖 Autopilot
+
+Layout is loose — video frames each spilled onto their own page. Let me compact them into a single 3-across row so the declaration lands on the same page:
+
+
+### 🤖 Autopilot
+
+Clean 6-page layout now. Sending the record-backed v3:
+
+
+### 🤖 Autopilot
+
+## Status — record-backed site-visit report ✅
+
+You were right about the media-archive manifest — it had what I needed. The **archive sidecar** (`raimundo_geniza.zip.archive.json`) + manifest resolved most of what I'd flagged pending:
+
+**Now confirmed from records (v3, sent as msg 21763):**
+| Item | Record source |
+|---|---|
+| **Visit date 03 Sep 2026** | all 22 HEICs (10:44–13:29 local) + 14 MOVs in archive sidecar |
+| **Plot U-06-07** | sunmint registry — RG-P1 restoration, 0.32 ha |
+| **GPS cluster** | -3.6302…-3.6306, -53.6519…-53.6520 across media |
+| **Originals archived** | all 22 HEICs → S3 `media.agroverse.shop/raw/raimundo-geniza/` |
+| **Video evidence** | 14 GPS-tagged MOVs (YouTube public) + 3 frames embedded in PDF |
+
+**Still PENDING — genuinely not derivable from records:**
+1. **Practice remarks** per facility (grove condition, fermentation regime, drying schedule) — needs vision on the media content. Grok key isn't on this box (it's on the market-research host).
+2. **Exact IMG # of the cacao-tree photo** — Telegram stripped EXIF; phash shortlist (IMG_8208/8256/8274/8275) inconclusive.
+3. **Existing-grove area** — 0.32 ha is the *restoration* plot; existing grove may differ.
+
+**To finish:** say *"fill remarks from vision"* and I'll pull the Grok key to characterize the media, or answer those 3 → then I finalize, file to `fda_fsvp/suppliers/cepotx/`, and open the PR.
+
+One note: the cacao-tree photo's original IS among the 22 archived HEICs — so once we pin its IMG number it gets full EXIF GPS + integrity like IMG_8277. Want me to try harder on that match (e.g. extract + compare at original resolution) while you answer the rest?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×19 → echo "=== farm_media_manifests tree ==="; curl -s "https://api.github.com/repos/TrueSightDAO/farm_media_manifests/git/trees/main?recursive=1; echo "=== README ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm_media_manifests/main/README.md"; echo; echo "=== index.j; echo "=== full manifest item list (basenames + gps + dates) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm_media_manifes; …(+16 more)
 
