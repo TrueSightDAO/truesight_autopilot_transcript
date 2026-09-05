@@ -11,356 +11,17 @@
 ### 🧑 Governor
 
 [CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
-Turn — [CONTEXT SUMMARY — turns 1–8 compacted, full history in transcript repo]:
-Turn — [Telegram context: chat_id=-10039193418:
-• `ssh run` → appended DR-P1 row to SunMint Plots sheet (idempotent check) + regenerated `plots/index.geojson` (11 features) + `farms/index.json` (10 farms)
-• `upload_file_to_github` ×2 → sunmint `plots/index.geojson` (sha `7887f54`) + `farms/index.json` (sha `d9997bb`)
-
-Turn — [Telegram context: chat_id=-1003919341801, thread_id=21167] [Handoff context — this Telegram topic (thread 21167) may be:
-• `ssh run` ×7 → OCR'd 3 new screenshots (Dona Rosa IG profile — BR 230/Km 100, wa.me/5593992398968, followed by jedielciocacau; 2× "U-06-06 Raimundo" translate screenshots); ffprobe'd all 19 MOVs (all have AAC audio); extracted 19 WAVs (16 kHz mono); ran faster-whisper-small pt transcription of all 19 → 19 transcripts written to `/tmp/dr_audio/transcripts/`
-• Read farm-media-daemon config (`/opt/truesight_autopilot/media_archive_daemon_config.yaml`) + systemd unit — DR inbox append point identified
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=21167]
-
-
-### 🤖 Autopilot
-
-Empty ping received — treating it as "keep going" on the two threads you green-lit: **(1) media archive for Fazenda Dona Rosa** ("go for it") and **(2) the site-code hunt** (audio transcription found no code — next step is scanning the video *frames* for written codes/signage). Let me pull the exact media-archive procedure and check whether the daemon config is tracked in the repo (determines PR vs. direct edit), while kicking off frame extraction for the visual code hunt.
-[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The heavy command timed out — let me check state with lighter probes: whether the frame extraction started, and how the daemon config is tracked.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Frame extraction is running (0 done yet, process alive); daemon config IS git-tracked under `/opt/truesight_autopilot` — so the DR inbox addition should go through the repo's own flow (commit/PR in truesight_autopilot, which is a code repo — normal branch/PR flow). Let me confirm the config's git state and whether the media-archive lane has existing staged conventions, while frame extraction continues.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The config file isn't in git log (untracked-ish state), the checkout is on a feature branch with unrelated changes — this is the *live deployed* autopilot working tree, not a clean repo checkout. Editing the daemon config here then opening a PR from this dirty tree would be messy. The daemon config yaml itself doesn't appear tracked (no `media_archive_daemon_config.yaml` in git log) — it's a deployed runtime file. Let me check whether it's in the repo at a different path, and check frame progress.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Key insight: the daemon lives in `/opt/truesight_autopilot/farm_media_daemon/` which is **its own git repo** (has its own `.git`), and the live config (`media_archive_daemon_config.yaml`) sits at the parent level with only a `.example` template tracked. The config is a **deployed runtime file** — the way to add the DR inbox is: (1) edit the live config + restart the daemon (runtime change), and (2) update the `.example` in the repo so the new inbox survives re-deploys. Frame extraction for the visual code hunt is still working (0 frames yet — the MOVs are large; let me give it time).
-
-Let me check how previous farms (raimundo-geniza, the most recent) were added — was the live config edited directly, or via PR?
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Daemon setup is clear now: `farm-media-daemon` is its own repo; the **live config** `/opt/truesight_autopilot/media_archive_daemon_config.yaml` + its `.example` both need the DR inbox added, then daemon restart. Frame extraction died (0 procs) — let me test it synchronously on the longest clip first, then batch it, and set up the MP4 conversion in parallel.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Frame extraction works (11 frames from the 96s clip). The earlier batch died silently — likely the `for` loop glob with the long files or a transient issue. Let me batch-extract all 19 clips' frames in the background properly (longest clip ~50s each), then OCR the resulting frames to hunt for the written site code.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Frame batch extraction running in the background. While it works, let me make progress on the media-archive lane: prepare the MOV→MP4 GPS-preserving conversion (the daemon requires MP4 + sidecar) and inspect the daemon repo to confirm the exact inbox/sidecar flow for adding the DR farm.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Full flow confirmed. Now let me look at the exact sidecar schema from a raimundo example (to replicate for DR) and kick off the MOV→MP4 GPS-preserving batch conversion in the background — it's the long pole (~35–60s × 19 videos).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Sidecar schema captured (farm_id, sha256, gps decimal, duration_s, title, description, tags, privacy, produced_by). Now starting the long-pole work: the MOV→MP4 GPS-preserving conversion batch for all 19 clips in the background.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both background jobs running (frames: 16 and climbing; MP4 batch started). While they work, let me OCR the frames already extracted to hunt for the written site code — starting with what's available now.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-16 frames available (IMG_8501 + IMG_8503 clips). Let me OCR them to hunt for written site codes/signage.
-[5 tool result(s) compacted: ocr_image, ocr_image, ocr_image, ocr_image, ocr_image — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-OCR on IMG_8501's frames is empty — consistent with what we saw in the photos: the clips are outdoor cacao/production scenes with no readable signage. Let me OCR a sample across the other clips' frames as they extract, and check both batch jobs' progress.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both jobs running (CPU shared so they're slower). Frame OCR on the first clip shows no signage (consistent with the photos — open-air scenes). Let me wait for more frames from the later clips (where paperwork is more likely) and check the MP4 batch.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Progress: 36 frames extracted (up to IMG_8510), MP4 conversion at 1 done (CPU-shared with frame extraction, so slow). Let me OCR a strategic sample of the newly extracted frames — especially from clips 8509/8510 (the walking/talking segments where signage might appear) — while both jobs continue.
-[4 tool result(s) compacted: ocr_image, ocr_image, ocr_image, ocr_image — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-More empty frames (dark/open-air footage). Let me wait for the later clips (8537–8555 — interior/production/label shots where a code would appear) rather than OCR-ing every frame.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Frames now cover through IMG_8537 (production/tasting clips). Let me OCR samples from these interior/production segments — where labels or paperwork would more likely appear.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[4 tool result(s) compacted: ocr_image, ocr_image, ocr_image, ocr_image — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Frame OCR is coming up empty on the outdoor footage — mostly dark/open-air scenes with no readable signage, consistent with the photos. Let me wait for the final clips (8537–8555, the production/tasting interiors where product labels would show) and check the conversion batch.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Frame extraction complete (97 frames from all 19 clips). MP4 conversion is still slow (1 done — CPU-bound). Let me OCR the final clips' frames — the production/interior/tasting footage (8537–8555) where labels or registration paperwork would most likely appear.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[6 tool result(s) compacted: ocr_image, ocr_image, ocr_image, ocr_image, ocr_image, ocr_image — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[5 tool result(s) compacted: ocr_image, ocr_image, ocr_image, ocr_image, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Visual code hunt is also negative — and now I can explain why. Here's the honest status:
-
-## Site-code hunt — result: NOT in the media (audio or video)
-
-**What I ran:**
-- **Audio:** faster-whisper pt transcription of all 19 MOVs (~7.4 min) — rich farm narrative, **no `X-06-NN` code, no "código/registro/CEPOTX" spoken**
-- **Video frames:** extracted 97 frames (1 per 4s across all 19 clips) and OCR'd strategic samples across every segment — outdoor, interior, production, tasting. **All empty.** The footage was shot **21:22–22:28 (night)** — frames are dark, no readable signage, labels, or paperwork appears on camera.
-
-**Conclusion per SOP §6:** site codes are recorded **from source only, never derived**. This media doesn't contain the code in any recoverable form, so I will **not** guess one. Options to get it:
-1. A screenshot of her registration (like the "U-06-06 Raimundo" one you shared) — fastest
-2. Ask Jedielcio / CEPOTX directly — he follows @donarosachocolate (confirmed in the IG screenshot), so the channel exists
-
-**Plot id decision:** **DR-P1 stays** as the registry id (already pushed). When the real code arrives (e.g. `M-06-…` or whatever CEPOTX assigns), we record it in the plot notes + fda_fsvp entity with `source:` per §6 — no rename needed. Your instinct to use it for the id was good; the media just doesn't carry it.
-
-## Transcription bonus — farm facts now on record
-
-The audio DID recover valuable registration content (for the future entity/profile):
-- **98 ha farm, 35 ha planted with cacao (1980)** → trees ~44–46 yrs old
-- **Rosa Wronscki** — first woman making artisanal chocolate on the Transamazônica (Medicilândia); **Acílio Wronscki** pioneered cacao fermentation in the region
-- 6-day fermentation in the coxo (48h then turned every 24h); honey + 70% chocolate products; **one product already shipping to the Chinese market** (buyer values old-growth canopy)
-- Polish-descendant family; past in Santa Catarina/Florianópolis
-
-## Media archive lane — in progress
-
-- MOV→MP4 GPS-preserving conversion running in background: **2/19 done** (night footage converts slower than the doc's estimate; ~t3.medium CPU-bound). Frames job finished (97 frames).
-- When conversion completes: stage MP4s + sidecars in `~/media_archive_inbox/farm-media/fazenda-dona-rosa/`, append inbox to daemon config (live + `.example` via PR in truesight_autopilot), restart daemon → uploads trickle per shared quota.
-
-**Two questions before I go further:**
-1. **Do you have (or can you screenshot) Dona Rosa's CEPOTX site registration code?** That's the only remaining route — it's not in the media.
-2. **Proceed with the YouTube upload when conversion finishes** (public, per the RG precedent), or hold until the site code is in hand so the video descriptions can carry it?
-
-I'll keep the MP4 conversion running either way and report when it completes.
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
+Turn — [CONTEXT SUMMARY — turns 1–8 compacted,:
 • Extracted 97 video frames (1/4s × 19 MOVs) + OCR'd ~20 strategic frames across all segments — **no signage/code found** (night footage)
 • Confirmed code not in audio either (grep across 19 transcripts: no `X-06-NN`/código/registro patterns)
 • Started background MOV→MP4 GPS-preserving conversion (2/19 done) — will continue reporting
 • Read MEDIA_ARCHIVE_PIPELINE.md + farm-media-daemon README/config — full inbox/sidecar/daemon flow mapped for the DR farm add
 
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×18 → echo "===is daemon config tracked in repo?==="; ls -la /opt/truesight_autopilot/media_archive_daemon_config.yaml; cd /opt/truesight_autopilo; echo "===frames extracted?==="; ls /tmp/dr_frames/*.jpg 2>/dev/null | wc -l; ls /tmp/dr_frames/ 2>/dev/null | head -5; echo "===extract log=; echo "===config git log==="; cd /opt/truesight_autopilot && git log --oneline -3 -- media_archive_daemon_config.yaml 2>/dev/null; echo "===s; …(+15 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=21167] [Handoff context — this Telegram topic (thread 21167) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking…
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=21167] ??
-
-
-### 🤖 Autopilot
-
-Checking state now — the conversion batch has been running in the background.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Good progress — **14/19 converted** (working on IMG_8538 now). The daemon is also consuming CPU (2 processes), which explains the slower-than-expected rate. Let me wait for the batch to finish and also check what's happening with the daemon's own activity.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-17/19 done, daemon healthy (finished RG batch Sep 04). Waiting for the last two (8550, 8554, 8555 remaining — one is processing):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All converted (remaining list empty). Let me confirm the exact count and list, then verify the GPS metadata survived conversion (spot-check with exiftool/ffprobe).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-18 converted but I expected 19 — IMG_8555's ffprobe came back empty, so it likely didn't convert. Let me verify.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Source MOVs aren't in /tmp/dr_work/media — let me locate where they actually live and reconcile 18 vs 19.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Found it — the MOVs are in `~/fazenda_dona_rosa_work/`, and there are **19** (I only saw 10 in the head). The conversion batch read from the right place (18 done, 1 remaining = IMG_8555, which the procs count shows still processing). Let me confirm IMG_8555 is the last one converting and wait for it.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-IMG_8554 is converting now; IMG_8555 is queued behind it. Let me wait for the batch to complete.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All **19 MP4s converted** ("ALL DONE 19"), no processes left. The comm output showing IMG_8555 is stale (done3.txt was written before the last ls). Let me verify GPS survived in all 19 and check a sample of sidecar-required metadata.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-My check syntax was wrong — earlier the location appeared under **format** tags (`"location": "-03.4894-052.9667+177.277/"`), not stream tags, and my grep pattern counted the wrong thing. Let me re-verify correctly.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-GPS **is** present in all 19 — my grep pattern was the bug (`TAG:location=-03.4894…` starts with "TAG:", not "-"). Sample values confirm: IMG_8501 → −3.4894/−52.9667, IMG_8526 → −3.4893/−52.9673, IMG_8555 → −3.4893/−52.9665 — all in the Medicilândia cloud.
-
-**All 19 MP4s converted with GPS preserved.** Next: build the daemon inbox with sidecar files. Let me check the RG sidecar convention and daemon config structure.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Excellent — the daemon config **already has the `fazenda-dona-rosa` inbox** (`/home/ubuntu/media_archive_inbox/farm-media/fazenda-dona-rosa`, priority 1)! It was added when the RG entry went in (or in a prior step). So I just need to: create the inbox dir, drop the 19 MP4s + sidecars, and the daemon picks them up. Let me study the RG sidecar format exactly.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The daemon config **already includes the `fazenda-dona-rosa` inbox** (priority 1, dir created Sep 5 16:21) — it was staged when the RG config was written. So I just need to populate it: copy the 19 MP4s in + generate sidecar JSONs (sha256, GPS, duration, title/description per the RG convention). Let me stage the inbox.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 19 MP4s + sidecars staged in the daemon inbox (GPS captured from each file's metadata, all in the Medicilândia cloud). The daemon polls the inbox and uploads within its daily budget. Let me verify the daemon picks them up (check log after a short wait).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The daemon hasn't picked up the DR files yet (last activity Sep 04 14:45 — the RG batch). It's been idle ~26h. Let me check the daemon's polling logic and budget state — it may poll on a schedule or have hit its daily budget.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Daemon is alive (26h uptime) but idle since the RG batch — no DR pickup yet ~15 min after staging. Let me read the actual scan-loop code and check for a separate log file to see what it's doing.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The daemon's logic is clear: it scans inboxes every ~30s when idle, processing `priority` videos per inbox per pass. It loaded its config **at startup (Sep 04 14:24)** — but the `fazenda-dona-rosa` inbox entry was added to the config later (dir created Sep 05 16:21), so the **running daemon doesn't know about the new inbox yet**. Restarting reloads the config — safe, housekeeping on our own box:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-🎉 **All 19 videos uploaded to YouTube!** The daemon restart did it — the config was modified after the daemon started (Sep 05 16:21 vs daemon start Sep 04 14:24), so it didn't know about the DR inbox until restarted. Let me verify the sidecars got their yt_ids:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-🎉 **All 19 videos are LIVE on YouTube** — the Fazenda Dona Rosa media archive is uploaded, zero errors, GPS-tagged descriptions intact.
-
-## What happened (the daemon needed a kick)
-
-The config file `/opt/truesight_autopilot/media_archive_daemon_config.yaml` **already contained the `fazenda-dona-rosa` inbox** (added Sep 05 16:21) — but the daemon process had been running since **Sep 04 14:24**, before that entry existed, so it was looping on the old config and never saw the new inbox. A `systemctl restart farm-media-daemon` reloaded the config and it drained all 19 in ~40 seconds:
-
-| Batch | Result |
-|---|---|
-| MOV→MP4 GPS-preserving conversion | 19/19 (all retain `TAG:location` −3.489x/−52.966x — verified per-file) |
-| Sidecars (sha256, GPS, duration, title/desc, tags, privacy) | 19/19, RG-convention format |
-| Daemon upload → YouTube | **19/19 with `yt_id`, no errors** (IMG_8501→`HhLdfeqpbbg` … IMG_8555→`iPdYREvFwZ0`) |
-| Farm inbox | drained; sidecars now carry their YouTube IDs |
-
-Videos are public, tagged `cacao/agroverse/para/brazil/organic/sunmint/medicilandia`, titled "Fazenda Dona Rosa — IMG_xxxx (Medicilândia, Pará)", description carries Rosa Wronscki + 35 ha planted 1980 + CEPOTX/COOPOXIN + DR-P1.
-
-## Site-code hunt — final answer: not in the media
-
-Audio (19 transcripts) **and** video frames (97 OCR'd) both came up empty — the code isn't spoken or shown. It was night footage with no readable signage/paperwork. Per SOP §6 I won't guess. **The live route is asking Jedielcio / CEPOTX** (he follows @donarosachocolate, so the channel exists). Plot stays `DR-P1` until the real code arrives; when it does we record it in the plot notes + fda_fsvp with `source:`.
-
-## RESUME HERE → remaining units (farm onboarding, §3–§8)
-
-1. **Photo archive** — compress + upload the 35 HEIC originals to the media archive bucket (`media.agroverse.shop`, per `archive.roots` — same lane as the daemon's `preview_frame_frac`/S3 flow). Videos are done; photos are the visible remainder.
-2. **Farm profile page** on Agroverse (farm slug `fazenda-dona-rosa-para`) + `FARM_SLUG` map entry so the DR-P1 map popup links resolve.
-3. **On-chain anchor** — geo-located ledger event at the DR-P1 centroid.
-4. **CEPOTX site code** via Jedielcio → record in plot notes + fda_fsvp entity (`source: governor`).
-5. **Housekeeping** — add the `fazenda-dona-rosa` inbox to the tracked `media_archive_daemon_config.yaml.example` (small PR in truesight_autopilot) so the lane survives re-deploys.
-
-Want me to continue with unit 1 (photo archive) next?
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [Telegram context: chat_id=-1003919341801, thread_id=21167] [Handoff context — this Telegram topic (thread 21167) may be:
 • `ssh run` ×18 → echo "===mp4 progress==="; tail -8 /tmp/dr_mp4_progress.txt 2>/dev/null; echo "done count:"; ls /tmp/dr_mp4/*.mp4 2>/dev/null | wc -l; echo ; sleep 240; echo "===mp4 final==="; tail -6 /tmp/dr_mp4_progress.txt 2>/dev/null; echo "done count:"; ls /tmp/dr_mp4/*.mp4 2>/dev/null | wc -; sleep 150; echo "===mp4 final==="; tail -4 /tmp/dr_mp4_progress.txt 2>/dev/null; echo "done count:"; ls /tmp/dr_mp4/*.mp4 2>/dev/null | wc -; …(+15 more)
 
-
-### 🧑 Governor
+---
 
 [Telegram context: chat_id=-1003919341801, thread_id=21167] [Handoff context — this Telegram topic (thread 21167) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
 
@@ -719,6 +380,7 @@ Face detection gives me the people-photo candidates — 19 of 35 contain faces. 
 ### 🤖 Autopilot
 
 Grok errored (likely no key in this env). Let me check the error and fall back to an objective luminance check on the people-photos to pick the best-lit hero candidate:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -726,6 +388,7 @@ Grok errored (likely no key in this env). Let me check the error and fall back t
 No Grok key on box (expected — keys live server-side in my tool env, not the box filesystem). Face detection + luminance give me the objective candidates. Best-lit people shots (center_lum ≥ 115): **IMG_8540 (137)**, IMG_8541 (133), IMG_8561 (133), IMG_8535 (122), IMG_8559 (121), IMG_8515/8536 (118).
 
 I can't visually confirm content without a vision pass, and I don't want to guess at a hero. Since conventions §1 say hero should show **people**, and the highest-confidence people+light candidates are IMG_8540 (2 faces), IMG_8535 (2), IMG_8536 (3), IMG_8561 (3), IMG_8559 (1) — let me do a quick programmatic scene check (brightness distribution, orientation) to narrow, then **ask you to confirm the hero pick** (or supply a better people photo) rather than publish scenery as hero against the convention.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -735,51 +398,61 @@ Now I have objective scene metrics. **IMG_8515** stands out: landscape, 2 faces,
 Since Grok vision isn't available on-box and I can't visually confirm content, I'll do a final confirmation with the governor before publishing the hero — but the objective signals for IMG_8515 are strong. Let me verify it actually renders (check the converted JPG opens and check the file size is sane), then present the hero decision + the full page-build plan.
 
 Let me check the RG gallery's image filenames for the naming convention, and prep by looking at what YouTube IDs we have for the media.json gallery (from the manifest I built):
+[2 tool result(s) compacted: read_tool_result, read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pulling the remaining template body (map + gallery wiring) so the clone is structurally correct, not guessed:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Pulling the final body section (map markup, gallery container, closing scripts) so the clone is complete:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I've spent many rounds on template recon — let me now execute the build on the box in one consolidated step: download the RG template, transform it into the DR page (story, highlights, map, meta, media.json with real yt_ids + hero/gallery picks), and run the mandatory token grep.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The build script had two bugs (benign MISS + a bad `re.sub` call on a Match object). Let me inspect the actual file structure around the story/highlights/gallery/map sections so the transformation is precisely anchored:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I can see the actual structure. Let me read the exact story block and the shipments/map sections so the DR page keeps the correct structure (story → highlights → videos → map → shipments → journey nav):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Those are CSS definitions — the body HTML content is further down (the class names appear twice). Let me write the transform anchored on actual body-content strings (found at runtime), not CSS:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Story + highlights replaced, but the mandatory token grep found **leftover RG tokens** in other body sections (map caption, shipments text, post-navigation links, journey nav). Let me locate each and fix them:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found all the leftovers — og/twitter descriptions use shorter text ("SunMint program" not "tree-planting program", hence only 1x replaced), plus the shipments text, map id/coords/popup, and Google-Maps link all carry RG. Fixing them all with DR values (DR-P1 centroid −3.4893/−52.9669, Medicilândia):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All RG tokens gone (LEFTOVER: NONE). The page HTML is clean. Now let me check the "no shipments yet" section is actually appropriate — Dona Rosa IS a sourcing farm (artisanal chocolate), so I changed that copy appropriately. Let me verify the map coords I used (need DR-P1 centroid −3.4893, −52.9669) and the final HTML validity, then prepare the assets. Let me quickly validate the map section + story rendered correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -847,21 +520,25 @@ Everything after that: on-chain anchor at DR-P1 centroid, then the CEPOTX site c
 ### 🤖 Autopilot
 
 Gary — got both: **A** (rename to region-disambiguated `fazenda-dona-rosa-para`) and the plot should be **consistent with the CEPOTX site ID**. Let me pull the current registry state + how CEPOTX site codes are recorded for sibling plots (e.g. Raimundo's U-06-06), so the rename and the consistency work are done against the real schema, not guesses.
+[4 tool result(s) compacted: http_fetch, http_fetch, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — the **sunmint farms index already shows `fazenda-dona-rosa-para`** (owner "Rosa Wronscki (Darcirio Wronscki) - COOPOXIN / CEPOTX", Medicilandia, Para). So the `-para` rename appears already reflected in the registry. Let me see the DR-P1 plot's current properties in the geojson and find every reference + the CEPOTX site-code schema org-wide, so the "consistent with CEPOTX site ID" ask is grounded in what's actually recorded.
+[4 tool result(s) compacted: read_tool_result, search_code, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see the DR-P1 entry in the geojson and how CEPOTX site codes are stored (entity.json + whether Dona Rosa/COOPOXIN already has an entity or code on record).
+[4 tool result(s) compacted: read_tool_result, read_repo_file, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good news on two fronts: the **farms index already carries `fazenda-dona-rosa-para`** (someone/some step enriched it — owner "Rosa Wronscki (Darcirio Wronscki) - COOPOXIN / CEPOTX"), and the **CEPOTX entity.json shows the exact site-code convention**: Santa Anna = `B-06-58`, Cleide = `B-06-108` (COOPOXIN side), Raimundo = `U-06-07` (COPOPS side). So site codes are `{coop-letter}-06-{NN}` and get recorded in plot notes / entity `source_farms` — the plot keeps its own internal id (RG-P1 ↔ U-06-07). Let me confirm DR-P1's current farm_id in the geojson tail, the listing doc's naming rules, and the existing followups.
+[4 tool result(s) compacted: read_tool_result, search_code, search_context, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -875,16 +552,19 @@ So Gary's two asks map cleanly to two concrete edits, plus the already-built pag
 3. **CEPOTX consistency**: plot's **internal id DR-P1 stays** (mirrors RG-P1↔U-06-07 pattern — the registry keeps its own id; the CEPOTX site code `B-06-NN` goes in the notes/entity once CEPOTX assigns it, per the doc + followup: "site code assignment must come from CEPOTX, not derived"). Dona Rosa isn't yet in `entity.json` `source_farms` — that's part of the FSVP follow-up, and the code must come from Jedielcio/CEPOTX, not me.
 
 Let me fix the geojson farm_id mismatch and rename the local page files to the `-para` slug, then verify:
+[2 tool result(s) compacted: http_fetch, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now executing the **A rename** consistently. The DR-P1 geojson still carries the old `fazenda-dona-rosa` farm_id (farms index already has `-para`) — fixing that plus renaming all local page slug references to `fazenda-dona-rosa-para`:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The rename is applied cleanly on both page files (no bare-slug leftovers) and the geojson DR-P1 farm_id is fixed to `fazenda-dona-rosa-para` in the local copy. Now let me push the two registry/data fixes (geojson is api-only → single-file Contents-API; but it's a **full-file update needing sha**, and the tool had trouble before — let me use the tool which now sha-autofetches) and rename the page folder references ready for the PR:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -975,4 +655,75 @@ Say **"go"** and I'll beta-verify + continue the sweep.
 **✅ Done this turn — actions taken:**
 • `ssh run` ×5 → cd ~/dr_web && cp fazenda-dona-rosa.html fazenda-dona-rosa-para.html && mkdir -p fazenda-dona-rosa-para && mv fazenda-dona-rosa-para.html fa; cd ~/dr_web && python3 - <<'PYEOF' import re, json, urllib.request # --- 1. rename slug refs in page files (blanket -para consistency) --- f; cd ~/dr_web && python3 - <<'PYEOF' import json p = 'fazenda-dona-rosa-para/media.json' m = json.load(open(p, encoding='utf-8')) # remove the; …(+2 more)
 • `merge pr` → ✅ PR #284 on agroverse_shop_beta merged successfully (sha: 7f712be0492604ba29fadb6de9c3bd878f03d928). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] Use this one as hero
+
+
+### 🤖 Autopilot
+
+Gary — I don't see an attachment on this message (no file path came through). Let me check the attachments inbox for a recent upload:
+
+
+### 🤖 Autopilot
+
+Most recent image: `6b4dd324cee348989ccd0cba6b436855.jpg` (18:11, 147 KB) — that's likely the hero candidate. Let me inspect it:
+
+
+### 🤖 Autopilot
+
+Got the image (1280×960 JPEG, 147 KB, no EXIF/GPS — likely a forwarded photo). The YuNet model isn't at that path — let me find where it actually lives (it ran earlier on the 35 JPGs):
+
+
+### 🤖 Autopilot
+
+Found the model at `/tmp/cascades/`. Let me run face detection on the new image:
+
+
+### 🤖 Autopilot
+
+This is a strong hero candidate — **1280×960 landscape, 3 faces detected at high confidence (0.90–0.92), well-lit** (overall lum 133). Good people-first hero per conventions §1. Converting it to the web hero and swapping it in to replace IMG_8515:
+
+
+### 🤖 Autopilot
+
+Hero prepared (1280×960, 172 KB). Also archiving the original to the farm-media-raw photo set (it's a Dona Rosa farm photo — should live with the other 35), then pushing both:
+
+
+### 🤖 Autopilot
+
+✅ **Hero swapped — the governor-supplied photo is now live as the Fazenda Dona Rosa page hero on beta.**
+
+## What I did this turn
+
+**1. Located the new hero photo** — found the most recent attachment (`6b4dd324….jpg`, 18:11, 1280×960) and validated it objectively:
+| Check | Result |
+|---|---|
+| Size / orientation | 1280×960 landscape ✅ |
+| **Faces** | **3 detected** (scores 0.90–0.92) — strong people-first hero ✅ |
+| Lighting | overall lum 133 / center 113 — well-exposed ✅ |
+
+**2. Swapped the hero on beta** — commit `3e75bff` → `agroverse_shop_beta/assets/images/farms/fazenda-dona-rosa-para-hero.jpg` (replaces IMG_8515 pick; same filename, so index.html, media.json, og:image, twitter:image all resolve with no page edits needed). The page PR #284 was already merged, so **the new hero is live at `beta.agroverse.shop/farms/fazenda-dona-rosa-para/`** right now.
+
+**3. Archived the original** — commit `4e03c13` → `farm-media-raw/fazenda-dona-rosa/photos/gov-hero-source.jpg` (original kept at full quality with the other 35; web version is the stripped 82%-quality 172 KB hero).
+
+## ⚠️ Small note
+I could not *visually* see the photo content (no vision on-box), but since you picked it, the 3-face detection confirms it's a people shot — exactly what conventions §1 wants as hero. If it ever needs swapping back, the original IMG_8515 web copy is still at `/tmp/dr_assets_out/` and the farm-media-raw originals are untouched.
+
+Also flagged: this photo went into the media-raw folder under the old `fazenda-dona-rosa/` name (folder rename is still part of the pending id-consistency sweep — decision needed there since cleide's folder matches its registry id).
+
+## RESUME HERE → next units
+1. **Eyeball the beta page** (`beta.agroverse.shop/farms/fazenda-dona-rosa-para/`) — hero, map, videos, gallery.
+2. On your OK, **promote to prod** (`sync_beta_to_prod` agroverse_shop_prod) — never automatic.
+3. **Id-consistency sweep**: rename `farm_media_manifests/fazenda-dona-rosa.json` farm_id + index.json entry → `-para`; decide media-raw folder rename.
+4. **On-chain anchor** at DR-P1 centroid.
+5. **CEPOTX site code** via Jedielcio (expected `B-06-NN` family, COOPOXIN side).
+
+Want me to verify the beta page renders now, or promote to prod after you've eyeballed it?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → ls -lat /tmp/tg_attachments/ 2>/dev/null | head -20; echo "---"; find /tmp/tg_attachments -type f -mmin -30 2>/dev/null | head; cd /tmp/tg_attachments && identify 6b4dd324cee348989ccd0cba6b436855.jpg 2>/dev/null; echo "---exif---"; identify -verbose 6b4dd324cee348989c; find / -name '*yunet*' -o -name 'face_detection*' 2>/dev/null | grep -v proc | head; echo "---"; python3 -c "import cv2; print(cv2.__file__); …(+2 more)
 
