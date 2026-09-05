@@ -478,16 +478,24 @@ PR2's implementation is complete, well-crafted, and matches the plan spec exactl
 ### 🤖 Autopilot
 
 Ruff clean. Now the full pytest suite — expecting 897 + 8 = **905 passed** with only the pre-existing config test failing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The full suite exceeded the 60s SSH timeout. Let me run it with a longer timeout and capture output to a file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No pytest-timeout plugin. Run the full suite in the background, writing to a log, then poll:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -495,21 +503,25 @@ No pytest-timeout plugin. Run the full suite in the background, writing to a log
 All gates green: **905 passed, 1 failed** — the only failure is the same pre-existing `test_config_own_data_repos.py` PAT-literal assertion (unrelated to PR2; it also failed during PR0/PR1). It again leaked the PAT into the log — I won't repeat it; recommend rotation if this thread is shared externally. The background pytest finished (the "still running" was a stale match).
 
 PR2's changes are verified complete and correct. Now commit and push as PR #403 — branch off the current main, carrying exactly the PR2 files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Commit `ee79653` created with exactly the 3 PR2 files (291 insertions; the unrelated working-tree dirt stayed unstaged). Now push and open the PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed. The `open_pr` signature differs — let me check the actual keyword names:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It uses `head`/`base`/`draft`. Opening the PR correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -709,4 +721,55 @@ Otherwise: **PR0→PR1→§1d→PR2→deploy→live-verify is fully done.** 🎉
 **✅ Done this turn — actions taken:**
 • `deploy autopilot` → Already on the latest commit 2a05df16 — no deploy needed. Did NOT restart. Do not retry.
 • `ssh run` ×9 → cd /opt/truesight_autopilot && echo "=== git state ===" && git branch --show-current && git log --oneline -2 && echo "=== processes ===" && ; cd /opt/truesight_autopilot && echo "=== pre-compact backups present ===" && ls -la sessions/*.pre-compact* 2>/dev/null; echo "=== this thre; cd /opt/truesight_autopilot && echo "=== config defaults ===" && grep -n "CONTEXT_COMPACTION\|context_compaction" app/config.py && echo "===; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Update from Envoy: PR3 fixed, merged (#404, sha e1fc54f), and deployed live myself - the mid-turn compaction check now fires inside both round loops (_run_tool_round_loop and _chat_blocking_turn), not just once at turn start. Verified: health 200, correct commit, 4 total _maybe_auto_compact call sites in main.py (2 original pre-turn + 2 new per-round). No threads were mid-turn during the restart. You're clear to resume normal work - nothing further needed on this from you.
+
+
+### 🤖 Autopilot
+
+Envoy's handoff noted — quick independent confirmation of the state, then I'll close out:
+
+
+### 🤖 Autopilot
+
+Envoy's report **independently confirmed** — all checks pass:
+
+## ✅ PR3 (#404) verified live — context-compaction rollout fully complete
+
+**Independent verification (my own reads, not just Envoy's word):**
+| Check | Result |
+|---|---|
+| Merged head | `e1fc54f` — `fix: re-check context compaction every round, not just at turn start (PR3) (#404)` on top of `2a05df1` (#403) |
+| Call sites | **4** actual `_maybe_auto_compact(history, session_id)` calls — 2799 + 3119 (pre-turn/original, shifted by PR3 insertions) and 4515 + 4549 (per-round additions) — matches Envoy's "2 original pre-turn + 2 new per-round"; 5078 is the `def` |
+| Running process | pid 654071, started **19:05:07** — fresh restart carrying PR3 (Envoy's deploy) |
+| Health | **HTTP 200** — `{"status":"ok","version":"0.2.0", …governors_count:72}` |
+
+### Full rollout ledger
+| Unit | PR | Status |
+|---|---|---|
+| PR0 — `app/context_compaction.py` library | #401 | ✅ merged |
+| PR1 — governor-only manual tool `compact_session_manual` | #402 | ✅ merged |
+| §1d — real-session manual validation (84K→16.6K, 66K→12.5K) | — | ✅ passed |
+| PR2 — automatic wiring (turn-start, env kill-switch) | #403 | ✅ merged |
+| PR3 — per-round re-check (mid-turn growth) | #404 | ✅ merged (Envoy) |
+| Deploy + live verification | — | ✅ serving `e1fc54f`, compaction firing in prod (observed folds + backups + summaries) |
+
+**Net effect:** no session can now stall in the 38–50K zone — compaction re-checks at turn start **and** after every tool round (catching long multi-tool turns like this very thread's), with pre-compaction backups, governor-only manual override, and the `CONTEXT_COMPACTION_AUTO=0` kill-switch for instant rollback.
+
+Noted: nothing further needed from me on this. **Closing out** — no new work started.
+
+**Optional follow-up** (only if you want it): a small PR to `agentic_ai_context` marking `SOPHIA_CONTEXT_COMPACTION_PLAN.md`'s rollout checkboxes complete with this verification ledger — say the word and I'll file it. Otherwise I'm back on normal duty.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot && echo "=== head ===" && git log --oneline -3 && git branch --show-current && echo "=== call sites ===" &&; echo "=== health ===" && curl -s -o /dev/null -w "HTTP %{http_code}\n" http://127.0.0.1:8001/health && curl -s http://127.0.0.1:8001/health | head -c 300
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /opt/truesight_autopilot && echo "=== head ===" && git log --oneline -3 && git branch --show-current && echo "=== call sites ===" && grep; echo "=== health ===" && curl -s -o /dev/null -w "HTTP %{http_code} " http://127.0.0.1:8001/health && curl -s http://127.0.0.1:8001/health |
 
