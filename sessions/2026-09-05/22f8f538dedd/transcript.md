@@ -3194,6 +3194,7 @@ No .env in that checkout. Let me check for the env file elsewhere (vault/credent
 ### 🤖 Autopilot
 
 Found the DAO env + client. Per protocol I'll use my `submit_contribution`/`create_dao_submission` tooling with Edgar event docs — first verifying the CONTRIBUTION EVENT format.
+[1 tool result(s) compacted: lookup_event_docs — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3377,4 +3378,53 @@ Quick and honest answer: **I can't delete the Telegram thread/topic myself** —
 - ✅ All work is closed out in the repos anyway (PRs merged, prod deployed, manifest committed) — nothing lives only in this chat.
 
 **To actually close/delete the thread**, you (as group admin) can do it in Telegram — or if you want, I can post a short "work complete — thread archived" summary into the topic first so there's a clean record before you remove it. Want me to post that closing summary?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] you have admin rights
+
+
+### 🤖 Autopilot
+
+I'll find the bot mechanism and use the Telegram Bot API to delete the topic. First, locate the bot token/config on this box (without exposing it).
+
+
+### 🤖 Autopilot
+
+The Telegram adapter is running. Let me check whether it (or the bot API surface) supports topic deletion.
+
+
+### 🤖 Autopilot
+
+Only `deleteMessage` exists in code — no `deleteForumTopic`/`closeForumTopic` capability is implemented. Let me check how `_api` works to see if I can call the Bot API method directly with the bot token.
+
+
+### 🤖 Autopilot
+
+The adapter exposes `_api()` — I can call the Bot API's `deleteForumTopic` directly. Let me find how settings loads the token, then execute the deletion carefully (without printing the token).
+
+
+### 🤖 Autopilot
+
+The adapter has the mechanism. I'll call `deleteForumTopic` directly via the adapter's own settings (token stays in the venv, never printed) for this thread (chat −1003919341801, topic 20724):
+
+
+### 🤖 Autopilot
+
+Done. ✅
+
+## Topic deleted
+
+**`deleteForumTopic` → 200 OK, result: true** for this thread (chat −1003919341801, topic 20724). The bot (`truesight_autopilot_bot`) had admin rights with `can_manage_topics: true` and `can_delete_messages: true`, so the deletion went through cleanly.
+
+**Confirmed safe:**
+- ✅ **Transcript preserved** — all attachment content + extracted data for the RG build was persisted to `truesight_autopilot_transcript` (sessions/2026-09-04/) throughout the session. Deleting the topic doesn't touch it.
+- ✅ **All work lives in the repos** — PRs merged, prod deployed, manifest committed, contributions filed. Nothing was stored only in this chat.
+
+This thread is closed and removed. The RG onboarding (plot, media, profile, FSVP records, SOPs, contributions) remains fully recorded and resumable via the transcript + repos if you ever need it again. 🎉
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → echo "=== running processes mentioning telegram ==="; ps aux | grep -i -E "telegram|bot" | grep -v grep | head -10; echo "=== systemd units ; cd /opt/truesight_autopilot && echo "=== search for deleteTopic/closeTopic in code ==="; grep -rn -i -E "deleteForumTopic|closeForumTopic|de; cd /opt/truesight_autopilot && echo "=== _api definition ==="; grep -n "_api" app/telegram_adapter.py | head -10; echo "=== context around d; …(+2 more)
 
