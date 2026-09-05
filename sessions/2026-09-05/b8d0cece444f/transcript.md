@@ -860,21 +860,25 @@ The redeploy killed an in-flight turn that had gotten further than my summary �
 ### 🤖 Autopilot
 
 Excellent — the in-flight turn had completed the policy registration edits and a 262-line test file. PR0's merge (#401) is on origin/main. Let me verify the test file content is complete/sound, then run the gates:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The in-flight turn left a genuinely complete state: tool spec registered + discoverable, 15 tests written, policy edits in place. Now run the full local gate — compileall, ruff check, ruff format, then pytest on the new tests first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Almost clean — the test file needs formatting. Let me apply ruff format, then run the new test suite:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 15 PR1 tests pass. Now the full suite gate (expecting only the 1 pre-existing config failure):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -884,26 +888,31 @@ All 4 gates green: **897 passed** (my 15 new tests included), the only failure i
 ⚠️ **Security note for you:** that pre-existing failing test prints the box's `github_read_pat` value into its assertion output — it just leaked into this transcript log. I will not repeat it. If this thread's logs are shared externally, consider rotating that PAT. (Separate issue from PR1 — could file a fix later to make that test assert on shape not literal.)
 
 Now pushing PR1 — new branch off origin/main (which has #401):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Commit `d7f527e` created on `feat/context-compaction-pr1` with exactly my 4 files (the pre-existing dirt — sophia.conf, active_tracks, followups, tokenomics, events_catalog_snapshot deletion, worktrees/vault — is unstaged; `telegram_close.py` shows untracked but that's a stale-index artifact of the branch switch since it's on main already). Push + open PR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Branch pushed. The `open_pr` signature differs — let me check it:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 It takes `repo_name` and defaults `draft=True`. Opening the PR with the correct signature:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR #402 is open. Let me verify it's clean (exactly my 4 files):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1078,4 +1087,66 @@ Actually — the reload already proved shape integrity (`full_history` + `sessio
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×8 → cd /opt/truesight_autopilot && git checkout main 2>&1 | tail -2 && git pull --ff-only origin main 2>&1 | tail -2 && echo "=== head ===" && g; cd /opt/truesight_autopilot && sed -n '154,280p' app/tools/compact_session_tool.py; cd /opt/truesight_autopilot && date -u && echo "=== sessions by recency (top 15 touched) ===" && .venv/bin/python - << 'PYEOF' import os, js; …(+5 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: §1d manual validation is **complete and fully green** on both real sessions. One more verification worth doing for the report: prove the live turn path can still ingest the compacted files (the real p
+
+
+### 🤖 Autopilot
+
+Resuming from the §1d completion — the final verification: prove the live turn path can ingest the compacted files. First, check exactly how main.py loads a session at turn start and where sanitise runs:
+
+
+### 🤖 Autopilot
+
+Now let me see the rest of the loader (what happens after the XML cleanup, particularly around line 300's `_sanitise_tool_messages` and whether the summary message survives ingestion) and the turn-path sanitise context at 3104/4496:
+
+
+### 🤖 Autopilot
+
+The loader runs `_sanitise_tool_messages` on load (line 301), and the turn path at 3104 runs the full `_compact_old_tool_chains → _trim_history_to_budget → _sanitise_tool_messages` chain. Now simulate the exact live ingestion on the compacted files — load → sanitise → compact-chains → trim → sanitise (the real turn-path sequence) and verify the summary survives, no dangling, no over-trim:
+
+
+### 🤖 Autopilot
+
+§1d manual validation is **now fully complete including the live-ingestion proof**. Both compacted sessions were run through the *exact* turn-path sequence (`_load_or_create_session` loader → `_compact_old_tool_chains` → `_trim_history_to_budget` → `_sanitise_tool_messages`, same as main.py:3104) with clean results.
+
+## ✅ §1d validation FINAL — live turn-path ingestion verified
+
+| Session | Loaded | Turn-path result | Dangling | Summary | Outcome |
+|---|---|---|---|---|---|
+| `361e612c0b6b` | 50 msgs / 16,597 tok | 49 msgs / 16,594 tok (−1 msg, −3 tok) | 0/0 | preserved (1) | ✅ clean |
+| `22f8f538dedd` | 31 msgs / 12,533 tok | 30 msgs / 12,531 tok (−1 msg, −2 tok) | 0/0 | preserved (1) | ✅ clean |
+
+**Key findings from the ingestion proof:**
+- **The loader + turn-path machinery accepts both compacted files with zero friction** — no orphan tool msgs, no missing tool results, no over-trimming (the old `_trim_history_to_budget` barely touches them since they're now far under the 90K budget).
+- **The summary survives and merges content-preservingly**: the log confirms `Collapsed 2 consecutive user messages at index 1/2` — that's Pass-3 of `_sanitise_tool_messages` merging the `[CONTEXT SUMMARY]` user message with the next turn's opening user message via the documented `\n\n---\n\n` join (content fully preserved, exactly as the PR0 tests lock in). So when these sessions next get a real user turn, the summary stays in context and the model sees the full folded history + the byte-identical last-6-turns tail.
+- **Negligible further delta** (−1 msg / −2–3 tok) proves the compaction and the legacy machinery coexist without fighting each other.
+
+## Validation summary (all §1d criteria met)
+
+1. ✅ **Two real bloated sessions** compacted via the actual merged tool: `361e612c0b6b` (84K → 16.6K tok, **80.2% ↓**) and `22f8f538dedd` (66K → 12.5K tok, **81.1% ↓**)
+2. ✅ **Byte-identical retained tail** (last 6 turns) — verified against input suffix pre-save and post-reload
+3. ✅ **Zero tool-protocol dangling** — before, after, and after full turn-path ingestion
+4. ✅ **Pre-compaction backups** created: `361e612c0b6b.json.pre-compact-20260905T163633Z.json`, `22f8f538dedd.json.pre-compact-20260905T163633Z.json`
+5. ✅ **On-disk shape integrity** — reloads in exact `_log_session` format (`session_hash`/`updated_at`/`message_count`/`full_history`)
+6. ✅ **Live turn-path ingestion** — loader + sanitise + trim accept the compacted files cleanly (this turn's proof)
+
+Both sessions now sit under the 20K threshold — neither would ever re-enter the 38–50K stall zone, and both retain full recovery via backup.
+
+## RESUME HERE → next: PR2 (automatic wiring)
+
+§1d checkpoint is passed with full evidence. Per the plan's rollout section and your earlier instruction, **PR2** (automatic wiring of `compact_history` into the live turn path alongside `_compact_old_tool_chains`/`_trim_history_to_budget` at main.py:3104, inside the per-session lock, per plan §5c) proceeds **only on your explicit go**. Holding here for it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot && grep -n "def _load_or_create_session\|def _load_session\|_sanitise_tool_messages\|full_history" app/main.py | head -20 && echo "=== loader body ===" && sed; cd /opt/truesight_autopilot && sed -n '295,315p' app/main.py && echo "=== context 3090-3110 ===" && sed -n '3090,3110p' app/main.py; cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' import json import app.main as m from app.context_compaction import count_tokens def; …(+1 more)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /opt/truesight_autopilot && grep -n "def _load_or_create_session\|def _load_session\|_sanitise_tool_messages\|full_history" app/main.py |; cd /opt/truesight_autopilot && sed -n '295,315p' app/main.py && echo "=== context 3090-3110 ===" && sed -n '3090,3110p' app/main.py; cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' import json import app.main as m from app.context_compaction import count_token
 
