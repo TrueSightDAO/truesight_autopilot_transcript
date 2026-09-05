@@ -17,12 +17,19 @@
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: search_context, search_context, lookup_event_docs — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me ground what AGL16 is before submitting.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary is logging 1.5h toward AGL16 setup — that's a CONTRIBUTION EVENT (time). AGL16 = the next Agroverse managed ledger in the AGL series (per MANAGED_LEDGER_EXPLORER_PATTERN.md). Submitting now:
+[1 tool result(s) compacted: submit_contribution — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -60,41 +67,59 @@ Elizabeth 13:35 who_is_who.pdf 17.7K ©. FLAN agl16_status_summar ta y.liz_final
 ### 🤖 Autopilot
 
 Gary wants this contribution recorded with the screenshot attached as evidence. Let me locate the attachment file first.
+[1 tool result(s) compacted: list_directory — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The attachment is `b0c7717f83ed447f83e3db57966fba77.jpg`. Let me verify it's on disk, then submit the DAO contribution with it attached.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 File confirmed (1280×958 JPEG, a Telegram-chat screenshot showing the AGL16 status summary / who_is_who PDFs — good evidence of the work session). Submitting the DAO contribution with it attached:
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Retrying with proper parameter formatting:
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me test without the attachment to isolate the issue:
+[1 tool result(s) compacted: create_dao_submission — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool keeps rejecting — likely the empty `pr_urls` array. Let me check whether there are real PRs/repos related to AGL16 work to reference, rather than fabricating one.
+[2 tool result(s) compacted: search_code, list_prs — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tool is rejecting the call — likely its `pr_urls` validation. Let me check the tool's implementation on the box to understand what it expects.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The schema requires all three fields, which I passed. Let me check the inline handler in main.py to see why it still rejects:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -166,4 +191,24 @@ The earlier plain `submit_contribution` (no attachment) already reported success
 **✅ Done this turn — actions taken:**
 • `ssh run` ×16 → ls -la /tmp/tg_attachments/b0c7717f83ed447f83e3db57966fba77.jpg && file /tmp/tg_attachments/b0c7717f83ed447f83e3db57966fba77.jpg; grep -rn "create_dao_submission\|dao_submission" /home/ubuntu/truesight_autopilot --include="*.py" -l 2>/dev/null | head -5; echo "---"; gre; find / -path /proc -prune -o -name "*.py" -print 2>/dev/null | xargs grep -l "create_dao_submission" 2>/dev/null | head -5; …(+13 more)
 • `create dao submission` ×3 → title, body, and pr_urls are required
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21444] close this thread
+
+
+### 🤖 Autopilot
+
+Closing the thread now. Quick note first: the 90-min AGL16 contribution **was logged** (plain submission, no attachment). The attachment version was never submitted due to the PR-evidence requirement — transcript is preserved, so it can be picked up later if needed.
+
+
+### 🤖 Autopilot
+
+Thread closed (topic deleted; full transcript preserved).
+
+**Wrap-up of this thread:**
+- ✅ **Logged:** 90 min (1.5h) AGL16 structure setup as CONTRIBUTION EVENT — Gary Teh, Time (Minutes), Amount 90.
+- ⚠️ **Not logged:** the screenshot-attached version — blocked by the AI-agent CLI's hard PR-evidence requirement (no AGL16 PR exists, and I won't fabricate one). The upload file `b0c7717f83ed447f83e3db57966fba77.jpg` remains in `/tmp/tg_attachments/` and the transcript if you want to revisit.
+- 📌 **Open improvement** (for a future session): `create_dao_submission` treats an empty `pr_urls` list as falsy → rejects valid attachment-only contributions. Worth a small `truesight_autopilot` fix PR. I can file it whenever you give the go.
 
