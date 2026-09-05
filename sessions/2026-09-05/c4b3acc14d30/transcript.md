@@ -1063,11 +1063,13 @@ Makes a lot of sense to update the docs to call the media archive Daemon. Yeah, 
 ### 🤖 Autopilot
 
 Let me check the handoff registry first (per protocol), then look at the current docs state so the rename PR is precise:
+[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Handoff registry confirms this thread's lineage (Farm Media Daemon plan — complete; now evolving). Let me read the remaining docs to make the rename PR precise:
+[3 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1239,4 +1241,56 @@ Want me to proceed with the zip-streaming PR next?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → systemctl is-active farm-media-archive.service; echo "--- markers per root ---"; for d in /home/ubuntu/santa_ana_bahia_work /home/ubuntu/sao
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] [Handoff context — this Telegram topic (thread 19892) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+I was thinking for video files that are already processed
+
+-  preview thumbnail on github
+- video on youtube
+- raw files on S3 
+- manifest on github, 
+
+perhaps we could just go ahead and remove them delete them from your file syste?
+
+
+### 🤖 Autopilot
+
+Let me verify the deletion-safety facts on the box before answering — what's actually still only-local, and whether manifests yet prove S3 holds everything:
+
+
+### 🤖 Autopilot
+
+Verified the safety facts on the box — here's the honest answer: **yes for the 374 extracted originals, but with one precondition — and not the zips yet.**
+
+## What the data shows
+
+| Fact | Value |
+|---|---|
+| Extracted media vs archived | **374 / 374** — all have `.raw.json` markers, S3 verified (`raw/` 374 + `previews/` 374) ✅ |
+| Manifests carrying `raw_url`/`preview_url` | **0 / 5** — none yet point at S3 ❌ |
+| Disk | 86% (11G free) |
+| Zips on disk (~20GB) | Still hold **un-archived raws** (cleide 142 videos, la-do-sitio, santa-anna remainder, oscar remainder…) |
+
+## My recommendation — delete in two waves
+
+**Wave 1 (safe to do now): the 374 extracted originals.** They're fully archived (raw + preview in S3, sha256 markers prove integrity, YouTube copies exist). BUT — one precondition first: **fold the marker data into the committed manifests** (add `raw_url`/`preview_url`/`captured_at`/`sha256` per item) *before* deleting. Right now the only record of what's in S3 lives in `.raw.json` files sitting **next to** the originals — delete the originals and we lose the sha256 integrity anchors unless the durable GitHub manifest carries them first. That's also what makes your "manifest on GitHub" the authoritative record — today it would go silent on 374 archived files.
+
+**Wave 2 (later, after zip-streaming): the zips.** The zips are the *source* for raws not yet archived (e.g. cleide's 142 videos exist only inside `cleide and marcelo's farm.zip` — nothing extracted from them is archived yet). Deleting them now would lose the only copy of those originals. So: zip-streaming archive runs first → then zips get deleted too.
+
+**Freed space:** Wave 1 frees the extracted dirs (~a few GB); Wave 2 frees ~20GB of zips → disk drops from 86% to comfortable.
+
+## What I'd do (need your go on the destructive step)
+1. **Manifest update pass** — fold all 374 markers into the per-farm manifests (`raw_url`, `preview_url`, `captured_at`, `sha256`) → commit to `farm_media_manifests` (data repo, direct-to-main).
+2. **Delete Wave 1** — the 374 extracted originals + their marker files (S3 + manifests now hold everything). Irreversible locally, but recoverable from S3.
+3. Then zip-streaming PR → archive zip contents → **delete Wave 2** (zips) with your go.
+
+Sound right? Confirm and I'll start with the manifest-update pass, then delete Wave 1.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → echo "=== disk ==="; df -h / | tail -1; echo; echo "=== zips still on disk (true raw archive) ==="; ls -la /home/ubuntu/*.zip 2>/dev/null |
 
