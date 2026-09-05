@@ -109,22 +109,41 @@ The lab reports are from PCTSul (per the ContaAzul invoices). The commercial pro
 
 ### 🤖 Autopilot
 
+[3 tool result(s) compacted: read_repo_file, gmail_search, gmail_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[3 tool result(s) compacted: gmail_read_message, search_code, list_directory — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The invoice confirms the lab is PCTSul/CIC (Parque Científico e Tecnológico do Sul da Bahia). Let me search for the actual proposal/quote that specifies sample quantity requirements.
+[3 tool result(s) compacted: gmail_search, gmail_search, gmail_search — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: gmail_read_message, gmail_read_message — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is about production quantities, not the lab sampling requirement. The lab reports reference "Proposta Comercial: 204.2025.V0" — the quote from PCTSul/CIC would contain the sample quantity requirement. Let me look for that proposal (May–June 2025 timeframe) and any sampling instructions.
+[3 tool result(s) compacted: gmail_search, gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the notarizations repo for related documents (proposal, sampling instructions) and look for the CIC testing emails around June 2025.
+[3 tool result(s) compacted: list_org_repos, gmail_search, gmail_search — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the shipment documentation process and search for any notes about testing quantities.
+[3 tool result(s) compacted: read_context_file, search_context, search_context — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -170,16 +189,19 @@ Ask CIC/PCTSul directly (cic@pctsb.org — contact at the lab was Adriana Cristi
 ### 🤖 Autopilot
 
 You're right — let me trace it through the FSVP repo, the lab proposal reference, and the shop. Running targeted searches:
+[4 tool result(s) compacted: search_code, search_code, read_repo_file, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found a reference in LAB_REPORT_TRANSLATION.md. Let me read it and explore the fda_fsvp structure:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The lab reports reference proposal **204.2025.V0** (the CIC/PCTSul commercial proposal). Let me check the notarizations repo for it and inspect the shop shipment pages + any FSVP lab PDFs for a gram figure:
+[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -251,4 +273,189 @@ The authoritative answer lives with **CIC/PCTSul** (Ilhéus/BA — the reports a
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×12 → cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" | python3 -c "import json,sys; d=json.loa; cd /tmp && curl -s "https://api.github.com/repos/TrueSightDAO/notarizations/git/trees/main?recursive=1" | python3 -c "import json,sys; d=jso; cd /tmp && for f in "20250714215834_gary_teh_oscar_lab_report" "20250714215751_gary_teh_para_lab_report"; do curl -sL -o "$f.pdf" "https://r; …(+7 more)
+
+
+### 🧑 Governor
+
+What does this document say
+
+[Attachment auto-processed: **f67569c31d1041aeac20f2b3e591cfc8.pdf**]
+- Type: PDF (2 pages, 3991 chars)
+
+Extracted content:
+```
+--- Page 1 ---
+Proposta Comercial - Nº: 410.2024 Rev.0
+Dados Cliente
+Solicitante:
+Black King
+CNPJ/CPF:
+50.042.585/0001-80
+Contato:
+Matheus Reis Pereira
+E-mail:
+theusreisssa@gmail.com
+Celular:
+(73) 99109-0002
+Dados da Negociação
+Data Elaboração:
+24/09/2024
+Duração Contrato:
+24/09/2024 a 24/10/2024
+Cond Pagto:
+A Vista
+Validade da Proposta:
+24/10/2024
+Soma dos Pontos:
+R$ 1.609,00
+Responsável Amostragem:
+Laboratorio
+Valor Total Proposta:
+R$ 1.609,00
+Prazo Entrega Relatório:
+20 dias a partir da data de recebimento da amostra no laboratório
+Ponto de Coleta:
+Casca de Cacau
+Matriz:
+Amêndoa de Cacau Processada - Subproduto de Cacau
+Valor Unitário
+R$ 1.609,00
+Pacotes
+19 - Micotoxinas completo para Cacau Processado - Valor: R$ 1.000,00
+Item
+Parâmetros
+Unidade Medida
+Metodologia
+L.Q.
+1
+Micotoxinas - Aflatoxina B1
+µg/kg
+Somatório de Aflatoxinas B1, B2, G1 e G2 por LC-MS
+-
+2
+Micotoxinas - Aflatoxina B2
+µg/kg
+Somatório de Aflatoxinas B1, B2, G1 e G2 por LC-MS
+-
+3
+Micotoxinas - Aflatoxina G1
+µg/kg
+Somatório de Aflatoxinas B1, B2, G1 e G2 por LC-MS
+-
+4
+Micotoxinas - Aflatoxina G2
+µg/kg
+Somatório de Aflatoxinas B1, B2, G1 e G2 por LC-MS
+-
+5
+Micotoxinas - Ocratoxina A
+µg/kg
+Ocratoxina A por LC-MS
+-
+20 - Metais pesados em cacau (Cu, As, Pb, Cd) - Valor: R$ 369,00
+Item
+Parâmetros
+Unidade Medida
+Metodologia
+L.Q.
+6
+Metais Pesados - Arsênio Total (ICP-MS)
+mg/kg
+Metais Pesados (ICP-MS)
+-
+7
+Metais Pesados - Cádmio Total (ICP-MS)
+mg/kg
+Metais Pesados (ICP-MS)
+-
+8
+Metais Pesados - Chumbo Total (ICP-MS)
+mg/kg
+Metais Pesados (ICP-MS)
+-
+9
+Metais Pesados - Cobre Total (ICP-MS)
+mg/kg
+Metais Pesados (ICP-MS)
+-
+25 - Microbiológico para Nibs (Escherichia e Salmonella) - Valor: R$ 240,00
+Item
+Parâmetros
+Unidade Medida
+Metodologia
+L.Q.
+10
+Escherichia coli/g
+UFC/g
+ANVISA IN 161/2022
+-
+11
+Salmonella em 25g
+Aus/Pres em 25g
+ISO 6579
+-
+Observações Importantes:
+Para limites de quantificação inferiores à referência normativa apresentada, tanto quanto os limites de quantificação declarados na proposta, o
+cliente deve entrar em contato com o laboratório quanto aos seus requisitos de resultados.
+Observações:
+"O CIC reserva para si o direito de rejeitar pedidos de análises devido a critérios técnicos dentro do prazo de 3 (três) dias úteis, contados da data do
+recebimento do respectivo pedido, mediante justificativa por escrito. Caso o cliente não se pronuncie exerceremos o direito de rejeição".
+As amostras devem ser enviadas em embalagem plástica, devidamente lacradas. Endereço para envio da amostra: CIC-Centro de inovação do
+Cacau. Rod Jorge Amado, KM 16 - UESC/IPAF-Instituto de Pesquisa em Análise Físico-Químicas. CNPJ 24.042.289/0002-50
+Salobrinho - lhéus - BA CEP: 45662-900 - Tel: (73) 3680-5661.
+A colocação do pedido de compra ou envio de amostras ao nosso laboratório implica no cliente aceitar essa cotação e nossos termos e condições
+gerais de vendas, disponível em: http://www.pctsb.org/CIC/servicos/termos-e-condicoes.aspx
+CANCELAMENTO DA ANÁLISE: Só será possível se ainda não tiverem sido iniciadas.
+COLETA DE AMOSTRA: O laboratório não atende à coleta das amostras e definição de planos de amostragem, mas havendo necessidade podemos
+oferecer orientação.
+TEMPO DE RETENÇÃO DE AMOSTRAS: 30 dias após emissão do Relatório de Análise ou Conforme o prazo de validade (se for menor que 30 dias,
+será retido até sua validade) ou conforme acordado com o cliente em Contrato.
+PRAZO PARA CONTESTAÇÃO DO RESULTADO: 15 dias após emissão do Relatório de Análise em Amêndoas de Cacau (Outras matrizes dependem do
+prazo de validade do produto).
+Amostras enviadas com menos de 1,5kg de amêndoas não terão condição de ser feito reanálise (Peso Médio <1,2g/amêndoa).
+TEMPO DE GUARDA DOS REGISTROS: 5 anos.
+Software Ultra Lims - Proposta Comercial:410.2024.V0-Versão:V2.0 
+ Data Emissão:24/09/2024 - Página.:1/2
+
+--- Page 2 ---
+Proposta Comercial
+________________________________
+Laysa Evelin Silva Santos
+Gestor Técnico
+Software Ultra Lims - Proposta Comercial:410.2024.V0-Versão:V2.0 
+ Data Emissão:24/09/2024 - Página.:2/2
+```
+
+
+### 🤖 Autopilot
+
+## What this document is
+
+A **CIC lab commercial proposal** — "Proposta Comercial Nº 410.2024 Rev.0", issued **24/09/2024** by CIC – Centro de Inovação do Cacau (PCTSul, Ilhéus/BA) to **Black King** (Matheus Reis Pereira). Same lab that ran the June 2025 heavy-metal tests — but note: this is proposal **410.2024.V0**, an earlier one. The reports from the AGL4/AGL8 tests cite **204.2025.V0**, which is still not on file.
+
+## What it covers — 3 test packages, R$ 1.609,00 total
+
+| Package | Tests | Price |
+|---|---|---|
+| 19 — Mycotoxins completo (cacau processado) | Aflatoxins B1, B2, G1, G2 (LC-MS) + Ochratoxin A | R$ 1.000,00 |
+| 20 — Metais pesados em cacau (Cu, As, Pb, Cd) | Arsênio, Cádmio, Chumbo, Cobre total (ICP-MS) | R$ 369,00 |
+| 25 — Microbiológico para Nibs | *E. coli* (UFC/g, IN 161/2022) + Salmonella em 25g (ISO 6579) | R$ 240,00 |
+
+Collection point: **Casca de Cacau** (cacao husk) — matrix "Amêndoa de Cacau Processada – Subproduto de Cacau". Report due 20 days after sample receipt at the lab (Rod. Jorge Amado KM 16, UESC/IPAF, Salobrinho, Ilhéus-BA).
+
+## ⚖️ The grams-relevant line (key for your question)
+
+> *"Amostras enviadas com menos de **1,5 kg de amêndoas** não terão condição de ser feito reanálise (Peso Médio < 1,2g/amêndoa)."*
+
+**Translation:** Samples sent with **less than 1.5 kg of almonds** cannot be re-analyzed (at avg weight < 1.2 g/almond). So the lab's stated floor is **≥ 1.5 kg (1,500 g)** — that's the threshold guaranteeing the lab can re-run the analysis (e.g. to contest a result within the 15-day window). Sample retention: 30 days after report.
+
+## Other commercial terms
+- Payment: À vista; proposal valid to 24/10/2024; lab does **not** do collection/sampling planning (only guidance)
+- Samples must arrive in sealed plastic packaging
+- CIC may reject requests within 3 business days, with written justification
+- Contest window: 15 days after report (amêndoas); records kept 5 years
+
+---
+
+**Note for the follow-up:** this is the older Sept-2024 proposal (410.2024.V0, husk matrix). It shows CIC's general terms — including the **1.5 kg almond minimum** — but the grams requirement for the actual heavy-metal shipments (nibs/almonds, June 2025) is under **proposal 204.2025.V0**, which we still don't have. If you want, I can file this PDF into `fda_fsvp` under the Black King supplier folder and keep the request for 204.2025.V0 on the follow-up list. Want me to?
 
