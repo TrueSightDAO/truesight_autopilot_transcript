@@ -782,6 +782,7 @@ I'm at high round usage — let me do one final targeted recon call, then write 
 ### 🤖 Autopilot
 
 Recon complete — architecture fully mapped. Now writing the PR1 tool module:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -847,11 +848,13 @@ A redeploy just happened and likely killed your in-flight turn (I confirmed the 
 ### 🤖 Autopilot
 
 Resuming PR1 after the redeploy. First, verify what survived — a redeploy typically pulls git main, which could have wiped my uncommitted local file:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The redeploy killed an in-flight turn that had gotten further than my summary — `policy.py` and `test_policy_enforcement.py` are already modified, and `tests/test_compact_session_tool.py` exists untracked. Let me inspect exactly what state those edits are in, and confirm the branch situation (local is still on the PR0 branch):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -994,4 +997,85 @@ Note: since #402 merged the tool itself, the cleanest validation is actually inv
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' from app.github_client import GitHubClient gh = GitHubClient() repo = gh.g.get_; cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' import os, json, glob, datetime d = "/opt/truesight_autopilot/sessions" files =; cd /opt/truesight_autopilot && timeout 300 .venv/bin/python - << 'PYEOF' import time from app.github_client import GitHubClient gh = GitHubC
 • `merge pr` → ✅ PR #402 on truesight_autopilot merged successfully (sha: f03fa2d6740809caad681c69bde6a46198257c1a). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Continue - run the §1d manual validation against the real bloated sessions.
+
+
+### 🤖 Autopilot
+
+Starting §1d manual validation. First sync the /opt checkout to merged main and re-check the tool's handler signature (it merged in #402):
+
+
+### 🤖 Autopilot
+
+Checkout is synced to merged main (both #401 + #402 present). The tool's `compact_session_manual(session, keep_last_turns, token_threshold, force, governor_name)` handler is available. Now run the §1d manual validation — in-memory analysis mode first on two real bloated sessions (no disk writes yet), using the exact tool code path. Let me read the handler's exact behavior first to call it correctly:
+
+
+### 🤖 Autopilot
+
+Checkout synced; the tool's exact behavior is confirmed (backup before rewrite, save after). Now pick the validation targets — the plan says "this week's real bloated sessions," so let me check the box date and which large sessions were touched most recently:
+
+
+### 🤖 Autopilot
+
+Today is 2026-09-05. "This week's real bloated sessions" = the recently-touched big ones. Best candidates: `361e612c0b6b` (541 msgs / 353 KB, last write 15:41 ≈ 55 min ago) and `22f8f538dedd` (361 msgs / 259 KB, 15:20 ≈ 75 min ago) — genuinely bloated, this-week activity, and idle enough that the tool's in-flight guard won't block. Running the in-memory validation first (no disk writes — the analysis checkpoint) on both:
+
+
+### 🤖 Autopilot
+
+Both in-memory validations **pass all §1d criteria**:
+- `361e612c0b6b`: 541 msgs / **84,009** tokens → 50 msgs / **16,597** tokens (**80.2% ↓**) · 0 dangling before/after · tail byte-identical
+- `22f8f538dedd`: 361 msgs / **66,247** tokens → 31 msgs / **12,533** tokens (**81.1% ↓**) · 0 dangling · tail byte-identical
+
+Both are genuinely bloated this-week sessions — exactly the 38–50K+ class the plan targets. Now the second half of §1d: exercise the **real tool path** (backup + on-disk save + reload verify) on these. First identify which threads these sessions belong to (must not rewrite an in-flight/live governor thread) and check the tool's own in-flight guard:
+
+
+### 🤖 Autopilot
+
+Both targets are idle this-week sessions (last writes 55 min / 75 min ago). Let me map them to thread names (for the report) and confirm neither is this live thread, then run the real tool path — backup + compact + save + reload verify — on both:
+
+
+### 🤖 Autopilot
+
+Both targets are idle, non-live threads (this thread is `6e0ff0d6ff13`, untouched by the tool's guard). Now the real §1d validation — invoke the **actual merged tool** `compact_session_manual()` end-to-end on both sessions (backup → compact → save → reload), which is precisely the manual-trigger path the plan requires validating. The tool's in-flight guard is itself part of what gets exercised:
+
+
+### 🤖 Autopilot
+
+The real tool path executed end-to-end on both sessions: backups created, compaction applied, on-disk saves done. Now the final §1d verification — reload both rewritten files from disk, confirm JSON shape integrity (`_log_session`-compatible: `session_hash/updated_at/message_count/full_history`), re-run the dangling check, and verify the retained tail + summary survived the save/load round-trip:
+
+
+### 🤖 Autopilot
+
+§1d manual validation is **complete and fully green** on both real sessions. One more verification worth doing for the report: prove the live turn path can still ingest the compacted files (the real proof is that these sessions' *next* turn processes cleanly, which only happens when they're next used — but I can simulate the load path exactly as main.py does). Let me confirm the loader accepts the rewritten shape, then report.
+
+Actually — the reload already proved shape integrity (`full_history` + `session_hash` + `message_count` + `updated_at` all valid, 0 dangling, summary present, tail opens on a clean turn boundary). The files parse and match exactly what `_log_session` writes. That's the validation the plan requires. Reporting now:
+
+## ✅ §1d manual validation COMPLETE — both real sessions pass
+
+**Targets** (this week's genuinely bloated sessions, both idle/non-live — this thread is `6e0ff0d6ff13`):
+| Session | msgs → | tokens → | reduction | tail byte-identical | dangling |
+|---|---|---|---|---|---|
+| `361e612c0b6b` | 541 → 50 | 84,009 → 16,597 | **80.2%** | ✅ | 0 → 0 |
+| `22f8f538dedd` | 361 → 31 | 66,247 → 12,533 | **81.1%** | ✅ | 0 → 0 |
+
+**Validated via the real merged tool** (`compact_session_manual`, the exact PR1 code path):
+1. ✅ **In-memory analysis first** — `count_tokens` → `compact_history(keep=6, thr=20000)` on both: boundaries correct (66/57 turns), 0 orphan tool msgs / 0 missing tool results before AND after, single `[CONTEXT SUMMARY — turns 1–60/1–51 compacted]` user message, retained tail **byte-identical** to the input suffix.
+2. ✅ **Real tool invocation** (`governor_name="Gary Teh"`) — both returned `status: ok` with backup paths.
+3. ✅ **Backup files created BEFORE rewrite** (plan invariant 1): `361e612c0b6b.json.pre-compact-20260905T163633Z.json` (353,517 B) + `22f8f538dedd.json.pre-compact-20260905T163633Z.json` (259,464 B) — full pre-compaction copies, byte-exact originals.
+4. ✅ **On-disk save + reload** — both files re-load in the exact `_log_session` shape (`session_hash`/`updated_at`/`message_count`/`full_history`), `message_count` field matches (50/31), tokens match the tool's report (16,597/12,533), **0 dangling** after save/load, 1 summary msg each, tail opens on a clean turn boundary (`user → assistant → user`), summary content head confirms real turn-directive text folded in.
+
+**Result:** 84K-token and 66K-token sessions now both sit **under the 20K compaction threshold** — neither would ever hit the 38–50K stall zone again, and both retain their last 6 turns verbatim (byte-identical) with full pre-compaction backups on disk for instant restore if ever needed.
+
+## RESUME HERE → next: PR2 (automatic wiring)
+§1d checkpoint passed. Per the plan's rollout section, PR2 (wiring `compact_history` into the live turn path automatically, alongside `_compact_old_tool_chains`/`_trim_history_to_budget` at main.py:3104/4496, inside the per-session lock) proceeds only on **your explicit go**. I'll hold here for it.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×8 → cd /opt/truesight_autopilot && git checkout main 2>&1 | tail -2 && git pull --ff-only origin main 2>&1 | tail -2 && echo "=== head ===" && g; cd /opt/truesight_autopilot && sed -n '154,280p' app/tools/compact_session_tool.py; cd /opt/truesight_autopilot && date -u && echo "=== sessions by recency (top 15 touched) ===" && .venv/bin/python - << 'PYEOF' import os, js; …(+5 more)
 
