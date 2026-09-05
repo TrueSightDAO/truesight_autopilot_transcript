@@ -10,117 +10,12 @@
 
 ### 🧑 Governor
 
-[CONTEXT SUMMARY — turns 1–3 compacted, full history in transcript repo]:
-Turn — [CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
-Turn — [TURN DIRECTIVE] You have opened or mer:
-• `list_directory`, `ssh run` ×8 → located d23cc94…HEIC/jpg; grok key absent locally; EXIF verified (iPhone 12 Pro Max, 13:29:07 local, GPS -3.630242/-53.652017 alt 180.7); matched to zip listing `IMG_8277.HEIC` (2,086,477 B, 16:29 UTC); sha256 21728b50… matches extracted original exactly; GPS inside plot hull ✅
-
-Turn — [Telegram context: chat_id=-1003919341801, thread_id=21534] Can you use this to generate a FDA site visit report?:
-• `ssh run` ×5 → echo "=== fda_fsvp repo tree ==="; curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" | python3 -c " im; echo "=== suppliers tree (rest) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" | python3 -c "; mkdir -p /tmp/fsvp_examples && cd /tmp/fsvp_examples && curl -sL -o santa_anna_20260830.pdf "https://raw.githubusercontent.com/TrueSightDAO/; …(+2 more)
-
----
-
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-Also this as an inspection of their existing cacao trees
-
-[Attachment auto-processed: **1ede6a6c52424b17b781dffe8c00c49b.jpg**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-Gary's sending a second evidence photo — this one shows an inspection of the existing cacao trees (Facility A — the grove). Let me locate it, pull its EXIF (GPS/date), and check whether it matches an original from the site-walk zip like IMG_8277 did.
-[1 tool result(s) compacted: list_directory — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The new file is `/tmp/tg_attachments/1ede6a6c52424b17b781dffe8c00c49b.jpg` (332,843 bytes). Let me pull its EXIF (GPS/date/device) and visually inspect it via OCR (even though the processor found no text, I want to confirm scene context):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-No EXIF on this one — Telegram stripped it (1280×960 re-encode). Unlike IMG_8277 I can't read GPS/date directly. Let me try to identify which original site-walk photo this is (perceptual hash vs the extracted originals) so I can recover the GPS/timestamp from the matching original:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The originals are all HEIC. To match the Telegram-re-encoded JPG (no EXIF) to its original, I'll compute perceptual hashes — comparing the uploaded image against downscaled versions of every HEIC original:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both libs ready. Now computing perceptual hashes to identify which original matches the uploaded tree photo:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-phash is inconclusive (closest 22 is too far for a confident match — likely heavy re-encode). Let me check the shop media.json captions to see which IMG numbers were captioned as showing the cacao grove/trees, then match against those specifically:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Empty — media.json structure differs. Let me look at the raw file:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The gallery JSON has captions. Let me get the full picture of which images have which captions — especially the ones that show cacao trees:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-None of the site-walk photos on the farm page are captioned as "cacao trees" — Gary says this new photo is "an inspection of their existing cacao trees." Let me actually look at the image to see the trees, since OCR found no text (it's a scene photo). Let me check what vision capability exists — the earlier session established no Grok key on this box, so let me verify the image's visual content via a perceptual comparison against a few likely originals, and examine the .raw.json sidecars (which may carry per-photo vision descriptions from the media pipeline):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The manifest confirms the HEICs were never archived (only 14 MOVs) — no stored vision descriptions for the photos. The uploaded JPG (1280×960, 4:3 landscape) is a Telegram re-encode with EXIF stripped, so to recover GPS/time I need a confident match to an original HEIC. The single phash wasn't conclusive — let me run a multi-hash consensus (dhash + ahash + color histogram) to narrow it down:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I've hit the limit of what I can recover automatically from this one — let me be straight about it:
-
-**What I know:**
-- `/tmp/tg_attachments/1ede6a6c52424b17b781dffe8c00c49b.jpg` (332 KB, 1280×960) — **no EXIF** (Telegram stripped it), so no GPS/date embedded, unlike IMG_8277
-- It's a landscape 4:3 photo → its original is a landscape HEIC from the 03-Sep site walk (portrait originals can't produce a 1280×960 landscape re-encode)
-- I ran a 3-hash consensus + color-histogram comparison against all 22 original HEICs in `~/raimundo_geniza/` — **IMG_8256** ranks closest, but the distances are too high for a confident match (heavy Telegram re-compression defeats fingerprinting)
-
-**I won't guess** which original it is on a compliance document — that's exactly the kind of invented detail `SITE_VISIT_PROCESS.md` forbids.
-
-**What I need from you (10 seconds):** which IMG number is this on your phone? (e.g. IMG_8256, IMG_8272…) — then I'll pull the GPS/time from that original HEIC and embed it properly.
-
-Meanwhile, here's how I'll fold it into the report either way:
-
-| Facility | Evidence | Caption (your words) |
-|---|---|---|
-| **A — Cacao Farm (grove)** | this photo | *"Inspection of their existing cacao trees"* — Sítio Raimundo & Geniza |
-| **B — Fermentation** | IMG_8277 | drying & fermentation station |
-| **C — Drying** | IMG_8277 | drying & fermentation station |
-
-If you'd rather not look it up: just say **"same site walk / same plot"** and I'll geo-reference it to U-06-07 (plot-level coordinates, noted as site-level not photo-level EXIF) — that's defensible as long as the report says so explicitly.
-
-Which do you prefer — the IMG number, or plot-level geo-reference?
-
-———
-**✅ Done this turn — actions taken:**
+[CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
+Turn — [CONTEXT SUMMARY — turns 1–3 compacted, full history in transcript repo]:
+Turn — [CONTEXT SUMMARY — turns 1–2 compacted,:
 • `ssh run` ×9 → cd /tmp/tg_attachments && python3 <<'PYEOF' from PIL import Image from PIL.ExifTags import TAGS, GPSTAGS import hashlib, os f = "1ede6a6c524; ls -la ~/raimundo_geniza/ 2>/dev/null | head -40; echo "=== count ==="; ls ~/raimundo_geniza/ 2>/dev/null | wc -l; echo "=== find HEIC/JPG =; python3 -c "import pillow_heif; print('pillow_heif OK')" 2>/dev/null || pip install -q pillow_heif 2>&1 | tail -1; python3 -c "import imageh; …(+4 more)
 
-
-### 🧑 Governor
+---
 
 [Telegram context: chat_id=-1003919341801, thread_id=21534] Hey, can you make sure they have the FBA FSBP site? The notification document follows the themes that we have, the stouting theme. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
 
@@ -420,11 +315,13 @@ Signature embedded (342×165 = exact same asset as Santa Anna). It defaulted to 
 ### 🤖 Autopilot
 
 x0=62.7 ≈ 6pt inside the 56.7pt margin (default flowable indent) — visually flush-left with the text, matching Santa Anna's layout. Let me do a quick visual sanity check of the rendered signature region, then send:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The signature region renders with real ink (dark pixels present, mean 248 = mostly white with signature strokes). Sending the signed v3 to Gary:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -481,46 +378,55 @@ S P oF ae J oS cA eee
 ### 🤖 Autopilot
 
 Gary sent another original HEIC from the site walk — GPS **-3.630328, -53.652011** (alt 181.1 m), captured **2026-09-03 14:41:58 UTC** (= 11:41:58 local). Let me locate the file and match it against the site-walk originals to identify its IMG number:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No zip candidate at 14:41:58 UTC exactly. Let me widen — search by byte-size match (2,457,171) and by nearby timestamps (allowing local/UTC ±3h ambiguity):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 **Definitive match: this is IMG_8236** — byte-size identical (2,457,171) and timestamp-aligned (zip 11:41:58 local = 14:41:58 UTC reported). Let me verify with sha256 against the zip original and pull its archive record:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 sha256 confirms: **this upload IS IMG_8236** — byte-identical to the site-walk original. Let me check the media archive manifest + repo to see if IMG_8236 is already archived (and whether the archive sidecar lives in the repo, not local):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the actual manifest file content from the repo — it should hold the HEIC archive records (the local copy is empty):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 sha256 match is definitive. Let me look more carefully at the image content — OCR caught *something* at 23.8% ("S P oF ae J oS cA eee"), which suggests text/document content. Let me run enhanced OCR passes and check GPS against the plot hull:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The upscale OCR timed out. Let me run lighter passes with shorter individual commands:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Full-res 4032×3024 photo, OCR empty in 30s (noise-level text at best). Let me try downscaled + psm variants quickly to see if there's real text content (sign/placard/bag label), since the auto-extract caught *some* pattern:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 OCR is effectively noise (no legible text). Let me get a proper **visual** read of the scene using available vision — the processor's OCR confidence was 23.8% meaning there IS some texture; but more usefully, let me compare this photo against the known site-walk originals to place it in the visit sequence (IMG_8236 was captured 11:41:58 local — right in the middle of the fermentation/drying video run 11:41–11:46, between IMG_8235.MOV and IMG_8237.MOV), and check the GPS position relative to the drying station:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -528,11 +434,13 @@ OCR is effectively noise (no legible text). Let me get a proper **visual** read 
 Key finding: **IMG_8236 sits 9.6 m from IMG_8277** — the drying/fermentation station. Its timestamp (11:41:58) slots it between IMG_8235.MOV (11:41:12) and IMG_8237.MOV (11:42:02) — i.e. the middle of the fermentation-video sequence. So this is almost certainly another **drying/fermentation station photo**, same spot as IMG_8277, taken ~1h47m earlier in the morning visit.
 
 Let me append this finding to the transcript and send Gary the key facts + ask how he wants it used (the report already has IMG_8277 in Facility B/C — do you want IMG_8236 added too?):
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The transcript tool needs the session hash, not the thread key. Let me find the right session id from the earlier successful append and retry:
+[1 tool result(s) compacted: append_to_transcript — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -671,4 +579,181 @@ Ready to **file** when you say go: commit PDF to `fda_fsvp/suppliers/cepotx/2026
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /tmp && ls -la CEPOTX_site_visit*.pdf *.py 2>/dev/null | head -20; echo "---build scripts---"; ls -la /tmp/*.py 2>/dev/null | head; ls -l; cd /tmp && sed -n '120,260p' build_site_visit_v3.py; cd /tmp/tg_attachments && python3 <<'PYEOF' from PIL import Image from PIL.ExifTags import TAGS, GPSTAGS f = "b1fed20b7dc24811812bda4be15623; …(+6 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21534] Reference the format of the information of this document 
+
+https://github.com/TrueSightDAO/fda_fsvp/blob/main/suppliers/cepotx/20240702_CEPOTX_site_visit_to_cleide_farm.pdf
+
+
+### 🤖 Autopilot
+
+Gary wants my report to follow the format of the earlier Cleide farm site-visit PDF. Let me fetch that reference document and study its structure:
+
+
+### 🤖 Autopilot
+
+The Cleide reference gives me the exact house format. Let me study its layout deeper — fonts, images, whether photos are embedded, and check what other CEPOTX site-visit PDFs exist so I match the canonical structure:
+
+
+### 🤖 Autopilot
+
+Now I understand the canonical Cleide format. It's a **Google Docs–exported PDF** (US Letter 612×792, Arial, photo-heavy with embedded WhatsApp-style phone photos) with this exact structure:
+
+1. **Title**: "CEPOTX site visit [date]"
+2. **Intro**: "This document established record for FSVP compliance requirements of our site visit to CEPOTX facility"
+3. **Supplier and visit dates** section — bullets: Supplier name visited, Site name, Site code, Date
+4. **Facilities visited** — bullets: count + type per facility
+5. **Per-facility sections** (A/B/C), each with:
+   - Facility header
+   - **Geo location** bullets (Latitude, Longitude, Google Map link)
+   - **Observations** table: Visual Observation | Remarks
+   - Embedded photo(s)
+6. **Closing**: "Sincerely, Zhiwen Teh, President, TrueTech Inc (EIN), admin@, phone" — **signature as text, no image**
+
+The images appear to be photos embedded via Google Docs — small phone-camera images placed through the document. Let me check the other existing CEPOTX site visits (Santa Anna was 7 pages — let me look at how closely my current report already matches, and whether Santa Anna uses the same Cleide structure or my v3 report structure):
+
+
+### 🤖 Autopilot
+
+Let me get the **full** Cleide text (all pages complete — the earlier cut truncated) to replicate its exact information format, and check whether p7's images include a signature image:
+
+
+### 🤖 Autopilot
+
+The Cleide reference is now fully clear — it's the **canonical house format**. Let me note its exact information structure and check what transcription tooling exists on the box (the walk videos likely carry narration that would fill the remark cells with real content, like Cleide has):
+
+
+### 🤖 Autopilot
+
+The Cleide PDF is the house template. Let me check the most recent 2026 report (Santa Anna) to see whether it follows the same info structure — that tells me exactly what "the format" is for current reports — and list the fda_fsvp repo contents for any template files:
+
+
+### 🤖 Autopilot
+
+The Cleide PDF is the canonical house format — and my current report (modeled on Santa Anna's newer layout) doesn't follow it. The Cleide structure is:
+
+- **Title**: "CEPOTX site visit [date]"
+- **Intro**: "This document established record for FSVP compliance requirements…"
+- **Supplier and visit dates** — bullets: Supplier name visited / Site name / Site code / Date
+- **Facilities visited** — bullets: 1 farm, 1 fermentation facility, 1 drying facility
+- **Per facility (A/B/C)**: Geo location (Latitude / Longitude / Google Map link) → Observations table (Visual Observation | Remarks) with **the farm's actual practice statements** → embedded photos
+- **Closing**: Sincerely / Zhiwen Teh / President / TrueTech Inc (EIN) / admin@ / phone
+
+Key difference from my v4: Cleide's remark cells contain real supplier practice statements (harvest technique, insect control, fermentation controls, drying schedule), and photos are embedded per facility. Let me check whether the media/entity records hold that practice info before I restructure:
+
+
+### 🤖 Autopilot
+
+Let me read the actual entity.json contents and test whether the videos carry narration worth mining for the remark cells:
+
+
+### 🤖 Autopilot
+
+**Key discovery!** The videos carry the farm's actual practice narration in Portuguese. IMG_8235 says: *"Fermentação. Estação de sol."* ("Fermentation. Sun station.") — this is the record basis that lets me fill the remark cells with real content, exactly like the Cleide format does.
+
+Let me transcribe all 14 walk videos to capture the practice statements:
+
+
+### 🤖 Autopilot
+
+13 of 14 extracted (IMG_8242 missing from local dir — let me check what's there and transcribe all 13):
+
+
+### 🤖 Autopilot
+
+Whisper on CPU is slow. Let me run it in the background with a log and check later:
+
+
+### 🤖 Autopilot
+
+**This is gold.** The videos are narrated farm-history/practice records in Portuguese. IMG_8210 gives the farm history (father since 1980, Raimundo bought the sítio in 2001, planted 2002–2004, organic certification 2006), IMG_8206 explains the renovation with native forest species. Let me wait for the rest of the transcripts:
+
+
+### 🤖 Autopilot
+
+Progress — IMG_8237 narrates the fermentation structure ("I improved the structure to focus on quality cacao… I have that one, a barcaça similar to this…"). Let me wait for the rest (drying clips are the key ones for Facility C):
+
+
+### 🤖 Autopilot
+
+All 13 walk videos transcribed. This gives real, record-backed practice statements for the remark cells — exactly what the Cleide format's Observations tables need. Let me pull the full transcripts and confirm which photo originals I have on disk:
+
+
+### 🤖 Autopilot
+
+All 13 walk videos transcribed — real, on-site narration in Portuguese (farm history, varieties, fermentation barcaça, "estação de sol" sun station). That's exactly the record material the Cleide format's Observations/Remarks cells need.
+
+Let me verify the photo assets I'll embed per facility, then rebuild the document in the Cleide information format:
+
+
+### 🤖 Autopilot
+
+All evidence in hand. Now I'll rebuild in the **Cleide information format** — same section flow, hazard row names, and remark style, with remark cells filled from the actual walk-video narration (Raimundo's own recorded words, translated), plus the Saffron band per your earlier theme instruction. Writing v5:
+
+
+### 🤖 Autopilot
+
+The `img_flow` helper returns a list — I appended the list itself instead of iterating. Quick fix:
+
+
+### 🤖 Autopilot
+
+The replace didn't take effect (string mismatch). Let me find the actual img_flow call lines and fix them directly:
+
+
+### 🤖 Autopilot
+
+Line-based fix:
+
+
+### 🤖 Autopilot
+
+Built (7.83 MB — 3 full-resolution photos embedded). Let me verify the pages render in the Cleide format:
+
+
+### 🤖 Autopilot
+
+Let me check the flow — page 2 seems nearly empty (just the Facility A photo spilled over). Let me see the full page 1 and 2 layout:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+## Converging — here's where things stand
+
+**Task:** Rebuild the Raimundo & Geniza FSVP site-visit PDF to follow the **Cleide reference format** (`20240702_CEPOTX_site_visit_to_cleide_farm.pdf`).
+
+**What I found — the Cleide canonical format:**
+1. Title `"CEPOTX site visit 3rd September 2026"`
+2. Intro: *"This document established record for FSVP compliance requirements of our site visit to the CEPOTX facility…"*
+3. **Supplier and visit dates** — bullets (Supplier name visited / Site name / Site code / Date)
+4. **Facilities visited** — bullets (1 farm, 1 fermentation, 1 drying)
+5. **Per-facility A/B/C**: Geo location (Lat/Long/Google Maps) → Observations table (Visual Observation | Remarks) → embedded photo
+6. Closing: Sincerely / **Zhiwen Teh (signature image)** / President / TrueTech Inc (EIN) / admin@ / phone
+
+**Bonus discovery:** All 13 walk videos carry **Raimundo's own Portuguese narration** (farm history since 1980, organic cert 2006, fermentation barcaça upgrade, "estação de sol" sun station, renovation planting). I transcribed all 13 — so the Observations remark cells are now filled with **real record-backed content**, not `[PENDING]` placeholders.
+
+**Built:** `build_site_visit_v5_cleide.py` → **4-page PDF, 7.83 MB** at `/tmp/CEPOTX_site_visit_to_raimundo_geniza_farm.pdf`:
+- **p1** — full Cleide header + Supplier/visit dates + Facilities visited + Facility A (Cacao farm) observations
+- **p2** — ⚠️ layout wart: Facility A photo alone on the page (overflowed off p1)
+- **p3** — Facility B (Fermentation) observations + IMG_8277 photo (13:29:07, GPS verified)
+- **p4** — Facility C (Drying) observations + IMG_8236 sun-station photo (11:41:58, GPS verified) + signed closing
+
+**Still blocking / next steps:**
+1. **Polish layout** — the Facility A photo spilled onto its own near-empty page 2; shrink the embedded image width (~92mm → ~80mm) or let the table compress so Facility A photo lands on p1. Minor, ~1 tool call.
+2. **Send v5 to Gary for review** (not yet delivered).
+3. On approval: file PDF to `fda_fsvp/suppliers/cepotx/20260903_CEPOTX_site_visit_to_raimundo_geniza_farm.pdf`, update `entity.json` `source_documents`, open PR.
+
+**RESUME HERE** → Next turn: (1) `ssh_run` to shrink Facility A photo width in `build_site_visit_v5_cleide.py` + rebuild, (2) `send_telegram_attachment` of the v5 PDF to thread 21534, (3) await Gary's approval to file + PR.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×24 → cd /tmp/fsvp_examples && curl -sL -o cleide_20240702.pdf "https://raw.githubusercontent.com/TrueSightDAO/fda_fsvp/main/suppliers/cepotx/2024; cd /tmp/fsvp_examples && python3 <<'PYEOF' import fitz doc = fitz.open("cleide_20240702.pdf") print("pages:", len(doc), "| metadata:", {k:v ; cd /tmp/fsvp_examples && ls -la *.pdf; echo "---"; for f in santa_anna_20260830.pdf cleide_20240702.pdf; do echo "== $f =="; python3 -c " im; …(+21 more)
 
