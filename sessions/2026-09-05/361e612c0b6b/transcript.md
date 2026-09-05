@@ -4354,6 +4354,7 @@ Figure out how much contribution time was spent by you, myself and envoy
 ### 🤖 Autopilot
 
 Gary's explicit approval received — promoting beta to prod, and gathering evidence for the contribution-time calc in parallel:
+[3 tool result(s) compacted: sync_beta_to_prod, search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4486,4 +4487,99 @@ If I fire now, I risk **double-counting** Sophia/Gary time that another thread a
 **Question: were those already-filed events for THIS Fazenda Bom Sucesso thread, or for other work (Raimundo/Elizabeth)?** Say "they're for other work — go" and I'll file the three new ones (Sophia 300 / Gary 45 / Envoy 60). Or tell me what's already covered and I'll file only the delta.
 
 That's the only thing open — everything else on this thread is complete and live.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] probably the previous contribution was for another thread. If it is already filed for this thread then close out this case
+
+
+### 🤖 Autopilot
+
+Let me quickly check whether those description-less events (`_062`/`_064`/`_066`/`_070`) were filed for this thread, by searching for their bodies:
+
+
+### 🤖 Autopilot
+
+The evidence says those description-less events came from **other threads** (they're only in the advisory snapshot, not in this thread's records; the 14:31–15:20 window was before our prod deploy at 15:21, and this thread never filed contribution events). So per your call — they're for another thread — I'll file this thread's contributions now. Let me check for the dao_client CLI (the convention for AI-agent contributions) and submit:
+
+
+### 🤖 Autopilot
+
+dao_client checkouts exist. Let me check for the AI-agent contribution module + credentials to follow the convention:
+
+
+### 🤖 Autopilot
+
+The dao_client module exists. Let me read its usage + check how prior AI contributions were invoked (the convention doc said PR URLs + explicit body):
+
+
+### 🤖 Autopilot
+
+The module computes TDG from time automatically (`amount_and_tdg_from_time`) and takes PR/commit URLs as evidence. Let me see the exact CLI args and check whether the autopilot's own `submit_contribution` tool is the sanctioned path for Sophia's events (the advisory shows Sophia events submitted at `_038`/`_062`/`_064`/`_070` via the standard tool):
+
+
+### 🤖 Autopilot
+
+TDG is auto-computed by the DAO rubric (**100 TDG/hour** = minutes/60×100), so no separate rate approval is needed — that resolves the earlier blocker. Per the convention (OPERATING_INSTRUCTIONS §334 + DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md), AI-agent contributions go through `dao_client`. Let me dry-run all three submissions to validate payloads before firing:
+
+
+### 🤖 Autopilot
+
+Let me check the CLI entry point and run a dry-run for all three submissions (Sophia, Gary, Envoy):
+
+
+### 🤖 Autopilot
+
+Let me find the contribution CLI entry and run dry-runs for all three (Sophia 300, Gary 45, Envoy 60):
+
+
+### 🤖 Autopilot
+
+Both CLIs available. Let me dry-run the three contribution submissions (Sophia 300 min, Gary 45 min, Envoy 60 min) with PR evidence to validate payloads:
+
+
+### 🤖 Autopilot
+
+The dao_client needs Edgar auth (EMAIL/PUBLIC_KEY/PRIVATE_KEY) in its .env — it's not logged in on this box. The autopilot's own `submit_contribution` tool is already authenticated (it's how I filed the 10 tree events, and how the prior Sophia contributions `_062`/`_064`/`_070` were filed today). Given this box lacks dao_client auth and the established pattern on this autopilot is `submit_contribution`, let me verify the TDG rubric handling and file via the tool — checking conversation history for duplicates first (none — we've only filed trees/plots this thread):
+
+
+### 🤖 Autopilot
+
+Sophia's contribution filed ✅. Now Gary's (45 min admin time → 75 TDG):
+
+
+### 🤖 Autopilot
+
+Gary's filed ✅. Now Envoy's (60 min → 100 TDG):
+
+
+### 🤖 Autopilot
+
+**All three contributions filed successfully** ✅ — no double-count (the earlier description-less events today were other threads' work, per your read).
+
+## Summary of this case
+
+**All work complete + live:**
+1. **Farm page in prod** — https://agroverse.shop/farms/fazenda-bom-sucesso/ (beta→prod sync, `deploy_20260905T152125Z`)
+2. **17 interview videos on YouTube** (public, deduped, transcripts as descriptions) + manifest committed to `farm_media_manifests`
+3. **8 curated videos embedded** in the page's media gallery + 10 tree photos
+4. Footer CSS fixed, shared JS comma-bug fixed, header/footer consistency test added — all merged
+
+**Contributions filed (online admin only, per your note):**
+
+| Contributor | Minutes | TDG | Evidence |
+|---|---|---|---|
+| **Sophia Truesight** | 300 | 500 | 6 agroverse PRs + catalog v4 deploy + YouTube pipeline + prod promotion |
+| **Gary Teh** | 45 | 75 | review/approvals + interview archive prep |
+| **Envoy TrueSight** | 60 | 100 | QA flags (broken styling, gallery), curation vote, verification |
+
+TDG auto-derived from the DAO rubric (100 TDG/hour = minutes/60×100). All three returned "submitted successfully."
+
+**One note:** I filed via `submit_contribution` (the autopilot's authenticated tool — same as the earlier Sophia events today) rather than the dao_client CLI, because the dao_client checkout on this box has no Edgar auth initialized. If you'd prefer these recorded strictly via dao_client, I can re-file that way — but that would double-submit, so I'd need to invalidate these three first. Otherwise — **this case is closed.** Anything else on this thread?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /opt/truesight_autopilot/context 2>/dev/null; echo "=== search all context + repo caches for those event IDs (what thread filed them) ===; echo "=== find dao_client checkout on this box ==="; find /home /opt /tmp -maxdepth 3 -iname "*dao_client*" 2>/dev/null | head -5; ls /opt/t; cd /home/ubuntu/dao_protocol/truesight_dao_client 2>/dev/null && echo "=== structure ===" && ls modules/ 2>/dev/null | grep -iE "contributio; …(+6 more)
+• `submit contribution` ×3 → Contribution submitted successfully.
 
