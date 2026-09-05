@@ -4362,16 +4362,19 @@ Gary's explicit approval received — promoting beta to prod, and gathering evid
 **Prod promotion complete** — `agroverse.shop/farms/fazenda-bom-sucesso/` is now live (deploy ledger: `deploy_20260905T152125Z_agroverse-shop-prod`). ✅
 
 And the mystery name resolves: **"Envoy"** = the interactive Claude Code seat on `nelanco-claude` (@nelanco_claude_bot) — the "Nobody" observer who's been in this thread. Let me get Envoy's exact registered contributor identity + check how prior agent contributions were logged:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Prod promotion done ✅. Now let me nail the contribution amounts. "Envoy" = Envoy TrueSight (the interactive Claude seat on nelanco-claude, @nelanco_claude_bot — the "Nobody" observer in this thread). Let me check contribution-logging conventions (how agent/contributor time is normally valued) before computing:
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the actual contribution ledger conventions — how prior agent/contributor time was logged (amounts, TDG rates) — checking the contributors ledger and past events:
+[2 tool result(s) compacted: read_google_sheet, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4417,26 +4420,31 @@ Say "go with those + <TDG rate>" and I'll fire all three `[CONTRIBUTION EVENT]`s
 ### 🤖 Autopilot
 
 Gary's clarified — contributions are for the online administrative work only; his physical field time is already accounted for. Let me get the exact CONTRIBUTION EVENT schema and check how prior events handled the TDG field:
+[2 tool result(s) compacted: lookup_event_docs, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The snapshot reveals **prior contribution events already logged today (Sep 5)** — some possibly overlapping this session's work (e.g. `_060` 420 min "HEIC/GPS extraction fix Sep 3–5"). I must avoid double-counting. Let me read the correct submission procedure (OPERATING_INSTRUCTIONS says use dao_client CLI, not submit_contribution) and check what's on the box:
+[2 tool result(s) compacted: read_context_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The snapshot shows **contribution events logged just minutes ago** (Sep 5, 13:54–15:20) — I must read their full descriptions to see which cover this Fazenda Bom Sucesso work before firing anything, or I'll double-count. Let me read the snapshot detail + the AI-contribution convention doc:
+[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The snapshot shows **several contribution events filed TODAY (Sep 5, 14:31–15:20) with no descriptions** (`_062` Sophia 30, `_064` Sophia 60, `_066` Gary 30, `_070` Sophia 75) — these could already cover this thread's work. I must read their full bodies before submitting anything, or I'll double-count. Let me query Edgar:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The API shape is different. Let me try the submissions endpoint differently to read the event bodies:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -4582,4 +4590,32 @@ TDG auto-derived from the DAO rubric (100 TDG/hour = minutes/60×100). All three
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /opt/truesight_autopilot/context 2>/dev/null; echo "=== search all context + repo caches for those event IDs (what thread filed them) ===; echo "=== find dao_client checkout on this box ==="; find /home /opt /tmp -maxdepth 3 -iname "*dao_client*" 2>/dev/null | head -5; ls /opt/t; cd /home/ubuntu/dao_protocol/truesight_dao_client 2>/dev/null && echo "=== structure ===" && ls modules/ 2>/dev/null | grep -iE "contributio; …(+6 more)
 • `submit contribution` ×3 → Contribution submitted successfully.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20065] close out this case
+
+
+### 🤖 Autopilot
+
+Closing out the case — the Fazenda Bom Sucesso work is complete (page live in prod, videos uploaded + embedded, contributions filed):
+
+
+### 🤖 Autopilot
+
+**Case closed.** ✅
+
+The topic has been closed and deleted (transcript preserved for future recall). Final state of the Fazenda Bom Sucesso arc:
+
+| Item | Status |
+|---|---|
+| Farm page live | ✅ https://agroverse.shop/farms/fazenda-bom-sucesso/ |
+| 17 interview videos on YouTube | ✅ public, deduped, transcript descriptions |
+| Manifest committed | ✅ `farm_media_manifests/farms/fazenda-bom-sucesso.json` |
+| 8 curated videos embedded + 10 tree photos | ✅ media gallery |
+| Footer CSS + shared JS comma fix + tests | ✅ merged (PRs #275/#277/#280) |
+| Contributions filed | ✅ Sophia 300m/500 TDG · Gary 45m/75 TDG · Envoy 60m/100 TDG |
+
+All deliverables done and verified — nothing left open on this thread. If anything else comes up on Bom Sucesso (harvest shipments, follow-up planting days, page updates), a fresh thread will pick it up cleanly.
 
