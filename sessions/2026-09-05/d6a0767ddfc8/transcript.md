@@ -10,97 +10,12 @@
 
 ### 🧑 Governor
 
-[CONTEXT SUMMARY — turns 1–4 compacted, full history in transcript repo]:
-Turn — [Telegram context: chat_id=-1003919341801, thread_id=21005] Analyze the media package ~/santa_anna_fazenda.zip let me kn:
-• `ssh run` ×14 → ls -la ~/santa_anna_fazenda.zip && unzip -l ~/santa_anna_fazenda.zip | head -100; unzip -l ~/santa_anna_fazenda.zip | grep -v __MACOSX | awk '{print $1, $4}' | tail -60 && echo "---- total files (excl macosx) ----" && unzi; mkdir -p ~/santa_anna_work && cd ~/santa_anna_work && unzip -o -q ~/santa_anna_fazenda.zip -x '__MACOSX/*' && ls -la | head -60 && echo "---; …(+11 more)
-
-Turn — [Telegram context: chat_id=-1003919341801, thread_id=21005] Oppss... These is for Fazenda Santa Rosa, it is a new farm.:
-• `ssh run` ×2 → echo "=== zips in home ==="; ls -la ~/*.zip 2>/dev/null; echo "=== any santa/rosa dirs ==="; find ~ -maxdepth 3 \( -iname "*rosa*" -o -iname; echo "=== any zip in tg_attachments ==="; find /tmp/tg_attachments -iname "*.zip" -newermt "2026-09-03" 2>/dev/null; ls -la /tmp/tg_attachme
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=21005] this is the zip file ~/fazenda_santa_rosa.zip
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=21005] status?
-
-
-### 🤖 Autopilot
-
-Checking the box for the Santa Rosa package now.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The correct package is on the box: **`~/fazenda_santa_rosa.zip`** — 847 MB, ~55 media files (IMG_8281–IMG_8341: 33 MOV + 15 HEIC + 7 PNG screenshots). Extracting and running the Step 0 gate now.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Extracted. This is a **different site** — GPS cloud ~**-3.6338…-3.6363 / -53.6677…-53.6706** (well south-west of Santa Anna's -3.29/-52.57). Now the Step-0 registry-overlap gate: checking the SunMint registry, existing manifests, and farm indexes for any "Santa Rosa" record, plus grabbing GPS off the HEICs (PIL can't read HEIC — using exiftool) and reading the PNG screenshots.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Step 0 gate result is clean — **no "Santa Rosa" anywhere** in the registry. Let me OCR the 7 screenshot PNGs (the conversation evidence) and map the full GPS cloud.
-[3 tool result(s) compacted: ssh_run, ocr_image, ocr_image — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Step 0 gate is **clean** — no Santa Rosa anywhere in the registry (plots index, farms index, manifests, farm-media-raw all checked). GPS cloud is tight: ~**-3.6338…-3.6363 / -53.6677…-53.6706** (49 of 56 files GPS-bearing). Screenshots are WhatsApp conversations in PT. Let me OCR the remaining 5 screenshots for the full conversation.
-[5 tool result(s) compacted: ocr_image, ocr_image, ocr_image, ocr_image, ocr_image — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Step 0 gate **clean** — "Santa Rosa" appears nowhere in the registry. Package verified as genuinely new. Let me do one sharper OCR pass on the screenshots to pull names/details, since the conversations are the identity evidence.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-## Status — Fazenda Santa Rosa onboarding
-
-**Received & verified** ✅ `~/fazenda_santa_rosa.zip` (847 MB, extracted to `~/santa_rosa_work/`)
-
-**Step 0 registry gate — CLEAN** (checked plots index, farms index, manifests repo, farm-media-raw): no "Santa Rosa" anywhere. This is genuinely new; no collision with Santa Anna, Rancho Maranta, Cleide, etc.
-
-**Package contents (56 files):**
-
-| Type | Count | Notes |
-|---|---|---|
-| MOV | 33 | farm walk footage (IMG_8281–8340) |
-| HEIC | 16 | photos (IMG_8282–8341) |
-| PNG | 7 | **WhatsApp conversation screenshots** (1125×2436) |
-
-**GPS intake** — 49/56 files carry coordinates; tight cloud **-3.6338…-3.6363 / -53.6677…-53.6706** (Δ~250 m), south of Altamira toward the Uruará/Transamazônica corridor — distinct site from Santa Anna. Good walk track for a plot hull.
-
-**Conversation transcription (the 7 PNGs, PT → EN)** — a farmer describing Santa Rosa to the field person:
-- *"Fazenda Santa Rosa"* (name confirmed in-chat)
-- **~30 ha total, "com cerca de cacau dentro"** — ~30 ha with cacao planted
-- *"A fazenda era maior mas ele dividiu entre os filhos"* — farm was bigger, divided among the children
-- *"começou essa organização deles em 2005"* — (the coop/org) started 2005
-- *"40 anos"* / *"se um dia a cooperativa acabar, ele vai ser o último…"* — loyalty line; ~40 years of something (OCR partial on a couple bubbles — screenshots show only the *translated* overlay text, low-res)
-
-**What I still need before registration (Step 0 — never invent identities):**
-1. **Owner name** — the screenshots don't reveal who owns Santa Rosa. Who is it? (If it's the same farmer family as a known CEPOTX member — Raimundo/Jedielcio/Paulo context — say so and I'll link correctly.)
-2. Confirm **region label** — GPS says Uruará/Transamazônica corridor (Pará); you may know the municipality better than I can infer.
-
-**Ready to proceed once you confirm:** I'll (a) extract the 30-ha story + hull from the walk, (b) transcribe the full conversation into the archive, (c) register plot + farm per the SOP, (d) build the page from the `rancho-maranta-para` template, and (e) stage on beta for your review. **Prod sync only on your explicit go.**
-
-Owner name + region? Then I move.
-
-———
-**✅ Done this turn — actions taken:**
+[CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
+Turn — [CONTEXT SUMMARY — turns 1–4 compacted, full history in transcript repo]:
+Turn — [Telegram context: chat_id=-10039193418:
 • `ssh run` ×6 → ls -la ~/fazenda_santa_rosa.zip 2>/dev/null && echo "=== listing ===" && unzip -l ~/fazenda_santa_rosa.zip 2>/dev/null | grep -v __MACOSX | ; cd ~ && rm -rf santa_rosa_work && mkdir -p santa_rosa_work && cd santa_rosa_work && unzip -o -q ~/fazenda_santa_rosa.zip -x '__MACOSX/*' 2>&; cd ~/santa_rosa_work && echo "=== HEIC + PNG GPS via exiftool ==="; for f in *.HEIC *.heic *.PNG *.png; do [ -f "$f" ] || continue; g=$(exif; …(+3 more)
 
-
-### 🧑 Governor
+---
 
 [Telegram context: chat_id=-1003919341801, thread_id=21005] I think there is a photo indicating Antonio somehwere? Also didnt Jedielcio mention something like artistic or something can you pull the name from it?
 
@@ -527,4 +442,61 @@ Per the runbook I won't decode the letter prefix or derive anything — just rec
 | Surname | TBD later (like "Raimundo & Geniza", no surname needed to register) | ⏳ optional |
 
 Nothing left open. **GO?** — on your word I execute the SOP sequence: SunMint Plots row → geojson + farms index push → on-chain plot event → media archive (33 MOV → YouTube daemon, HEICs → farm-media-raw) → farm page clone on **beta** for your review. Prod sync only on a separate explicit go.
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=21005] I think there really is only one fazenda Santa Rosa
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=21005] [Handoff context — this Telegram topic (thread 21005) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+A redeploy happened a bit ago and likely killed your in-flight turn (confirmed - service is healthy now). Resuming - continue from wherever you left off, or report status.
+
+
+### 🤖 Autopilot
+
+Understood — that's an important data point before I register anything. Let me pull exactly what our records say about "Dona Rosa"/DR-P1 vs this "Santa Rosa" package before drawing a conclusion. Checking the backlog entry, the registry record, and any plan file for this thread in parallel:
+
+
+### 🤖 Autopilot
+
+Let me read the full Dona Rosa backlog entry — it may clarify whether that item is actually *this* farm under a garbled name (which would explain your "only one" point).
+
+
+### 🤖 Autopilot
+
+Good flag to check before I register anything — let me verify what "Santa Rosa" vs "Dona Rosa" actually exist on the box and in the registries, so we don't create or duplicate the wrong thing. Checking in parallel:
+
+
+### 🤖 Autopilot
+
+Confirmed — and the evidence agrees with you. I checked the box and the two packages are unambiguously **distinct farms**; there is exactly one **Fazenda Santa Rosa** (this one), and it is **not** the Dona Rosa backlog item:
+
+| | **Fazenda Santa Rosa** (this thread) | Fazenda Dona Rosa (backlog DR-P1) |
+|---|---|---|
+| Zip | `fazenda_santa_rosa.zip` (847 MB) | `fazenda_dona_rosa.zip` (763 MB) |
+| Photo range | IMG_8281–8341 | IMG_8501–8564 |
+| GPS cloud | −3.6338…−3.6363 / −53.6677…−53.6706 | −3.4892…−3.4894 / −52.9665…−52.9673 |
+| Municipality | **Uruará** (Transamazônica, ~2 km from RG-P1) | **Medicilândia** (~150 km away) |
+| Owner | **Antônio & Graça** | Rosa Wronscki |
+| Sub-coop | **COPOPS** (same as Raimundo & Geniza) | **COOPOXIN** (same as Cleide) |
+| Site code | **U-06-06** (you, today) | B-06 family (Cleide B-06-108) |
+| Registry state | not yet registered → propose **SR-P1** | DR-P1 already filed, separate pending item |
+
+So no conflation: my earlier "name-collision" note was just flagging that a `fazenda-dona-rosa` record exists under a *similar-sounding* name — but it's a different farm, different owner, different co-op, 150 km away. **Santa Rosa (Antônio & Graça, COPOPS, Uruará) is unique and clear to register as its own plot `SR-P1`.**
+
+All identity fields locked:
+- Farm: **Fazenda Santa Rosa** · Plot: **SR-P1** · farm_id: `fazenda-santa-rosa-para`
+- Owner: **Antônio & Graça** · Coop: CEPOTX → **COPOPS** · Site code: **U-06-06**
+- Region: Uruara, Para · Hull: ~4.75 ha (37 GPS pts) · Status: proposed / approx
+
+**GO?** On your word I run the SOP: SunMint Plots row → geojson + farms index push → on-chain plot event → media archive (33 MOV → daemon, HEICs → raw) → farm page on **beta** for review. Prod sync only on separate explicit go.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== zips on box ==="; ls -la ~/*.zip 2>/dev/null; echo; for z in ~/*.zip; do [ -f "$z" ] || continue; echo "=== $z ==="; unzip -l "$z"; echo "=== media_archive_inbox farm dirs ==="; ls -la ~/media_archive_inbox/farm-media/ 2>/dev/null; ls ~/farm-media-raw 2>/dev/null; echo "=
 
