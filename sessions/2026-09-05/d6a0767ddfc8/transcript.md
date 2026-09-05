@@ -10,80 +10,12 @@
 
 ### 🧑 Governor
 
-[CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
+[CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
 Turn — [CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
-Turn — [CONTEXT SUMMARY — turns 1–1 compacted,:
-• `ssh run` ×17 → echo "=== conversion log tail ==="; tail -8 /tmp/sr_convert.log 2>/dev/null; echo "=== mp4 count ==="; ls ~/media_archive_inbox/farm-media/f; echo "=== candidate hero images (couple photo from earlier session) ==="; find /tmp/tg_attachments /home/ubuntu/santa_rosa_work /home/ubuntu; echo "=== identify recent attachment images (dimensions + quick ocr/gps) ==="; cd /tmp/tg_attachments && for f in 1ede6a6c52424b17b781dffe8c; …(+14 more)
-• `merge pr` → ✅ PR #287 on agroverse_shop_beta merged successfully (sha: 1056c452b4c68a2b504f718c94dfac74f1793d51). Pull Request successfully merged
-
-Turn — [Telegram context: chat_id=-1003919341801, thread_id=21005] [Handoff context — this Telegram topic (thread 21005) may be:
-• `ssh run` ×14 → echo "=== conversion log tail ==="; tail -6 /tmp/sr_convert.log 2>/dev/null; echo "=== mp4 count (expect 31) ==="; ls ~/media_archive_inbox/; echo "=== daemon config (inbox entries + sidecar hints) ==="; sed -n '1,80p' /opt/truesight_autopilot/media_archive_daemon_config.yaml; echo; echo "=== Dona Rosa sidecar example ==="; cat ~/media_archive_inbox/farm-media/fazenda-dona-rosa/IMG_8501.mp4.json 2>/dev/null; echo; echo "; …(+11 more)
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=21005] [Handoff context — this Telegram topic (thread 21005) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-[emoji-go: 👍 from user 2102593402] go for it — original resume text: **Archive worker complete for SR**: all **49 originals** (18 HEIC + 31 MOV) archived to S3 `media.agroverse.shop/raw/fazenda-santa-rosa/` with raw_urls; 31 previews generated. That's the raw-media arc
-
-
-### 🤖 Autopilot
-
-👍 GO received — finishing §3b (verify 31/31 converted + uploaded) and then the YouTube gallery PR. Checking conversion/upload state first:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Conversion is at 20/31 with **all 20 uploaded** (daemon is keeping pace perfectly — no errors). ffmpeg still churning through the last 11. Let me check conversion progress + whether the process is still alive:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Interesting — ffmpeg is on IMG_8316 (already done per the mp4 list), and the log tail shows up to IMG_8314 but not IMG_8316 yet. Wait — the mp4s present go 8281→8316 (20 files), and the convert log shows DONE through 8314. So IMG_8315 may be missing or the list shows 8316 done while log hasn't logged it. Let me look more carefully — the ffmpeg process command shows IMG_8316.mp4 as its **output** arg, meaning it's converting IMG_8316's source now or finished it. Let me check which MOVs remain unconverted (31 source - 20 done = 11 left) and whether the convert loop is still alive:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Conversion is healthy: `/tmp/convert_sr.sh` alive (since 19:37), IMG_8316 in progress, 11 MOVs remaining (8317/8320/8322–24/8326/8333/8335–37/8340). ~10–15 min to finish at ~1/min. Rather than idle, let me run a bounded wait-poll (up to ~4 min) to squeeze progress, then converge:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Progress: **24/31 mp4** (7 left), 20 uploaded. Conversion is ~3-4 min per video at this point (larger files) — 7 remaining ≈ 20-25 min. Uploads are slightly behind (24 converted, 20 uploaded — daemon catching up). This is genuinely long-running; I shouldn't burn the whole turn polling. Let me land a clean status with a resume pointer, and set expectations accurately.
-
-## SR-P1 SOP §3b — conversion/upload in progress (24/31)
-
-| Metric | Count |
-|---|---|
-| MP4 converted | **24/31** (7 left: 8317/8320/8322–24/8326/8333/8335–37/8340) |
-| Uploaded to YouTube (yt_id in sidecar) | **20/31** (all rc=0, no errors) |
-| Archive raw originals | ✅ 49/49 done earlier |
-
-Conversion script `/tmp/convert_sr.sh` alive, ~3–4 min/video on the remaining larger files → ~20–25 min to completion. Daemon auto-uploads each mp4 within ~30s of it landing (polling loop), so 31/31 uploaded should land shortly after conversion finishes. No errors anywhere.
-
-**No action needed right now** — everything runs unattended. Next natural check-in: when 31/31 mp4 + 31/31 yt_ids are present.
-
-## RESUME HERE → YouTube gallery PR (after 31/31)
-1. **Verify:** `cd ~/media_archive_inbox/farm-media/fazenda-santa-rosa && ls *.mp4 | wc -l` (expect 31) + `grep -l '"yt_id": "[A-Za-z0-9_-]' *.json | wc -l` (expect 31). Spot-check `/tmp/farm_media_daemon.log` tail for any `rc!=0`/errors — none seen so far.
-2. **Build YouTube gallery PR:** read all 31 sidecars → build `{type: youtube, videoId: <yt_id>, title, caption: "Fazenda Santa Rosa — IMG_xxxx (Uruará, Pará)"}` entries → insert into `farms/fazenda-santa-rosa-para/media.json` (repo `agroverse_shop_beta`, current file already has hero + 6 images). Curated subset vs all 31 — recommend **all 31** (they're short GPS-tagged clips; the Dona Rosa page precedent has all videos listed).
-3. **git_push_changes PR → merge** → re-verify `https://beta.agroverse.shop/farms/fazenda-santa-rosa-para/` renders with the video gallery.
-4. **Follow-ups (non-blocking):** FARM_SLUG mapping (impact-map popup), FSVP entity (legal name/CNPJ needed), prod sync on your go.
-
-**Open for you:** nothing blocking. Conversion completes unattended in ~20–25 min; the gallery PR is the next unit once 31/31 land.
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [CONTEXT SUMMARY — turns 1–2 compacted,:
 • `ssh run` ×4 → cd ~/media_archive_inbox/farm-media/fazenda-santa-rosa && echo "mp4: $(ls *.mp4 2>/dev/null | wc -l)/31"; echo "uploaded(yt_id): …; for i in $(seq 1 12); do n=$(ls ~/media_archive_inbox/farm-media/fazenda-santa-rosa/*.mp4 2>/dev/null | wc -l); echo "[$i] mp4: $n/31"; [ "$n" -ge 25 ] && break; sleep 20; done; echo "=== final mp4 count ==="; ls ~/media_archive_inbox/farm-media/fazenda-santa-rosa/*.mp4 | wc -l; echo "=== uploaded ==="; grep -l '"yt_id": "[A-Za-z0-9_-]' ~/media_archive_inbox/farm-media/fazenda-santa-rosa/*.json 2>/dev/null | wc -l
 
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×4 → cd ~/media_archive_inbox/farm-media/fazenda-santa-rosa && echo "mp4: $(ls *.mp4 2>/dev/null | wc -l)/31"; echo "uploaded(yt_id): $(grep -l '; echo "=== ffmpeg running? ==="; ps aux | grep "ffmpeg.*fazenda-santa-rosa" | grep -v grep | awk '{print $NF}'; echo "=== sr_convert.log tail; echo "=== convert loop process alive? ==="; ps aux | grep -E "convert|sr_convert|bash.*santa" | grep -v grep | head -5; echo "=== MOV source; …(+1 more)
-
-
-### 🧑 Governor
+---
 
 [Telegram context: chat_id=-1003919341801, thread_id=21005] [Handoff context — this Telegram topic (thread 21005) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
 
@@ -519,26 +451,31 @@ Let me search this conversation's own history for where U-06-06 was first mentio
 ### 🤖 Autopilot
 
 The registry check raises a real question about U-06-06's provenance. Let me find where it was first introduced — checking the handoff manifest/plan:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me find the SR-P1 plan row in the manifest and confirm where U-06-06's provenance was recorded:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the final chunk of the registry (tail of COOPCAO + Related section) to be complete:
+[2 tool result(s) compacted: read_tool_result, read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me check the plan/manifest provenance for U-06-06 and what's actually registered in the sunmint indexes:
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The context-level search shows the registry doesn't mention SR. Let me check exactly what's recorded in the sunmint registry files (plots + farms index) for Santa Rosa before I respond:
+[1 tool result(s) compacted: list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -683,4 +620,16 @@ Status remains **reported/unverified** (no legal/FSVP use without CEPOTX/Jedielc
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` ×2 → ✅ PR #918 on agentic_ai_context merged successfully (sha: 3811f3e877c072f5f7f27c793cbdda21610753d4). Pull Request successfully merged; ✅ PR #14 on fda_fsvp merged successfully (sha: c5e40db82a372218151403ffbcd790b4b6cafd59). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21005] Just accept the legal name of the place as Antonio and Garcia. That is already there. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Understood — closing that follow-up. The name on record for Fazenda Santa Rosa is **Antônio & Graça**, and that's what's already written everywhere: the CEPOTX registry anchors (just merged in both copies), the sunmint plot record U-06-06, and the farm page. No further action needed — I won't keep flagging it as a gap. 
+
+The only genuinely open item left is the prod sync of the farm profile, which still awaits your go whenever you're ready.
 
