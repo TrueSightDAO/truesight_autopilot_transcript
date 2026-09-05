@@ -1129,6 +1129,7 @@ I'll keep reporting here as it drains.
 ### 🤖 Autopilot
 
 👍 received — resuming execution. The deploy unit is already done (worker live + draining), so the next unit in sequence is merging the docs-rename PR you asked me to create. Merging farm-media-daemon #13 now:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -1173,6 +1174,7 @@ Next unit (zip-streaming support — the biggest remaining gap for full raw cove
 ### 🤖 Autopilot
 
 Good question — and the honest answer is: **not reliably yet**. Let me verify what a future LLM would actually read when spinning up a new Sophia, so I'm not guessing:
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1393,4 +1395,54 @@ This complements the earlier "spin up a new Sophia" gap — together, a fresh So
 - Then manifest update pass (`raw_url`/`preview_url`/`captured_at`) → then Wave 1/Wave 2 deletion with your go
 
 Want me to continue with merging #913 and reconciling #908?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] [Handoff context — this Telegram topic (thread 19892) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Done. The rule is now codified for every future Sophia.
+
+## ✅ This turn
+
+**agentic_ai_context #913 opened** — `MAP: ZIP HANDLING RULE — all Sophias unpack zip contents and archive each file individual
+
+
+### 🤖 Autopilot
+
+👍 received — merging the ZIP HANDLING RULE doc PR first:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Merged agentic_ai_context #913** (sha `ab5f257`) — the universal **ZIP HANDLING RULE** is now on `main` of the runbook that every Sophia instance reads. It's codified in `MEDIA_ARCHIVE_PIPELINE.md` at the top of the pipeline section:
+
+- A zip is a **transport container, never an archive unit** — never uploaded as one blob
+- Open + iterate entries, extract each real media file individually (streamed, never whole-zip)
+- Skip `__MACOSX/` + `._` AppleDouble junk
+- Per file: sha256 → captured_at → preview frame → raw to S3 → preview (hot) → resume-safe marker
+- Delete originals/zips only after S3 + manifest verify + governor's explicit go
+- Reference implementation: `farm_media_archive.py` (zip-root streaming flagged as in-progress extension)
+
+This was the "make sure future processes handle zips like this for all Sophias" directive — now permanently in the MAP runbook for any future instance.
+
+## RESUME HERE →
+Next units, in order:
+1. **Merge agentic_ai_context #908** — but FIRST reconcile its previews row (it still says previews land in GitHub `farm-media-raw`; your decision was previews → S3 hot). Edit the PR's branch or fold the fix into the merge, then merge.
+2. **Build zip-root streaming** in `farm-media-daemon` `farm_media_archive.py` — per-file stream from the 17 zips (~998 media entries), skipping `__MACOSX`/`._` junk, sha256 dedupe, captured_at + preview per file → S3 `raw/<farm>/` + `previews/<farm>/`. Open PR → merge → deploy → service picks up zip roots.
+3. **Manifest update pass** — fold markers into per-farm manifests (`raw_url`/`preview_url`/`captured_at`/`sha256`) so GitHub is authoritative.
+4. **Deletion waves** — Wave 1 (extracted originals) + Wave 2 (zips) only after S3 + manifests verify, each with your explicit go.
+
+Archive-worker status: extracted-dir pass complete (374/374 archived + verified in S3); service `active` idle awaiting zip work.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #913 on agentic_ai_context merged successfully (sha: ab5f25715d3b7b214cc37231d9f3da16a7498634). Pull Request successfully merged
 
