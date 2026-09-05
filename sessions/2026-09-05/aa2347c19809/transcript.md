@@ -10,328 +10,14 @@
 
 ### 🧑 Governor
 
- You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram context: chat_id=-1003919341801, thread_id=21534] Can you check if there is a farm on record matching this?
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: list_directory, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me figure out what "this" refers to — checking the most recently uploaded attachments and what farm records we have on file.
-[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: ocr_image, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check this conversation's recent history and the recent images for context on what "this" refers to.
-[3 tool result(s) compacted: recall_context, ocr_image, ocr_image — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me look at the most recent image attachment more closely and check the session transcript for context about this thread.
-[2 tool result(s) compacted: search_transcript, read_local_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The question references "this" — likely an attachment or earlier context in this thread that got trimmed. Let me dig into what was recently shared in this thread and check for an attachment I may have missed.
-[3 tool result(s) compacted: search_transcript, recall_context, recall_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check the session transcript repo for this thread's recent context — there may be a voice note + image from Gary that got trimmed from my live context.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The current session may be mid-flight. Let me check the most recent transcript sessions for this thread's context, especially any image/voice that "this" refers to.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me find the session for this thread (21534) and see what context preceded this question.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The question likely refers to the image uploaded just before this message. Let me examine it more closely.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ocr_image — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The image OCR came back empty — likely a photo with no text. Let me check the transcript for this thread and analyze the image content.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The most recent upload in this thread is `9aed8c7280e7458f9f8af70a4192b3fd.jpg` (17:58) — OCR came back empty, so it's likely a photo without legible text. Let me try harder preprocessing to see if there's embedded text, and also check the farm registry sources in parallel.
-[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check the live session state on the box (this thread's session may not be flushed to the transcript repo yet) and review what images arrived right before this question.
-[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me locate the other recently-uploaded file and verify the Raimundo & Geniza farm record that surfaced in prior sessions.
-[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check the live session state for this thread and OCR the most recent attachment more aggressively.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me find which session file corresponds to thread 21534 (this thread) and read its recent context.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
-
-
-### 🤖 Autopilot
-
-## What I found
-
-I checked the SunMint plots registry (`sunmint/plots/index.geojson`), the farms index commits, and the session transcripts from the last two days. Based on the context around this thread (recent uploads: a registry screenshot fragment showing "Raimundo", plus field photos), **yes — there is a farm on record matching "this"**:
-
-**Sítio Raimundo & Geniza — plot RG-P1**
-- **Plot ID:** `RG-P1` · Registered 2026-09-04 as a **restoration plot** worked by Raimundo & Geniza (married couple)
-- **Location:** Altamira region, Pará — GPS hull around **-3.629756 / -53.652156** (confirmed as hull vertex #4 from iPhone HEIC originals in `~/raimundo_geniza.zip`)
-- **Evidence base:** 36-media GPS hull (photos/videos), boundary authority `approx`
-- **On the public web:** agroverse.shop farm profile **"Sítio Raimundo & Geniza"** (slug `raimundo-geniza-para`) added 2026-09-04 (agroverse_shop PR #273) — it links the plot popup to the farm page
-
-**Existing registered plots for reference:** RM-P1/RM-P2 (Rancho Maranta, Jedielcio), SA-P1 (Santa Anna Fazenda, Ana Lucia), CL-P1 (Fazenda Cleide), LD-P1 (Paulo La do Sitio), PL-002 (Fazenda Bom Sucesso, Paulo/Vitória) — none of those match the Raimundo & Geniza name; RG-P1 is the match.
-
-## Still blocking / needs your input
-- The newest upload (**9aed8c72…jpg**, 17:58) is a photo with **no legible text** (OCR empty) and **no GPS** (Telegram strips EXIF). Color analysis = warm earth/tan field tones — consistent with a plot/field photo, but I cannot visually confirm whether it depicts the RG-P1 plot or something else.
-- If "this" = the **name Raimundo/Geniza** (from your screenshot) → confirmed, it's **RG-P1 / raimundo-geniza-para**.
-- If "this" = the **new photo** → I need one clarification: is this photo *of* the Raimundo & Geniza plot (in which case it may just be new gallery media for RG-P1 — no new plot), or a *different/new* plot location (then we need the GPS-bearing original, since Telegram-stripped JPGs can't locate it)?
-
-## RESUME HERE
-Next turn: (1) read the truncated tail of the plots geojson artifact to quote RG-P1's full row if needed; (2) on Gary's confirmation of which "this" is, either file the new photo as RG-P1 media or start a new-plot check against the registry. Nothing submitted — no ledger writes made.
-
-———
-**✅ Done this turn — actions taken:**
+[CONTEXT SUMMARY — turns 1–3 compacted, full history in transcript repo]:
+Turn — [TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and c:
 • `ssh run` ×18 → ls -lt /tmp/tg_attachments/ | head -30 && echo "---thread recent---" && ls -lt /tmp/tg_attachments/ | head -5; cd /tmp && rm -rf tsx && mkdir tsx && cd tsx && git clone -q --depth 20 https://github.com/TrueSightDAO/truesight_autopilot_transcript.git 2; cd /tmp/tsx/truesight_autopilot_transcript && ls -lt sessions/ | head -10 && echo "---" && grep -rl "21534" sessions/ 2>/dev/null | head -5; …(+15 more)
 
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=21534] Two changes can we make the plot id similar to the CEPOTX SITE id across the board
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me understand the CEPOTX site code scheme and the current farm/plot ID structures before proposing the change.
-[2 tool result(s) compacted: read_context_file, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me gather the full picture: the complete plot list and how CEPOTX site codes are structured in the FSVP records.
-[2 tool result(s) compacted: read_tool_result, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: search_code, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me pull the FSVP site-code records and the full plot registry so I can ground the proposal in what's actually on file.
-[2 tool result(s) compacted: read_repo_file, read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me pull the full plot list and the FARM_SLUG map so I can show exactly what a site-code-style rename touches.
-[2 tool result(s) compacted: http_fetch, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me see the remaining plots in the registry and the FARM_SLUG map in sunmint.html.
-[2 tool result(s) compacted: read_tool_result, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check the current thread's session history to see the full request context (the earlier part of this thread was auto-compacted).
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me OCR the second screenshot (18:11 upload) — it likely shows what Gary is looking at when he asks about these changes.
-[1 tool result(s) compacted: ocr_image — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check the impact map's FARM_SLUG map and confirm which repos carry the plot_id, so I can scope the rename precisely.
-[1 tool result(s) compacted: http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me search for the CEPOTX site-code scheme and how it's been recorded, plus check for any FARM_SLUG map and recent context in other threads.
-[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me find the SunMint source-of-truth spreadsheet and check what's currently stored for plot IDs vs CEPOTX site codes.
-[2 tool result(s) compacted: search_context, search_code — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me look at the canonical SunMint schema and how site codes are meant to relate to farms/plots.
-[1 tool result(s) compacted: read_repo_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me recover the full earlier context of this thread (pre-compaction) to see exactly what the two images showed and what "two changes" refers to, and read the SunMint Plots sheet in parallel.
-[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me check the debug log for the exact raw incoming message — the request may contain a second change that got cut off.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the raw session history to see the exact text of the incoming governor message(s) and any earlier turns in this thread.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I've pulled the current state from the source-of-truth sheet, the plots/farms registries, and the FSVP records. Before proposing the change I want to make sure I scope it right — two things need pinning down first.
-
-## What I found
-
-**CEPOTX site-code scheme (as recorded):**
-| Farm / owner | Site code | Current plot id |
-|---|---|---|
-| Raimundo & Geniza (COPOPS, Uruará) | **U-06-07** | `RG-P1` |
-| Paulo — La do Sítio | **V-06-29** | `LD-P1` |
-| Santa Anna / Ana Lucia (COOPOXIN) | **B-06-58** | `SA-P1` |
-| Fazenda Cleide | **B-06-108** | `CL-P1` |
-| Fazenda Dona Rosa (COOPOXIN) | *pending CEPOTX* | `DR-P1` |
-| Rancho Maranta (Jedielcio) | *none on record* | `RM-P1`, `RM-P2` |
-| Bom Sucesso / test rows | *none* | `PL-002`, `PL-001`, UAT/TEST rows |
-
-⚠️ Per `AGROVERSE_SUNMINT_FARM_LISTING.md` the letter-prefix meaning is **explicitly documented as unknown** ("do not decode/derive; record the source"). Also note site codes are **per-farm**, while plots are **per-parcel** — so farms with two plots (Rancho Maranta RM-P1 + RM-P2) can't both collapse to a single site code without a sub-suffix.
-
-**Where `plot_id` lives ("across the board" surface):** SunMint Plots sheet (col A — source of truth) → `plots/index.geojson` → `trees/index.geojson` optional `plot_id` links → GAS auto-gen handler (currently emits `PL-<seq>` for new farmer submissions) → media sidecars/ledger notes (e.g. `entity.json` cites "plot RG-P1"). The farms index and agroverse slugs are `farm_id` (unchanged by this).
-
-## My best-guess reading of your request
-
-"Make the plot id similar to the CEPOTX site id" = where a farm has a CEPOTX site code, use it as the canonical identifier instead of our invented farm-initial codes, i.e. **`RG-P1 → U-06-07`, `LD-P1 → V-06-29`, `SA-P1 → B-06-58`, `CL-P1 → B-06-108`**, applied consistently in the sheet, geojson, trees links, and the GAS auto-generation going forward.
-
-Before I draft the change, three clarifications:
-
-1. **Which transformation do you mean?**
-   - (a) Replace plot id with the site code exactly (`RG-P1` → `U-06-07`), or
-   - (b) Keep plot ids but *append/align* the site code (e.g. `U-06-07-P1`), or
-   - (c) Standardize the **format** to site-code style `X-06-NN` for every plot, assigning codes where CEPOTX hasn't issued one yet (note: we shouldn't invent codes — that rule is in the runbook)?
-2. **Rows without codes** (Rancho Maranta, Dona Rosa pending, Bom Sucesso, UAT/TEST) — leave as-is, or get codes from CEPOTX before renaming?
-3. **You said "Two changes" but only one is stated** — what's the second? (If it was in one of the images you sent, both OCR'd empty — please re-type it.)
-
-**RESUME HERE** — once you confirm (1)/(2) and give me change #2, I'll draft the exact mapping table + PR for the data (sheet + `sunmint` registry + GAS auto-gen note), dry-run it, and show you before anything is written. No changes made yet.
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [Telegram context: chat_id=-1003919341801, thread_id=21534] Two changes can we make the plot id similar to the CEPOTX SI:
 • `ssh run` ×4 → cd /opt/truesight_autopilot/sessions && python3 - <<'EOF' import json d = json.load(open('aa2347c19809.json')) h = d.get('full_history') or ; cd /opt/truesight_autopilot/sessions && ls -la aa2347c19809* 2>/dev/null; echo "---precompact search---"; python3 - <<'EOF' import json, glo; cd /opt/truesight_autopilot/sessions && tail -c 6000 aa2347c19809_debug.log | python3 -c "import sys; d=sys.stdin.read(); import re; print(d
 
-
-### 🧑 Governor
+---
 
 [Telegram context: chat_id=-1003919341801, thread_id=21534] Replace the Sunmint plot id of Raimundo farm with its site code from CEPOTX
 
@@ -655,6 +341,7 @@ Please inspect the attached file.
 ### 🤖 Autopilot
 
 Gary sent the original HEIC photo (this should be IMG_8277 — the drying/fermentation station shot, with GPS preserved). Let me find the file on disk and check what vision tooling is available on the box to inspect it.
+[2 tool result(s) compacted: list_directory, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -776,4 +463,86 @@ So you can confirm on your screen that the image you see is **the same photo** w
 - IMG_8277 GPS-verified, inside the plot hull, byte-identical to the site-walk original
 
 If it's *not* the same photo you meant, tell me and I'll dig further. No other open items unless you have change #2 or want the HEIC set archived to the media pipeline.
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21534] Can you use this to generate a FDA site visit report?
+
+
+### 🤖 Autopilot
+
+Gary wants an FDA site visit report generated from this photo + the site-visit data. Let me check what an FDA/FSVP site visit report looks like in our system — templates, prior reports, and the fda_fsvp repo structure.
+
+
+### 🤖 Autopilot
+
+A site-visit report needs the FSVP context. Let me examine the fda_fsvp repo structure, the FSVP runbook, and what records we hold for the Raimundo & Geniza site visit:
+
+
+### 🤖 Autopilot
+
+There's a `SITE_VISIT_PROCESS.md` runbook and existing site-visit PDFs in supplier folders. Let me read the process doc and see the full supplier tree (especially CEPOTX/COPOPS-related):
+
+
+### 🤖 Autopilot
+
+Let me read the SITE_VISIT_PROCESS.md runbook — it defines the report structure and PDF template:
+
+
+### 🤖 Autopilot
+
+This is a compliance document — per `SITE_VISIT_PROCESS.md` I must never invent the required fields, but I can assemble everything evidence-backed. Let me gather: (1) which supplier entity Raimundo & Geniza belongs to, (2) the entities index schema, and (3) an exemplar site-visit PDF to mirror the canonical structure.
+
+
+### 🤖 Autopilot
+
+I have the full entity picture: **Raimundo & Geniza's Sítio (U-06-07) sits under CEPOTX as a COPOPS member site** — the FSVP supplier of record is CEPOTX, and the site was already added to CEPOTX's `source_farms`. The 2026-08-30 Santa Anna visit (2 weeks before this one, same supplier) is the perfect structural precedent. Let me extract text from both exemplar PDFs to mirror the exact layout:
+
+
+### 🤖 Autopilot
+
+The Santa Anna report (2026-08-30, same supplier) is the structural precedent. I now have everything evidence-backed: the photo's EXIF (GPS, date, device), the entity chain (CEPOTX central → COPOPS → Sítio Raimundo & Geniza, site U-06-07), and the canonical template. Building a **draft** site-visit PDF with IMG_8277 embedded — populated only with verified facts, pending fields clearly marked for Gary's confirmation before it becomes a compliance record:
+
+
+### 🤖 Autopilot
+
+reportlab is available. Building the draft report PDF now — mirroring the Santa Anna structure, embedding IMG_8277, marking unconfirmed fields (visit-date interpretation, host name, practice remarks) clearly as **pending governor confirmation** rather than inventing them:
+
+
+### 🤖 Autopilot
+
+Draft PDF built (3.67 MB). Let me verify it renders correctly by extracting its text, then send it to Gary with a clear summary of what's confirmed vs. pending:
+
+
+### 🤖 Autopilot
+
+The draft renders cleanly across 3 pages. Let me send it to Gary with a summary of what's verified vs. what needs his confirmation before this can become a filed FSVP record:
+
+
+### 🤖 Autopilot
+
+## Draft site-visit report sent 📋
+
+I built and sent a **3-page draft FDA FSVP site-visit report** (message 21673) from the IMG_8277 evidence, following the Santa Anna site-visit structure (the 30-Aug-2026 CEPOTX precedent).
+
+**What's in it:**
+- **Page 1** — Report header + supplier/site details (CEPOTX → COPOPS → Sítio Raimundo & Geniza, site U-06-07), purpose statement, GPS from the photo
+- **Page 2** — IMG_8277 embedded with its full EXIF evidence chain (device, timestamp, GPS, SHA-256 integrity)
+- **Page 3** — Facility observations (A farm / B fermentation / C drying) + declaration block
+
+**Compliance discipline** (per `SITE_VISIT_PROCESS.md`): I populated only **evidence-verified facts** (entity chain, site code from PR #11, GPS from EXIF, photo integrity). Everything I cannot verify is marked **`[PENDING]`** — I will not invent coordinates, dates, host names, or practice remarks on a compliance document.
+
+**5 items I need from you to finalize** (listed in the caption):
+1. **Visit date** — photo is 03-Sep-2026 13:29; was the site visit that day?
+2. **Host** — who received you (CEPOTX agronomist / Raimundo himself?)
+3. **Farm area** (hectares)
+4. **Facility observations** — grove condition, fermentation method (boxes/days/turning), drying method
+5. **Hazard assessments** per facility (microbial/insect/foreign objects/mold/pesticide)
+
+Reply with those 5 (or "fill from the site-walk notes / farm page") and I'll finalize the PDF, file it as `fda_fsvp/suppliers/cepotx/20260903_CEPOTX_site_visit_to_raimundo_geniza_farm.pdf`, update the entity `source_documents`, and open the PR.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×5 → echo "=== fda_fsvp repo tree ==="; curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" | python3 -c " im; echo "=== suppliers tree (rest) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" | python3 -c "; mkdir -p /tmp/fsvp_examples && cd /tmp/fsvp_examples && curl -sL -o santa_anna_20260830.pdf "https://raw.githubusercontent.com/TrueSightDAO/; …(+2 more)
 
