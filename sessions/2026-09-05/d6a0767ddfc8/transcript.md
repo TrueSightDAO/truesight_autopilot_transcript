@@ -17,6 +17,11 @@
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Read and understood — `AGROVERSE_SUNMINT_FARM_LISTING.md` is the consolidated end-to-end SOP for onboarding new partner farms (raw media → live Agroverse profile + SunMint plot + FSVP records), built from the Sítio Raimundo & Geniza (RG-P1) post-mortem.
 
 Key points I'm holding in context:
@@ -42,27 +47,42 @@ This is a new farm which we haven't onboarded yet. Trascribe the conversations i
 
 ### 🤖 Autopilot
 
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 The zip is unpacked content-wise: **46 real files** (13 × MOV, 32 × HEIC, 1 × PNG) — all dated 2026-08-30. The PNG (`IMG_7728.PNG`) is almost certainly the conversation screenshot you want transcribed. Let me extract and analyze.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Extracted. The package = **13 MOV + 32 HEIC + 1 PNG screenshot** (IMG_7728.PNG, 1125×2436 — phone screenshot size, likely the WhatsApp conversation). Let me OCR the screenshot and check GPS on the originals.
+[2 tool result(s) compacted: ssh_run, ocr_image — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 OCR of the screenshot picked up a Portuguese voice-message transcription about doing a "small audit" with a family connected to the cooperative. Let me dig deeper — upscale the screenshot for better OCR, and check GPS on the media originals.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All media carries GPS. Location ~3°17'S / 52°34'W. Let me map the full GPS cloud and re-OCR the upscaled screenshot.
+[2 tool result(s) compacted: ssh_run, ocr_image — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 45 originals carry GPS — a tight cloud around **3°17'31–33"S / 52°34'17–20"W** (Altamira/Transamazônica region, Pará). Now the key Step 0 checks: registry overlap for that bbox, and what we already know about "Santa Anna" (SOP mentions a **B-06-58 site code: Santa Anna / COOPOXIN** — must verify this is the same farm). Let me also crop the screenshot into bands to read the whole conversation.
+[3 tool result(s) compacted: search_context, search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -167,4 +187,49 @@ Want me to (a) upload the 8 remaining videos for archive completeness, (b) file 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×14 → ls -la ~/santa_anna_fazenda.zip && unzip -l ~/santa_anna_fazenda.zip | head -100; unzip -l ~/santa_anna_fazenda.zip | grep -v __MACOSX | awk '{print $1, $4}' | tail -60 && echo "---- total files (excl macosx) ----" && unzi; mkdir -p ~/santa_anna_work && cd ~/santa_anna_work && unzip -o -q ~/santa_anna_fazenda.zip -x '__MACOSX/*' && ls -la | head -60 && echo "---; …(+11 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21005] Oppss... These is for Fazenda Santa Rosa, it is a new farm.  is not Santa Annna Fazenda
+
+
+### 🤖 Autopilot
+
+Understood — let me not argue with the evidence I have; instead let me verify what this zip actually is vs. what "Santa Rosa" might be on the box. There's a real chance the file at `~/santa_anna_fazenda.zip` is mislabeled, **or** that a separate Santa Rosa package exists that I should be looking at. Checking both angles now.
+
+
+### 🤖 Autopilot
+
+Let me look at what actually arrived recently in this thread and check whether a Santa Rosa package exists under a different name — several candidate zips on the box could be it.
+
+
+### 🤖 Autopilot
+
+Understood — but before I register anything, let me be straight with you about what the file on the box actually is, because this is exactly the Step-0 gate the runbook exists for.
+
+**I analyzed the file you named — `~/santa_anna_fazenda.zip` — and its contents are Santa Anna Fazenda's media, not a new farm's.** Evidence:
+
+| Check | Result |
+|---|---|
+| GPS cloud of all 45 originals | −3.2918…−3.2925 / −52.5715…−52.5724 = **exactly SA-P1 compound** (Santa Anna Plot 1, per `sunmint/plots/index.geojson`) |
+| Filenames (IMG_7702–IMG_7751) | **Already archived** under `farm-media-raw/santa-anna-fazenda-para/photos/` (32 files, incl. the IMG_7728.PNG screenshot) |
+| Manifest | `farm_media_manifests/santa-anna-fazenda-para.json` records `source_zips: ["santa_anna_fazenda.zip"]`, generated 2026-08-31 |
+| Farm page | Live at agroverse.shop/farms/santa-anna-fazenda-para/ (Ana Lucia Araujo de Sousa, CEPOTX) |
+
+**On "Santa Rosa" specifically — I searched org-wide (agentic_ai_context content search = 0 hits; GitHub code search org-wide = no farm matches) and scanned every zip on this box.** There is **no Santa Rosa reference anywhere** in our records, and no Santa Rosa package on the autopilot box. The zips present are: cleide, la do sitio, rancho maranta, santa_anna_fazenda, santa_anna_farzenda_bahia, sao_jorge, oscar, fernando_carla, paulo_interview, raimundo_geniza, cacao_variety_parap, sorting, "to analyze".
+
+So one of these is true, and I need your call:
+
+1. **The file got mislabeled/copy-pasted** — you meant to send me a Santa Rosa zip but `~/santa_anna_fazenda.zip` is the Santa Anna one. If so, the Santa Rosa package hasn't reached the box yet.
+2. **The Santa Rosa media is inside one of the other zips** (e.g. "to analyze.zip" or "sorting.zip" — neither has been processed). Point me at it and I'll check.
+3. **The WhatsApp conversation screenshot** (the "small audit" voice-note) is what ties to Santa Rosa — but that screenshot (`IMG_7728.PNG`) is already archived under the Santa Anna folder, and the GPS on it is Santa Anna's compound.
+
+Per the SOP I will **not** register anything or invent a "Santa Rosa" plot/owner until we resolve which package is actually Santa Rosa — registering a duplicate Santa Anna under a guessed name is exactly the failure mode Step 0 prevents.
+
+**Which is it?** If you have the real Santa Rosa package (different filename, or it's on its way), send it / tell me the path and I'll start the new-farm onboarding for real. If it's supposed to be in one of the unprocessed zips on the box, say which and I'll dig in immediately.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "=== zips in home ==="; ls -la ~/*.zip 2>/dev/null; echo "=== any santa/rosa dirs ==="; find ~ -maxdepth 3 \( -iname "*rosa*" -o -iname; echo "=== any zip in tg_attachments ==="; find /tmp/tg_attachments -iname "*.zip" -newermt "2026-09-03" 2>/dev/null; ls -la /tmp/tg_attachme
 
