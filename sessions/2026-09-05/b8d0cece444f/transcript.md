@@ -10,251 +10,20 @@
 
 ### 🧑 Governor
 
-[CONTEXT SUMMARY — turns 1–10 compacted, full history in transcript repo]:
-Turn — [TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and c:
-` followed by `• `-bullet lines (built by `_build_turn_report`, main.py:2691).
-
-Turn — [TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and c:
-• `ssh run` ×21 → cd /opt/truesight_autopilot && git status --short && echo "---branch---" && git branch --show-current && echo "---head---" && git log --onel; cd /opt/truesight_autopilot && grep -n "def _sanitise_tool_messages" app/main.py && sed -n "$(grep -n 'def _sanitise_tool_messages' app/main; cd /opt/truesight_autopilot && ls app/__init__.py 2>&1; echo "---venv---"; ls -d .venv venv 2>/dev/null; which python3; python3 -m pytest --; …(+18 more)
-
-Turn — [Telegram context: chat_id=-1003919341801, thread_id=21264] Great real-data result (3.3x token reduction, byte-identical:
-• `ssh run` ×14 → cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' s = open('tests/test_context_compaction.py').read() # The HAS_MAIN guard's exce; cd /opt/truesight_autopilot && echo "=== guard section ===" && sed -n '30,50p' tests/test_context_compaction.py && echo "=== any 'as exc' le; cd /opt/truesight_autopilot && echo "=== my files untracked? ===" && git status --short | grep -E "context_compaction" ; echo "=== run faili; …(+11 more)
-
-Turn — [TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the ne:
-• `merge_pr(truesight_autopilot, 401)` → ❌ refused: CI not green (failing/pending checks: `test`, `smoke`)
-• `read_repo_file(agentic_ai_context, plans/SOPHIA_CONTEXT_COMPACTION_PLAN.md)` → refreshed plan-of-record; PR1 spec section partially re-read (needs the §5 tail next turn)
-
-Turn — [TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the ne:
-• `ssh run` → cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' from github import Auth, Github import app.config as cfg g = Github(auth=Auth.T
-• `merge pr` → ✅ PR #401 on truesight_autopilot merged successfully (sha: 9a14378cbf21aeda1b39d73573ba0fcb7bbe1576). Pull Request successfully merged
-
----
-
-[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
-
-
-### 🤖 Autopilot
-
-Converging per turn budget — PR1 tool module written and compiling; the rest is next turn.
-
-## PR1 status: tool module written, wiring + tests + gate remain
-
-**Done this turn:**
-- Re-read PR1 spec fully (plan §5 1a–1d): tool `compact_session_manual` (or similar) → load under per-session lock → `compact_history` → backup → save → report before/after; governor-only via the `POLICY ALLOW ... role=governor` mechanism; §1d = **required manual validation** against 1–2 real bloated sessions before PR2.
-- Completed full recon of the tool/authorization architecture:
-  - **Tool registration**: `app/tools/*.py` exports `TOOL_SPEC: ToolSpec(name, description, parameters, handler, default_roles)`; auto-discovered by `tool_registry`; sync handlers run via `asyncio.to_thread(_run_tool_sync, …)` off the event loop.
-  - **Governor gate**: `policy.py classify_action` — WRITE tools → `_run_tool_sync` requires `governor_name` + `_policy_evaluate` ALLOW (POLICY ALLOW log). `write_tools` set is in `app/policy.py`; mirrors `tests/test_policy_enforcement.py::WRITE_TOOLS`.
-  - **Roles**: `general` has `tools=[]` = sees every tool; `infrastructure` has explicit list. `default_roles=frozenset({"infrastructure"})` matches `ssh_run` (SRE-only schema visibility) — but the hard governor gate is the WRITE classification, which fires for any role.
-  - **Session files**: `settings.session_log_dir` = `/opt/truesight_autopilot/sessions/`, 291 JSONs, shape `{session_hash, updated_at, message_count, full_history}`; key = `tg:<chat>:<thread>` → `md5(key)[:12]`. Save path mirrors `_log_session` (atomic `os.replace`). In-flight detection via `main._active_streams` (5-min window) + `_live_progress`.
-  - **PR0 library** (`app/context_compaction.py`, merged in #401) is importable: `compact_history`, `count_tokens`, `backup_session_file`, defaults `DEFAULT_KEEP_LAST_TURNS=6` / `DEFAULT_TOKEN_THRESHOLD=20000`.
-- **Wrote `app/tools/compact_session_tool.py` (320 lines, py_compile OK)** — the PR1 tool:
-  - `_resolve_session(session, current_session_id)`: accepts 12-hex hash (`d32b2609056d`), full key (`tg:-1003919341801:21264`), or bare numeric thread id in current chat.
-  - Refuses to race an in-flight turn in another thread (invariant 7); allows compacting the calling session.
-  - No-op (with `force` escape) when under `token_threshold`.
-  - Full pre-compaction backup via `backup_session_file()` → `<hash>.pre-compact-*.json` before any rewrite; aborts if backup fails.
-  - Saves compacted history in `_log_session` shape + syncs live `main._sessions`; returns JSON with `status`, `tokens_before/after`, `reduction_pct`, `backup`, `messages_before/after`.
-  - `TOOL_SPEC` with `default_roles=frozenset({"infrastructure"})`.
-
-**Still to do (next turn, ~7 tool rounds' work):**
-1. Register as WRITE: add `"compact_session_manual"` to `write_tools` in `app/policy.py`; add to `WRITE_TOOLS` in `tests/test_policy_enforcement.py`.
-2. New `tests/test_compact_session_tool.py`: (a) non-governor POLICY BLOCK at the `_run_tool_sync` layer (mirror `test_policy_enforcement`), (b) end-to-end against a synthetic bloated session fixture in a tmp `SESSION_LOG_DIR` — assert backup file exists, token count drops, retained tail byte-identical, (c) no-op under threshold + `force`, (d) refuses when target active in another thread (monkeypatch `_active_streams`/`_live_progress`), (e) `_resolve_session` forms.
-3. Run the 4 local gates: `compileall -q`, `ruff check`, `ruff format --check` (new file must be clean), `pytest -q` (full suite, expect the 1 pre-existing config test failure only).
-4. Push via the proven path (git CLI from `/opt` checkout — **`git pull` first**, PR0 merged since branch cut): branch `feat/context-compaction-pr1`, commit the 3–4 files, push, open PR via `GitHubClient().open_pr` (used for #401).
-5. Report PR URL + gate results; **hold for Gary's checkpoint** — §1d manual validation against 1–2 real bloated sessions (`d32b2609056d.json` 161K tokens / `6827715c3c2b.json` 359 msgs) before PR2.
-
-## RESUME HERE
-Next turn picks up at step 1 above (policy.py write_tools + policy test list), then tests → gates → push+PR for PR1. The tool module `app/tools/compact_session_tool.py` is written and compiles; nothing is wired into the live turn path (PR2 stays unstarted until the §1d validation checkpoint passes with Gary's go).
-
-———
-**✅ Done this turn — actions taken:**
+[CONTEXT SUMMARY — turns 1–4 compacted, full history in transcript repo]:
+Turn — [CONTEXT SUMMARY — turns 1–10 compacted, full history in transcript repo]:
+Turn — [TURN DIRECTIVE] You have used 23 of 3:
 • `read_tool_result` ×2 → plan §5 PR1 spec (1a–1d) + §3 architecture decisions fully captured
 • `ssh run` ×11 → tool-registry/policy/roles/session-file recon; wrote `app/tools/compact_session_tool.py` (320 lines, py_compile clean)
 
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×23 → cd /opt/truesight_autopilot && echo "=== app/tools ===" && ls -la app/tools/ 2>/dev/null | head -40 && echo "=== governor gate greps ===" &&; cd /opt/truesight_autopilot && echo "=== policy/allow pattern ===" && grep -rnE "POLICY ALLOW|role=governor|role=\"governor\"|GOVERNOR_ONLY|; cd /opt/truesight_autopilot && echo "=== tool registry in main.py ===" && grep -nE '"name": "(ssh_run|deploy_autopilot|read_oracle_logs|scan; …(+20 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Continue - finish PR1 (policy registration, tests, gates, push, PR).
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-A redeploy just happened and likely killed your in-flight turn (I confirmed the service is healthy now). Resuming - continue PR1 from wherever you left off.
-
-
-### 🤖 Autopilot
-
-Resuming PR1 after the redeploy. First, verify what survived — a redeploy typically pulls git main, which could have wiped my uncommitted local file:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The redeploy killed an in-flight turn that had gotten further than my summary — `policy.py` and `test_policy_enforcement.py` are already modified, and `tests/test_compact_session_tool.py` exists untracked. Let me inspect exactly what state those edits are in, and confirm the branch situation (local is still on the PR0 branch):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Excellent — the in-flight turn had completed the policy registration edits and a 262-line test file. PR0's merge (#401) is on origin/main. Let me verify the test file content is complete/sound, then run the gates:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The in-flight turn left a genuinely complete state: tool spec registered + discoverable, 15 tests written, policy edits in place. Now run the full local gate — compileall, ruff check, ruff format, then pytest on the new tests first:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Almost clean — the test file needs formatting. Let me apply ruff format, then run the new test suite:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 15 PR1 tests pass. Now the full suite gate (expecting only the 1 pre-existing config failure):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 4 gates green: **897 passed** (my 15 new tests included), the only failure is the same pre-existing `test_config_own_data_repos.py` PAT assertion (unrelated to PR1 — proven pre-existing during PR0).
-
-⚠️ **Security note for you:** that pre-existing failing test prints the box's `github_read_pat` value into its assertion output — it just leaked into this transcript log. I will not repeat it. If this thread's logs are shared externally, consider rotating that PAT. (Separate issue from PR1 — could file a fix later to make that test assert on shape not literal.)
-
-Now pushing PR1 — new branch off origin/main (which has #401):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Commit `d7f527e` created on `feat/context-compaction-pr1` with exactly my 4 files (the pre-existing dirt — sophia.conf, active_tracks, followups, tokenomics, events_catalog_snapshot deletion, worktrees/vault — is unstaged; `telegram_close.py` shows untracked but that's a stale-index artifact of the branch switch since it's on main already). Push + open PR:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Branch pushed. The `open_pr` signature differs — let me check it:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-It takes `repo_name` and defaults `draft=True`. Opening the PR with the correct signature:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #402 is open. Let me verify it's clean (exactly my 4 files):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-PR #402 is open and clean. Reporting PR1 complete — holding for your merge + the §1d validation checkpoint.
-
-## ✅ PR1 complete — PR #402
-
-**🔗 https://github.com/TrueSightDAO/truesight_autopilot/pull/402** (open, non-draft, `main ← feat/context-compaction-pr1`, 1 commit, exactly 4 files: +593/−0)
-
-### Gate results (all local, per the hard rule)
-| Gate | Result |
-|---|---|
-| `compileall -q app tests` | ✅ rc=0 |
-| `ruff check` (4 changed files) | ✅ All checks passed |
-| `ruff format --check` | ✅ (1 file auto-formatted first) |
-| `pytest -q` full suite | ✅ **897 passed** — only failure is the pre-existing `test_config_own_data_repos.py` PAT assertion (same one from PR0, unrelated) |
-
-### Files
-- `app/tools/compact_session_tool.py` (+327) — the `compact_session_manual` tool: resolves session by 12-hex hash / full `tg:` key / numeric thread id; refuses to race an in-flight turn in another thread; takes a full `<hash>.pre-compact-<UTC>.json` backup before any rewrite (aborts if backup fails); keeps last N turns byte-identical; reports before/after token counts + reduction %.
-- `app/policy.py` (+1) — `compact_session_manual` added to `write_tools` → classified WRITE → **governor-only** via `evaluate`.
-- `tests/test_policy_enforcement.py` (+1) — WRITE_TOOLS list parity.
-- `tests/test_compact_session_tool.py` (+264) — **15 tests, all passing** (registration, policy gate, resolution forms, end-to-end with backup+token-drop+byte-identical tail, no-op/force, active-other-thread refusal, own-session allowance, backup-failure abort, input-never-mutated).
-
-### Notes
-- The redeploy had killed my in-flight turn mid-PR1 — but it had already completed the policy edits + test file, so I verified all of it (compiles, spec discoverable, 15/15 pass), re-ran gates, and finished the push/PR.
-- **Not wired into the automatic turn path** — that stays PR2, gated on the §1d checkpoint.
-- ⚠️ One flag: that pre-existing failing config test prints the box's `github_read_pat` into its assertion output (leaked into this thread's log during the gate run). I won't repeat the value. Consider rotating it if this thread's logs are shared — happy to file a follow-up to make that test assert on shape, not literal.
-
-## RESUME HERE → next: §1d manual validation checkpoint
-1. When you give the go, merge #402 (CI-check first).
-2. After merge, run the **required manual validation** against 1–2 real bloated sessions via the tool (or the same code path): candidates `d32b2609056d` (161K tokens) and the `b8d0cece444f`/`424960398866` sessions — verify token drop, byte-identical retained tail, zero tool-protocol dangling, backup file created.
-3. Report validation results back — then PR2 (automatic wiring) only after your explicit go.
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be:
 • `ssh run` ×11 → cd /opt/truesight_autopilot && echo "=== current branch/head ===" && git branch --show-current && git log --oneline -3 && echo "=== my PR1 f; cd /opt/truesight_autopilot && echo "=== git diff policy.py ===" && git diff app/policy.py && echo "=== git diff test_policy_enforcement.py ; cd /opt/truesight_autopilot && echo "=== test file structure ===" && grep -nE "^def test_|^class |^import |^from |HAS_MAIN|skip" tests/test_; …(+8 more)
 
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
-
-Go - merge #402. Then proceed with the §1d manual validation against the real bloated sessions as planned.
-
-
-### 🤖 Autopilot
-
-Merging #402 after CI check, and scouting validation candidates in parallel:
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-CI is in progress on #402 (same timing pattern as #401). Let me poll until both checks reach terminal state, then merge:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-CI green: `test: success`, `smoke: success`. Merging #402:
-[1 tool result(s) compacted: merge_pr — detail in artifacts]
-
-
-### 🧑 Governor
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-PR1 merged — stopping here per the one-PR-per-turn rule (§1d validation runs in a fresh turn).
-
-## ✅ PR #402 merged — PR1 complete
-
-- 🔗 **https://github.com/TrueSightDAO/truesight_autopilot/pull/402** — merged successfully (sha `f03fa2d6740809caad681c69bde6a46198257c1a`)
-- CI checked first: waited for terminal state — `test: success` · `smoke: success` (same timing pattern as #401; they were in_progress at first poll, resolved green within ~2 min)
-- **What landed on `main`:** `compact_session_manual` governor-only tool (`app/tools/compact_session_tool.py`, +327) + WRITE registration (`app/policy.py`, `tests/test_policy_enforcement.py`) + 15 tests (`tests/test_compact_session_tool.py`, +264). Local gates all green (897 passed; only the known pre-existing config test fails). Not wired into the automatic turn path — that remains PR2.
-
-## RESUME HERE → next unit: §1d manual validation on real bloated sessions
-
-1. **Candidate sessions scouted** (291 session files on the box; biggest 12 measured). Best targets for validation — pick 2:
-   - `d32b2609056d.json` — 554 msgs / 669 KB, mtime 2026-06-13 (the plan's cited session; **already smoke-tested at library level during PR0: 161K → 49K tokens, 3.3× drop**)
-   - `6827715c3c2b.json` — 359 msgs / 603 KB, mtime 2026-06-11
-   - `a3db3250c3b8.json` — 429 msgs / 420 KB, mtime 2026-08-23 (most recent of the big ones)
-   - `5bb45b91827a.json` — 466 msgs / 403 KB, mtime 2026-06-18
-   - `_resume_awaiting.json` (2.7 MB) is a different shape (msgs=0) — **not** a candidate.
-2. **Run validation** via the merged tool path (library + backup + save, same code the tool executes): for each chosen session — record tokens/messages before → `compact_history(keep=6, threshold=20000)` → assert **byte-identical retained tail**, **token drop**, **zero tool-protocol dangling** (run the `_sanitise_tool_messages` Pass-1/2 check), **backup file created** (`<hash>.pre-compact-<UTC>.json`), and the file on disk re-loads in the same JSON shape `main._log_session` writes.
-3. **Report results back** (tokens before/after, reduction %, tail-identical proof, backup path) — then **HOLD for Gary's go on PR2** (automatic wiring into the turn path), per the plan's rollout section.
-
-Note: since #402 merged the tool itself, the cleanest validation is actually invoking `compact_session_manual()` on one live session via the python REPL — but to be safe, run it in **dry-run/analysis mode first** (load + compact in memory, verify, don't save) and only persist when Gary confirms he wants the on-disk rewrite on a real session file (that's the tool's actual side effect, and it should be exercised deliberately on the chosen targets — these are old sessions from June, not live threads, so no in-flight race risk; I'll confirm each is idle before writing).
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the ne:
 • `ssh run` ×3 → cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' from app.github_client import GitHubClient gh = GitHubClient() repo = gh.g.get_; cd /opt/truesight_autopilot && .venv/bin/python - << 'PYEOF' import os, json, glob, datetime d = "/opt/truesight_autopilot/sessions" files =; cd /opt/truesight_autopilot && timeout 300 .venv/bin/python - << 'PYEOF' import time from app.github_client import GitHubClient gh = GitHubC
 • `merge pr` → ✅ PR #402 on truesight_autopilot merged successfully (sha: f03fa2d6740809caad681c69bde6a46198257c1a). Pull Request successfully merged
 
-
-### 🧑 Governor
+---
 
 [Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
 
@@ -527,6 +296,7 @@ It uses `head`/`base`/`draft`. Opening the PR correctly:
 ### 🤖 Autopilot
 
 PR #403 is open. Verifying it carries exactly the 3 PR2 files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -579,6 +349,7 @@ Merge #403. Nice touch adding the kill-switch env var - wasn't in the original p
 ### 🤖 Autopilot
 
 Merging #403 — first checking CI is green on it (same `test`/`smoke` workflow as #401/#402):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -772,4 +543,105 @@ Noted: nothing further needed from me on this. **Closing out** — no new work s
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → cd /opt/truesight_autopilot && echo "=== head ===" && git log --oneline -3 && git branch --show-current && echo "=== call sites ===" && grep; echo "=== health ===" && curl -s -o /dev/null -w "HTTP %{http_code} " http://127.0.0.1:8001/health && curl -s http://127.0.0.1:8001/health |
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: Envoy's report **independently confirmed** — all checks pass:
+
+## ✅ PR3 (#404) verified live — context-compaction rollout fully complete
+
+**Independent verification (my own reads, not just Envoy's wor
+
+
+### 🤖 Autopilot
+
+The 👍 is the go for the close-out PR. Let me pull the current plan file + manifest to see exact checkbox format and whether Envoy already touched it:
+
+
+### 🤖 Autopilot
+
+Reading the full plan tail (progress/rollout section + RESUME HERE) to update it accurately:
+
+
+### 🤖 Autopilot
+
+Let me read the final section of the plan (rollout/closeout checkboxes) so my edit matches the exact wording:
+
+
+### 🤖 Autopilot
+
+Reading the final rollout/closeout section of the plan:
+
+
+### 🤖 Autopilot
+
+Reading the very tail (resume tracker table) for a precise edit:
+
+
+### 🤖 Autopilot
+
+Reading the final resume-tracker tail:
+
+
+### 🤖 Autopilot
+
+The artifact chaining is nesting; let me pull the raw plan tail directly from the repo instead:
+
+
+### 🤖 Autopilot
+
+I have the tracker table. To craft exact-match edits safely, let me pull the literal text of the sections I'll change (header status, top RESUME HERE, §4 checkboxes, §9 tracker) from the local clone:
+
+
+### 🤖 Autopilot
+
+I have exact text. Quick check whether the handoff manifest has a compaction row to update too:
+
+
+### 🤖 Autopilot
+
+No manifest row for this plan (self-executed, tracked only in its own file) — so the close-out edit is a single file: `plans/SOPHIA_CONTEXT_COMPACTION_PLAN.md`. Making the three edits (header status, §4 checkboxes, §9 tracker + RESUME HERE):
+
+
+### 🤖 Autopilot
+
+PR #915 opened on agentic_ai_context — closing out the compaction plan. Merging it (close-out doc PR, consistent with plan-authorization scope):
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ Plan close-out complete — SOPHIA_CONTEXT_COMPACTION_PLAN marked COMPLETE
+
+- 🔗 **PR #915** (agentic_ai_context) — merged (sha `99553f84e58daf187dedfcd92df2002266f6ba31`)
+- **What changed** (`plans/SOPHIA_CONTEXT_COMPACTION_PLAN.md`):
+  - **Header status** → `COMPLETE — PR0→PR3 merged (#401–#404), deployed live at e1fc54f, verified folding real sessions in production`
+  - **§4 pre-flight checklist** → all 5 items ticked `[x]`
+  - **§9 resume tracker** → filled with the full ledger: PR0 #401, PR1 #402 (+ §1d real-session validation numbers 84,009→16,597 / 66,247→12,533 tok), PR2 #403 `2a05df1` (live folds observed), PR3 #404 `e1fc54f` (4 call sites); **RESUME HERE → none — COMPLETE (2026-09-05)**
+  - DAO-contribution column left `☐` — an honest flag that the contribution-event reporting for PR0–PR3 is the one remaining optional follow-up
+
+### Full rollout ledger (for the record)
+| Unit | PR | State |
+|---|---|---|
+| PR0 — compaction library | #401 | ✅ merged |
+| PR1 — manual tool + §1d validation | #402 | ✅ merged + validated |
+| PR2 — automatic wiring (turn-start) | #403 | ✅ merged + deployed + live folds |
+| PR3 — per-round re-check | #404 | ✅ merged (Envoy) + deployed `e1fc54f` |
+| Deploy + live verify | — | ✅ health 200, kill-switch ON by default |
+| **Plan close-out** | **#915** | ✅ **merged this turn** |
+
+### RESUME HERE → optional follow-up
+The one box left unticked in the tracker is **DAO contribution reported** — if you want, say the word and I'll file a [CONTRIBUTION EVENT] covering the PR0–PR3 work (either as one consolidated entry or per-PR), with the PR URLs as evidence. Otherwise: **this plan is fully closed out** — no further work pending.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → cd /tmp && rm -rf aac_ctx && git clone --depth 1 -q https://github.com/TrueSightDAO/agentic_ai_context.git aac_ctx 2>&1 | tail -1; echo "===; cd /tmp/aac_ctx && .venv/bin/python3 -c "print('x')" 2>/dev/null; python3 - << 'PYEOF' p = "plans/SOPHIA_CONTEXT_COMPACTION_PLAN.md" t = ope; cd /tmp/aac_ctx && grep -n "CONTEXT_COMPACTION\|context-compaction\|Context Compaction" handoffs/HANDOFF_MANIFEST.md | head -10; echo "---rc
+• `merge pr` → ✅ PR #915 on agentic_ai_context merged successfully (sha: 99553f84e58daf187dedfcd92df2002266f6ba31). Pull Request successfully merged
 
