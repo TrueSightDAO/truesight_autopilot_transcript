@@ -302,11 +302,13 @@ Committed. Now pushing the branch and opening the PR:
 ### 🤖 Autopilot
 
 Branch pushed. Opening the PR via git_push_changes-style flow — let me create the PR with a proper body:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me create the PR using the GitHub CLI on the box:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -434,4 +436,73 @@ Merging PR #400 now:
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #400 on truesight_autopilot merged successfully (sha: 9f0e8d3da321efbbf37a3f0ac4495dc35c9dd096). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21047] Dont mess around with the box. It is running the way I want it to already. There are other instances performing stuff.
+
+how mcuh time was spent making this modification by you and me. Examine transcription (I think the future if we havent already whenever I ask how much time was spent, all Sophia's should follow this convention). And indicate clearly how much contribution time should be reported for you, me and Envoy.
+
+
+### 🤖 Autopilot
+
+Understood — no box work; leaving the deployment alone. Let me sort out the time accounting. First, figuring out who Envoy is and what the transcript shows about this session.
+
+
+### 🤖 Autopilot
+
+Envoy context loaded. Now let me ground the time estimate in hard data — PR timestamps — and check whether a time-reporting convention already exists in context.
+
+
+### 🤖 Autopilot
+
+Let me ground this properly — reading the contribution-time conventions and checking who authored the actual work.
+
+
+### 🤖 Autopilot
+
+Let me read the AI-contribution convention to report amounts correctly, and check whether a contribution for PR #400 was already filed.
+
+
+### 🤖 Autopilot
+
+Let me read the actual contribution convention doc and check what's already been filed for this work:
+
+
+### 🤖 Autopilot
+
+No box work — acknowledged: no restart, no deploy, /opt untouched by me. PR #400 exists only on GitHub; the running service is exactly as you left it. Other instances are free to keep doing their thing.
+
+Here's the time accounting, per the convention already set in `agentic_ai_context/dao/DAO_CLIENT_AI_AGENT_CONTRIBUTIONS.md` §"Sophia (autopilot) time estimates" (you set it 2026-08-24, thread 14165: **Sophia raw execution** and **Sophia direct time** are always two separate events; governor time is its own event under your name). So yes — the convention you're describing already exists, and I'm applying it.
+
+## What's measurable (ground truth)
+
+| Marker | Value |
+|---|---|
+| Code edited on box | ~14:02 (2026-09-05) |
+| PR #400 created | 14:13:55 UTC |
+| PR #400 merged | 14:17:00 UTC |
+| Sophia tool ops (visible this thread) | ~70 (investigation turn ~28, execution turn ~23, merge + this ~10+) |
+| CI | test ✅ + smoke ✅ before merge |
+
+Everything else is an **estimate** from turn count, tool-op volume, and depth of diagnosis — per the convention, amounts are informational (TDG 0 unless you set economics).
+
+## Recommended contribution events
+
+| Contributor (exact name) | Event | Minutes | Description prefix |
+|---|---|---|---|
+| **Sophia Truesight** | Raw machine execution | **~30** | ~70 tool ops: ssh file reads/greps of telegram_adapter.py + policy.py, compileall/ruff, pytest ×2, git commit/push, PR #400 create, CI polls, merge |
+| **Sophia Truesight** | Direct time (engagement/analysis) | **~60** | multi-turn diagnosis of the gate mechanism, policy semantics, test design, deploy-safety analysis (runtime-state preservation), PR/CI review |
+| **Gary Teh** | Direct time | **~30** | spec/decision, 3 go-signals (👍, "is this done?", "go merge #400"), this accounting question — I can't see your side of the clock, so confirm/override |
+| **Envoy TrueSight** | Direct time | **~60 (needs your confirm)** | mechanism research + the detailed spec (line numbers, identity pitfall) that opened this thread — and possibly the 14:02 working-tree code edit, which I did **not** make; I can't see Envoy's session from this seat |
+
+Notes on attribution honesty:
+- The **14:02 code edit** (`_sender_is_governor` + gate condition + 2 tests) was already in the working tree when I picked it up — I verified, tested, committed, PR'd, and merged it, but I didn't author that edit. If that was Envoy, Envoy's minutes should include it (add ~20–30 to the Envoy figure).
+- My investigation partially **re-derived** what the spec already stated — some of my ~28 investigation calls were redundant verification. I've kept raw at ~30 rather than inflating for that.
+
+## Your convention request
+"Whenever I ask how much time was spent, all Sophias follow this convention" — the **split** rule is documented (thread 14165), but the **trigger** ("when Gary asks how much time was spent → examine the transcript/timeline, then split per this table") isn't written explicitly. I can add one line to the convention doc next turn via PR if you want it hard-coded.
+
+**Want me to file now?** Your confirm and I'll submit three events (Sophia raw 30, Sophia direct 60, Gary Teh direct 30) via `submit_contribution` — all `Time (Minutes)`, TDG 0, PR #400 cited. Envoy's I'd either hand off to Envoy's session to file under its own identity (admin+envoy@truesight.me), or file as "Envoy TrueSight" if you'd rather I do it — say which.
 
