@@ -10,259 +10,15 @@
 
 ### 🧑 Governor
 
-[CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
-Turn — [TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the ne:
-• `git_push_changes` ×2 → PR #286 opened (agroverse_shop_beta, caption fix); first attempt failed (identical search/replace) then succeeded
-• `merge pr` ×1 → ✅ PR #286 merged (sha a84e8b0)
-• `upload_local_file_to_github` ×1 → farm_media_manifests/raimundo-geniza-para.json updated (commit d4afd68)
-• `ssh run` ×2 → manifest grep + rewrite; shop HTML check (JSON-driven)
-• `search_code` / `search_context` ×3 → confirmed remaining RG-P1 refs are doc-only/historical
-
----
-
-Please inspect the attached file.
-
-[Attachment auto-processed: **d23cc94cdb614142975b72dd77d3c5e7.HEIC**]
-- Type: Image (OCR confidence: 0.0%, quality: poor)
-- Note: HEIC converted to JPEG (EXIF/GPS preserved)
-- 📍 GPS: -3.630242, -53.652017 (alt 180.7 m)
-- 🕐 Captured: 2026:09:03 16:29:06
-
-*(No text detected in image)*
-
-
-### 🤖 Autopilot
-
-Gary sent the original HEIC photo (this should be IMG_8277 — the drying/fermentation station shot, with GPS preserved). Let me find the file on disk and check what vision tooling is available on the box to inspect it.
-[2 tool result(s) compacted: list_directory, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The HEIC is at `/tmp/tg_attachments/d23cc94cdb614142975b72dd77d3c5e7.jpg` (converted, GPS preserved). OCR found no text, so visual inspection needs the vision client — let me check how `grok_client.py` is invoked:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The file is a library module — let me check how it's called in the app and run a vision pass on the image to describe what's actually in it:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me run Grok vision on the image with a context-appropriate prompt (this should be the drying/fermentation station, GPS -3.630242/-53.652017, 2026-09-03 16:29):
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Grok key isn't on this box (it lives on the market-research host). Let me find where the key is configured and check alternate vision routes — the app may have a working key path:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-There's a `/home/ubuntu/.env` — let me check whether it holds the Grok key (without printing secrets), and also check the generate_image tool config since that uses Gemini/Google AI Studio:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-No Grok/Gemini API key on this box (only DAO identity keys), so a vision-model description isn't available locally. But the attachment processor already gave me the key data: **GPS -3.630242, -53.652017 (alt 180.7m), captured 2026-09-03 16:29:06**. Let me inspect the full EXIF (original filename may be embedded, confirming whether this is IMG_8277) and cross-check the GPS against the plot hull and the repo copy of that photo:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-EXIF confirms the full picture — GPS **-3.630242, -53.652017** (S/W), alt 180.7 m, **iPhone 12 Pro Max**, captured **2026-09-03 13:29:07 local** (16:29 UTC — matches the attachment note). That GPS sits inside the U-06-07 plot hull (−3.6294…−3.6306 / −53.6518…−53.6522) and the timestamp matches the 03 Sep site walk. Now let me identify which IMG number this original is, by checking the media pipeline runbook and the farm-media-raw blob store:
-[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-`farm-media-raw` has no raimundo folder — RG originals may still live in the source zip `~/raimundo_geniza.zip` (per the manifest). Let me match this photo's GPS/time against the originals there to identify its IMG number and confirm whether this is IMG_8277:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The original zip is at `/home/ubuntu/raimundo_geniza.zip` and there's an extracted folder `~/raimundo_geniza/`. The shop asset `~/rg_shop_assets/raimundo-geniza-IMG_8277.jpg` exists (the exact image Gary's caption referred to). Let me compare this uploaded photo's EXIF (GPS/time/size) against the extracted originals to identify which IMG it is:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The extracted folder scan found no match (may only hold MOVs, or HEIC EXIF isn't readable by PIL in that folder). The uploaded photo: iPhone 12 Pro Max, 2026:09:03 13:29:07, GPS -3.630242/-53.652017. Let me search the zip contents listing for files with that timestamp and check the extracted folder structure:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Definitive match: the zip listing shows **`IMG_8277.HEIC` — 2,086,477 bytes, 2026-09-03 16:29 UTC** — identical byte-size (2,086,477) and timestamp to the uploaded file `/tmp/tg_attachments/d23cc94cdb614142975b72dd77d3c5e7.HEIC` (2,086,477 bytes, 16:29). This confirms the upload **is IMG_8277** — the exact photo Gary captioned as the **drying station and fermentation station**.
-
-So: **the photo Gary just sent IS IMG_8277** (byte-identical original HEIC from the site walk). My earlier caption fix (media.json alt) was already correct. Now let me confirm its GPS sits inside the plot hull and check what the hull records say, so I can give a complete answer with the photo's evidence value:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Confirmed — the attached file is IMG_8277**, byte-identical to the original in the site-walk zip:
-
-- **SHA-256 match**: uploaded `21728b508cc415b6…` = zip's `IMG_8277.HEIC` `21728b508cc415b6…` — same file, no doubt
-- **Size**: 2,086,477 bytes both; **captured** 2026-09-03 16:29 UTC (= 13:29 local), iPhone 12 Pro Max
-- **GPS**: -3.630242, -53.652017 (alt 180.7 m) — **inside the U-06-07 plot hull** ✅
-- This is the **drying station & fermentation station** photo (per Gary's earlier caption fix, which I already applied to the shop media.json in PR #286)
-
-This gives the photo **full evidence value** for the plot record: it's an original HEIC with intact EXIF/GPS (not a Telegram-stripped re-encode), proving the drying/fermentation station sits on/adjacent to the U-06-07 plot.
-
-## What I'd like to do with it
-
-The manifest tracks only the 14 MOVs (`counts: MOV 14, HEIC 0`), and `farm-media-raw` has no raimundo folder — so this original photo isn't archived in the media pipeline yet. Options:
-
-1. **Archive it properly** — add IMG_8277 (and the other HEICs: 8205, 8208, 8232, 8234, 8236, 8240, 8241, 8249, 8250/51/52/53/54/55/56, 8268, 8272-78) to the RG media archive with GPS verified — consistent with MEDIA_ARCHIVE_PIPELINE.md
-2. **Just note it** — record this as confirmation that the existing media.json caption fix is accurate; no further action
-3. **Something else** you had in mind
-
-Which would you like? (I can also append this finding to the session transcript as-is so it's preserved for cross-session recall either way.)
-
-———
-**✅ Done this turn — actions taken:**
+[CONTEXT SUMMARY — turns 1–3 compacted, full history in transcript repo]:
+Turn — [CONTEXT SUMMARY — turns 1–2 compacted, full history in transcript repo]:
+Turn — [TURN DIRECTIVE] You have opened or mer:
 • `list_directory`, `ssh run` ×8 → located d23cc94…HEIC/jpg; grok key absent locally; EXIF verified (iPhone 12 Pro Max, 13:29:07 local, GPS -3.630242/-53.652017 alt 180.7); matched to zip listing `IMG_8277.HEIC` (2,086,477 B, 16:29 UTC); sha256 21728b50… matches extracted original exactly; GPS inside plot hull ✅
 
-———
-**✅ Done this turn — actions taken:**
-• `ssh run` ×12 → echo "=== grok/vision clients on box ==="; ls ~/grok_client* /opt/*grok* 2>/dev/null; which grok_client 2>/dev/null; find ~ /opt -maxdepth 3; echo "=== grok_client usage ==="; head -80 /opt/truesight_autopilot/app/grok_client.py; echo "=== any CLI wrapper ==="; ls /opt/truesight_au; echo "=== grok client public API ==="; grep -n "^def \|^class " /opt/truesight_autopilot/app/grok_client.py; echo "=== sample usage in app =; …(+9 more)
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=21534] Sync it. Also can you extract the latitude and longitude of the photo as well as send it Back as an attachment to ensure we are referring to the same photo
-
-
-### 🤖 Autopilot
-
-Gary explicitly authorized the prod sync ("Sync it") — doing that now, and sending the photo back with its GPS so we're confirming the same image:
-[2 tool result(s) compacted: sync_beta_to_prod, send_telegram_attachment — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-## ✅ Both done
-
-**1. Prod sync — complete**
-- `agroverse_shop_prod` synced from beta (upstream merge, no force) — deploy ledger recorded:
-  - `deploy_20260905T194414Z_agroverse-shop-prod`
-  - [Evidence URL](https://github.com/TrueSightDAO/ecosystem_change_logs/blob/main/deploys/entries/deploy_20260905T194414Z_agroverse-shop-prod.md)
-- This carries to **agroverse.shop** (production): the **U-06-07 plot-id rename** AND the **IMG_8277 drying/fermentation station caption fix**. The live farm page `agroverse.shop/farms/raimundo-geniza-para/` should now show both.
-
-**2. Photo sent back as attachment** (message 21663 in this thread) with caption containing:
-- 📍 **Latitude: -3.630242** | **Longitude: -53.652017** (S/W)
-- 🏔 Altitude: 180.7 m · 🕐 2026-09-03 13:29:07 local (iPhone 12 Pro Max)
-- SHA-256 prefix `21728b50…` — matches the zip original `IMG_8277.HEIC` byte-for-byte
-
-So you can confirm on your screen that the image you see is **the same photo** we've been captioning as the drying station & fermentation station (and that I archived/verified GPS for).
-
-**To confirm we're aligned:** does the photo I just sent show what you expect (the drying/fermentation station)? If yes — the loop is closed:
-- Farm page live on prod with `U-06-07` + corrected caption
-- IMG_8277 GPS-verified, inside the plot hull, byte-identical to the site-walk original
-
-If it's *not* the same photo you meant, tell me and I'll dig further. No other open items unless you have change #2 or want the HEIC set archived to the media pipeline.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=21534] Can you use this to generate a FDA site visit report?
-
-
-### 🤖 Autopilot
-
-Gary wants an FDA site visit report generated from this photo + the site-visit data. Let me check what an FDA/FSVP site visit report looks like in our system — templates, prior reports, and the fda_fsvp repo structure.
-[3 tool result(s) compacted: search_context, search_code, list_org_repos — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-A site-visit report needs the FSVP context. Let me examine the fda_fsvp repo structure, the FSVP runbook, and what records we hold for the Raimundo & Geniza site visit:
-[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-There's a `SITE_VISIT_PROCESS.md` runbook and existing site-visit PDFs in supplier folders. Let me read the process doc and see the full supplier tree (especially CEPOTX/COPOPS-related):
-[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the SITE_VISIT_PROCESS.md runbook — it defines the report structure and PDF template:
-[1 tool result(s) compacted: read_context_file — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-This is a compliance document — per `SITE_VISIT_PROCESS.md` I must never invent the required fields, but I can assemble everything evidence-backed. Let me gather: (1) which supplier entity Raimundo & Geniza belongs to, (2) the entities index schema, and (3) an exemplar site-visit PDF to mirror the canonical structure.
-[4 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-I have the full entity picture: **Raimundo & Geniza's Sítio (U-06-07) sits under CEPOTX as a COPOPS member site** — the FSVP supplier of record is CEPOTX, and the site was already added to CEPOTX's `source_farms`. The 2026-08-30 Santa Anna visit (2 weeks before this one, same supplier) is the perfect structural precedent. Let me extract text from both exemplar PDFs to mirror the exact layout:
-[2 tool result(s) compacted: extract_pdf_text, extract_pdf_text — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The Santa Anna report (2026-08-30, same supplier) is the structural precedent. I now have everything evidence-backed: the photo's EXIF (GPS, date, device), the entity chain (CEPOTX central → COPOPS → Sítio Raimundo & Geniza, site U-06-07), and the canonical template. Building a **draft** site-visit PDF with IMG_8277 embedded — populated only with verified facts, pending fields clearly marked for Gary's confirmation before it becomes a compliance record:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-reportlab is available. Building the draft report PDF now — mirroring the Santa Anna structure, embedding IMG_8277, marking unconfirmed fields (visit-date interpretation, host name, practice remarks) clearly as **pending governor confirmation** rather than inventing them:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Draft PDF built (3.67 MB). Let me verify it renders correctly by extracting its text, then send it to Gary with a clear summary of what's confirmed vs. pending:
-[1 tool result(s) compacted: extract_pdf_text — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The draft renders cleanly across 3 pages. Let me send it to Gary with a summary of what's verified vs. what needs his confirmation before this can become a filed FSVP record:
-[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-## Draft site-visit report sent 📋
-
-I built and sent a **3-page draft FDA FSVP site-visit report** (message 21673) from the IMG_8277 evidence, following the Santa Anna site-visit structure (the 30-Aug-2026 CEPOTX precedent).
-
-**What's in it:**
-- **Page 1** — Report header + supplier/site details (CEPOTX → COPOPS → Sítio Raimundo & Geniza, site U-06-07), purpose statement, GPS from the photo
-- **Page 2** — IMG_8277 embedded with its full EXIF evidence chain (device, timestamp, GPS, SHA-256 integrity)
-- **Page 3** — Facility observations (A farm / B fermentation / C drying) + declaration block
-
-**Compliance discipline** (per `SITE_VISIT_PROCESS.md`): I populated only **evidence-verified facts** (entity chain, site code from PR #11, GPS from EXIF, photo integrity). Everything I cannot verify is marked **`[PENDING]`** — I will not invent coordinates, dates, host names, or practice remarks on a compliance document.
-
-**5 items I need from you to finalize** (listed in the caption):
-1. **Visit date** — photo is 03-Sep-2026 13:29; was the site visit that day?
-2. **Host** — who received you (CEPOTX agronomist / Raimundo himself?)
-3. **Farm area** (hectares)
-4. **Facility observations** — grove condition, fermentation method (boxes/days/turning), drying method
-5. **Hazard assessments** per facility (microbial/insect/foreign objects/mold/pesticide)
-
-Reply with those 5 (or "fill from the site-walk notes / farm page") and I'll finalize the PDF, file it as `fda_fsvp/suppliers/cepotx/20260903_CEPOTX_site_visit_to_raimundo_geniza_farm.pdf`, update the entity `source_documents`, and open the PR.
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [Telegram context: chat_id=-1003919341801, thread_id=21534] Can you use this to generate a FDA site visit report?:
 • `ssh run` ×5 → echo "=== fda_fsvp repo tree ==="; curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" | python3 -c " im; echo "=== suppliers tree (rest) ==="; curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" | python3 -c "; mkdir -p /tmp/fsvp_examples && cd /tmp/fsvp_examples && curl -sL -o santa_anna_20260830.pdf "https://raw.githubusercontent.com/TrueSightDAO/; …(+2 more)
 
-
-### 🧑 Governor
+---
 
  You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
 
@@ -571,11 +327,13 @@ Built v3 (4.58 MB) — now record-backed. Let me verify the pages render cleanly
 ### 🤖 Autopilot
 
 Layout is loose — video frames each spilled onto their own page. Let me compact them into a single 3-across row so the declaration lands on the same page:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Clean 6-page layout now. Sending the record-backed v3:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -615,36 +373,48 @@ One note: the cacao-tree photo's original IS among the 22 archived HEICs — so 
 ### 🤖 Autopilot
 
 Gary wants his signature inserted into the report's declaration block. Let me find his signature image on file:
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found Gary's signature files. Let me inspect the candidates and how prior signed PDFs place the signature (Santa Anna precedent + signed operating agreement):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me see exactly how the Santa Anna precedent places the signature (page 7 has an image near the signature text) and compare with my v3 declaration block:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Santa Anna precedent places a **342×165 signature image** (exactly `gary_teh_signature.png` dimensions) right after "Sincerely," and before the name block. Let me confirm the embedded image is the same signature file, then insert it into my v3 in the same spot:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Aspect is a definitive match (2.072 vs 2.073) — Santa Anna embeds `gary_teh_signature.png` (342×165) at ~170×82pt between "Sincerely," and "Zhiwen Teh". Let me OCR the candidates to confirm which reads as the actual signature before inserting:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Santa Anna precedent is clear: `gary_teh_signature.png` (342×165, aspect 2.073 — exact match) embedded at ~170×82pt between "Sincerely," and "Zhiwen Teh / President". That's Gary's signature image. Let me insert it into the v3 declaration block at the same spot and rebuild:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Signature embedded (342×165 = exact same asset as Santa Anna). It defaulted to centered though — the Santa Anna precedent places it left-aligned under "Sincerely,". Let me match that exactly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -799,4 +569,106 @@ Which is it?
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /tmp/tg_attachments && ls -la b1fed20b7dc24811812bda4be156230a* 2>/dev/null; echo "---sha256---"; sha256sum b1fed20b7dc24811812bda4be1562; cd /tmp && python3 <<'PYEOF' import zipfile from datetime import datetime, timedelta z = zipfile.ZipFile("/home/ubuntu/raimundo_geniza.zip"); cd /tmp && python3 <<'PYEOF' import zipfile, hashlib z = zipfile.ZipFile("/home/ubuntu/raimundo_geniza.zip") # sha256 of zip's IMG_8236.HEIC; …(+6 more)
 • `append to transcript` ×2 → Script exited 2: usage: append_to_transcript.py [-h] --session-id SESSION_ID --content CONTENT --filename FILENAME --type {PDF,Image,Word} [; https://github.com/TrueSightDAO/truesight_autopilot_transcript/blob/main/sessions/2026-09-05/3a97b642d960/transcript.md
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21534] 8236 is actually the photo of the sun drying station 
+
+Replace this in the FDA FSVP document
+
+
+### 🤖 Autopilot
+
+Gary confirms IMG_8236 = the **sun drying station** photo — he wants it swapped into the FSVP report (replacing IMG_8277 in the drying/facility sections). Let me find the current build script and the PDF so I can make the swap correctly:
+
+
+### 🤖 Autopilot
+
+The current build script is `build_site_visit_v3.py` (built the 4.58 MB signed PDF). Let me inspect its structure — where IMG_8277 is referenced and how photos are embedded:
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the v3 build script to see how the photos are laid out on pages 4–6 (captions, section mapping):
+
+
+### 🤖 Autopilot
+
+Let me read the remainder of the script — the photo pages and declaration:
+
+
+### 🤖 Autopilot
+
+The artifact nesting is mangling the file. Let me just read the tail of the script directly on disk — the photo pages + declaration:
+
+
+### 🤖 Autopilot
+
+Gary's correction is clear: **IMG_8236 (b1fed20b) = the sun drying station photo** — it belongs as Facility C's drying evidence, replacing IMG_8277's role there (IMG_8277 stays as the fermentation-station reference). Let me verify the converted JPG's EXIF, then rebuild the report with the swap:
+
+
+### 🤖 Autopilot
+
+Gary's correction: **IMG_8236 is the sun drying station photo** — the document currently mislabels IMG_8277 as covering both drying & fermentation. The right partition is: **B (fermentation) → IMG_8277**, **C (drying) → IMG_8236**. IMG_8236 has full EXIF (GPS -3.630328/-53.652011, alt 181.1, 11:41:58 local, sha256 `cdd6bae5…` byte-identical to the archive).
+
+Let me build v4 with the swap:
+
+
+### 🤖 Autopilot
+
+Some replacements missed because the file uses literal unicode (— ·) not escapes. Let me fix the remaining spots directly with literal text replacements:
+
+
+### 🤖 Autopilot
+
+Let me fix the exact strings by reading actual line content:
+
+
+### 🤖 Autopilot
+
+Now I see the exact strings (with `\u2014` literal escapes inside the source for some). Let me fix L113 and L124 precisely:
+
+
+### 🤖 Autopilot
+
+All fixed. Now build v4:
+
+
+### 🤖 Autopilot
+
+Built (4.66 MB). Let me verify the swap rendered correctly — page 4 should now show IMG_8236 with its own GPS/sha256, and Facility C should reference the drying station photo:
+
+
+### 🤖 Autopilot
+
+The swap is verified:
+- **p4** = "Photographic Evidence 1 — Sun Drying Station (IMG_8236)" with its own EXIF metadata (11:41:58, sha256 cdd6bae5)
+- **p3** Facility C remarks reference IMG_8236 drying photo; Facility B keeps IMG_8277 as fermentation reference
+- p1 still shows 8277 (as the representative GPS coordinate in the header table — correct, it's the cluster representative, but let me double check whether that should note 8236 too)
+
+Let me send the corrected v4 to Gary:
+
+
+### 🤖 Autopilot
+
+## Done — IMG_8236 (sun drying station) now in the document ✅
+
+Sent as **message 21816** (v4, 6 pages, saffron theme).
+
+**What changed:**
+| Section | Before | After |
+|---|---|---|
+| **p4 Photographic Evidence 1** | IMG_8277 "Drying & Fermentation Station" | **IMG_8236 "Sun Drying Station"** — with its own verified EXIF: GPS -3.630328, -53.652011 (alt 181.1 m), 11:41:58 local, sha256 `cdd6bae5…` byte-identical to archived original |
+| **Facility C (Drying)** remarks | cited IMG_8277 | cites **IMG_8236 photo (p.4)** + walk video clips |
+| **Facility B (Fermentation)** | IMG_8277 + clips | unchanged — **IMG_8277** stays as fermentation reference (13:29:07) |
+| p1 header | IMG_8277 representative GPS | unchanged (cluster representative; noted) |
+
+So now each facility has its correct evidence: **A** → tree-inspection photo (p5), **B fermentation** → IMG_8277, **C sun drying** → IMG_8236.
+
+Ready to **file** when you say go: commit PDF to `fda_fsvp/suppliers/cepotx/20260903_CEPOTX_site_visit_to_raimundo_geniza_farm.pdf`, update `entity.json` `source_documents`, open the PR.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → cd /tmp && ls -la CEPOTX_site_visit*.pdf *.py 2>/dev/null | head -20; echo "---build scripts---"; ls -la /tmp/*.py 2>/dev/null | head; ls -l; cd /tmp && sed -n '120,260p' build_site_visit_v3.py; cd /tmp/tg_attachments && python3 <<'PYEOF' from PIL import Image from PIL.ExifTags import TAGS, GPSTAGS f = "b1fed20b7dc24811812bda4be15623; …(+6 more)
 
