@@ -1180,11 +1180,13 @@ Good question — and the honest answer is: **not reliably yet**. Let me verify 
 ### 🤖 Autopilot
 
 Let me check what actually exists in the context about spinning up new Sophias and daemons — searching the provisioning docs and the farm-media-daemon repo README reference:
+[2 tool result(s) compacted: search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 No direct hits on Sophia provisioning docs. Let me check the SOPHIA_HANDOFFS trigger protocol and the FARM_MEDIA_DAEMON_PLAN to see what a spawning LLM is told today:
+[2 tool result(s) compacted: read_context_file, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1445,4 +1447,71 @@ Archive-worker status: extracted-dir pass complete (374/374 archived + verified 
 ———
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #913 on agentic_ai_context merged successfully (sha: ab5f25715d3b7b214cc37231d9f3da16a7498634). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] [Handoff context — this Telegram topic (thread 19892) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn
+
+**Merged agentic_ai_context #913** (sha `ab5f257`) — the universal **ZIP HANDLING RULE** is now on `main` of the runbook that every Sophia instance reads. It's codified in `ME
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] ??
+
+
+### 🤖 Autopilot
+
+👍 "go" received — executing next unit: reconcile #908's previews row (GitHub → S3 hot, per your decision) then merge it. First I need the PR's head branch name (for the write) and the exact current row text:
+
+
+### 🤖 Autopilot
+
+The PR head branch is `schema/raw-s3-previews-captured-at`, and #908's "Where things land" table still routes previews to GitHub `farm-media-raw` — which predates your S3-hot decision. I'll surgically fix that one row on the PR's own branch (preserving its other changes), then merge. Checking for a GitHub token on the box to push the branch edit:
+
+
+### 🤖 Autopilot
+
+Clone succeeded (read PAT works). Now editing the previews row on the PR's branch to route previews → S3 hot (your decision), then pushing with a write credential from `.env` (values never printed):
+
+
+### 🤖 Autopilot
+
+The previews row is now fixed on #908's branch (previews → S3 hot). Merging #908:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Merged agentic_ai_context #908** (sha `f57271d`) — but first reconciled it to match your decisions:
+
+1. **Found the drift**: #908's "Where things land" table still routed Frame previews to GitHub `farm-media-raw` — predating your voice decision that previews land in **S3 hot**. Its raw-originals row was already correct (S3 `media.agroverse.shop`).
+2. **Patched the PR's own branch** (`schema/raw-s3-previews-captured-at`): previews row now reads → **S3 `media.agroverse.shop` `previews/<farm>/<basename>.jpg` (HOT — Standard, no lifecycle)** with note that the manifest `preview` field references the S3 URL for fast explorer rendering.
+3. **Merged #908** — MAP runbook now authoritative on: raw MOV originals → S3 `raw/<farm>/`, frame previews → S3 `previews/<farm>/` (hot), sidecar schema includes `captured_at`/`raw_url`/`preview`.
+
+The runbook now matches the live worker behavior exactly (374 raws + 374 previews already in S3).
+
+## RESUME HERE →
+Next unit — **build zip-root streaming** in `farm-media-daemon/farm_media_archive.py`:
+1. Extend the worker with a `zip:` root type: open each farm zip (17 zips, ~998 media entries), iterate entries, skip `__MACOSX/` + `._` junk, stream each real file to temp (never whole-zip extract — disk ~86%), run the standard pass (sha256 → captured_at → ffmpeg preview frame → upload `raw/<farm>/` + `previews/<farm>/` → marker), never upload the zip itself (rule #913).
+2. Local test against one zip's first file → open PR → merge → deploy to box → `systemctl restart farm-media-archive` → watch `/tmp/farm_media_archive.log` drain zip contents.
+3. Then: manifest update pass (`raw_url`/`preview_url`/`captured_at`/`sha256` folded in) → deletion waves 1+2 with your explicit go.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → curl GitHub API for PR #908 head ref (`schema/raw-s3-previews-captured-at`); cloned PR branch; patched Frame previews row (GitHub farm-media-raw → S3 hot `previews/<farm>/`) via python assert-once replace; committed + pushed (rc=0, creds from .env never printed).
+• `merge pr` → ✅ PR #908 on agentic_ai_context merged successfully (sha: f57271d570c542837ddfee369ba4da5457ddb391). Pull Request successfully merged
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×3 → curl -s https://api.github.com/repos/TrueSightDAO/agentic_ai_context/pulls/908 | python3 -c "import json,sys; d=json.load(sys.stdin); print(; grep -oE "^[A-Z_]*(GITHUB|GH|TOKEN)[A-Z_]*" /opt/truesight_autopilot/.env 2>/dev/null | sort -u; echo "---"; cd /tmp && rm -rf ctx908 && git; cd /tmp/ctx908 && python3 - <<'EOF' import re p='MEDIA_ARCHIVE_PIPELINE.md' s=open(p).read() old="| Frame previews (JPG) | GitHub repo **`fa
+• `merge pr` → ✅ PR #908 on agentic_ai_context merged successfully (sha: f57271d570c542837ddfee369ba4da5457ddb391). Pull Request successfully merged
 
