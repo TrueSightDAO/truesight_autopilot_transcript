@@ -328,6 +328,7 @@ Lint passes; formatting needs a fix. Running the formatter, then a **real end-to
 The smoke test works — zip-root streaming is functional (dedupe-vs-S3 correctly recognized the 3 rancho files already archived from the extracted-dir pass, so it skipped them instead of re-uploading; state file written). The 3 entries were size-matched as already-in-S3, proving the dedupe path; the upload path is the same `archive_one` already proven live for 374 files.
 
 Now creating the PR with the worker changes + config docs. Let me stage and open it via the repo's real git flow:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -510,4 +511,59 @@ Yes, exactly right. The zip streaming code is fully merged into the main branch 
 So the codebase on GitHub main and the code running on the box are identical — it's not some unreviewed branch floating around. And the two documentation rules that govern it, the zip handling rule and the media archive pipeline, are also merged into the context repo on main.
 
 The only thing that is *not* on GitHub is the runtime config with the 17 zip locations — that stays local on the server, which is correct, since it points to files that only exist on that machine. Want me to also drop that example config into the repo so a future Sophia can see the format?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] Yes
+
+
+### 🤖 Autopilot
+
+Let me look at the current example config on GitHub and the live config structure so the example is accurate:
+
+
+### 🤖 Autopilot
+
+The example config needs a `zip:` root example so future Sophias see the format. Opening the doc PR:
+
+
+### 🤖 Autopilot
+
+Done — and per the workflow, this is a docs-only PR I can self-merge since your "go" authorizes it:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**farm-media-daemon #15 opened + merged** (sha `f7c7bc6`) — `config.yaml.example` now documents both archive-root forms:
+
+- **Form 1 — extracted dir** (`path:`): existing entries kept
+- **Form 2 — zip root** (`zip:` + `extensions:`): new commented block showing the exact live format (`farm_id: cacao-variety-parap`, `zip: /home/ubuntu/cacao_variety_parap.zip`), plus a note binding it to the ZIP HANDLING RULE — archive each zip **entry** individually (never the blob), junk skipped, state file `<zip>.archive.json` written per zip
+
+This means a future Sophia cloning the repo sees the zip-root format in the documented template, matching the live box config — the only remaining local-only artifact is the actual runtime file (which correctly stays off GitHub since it contains machine-specific paths).
+
+## RESUME HERE →
+Back to the running drain. The zip archive is a **background job** still in progress on the box (~10 entries when last checked, ~998 total minus dedupe). Next units when you're ready:
+1. **Check drain status**: `sudo tail -20 /tmp/farm_media_archive.log` + sum the `.zip.archive.json` state files — expect all 17 state files + near-full entry counts when done (~30–60 min total)
+2. **Manifest update pass**: fold `raw_url`/`preview_url`/`captured_at`/`sha256` into per-farm manifests in `farm_media_manifests/` so GitHub is authoritative
+3. **Deletion waves** (extracted dirs → then zips) — each with your explicit go after S3 + manifest verification
+
+———
+**✅ Done this turn — actions taken:**
+• `read_repo_file` → config.yaml.example (had only extracted-dir root examples, no zip form)
+• `ssh run` → head of live config (shows zip root `cacao-variety-parap` at line ~55 — the format to mirror)
+• `git_push_changes` → farm-media-daemon PR #15 (docs: show zip-root format in config.yaml.example)
+• `merge pr` → ✅ PR #15 merged (sha: f7c7bc605cc250c7bb9cdc4260f2a06fbb6f0bde)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → head -60 /opt/truesight_autopilot/media_archive_daemon_config.yaml
+• `merge pr` → ✅ PR #15 on farm-media-daemon merged successfully (sha: f7c7bc605cc250c7bb9cdc4260f2a06fbb6f0bde). Pull Request successfully merged
 
