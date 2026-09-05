@@ -442,21 +442,30 @@ Got it — you want me to pin down which sub-coop **Fazenda Cleide** (the closes
 ### 🤖 Autopilot
 
 entity.json is revealing: among CEPOTX's source farms, **Santa Anna is explicitly tagged COOPOXIN** (site code B-06-58) and **Raimundo is tagged COPOPS** (U-06-07) — but Cleide isn't explicitly tagged. However Cleide carries the same **B-06-** code family as Santa Anna. The authoritative check is the Cleide site-visit PDF itself. Let me download it and grep for the sub-coop name.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Both PDFs downloaded. Now let me grep inside them for the sub-cooperative names.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Santa Anna PDF is ReportLab-generated (has a real text layer); Cleide appears to be a scan (only "Altamira" in its limited OCR layer). Let me extract the Santa Anna text properly — it's the model for how Cleide-family farms (B-06) are registered.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the confirmation — the Santa Anna PDF (the B-06 family model, closest-in-records analog) explicitly states **Sub-cooperative: COOPOXIN**, site code **B-06-58**, registered owner **Ana Lucia Araujo de Sousa**. Now let me check the Cleide PDF (the actual closest farm) more thoroughly — it may have a text layer under the scans.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -517,26 +526,31 @@ One flag: our shop pages label Cleide as "Altamira municipality" while the FSVP 
 ### 🤖 Autopilot
 
 Gary's confirming the affiliation — recording Dona Rosa as **COOPOXIN**. Before I touch any record, let me pull the exact SOP and the canonical places where farm/sub-coop affiliations live so the annotation lands in the right file with the right format.
+[3 tool result(s) compacted: read_context_file, search_context, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The governor has confirmed the affiliation. Per Step Zero, governor confirmation is the authoritative link — but we're pre-registration (no legal name/CNPJ/plot yet), so the right home for this is the cross-session backlog, not the FDA/plots registries. Let me check OPEN_FOLLOWUPS.md for format and duplicates.
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I have the format. Let me add a Pending entry for the Dona Rosa / COOPOXIN affiliation — the zip is analyzed, the attribution is governor-confirmed, but the actual farm listing work is a distinct future unit (needs legal name/CNPJ + plot registration + media archive + profile). This goes in the backlog so it survives across sessions.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Confirmed and recorded. The right home for this right now is the cross-session backlog (OPEN_FOLLOWUPS.md) — we have governor-confirmed attribution but no legal name/CNPJ yet, so a full FSVP entity or plot row would jump the Step Zero gate. Filing the lead with everything established so far:
+[1 tool result(s) compacted: git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 PR opened. Merging it now so the affiliation is recorded in the canonical backlog (governor's "go" authorizes merging my own housekeeping PRs):
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -585,11 +599,13 @@ https://github.com/TrueSightDAO/agentic_ai_context/blob/main/AGROVERSE_SUNMINT_F
 ### 🤖 Autopilot
 
 Good — the media zip is analyzed and the affiliation is recorded; onboarding can start. Let me first re-run the Step Zero gate against the SOP checklist, and prep the one thing that's un-gated: the convex-hull plot ring from the GPS originals (ready for Step 2 the moment the name is confirmed).
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The hull is computed — 45 unique GPS points collapsing to a clean 6-vertex ring, **DR candidate: centroid −3.4893 / −52.9669, ~0.14 ha footprint** (tight cluster — likely the yard/processing area; CAR/walk would expand it later, matching `boundary_authority: approx`). Now let me mirror the exact registry formats so the plot row + geojson + farms-index entries are ready to write the moment the gate is confirmed.
+[2 tool result(s) compacted: http_fetch, http_fetch — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -680,4 +696,81 @@ Say "go" (or adjust any field) and I'll write the row, regenerate, and push both
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×4 → cd ~/fazenda_dona_rosa_work 2>/dev/null || { mkdir -p ~/fazenda_dona_rosa_work && cd ~/fazenda_dona_rosa_work && unzip -o -q ~/fazenda_dona_; echo "===HOME dirs==="; ls -d ~/sunmint_work ~/sunmint ~/fazenda_dona_rosa_work 2>/dev/null; echo "===SA keys==="; ls -la /opt/truesight_aut; ls -la ~/sunmint_work/scripts/ ~/sunmint_work/farms/ ~/sunmint_work/plots/ 2>/dev/null; echo "===HEAD build_plots_geojson.py==="; head -120 ; …(+1 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] [Handoff context — this Telegram topic (thread 21167) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking… (round 7)
+
+
+### 🤖 Autopilot
+
+👍 Go received — executing the DR-P1 registration plan. First, quick context checks in parallel: the handoff manifest (per directive), the exact hull ring from the media, and how `farms/index.json` is built.
+
+
+### 🤖 Autopilot
+
+👍 Go received. Executing the DR-P1 registration. First, recompute the exact hull ring from the media GPS (authoritative — don't trust my earlier rounded memory) and fetch the farms-index generator:
+
+
+### 🤖 Autopilot
+
+👍 Go received — executing the DR-P1 registration unit. All context is in place (hull ring confirmed from the 45 unique GPS points; both generators read the `SunMint Plots` tab). Executing: append the sheet row (write SA) → regenerate both index files → verify.
+
+
+### 🤖 Autopilot
+
+DR-P1 row appended and both indexes regenerated (11 plots, 10 farms). Now verify the local output contains DR-P1 correctly and the previous features survived:
+
+
+### 🤖 Autopilot
+
+Both files verified — DR-P1 present with correct ring and notes; all prior plots/farms intact; new farm `fazenda-dona-rosa` in the farms index. Now push both generated files to the sunmint repo (api-only data repo → Contents API writes to main):
+
+
+### 🤖 Autopilot
+
+Both files verified. Now pushing to the sunmint repo (api-only data repo → Contents API writes to main, per repo classes):
+
+
+### 🤖 Autopilot
+
+✅ **DR-P1 registered end-to-end.** The Fazenda Dona Rosa plot is now live in the SunMint registry.
+
+## What I did this turn (go received 👍)
+
+**1. SunMint Plots sheet — row appended** (spreadsheet `1qbZZhf…`, tab `SunMint Plots`, write via `agroverse_qr_code_manager` SA):
+- `DR-P1` / `fazenda-dona-rosa` / "Fazenda Dona Rosa Plot 1 (processing yard)" / 0.14 ha / proposed / approx / owner **Rosa Wronscki (Darcírio Wronscki) — COOPOXIN / CEPOTX** / Medicilandia, Para / verified 2026-09-05 / full notes + closed ring
+
+**2. Both registry files regenerated** from the sheet (mirroring the RG-P1 build):
+- `plots/index.geojson` → **11 plot features** (all 10 prior plots preserved + DR-P1 with the 6-vertex hull ring from 45 unique GPS points, centroid −3.489300 / −52.966902)
+- `farms/index.json` → **10 farms** (+ `fazenda-dona-rosa`, plot_count 1, total 0.14 ha)
+
+**3. Pushed to sunmint main** (api-only data repo → Contents API):
+- `plots/index.geojson` — commit `7887f54` — [diff](https://github.com/TrueSightDAO/sunmint/commit/7887f5481503f0306b829bfcbd1ad57d7c52348e)
+- `farms/index.json` — commit `d9997bb` — [diff](https://github.com/TrueSightDAO/sunmint/commit/d9997bb282fbd6752b29136687121c5e65a123a6)
+
+The polygon will now render on the impact map automatically (the map reads `plots/index.geojson` from the repo/CDN).
+
+## RESUME HERE → next unit(s) per AGROVERSE_SUNMINT_FARM_LISTING.md
+
+Plot registration (the data layer) is **done**. Remaining steps in the farm-listing process, in order:
+1. **Media archive** — compress + upload the 35 HEIC photos to `sunmint/images/DR-P1/` (raw MOVs stay out of git per §3.8; they're already queued for the farm-media daemon lane)
+2. **Farm profile page** on Agroverse (`agroverse.shop/farms/fazenda-dona-rosa-para` or similar) + `FARM_SLUG` map entry in `truesight_me_beta/sunmint.html` so the plot popup links resolve (see SUNMINT_PLOTS_REGISTRY.md §5b)
+3. **Anchor on-chain** — a geo-located ledger event at the DR-P1 centroid for ledger identity
+4. **CEPOTX site code** — obtain (e.g. B-06-xxx) via Jedielcio to firm the COOPOXIN organic line, then update the owner string
+
+Want me to continue with unit 1 (media archive) in the next turn, or pause here for review?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → appended DR-P1 row to SunMint Plots sheet (idempotent check) + regenerated `plots/index.geojson` (11 features) + `farms/index.json` (10 farms)
+• `upload_file_to_github` ×2 → sunmint `plots/index.geojson` (sha `7887f54`) + `farms/index.json` (sha `d9997bb`)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×4 → cd ~/sunmint_work && echo "===farms/index.json==="; cat farms/index.json; echo; echo "===build_farms_index.py head==="; head -80 scripts/bui; cd ~/fazenda_dona_rosa_work && echo "===extract GPS from all media===" && exiftool -r -q -p '${GPSLatitude#;};${GPSLongitude#}' -ext HEIC -e; set -e # 1. fetch missing farms-index generator into local checkout curl -sL -o ~/sunmint_work/scripts/build_farms_index.py https://raw.gith; …(+1 more)
+• `upload file to github` ×2 → https://github.com/TrueSightDAO/sunmint/blob/main/plots/index.geojson; https://github.com/TrueSightDAO/sunmint/blob/main/farms/index.json
 
