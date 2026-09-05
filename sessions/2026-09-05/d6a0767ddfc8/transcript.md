@@ -11,65 +11,11 @@
 ### 🧑 Governor
 
 [CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
-1 earlier turn(s) in this thread were compacted; 0 tool call(s) executed across them. Full detail is in the session transcript repo.
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=21005] Status
-
-
-### 🤖 Autopilot
-
-Checking the background transcription job and OCR results.
-[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-STT is 15/31 done already. Reading the transcripts for the names now.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-STT is at **15/31** (~1 file/min on this box — the rest land in ~15 min). Results so far: farm-walk chatter in PT (tatajuba tree, gamel(eira), spring water, "ceremonial cacao"), **no "Antonio" yet**. The HEIC OCR phase hasn't started (it runs after the STT loop in the bg script), so let me run it in parallel now rather than wait.
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-The launch call timed out at 60s (likely the heredoc/nohup interplay held the shell open). Checking whether the OCR job actually started and continuing to monitor STT:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Both jobs progressing — STT 18/31, HEIC OCR 8/16 (a tesseract is mid-run now). Let me check partial results for name hits:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-**Status — still hunting the name; here's exactly where it stands:**
-
-| Source | Coverage | "Antonio" / "artista"? |
-|---|---|---|
-| WhatsApp screenshots (7 PNGs) | ✅ Fully OCR'd (4× upscale, PT+EN) | ❌ Not present — only the Santa Rosa farm facts (30 ha, split among children, coop loyalty, 2005 org, "40 years") |
-| Video speech (STT via faster-whisper, PT) | **18/31 MOVs done** | ❌ So far only farm-walk chatter (tatajuba, gamel(eira), spring, "ceremonial cacao") — no names |
-| HEIC photos (full-res OCR) | 8/16 done | ❌ Natural scenes, no readable text/signs |
-| EXIF Artist/Author fields | ✅ All 56 checked | ❌ Only "Screenshot" on the PNGs |
-| Repos/registry (Antonio, artista) | ✅ Org-wide search | ❌ Zero farm matches |
-
-**What this tells me:** "Antonio" is most likely **spoken on the video** (someone introducing "seu Antônio" or him naming himself) — and it may still be in the **13 remaining MOVs** (another ~12 min of STT on this box). Caveat: Whisper's PT output is rough (e.g. "Nong Chang é o de Santa Rosa" is clearly a mis-hear), so if the name *is* spoken it may come out mangled (Antônio → "O Tonio" / "Antoneo"…) — I'll read the transcripts manually rather than just grep, and cross-check against the WhatsApp + "artista/arte" PT variants.
-
-I'll keep polling as the job finishes. **One thing that would shortcut all of this:** if you know roughly *where* you saw "Antonio" (a video intro? a photo of a document? the WhatsApp chat?), say the word and I'll go straight at that file. Otherwise I'll report back when STT completes with the full transcript scan.
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
+1 earlier turn(s) in this thread were compacte:
 • `ssh run` ×6 → echo "=== bg job log ==="; cat /tmp/sr_stt_job.log 2>/dev/null; echo; echo "=== job running? ==="; pgrep -af sr_stt_job.sh | head -3; pgrep ; echo "=== HEIC OCR text results ==="; grep -ilE "antonio|ant[oô]nio|artista|artist|rosa|assinatura|nome" /tmp/sr_heic_fullres/*.txt 2>/dev/n; echo "=== STT transcripts: dump all ==="; for f in /tmp/sr_stt/*.txt; do echo "----- $(basename $f) -----"; cat "$f"; echo; done; echo; echo; …(+3 more)
 
-
-### 🧑 Governor
+---
 
 This is the photo of the farmer and his wife. The names are in the photo
 
@@ -256,31 +202,37 @@ The geojson artifact is nesting too deep to read cleanly. Let me pull it directl
 Registry fully mapped. **Key corroboration:** Santa Rosa's GPS cloud (**-3.6338…-3.6363 / -53.6677…-53.6706**) sits **~2 km from RG-P1** (Raimundo & Geniza: -3.6294…-3.6306 / -53.6518…-53.6522, Uruará) — perfectly consistent with your statement that Antônio is in the **same COPOPS sub-coop as Raimundo** (COPOPS = Uruará co-op). They're neighbors.
 
 Let me compute the actual convex hull from the Santa Rosa GPS points so the proposed registry record has real numbers:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 exiftool isn't in the cwd-relative path for globs (files are in ~/santa_rosa_work but maybe uppercase extensions / already-converted jpgs). Let me check what's actually in the work dir and where the GPS-bearing originals are.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Files are uppercase `.HEIC/.MOV/.PNG` — globs were fine but exiftool returned no GPS. The earlier GPS extraction used a different method. Let me re-check how GPS was extracted before and re-run the hull computation with the working method:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The GPS is in **DMS format** (not decimal) — my regex only matched decimal. And the earlier GPS cloud values I quoted (-3.6338…-3.6363 / -53.6677…-53.6706) — let me recheck: this HEIC is at **3°38'4.56"S = -3.6346, 53°40'14.16"W = -53.6706**. Consistent with the cloud. Let me recompute the hull parsing DMS properly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 My regex isn't matching because exiftool `-s` with `-GPSLatitude` prints `3 deg 38' 4.56" S` but my capture may have the raw `-s` output differently (actually the earlier run showed `GPS Latitude` without the `-s` tag names). Let me debug the actual exiftool output format:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the regex needed to allow spaces before the colon. Fixing and recomputing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -361,16 +313,19 @@ A redeploy happened a bit ago and likely killed your in-flight turn (confirmed -
 ### 🤖 Autopilot
 
 Understood — that's an important data point before I register anything. Let me pull exactly what our records say about "Dona Rosa"/DR-P1 vs this "Santa Rosa" package before drawing a conclusion. Checking the backlog entry, the registry record, and any plan file for this thread in parallel:
+[4 tool result(s) compacted: search_context, search_context, search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full Dona Rosa backlog entry — it may clarify whether that item is actually *this* farm under a garbled name (which would explain your "only one" point).
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good flag to check before I register anything — let me verify what "Santa Rosa" vs "Dona Rosa" actually exist on the box and in the registries, so we don't create or duplicate the wrong thing. Checking in parallel:
+[4 tool result(s) compacted: ssh_run, ssh_run, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -420,61 +375,73 @@ TTL a | 97 } Portuguese (Brazil) U -06-06 Raimundo =D a English ee ee Portuguese
 ### 🤖 Autopilot
 
 GO received — executing the full SR-P1 SOP. First, per protocol let me check the handoff manifest for this thread's plan linkage and pull the SOP runbook so I execute registry steps exactly:
+[3 tool result(s) compacted: search_context, search_context, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 GO received and SOP loaded. Executing the SR-P1 onboarding in order. First, **Phase A — capture current registry state** (plots geojson, farms index, sheet schema, page template) so my rows/PRs match conventions exactly:
+[3 tool result(s) compacted: search_context, ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Registry state captured — 11 plot features, 10 farms. Let me get a compact view of all plot properties (IDs, farm_ids, conventions) plus the current SunMint Plots sheet and the per-plot file convention before I write SR-P1:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 U-06-07 (Raimundo & Geniza) is the perfect template — same sub-coop, same region. Let me pull its full feature JSON to mirror field-for-field:
+[2 tool result(s) compacted: ssh_run, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The sheet ID from the doc was a stub/example. Let me find the real SunMint Plots spreadsheet ID (from prior plans/config) and check the U-06-07/RG feature is complete (I see U-06-07 and DR-P1; note the geojson has 11 features but my earlier list only showed 5 — the parse died early). Let me get the true sheet ID and full feature count:
+[3 tool result(s) compacted: search_context, search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The real workbook is `1qbZZhf-_7xzmDTriaJVWj6OZshyQsFkdsAV8-pyzASQ`. Let me read the SunMint Plots tab there (U-06-07's row) so SR-P1's row matches column-for-column:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Sheet schema captured (16 data columns + invalidate trio). Now let me read the U-06-07 row (Raimundo & Geniza — same sub-coop template) to mirror its exact row format:
+[1 tool result(s) compacted: read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The tab only has 16 rows. U-06-07 must be in a different tab or appended later. Let me list all tabs and find where U-06-07 lives:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 SA key not at that path. Let me locate the actual credentials file on the box:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The full-disk find is slow. Let me target likely config locations:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Key files found: `agroverse_qr_code_manager_gdrive_key.json` is in `/opt/truesight_autopilot/config/google/` (note the `_gdrive_key` suffix vs the SOP's path). Let me list the sheet tabs via that key and locate where U-06-07 rows live (the plots may be in a larger sheet, or the geo rows are written by the GAS pipeline):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Found it — the plots live in **SunMint Plots** (rows: 16) but the sheet is the *canonical registry*, while U-06-07 / RG / DR were added via the **`Farm Boundary Evidence`** and **`SunMint Registered Farms`** tabs (1000 rows — the GAS pipeline source). The `SunMint Registered Farms` tab is the actual farm registry. Let me read both to see exactly where U-06-07 and its farm row are so SR-P1 appends in the right places:
+[2 tool result(s) compacted: read_google_sheet, read_google_sheet — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -566,4 +533,127 @@ One open item for you to confirm when convenient: **farm display name** — shee
 **✅ Done this turn — actions taken:**
 • `ssh run` ×20 → cd /tmp && echo "=== plots/index.geojson (current) ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geo; cd /tmp && echo "=== farms/index.json ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/farms/index.json | python3 -; cd /tmp && curl -s https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geojson | python3 -c " import json,sys d=json.loa; …(+15 more)
 • `upload file to github` ×2 → https://docs.github.com/rest/repos/contents#create-or-update-file-contents
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21005] [Handoff context — this Telegram topic (thread 21005) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Good progress — registry core done and pushed. On display name: use 'Fazenda Santa Rosa' (no 'Para' suffix), matching the convention on Dona Rosa, Cleide, etc. Go ahead and continue: SOP §2 (on-chain plot event), §3 (media archive: 31 MOV + HEICs), §4 (farm page clone PR to beta). Prod sync still on hold for a separate explicit go.
+
+
+### 🤖 Autopilot
+
+GO received — resuming SOP §2–§4 with display name **"Fazenda Santa Rosa"** (no suffix). First, batch the context I need: the event docs for the on-chain plot event, the SOP runbook references, the current farms index names (to fix the display-name derivation), and the builder's name logic:
+
+
+### 🤖 Autopilot
+
+GO acknowledged — executing §2–§4 with display name **"Fazenda Santa Rosa"**. Key discovery from the builder source: `farms/index.json`'s `name` is **auto-derived** (`humanize(farm_id)`), so my `fazenda-santa-rosa-para` slug produced "Fazenda Santa Rosa Para". To match the Dona Rosa/Cleide convention cleanly, the fix is **farm_id → `fazenda-santa-rosa`** (sheet is canonical → rebuild → push). Batching: sheet fix + rebuild in one call, and pulling the SOP plan + processing doc in parallel:
+
+
+### 🤖 Autopilot
+
+Display-name fix verified locally: **fazenda-santa-rosa → "Fazenda Santa Rosa"** (matches Dona Rosa/Cleide convention). Pushing the corrected indexes to main, and in parallel checking how the sibling plot U-06-07 was submitted on-chain (to mirror the exact event format for §2):
+
+
+### 🤖 Autopilot
+
+Both corrected indexes pushed (commit `d476aa08` + `84a37aa3`). Now reading the full SOP runbook (`AGROVERSE_SUNMINT_FARM_LISTING.md`) to execute §2–§4 exactly as specified — especially the on-chain event format and the media/page steps:
+
+
+### 🤖 Autopilot
+
+SOP fully loaded — key conventions noted (COPOPS one-O spelling already correct in my row; §2 wants an on-chain geo event; §3 daemon flow; §4 clone + mandatory token-grep). Now let me (a) check how the sibling U-06-07 logged its on-chain audit event, and (b) inspect the daemon config + media staging so I execute §3 exactly:
+
+
+### 🤖 Autopilot
+
+Confirmed: 31 MOV + 18 HEIC + 7 PNG in `~/santa_rosa_work`, both daemons (`farm-media-daemon`, `farm-media-archive`) are running, and inbox has the pattern `raimundo-geniza-para` etc. I need the daemon's config to know the exact YAML shape + how existing farms are registered. Let me find it (systemd unit → ExecStart → config path):
+
+
+### 🤖 Autopilot
+
+Config found: `/opt/truesight_autopilot/media_archive_daemon_config.yaml`. Let me read it to learn the exact inbox/farm entry shape (so the SR entry matches):
+
+
+### 🤖 Autopilot
+
+Daemon config already knows `fazenda-santa-rosa` as an archive root (zip `fazenda_santa_rosa.zip`) — good, consistent with my corrected farm_id. But it has **no inbox entry** for YouTube upload yet (needed for §3). Executing in order:
+
+**§2 first — the on-chain plot event** (explicit Plot ID U-06-06, mirroring how RG/DR were logged), and in parallel scouting the §3 conversion path (existing sidecar schema + RG converter script):
+
+
+### 🤖 Autopilot
+
+§2 done — **on-chain FARM BOUNDARY EVIDENCE EVENT submitted successfully** (U-06-06, Fazenda Santa Rosa, 4.75 ha, 49 media).
+
+Now §3 — the sidecar schema is clear. I have the RG sidecar shape (title/description/tags) and converter scripts (`bomsucesso_work/convert.sh` + daemon py). Let me check the convert.sh convention and then batch-convert the 31 MOVs → MP4 with GPS re-inject into the SR inbox. First look at the converter + GPS-extract approach used for RG:
+
+
+### 🤖 Autopilot
+
+I have the full recipe. The convert.sh pattern is: ffmpeg MOV→MP4 + exiftool GPS re-inject, matching how RG's 14 were done. Executing the §3 conversion now — 31 MOVs → MP4 into the new SR inbox (long job — launching in background with a log, and I'll verify progress):
+
+
+### 🤖 Autopilot
+
+Conversion running (1 MP4 done in first 20s — 31 total, will take a while). While it converts, let me start **§4 (farm page clone)** in parallel — I need the current `agroverse_shop_beta` template + how RG's page was structured. First inspect the working page tree and the RG page (same sub-coop, closest analog):
+
+
+### 🤖 Autopilot
+
+No agroverse_shop checkout on the box (only agentic context + tokenomics). And conversion is at 1 MP4 — slow (~1/min, so 31 will take ~30 min). Let me check the git state and how to push to agroverse_shop_beta, plus monitor conversion:
+
+
+### 🤖 Autopilot
+
+Conversion proceeding (GPS re-inject working — "3 deg 38' 4.56" S, 53 deg 40' 14.16" W"). agroverse_shop_beta exists. For §4 I'll use `git_push_changes` (beta = normal PR flow). Let me fetch the current `rancho-maranta-para` template + the RG page structure to model the SR clone, while conversion continues in background:
+
+
+### 🤖 Autopilot
+
+The tree shows the convention clearly. Notable: farm dirs use **`<name>-para`** suffix (`raimundo-geniza-para`, `fazenda-dona-rosa-para`, `fazenda-cleide-para`) — so the SR page dir should be **`farms/fazenda-santa-rosa-para/`** (page slug ≠ registry farm_id `fazenda-santa-rosa`; the SOP §5 impact-map link needs a FARM_SLUG entry or matching slug). Let me pull the RG page (closest analog: same sub-coop, most recent build) as the clone base, plus its media.json, to model SR:
+
+
+### 🤖 Autopilot
+
+I now have the full page template structure. Given the turn budget and that this is a large multi-file clone, let me be strategic: pull the complete RG index.html + media.json to disk as the clone base (I'll adapt them for SR in the PR). Let me also check conversion progress, then assemble the §4 PR:
+
+
+### 🤖 Autopilot
+
+Converging to land a clean status — conversion is running in the background and §4 is a substantial multi-file build best done fresh next turn (I've used most of this turn's tool budget).
+
+## SR-P1 onboarding — status after your GO
+
+| Step | State | Detail |
+|---|---|---|
+| §1 identity | ✅ | Antônio & Graça — Fazenda Santa Rosa — CEPOTX/COPOPS — U-06-06 |
+| Registry (sheet + indexes) | ✅ pushed | farm_id **corrected to `fazenda-santa-rosa`** → display name now **"Fazenda Santa Rosa"** (no Para suffix, matches Dona Rosa/Cleide). `plots/index.geojson` commit `d476aa08`, `farms/index.json` commit `84a37aa3` |
+| **§2 on-chain** | ✅ **done** | **FARM BOUNDARY EVIDENCE EVENT submitted** — Farm "Fazenda Santa Rosa", Plot ID U-06-06, Is New Farm Yes, 4.75 ha, 49 media, boundary approx, source = governor-confirmed identity |
+| §3 media conversion | 🔄 **running** | 31 MOV → MP4 (ffmpeg + GPS re-inject via exiftool) into `~/media_archive_inbox/farm-media/fazenda-santa-rosa/`. GPS verified working (`3°38'4.56"S, 53°40'14.16"W`). **~2/31 done** — slow (~1/min), ~30 min total. Log `/tmp/sr_convert.log` |
+| §3 daemon config + restart | ⏳ next | after conversion: generate sidecars → add inbox entry to `/opt/truesight_autopilot/media_archive_daemon_config.yaml` → restart daemon → verify rc=0 + yt_ids |
+| §3 photos → raw | ✅ config-ready | daemon config **already has** `fazenda-santa-rosa` archive root (zip `fazenda_santa_rosa.zip`) → archive worker handles HEICs→S3 |
+| **§4 farm page** | ⏳ not started | clone `farms/raimundo-geniza-para/` (fetched to `/tmp/sr_page_base/`, 24.5 KB index + media.json + hero) → page dir `farms/fazenda-santa-rosa-para/` → token-grep + adapt → PR to beta |
+
+## RESUME HERE
+SR-P1 SOP §3–§4 mid-flight. §2 on-chain event **done**. MOV→MP4 conversion running in background (`/tmp/sr_convert.log`, inbox `~/media_archive_inbox/farm-media/fazenda-santa-rosa/`, 31 videos ~1/min). Next turn: **(a)** check conversion finished (31 mp4s) → for each, build sidecar `<name>.mp4.json` mirroring RG schema (farm_id `fazenda-santa-rosa`, title "Fazenda Santa Rosa — IMG_xxxx (Uruará, Pará)", description w/ CEPOTX/COPOPS + U-06-06, GPS from exiftool, duration via ffprobe, sha256, privacy public, tags cacao/agroverse/para/brazil) → **(b)** append inbox entry to `/opt/truesight_autopilot/media_archive_daemon_config.yaml` (farm_id `fazenda-santa-rosa`, path above, priority 1) → `systemctl restart farm-media-daemon` → verify `/tmp/farm_media_daemon.log` rc=0 + yt_ids written back → **(c)** pull any SR HEIC photo(s) for the page hero/gallery (convert HEIC→JPG) → **(d)** build §4 clone: `git_push_changes(agroverse_shop_beta)` creating `farms/fazenda-santa-rosa-para/index.html` + `media.json` (adapted from `/tmp/sr_page_base/`, replacing RG names/copy with Antônio & Graça / Fazenda Santa Rosa / U-06-06 / COPOPS; canonical/og URL `https://www.agroverse.shop/farms/fazenda-santa-rosa-para` once; literal UTF-8 Pará) + assets `fazenda-santa-rosa-hero.jpg` etc. → mandatory token-grep → PR merge → beta verify `https://beta.agroverse.shop/farms/fazenda-santa-rosa-para/` → **prod sync still needs your separate go**.
+
+**Open items for you (non-blocking):**
+1. §5 impact-map link: page slug `fazenda-santa-rosa-para` ≠ registry farm_id `fazenda-santa-rosa` → needs a **FARM_SLUG mapping** (or I keep farm_id with `-para`). I'll add the FARM_SLUG entry in the §4 PR unless you'd rather I register farm_id as `fazenda-santa-rosa-para` to match page slug like RG does.
+2. §6 FSVP entity (legal name/CNPJ/INCRA) + COPOPS site-code update in fda_fsvp — same follow-up list as Dona Rosa (needs legal name from you/original docs when available).
+
+———
+**✅ Done this turn — actions taken:**
+• `lookup_event_docs` FARM BOUNDARY EVIDENCE EVENT → contract: omit Plot ID only when unknown (we have U-06-06); include Is New Farm, Media URLs, Extracted GPS, Area Hectares
+• `submit_contribution` → **FARM BOUNDARY EVIDENCE EVENT for Fazenda Santa Rosa / U-06-06 submitted successfully**
+• `ssh run` ×12 → verified farm_id display-name derivation (`humanize` = "Fazenda Santa Rosa Para" from slug → fixed sheet B17 → rebuilt → pushed both indexes as "Fazenda Santa Rosa"); read daemon config (inbox schema + existing `fazenda-santa-rosa` archive root); scoped RG sidecar/convert conventions; launched background 31-MOV conversion
+• `read_context_file` HANDOFF_MANIFEST + AGROVERSE_SUNMINT_FARM_LISTING.md SOP
+• Fetched RG page template + media.json + hero to `/tmp/sr_page_base/` for the §4 clone
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×12 → echo "=== farms/index.json (live main) ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/farms/index.json | python3 ; cd /tmp && cat > /tmp/fix_sr_farmid.py <<'EOF' import os, json os.environ['GOOGLE_APPLICATION_CREDENTIALS'] = '/opt/truesight_autopilot/conf; echo "=== santa_rosa_work media ==="; ls ~/santa_rosa_work/ | head -60; echo "counts:"; ls ~/santa_rosa_work/*.MOV 2>/dev/null | wc -l; ls ~; …(+9 more)
+• `submit contribution` → Contribution submitted successfully.
 
