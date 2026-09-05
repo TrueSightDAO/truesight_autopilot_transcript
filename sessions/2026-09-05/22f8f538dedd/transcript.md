@@ -3170,6 +3170,7 @@ Everything else is green. 🟢
 ### 🤖 Autopilot
 
 Roger — filing the contribution events. Recon first: locate dao_client + confirm the CLI and credentials on the box.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3292,4 +3293,32 @@ Semuanya `TDG Issued: 0` (informational) sesuai konvensi 2026-08-24.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×2 → echo "=== 3 most recent contribution events in local ledger ==="; ls -t /home/ubuntu/scripts/_ledger/contribution_event/ | grep -v index | h; echo "=== check Edgar remote ledger (verify_public_signatures) for today's events ==="; curl -s "https://api.github.com/repos/TrueSightDAO/v
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] In English
+
+
+### 🤖 Autopilot
+
+Understood — here's the update in English.
+
+## ✅ The 3 contribution events were already submitted successfully
+
+All three were accepted by Edgar ("Contribution submitted" for each) in the previous turn:
+
+| # | Contribution | Contributor | Minutes | TDG |
+|---|---|---|---|---|
+| 1 | **Raw machine execution** — GPS extraction, 14 video transcodes + YouTube uploads, 8 PRs, 2 prod syncs, manifest | Sophia Truesight | 150 | 0 |
+| 2 | **Direct time (engagement/analysis)** — Bom Sucesso mis-attribution resolution, forensics, naming, COPOPS verification, SOP gap analysis | Sophia Truesight | 100 | 0 |
+| 3 | **Gary Teh direct time** — direction, naming ruling, attachments, go-signals | Gary Teh | 60 | 0 |
+
+All `TDG Issued: 0` (informational), per your 2026-08-24 convention — machine cost vs. human-equivalent attention vs. governor direction kept as separate events.
+
+**One thing to clarify:** in your earlier voice message you said "here are some in the contribution for this 3 lines of the chords" — I wasn't sure whether that meant:
+- **(a)** "go ahead and submit those 3 lines" (done ✅ above), or
+- **(b)** you have **specific numbers/values** you want to adjust for one or more of the three (e.g. different minutes or actual TDG awards).
+
+If it's (b), tell me the amounts and I'll submit the adjustments. Nothing further has been changed — awaiting your numbers if you have them.
 
