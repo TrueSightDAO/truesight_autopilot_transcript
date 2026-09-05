@@ -489,31 +489,37 @@ Replace this in the FDA FSVP document
 ### 🤖 Autopilot
 
 Gary confirms IMG_8236 = the **sun drying station** photo — he wants it swapped into the FSVP report (replacing IMG_8277 in the drying/facility sections). Let me find the current build script and the PDF so I can make the swap correctly:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The current build script is `build_site_visit_v3.py` (built the 4.58 MB signed PDF). Let me inspect its structure — where IMG_8277 is referenced and how photos are embedded:
+[1 tool result(s) compacted: read_local_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the rest of the v3 build script to see how the photos are laid out on pages 4–6 (captions, section mapping):
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the remainder of the script — the photo pages and declaration:
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The artifact nesting is mangling the file. Let me just read the tail of the script directly on disk — the photo pages + declaration:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary's correction is clear: **IMG_8236 (b1fed20b) = the sun drying station photo** — it belongs as Facility C's drying evidence, replacing IMG_8277's role there (IMG_8277 stays as the fermentation-station reference). Let me verify the converted JPG's EXIF, then rebuild the report with the swap:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -521,31 +527,37 @@ Gary's correction is clear: **IMG_8236 (b1fed20b) = the sun drying station photo
 Gary's correction: **IMG_8236 is the sun drying station photo** — the document currently mislabels IMG_8277 as covering both drying & fermentation. The right partition is: **B (fermentation) → IMG_8277**, **C (drying) → IMG_8236**. IMG_8236 has full EXIF (GPS -3.630328/-53.652011, alt 181.1, 11:41:58 local, sha256 `cdd6bae5…` byte-identical to the archive).
 
 Let me build v4 with the swap:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Some replacements missed because the file uses literal unicode (— ·) not escapes. Let me fix the remaining spots directly with literal text replacements:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me fix the exact strings by reading actual line content:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now I see the exact strings (with `\u2014` literal escapes inside the source for some). Let me fix L113 and L124 precisely:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All fixed. Now build v4:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Built (4.66 MB). Let me verify the swap rendered correctly — page 4 should now show IMG_8236 with its own GPS/sha256, and Facility C should reference the drying station photo:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -556,6 +568,7 @@ The swap is verified:
 - p1 still shows 8277 (as the representative GPS coordinate in the header table — correct, it's the cluster representative, but let me double check whether that should note 8236 too)
 
 Let me send the corrected v4 to Gary:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -591,11 +604,13 @@ https://github.com/TrueSightDAO/fda_fsvp/blob/main/suppliers/cepotx/20240702_CEP
 ### 🤖 Autopilot
 
 Gary wants my report to follow the format of the earlier Cleide farm site-visit PDF. Let me fetch that reference document and study its structure:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Cleide reference gives me the exact house format. Let me study its layout deeper — fonts, images, whether photos are embedded, and check what other CEPOTX site-visit PDFs exist so I match the canonical structure:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -614,21 +629,25 @@ Now I understand the canonical Cleide format. It's a **Google Docs–exported PD
 6. **Closing**: "Sincerely, Zhiwen Teh, President, TrueTech Inc (EIN), admin@, phone" — **signature as text, no image**
 
 The images appear to be photos embedded via Google Docs — small phone-camera images placed through the document. Let me check the other existing CEPOTX site visits (Santa Anna was 7 pages — let me look at how closely my current report already matches, and whether Santa Anna uses the same Cleide structure or my v3 report structure):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me get the **full** Cleide text (all pages complete — the earlier cut truncated) to replicate its exact information format, and check whether p7's images include a signature image:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Cleide reference is now fully clear — it's the **canonical house format**. Let me note its exact information structure and check what transcription tooling exists on the box (the walk videos likely carry narration that would fill the remark cells with real content, like Cleide has):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Cleide PDF is the house template. Let me check the most recent 2026 report (Santa Anna) to see whether it follows the same info structure — that tells me exactly what "the format" is for current reports — and list the fda_fsvp repo contents for any template files:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -643,11 +662,13 @@ The Cleide PDF is the canonical house format — and my current report (modeled 
 - **Closing**: Sincerely / Zhiwen Teh / President / TrueTech Inc (EIN) / admin@ / phone
 
 Key difference from my v4: Cleide's remark cells contain real supplier practice statements (harvest technique, insect control, fermentation controls, drying schedule), and photos are embedded per facility. Let me check whether the media/entity records hold that practice info before I restructure:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the actual entity.json contents and test whether the videos carry narration worth mining for the remark cells:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -655,11 +676,13 @@ Let me read the actual entity.json contents and test whether the videos carry na
 **Key discovery!** The videos carry the farm's actual practice narration in Portuguese. IMG_8235 says: *"Fermentação. Estação de sol."* ("Fermentation. Sun station.") — this is the record basis that lets me fill the remark cells with real content, exactly like the Cleide format does.
 
 Let me transcribe all 14 walk videos to capture the practice statements:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 13 of 14 extracted (IMG_8242 missing from local dir — let me check what's there and transcribe all 13):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -756,4 +779,60 @@ Let me check the flow — page 2 seems nearly empty (just the Facility A photo s
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×24 → cd /tmp/fsvp_examples && curl -sL -o cleide_20240702.pdf "https://raw.githubusercontent.com/TrueSightDAO/fda_fsvp/main/suppliers/cepotx/2024; cd /tmp/fsvp_examples && python3 <<'PYEOF' import fitz doc = fitz.open("cleide_20240702.pdf") print("pages:", len(doc), "| metadata:", {k:v ; cd /tmp/fsvp_examples && ls -la *.pdf; echo "---"; for f in santa_anna_20260830.pdf cleide_20240702.pdf; do echo "== $f =="; python3 -c " im; …(+21 more)
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=21534] [Handoff context — this Telegram topic (thread 21534) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## Converging — here's where things stand
+
+**Task:** Rebuild the Raimundo & Geniza FSVP site-visit PDF to follow the **Cleide reference format** (`20240702_CEPOTX_site_visit_to_cleide_farm.pdf`).
+
+**W
+
+
+### 🤖 Autopilot
+
+👍 Go received. Resuming: polish the v5 layout (Facility A photo spill), rebuild, deliver for review.
+
+**Step 1 — fix layout:** Facility A's photo spills onto a near-empty page 2. Since page 1 is already at capacity (intro + supplier bullets + facilities + Facility A table), the clean fix is to make p2 a deliberate evidence page with a larger photo, consistent with Facilities B/C.
+
+
+### 🤖 Autopilot
+
+Layout is now deliberate: **p1** = intro + supplier/facilities + Facility A observations, **p2** = Facility A evidence photo (130mm), **p3** = Facility B + IMG_8277, **p4** = Facility C + IMG_8236 + signed closing. Sending v5 for review:
+
+
+### 🤖 Autopilot
+
+## v5 delivered — Cleide reference format ✅ (message 21834)
+
+Rebuilt the report to match the **canonical Cleide information format** and sent it for your review.
+
+**Document structure (4 pages, saffron house theme):**
+| Page | Content |
+|---|---|
+| **1** | Title "CEPOTX site visit 3rd September 2026" + FSVP intro + **Supplier and visit dates** bullets + **Facilities visited** + Facility A (Cacao farm) observations table |
+| **2** | Facility A evidence photo (tree inspection) |
+| **3** | Facility B (Fermentation) — geo loc + observations table + **IMG_8277** (13:29:07, GPS -3.630242/-53.652017) |
+| **4** | Facility C (Drying) — geo loc + observations table + **IMG_8236** sun station (11:41:58, GPS -3.630328/-53.652011) + **signed closing** |
+
+**What's now record-backed (no more placeholders):**
+- **Hazard rows** mirror Cleide's exactly — Microbial Contamination (salmonella), Insect Infestation, Foreign objects; Undesirable Fermentation, Non-cacao materials in containers, Chemical contamination; Mold from improper drying, Foreign objects during drying, Residues
+- **Remarks filled from Raimundo's own narration** — transcribed all **13 walk videos** (faster-whisper, PT): farm history since 1980, IBD NOP organic cert since 2006, trinitário-forasteiro hybrid, fermentation barcaça upgrade *"to focus on quality cacao"*, *"estação de sol"* sun station, renovation planting with native shade species (comaru, andiroba, copaíba)
+- Each facility cites its media evidence (photo EXIF + walk-video IDs)
+
+**Awaiting your review.** If it looks right, say **"file it"** and I'll:
+1. Commit PDF → `fda_fsvp/suppliers/cepotx/20260903_CEPOTX_site_visit_to_raimundo_geniza_farm.pdf`
+2. Update `entity.json` `source_documents` with the new record
+3. Open the PR for merge
+
+**RESUME HERE** → on Gary's "file it": git_push_changes PR to `fda_fsvp` (PDF + entity.json), then report PR URL. (If he wants format tweaks, rebuild from `build_site_visit_v5_cleide.py` in `/tmp`.)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → cd /tmp && python3 - <<'PYEOF' # enlarge Facility A photo to 130mm so page 2 is a proper evidence page (like B/C at 120mm) src = open("build; cd /tmp && python3 <<'PYEOF' import fitz doc = fitz.open("CEPOTX_site_visit_to_raimundo_geniza_farm.pdf") print("pages:", len(doc)) for i,p
 
