@@ -108,6 +108,11 @@ Nº Código Nome Produtor Cooperativa
 
 ### 🤖 Autopilot
 
+[4 tool result(s) compacted: search_context, search_context, search_context, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Let me cross-check these rosters against what we already have in the records.
 
 
@@ -143,4 +148,26 @@ Per the runbook I'm **not deriving what the letter prefixes mean** (B/U/N — un
 3. **Nothing now** — treat as reference only.
 
 What would you like?
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21727] 14 N-06-50 Juliano Cruz Oliveira COOPCAO
+15 N-06-51 Janilson Cruz Oliveira COOPCAO
+16 N-06-52 Erivaldo Moreira de Sousa COOPCAO
+
+
+### 🤖 Autopilot
+
+Got it — appending to the COOPCAO capture:
+
+| Nº | Código | Nome Produtor | Cooperativa |
+|---|---|---|---|
+| 14 | N-06-50 | Juliano Cruz Oliveira | COOPCAO |
+| 15 | N-06-51 | Janilson Cruz Oliveira | COOPCAO |
+| 16 | N-06-52 | Erivaldo Moreira de Sousa | COOPCAO |
+
+So COOPCAO rows 1–16 now on record: N-06-02 → N-06-52. Interesting — the Cruz Oliveira family appears in several entries (José Paulo Cruz Oliveira N-06-49, Juliano N-06-50, Janilson N-06-51 — likely relatives in consecutive codes).
+
+Still holding the earlier question open: want me to (1) file the OPEN_FOLLOWUPS.md Pending entry with the full roster source + B-06-56 vs B-06-58 verification item, (2) start the COOPCAO fda_fsvp entity research, or (3) keep this as reference only?
 
