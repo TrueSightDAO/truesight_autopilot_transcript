@@ -39,31 +39,37 @@ Turn — [Telegram context: chat_id=-1003919341801, thread_id=21167] Did you rec
 ### 🤖 Autopilot
 
 Understood — those 3 are Dona Rosa footage that got misrouted into the Santa Rosa ingest folder. Let me check the current state (all 3 in yet?) and see how the daemon decided the folder, so I can move them correctly and flag the routing bug:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 3 videos are now in: **IMG_8281.mp4 (17.4 MB), IMG_8282.mp4 (22.4 MB), IMG_8286.mp4 (42 MB)** — all in the `fazenda-santa-rosa` folder, with ffmpeg still transcoding IMG_8286 (that's why it's growing). The source uploads are `.MOV`/direct and they're being converted to mp4. Let me read the daemon config to see how the folder routing works:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 3 videos are in (IMG_8281 ✅ 17.4 MB, IMG_8282 ✅ 22.4 MB, IMG_8286 ⏳ still transcoding at 42 MB — ffmpeg is running on it right now). Let me find the source `.MOV` files and figure out what mechanism chose the `fazenda-santa-rosa` folder:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 All 3 sources are in `~/santa_rosa_work/` (IMG_8281/8282/8286.MOV) — and interestingly there are **already transcription artifacts** (`/tmp/sr_stt/IMG_828*.txt`, wavs, frames) from ~17:05–17:11, likely from an earlier send that the redeploy killed. Let me read what's there and check the routing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Understood — 3 Dona Rosa clips that got routed to the Santa Rosa folder. Let me verify final state (is the IMG_8286 conversion done? has anything been uploaded?) and get the GPS/durations so I can explain exactly how the misroute happened:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the full config (it was truncated) to see how `santa_rosa_work` maps to the farm folders, and check the archive daemon's routing logic:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -265,4 +271,42 @@ So the Santa Rosa folder was **correct** — nothing was misrouted, and I should
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo "===MOVING 3 confirmed DR clips to fazenda-dona-rosa inbox==="; mv -v /home/ubuntu/media_archive_inbox/farm-media/fazenda-santa-rosa/IM; echo "===daemon log tail (did it pick up 8281/8282/8286?)==="; tail -15 /tmp/farm_media_daemon.log; echo; echo "===any youtube upload in fli; echo "===sidecars for 8282/8286 (yt_ids?)==="; cat /home/ubuntu/media_archive_inbox/farm-media/fazenda-santa-rosa/IMG_8282.mp4.json 2>/dev/n
+
+
+### 🧑 Governor
+
+ You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
+
+[Telegram context: chat_id=-1003919341801, thread_id=21167] I just sent them again
+
+
+### 🤖 Autopilot
+
+Let me check for the fresh uploads:
+
+
+### 🤖 Autopilot
+
+No video files landed in the last 10 minutes — only your voice messages (.oga) and some build artifacts. Let me search wider for where the resent videos would land:
+
+
+### 🤖 Autopilot
+
+Not seeing them yet — no video files have landed in the last 20 minutes. Here's what I checked:
+
+- **Telegram attachments folder** (`/tmp/tg_attachments/`) — only your voice notes (.oga), no video since the earlier batch
+- **Both farm inboxes** — Santa Rosa still processing its Sep 3 batch (up to IMG_8340), Dona Rosa untouched (38 clips, all 85xx)
+- **Anywhere on disk** — zero new `.MOV`/`.mp4` in the last 20 min
+
+Possibly they're still uploading (large files take a while over Telegram), or they went to a different chat/thread than this one.
+
+**Can you check on your side:**
+1. Is the send still showing as in-progress (uploading) on your phone?
+2. Which chat/thread did you send them into — this same thread, or somewhere else?
+
+Once they land here I'll spot them immediately and route them correctly this time. If they're meant to be **Dona Rosa (Medicilândia)** clips, tell me and I'll make sure they go to the Dona Rosa inbox — not the Santa Rosa one.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×2 → echo "===recent tg_attachments (last 15 min)==="; ls -lat /tmp/tg_attachments/ | head -15; echo; echo "===new files anywhere (last 10 min, v; echo "===recent video files ANYWHERE (last 20 min)==="; find /tmp /home/ubuntu -type f \( -iname '*.mov' -o -iname '*.mp4' -o -iname '*.MOV'
 
