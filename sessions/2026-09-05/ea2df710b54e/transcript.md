@@ -207,6 +207,7 @@ The lab reports reference proposal **204.2025.V0** (the CIC/PCTSul commercial pr
 ### 🤖 Autopilot
 
 The lab reports themselves are in notarizations. Let me re-extract them looking specifically for any sample-quantity field, and find the shop shipment pages:
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -458,4 +459,101 @@ Collection point: **Casca de Cacau** (cacao husk) — matrix "Amêndoa de Cacau 
 ---
 
 **Note for the follow-up:** this is the older Sept-2024 proposal (410.2024.V0, husk matrix). It shows CIC's general terms — including the **1.5 kg almond minimum** — but the grams requirement for the actual heavy-metal shipments (nibs/almonds, June 2025) is under **proposal 204.2025.V0**, which we still don't have. If you want, I can file this PDF into `fda_fsvp` under the Black King supplier folder and keep the request for 204.2025.V0 on the follow-up list. Want me to?
+
+
+### 🧑 Governor
+
+[observed, not directed at you — Nobody Will not DM you]: Also what was recorded on AGL4 or AGL8 I am sure there was an expense report stating the amount used
+
+---
+
+[observed, not directed at you — Nobody Will not DM you]: This is the correspondence between Matheus and Wesley from CIC
+
+[29/5 15:44] Matheus: Good afternoon!!
+[29/5 15:45] Matheus: How are you??
+[29/5 15:45] Matheus: I need to send some samples of nibs and almonds for you to test. What do you need?
+[29/5 16:05] Wesley Cic: Good afternoon
+[29/5 16:06] Wesley Cic: Which analysis are you interested in?
+[29/5 16:29] Matheus: Cadmium and lead
+[29/5 16:54] Wesley Cic: The heavy metals package costs R$369.00
+[29/5 16:55] Wesley Cic: 400g of each sample will be required
+[29/5 21:00] Matheus: 👍👍
+[3/6 07:39] Matheus: It should be R$360
+[3/6 07:39] Matheus: Gary is asking why the price changed
+[3/6 09:59] Wesley Cic: Good morning, there was a mistake in the amount sent! These analyses cost R$369.00.
+
+I believe there is a tab on our ledger that indicates the pricing from various Agroverse service providers
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=21041]
+
+
+### 🤖 Autopilot
+
+Now we have the authoritative answer — **400 g per sample** (from Wesley CIC directly). Let me verify what AGL4/AGL8 recorded (expense/amount used) and look for that ledger tab with service-provider pricing.
+
+
+### 🤖 Autopilot
+
+Now the grams figure is confirmed: **400 g per sample** (Wesley CIC, 29/5). Let me verify what AGL4/AGL8 recorded about the expense/amount, and hunt that "service provider pricing" ledger tab.
+
+
+### 🤖 Autopilot
+
+The conversation gives us the answer — **400 g per sample** (Wesley CIC). Now let me find that ledger tab with Agroverse service-provider pricing and check AGL4/AGL8 expense records.
+
+
+### 🤖 Autopilot
+
+Let me find the actual Agroverse service-provider pricing sheet and look for expense entries referencing AGL4/AGL8 lab tests in the ledger.
+
+
+### 🤖 Autopilot
+
+Let me check the full sheet structure artifact for a service-provider pricing tab, and search the ledger for AGL4/AGL8 expense entries:
+
+
+### 🤖 Autopilot
+
+Found it — **"Agroverse Cacao Processing Cost"** tab (gid 603759787) is the service-provider pricing sheet. Let me read it plus the Shipment Ledger Listing for AGL4/AGL8:
+
+
+### 🤖 Autopilot
+
+## Found it — the answer is in the correspondence + the ledger
+
+### ✅ The number: **400 g per sample** (from Wesley CIC, 29/5)
+
+> Wesley Cic: "The heavy metals package costs R$369.00" · "**400g of each sample will be required**"
+
+So for the June 2025 testing:
+- **AGL4 (Oscar, nibs)** → 1 sample → **400 g** of cacao nibs
+- **AGL8 (Paulo, almonds)** → 1 sample → **400 g** of cacao almonds
+- Total sent for testing: **~800 g** across the two shipments (invoice confirms 2 tests × R$369 = **R$738**, ContaAzul Venda 118996, 17/06/2025 — matches exactly)
+
+### 📋 What the ledger records (the tab you remembered)
+
+Yes — the **"Agroverse Cacao Processing Cost"** tab (Main Ledger spreadsheet, gid 603759787) is the service-provider pricing sheet. The CIC rows:
+
+| Facility | Process | Cost | Currency | Status Date |
+|---|---|---|---|---|
+| Wesley - CIC | Lab test per kg (based off 100kg batch) — `20240910_lab_test_1/2.jpeg` | **0.1794** | BRL | 20240910 |
+| Wesley - CIC | **Analysis package for cadmium, arsenic, lead and copper** | **360** | BRL | 20250425 |
+| Wesley - CIC | Cacao almonds→nibs / packing / nibs→bar rows | 7.5 / 1.54 / 0.35 / 48.5 | BRL | — |
+
+**Two data points worth noting:**
+1. The ledger row says **R$ 360** (recorded 25/04/2025) — but that's the *stale* price Matheus initially quoted ("It should be R$360"). Wesley corrected it **3/6: "there was a mistake… These analyses cost R$369.00"**, and the June invoice (R$738 = 2 × 369) confirms **R$369** is correct. The ledger tab has a stale figure.
+2. The **400 g quantity itself is NOT recorded in the ledger** — it lived only in the WhatsApp exchange. The shipment rows for AGL4/AGL8 record lot sizes (300 kg nibs / 330 kg almonds) and link the lab reports, but no per-sample gram figure.
+
+### Nuance vs. the earlier proposal
+The 410.2024.V0 proposal's "**1.5 kg minimum**" line is about **re-analysis capability** (samples under 1.5 kg can't be re-run) — that's the retention/re-test floor, not the test intake. The **400 g** from Wesley is the actual intake requirement per sample for the heavy-metals package. Both are CIC terms; 400 g is the one to plan around when sending future samples.
+
+---
+
+**Suggested follow-up (say the word):** file the WhatsApp exchange + correct the stale **R$360 → R$369** row in the "Agroverse Cacao Processing Cost" tab, and note "400 g/sample required" in the process description so the number is on record for next time. Want me to do the ledger correction + a note in `OPEN_FOLLOWUPS.md`/`SUPPLY_CHAIN_AND_FREIGHTING.md`?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` → cd /tmp && for p in agl4 agl8; do echo "=== $p index ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/
 
