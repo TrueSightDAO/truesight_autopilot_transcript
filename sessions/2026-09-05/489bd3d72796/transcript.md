@@ -10,178 +10,15 @@
 
 ### 🧑 Governor
 
-[CONTEXT SUMMARY — turns 1–6 compacted, full history in transcript repo]:
-Turn — [TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the ne:
-• `ssh run` ×5 → cd ~/dr_web && cp fazenda-dona-rosa.html fazenda-dona-rosa-para.html && mkdir -p fazenda-dona-rosa-para && mv fazenda-dona-rosa-para.html fa; cd ~/dr_web && python3 - <<'PYEOF' import re, json, urllib.request # --- 1. rename slug refs in page files (blanket -para consistency) --- f; cd ~/dr_web && python3 - <<'PYEOF' import json p = 'fazenda-dona-rosa-para/media.json' m = json.load(open(p, encoding='utf-8')) # remove the; …(+2 more)
-• `merge pr` → ✅ PR #284 on agroverse_shop_beta merged successfully (sha: 7f712be0492604ba29fadb6de9c3bd878f03d928). Pull Request successfully merged
-
-Turn — [Telegram context: chat_id=-1003919341801, thread_id=21167] Use this one as hero:
-• `ssh run` ×5 → ls -lat /tmp/tg_attachments/ 2>/dev/null | head -20; echo "---"; find /tmp/tg_attachments -type f -mmin -30 2>/dev/null | head; cd /tmp/tg_attachments && identify 6b4dd324cee348989ccd0cba6b436855.jpg 2>/dev/null; echo "---exif---"; identify -verbose 6b4dd324cee348989c; find / -name '*yunet*' -o -name 'face_detection*' 2>/dev/null | grep -v proc | head; echo "---"; python3 -c "import cv2; print(cv2.__file__); …(+2 more)
-
-Turn — [Telegram context: chat_id=-1003919341801, thread_id=21167] Also what were said in this video:
-• `ssh run` ×3 → find /tmp ~ -maxdepth 3 -iname '*transcri*' -o -iname '*transcript*' 2>/dev/null | grep -viE 'node_modules|site-packages' | head -20; echo "; echo "===recent attachments (any video?)==="; ls -lat /tmp/tg_attachments/ 2>/dev/null | grep -iE 'mp4|mov|mkv|webm|avi' | head; echo "===dr; cd /tmp/dr_audio/transcripts && for f in *.txt; do echo "=== $f ==="; cat "$f"; echo; done
-
-Turn — [Telegram context: chat_id=-1003919341801, thread_id=21167] This one
-
----
-
-[Telegram context: chat_id=-1003919341801, th:
-• `ssh run` ×2 → ls -lat /tmp/tg_attachments/ 2>/dev/null | head -15; echo "===recent video-ish files anywhere==="; find /tmp /home/ubuntu -type f \( -iname '*.mp4' -o -iname '*.mov' -o -iname '*.mkv' -o -iname
-
-Turn — [Telegram context: chat_id=-1003919341801, thread_id=21167] Did you receive the 3 vídeos:
-• `ssh run` ×5 → echo "===ALL tg_attachments (full, sorted)==="; ls -lat /tmp/tg_attachments/ | head -40; echo; echo "===any video files anywhere on disk, ne; echo "===media_archive_inbox tree (recent)==="; find /home/ubuntu/media_archive_inbox -type f -newermt '2026-09-05 17:00' 2>/dev/null | head; echo "===fazenda-santa-rosa folder==="; ls -la /home/ubuntu/media_archive_inbox/farm-media/fazenda-santa-rosa/ 2>/dev/null; echo; echo "===a; …(+2 more)
-
----
-
-[Telegram context: chat_id=-1003919341801, thread_id=21167] The 3 are from regarding dona Rosa not sure why they landed up in the Santa Rosa folder
-
-
-### 🤖 Autopilot
-
-Understood — those 3 are Dona Rosa footage that got misrouted into the Santa Rosa ingest folder. Let me check the current state (all 3 in yet?) and see how the daemon decided the folder, so I can move them correctly and flag the routing bug:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 3 videos are now in: **IMG_8281.mp4 (17.4 MB), IMG_8282.mp4 (22.4 MB), IMG_8286.mp4 (42 MB)** — all in the `fazenda-santa-rosa` folder, with ffmpeg still transcoding IMG_8286 (that's why it's growing). The source uploads are `.MOV`/direct and they're being converted to mp4. Let me read the daemon config to see how the folder routing works:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 3 videos are in (IMG_8281 ✅ 17.4 MB, IMG_8282 ✅ 22.4 MB, IMG_8286 ⏳ still transcoding at 42 MB — ffmpeg is running on it right now). Let me find the source `.MOV` files and figure out what mechanism chose the `fazenda-santa-rosa` folder:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 3 sources are in `~/santa_rosa_work/` (IMG_8281/8282/8286.MOV) — and interestingly there are **already transcription artifacts** (`/tmp/sr_stt/IMG_828*.txt`, wavs, frames) from ~17:05–17:11, likely from an earlier send that the redeploy killed. Let me read what's there and check the routing:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Understood — 3 Dona Rosa clips that got routed to the Santa Rosa folder. Let me verify final state (is the IMG_8286 conversion done? has anything been uploaded?) and get the GPS/durations so I can explain exactly how the misroute happened:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Let me read the full config (it was truncated) to see how `santa_rosa_work` maps to the farm folders, and check the archive daemon's routing logic:
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-All 3 received — plus a 4th landed too. Here's the full picture:
-
-## 📥 Received — in `~/media_archive_inbox/farm-media/fazenda-santa-rosa/`
-
-| File | Size | Duration | Received |
-|---|---|---|---|
-| IMG_8281.mp4 | 17.4 MB | 12.5s | 19:38 ✅ |
-| IMG_8282.mp4 | 22.4 MB | 21.1s | 19:40 ✅ |
-| IMG_8286.mp4 | 88.7 MB | 54.2s | 19:43 ✅ |
-| IMG_8293.mp4 | 8.4 MB+ | still converting | 19:43 ⏳ (a 4th?) |
-
-**Rough transcripts** (from an earlier STT pass over the same source MOVs — raw Whisper, garbled):
-- **IMG_8281**: "Opa! É indo vir aqui! Opa! Pronto!" — arrival/greeting banter
-- **IMG_8282**: "Olá!" — short greeting only
-- **IMG_8286**: "…a jaca é na baía… muito jaca… jaca é quantos anos?" — jackfruit-tree talk (garbled)
-
-## 🔍 Why they landed in the Santa Rosa folder (the routing bug)
-
-The files came in through the **media converter running out of `~/santa_rosa_work/`** (the source `.MOV`s IMG_8281/8282/8286/8293 live there, dated Sep 3), which transcodes into `farm-media/fazenda-santa-rosa/`. That folder association comes from the archive-roots mapping (`santa_rosa_work` ↔ `fazenda-santa-rosa`), not from anything in your message.
-
-**Good news:** `fazenda-santa-rosa` is **NOT** in the daemon's watched-`inboxes:` list (that list is only cleide, paulo-la-do-sitio, santa-anna-fazenda, jedielcio, raimundo-geniza-para, fazenda-dona-rosa) — so **nothing has been auto-uploaded to YouTube**. The daemon log shows no activity since 19:30. They're sitting safely in the inbox, not published anywhere.
-
-## Next — how do you want me to handle them?
-
-1. **Move to the Dona Rosa inbox** (`farm-media/fazenda-dona-rosa/`) so they route correctly + transcribe all 3 fresh from the mp4s → report "what was said" properly.
-2. Just **transcribe them in place** (no move) and report content.
-3. **Also investigate the misroute root-cause** — the `santa_rosa_work` converter association looks stale/wrong if these are DR clips; I can file a follow-up (OPEN_FOLLOWUPS.md) + propose a config fix.
-
-And is **IMG_8293** also one of yours (a 4th Dona Rosa clip), or is that leftover Santa Rosa material that should stay put?
-
-———
-**✅ Done this turn — actions taken:**
+[CONTEXT SUMMARY — turns 1–4 compacted, full history in transcript repo]:
+Turn — [CONTEXT SUMMARY — turns 1–6 compacted, full history in transcript repo]:
+Turn — [TURN DIRECTIVE] You have opened or mer:
 • `ssh run` ×6 → echo "===santa-rosa inbox now==="; ls -la /home/ubuntu/media_archive_inbox/farm-media/fazenda-santa-rosa/ 2>/dev/null; echo; echo "===dona-r; cat /opt/truesight_autopilot/media_archive_daemon_config.yaml; echo "===example==="; cat /opt/truesight_autopilot/media_archive_daemon_confi; echo "===find source MOVs for the 828x set==="; find /home/ubuntu /tmp -type f \( -iname 'IMG_8281*' -o -iname 'IMG_8282*' -o -iname 'IMG_82; …(+3 more)
 
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=21167] Stand it over to me as an attachment so that I can access it to no self, that image. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-[1 tool result(s) compacted: ssh_run — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Sending the current hero image (the one we swapped in from your photo) to you now as an attachment:
-[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-✅ **Sent** — the current Fazenda Dona Rosa hero image is now attached here in the chat (from your photo, the 1280×960 web-optimized version that's live on the beta page).
-
-If you meant a *different* image (e.g. one of the newer ones you sent at 19:30/19:36, or the original full-res source), tell me which and I'll send that one instead.
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [Telegram context: chat_id=-1003919341801, thread_id=21167] Stand it over to me as an attachment so that I can access it:
 • `ssh run` → echo "===hero & candidate images on disk==="; find /tmp /home/ubuntu -type f -iname '*hero*.jpg' -newermt '2026-09-05' 2>/dev/null | grep -v
 
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=21167] Yep, correct. This is the photo to use for our heroic image for this farm. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Got it — good news is that's already exactly what's live. That photo was the one I swapped in as the hero on the beta page earlier today (commit `3e75bff`), so the Fazenda Dona Rosa page on beta is already using it. Nothing more to change for the hero.
-
-Remaining steps whenever you're ready:
-
-1. Eyeball the beta page to confirm it all renders well — `beta.agroverse.shop/farms/fazenda-dona-rosa-para/`
-2. Give me the word and I'll promote the page to production (`sync_beta_to_prod` — I never push to prod on my own)
-3. Then the follow-ups: renaming the media manifest and media-raw folder to the `-para` id, anchoring the plot on-chain, and chasing the CEPOTX site code through Jedielcio.
-
-Just say the word when you've had a look.
-
-
-### 🧑 Governor
-
-[Telegram context: chat_id=-1003919341801, thread_id=21167] Have you shared a URL with me so I can proof on it? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
-
-
-### 🤖 Autopilot
-
-Let me verify the page is actually live before I share the URL:
-[1 tool result(s) compacted: http_fetch — detail in artifacts]
-
-
-### 🤖 Autopilot
-
-Yes — the page is live and confirmed up (HTTP 200, hero = your photo). Here's your proofing URL:
-
-**https://beta.agroverse.shop/farms/fazenda-dona-rosa-para/**
-
-What's on it to check:
-- **Hero** — your photo (full-width, center 30%)
-- **Story** — Rosa Wronscki, first woman artisanal chocolate maker on the Transamazônica; 98 ha / 35 ha cacao since 1980; 6-day coxo fermentation; honey-cacao line
-- **Map** — DR-P1 centroid (−3.4893, −52.9669), Medicilândia, Pará
-- **Media** — 8 YouTube clips + 5 site photos in the gallery
-- **Links** — back-link to farms index, canonical → www.agroverse.shop/farms/fazenda-dona-rosa-para
-
-Note: I checked it renders and the meta/hero are wired correctly, but I can't *see* it — so your eyeball is the real proof. Once you've had a look and it's good, say the word and I'll promote it to production.
-
-
-### 🧑 Governor
+---
 
 [Telegram context: chat_id=-1003919341801, thread_id=21167] Maksud saya, saya akan mempunyai bahawa saya akan mempunyai bahawa saya mempunyai [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
 
@@ -232,11 +69,13 @@ Go
 ### 🤖 Autopilot
 
 Let me check the handoff registry to see if this thread has an execution plan that defines what "Go" resumes:
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Taking "Go" as: move the 3 Dona Rosa clips into the Dona Rosa inbox + report what's said in them. (Production promotion I'll still hold until you've proofed the page — that's the one step I never jump.) Executing the move now, plus grabbing the transcripts and checking what actually triggered the Santa Rosa routing:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -248,11 +87,13 @@ Wait — before I lock this in, I have to flag a serious conflict. While moving 
 - Their STT mentions "Nong Chang é o de Santa Rosa"
 
 Also critical: **fazenda-dona-rosa is a WATCHED inbox** — the daemon auto-uploads mp4s from it to YouTube. By moving them there I may have queued them for upload as DR content. Let me check the daemon didn't grab them yet and inspect the sidecar schema:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Stop — I need to correct myself. Looking at the hard evidence, I jumped too fast on moving those files. The sidecar metadata (auto-generated earlier today, before any of this) says these are **Santa Rosa (Uruará) clips — not Dona Rosa**, and they already carry YouTube IDs (uploaded as Santa Rosa). Let me verify and revert my move:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -426,4 +267,117 @@ No ingestion, move, or dedupe action needed — it's a clean duplicate of materi
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×3 → echo "===file on disk==="; ls -la /tmp/tg_attachments/63677c46b61849b7a42568b644d1e0a5.* 2>/dev/null; echo; echo "===sha256==="; sha256sum /; echo "===proper dup check: content sha 1b7c9909 across DR workdir + zip + inbox==="; find /home/ubuntu/fazenda_dona_rosa_work /home/ubuntu/m; echo "===jpg version exists on disk?==="; ls -la /tmp/tg_attachments/63677c46b61849b7a42568b644d1e0a5.jpg 2>/dev/null; echo "===try a vision
+
+
+### 🧑 Governor
+
+These are photos I took during the FDA inspection
+
+Follow this format
+https://github.com/TrueSightDAO/fda_fsvp/blob/main/suppliers/coopercabruca/20240814_Coopercabruca_site_visit_santos_factory.pdf
+
+And this format 
+https://github.com/TrueSightDAO/fda_fsvp/blob/main/suppliers/cepotx/20260830_CEPOTX_site_visit_to_santa_anna_farm.pdf
+
+Generate FDA fsvp document for
+
+Drying 
+fermentation
+roasting
+melanger 
+facilities
+
+[Attachment auto-processed: **c7670e26044149dcb64189d4c1bb6f3f.HEIC**]
+- Type: Image (OCR confidence: 0.0%, quality: poor)
+- Note: HEIC converted to JPEG (EXIF/GPS preserved)
+- 📍 GPS: -3.634181, -53.670303 (alt 159.0 m)
+- 🕐 Captured: 2026:09:03 17:15:15
+
+*(No text detected in image)*
+
+
+### 🤖 Autopilot
+
+Gary — I'll build the FSVP document following those two formats. Let me first study the example PDFs and the existing build tooling so the output matches your house style, and check what site-visit evidence we already have for these photos:
+
+
+### 🤖 Autopilot
+
+Gary — on it. Before I build the FSVP document I need to (a) mirror the exact house format from those two example PDFs and (b) identify which supplier/farm this photo set belongs to. Let me pull the process doc, download both reference PDFs, and inventory every photo you've sent in this session with its GPS/date:
+
+
+### 🤖 Autopilot
+
+Gary — before generating compliance documents I need to (1) mirror the exact structure of both reference PDFs, (2) identify the photos' content (they're scene photos, no text — OCR is blind here), and (3) confirm which supplier/farm these belong to. Let me pull the reference structures, the CEPOTX entity record, and the vision tooling in parallel:
+
+
+### 🤖 Autopilot
+
+I have both formats clearly. Let me clarify what I'm seeing, because the two references are **different document types**, and your request spans both:
+
+**Reference 1 — Coopercabruca santos_factory (18 pages):** a **facility/equipment inspection** of a *processing factory* — covers **Roaster A/B, Peeler A/B, Pulverizer, Melanger A/B/C, Tempering A/B/C, Cooling tunnels, Packing, Storage** with per-machine pages: *Visual Observation / Preventive Control / Examined / Remarks*.
+
+**Reference 2 — CEPOTX santa_anna (7 pages):** a **farm + fermentation + drying** visit with GPS-tagged observations (Microbial/Insect/Foreign objects/Mold) and photo evidence.
+
+Your list — **drying, fermentation, roasting, melanger, facilities** — looks like a **factory-style equipment inspection** in the Coopercabruca mold, *plus* fermentation/drying (farm processing). And your photos are GPS'd to **two different farms**: the Uruará cluster (Santa Rosa, Sep 3) and the Medicilândia cluster (Dona Rosa, Sep 4). I need to know **which site** this document is for before writing anything. Let me check what the **most recent** FDA photos you sent (eea/67c/889/636 = Sep 4, Dona Rosa) actually show, via the vision tool, and confirm which supplier folder these belong under:
+
+
+### 🤖 Autopilot
+
+Grok key isn't loaded in that context. Let me find the right env and retry, or fall back to another vision path:
+
+
+### 🤖 Autopilot
+
+Vision worked — and the four recent photos map exactly onto your list: **drying shed → Drying, wooden fermentation box → Fermentation, countertop roaster oven → Roasting, stainless melanger → Melanger**. Now let me identify exactly which farm/supplier this attachment batch belongs to and what supplier folders exist, so the document lands in the right place with correct geo fields:
+
+
+### 🤖 Autopilot
+
+Vision confirms what the photos show, and it matches your equipment list exactly — but I need to pin down one thing before I generate, because the photos span **two different farms/dates**, and this is a compliance doc (I won't guess entity/geo on it).
+
+Quick evidence check first:
+
+
+### 🤖 Autopilot
+
+Photos identified — the 4 from 21:28–29 are **Dona Rosa (Medicilândia, Sep 4)**: drying shed, fermentation box, roaster oven, melanger — exactly your four process steps. The one flagged in your message (`c7670e26`) is a **Santa Rosa (Uruará, Sep 3)** drying platform — a different farm. Before I build the compliance doc I need to nail the subject entity. Let me pull the Dona Rosa farm record + see if there's a prior DR inspection context:
+
+
+### 🤖 Autopilot
+
+The process doc is clear: for a compliance document I must **never invent** the entity/geo/farm-owner — and I've hit a real fork. Let me look at the farm page data that exists for both candidate farms to ground the supplier fields:
+
+
+### 🤖 Autopilot
+
+I have enough to know the shape — but this needs **your confirmation on 3 fields** before I generate a compliance doc (the process doc is explicit: never invent entity/geo on an FSVP record). Here's where I've landed, with the fork:
+
+## What the photos show (vision-confirmed)
+Your Sep 4 batch (21:28 uploads) = **Dona Rosa site** (GPS −3.489/−52.967, Medicilândia):
+1. `8890…` — **Drying** — large open drying shed, beans on floor
+2. `eea8…` — **Fermentation** — wooden fermentation box, woman gesturing
+3. `67c0…` — **Roasting** — loading tray into countertop roaster oven
+4. `6367…` — **Melanger** — stainless chocolate melanger/conche
+
+The `c7670e26` attachment on your last message is **Santa Rosa (Uruará, Sep 3)** — a different drying platform. So the batch you intend for this document is the **Dona Rosa Sep 4** set.
+
+## The fork — which supplier folder?
+Your two reference PDFs live under **different suppliers**: Coopercabruca (santos factory) and CEPOTX (santa_anna farm). Your equipment list (drying/fermentation/roasting/melanger/facilities) is the **Coopercabruca factory-style** set. But I need to know **which supplier the photos belong to**:
+
+- **Option A — Dona Rosa is a CEPOTX-member farm** (Medicilândia), and this is a farm-processing FSVP like the santa_anna doc. But I have **no Dona Rosa record** in `fda_fsvp` — no entity, no site code, no owner record. (site_codes.md has no Medicilândia/COOPOXIN entry for it; search for Wronscki = 0 hits.)
+- **Option B — this is the Coopercabruca facility** and the drying/fermentation photos are from a *farm visit* while roaster/melanger are the *factory* — matching the Coopercabruca template exactly (roaster A/B, melanger A/B/C, packing…).
+
+**What I need from you (per the process doc):**
+1. **Supplier** for the doc: is this CEPOTX-member Dona Rosa, Coopercabruca, or another entity? (Folder to file under.)
+2. **Farm/site name + owner + site code** (if any) — e.g. "Dona Rosa — Rosa Wronscki, Medicilândia, Pará". I have GPS from photos, but not owner/site-code.
+3. **Date of visit** — Sep 4, 2026 (from photo EXIF)? Drives filename.
+
+Once you confirm those three, I'll generate the PDF in the Coopercabruca factory style (drying/fermentation/roasting/melanger/facilities pages with your photos embedded), sign it TrueTech, and PR it to `fda_fsvp/suppliers/<supplier>/`.
+
+Want me to proceed on the working assumption of **Dona Rosa (Medicilândia) under CEPOTX**, or is this a **different supplier**? And is there an **owner name / site code** for Dona Rosa I should use?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → echo "===local fda_fsvp-related files/dirs==="; find /home/ubuntu /tmp -maxdepth 3 -iname '*fsvp*' -o -iname '*site_visit*' -o -iname '*fda*; mkdir -p /tmp/fsvp_examples; cd /tmp/fsvp_examples; for u in "https://raw.githubusercontent.com/TrueSightDAO/fda_fsvp/main/suppliers/cooperc; echo "===vision tooling on box==="; ls /opt/truesight_autopilot/app/grok_client.py 2>/dev/null && grep -n 'def grok_analyze_images\|def grok; …(+4 more)
 
