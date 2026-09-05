@@ -747,6 +747,7 @@ Now executing step 1 (schema PR) — updating the daemon DESIGN.md sidecar schem
 ### 🤖 Autopilot
 
 The PR failed on a text-matching issue — DESIGN.md's principle list is numbered (`7.`), not bulleted (`-`). Also important discovery: MEDIA_ARCHIVE_PIPELINE.md §7a **already lists `captured_at`** in the sidecar JSON description — so capture time was already intended; DESIGN.md's schema example is just stale, and `raw_url`/`preview` are the genuinely new adds. Fixing both docs now (independent repos → parallel):
+[2 tool result(s) compacted: git_push_changes, git_push_changes — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -952,4 +953,80 @@ Next unit (deploy + start the archive worker on the box):
 **✅ Done this turn — actions taken:**
 • `merge pr` → ✅ PR #12 on farm-media-daemon merged successfully (sha: 2d77d2dd29109b677331dee58d07f9a0211964be). Pull Request successfully merged
 • `ssh run` → echo "=== live daemon checkout ==="; ls -la /opt/truesight_autopilot/farm_media_daemon/ 2>/dev/null; echo "=== running daemon? ==="; systemc
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] And uh, stay close. So please, that makes a lot of sense too. Yeah. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Understood — I'll stay close: deploy it, get it running, and keep this thread updated as it drains. Executing the deploy now — pulling the merged worker onto the box and locating the real MOV dirs per farm (need exact paths for the config roots):
+
+
+### 🤖 Autopilot
+
+Module's live on the box and imports clean (boto3 present). Now mapping raw dirs → farm_ids using the committed manifests (basename intersection) so I configure roots without guessing — fetching manifests and cross-matching in one pass:
+
+
+### 🤖 Autopilot
+
+The basename overlap is nearly zero because manifests store files by their **basename inside the zip** (e.g. `IMG_48xx.MOV`) while dirs hold extracted subfolders — names don't match at this depth. oscar shows real overlap (45) because its `src/` mirrors manifest names. Rather than chase names, the practical approach: **archive every real MOV dir on the box** (that's the whole point — preserve raws, GPS, capture time, previews), and tag each with its farm dir. So I'll use the dirs' own names as farm_ids (cleide_media is empty of MOVs — the cleide raws are inside `cleide and marcelo's farm.zip`).
+
+Let me verify what's actually inside the zips (do the MOVs live only in zips?) and check the empty cleide_media + to_analyze junk before writing the config:
+
+
+### 🤖 Autopilot
+
+Key insight: the raws live **inside the zips** (cleide 142, santa 302, la-do-sitio 154, oscar 124 videos — far more than manifests track), while the work dirs hold only extracted *processed* subsets. The zips are the true raw archive. So the archive worker should extract-and-archive **per zip** — not watch extracted dirs.
+
+The current worker watches a flat dir of MOVs. For zip roots it needs an extract-to-temp → archive → (keep zip for now) flow, with `captured_at`+sha256 read from the extracted original. That's a real but small extension (`zip:` root type). Given your "stay close", I'll: (1) write that zip-root support, test it against ONE zip's first file, then (2) configure all zips + extracted dirs, (3) install + start the service. Let me look at the current worker's `run()` to extend it minimally:
+
+
+### 🤖 Autopilot
+
+The raws live inside zips (cleide 142, santa 302, la-do-sitio 154, oscar 124 — more than manifests track), but ~374 MOVs are **already extracted** in work dirs on disk. Smart order: point the current worker at those extracted dirs now (zero code change, uses disk already spent), get the service draining immediately, then add zip-streaming support as a follow-up PR. Configuring the archive roots first:
+
+
+### 🤖 Autopilot
+
+End-to-end **works**: 3 test raws + 3 hot previews are live in `media.agroverse.shop` (raw + previews/rancho-maranta-plot-1), markers written, resume-safe. Now installing the systemd service and starting it against the full corpus, then confirming it's draining:
+
+
+### 🤖 Autopilot
+
+The archive worker is **live and draining** — `active (running)`, currently chewing through santa-ana (151 MOVs) at ~2-3 sec/file, uploading raw + hot preview per file, markers written (resume-safe). 9 farm roots configured. Rancho test proved the full loop (3 raws + 3 previews verified in S3).
+
+To honor "stay close" without burning turns polling manually, let me register a background watcher that tells this thread when the queue drains:
+
+
+### 🤖 Autopilot
+
+The watcher needs a Telegram topic context I don't have here, so I'll monitor inline instead. Let me check current drain progress (counts done per root, log rate) so I can report a concrete state and estimate:
+
+
+### 🤖 Autopilot
+
+Drain is proceeding (santa-ana at 9+ and climbing ~2/sec, rancho 3 done). The S3 count script hit `NoCredentialsError` — that's just my count script failing to source `.env` in that subshell, not the daemon (the daemon is actively uploading, which proves it has creds via its EnvironmentFile). All good.
+
+I've reached a natural checkpoint. Here's the state:
+
+## ✅ Live now
+**`farm-media-archive.service` is `active (running)`** — the S3 archive worker you asked for. It's draining the corpus right now: santa-ana at ~10 files and climbing (~2-3s/file), rancho-plot-1's 3 files done (verified in S3). Each file gets: sha256 + `captured_at` (from the original) + 1 hot ffmpeg preview → uploaded to `media.agroverse.shop` (`raw/<farm>/` + `previews/<farm>/`), with a resume-safe marker beside the original. 9 farm roots configured.
+
+**Pipeline so far (all merged/deployed):**
+- farm-media-daemon **#12** merged → worker deployed → service running ✅
+- farm-media-daemon **#11** (schema) merged ✅
+- Bucket + public policy + Explorya DNS CNAME + lifecycle (raws cold @30/180d, previews hot) ✅
+
+## ⏳ Draining now (background, no chat needed)
+~370 extracted MOVs across 9 roots → S3 (currently on santa-ana, 151 files). Then the **zips** (cleide 142, santa 302, la-do-sitio 154, oscar 124 videos — the full raw archive) need a small **zip-streaming extension** to the worker (extract→archive, never store), which is a follow-up PR. Disk is 81% — I'll prune extracted originals **only after** manifests carry `raw_url`/`preview_url` + your approval.
+
+## RESUME HERE →
+When you next say "go" (or want a progress check): (1) check drain progress + verify S3 object counts (source `.env` first); (2) add **zip-root support** to `farm_media_archive.py` (stream entries from each farm zip → archive raw+preview → marker per entry) + open PR + deploy; (3) once all raws are in S3 and manifests updated with `raw_url`/`preview_url`, get Gary's OK to **prune zips + extracted dirs** off the disk; (4) still open: merge agentic_ai_context **#908** (MAP runbook), agroverse_shop_beta **#271** (cleide gallery 2-video fix), santa-anna 8-id fold-in, jedielcio decision (santa-anna fold vs CEPOTX slug). Staying close — I'll keep reporting here as it drains.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → cd /opt/truesight_autopilot/farm_media_daemon && git pull -q origin main 2>&1 | tail -2; ls -la farm_media_archive.py systemd/ 2>/dev/null |; mkdir -p /tmp/manifests && cd /tmp/manifests for f in cleide paulo-la-do-sitio-para santa-anna-fazenda-para rancho-maranta-para oscar-bahia;; echo "=== zip contents (first few + counts) ==="; for z in "/home/ubuntu/cleide and marcelo's farm.zip" /home/ubuntu/santa_anna_farzenda_bah; …(+4 more)
 
