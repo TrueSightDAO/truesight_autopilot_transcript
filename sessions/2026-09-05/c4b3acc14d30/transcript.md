@@ -883,6 +883,7 @@ All checks pass. Now opening the PR to add the S3 archive worker to farm-media-d
 ### 🤖 Autopilot
 
 PR #12 is open with the new S3 archive worker. I need to align the DESIGN.md schema doc with the archive worker PR's content — but the earlier schema PR (#11) also touched DESIGN.md, so let me first merge #11 (my own PR, governor's "go" authorizes self-merge) to keep the branch clean, then verify #12's diff is complete:
+[1 tool result(s) compacted: merge_pr — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -929,6 +930,7 @@ Next units, in order:
 ### 🤖 Autopilot
 
 Thanks — proceeding: merge the S3 archive worker PR, deploy it onto the box, and start it draining the corpus. First the merge, and in parallel I'll probe the live daemon checkout + raw dirs so deployment lands on real paths:
+[2 tool result(s) compacted: merge_pr, ssh_run — detail in artifacts]
 
 
 ### 🧑 Governor
@@ -975,6 +977,7 @@ Next unit (deploy + start the archive worker on the box):
 ### 🤖 Autopilot
 
 Understood — I'll stay close: deploy it, get it running, and keep this thread updated as it drains. Executing the deploy now — pulling the merged worker onto the box and locating the real MOV dirs per farm (need exact paths for the config roots):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -1101,4 +1104,52 @@ I'll keep reporting here as it drains.
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` → systemctl is-active farm-media-archive.service; echo "--- markers done per root ---"; for d in /home/ubuntu/santa_ana_bahia_work /home/ubunt
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=19892] [Handoff context — this Telegram topic (thread 19892) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## What I did this turn
+
+**Merged farm-media-daemon #12** (sha `2d77d2d`) — the S3 archive worker (`farm_media_archive.py` + systemd unit + config) is now on `main`. That's the second "good idea" of y
+
+
+### 🤖 Autopilot
+
+👍 received — resuming execution. The deploy unit is already done (worker live + draining), so the next unit in sequence is merging the docs-rename PR you asked me to create. Merging farm-media-daemon #13 now:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## What I did this turn
+
+**Merged farm-media-daemon #13** (sha `ad1618cf`) — the docs-rename PR you greenlit via voice ("call it the media archive Daemon"):
+
+- **README.md** — retitled to **Media Archive Daemon**, rewritten around the two-worker architecture (YouTube uploader worker + S3 raw archive worker), with a new "How raws archive to S3" section
+- **DESIGN.md** — retitled, covers both daemon loops, added the archive marker schema (sha256 / captured_at / raw_url / preview_url)
+- **systemd unit descriptions** — both units now labeled as the two workers of the Media Archive Daemon
+
+Docs-only; no code, config, or unit behavior changed. Repo name stays `farm-media-daemon` (noted in README).
+
+**Archive worker status (staying close):** still `active` and draining — santa-ana-fazenda-bahia was 56/151 done at last check, raw + hot preview objects landing in `media.agroverse.shop` at ~2-3s/file.
+
+## RESUME HERE →
+Next unit (zip-streaming support — the biggest remaining gap for full raw coverage):
+1. Add **zip-root support** to `farm_media_archive.py` — stream entries from each farm zip (cleide 142, santa 302, la-do-sitio 154, oscar 124 videos, more) → sha256 + `captured_at` (read from the extracted entry) + ffmpeg preview frame → upload raw + preview to S3 → write resume-safe marker, **without** ever storing the full extracted file on disk (critical — disk is at 81%). Open PR → merge → deploy → service picks up zip roots.
+2. After all raws are in S3 and manifests carry `raw_url`/`preview_url`: prune zips + extracted dirs off disk (needs Gary's explicit approval).
+3. Still open, in parallel/backlog: merge agentic_ai_context **#908** (MAP runbook), agroverse_shop_beta **#271** (cleide gallery 2-video fix), santa-anna 8-id fold-in, jedielcio decision.
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #13 on farm-media-daemon merged successfully (sha: ad1618cf0d0f633ecddd2d63f4f6f502597f0721).
+
+———
+**✅ Done this turn — actions taken:**
+• `merge pr` → ✅ PR #13 on farm-media-daemon merged successfully (sha: ad1618cf0d0f633ecddd2d63f4f6f502597f0721). Pull Request successfully merged
 
