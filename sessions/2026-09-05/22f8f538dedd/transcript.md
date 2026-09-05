@@ -2946,6 +2946,7 @@ All 14 videos have yt_ids — but sidecars show lat/lon None (they may be in dif
 ### 🤖 Autopilot
 
 The rancho manifest uses per-file entries: `basename, file, ext, duration_s, gps_raw, latitude, longitude, sha256, size_bytes, yt_id`. My sidecars have yt/sha/duration but lat/lon under different keys. Let me read a full sidecar, the rancho top-level keys, index.json, and extract per-MOV GPS for the manifest.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -3149,4 +3150,86 @@ Amounts stay informational (`TDG Issued: 0`) unless you set real economics — t
 - **Contribution events** — the retrospective you asked about (my raw-execution + direct-time split, plus your direct time). I proposed ~150–180 min machine / ~90–120 min direct (me) / ~45–60 min (you), all `TDG: 0` informational, filed as 3 separate events. **Want me to file them?**
 
 Everything else is green. 🟢
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=20724] Yes, found a contribution. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Roger — filing the contribution events. Recon first: locate dao_client + confirm the CLI and credentials on the box.
+
+
+### 🤖 Autopilot
+
+dao_client isn't at the usual paths. Let me search the box for it.
+
+
+### 🤖 Autopilot
+
+dao_client exists at `/home/ubuntu/dao_protocol/truesight_dao_client` (the live one). Let me verify the .env credentials and CLI structure there.
+
+
+### 🤖 Autopilot
+
+No .env in that checkout. Let me check for the env file elsewhere (vault/credential stores) and how previous contribution submissions were made on this box.
+
+
+### 🤖 Autopilot
+
+Found the DAO env + client. Per protocol I'll use my `submit_contribution`/`create_dao_submission` tooling with Edgar event docs — first verifying the CONTRIBUTION EVENT format.
+
+
+### 🤖 Autopilot
+
+Event schema confirmed. The convention doc says submissions use `report_ai_agent_contribution.py` with `--contributors`, `--body`, `--pr` — but my direct tool path is `create_dao_submission`. Let me check how prior agent submissions were filed to use the correct mechanism, checking the ledger history for Sophia's identity registration.
+
+
+### 🤖 Autopilot
+
+Let me look at recent contribution events to see the exact format and how Sophia's identity has been used before.
+
+
+### 🤖 Autopilot
+
+Let me look at an actual recent contribution_event file (one of the Edgar_*.json from Sep 2) to see the canonical payload structure and which contributor identities were used.
+
+
+### 🤖 Autopilot
+
+Payload format confirmed from the ledger (canonical `[CONTRIBUTION EVENT]` with Type/Amount/Description/Contributor(s)/TDG Issued). Gary approved filing. Submitting the **three separate events** per the 2026-08-24 convention — all informational (TDG 0):
+
+
+### 🤖 Autopilot
+
+Event 1 filed. Now event 2 — Sophia's direct time (engagement/analysis):
+
+
+### 🤖 Autopilot
+
+Event 2 filed. Now event 3 — Gary's direct time:
+
+
+### 🤖 Autopilot
+
+## ✅ All 3 contribution events filed
+
+| # | Event | Contributor | Minutes | TDG |
+|---|---|---|---|---|
+| 1 | **Raw machine execution** — GPS extraction, 14 transcodes + YouTube uploads, 8 PRs, 2 prod syncs, manifest | Sophia Truesight | 150 | 0 |
+| 2 | **Direct time (engagement/analysis)** — Bom Sucesso mis-attribution resolution, forensics, naming, COPOPS verification, SOP gap analysis | Sophia Truesight | 100 | 0 |
+| 3 | **Gary Teh direct time** — direction, naming ruling, attachments, go-signals, verification asks | Gary Teh | 60 | 0 |
+
+All three submitted successfully to Edgar as separate `[CONTRIBUTION EVENT]`s, per the split convention you set 2026-08-24 (thread 14165) — machine cost and human-equivalent attention kept distinct, your time separate under your name, `TDG Issued: 0` informational (ready for real economics whenever you set them).
+
+**Evidence cited:** shop_beta PRs #273/#274/#276/#279/#282, fda_fsvp #11, agentic_ai_context #907, sunmint commit, manifest commits.
+
+Want me to adjust any amounts, or set TDG awards on any of the three?
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×7 → for d in ~/Applications/dao_client ~/dao_client /opt/dao_client; do [ -d "$d" ] && echo "FOUND: $d" && ls "$d/modules/report_ai_agent_contri; echo "=== find dao_client ==="; find ~ /opt /srv /home -maxdepth 4 -iname "*dao_client*" -type d 2>/dev/null | head; echo "=== find report_a; cd /home/ubuntu/dao_protocol/truesight_dao_client && ls .env 2>/dev/null && grep -c "EMAIL\|PRIVATE_KEY\|PUBLIC_KEY" .env 2>/dev/null && ech; …(+4 more)
+• `create dao submission` ×3 → Contribution submitted
 
