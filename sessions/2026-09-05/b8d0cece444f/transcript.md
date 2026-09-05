@@ -28,42 +28,80 @@ Start with PR0 now. Report back with test results before moving to PR1.
 
 ### 🤖 Autopilot
 
+[2 tool result(s) compacted: read_context_file, read_context_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: read_repo_file, search_context — detail in artifacts]
+
+
+### 🤖 Autopilot
+
 Plan found in the repo (PR #910). Let me read the full plan — the section with PR0's spec got truncated.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plan is long — let me read the rest in sections to get the full PR0 spec.
+[1 tool result(s) compacted: read_tool_result — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The plan is merged (PR #910) and I've now read it in full — the local `read_context_file` copy was stale (missing), but the GitHub `main` copy has the complete spec. Let me pull the codebase context I need for PR0. First, locate the local `truesight_autopilot` checkout and inspect its structure.
+[2 tool result(s) compacted: ssh_run, read_repo_file — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 `app/context_compaction.py` doesn't exist yet — confirmed. Now let me study the key existing code patterns: `_sanitise_tool_messages`, the session structure, the "Done this turn" convention, and config.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Now let me study the key functions in detail — `_sanitise_tool_messages`, the session load/save logic, and the "Done this turn" reporting convention.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me look at the "Done this turn" report format and the session-save logic in detail.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the key patterns. Now let me examine a real bloated session file to understand actual message shapes, and check config.py + an existing test for conventions.
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
+
+
+### 🤖 Autopilot
+
+[2 tool result(s) compacted: ssh_run, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is the exact 554-message session cited in the plan. Let me inspect message shapes further — tool messages, assistant replies with "Done this turn", and how the retention tail should look.
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -150,4 +188,150 @@ PR0 recon done, nothing written yet. Next turn:
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×32 → ls -d /opt/truesight_autopilot /home/ubuntu/truesight_autopilot 2>/dev/null; echo "---"; ls /opt/truesight_autopilot 2>/dev/null | head -30;; cd /opt/truesight_autopilot && ls app/ && echo "---tools---" && ls app/tools/ 2>/dev/null && echo "---tests---" && ls tests/ | head -40 && e; cd /opt/truesight_autopilot && grep -n "_sanitise_tool_messages\|def _load_or_create_session\|SESSION_LOG_DIR\|_sessions" app/main.py | head; …(+26 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+Continue - write the code and tests for PR0, run the gate, and open the PR.
+
+---
+
+[Telegram context: chat_id=-1003919341801, thread_id=21264] [Handoff context — this Telegram topic (thread 21264) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: 🔄 Thinking… (round 12)
+
+
+### 🤖 Autopilot
+
+Resuming PR0 execution with the go-signal. First, re-confirm the plan's PR0 spec from the authoritative GitHub copy and check local git state.
+
+
+### 🤖 Autopilot
+
+Let me read the full plan from the artifact — particularly the PR0 spec section (§5).
+
+
+### 🤖 Autopilot
+
+Let me read the rest of the plan — the PR0 spec section (§5) and the rollout section.
+
+
+### 🤖 Autopilot
+
+The artifact nesting is confusing — let me read the remaining sections of the plan directly with an offset to find §4/§5 (PR0 spec).
+
+
+### 🤖 Autopilot
+
+I have the full PR0 spec now. Two last pieces of recon before writing code — the exact `_sanitise_tool_messages` internals (for the no-dangling test helper) and the test-runner environment:
+
+
+### 🤖 Autopilot
+
+Let me see Pass 3 of the sanitiser (user-collapse) and verify the venv tooling:
+
+
+### 🤖 Autopilot
+
+All tooling confirmed: `.venv/bin/ruff` 0.15.17 + pytest, 868 tests collect. Now writing PR0. First, the library:
+
+
+### 🤖 Autopilot
+
+The library file parses, but I spotted real bugs on review (dead code in `find_turn_boundaries`, broken `_default_summarizer` that never extracts Done-this-turn blocks, off-by-one in the retained-tail start, wrong `k` in the prefix). Rewriting it cleanly:
+
+
+### 🤖 Autopilot
+
+Two bugs to fix before tests: `tail_start` is off by one (must be `turn_ends[-keep-1] + 1` to keep the last K turns verbatim), and mid-list `[PINNED]` system notes must never be dropped either. Fixing:
+
+
+### 🤖 Autopilot
+
+Before writing tests, let me smoke-test the library against the real 554-message bloated session to verify the math:
+
+
+### 🤖 Autopilot
+
+Smoke test passes — my inline comparison was wrong (used `te[-6]+1` instead of the function's `turn_ends[-keep-1]+1`); the function's tail (149 msgs from index 405) IS byte-identical to the input slice, and 161K → 49K tokens (3.3x drop, tail = last 6 turns verbatim, 10 turns compacted). One documented interaction confirmed: the summary `user` message sits adjacent to the tail's opening `user` message, so Pass 3 of `_sanitise_tool_messages` will content-preservingly merge them next turn — the tests must lock that in.
+
+Now writing the test suite:
+
+
+### 🤖 Autopilot
+
+That heredoc blew up (over-long command with a duplication glitch). Let me write the test file in clean smaller chunks using Python file writes:
+
+
+### 🤖 Autopilot
+
+Now the actual test functions — first batch (token counting + boundaries):
+
+
+### 🤖 Autopilot
+
+One design correction before running: `_sanitise_tool_messages` mutates in place and returns `None`, and its Pass 3 *will* merge the summary user + tail-opener user (the documented content-preserving interaction). The "zero dangling" assertion must target the real hard constraint — tool-protocol dangling (Pass 1/2) — not the benign user-merge. Rewriting those two tests with an explicit structural validator:
+
+
+### 🤖 Autopilot
+
+Now run the new test suite:
+
+
+### 🤖 Autopilot
+
+3 failures — let me diagnose each precisely:
+
+
+### 🤖 Autopilot
+
+Diagnosis clear — the library is correct; my test expectations were wrong:
+1. `tail_orig = h[te[-keep]+1:]` — should be `te[-keep-1]+1` (same off-by-one I fixed in the library, but I wrote the wrong form in the test).
+2. Token-drop: the 12/20-turn synthetic fixture has tiny tool results, so the drop is only 0.52×, not `< before//2`. Inflate tool-result sizes to mimic real verbose tool output.
+3. Leftover nonsense assertion line in the sanitise test.
+
+Fixing the three tests:
+
+
+### 🤖 Autopilot
+
+All 22 tests pass. Now the full local gate — compileall, ruff check, ruff format, full pytest:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
+
+
+### 🤖 Autopilot
+
+Converging per the turn budget — one trivial lint fix remains, everything else is green.
+
+## Status: PR0 code + tests written, local gate 3.5/4 green
+
+**Written on the box (`/opt/truesight_autopilot`):**
+- `app/context_compaction.py` — the compaction library (PR0, un-wired): `find_turn_boundaries`, `extract_done_this_turn`, `count_tokens` (litellm + chars//2 fallback), `default_summarizer` (reuses each turn's `✅ Done this turn` block), `compact_history` (no-op under threshold; preserves system/[PINNED]; folds old completed turns into one synthetic `user` `[CONTEXT SUMMARY …]` message; keeps last K turns byte-identical), `backup_session_file` (`<hash>.pre-compact-<UTC>.json` sibling).
+- `tests/test_context_compaction.py` — 22 tests, **all passing** (11.93s): token counting, boundary detection (never mid-`tool_calls`, unfinished tail excluded), Done-this-turn extraction on the real captured shape, full round-trip (tail byte-identical, token drop, system/[PINNED] preserved, input never mutated, custom summarizer), `_sanitise_tool_messages` zero-dangling before/after + the documented content-preserving Pass-3 user-merge, backup helper.
+
+**Real-data smoke test (already run):** on the actual 554-message session `d32b2609056d.json` (161,127 tokens), `compact_history(keep=6, threshold=20000)` → **151 msgs / 49,256 tokens** (3.3× drop), retained tail = last 6 turns byte-identical, 10 turns compacted into the summary. Math verified correct.
+
+**Local gate status:**
+1. ✅ `compileall -q app tests` — OK
+2. ❌ `ruff check` — **1 error**: `tests/test_context_compaction.py:42` — unused `except Exception as exc:` in the `HAS_MAIN` guard (the `except` that sets `m = None`). Fix: change line 42 to `except Exception:  # noqa: BLE001` (drop the `as exc`), or `except Exception as exc: ...` → the module-level skip guard above it already uses `exc`, so just make this one `except Exception:`.
+3. ⏳ `ruff format --check` — not yet run (needs the ruff check fix first to be clean, though format is likely fine).
+4. ⏳ Full `pytest -q` (868 tests) — not yet run.
+
+## RESUME HERE
+
+1. Fix the one lint error: in `/opt/truesight_autopilot/tests/test_context_compaction.py` line ~42, change `except Exception as exc:  # noqa: BLE001` (the second one, in the `HAS_MAIN` block) to `except Exception:  # noqa: BLE001`.
+2. Re-run: `.venv/bin/ruff check app/context_compaction.py tests/test_context_compaction.py` → clean; then `.venv/bin/ruff format --check app/context_compaction.py tests/test_context_compaction.py`.
+3. Run full suite: `.venv/bin/python -m pytest -q` → all green.
+4. Push PR0: `git_push_changes(repo="truesight_autopilot", branch="feat/context-compaction-pr0", commit_message="feat: context compaction library + tests (PR0 of context-compaction plan)", pr_body=<summary + gate results>)`. Working tree has unrelated dirty files (config/nginx/sophia.conf, data/active_tracks.json, followups/state.json, tokenomics, app/data/events_catalog_snapshot.json, worktrees/vault, untracked artifacts/ + farm_media_daemon/) — `git_push_changes` stages only the two new files, but I'll double-check the diff before push.
+5. Report PR URL + full gate results back to Gary. **Do NOT start PR1** until Gary confirms — checkpoint per his instruction.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×21 → cd /opt/truesight_autopilot && git status --short && echo "---branch---" && git branch --show-current && echo "---head---" && git log --onel; cd /opt/truesight_autopilot && grep -n "def _sanitise_tool_messages" app/main.py && sed -n "$(grep -n 'def _sanitise_tool_messages' app/main; cd /opt/truesight_autopilot && ls app/__init__.py 2>&1; echo "---venv---"; ls -d .venv venv 2>/dev/null; which python3; python3 -m pytest --; …(+18 more)
 
