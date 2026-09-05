@@ -11,45 +11,12 @@
 ### 🧑 Governor
 
 [CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
-1 earlier turn(s) in this thread were compacted; 0 tool call(s) executed across them. Full detail is in the session transcript repo.
-
----
-
-[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
-
-
-### 🤖 Autopilot
-
-## Done this turn — Raimundo & Geniza plot id → CEPOTX site code `U-06-07`
-
-Gary confirmed change #1: replace the SunMint plot id of Raimundo's farm with its CEPOTX site code. Executed end-to-end across all surfaces:
-
-**Registry (source of truth) — pushed directly:**
-- **SunMint Plots sheet** — col A `RG-P1` → `U-06-07`, plus provenance note in Notes col (K15: "Plot ID = CEPOTX site code U-06-07 (replaces RG-P1; governor-confirmed 2026-09-05)")
-- **`sunmint/plots/index.geojson`** — regenerated via canonical `build_plots_geojson.py` from the sheet (11 features preserved) and pushed to main (commit `b7f1d61`)
-
-**Merged PRs (3):**
-| Repo | PR | What |
-|---|---|---|
-| agroverse_shop_beta | [#285](https://github.com/TrueSightDAO/agroverse_shop_beta/pull/285) | Farm page prose + media.json captions/alts: `RG-P1` → `U-06-07` (0 RG-P1 refs left) |
-| fda_fsvp | [#12](https://github.com/TrueSightDAO/fda_fsvp/pull/12) | COPOPS + CEPOTX entity records: dropped old RG-P1 alias |
-| agentic_ai_context | [#914](https://github.com/TrueSightDAO/agentic_ai_context/pull/914) | Runbook worked example + naming section teach new scheme |
-
-**Verification:** all live surfaces now show 0 functional `RG-P1` references — the only remaining occurrence is the intentional provenance note ("replaces RG-P1") in the geojson notes field. U-06-07 confirmed as the site code from fda_fsvp PR #11 (governor-provided).
-
-**Notes:**
-- The farm **page is merged on beta** (`beta.agroverse.shop/farms/raimundo-geniza-para/`) — it is **not yet synced to prod** (agroverse.shop still shows RG-P1 until a prod sync, which needs your explicit go).
-- Impact map (`truesight.me/sunmint.html`) is data-driven — it already picks up the new plot id from the geojson push.
-
-**RESUME HERE → Change #2:** You said "Two changes" — change #1 (RG-P1 → U-06-07) is complete. Reply with the second change (if it was in one of the photos, both OCR'd empty — please re-type it), and whether you want me to **sync agroverse_shop_beta → prod** for the farm-page update.
-
-———
-**✅ Done this turn — actions taken:**
+Turn — [CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
+1 earlier turn(s) in this thread were compacte:
 • `ssh run` ×13 → python3 - <<'EOF' import urllib.request, json def get(url): req = urllib.request.Request(url, headers={'User-Agent':'sophia'}) return urllib; echo "=== sunmint_work checkout ==="; ls -d ~/sunmint_work 2>/dev/null && ls ~/sunmint_work 2>/dev/null; echo "=== scripts ==="; find ~ -max; cd ~/sunmint_work && echo "=== tree ==="; ls -R . | head -30; echo "=== build script head ==="; head -60 scripts/build_plots_geojson.py; ech; …(+6 more)
 • `merge pr` ×3 → ✅ PR #285 on agroverse_shop_beta merged successfully (sha: 8c5b608a67c20c3fe081f389c28405c638759fc5). Pull Request successfully merged; ✅ PR #12 on fda_fsvp merged successfully (sha: 7a7a1b98e074f5bc17d64a8285ba6b5a743801b5). Pull Request successfully merged; ✅ PR #914 on agentic_ai_context merged successfully (sha: 39f0be2f5d4e915938aa0c09810412fe3acab63e). Pull Request successfully merged
 
-
-### 🧑 Governor
+---
 
 [Telegram context: chat_id=-1003919341801, thread_id=21534] 8277 is a photo of their drying station and fermentation station
 
@@ -334,36 +301,43 @@ If it's *not* the same photo you meant, tell me and I'll dig further. No other o
 ### 🤖 Autopilot
 
 Gary wants an FDA site visit report generated from this photo + the site-visit data. Let me check what an FDA/FSVP site visit report looks like in our system — templates, prior reports, and the fda_fsvp repo structure.
+[3 tool result(s) compacted: search_context, search_code, list_org_repos — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 A site-visit report needs the FSVP context. Let me examine the fda_fsvp repo structure, the FSVP runbook, and what records we hold for the Raimundo & Geniza site visit:
+[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 There's a `SITE_VISIT_PROCESS.md` runbook and existing site-visit PDFs in supplier folders. Let me read the process doc and see the full supplier tree (especially CEPOTX/COPOPS-related):
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me read the SITE_VISIT_PROCESS.md runbook — it defines the report structure and PDF template:
+[1 tool result(s) compacted: read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 This is a compliance document — per `SITE_VISIT_PROCESS.md` I must never invent the required fields, but I can assemble everything evidence-backed. Let me gather: (1) which supplier entity Raimundo & Geniza belongs to, (2) the entities index schema, and (3) an exemplar site-visit PDF to mirror the canonical structure.
+[4 tool result(s) compacted: read_repo_file, read_repo_file, read_repo_file, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 I have the full entity picture: **Raimundo & Geniza's Sítio (U-06-07) sits under CEPOTX as a COPOPS member site** — the FSVP supplier of record is CEPOTX, and the site was already added to CEPOTX's `source_farms`. The 2026-08-30 Santa Anna visit (2 weeks before this one, same supplier) is the perfect structural precedent. Let me extract text from both exemplar PDFs to mirror the exact layout:
+[2 tool result(s) compacted: extract_pdf_text, extract_pdf_text — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The Santa Anna report (2026-08-30, same supplier) is the structural precedent. I now have everything evidence-backed: the photo's EXIF (GPS, date, device), the entity chain (CEPOTX central → COPOPS → Sítio Raimundo & Geniza, site U-06-07), and the canonical template. Building a **draft** site-visit PDF with IMG_8277 embedded — populated only with verified facts, pending fields clearly marked for Gary's confirmation before it becomes a compliance record:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -498,4 +472,81 @@ Which do you prefer — the IMG number, or plot-level geo-reference?
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×9 → cd /tmp/tg_attachments && python3 <<'PYEOF' from PIL import Image from PIL.ExifTags import TAGS, GPSTAGS import hashlib, os f = "1ede6a6c524; ls -la ~/raimundo_geniza/ 2>/dev/null | head -40; echo "=== count ==="; ls ~/raimundo_geniza/ 2>/dev/null | wc -l; echo "=== find HEIC/JPG =; python3 -c "import pillow_heif; print('pillow_heif OK')" 2>/dev/null || pip install -q pillow_heif 2>&1 | tail -1; python3 -c "import imageh; …(+4 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21534] Hey, can you make sure they have the FBA FSBP site? The notification document follows the themes that we have, the stouting theme. [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Voice note received — I parsed "FDA FSVP site" and "notification document… follows the themes… the [stouting?] theme," but I want to ground that in the actual runbooks/templates before acting. Let me search the context and the fda_fsvp repo for the notification document and theme structure.
+
+
+### 🤖 Autopilot
+
+Voice transcription is rough — let me ground "FDA FSVP site", "notification document", and "the [Saffron?] theme" in the actual runbooks and the fda_fsvp repo before I act.
+
+
+### 🤖 Autopilot
+
+Voice parsing: I think you're asking me to (a) make sure the supplier file has the FSVP site-visit record on it, and (b) build the report PDF in our house Saffron-Monk theme (my earlier draft used a non-brand green header — fair catch). Let me verify what's on file for CEPOTX/COPOPS before confirming:
+
+
+### 🤖 Autopilot
+
+Voice transcript is rough — let me verify the two things I think you're asking before replying. Checking (1) whether the CEPOTX FSVP file already has the Raimundo & Geniza site record, and (2) how the existing CEPOTX site-visit PDFs are styled (theme):
+
+
+### 🤖 Autopilot
+
+Voice parsed — got it: (1) make sure the FSVP record carries this **Raimundo & Geniza site**, and (2) the report document should follow our house **Saffron theme** like the Santa Anna PDF (my first draft used a non-brand green header — fair catch; the existing CEPOTX PDFs use the saffron band `#C87A2B`).
+
+Verified on file: CEPOTX `entity.json` **already lists the site** (`Raimundo & Geniza – Sítio Raimundo & Geniza (Uruará, Pará) — site code U-06-07` in `source_farms`), but the **site-visit PDF itself isn't filed yet** — that's the gap. Rebuilding the report now in the Saffron-Monk house style, matching the Santa Anna 7-page structure, embedding both photos:
+
+
+### 🤖 Autopilot
+
+Quick fix — import alias mismatch:
+
+
+### 🤖 Autopilot
+
+Built (4.09 MB). Let me verify the saffron band rendered on page 1 and the text is clean:
+
+
+### 🤖 Autopilot
+
+Saffron band `#C88A2D` confirmed on every page (matches house style ~`#C98A2D`), 5 pages, clean text. Sending the themed report:
+
+
+### 🤖 Autopilot
+
+## Rebuilt the site-visit report in the Saffron house theme ✅
+
+Your voice came through as two asks — I've handled both:
+
+**1. "Make sure they have the FSVP site" — checked.**
+- CEPOTX `entity.json` **already lists Raimundo & Geniza's Sítio** in `source_farms` (site code U-06-07, COPOPS member, owner Raimundo Silva) ✅
+- What's **missing** is the site-visit PDF itself → that's the report I've been building. It's the piece that makes the FSVP file complete for this farm.
+
+**2. "Notification document… the Saffron theme" — done.**
+- My first draft used a generic green header — not house style. You're right.
+- **Rebuilt** (5 pages, 4.09 MB, sent as message 21701) now matching the Santa Anna PDF's **Saffron Monk theme** (`#C98A2D` saffron band + `TRUE·SIGHT DAO × AGROVERSE` header on every page, observation tables with saffron header rows).
+- Both photos embedded with full evidence metadata: IMG_8277 (drying/fermentation, GPS-verified) + the cacao-tree inspection photo.
+
+**Still needs your 5 confirmations** (I won't invent compliance facts): visit date, host name, farm area, practice remarks per facility, and the IMG number of the cacao-tree photo (Telegram stripped its EXIF).
+
+Reply with those and I'll finalize → file as `fda_fsvp/suppliers/cepotx/20260903_CEPOTX_site_visit_to_raimundo_geniza_farm.pdf` → update `entity.json` `source_documents` → PR.
+
+———
+**✅ Done this turn — actions taken:**
+• `search_context` ×2, `search_code` ×2, `read_context_file` ×1 → verified FSVP site-visit process + Saffron conventions
+• `ssh run` ×4 → read entity.json files (site already in source_farms), confirmed Santa Anna PDF saffron band #C87A2B, built v2 report, verified band on all pages
+• `send_telegram_attachment` ×1 → Saffron-themed draft PDF delivered (msg 21701)
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×6 → echo "=== fda_fsvp full tree ==="; curl -s "https://api.github.com/repos/TrueSightDAO/fda_fsvp/git/trees/main?recursive=1" | python3 -c " im; for f in suppliers/cepotx/entity.json suppliers/copops/entity.json; do echo "===== $f ====="; curl -s "https://raw.githubusercontent.com/Tru; cd /tmp && curl -sL -o santa_anna_sv.pdf "https://raw.githubusercontent.com/TrueSightDAO/fda_fsvp/main/suppliers/cepotx/20260830_CEPOTX_site; …(+3 more)
 
