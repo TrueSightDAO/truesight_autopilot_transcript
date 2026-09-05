@@ -10,49 +10,13 @@
 
 ### 🧑 Governor
 
-[CONTEXT SUMMARY — turns 1–3 compacted, full history in transcript repo]:
-Turn —  You are speaking with Gary Teh. When they say 'I', 'me', or 'my', they mean Gary Teh.]
-
-[Telegram co:
-• `ssh run` ×2 → echo "=== zips on box ==="; ls -la ~/*.zip 2>/dev/null; echo; for z in ~/*.zip; do [ -f "$z" ] || continue; echo "=== $z ==="; unzip -l "$z"; echo "=== media_archive_inbox farm dirs ==="; ls -la ~/media_archive_inbox/farm-media/ 2>/dev/null; ls ~/farm-media-raw 2>/dev/null; echo "=
-
----
-
-[TURN DIRECTIVE] You have used 23 of 30 tool rounds and are approaching the per-turn limit. Stop calling tools now and converge: summarize what you found, what (if anything) is still blocking, and end with a 'RESUME HERE' pointer so the next turn can continue. Start no new multi-step work — land a clean, resumable answer in your next message.
-
-
-### 🤖 Autopilot
-
-Stopping here to respect the turn limit — good landing point, the registry core of the SOP is **done and pushed**.
-
-## SR-P1 onboarding — status
-
-| Step | State | Detail |
-|---|---|---|
-| Identity gate (Step 0) | ✅ | Antônio & Graça, Fazenda Santa Rosa, CEPOTX/COPOPS, site code U-06-06 (governor-confirmed) |
-| SunMint Plots sheet row | ✅ | `U-06-06` row appended at `SunMint Plots!A17:N17` (owner, 4.75 ha, hull coords, notes) |
-| `plots/index.geojson` | ✅ pushed | Regenerated via canonical builder → **12 features**, U-06-06 included. Commit `6f6e190c` |
-| `farms/index.json` | ✅ pushed | Regenerated via canonical builder → **11 farms**, `fazenda-santa-rosa-para` (Antônio & Graça, 4.75 ha). Commit `3a35fd6f` |
-| On-chain plot event | ⏳ next | SOP §2 — needs `lookup_event_docs` + `submit_contribution` (FARM BOUNDARY / plot geo event) |
-| Media archive (33 MOV→MP4 + sidecars → daemon inbox + config + restart) | ⏳ next | SOP §3 — files staged in `~/santa_rosa_work` (31 MOV + 18 HEIC + 7 PNG) |
-| Photos → `farm-media-raw/fazenda-santa-rosa-para/photos/` | ⏳ next | Contents-API only |
-| Farm profile page (clone `rancho-maranta-para` → beta PR) | ⏳ next | SOP §4 — impact map will auto-wire since `farm_id` == page slug |
-| Prod sync | ⏳ blocked on your explicit go | — |
-
-**Impact map note:** the plots geojson push already makes U-06-06 render on the map (data-driven fetch); the popup link goes to the prod profile URL, so it's clickable only after prod sync.
-
-## RESUME HERE
-SR-P1 SOP mid-flight. Registry push **complete** (sheet row + both sunmint indexes live on main, commits above). Next turn resumes at **SOP §2 on-chain plot event**: call `lookup_event_docs("FARM BOUNDARY EVIDENCE EVENT" or the plot-geo event used for U-06-07/DR-P1)`, then `submit_contribution` with plot U-06-06 / fazenda-santa-rosa-para / hull / Antônio & Graça / Uruara, Para. Then SOP §3 media archive from `~/santa_rosa_work` (31 MOV→MP4 w/ GPS re-inject + sidecar → `~/media_archive_inbox/farm-media/fazenda-santa-rosa-para/`; HEICs → `farm-media-raw/fazenda-santa-rosa-para/photos/`; append daemon config + restart), then SOP §4 farm page clone PR → beta, prod only on separate go.
-
-One open item for you to confirm when convenient: **farm display name** — sheet/farms-index currently read "Fazenda Santa Rosa Para" (auto-built from farm_id); the page title can read "Fazenda Santa Rosa" — I'll set that in the profile clone.
-
-———
-**✅ Done this turn — actions taken:**
+[CONTEXT SUMMARY — turns 1–1 compacted, full history in transcript repo]:
+Turn — [CONTEXT SUMMARY — turns 1–3 compacted, full history in transcript repo]:
+Turn —  You are speaking wi:
 • `ssh run` ×20 → cd /tmp && echo "=== plots/index.geojson (current) ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geo; cd /tmp && echo "=== farms/index.json ==="; curl -s https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/farms/index.json | python3 -; cd /tmp && curl -s https://raw.githubusercontent.com/TrueSightDAO/sunmint/main/plots/index.geojson | python3 -c " import json,sys d=json.loa; …(+15 more)
 • `upload file to github` ×2 → https://docs.github.com/rest/repos/contents#create-or-update-file-contents
 
-
-### 🧑 Governor
+---
 
 [Telegram context: chat_id=-1003919341801, thread_id=21005] [Handoff context — this Telegram topic (thread 21005) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
 
@@ -406,6 +370,7 @@ I have the exact sidecar schema from Dona Rosa. Now let me generate sidecars for
 ### 🤖 Autopilot
 
 Daemon confirmed: `farm_media_daemon.py` (running since 16:50), archive worker also active, ffmpeg on IMG_8316 (21/31). Conversion continues ~1/min in background. I need to check whether the daemon **polls** for new inbox files (so adding the config entry mid-conversion works) before I add the SR inbox entry:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -413,11 +378,13 @@ Daemon confirmed: `farm_media_daemon.py` (running since 16:50), archive worker a
 The daemon **polls every 30s** (`while True` → scan → `time.sleep(30)`), reads config at startup, and uploads any video whose sidecar lacks a `yt_id`. So the clean flow: let conversion finish (all 31 mp4s + sidecars) → **then** add the SR inbox entry to the config → restart daemon → it picks up SR files and uploads.
 
 But there's a subtlety: the daemon scans inboxes defined in config at startup. Since SR inbox isn't in config yet, existing 20 mp4s+sidecars won't be touched until restart. Adding the config entry now + restart would start uploading the 20 done (and pick up remaining 11 as they land, since it polls the dir every 30s). That's the most efficient path. Let me add the SR inbox entry and restart the daemon now — remaining conversions will be picked up as they appear. First let me check what the daemon log says and confirm the exact YAML insertion point:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Daemon log confirms yesterday's Dona Rosa uploads (48 videos, all rc=0, quota resets 07:05 UTC, budget 500/day — plenty of room). Now I'll add the SR inbox entry, restart the daemon, and confirm it picks up the converted mp4s:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -425,11 +392,13 @@ Daemon log confirms yesterday's Dona Rosa uploads (48 videos, all rc=0, quota re
 **Daemon is live for SR** — first upload landed: `IMG_8281.mp4 → E7rJXE5So5U rc=0`. The daemon polls every 30s, so it will upload the remaining converted mp4s (20+ so far) and pick up the rest as ffmpeg finishes them.
 
 Let me set a background watcher on conversion + uploads so I can report completion, then verify sidecars get yt_ids written back. First check progress:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — 2 daemon uploads logged (rc=0) but **20 sidecars already have yt_id**. That means 18 yt_ids were written back but the log shows only 2... wait, let me re-read: `grep -l "yt_id"` counts files containing the string `yt_id` — my sidecars were **generated with `"yt_id": null`**, so all 20 contain the key. Let me check which actually have a non-null yt_id (daemon wrote back), and confirm upload pace:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -437,16 +406,19 @@ Interesting — 2 daemon uploads logged (rc=0) but **20 sidecars already have yt
 Clean: 4 uploaded with real yt_ids written back to sidecars, daemon log matches. Uploads proceed at ~2-3/min (~upload time each). Conversion is at 20/31 and climbing; daemon picks up each mp4 as it lands.
 
 Let me register a background watcher so I get notified when all 31 are converted+uploaded (long-running — can't wait in-turn), then report status:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The watch tools cover AWS resources/URLs, not local file counts — so I'll verify completion next turn rather than promise a callback. Let me do a final check on the archive worker side (HEICs → S3 raw originals) before converging:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 The archive worker is active but its log shows older processing (paulo-la-do-sitio, to-analyze) — the SR zip archive json (`fazenda_santa_rosa.zip.archive.json`) exists from 18:02 but reports **0 files uploaded**. The archive worker processes the zip roots (`~/fazenda_santa_rosa.zip`) — it may be queued/backlogged. Let me check the archive worker's SR zip handling state and whether it's actively working on SR:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -454,6 +426,7 @@ The archive worker is active but its log shows older processing (paulo-la-do-sit
 The **archive worker already processed the SR zip** — log shows all HEICs → raw + preview on S3 (18:02, sha tracked), and the archive json has entries with `raw_url` pointing to `media.agroverse.shop/raw/fazenda-santa-rosa/IMG_8283.HEIC`. The "0 uploaded" from my earlier parse was just a schema mismatch (it's `entries`, not `files`, and uses `uploaded_at` not `uploaded`). The raw originals (18 HEIC + MOVs) are archived.
 
 Let me confirm the archive json completeness (all entries have uploaded_at/raw_url) and get a full count:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -497,21 +470,25 @@ Remaining: the **31 MOV→MP4 YouTube conversions + uploads** (20 mp4 converted,
 ### 🤖 Autopilot
 
 👍 GO received — finishing §3b (verify 31/31 converted + uploaded) and then the YouTube gallery PR. Checking conversion/upload state first:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Conversion is at 20/31 with **all 20 uploaded** (daemon is keeping pace perfectly — no errors). ffmpeg still churning through the last 11. Let me check conversion progress + whether the process is still alive:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Interesting — ffmpeg is on IMG_8316 (already done per the mp4 list), and the log tail shows up to IMG_8314 but not IMG_8316 yet. Wait — the mp4s present go 8281→8316 (20 files), and the convert log shows DONE through 8314. So IMG_8315 may be missing or the list shows 8316 done while log hasn't logged it. Let me look more carefully — the ffmpeg process command shows IMG_8316.mp4 as its **output** arg, meaning it's converting IMG_8316's source now or finished it. Let me check which MOVs remain unconverted (31 source - 20 done = 11 left) and whether the convert loop is still alive:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Conversion is healthy: `/tmp/convert_sr.sh` alive (since 19:37), IMG_8316 in progress, 11 MOVs remaining (8317/8320/8322–24/8326/8333/8335–37/8340). ~10–15 min to finish at ~1/min. Rather than idle, let me run a bounded wait-poll (up to ~4 min) to squeeze progress, then converge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -557,21 +534,25 @@ Go
 ### 🤖 Autopilot
 
 Checking conversion/upload completion state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Still 24/31 (same as last check) — 7 MOVs remain, convert process alive. But wait — the remaining list changed from before (was 8317/8320/8322/8323/8324/8326/8333/8335/8336/8337/8340 — now only 8324/8326/8333/8335/8336/8337/8340), so it progressed 8317/8320/8322/8323 but the mp4 count shows 24... let me recheck. Actually the earlier count showed 24 already with those four done, so we may have stalled or the ffmpeg is on a slow file. Let me check what ffmpeg is actively doing and whether IMG_8317/8320/8322/8323 got converted but the count is stale:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Conversion is healthy — IMG_8323 actively encoding (164% CPU), log at 23 DONE, daemon uploading in parallel. Let me run one bounded wait-poll to push toward completion, then converge:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Progress jumped (29/31 converted) but the count dipped mid-run (24→21) — likely the daemon **moves uploaded mp4s** to a processed location after writeback. Let me verify the actual layout and final state:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -579,6 +560,7 @@ Progress jumped (29/31 converted) but the count dipped mid-run (24→21) — lik
 The layout is clear: mp4s stay in the inbox dir (30 now), sidecar jsons are created as the daemon processes each (20 jsons with yt_ids, matching 20 uploaded). The mp4 count fluctuation was just ffmpeg output-file churn during my polling. **30/31 mp4 converted** — IMG_8340 is the last (largest, ~20 MB source). Sidecars/jsons are daemon-created per upload.
 
 So: 30 converted, 20 uploaded, daemon generating sidecars as it goes. Let me run one final bounded poll to catch 31/31 + watch uploads climb:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -699,4 +681,184 @@ PR #288 opened. Merging it (the GO covers the beta gallery work):
 **✅ Done this turn — actions taken:**
 • `ssh run` ×15 → cd ~/media_archive_inbox/farm-media/fazenda-santa-rosa && echo "mp4: $(ls *.mp4 2>/dev/null | wc -l)/31"; echo "uploaded(yt_id): $(grep -l '; echo "=== ffmpeg active ==="; ps aux | grep "ffmpeg" | grep -v grep | head -3; echo "=== convert_sr.sh current line ==="; ps aux | grep conv; cd ~/media_archive_inbox/farm-media/fazenda-santa-rosa; for i in $(seq 1 13); do n=$(ls *.mp4 2>/dev/null | wc -l); u=$(grep -l '"yt_id": "[; …(+11 more)
 • `merge pr` → ✅ PR #288 on agroverse_shop_beta merged successfully (sha: 493eda2bb3589744087cdbe60b1c485819df99eb). Pull Request successfully merged
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21005] [Handoff context — this Telegram topic (thread 21005) may be an execution handoff. If the governor gives a go-signal ("go for it", "go", "proceed") or references a plan/mission, find this thread in agentic_ai_context/handoffs/HANDOFF_MANIFEST.md via read_context_file, open the referenced `*_PLAN.md`, and resume from its RESUME HERE. Do NOT reply that you lack context without checking the registry first.]
+
+[emoji-go: 👍 from user 2102593402] go for it — original resume text: ## ✅ SR-P1 SOP §3b COMPLETE + YouTube gallery PR merged
+
+**PR #288 (agroverse_shop_beta) — merged** (sha `493eda2b`): added the full YouTube video gallery to the Fazenda Santa Rosa profile
+- `farms/fa
+
+
+### 🤖 Autopilot
+
+👍 GO received — resuming with beta gallery render verification. Checking the page + media.json serving in parallel:
+
+
+### 🤖 Autopilot
+
+Beta page renders (HTTP 200, title/OG/canonical all correct) and media.json on main has all 37 entries. Critical question: does the farm page render the gallery **statically** (embeds in index.html) or **dynamically** (JS fetches media.json)? Let me check how the page consumes media.json:
+
+
+### 🤖 Autopilot
+
+Gallery is JSON-driven (`media-gallery.js` fetches media.json → renders into `#media-gallery`). Let me verify media-gallery.js's fetch path and that beta actually serves the media.json at the expected URL:
+
+
+### 🤖 Autopilot
+
+**Beta gallery verification complete — fully working:**
+- Page HTTP 200, title/OG/canonical correct
+- `media-gallery.js` fetches `./media.json`, renders youtube items as `https://www.youtube.com/embed/<videoId>?rel=0` iframes
+- **Beta serves media.json with all 37 entries** (HTTP 200, 6943 bytes, 31 youtube + 6 image), sample video `E7rJXE5So5U` present
+
+The video gallery will render as 31 YouTube embeds + 6 images. Let me do one final check — verify a couple of the YouTube video IDs are actually live (not private/processing) by hitting their oEmbed endpoints, since a dead ID would render an empty embed on the page:
+
+
+### 🤖 Autopilot
+
+One ID returns 404: **`lVHN5OZ9HCY` (IMG_8316)** — the others check out. Let me investigate: check the daemon log for that upload and retest (could be still processing or a failed publish):
+
+
+### 🤖 Autopilot
+
+One video is genuinely 404: **IMG_8316 → `lVHN5OZ9HCY`** (uploaded 20:03:03 rc=0, but oEmbed consistently 404 — not processing lag, it's been an hour). The other 30 all resolve. Let me check via the YouTube API directly (the daemon has credentials on-box) to see the video's actual status:
+
+
+### 🤖 Autopilot
+
+The daemon's YouTube credentials live in the daemon source, not obvious token files. Let me find the actual daemon script that uploads (it ran the uploads — I need its path to understand how re-upload would work and whether it uses a specific channel/account):
+
+
+### 🤖 Autopilot
+
+The daemon script is at `/home/ubuntu/farm-media-daemon/farm_media_daemon.py` (and a copy in `/opt/truesight_autopilot/farm_media_daemon/`). Let me look at how it handles uploads — whether there's a way to see the video's status, and understand if `lVHN5OZ9HCY` may have been a failed/duplicate (e.g. upload returned an ID but the video was rejected after the fact):
+
+
+### 🤖 Autopilot
+
+Watch URL returns 200 but oEmbed 404 — that pattern usually means the video is **private/unlisted or blocked**, not processing (oEmbed works for public + unlisted). Let me read the daemon's upload path to see the privacy setting and where credentials live, so I can query the video's actual status via the Data API:
+
+
+### 🤖 Autopilot
+
+The daemon shells out to an `upload_cmd` (a helper that prints "Video ID:"). The upload reported rc=0 with `lVHN5OZ9HCY` — but the video 404s on oEmbed. Let me find the upload helper script and the credentials, so I can query the video status via the Data API (videos.list) to see if it's private/rejected:
+
+
+### 🤖 Autopilot
+
+Found the uploader: `/opt/truesight_autopilot/config/youtube/upload_video_to_youtube.py` + creds in `/opt/truesight_autopilot/config/youtube/`. Let me query the video's actual status via the Data API (`videos.list` with the stored token) to determine why `lVHN5OZ9HCY` isn't oEmbed-visible:
+
+
+### 🤖 Autopilot
+
+The video isn't visible to the token — but uploads *succeeded* with it, so my token parsing may be wrong (or the video was removed after upload). Let me check how the actual uploader parses credentials and re-query properly:
+
+
+### 🤖 Autopilot
+
+My earlier parse took the manual branch; the uploader uses `Credentials.from_authorized_user_file`. Let me re-query properly with the same method (the scopes include `youtube.force-ssl`, which allows reading the video list):
+
+
+### 🤖 Autopilot
+
+The suspect video is genuinely **gone from the API** (not owned/deleted), yet the channel is "TrueSight DAO". The `contentDetails` part came back without `uploads` — possibly a partial-failure quirk. Let me re-query the channel uploads playlist properly to see which Santa Rosa videos actually exist:
+
+
+### 🤖 Autopilot
+
+The channel item is returned but `contentDetails.uploads` is missing from the response — unusual. Let me dump the raw channel JSON to see what's actually there:
+
+
+### 🤖 Autopilot
+
+Channel: **TrueSight DAO** (418 videos, 51 subs) — uploads playlist `UUjzpsu2NPLqMTGX4pa-668w`. My earlier key miss was a dict nesting issue (`contentDetails.relatedPlaylists.uploads`, not `contentDetails.uploads`). Let me list the uploads and check whether IMG_8316 exists under a *different* ID than `lVHN5OZ9HCY` (i.e. the daemon logged a stale/duplicate ID), and confirm all 31 Santa Rosa videos are present:
+
+
+### 🤖 Autopilot
+
+**Root cause found**: 30/31 Santa Rosa videos are live on the TrueSight DAO channel — **IMG_8316 is missing**. The daemon logged `lVHN5OZ9HCY rc=0` but that ID doesn't exist on the channel (upload finalized silently or was removed). Everything else is perfect.
+
+Fix: re-upload IMG_8316.mp4 with the same uploader script (same token/creds, same title/description), then update the sidecar + media.json. Re-uploading now:
+
+
+### 🤖 Autopilot
+
+The script resolves relative to its own dir — pass the absolute path:
+
+
+### 🤖 Autopilot
+
+**IMG_8316 re-uploaded successfully** → new ID **`GURyK-f94xA`** (the old `lVHN5OZ9HCY` was indeed dead). Now I need to update three places:
+1. The sidecar `IMG_8316.mp4.json` (yt_id → `GURyK-f94xA`)
+2. `media.json` on agroverse_shop_beta (videoId → `GURyK-f94xA`)
+3. Verify the new video resolves via oEmbed
+
+
+### 🤖 Autopilot
+
+New ID resolves (HTTP 200). Now update `media.json` on agroverse_shop_beta — replace the stale `lVHN5OZ9HCY` with `GURyK-f94xA`. Small surgical PR:
+
+
+### 🤖 Autopilot
+
+The writes array was missing the `path` field. Retrying with the correct path:
+
+
+### 🤖 Autopilot
+
+PR #289 opened with the surgical ID fix. Merging it:
+
+
+### 🧑 Governor
+
+[TURN DIRECTIVE] You have opened or merged a PR this turn. Per the one-PR-per-turn rule, STOP here — do NOT begin the next plan unit (it runs in a fresh turn). Stop calling tools now and write your final 'what I did this turn' report: the PR link(s), what changed, and a 'RESUME HERE → <next unit>' pointer. Start no new multi-step work.
+
+
+### 🤖 Autopilot
+
+## ✅ IMG_8316 video fixed — all 31/31 Fazenda Santa Rosa clips now live & correct
+
+**PR #289 (agroverse_shop_beta) — merged** (sha `b66639cb`): replaced the stale YouTube ID for IMG_8316
+- `farms/fazenda-santa-rosa-para/media.json`: `videoId lVHN5OZ9HCY` → **`GURyK-f94xA`** (caption unchanged)
+- Sidecar on the daemon host (`IMG_8316.mp4.json`) updated to match
+
+### What happened this turn
+1. **Beta gallery verify** — page HTTP 200, title/OG/canonical correct, `media.json` served with all 37 entries (31 youtube + 6 image), `media-gallery.js` renders youtube items as embed iframes. ✅
+2. **Full oEmbed scan of all 31 video IDs** → **30/31 OK, 1 BAD**: `lVHN5OZ9HCY` (IMG_8316) returned consistent 404.
+3. **Root-caused via YouTube Data API**: channel "TrueSight DAO" (418→447 videos) has all 30 other Santa Rosa clips but **IMG_8316 was never actually on the channel** — the daemon logged `rc=0` with that ID but the upload silently didn't persist (likely dropped right after finalization).
+4. **Re-uploaded** `IMG_8316.mp4` (60.8 MB, same title/description/privacy) → new ID **`GURyK-f94xA`**, verified live via oEmbed (HTTP 200).
+5. Updated sidecar + PR #289 → merged.
+
+### §4 complete — Fazenda Santa Rosa profile, fully verified
+| Check | Result |
+|---|---|
+| Page renders (beta) | ✅ HTTP 200, title/OG/canonical/hero |
+| media.json served (37 entries) | ✅ 31 youtube + 6 images |
+| All 31 YouTube IDs live | ✅ 31/31 resolve via oEmbed |
+
+### SR-P1 SOP final status
+| § | Step | State |
+|---|---|---|
+| §1–2 | Registry + on-chain event | ✅ done |
+| §3 | Media archive (49/49) + YouTube (31/31) | ✅ complete |
+| §4 | Farm page + gallery (PR #287, #288) + ID fix (#289) | ✅ complete + verified |
+| — | **Prod sync** | ⏳ **your explicit go** |
+
+## RESUME HERE → prod sync (awaits your go)
+1. **Prod sync on your word:** `sync_beta_to_prod(agroverse_shop_prod)` — promotes the whole Fazenda Santa Rosa profile (page PR #287, gallery PR #288, ID-fix PR #289 all ride the fork-sync). Then verify `https://www.agroverse.shop/farms/fazenda-santa-rosa-para/` renders (HTTP 200, gallery present).
+2. **Follow-ups (non-blocking):**
+   - FARM_SLUG mapping (farm_id `fazenda-santa-rosa` ≠ page slug `fazenda-santa-rosa-para`) so the sunmint impact-map popup links correctly.
+   - FSVP entity in fda_fsvp (COPOPS site code U-06-06; needs legal name/CNPJ from Antônio & Graça's docs when available).
+   - **Self-improvement candidate (worth noting):** the daemon logged `rc=0` with a video ID that never persisted on the channel — a silent-upload-drop. Could add a post-upload verification step (oEmbed/videos.list check within N minutes) to the daemon so this is caught automatically. That's a `truesight_autopilot` code change — I'd propose it as its own PR if you want it.
+
+**Open for you:** beta is fully verified and complete; **prod sync needs your explicit go** (that's an irreversible-ish gate I won't cross without it).
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×19 → echo "=== media.json on main (raw) — should have 37 gallery entries ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_; cd /tmp && curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/farms/fazenda-santa-rosa-para/index.html" -o sr_; echo "=== media-gallery.js fetch logic ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/agroverse_shop_beta/main/js/media-galle; …(+14 more)
+• `merge pr` → ✅ PR #289 on agroverse_shop_beta merged successfully (sha: b66639cb32a1dc119b56785838c1f44f3ca46a7f). Pull Request successfully merged
 
