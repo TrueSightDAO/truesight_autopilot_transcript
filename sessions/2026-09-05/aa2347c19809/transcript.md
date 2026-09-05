@@ -331,6 +331,7 @@ None of the site-walk photos on the farm page are captioned as "cacao trees" —
 ### 🤖 Autopilot
 
 The manifest confirms the HEICs were never archived (only 14 MOVs) — no stored vision descriptions for the photos. The uploaded JPG (1280×960, 4:3 landscape) is a Telegram re-encode with EXIF stripped, so to recover GPS/time I need a confident match to an original HEIC. The single phash wasn't conclusive — let me run a multi-hash consensus (dhash + ahash + color histogram) to narrow it down:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -371,21 +372,25 @@ Which do you prefer — the IMG number, or plot-level geo-reference?
 ### 🤖 Autopilot
 
 Voice note received — I parsed "FDA FSVP site" and "notification document… follows the themes… the [stouting?] theme," but I want to ground that in the actual runbooks/templates before acting. Let me search the context and the fda_fsvp repo for the notification document and theme structure.
+[4 tool result(s) compacted: search_context, search_context, search_code, search_code — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Voice transcription is rough — let me ground "FDA FSVP site", "notification document", and "the [Saffron?] theme" in the actual runbooks and the fda_fsvp repo before I act.
+[3 tool result(s) compacted: read_context_file, search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Voice parsing: I think you're asking me to (a) make sure the supplier file has the FSVP site-visit record on it, and (b) build the report PDF in our house Saffron-Monk theme (my earlier draft used a non-brand green header — fair catch). Let me verify what's on file for CEPOTX/COPOPS before confirming:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Voice transcript is rough — let me verify the two things I think you're asking before replying. Checking (1) whether the CEPOTX FSVP file already has the Raimundo & Geniza site record, and (2) how the existing CEPOTX site-visit PDFs are styled (theme):
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -393,21 +398,25 @@ Voice transcript is rough — let me verify the two things I think you're asking
 Voice parsed — got it: (1) make sure the FSVP record carries this **Raimundo & Geniza site**, and (2) the report document should follow our house **Saffron theme** like the Santa Anna PDF (my first draft used a non-brand green header — fair catch; the existing CEPOTX PDFs use the saffron band `#C87A2B`).
 
 Verified on file: CEPOTX `entity.json` **already lists the site** (`Raimundo & Geniza – Sítio Raimundo & Geniza (Uruará, Pará) — site code U-06-07` in `source_farms`), but the **site-visit PDF itself isn't filed yet** — that's the gap. Rebuilding the report now in the Saffron-Monk house style, matching the Santa Anna 7-page structure, embedding both photos:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Quick fix — import alias mismatch:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Built (4.09 MB). Let me verify the saffron band rendered on page 1 and the text is clean:
+[1 tool result(s) compacted: ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Saffron band `#C88A2D` confirmed on every page (matches house style ~`#C98A2D`), 5 pages, clean text. Sending the themed report:
+[1 tool result(s) compacted: send_telegram_attachment — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -478,26 +487,31 @@ Nothing is blocked on the technical side — just waiting on those 5 answers fro
 ### 🤖 Autopilot
 
 Gary says the records should be pullable from the media archive pipeline manifest — let me go look instead of asking. Checking the manifest repo structure + the pipeline doc:
+[2 tool result(s) compacted: search_context, ssh_run — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Let me pull the actual manifest contents and the pipeline docs that describe the schema:
+[2 tool result(s) compacted: ssh_run, search_context — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary's right to push — let me actually mine the manifest + video-evidence records instead of asking. Checking the full manifest item list and the video-evidence process outputs:
+[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Gary's right — the manifest holds the media records, and the pipeline should have per-item analysis. Let me dig into farm-media-raw (raw media + any sidecars) and the MAP runbook to see what per-photo/video records exist:
+[2 tool result(s) compacted: ssh_run, read_context_file — detail in artifacts]
 
 
 ### 🤖 Autopilot
 
 Good nudge — the MAP records should cover more than I've been leaning on. Let me pull the full pipeline state for this farm: local sidecars (they carry `captured_at`), daemon inbox, and the S3 video previews (which I can match the cacao-tree photo against frame-by-frame):
+[2 tool result(s) compacted: ssh_run, aws_query — detail in artifacts]
 
 
 ### 🤖 Autopilot
@@ -582,4 +596,89 @@ One note: the cacao-tree photo's original IS among the 22 archived HEICs — so 
 ———
 **✅ Done this turn — actions taken:**
 • `ssh run` ×19 → echo "=== farm_media_manifests tree ==="; curl -s "https://api.github.com/repos/TrueSightDAO/farm_media_manifests/git/trees/main?recursive=1; echo "=== README ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm_media_manifests/main/README.md"; echo; echo "=== index.j; echo "=== full manifest item list (basenames + gps + dates) ==="; curl -s "https://raw.githubusercontent.com/TrueSightDAO/farm_media_manifes; …(+16 more)
+
+
+### 🧑 Governor
+
+[Telegram context: chat_id=-1003919341801, thread_id=21534] Can you insert my signature in the right location properly? [System note: the user sent this as a VOICE message via the Telegram bot. Your text reply is automatically synthesized into a voice note and sent back, so answer naturally for speech and keep it concise. The user is on Telegram, NOT the DApp web chat -- do not claim otherwise. URLs are delivered separately as text, so do not read URLs aloud.]
+
+
+### 🤖 Autopilot
+
+Gary wants his signature inserted into the report's declaration block. Let me find his signature image on file:
+
+
+### 🤖 Autopilot
+
+Found Gary's signature files. Let me inspect the candidates and how prior signed PDFs place the signature (Santa Anna precedent + signed operating agreement):
+
+
+### 🤖 Autopilot
+
+Let me see exactly how the Santa Anna precedent places the signature (page 7 has an image near the signature text) and compare with my v3 declaration block:
+
+
+### 🤖 Autopilot
+
+The Santa Anna precedent places a **342×165 signature image** (exactly `gary_teh_signature.png` dimensions) right after "Sincerely," and before the name block. Let me confirm the embedded image is the same signature file, then insert it into my v3 in the same spot:
+
+
+### 🤖 Autopilot
+
+Aspect is a definitive match (2.072 vs 2.073) — Santa Anna embeds `gary_teh_signature.png` (342×165) at ~170×82pt between "Sincerely," and "Zhiwen Teh". Let me OCR the candidates to confirm which reads as the actual signature before inserting:
+
+
+### 🤖 Autopilot
+
+The Santa Anna precedent is clear: `gary_teh_signature.png` (342×165, aspect 2.073 — exact match) embedded at ~170×82pt between "Sincerely," and "Zhiwen Teh / President". That's Gary's signature image. Let me insert it into the v3 declaration block at the same spot and rebuild:
+
+
+### 🤖 Autopilot
+
+Signature embedded (342×165 = exact same asset as Santa Anna). It defaulted to centered though — the Santa Anna precedent places it left-aligned under "Sincerely,". Let me match that exactly:
+
+
+### 🤖 Autopilot
+
+x0=62.7 ≈ 6pt inside the 56.7pt margin (default flowable indent) — visually flush-left with the text, matching Santa Anna's layout. Let me do a quick visual sanity check of the rendered signature region, then send:
+
+
+### 🤖 Autopilot
+
+The signature region renders with real ink (dark pixels present, mean 248 = mostly white with signature strokes). Sending the signed v3 to Gary:
+
+
+### 🤖 Autopilot
+
+## Signed report sent ✅
+
+**✍️ Signature inserted** (message 21787) — using the **same signature asset the Santa Anna report embeds** (`gary_teh_signature.png`, 342×165), placed **exactly where the precedent puts it**:
+
+```
+Declaration
+I hereby attest that the information recorded in this report was verified during an
+on-site visit to Sítio Raimundo & Geniza (site code U-06-07)… on 03 September 2026.
+
+Sincerely,
+
+   [ ✍️ your signature — flush-left, 150×72pt ]
+
+Zhiwen Teh
+President
+TrueTech Inc · Importer of Record · EIN 88-3411514
+```
+
+- I verified the Santa Anna PDF (p7) embeds a 342×165 image with **aspect 2.073** — identical to `gary_teh_signature.png` (2.073) — so this is confirmed as your canonical signature placement
+- Last page now carries the signed Declaration; 6 pages total, saffron theme
+
+**Still pending before it's a complete compliance record** (your 3 answers or *"fill from vision"*):
+1. Practice remarks per facility (grove condition, fermentation regime, drying schedule)
+2. Exact IMG # of the cacao-tree photo
+3. Existing-grove area
+
+Say **"looks good — file it"** (with or without those answers) and I'll commit the PDF to `fda_fsvp/suppliers/cepotx/`, update `entity.json` `source_documents`, and open the PR.
+
+———
+**✅ Done this turn — actions taken:**
+• `ssh run` ×9 → echo "=== signature files on box ==="; find /home/ubuntu /opt /tmp -maxdepth 3 \( -iname "*sign*" -o -iname "*assinat*" -o -iname "*gary*" \; echo "=== signature PNG dimensions/alpha ==="; python3 <<'PYEOF' from PIL import Image import os for p in ["/home/ubuntu/sunmint_agreement/g; cd /tmp && python3 <<'PYEOF' import fitz # Santa Anna full p7 text doc = fitz.open("/tmp/fsvp_examples/santa_anna_20260830.pdf") p7 = doc[6]; …(+5 more)
 
